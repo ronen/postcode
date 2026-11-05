@@ -6,7 +6,7 @@ Replace Working through qualified views, preserving its anchor.
 
 PostCode specializes in qualified architectural investigation and retained understanding for humans working alone or with design and implementation agents. Participants may conduct larger design conversations elsewhere while consulting, challenging, extending and comparing PostCode's accounts. PostCode contributes architectural expertise without taking responsibility for architectural decisions or requiring those conversations to occur inside it. Useful direct human investigation and superior architectural investigative expertise along relevant dimensions are aspirations to evaluate, not assumed advantages; specialization does not depend on demonstrating comparative advantage. [[Product role](decisions/specialized-architectural-investigation.md#specialized-product-role)]
 
-The human investigates through read-only Views and is presumed to understand relevant computational, software-design and architectural concepts without source-language literacy. Views and Projections do not directly modify the program or silently rewrite their underlying material. Receiving participant-supplied requirements, proposals, intentions or rationale is compatible with that boundary; it does not automatically adopt that material or make it implemented. The human continues to direct program changes through implementation agents. Interaction may be graphical, prose-based, command-line or machine-readable, including external-agent invocation. Interfaces share the conceptual model and epistemological contract without necessarily exposing identical facilities.
+The working surface supports understanding, design, direction and evaluation through computational, software-design and architectural concepts. The human investigates through read-only Views and is presumed to understand relevant computational, software-design and architectural concepts without source-language literacy. Views and Projections do not directly modify the program or silently rewrite their underlying material. Receiving participant-supplied requirements, proposals, intentions or rationale is compatible with that boundary; it does not automatically adopt that material or make it implemented. The human continues to direct program changes through implementation agents. Interaction may be graphical, prose-based, command-line or machine-readable, including external-agent invocation. Interfaces share the conceptual model and epistemological contract without necessarily exposing identical facilities.
 
 The working surface supports following subjects, relationships and questions without routinely translating them into source coordinates. Text is a first-class Presentation. An explanation may contain interpretation if its status and supporting basis remain apparent. Qualification is information needed to understand the answer, not a warning hidden in documentation. Plain-English qualification may be clearer than an initially elaborate formal vocabulary.
 
@@ -43,7 +43,7 @@ Accounts may concern implemented, hypothetical or intended architecture. Impleme
 
 A captured basis identifies the specific input material used for a Lens application. It can include program states, observations, participant-supplied architectural material and earlier Projections, with their qualifications and meaningful roles or order preserved. Program inputs and captured program states remain useful special cases; they do not exhaust the general model. Subject designation does not replace basis attribution. Lens applicability across modalities depends on method, not merely a compatible-looking data shape. New architectural claims require core analysis, including when resolving requests or comparing accounts. [[Captured bases](decisions/specialized-architectural-investigation.md#inputs-and-captured-bases)]
 
-The current CLI remains an implemented-architecture subset: configured TypeScript project analysis, module-originating prose interpretations and qualified follow-up within a transient unchanged-input Session. It does not offer hypothetical/intended account investigation or general participant-material capture. These are future capabilities, not prerequisites for retaining the accurately described current subset. This conceptual scope introduces no modality fields, generalized input capture, design-acceptance workflows, account schemas or persistence machinery.
+The current CLI remains an implemented-architecture subset: configured TypeScript project analysis, module-originating prose interpretations and qualified follow-up within a transient unchanged-input Session. It does not offer hypothetical/intended account investigation or general participant-material capture. These are future capabilities, not prerequisites for retaining the accurately described current subset.
 
 ---
 
@@ -95,7 +95,7 @@ Replace Comparison and conceptual change, preserving its anchor.
 
 Architectural comparison may concern different implemented states, competing hypothetical alternatives, or intended and implemented accounts. Preserve each account's modality, basis, evidence and qualifications; their evidentiary bases need not be equivalent. Applying a Lens at two states and presenting the results together is one implemented-state case. Juxtaposition permits direct comparison without claiming that PostCode has derived a relationship. Alignment uses supported correspondence or exact identity guarantees within their scope; matching labels alone do not establish semantic continuity. [[Architectural comparison](decisions/specialized-architectural-investigation.md#architectural-modalities)]
 
-Identifying correspondence, additions, removals, changed relationships, consequences, significance, conformance or contradiction requires a qualified comparison Lens. A conceptual diff concerns change between program states; it can use ordered states with roles and intermediate evolution where relevant. Implementation review may compare prior implementation, intended change and resulting implementation, distinguishing what changed, whether it changed as intended and additional architectural consequences.
+Identifying correspondence, additions, removals, changed relationships, consequences, significance, conformance or contradiction requires a qualified comparison Lens. A conceptual diff concerns change between program states; it can use ordered states with roles and intermediate evolution where relevant. A subject-oriented change summary and a change-oriented account can organize the same evidence differently. Implementation review may compare prior implementation, intended change and resulting implementation, distinguishing what changed, whether it changed as intended and additional architectural consequences.
 
 Different perspectives may coexist: mechanically derived dependency changes, interpreted responsibility movement, test-supported behavior or asserted requirement correspondence. Expose selection criteria, methods, alternatives and omissions without implying one uniquely correct account. Analysis behavior must be stable or versioned sufficiently that PostCode changes do not masquerade as program changes. No particular comparison command, Lens or cross-modality implementation is selected here.
 
@@ -148,3 +148,34 @@ Make contemporaneous subjective observations easy to record, with optional expla
 Preserve enough provenance to relate observations to PostCode version, relevant repository commits and working-tree state, the bases of participating Projections, session, task where available, and research use versus testing/debugging PostCode. Session identity does not establish one task or a consistent program snapshot. Distinguish human-, external-agent-, and PostCode-initiated activity; system-initiated investigation records request-scoped versus autonomous attribution and its parent or trigger. Where a task is formalized, context may include its definition or a stable reference to the defining task artifact or conversation. Attribution is distinct from full reproducibility or indefinite retention of repository contents.
 
 Retain or reference enough surrounding requests, Views, choices, captured bases and lineage to interpret each observation. Recording relevant investigation-context evolution remains a local application obligation; it does not require copying all retained architectural understanding into each event or treating observations as the store that restores it. Self-contained feedback batches continue to include the available displayed artifacts and exact output under their existing delivery contract. [[Observation responsibility](decisions/specialized-architectural-investigation.md#retained-understanding-and-context)]
+
+
+---
+
+In Interpreting and resolving requests, replace the complete paragraph beginning “Request interpretation can consume” with:
+
+Request interpretation can consume qualified information but must not itself establish the subject population or other architectural claims. When resolution needs additional investigation, obtain it through Evaluation and core construction. Preserve attribution to its results and qualifications even when the parent request remains ambiguous or cannot be resolved. Established candidates, missing population coverage, unsupported applications, unavailable analysis, and an established empty result must not collapse into an undifferentiated “not found.”
+
+---
+
+In Qualification and presentation, replace the complete paragraph beginning “Displaying supplied assertions” with:
+
+Displaying supplied assertions or rendering established meaning intelligibly remains presentation when it preserves supplied meaning and qualifications without inferring additional architectural properties.
+
+---
+
+In Qualification and presentation, replace the complete paragraph beginning “New classifications, correlations” with:
+
+New classifications, correlations, correspondence, flows, synthesized explanations, or other architectural claims require analysis and qualified Projections. Displaying two results together is not evidence of a relationship between them. Preserve each contributing Projection's subject, Lens, parameters, captured basis, qualification, and relevant outcomes. Consequential filtering, aggregation, grouping, and omissions remain visible. Ordinary layout and interaction are not restricted to an exhaustive whitelist of computations.
+
+---
+
+In Experimental structured outputs, replace the complete paragraph beginning “Before supporting durable consumption” with:
+
+Before supporting durable consumption, define deliberate format versioning, published schemas and compatibility obligations. The future external-agent context artifact, required to be documented and stable enough for independent agents to consume, is such a case. That later requirement does not impose schema infrastructure on current early development. [[Temporary output policy](decisions/experimental-structured-outputs.md)]
+
+---
+
+In Scope and future refinement, replace the complete paragraph beginning “Existing retention and follow-up” with:
+
+Existing retention and follow-up provide mechanisms for the required [accumulated-understanding capability](#immutable-results-and-interpretation-history); its intended UX and supporting architecture remain unresolved. The [accumulation decision](decisions/structured-investigram-content.md#require-accumulated-understanding) records the deferred capability and the limits of current support. Further UX decisions may select richer workspace context, specialized workspace kinds, or a particular initial View. Continuity across program changes and application restarts needs later requirements and lifecycle design. Investigation of hypothetical and intended architecture, participant-material intake, general multi-state analysis, live refresh, shared-context protocols, resource-policy mechanisms and new language or Lens families each require appropriately scoped work. Retained interpretation already supplies qualified input to supported follow-up; it does not deliver those broader capabilities.

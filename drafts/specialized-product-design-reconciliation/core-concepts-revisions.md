@@ -24,7 +24,7 @@ A **subject** is what a lens investigates or a claim concerns. This is a role, n
 
 A configured project can provide the subject for a module inventory without denoting an executable entry point or the human's current workspace.
 
-Subjects may concern implemented, hypothetical or intended architecture. Subject designation does not itself identify the captured basis or establish correspondence across accounts. Current selectable subjects remain capability-specific.
+Subjects may concern implemented, hypothetical or intended architecture. Subject designation does not itself identify the captured basis or establish correspondence across accounts.
 
 ---
 
@@ -61,7 +61,7 @@ Add after Claim context.
 
 **Architectural modality** distinguishes what an account concerns: implemented architecture describes actual software, supported and qualified by implementation evidence; hypothetical architecture describes alternatives without implying acceptance, feasibility or realization; intended architecture describes accepted requirements or design decisions. Modality is distinct from provenance, method and epistemological status. An implemented account can be interpretive, and exact recording of a proposal establishes neither its acceptance nor its feasibility. Observed behavior is execution-scoped evidence, not a further modality.
 
-These meanings require neither separate data models nor modality fields. Lens applicability depends on method. A transition from proposal to intention preserves its provenance and history; sharing an account does not establish participant agreement or confer authority on PostCode's interpretation.
+Lens applicability depends on method. A transition from proposal to intention preserves its provenance and history; sharing an account does not establish participant agreement or confer authority on PostCode's interpretation.
 
 ---
 
@@ -79,9 +79,9 @@ A **program input** is a designated source of program information, such as a rep
 
 A **captured program state** is program information captured from a designated input, with attributable scope, capture timing and limitations. It is one possible basis contribution and need not be exhaustive or atomic. An input designation or Session identifier alone is not a captured basis.
 
-A **Projection request** designates applicable inputs, a subject, a Lens and Lens parameter values. Execution identifies the material actually used as the result's captured basis. Binding policies apply where the input supports them; participant material and earlier Projections do not acquire following or pinned policies by analogy. Repeating a request is distinct from presenting an exact retained Projection. These distinctions prescribe neither a storage schema, generalized input-capture mechanism nor planner. A Session supplies analysis and reference context, not an input binding.
+A **Projection request** designates applicable inputs, a subject, a Lens and Lens parameter values. Execution identifies the material actually used as the result's captured basis. Binding policies apply where the input supports them; participant material and earlier Projections do not acquire following or pinned policies by analogy. Repeating a request is distinct from presenting an exact retained Projection. A Session supplies analysis and reference context, not an input binding.
 
-The current implementation uses captured program information and selected retained interpretation within transient unchanged-input Sessions. This broader definition does not require changing its request or capture types before adding a capability that needs other input material.
+Retained interpretation supplied to an investigation contributes to its captured basis with the supplied content, provenance, qualifications and limitations. Supplied input is distinct from demonstrated reliance or claimed evidential support; a reference alone does not imply that the referenced content was supplied. An answer's selection of retained accounts and correction/association snapshots is also a basis contribution, distinct from the inputs to their generating investigations and from captured program states. [[Retained contributions](decisions/specialized-architectural-investigation.md#inputs-and-captured-bases)]
 
 ---
 
@@ -97,7 +97,7 @@ A Projection is an architectural-domain object, addressable within its Session, 
 
 A produced Projection retains the information selected for that result. Later accumulation or input changes do not mutate its captured basis, selected content or qualification. For revision-oriented inputs, a following binding resolves a changing input again on subsequent requests; a pinned binding continues to use the same captured program state. A result from newly captured input identifies that new basis without changing earlier results. Pinning the input does not mean redisplaying an exact retained Projection. Reusing or rendering a retained Projection need not establish a different answer. For mechanical analyses, equivalent inputs, methods, requirements and completed evaluation preserve deterministic semantic content. Later evaluation may add information missing from incomplete work without changing the earlier Projection or outcome. Presentation choices describe how supplied information is shown and do not redefine the Lens question. [[Immutable information](decisions/transient-analysis-sessions.md#immutable-information-within-an-accumulating-session)] [[Bindings and refresh](decisions/coordinated-views-and-qualified-results.md#preserve-immutable-results-under-bindings-and-refresh)]
 
-A fresh request for investigation results can select retained investigrams and explicit replacements into a new Projection while preserving earlier Projections. The retained interpretations and correction/association selections supporting an answer are distinct from its captured program-state basis: either can affect the answer, but interpretation history is not thereby a captured program state and does not acquire following or pinned policies. Presenting an exact retained Projection preserves both its basis and its selected answer. [[Retained interpretation selection](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)] [[Presentation continuity](decisions/coordinated-views-and-qualified-results.md#preserve-the-selected-answer-during-presentation-changes)]
+A fresh request for investigation results can select retained investigrams and explicit replacements into a new Projection while preserving earlier Projections. The selected retained interpretations and correction/association snapshots contribute to the answer’s broader captured basis, while remaining distinct from its captured program-state support and from the input deliveries to their generating investigations. Interpretation history is not thereby a captured program state and does not acquire following or pinned policies. Presenting an exact retained Projection preserves these contributions and its selected answer. [[Retained contributions](decisions/specialized-architectural-investigation.md#inputs-and-captured-bases)] [[Retained interpretation selection](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)] [[Presentation continuity](decisions/coordinated-views-and-qualified-results.md#preserve-the-selected-answer-during-presentation-changes)]
 
 Otherwise identical qualified answers have repeatable logical identity within the supported Session, independently of subject designation or lookup route. Equality uses the decision’s [canonical effective-input set](decisions/lens-application-and-request-outcomes.md#give-equivalent-qualified-answers-repeatable-identity), including Session context, method version and meaningful subject order/roles. Invocation-specific resolution information has a separate owner; answer-relevant qualification remains in the Projection. This preserves full immutable payload consistency without requiring physical memoization or cross-session identity. [[Qualified answer identity](decisions/lens-application-and-request-outcomes.md#give-equivalent-qualified-answers-repeatable-identity)]
 
@@ -114,7 +114,7 @@ An **Investigram** is an immutable, addressable artifact of architectural invest
 - <a id="interpretation-content"></a>**Interpretation content** — the substantive content of the interpretation. It may contain multiple related [claims](#claim), expressed in prose, structured content, or a combination, including prose within a structure.
 - **Referent information** — what the interpretation concerns in its architectural context. It may include references to specific [subjects](#subject); a referent may span entities or identify captured source.
 - **Evidence context** — the supporting [evidence](#evidence) and its relationship to the interpretation's claims.
-- **Provenance** — the operation and selected subject that produced the investigram, together with its originating architectural context, captured basis and supporting method.
+- **Provenance** — the operation and selected subject that produced the investigram, together with its originating architectural context and supporting method.
 - **Qualifications** — the claims' [Claim context](#claim-context), including evidence attribution, provenance and method, scope, epistemological status or guarantee, and limitations. Qualifications remain attributable to the claims or portions they qualify; they need not apply uniformly to all content.
 
 Investigrams can be associated with the subjects they describe for subsequent inspection and investigation. [[Subject associations](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)]
@@ -125,7 +125,7 @@ An investigram may carry accompanying corrections identifying earlier targets, r
 
 An investigram's citation index records prior investigrams supplied to the investigator during its generating evaluation, without asserting reliance or endorsement. "Needs reconsideration" is a session-derived property indicating corrected context reached through those citations; the investigram and its index remain immutable. [[Citation exposure and reconsideration](decisions/investigrams-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status)]
 
-An Investigram is an interpretation result, not every architectural account or participant-supplied document. Current prose Investigrams originate in module investigation; the general definition permits other architectural subjects without requiring a schema change or treating retained-result validation as design acceptance.
+An Investigram is an interpretation result, not every architectural account or participant-supplied document. Retaining a validated investigation result is distinct from accepting a design proposal as intended architecture.
 
 ---
 
