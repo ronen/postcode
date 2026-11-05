@@ -62,15 +62,17 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 <a id="accepted-decisions"></a>
 ## Accepted decisions
 
+- [Specialize in architectural investigation and retained understanding](specialized-architectural-investigation.md)
+
 - [Human-facing architectural representations](human-facing-architectural-representations.md)
-- [Allow structured investigram content](structured-investigram-content.md)
+- [Allow structured investigram content](structured-investigram-content.md) — partially superseded; its accumulation requirement and representation-independent interpretation contracts remain accepted.
 
 - [Present exact retained answers independently of fresh selection](exact-retained-answer-presentation.md)
 
 - [Compact interface attribution and complete operational results](compact-attribution-and-complete-results.md)
 - [Separate research concepts from application specification](application-specification-boundaries.md)
 
-- [Coordinate Views while preserving qualified results](coordinated-views-and-qualified-results.md)
+- [Coordinate Views while preserving qualified results](coordinated-views-and-qualified-results.md) — partially superseded; see the record’s heading mappings.
 - [Hosted authentication and billing routes](hosted-authentication-and-billing.md)
 - [Private investigator reference transport](investigator-reference-transport.md)
 

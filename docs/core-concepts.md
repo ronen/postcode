@@ -10,15 +10,15 @@ Semantic changes require explicit human agreement and a corresponding accepted d
 
 ### Entity
 
-*[decision: [Initial core concepts](decisions/initial-core-concepts-decisions.md#define-entities-subjects-claims-and-relationships-by-their-meaning)]*
+*[decision: [Architectural subjects](decisions/specialized-architectural-investigation.md#architectural-subjects)]*
 
-An **Entity** is a distinguishable program subject represented by PostCode, such as a module, symbol, function, or test. What constitutes an entity, and what can be established about it, depends on the applicable language or analysis. An entity is distinct from the claims made about it and the evidence for those claims.
+An **Entity** is a distinguishable architectural subject represented by PostCode. Implemented examples include a module, symbol, function or test; what can be established about them depends on the applicable language or analysis. An entity can also be introduced by a hypothetical or intended account, inheriting the identity and provenance supplied by that account. Correspondence with other accounts remains qualified rather than inferred from matching names. An entity is distinct from the claims made about it and the evidence for those claims.
 
 Addressability alone does not make something an entity. Claims, evidence, evaluation outcomes, and projections can also be addressable. An entity's identity, its implementation name, and a displayed label or navigation handle are different concepts. Continuity of a human's attention to a subject is also distinct from semantic continuity of that subject across program states.
 
 ### Subject
 
-*[decision: [Initial core concepts](decisions/initial-core-concepts-decisions.md#define-entities-subjects-claims-and-relationships-by-their-meaning)]*
+*[decision: [Architectural subjects](decisions/specialized-architectural-investigation.md#architectural-subjects)]*
 
 A **subject** is what a lens investigates or a claim concerns. This is a role, not another entity kind. Possible subjects are open-ended; examples include an entity, a collection of entities, a relationship, an identified qualified change, or an investigram. [[Investigrams as subjects](decisions/investigrams-and-progressive-investigation.md#separate-program-referents-from-interpretive-focus)]
 
@@ -26,9 +26,11 @@ A **subject** is what a lens investigates or a claim concerns. This is a role, n
 
 A configured project can provide the subject for a module inventory without denoting an executable entry point or the human's current workspace.
 
+Subjects may concern implemented, hypothetical or intended architecture. Subject designation does not itself identify the captured basis or establish correspondence across accounts.
+
 ### Claim
 
-*[decision: [Initial core concepts](decisions/initial-core-concepts-decisions.md#define-entities-subjects-claims-and-relationships-by-their-meaning)]*
+*[decision: [Architectural subjects](decisions/specialized-architectural-investigation.md#architectural-subjects)]*
 
 A **Claim** is the information asserted by an analysis result. Its content is distinct from the Claim context that qualifies it and the evaluation outcome describing the attempt to produce it. Information about an entity and an assertion of a relationship are examples of claim content.
 
@@ -44,11 +46,11 @@ Property is descriptive vocabulary here. It does not imply a source-language fie
 
 ### Relationship
 
-*[decision: [Initial core concepts](decisions/initial-core-concepts-decisions.md#define-entities-subjects-claims-and-relationships-by-their-meaning)]*
+*[decision: [Architectural subjects](decisions/specialized-architectural-investigation.md#architectural-subjects)]*
 
 A **Relationship** is a connection such as containment, dependency, a call, or an association between documentation and its subject. A **relationship claim** asserts such a connection and has Claim context of its own. For example, an exported symbol is an entity, while a module's export of that symbol is a relationship claim.
 
-Participants are not necessarily all entities: a documentation association can connect an addressable recorded assertion to its subject. A relationship's meaning is distinct from its depiction as a graph edge or tree link. References between records do not, merely by being references, constitute asserted program relationships.
+Participants are not necessarily all entities: a documentation association can connect an addressable recorded assertion to its subject. A relationship's meaning is distinct from its depiction as a graph edge or tree link. References between records do not, merely by being references, constitute asserted architectural relationships.
 
 ### Facet
 
@@ -82,17 +84,32 @@ Where a claim or result concerns multiple program states, its context preserves 
 
 An observation about the investigated program concerns a particular observed execution or circumstance. An observation of PostCode use records an interaction or resulting view. The latter is evidence of that experience, not automatically a current claim about the investigated program.
 
+<a id="architectural-modality"></a>
+### Architectural modality
+
+*[decision: [Architectural modalities](decisions/specialized-architectural-investigation.md#architectural-modalities)]*
+
+**Architectural modality** distinguishes what an account concerns: implemented architecture describes actual software, supported and qualified by implementation evidence; hypothetical architecture describes alternatives without implying acceptance, feasibility or realization; intended architecture describes accepted requirements or design decisions. Modality is distinct from provenance, method and epistemological status. An implemented account can be interpretive, and exact recording of a proposal establishes neither its acceptance nor its feasibility. Observed behavior is execution-scoped evidence, not a further modality.
+
+Lens applicability depends on method. A transition from proposal to intention preserves its provenance and history; sharing an account does not establish participant agreement or confer authority on PostCode's interpretation.
+
 ## Evaluation and analysis context
 
-### Program inputs, bindings, captured states and Projection requests
+<a id="program-inputs-bindings-captured-states-and-projection-requests"></a>
+<a id="captured-basis"></a>
+### Captured bases, program inputs and Projection requests
 
-*[decision: [Coordinate Views while preserving qualified results](decisions/coordinated-views-and-qualified-results.md#define-request-inputs-and-captured-states)]*
+*[decision: [Inputs and captured bases](decisions/specialized-architectural-investigation.md#inputs-and-captured-bases)]*
+
+A **captured basis** identifies the specific input material used for a Lens application. It may contain one or more program states, observations, participant-supplied architectural material or earlier Projections. Preserve the contributions' provenance, scope and limitations, their associations with the information they support, and meaningful roles or order. Including material does not establish its truth or agreement with other material. Earlier PostCode output remains a qualified artifact, not independent repository evidence.
 
 A **program input** is a designated source of program information, such as a repository revision, working tree, index, execution or observation stream. Its **binding policy** determines which state is used when a request is performed. For revision-oriented inputs, following resolves a changing input again and pinned continues to use the same captured program state.
 
-A **captured program state** is the program information captured from a designated input as the basis for a result, with attributable scope, capture timing and limitations. It need not be an exhaustive or atomic snapshot. An input designation or Session identifier alone is not that captured basis.
+A **captured program state** is program information captured from a designated input, with attributable scope, capture timing and limitations. It is one possible basis contribution and need not be exhaustive or atomic. An input designation or Session identifier alone is not a captured basis.
 
-A **Projection request** designates program inputs and applicable bindings, a subject, a Lens and Lens parameter values. Execution resolves the inputs to captured states; the resulting [Projection](#projection) identifies the basis actually used. Repeating the request is distinct from presenting an exact retained Projection. These distinctions prescribe neither a storage schema nor a planner. A Session supplies analysis and reference context, not a following or pinned input binding.
+A **Projection request** designates applicable inputs, a subject, a Lens and Lens parameter values. Execution identifies the material actually used as the result's captured basis. Binding policies apply where the input supports them; participant material and earlier Projections do not acquire following or pinned policies by analogy. Repeating a request is distinct from presenting an exact retained Projection. A Session supplies analysis and reference context, not an input binding.
+
+Retained interpretation supplied to an investigation contributes to its captured basis with the supplied content, provenance, qualifications and limitations. Supplied input is distinct from demonstrated reliance or claimed evidential support; a reference alone does not imply that the referenced content was supplied. An answer's selection of retained accounts and correction/association snapshots is also a basis contribution, distinct from the inputs to their generating investigations and from captured program states. [[Retained contributions](decisions/specialized-architectural-investigation.md#inputs-and-captured-bases)]
 
 ### Request resolution
 
@@ -155,7 +172,7 @@ Immutability is a property of retained information, distinct from retention dura
 
 ### Lens
 
-*[decision: [Coordinate Views while preserving qualified results](decisions/coordinated-views-and-qualified-results.md#generalize-lens-results-and-view-composition)]*
+*[decision: [Results over captured bases](decisions/specialized-architectural-investigation.md#results-over-captured-bases)]*
 
 A **Lens** describes the aspect of a subject being investigated: the question being asked. Lens parameters refine the information requested, such as direct versus transitive callers. A Lens may use multiple analyses, evidence sources, reusable operation outcomes or qualified Projections to produce its answer. Its method preserves the provenance, qualifications and limitations of those contributions. “Composite Lens” is descriptive language for a method, not a separate architectural category or a requirement to use other Lenses for every analysis contribution.
 
@@ -165,28 +182,28 @@ A Lens definition makes its question, applicability/cardinality, parameter meani
 
 ### Projection
 
-*[decision: [Coordinate Views while preserving qualified results](decisions/coordinated-views-and-qualified-results.md#generalize-lens-results-and-view-composition)]*
+*[decision: [Results over captured bases](decisions/specialized-architectural-investigation.md#results-over-captured-bases)]*
 
-A **Projection** is the qualified information produced by applying a Lens to one or more captured program states and a subject, with particular Lens parameter values. It includes its content and the qualifications needed to understand what that content establishes. The subject may be a collection. Requests designate program inputs with applicable binding policies; execution resolves those inputs to the captured states identified by the result. State associations with claims and evidence, and meaningful ordering or roles among states, are part of interpreting the result.
+A **Projection** is the qualified information produced by applying a Lens to a subject and a captured basis, with particular Lens parameter values. It includes its content and the qualifications needed to understand what that content establishes. The subject may be a collection. Requests designate applicable inputs; the result identifies the specific material actually used. Associations of basis contributions with claims and evidence, and meaningful ordering or roles among contributions, are part of interpreting the result.
 
-A Projection is a program-domain object, addressable within its Session, identifying its subject, Lens, Lens parameters and session context, with references to selected claims, their captured supporting basis and method context, and relevant Evaluation outcomes. Session membership and a branch designation do not themselves establish that basis. A Projection is distinct from an evaluation attempt and from a rendering of its result.
+A Projection is an architectural-domain object, addressable within its Session, identifying its subject, Lens, Lens parameters and session context, with references to selected claims, their captured supporting basis and method context, and relevant Evaluation outcomes. Session membership and a branch designation do not themselves establish that basis. A Projection is distinct from an evaluation attempt and from a rendering of its result.
 
 A produced Projection retains the information selected for that result. Later accumulation or input changes do not mutate its captured basis, selected content or qualification. For revision-oriented inputs, a following binding resolves a changing input again on subsequent requests; a pinned binding continues to use the same captured program state. A result from newly captured input identifies that new basis without changing earlier results. Pinning the input does not mean redisplaying an exact retained Projection. Reusing or rendering a retained Projection need not establish a different answer. For mechanical analyses, equivalent inputs, methods, requirements and completed evaluation preserve deterministic semantic content. Later evaluation may add information missing from incomplete work without changing the earlier Projection or outcome. Presentation choices describe how supplied information is shown and do not redefine the Lens question. [[Immutable information](decisions/transient-analysis-sessions.md#immutable-information-within-an-accumulating-session)] [[Bindings and refresh](decisions/coordinated-views-and-qualified-results.md#preserve-immutable-results-under-bindings-and-refresh)]
 
-A fresh request for investigation results can select retained investigrams and explicit replacements into a new Projection while preserving earlier Projections. The retained interpretations and correction/association selections supporting an answer are distinct from its captured program-state basis: either can affect the answer, but interpretation history is not thereby a captured program state and does not acquire following or pinned policies. Presenting an exact retained Projection preserves both its basis and its selected answer. [[Retained interpretation selection](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)] [[Presentation continuity](decisions/coordinated-views-and-qualified-results.md#preserve-the-selected-answer-during-presentation-changes)]
+A fresh request for investigation results can select retained investigrams and explicit replacements into a new Projection while preserving earlier Projections. The selected retained interpretations and correction/association snapshots contribute to the answer’s broader captured basis, while remaining distinct from its captured program-state support and from the input deliveries to their generating investigations. Interpretation history is not thereby a captured program state and does not acquire following or pinned policies. Presenting an exact retained Projection preserves these contributions and its selected answer. [[Retained contributions](decisions/specialized-architectural-investigation.md#inputs-and-captured-bases)] [[Retained interpretation selection](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)] [[Presentation continuity](decisions/coordinated-views-and-qualified-results.md#preserve-the-selected-answer-during-presentation-changes)]
 
 Otherwise identical qualified answers have repeatable logical identity within the supported Session, independently of subject designation or lookup route. Equality uses the decision’s [canonical effective-input set](decisions/lens-application-and-request-outcomes.md#give-equivalent-qualified-answers-repeatable-identity), including Session context, method version and meaningful subject order/roles. Invocation-specific resolution information has a separate owner; answer-relevant qualification remains in the Projection. This preserves full immutable payload consistency without requiring physical memoization or cross-session identity. [[Qualified answer identity](decisions/lens-application-and-request-outcomes.md#give-equivalent-qualified-answers-repeatable-identity)]
 
 ### Investigram
 
-*[decision: [Allow structured investigram content](decisions/structured-investigram-content.md#permit-structured-interpretation)]*
+*[decision: [Architectural interpretation](decisions/specialized-architectural-investigation.md#architectural-interpretation)]*
 
-An **Investigram** is an immutable, addressable artifact of program investigation containing a qualified interpretation. It includes the following information:
+An **Investigram** is an immutable, addressable artifact of architectural investigation containing a qualified interpretation. It includes the following information:
 
 - <a id="interpretation-content"></a>**Interpretation content** — the substantive content of the interpretation. It may contain multiple related [claims](#claim), expressed in prose, structured content, or a combination, including prose within a structure.
-- **Referent information** — what the interpretation concerns in its program context. It may include references to specific [subjects](#subject); a referent may span entities or identify captured source.
+- **Referent information** — what the interpretation concerns in its architectural context. It may include references to specific [subjects](#subject); a referent may span entities or identify captured source.
 - **Evidence context** — the supporting [evidence](#evidence) and its relationship to the interpretation's claims.
-- **Provenance** — the operation and selected subject that produced the investigram, together with its originating program context and supporting method.
+- **Provenance** — the operation and selected subject that produced the investigram, together with its originating architectural context and supporting method.
 - **Qualifications** — the claims' [Claim context](#claim-context), including evidence attribution, provenance and method, scope, epistemological status or guarantee, and limitations. Qualifications remain attributable to the claims or portions they qualify; they need not apply uniformly to all content.
 
 Investigrams can be associated with the subjects they describe for subsequent inspection and investigation. [[Subject associations](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)]
@@ -197,18 +214,20 @@ An investigram may carry accompanying corrections identifying earlier targets, r
 
 An investigram's citation index records prior investigrams supplied to the investigator during its generating evaluation, without asserting reliance or endorsement. "Needs reconsideration" is a session-derived property indicating corrected context reached through those citations; the investigram and its index remain immutable. [[Citation exposure and reconsideration](decisions/investigrams-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status)]
 
+An Investigram is an interpretation result, not every architectural account or participant-supplied document. Retaining a validated investigation result is distinct from accepting a design proposal as intended architecture.
+
 <a id="presentation-and-view"></a>
 ### Presentation and View
 
-*[decision: [Coordinate Views while preserving qualified results](decisions/coordinated-views-and-qualified-results.md#generalize-lens-results-and-view-composition)]*
+*[decision: [Results over captured bases](decisions/specialized-architectural-investigation.md#results-over-captured-bases)]*
 
 A **Presentation** describes how one or more Projections are rendered, interacted with or exposed through a PostCode interface. Presentation parameters describe choices such as layout, sorting, grouping, filtering and disclosure of detail. A Presentation can be graphical, human-readable text or structured machine-readable data.
 
-A **View** is an instantiated Presentation of a nonempty collection of Projections. Each Projection retains its identity, subject, Lens, parameters, program-state basis, content and qualification. Different Presentations or parameter values can give different Views over the same Projection or collection. Presentation context supplies rendering circumstances, such as available space or the surrounding investigation; it does not change the supplied answers.
+A **View** is an instantiated Presentation of a nonempty collection of Projections. Each Projection retains its identity, subject, Lens, parameters, captured basis, content and qualification. Different Presentations or parameter values can give different Views over the same Projection or collection. Presentation context supplies rendering circumstances, such as available space or the surrounding investigation; it does not change the supplied answers.
 
-One coordinating Presentation can relate several Projections through shared alignment, axes, anchoring or linked selection. Several independent Views placed together remain several Views; a common container or visual proximity alone does not make them one. Presentation relationships do not establish new relationships in the investigated program. Alignment requires established correspondence or an exact identity guarantee supplied by the inputs; deriving further correspondence or a new program claim requires core analysis and a qualified Projection. [[Interface boundary](decisions/coordinated-views-and-qualified-results.md#coordinate-supplied-information-without-deriving-new-program-claims)]
+One coordinating Presentation can relate several Projections through shared alignment, axes, anchoring or linked selection. Several independent Views placed together remain several Views; a common container or visual proximity alone does not make them one. Presentation relationships do not establish new architectural relationships. Alignment requires established correspondence or an exact identity guarantee supplied by the inputs; deriving further correspondence or a new architectural claim requires core analysis and a qualified Projection. [[Architectural scope](decisions/specialized-architectural-investigation.md#results-over-captured-bases)] [[Interface boundary](decisions/coordinated-views-and-qualified-results.md#coordinate-supplied-information-without-deriving-new-program-claims)]
 
-Adding or removing an underlying Projection changes View composition, rather than merely rendering context. Such changes must be visible and recorded. Replacing displayed information with a result based on newly captured state must likewise expose and record the change of basis. These distinctions preserve investigation lineage and define meaning rather than requiring independently stored stages, a managed-View lifecycle or a universal View identity formula.
+Adding or removing an underlying Projection changes View composition, rather than merely rendering context. Such changes must be visible and recorded. Replacing displayed information with a result based on newly captured material must likewise expose and record the change of basis. These distinctions preserve investigation lineage and define meaning rather than requiring independently stored stages, a managed-View lifecycle or a universal View identity formula.
 
 Presentation-only actions, including paging and reformatting, preserve the selected answer and its qualifications. If an interaction instead refreshes the answer, its refresh behavior must be apparent and consequential changes in the answer, selection or qualifications disclosed. Disclosed reselection is distinct from the continuity of presenting the exact retained result with different presentation inputs. This does not require a warning for every identifier change or a comparison notice for every independently requested fresh investigation. [[Presentation continuity](decisions/coordinated-views-and-qualified-results.md#preserve-the-selected-answer-during-presentation-changes)]
 
@@ -222,6 +241,8 @@ Result/Presentation compatibility is an explicit contract between the qualified 
 *[decision: [Application specification boundaries](decisions/application-specification-boundaries.md#start-with-a-workspace-as-a-collection-and-arrangement-of-views)]*
 
 An **investigation context** comprises the Views accumulated while following subjects, relationships, and questions, together with their captured bases and relevant lineage. It identifies what each View shows and how it relates to the investigation. It can span Workspace arrangements and does not imply a separately stored context object, common captured state, or persistent Session. The [application specification](app-specification.md#workspaces-and-navigation) states the retained-lineage contract.
+
+This is local application terminology for Views, bases and lineage, not the definition of all [retained architectural understanding](../foundation/product-design.md#retained-architectural-understanding-and-continuity). It is distinct from an observation archive and the context supplied during an Investigator execution. Those responsibilities may refer to overlapping information without requiring one shared object. [[Retained understanding and context](decisions/specialized-architectural-investigation.md#retained-understanding-and-context)]
 
 <a id="workspace"></a>
 ### Workspace

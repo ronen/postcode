@@ -1,7 +1,7 @@
 # Specialize in architectural investigation and retained understanding
 
-Status: in review
-Decided: [set on human acceptance]
+Status: accepted
+Decided: 2026-11-05
 Arising from: Human-directed reconciliation of foundation/product-design.md at `03f4dd23ab6f8df90df54fe9c7f2c5243c461abc`, November 2026
 Scope: Product role, architectural modalities and captured bases, retained understanding and external participants; current implementation remains an implemented-architecture subset
 Supersedes:
@@ -118,6 +118,8 @@ At `03f4dd2`, focused source inspection found no demonstrated implementation con
 For current follow-up, [Investigation execution](../../src/lib/investigation/execute.ts) supplies the selected prior account through `InvestigationContext.prepare` and records the dispatched response through `supplied`; the frozen delivery retains the supplied portions, correction context, completeness information and omissions. [Investigation acceptance](../../src/lib/investigation/acceptance.ts) retains those deliveries and citation/evidence identifiers in `InvestigationProvenance`, and each resulting Investigram points to that provenance. These records identify the retained-interpretation input contribution within the supported Session without a new basis field. Citations are an exposure index, not a replacement for delivery records or proof of reliance. Claim-support references preserve the distinction between material available to an investigation and evidence asserted for its claims.
 
 For a retained answer, the immutable [investigation-selection Projection](../../src/lib/investigation/selection-record.ts) identifies the selected accounts, replacements, associations, revision snapshots and applicable evaluation or mechanical Projection. [Fixed-reference content resolution](../../src/lib/investigation/content.ts) reaches the corresponding accounts, provenance and supporting records. This attributes the answer's selected interpretation separately from its program-state support and the inputs originally delivered to the Investigator. Neither attribution rests solely on the Session identifier. This is a source-based assessment of existing internal retention, not a claim that observations export a complete basis, that every exposure was understood, or that unrestricted interpretation is semantically correct.
+
+The observation-gap backlog entry deliberately retains its narrower “captured program-state basis” wording: it describes a demonstrated export defect, with ordinary module inventory as the concrete example. That defect remains correctly described under the broader definition. The entry already calls for assessing the actual qualified answer and its basis, including associated inspection; it is not an exhaustive statement of every basis contribution or a claim that interpretation deliveries and selection snapshots are fully exported. Establishing conformance with the broader observation rule also requires checking attribution of those contributions where used. The internal-retention assessment above does not establish that export guarantee, and this pass identifies no additional demonstrated export defect to append to the candidate.
 
 Existing documented captured-basis observation, navigation-lineage, initiation-attribution assessment and output-boundary limitations retain their prior scope and disposition. This is not a fresh conformance certification or an excuse to defer a newly demonstrated violation. If adoption review identifies one, first specify its concrete failing behavior, the minimum bounded implementation and focused verification; bring consequential scope changes to the human before promotion.
 

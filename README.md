@@ -1,12 +1,12 @@
 # PostCode
 
-> *When coding agents do the coding, humans should be able to understand, direct, and supervise software development without ever needing to see programming-language source code.*
+> *Humans should be able to understand, design, direct and evaluate software without needing to read or write its programming language.*
 
-PostCode is an application for software development that aims to make that possible. It presents task-appropriate views of program structure, behavior, history, and rationale.
+PostCode is a specialized tool for architectural investigation and retained understanding. It supplies task-appropriate, qualified architectural accounts that humans and agents can consult, challenge, extend and compare, including within larger design conversations held elsewhere. It does not take responsibility for architectural decisions or require those conversations to take place inside PostCode.
 
-Those views preserve the provenance, epistemological status, and limitations of their content. They clearly distinguish between derived facts, recorded assertions, observations, and interpretations.
+Accounts preserve provenance, epistemological status and limitations, distinguishing derived facts, recorded assertions, observations and interpretations. The product design covers implemented, hypothetical and intended architecture; the current development CLI investigates implemented software within its documented limits. Useful direct human investigation and comparative investigative expertise remain research aspirations, not demonstrated advantages or prerequisites for specialization.
 
-As an initial simplification, PostCode's projections and views are read-only. Humans continue to direct program changes by instructing coding agents in prose.
+PostCode's Projections and Views are read-only: they do not directly modify the program or silently rewrite their underlying material. Humans continue to direct program changes by instructing implementation agents.
 
 See the [research product design](foundation/product-design.md) for conceptual commitments, the [application specification](docs/app-specification.md) for intended application behavior and high-level design, and the [capability reference](docs/capability-reference.md) for the current toolbox.
 
