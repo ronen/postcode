@@ -6,15 +6,19 @@ This document describes the conceptual product design through which PostCode's r
 
 ## 1. Design Premise
 
-The goal is a projection-based software-development environment in which humans can practice software design and architecture in collaboration with agents that implement the software. PostCode provides task-appropriate, epistemologically qualified representations that help humans understand, design, direct, and evaluate software without requiring them to know how to read or write conventional programming-language source.
+The goal is to support humans working alone or in collaboration with agents as they understand, design, direct, and evaluate software without requiring them to know how to read or write conventional programming-language source. PostCode is a specialized tool toward that goal, providing task-appropriate, epistemologically qualified accounts of software architecture.
+
+PostCode supplies evidence-grounded architectural investigation and retained understanding that humans can use directly or share within larger design processes. Humans and agents may conduct their architectural conversations outside PostCode while consulting, challenging, extending, and comparing those accounts. PostCode contributes architectural expertise without taking responsibility for architectural decisions or requiring the design conversation to take place within PostCode. This specialization is a product-design choice independent of whether it eventually outperforms general-purpose agents.
+
+PostCode aspires to support useful direct human investigation and to develop architectural investigative expertise—both in understanding implemented software and in investigating proposed designs—superior, along relevant dimensions, to what capable general-purpose coding or design agents ordinarily provide. Those aspirations guide the product design; whether PostCode supports useful direct investigation, produces better architectural accounts, or improves collaborative design is a research question rather than an assumed advantage.
 
 The human user is presumed to understand relevant concepts of computation, software design, and architecture, but not the programming language used to implement the software. PostCode is designed for the human to reason through those concepts rather than reconstruct the implementation through its programming language. Human understanding must not depend on programming-language source or source-language syntax. Source remains input to analyses and coding agents; relevant evidence attribution, qualifications, and implementation mappings remain available without requiring source-language literacy. The conceptual model does not assume that the program's persistent representation is intended for human reading.
 
 This is a semantic rather than textual restriction: assertions, labels, and evidence embedded in source artifacts may be presented when they are intelligible without source-language literacy, with their provenance and epistemological status preserved.
 
-The first design decision is a simplification: PostCode's projections and views are read-only. The human continues to direct program changes by instructing coding agents in prose. This defers questions about semantics, authority, ambiguity, round-tripping, and implementation conformance that need not be answered to investigate the core projection model. Later versions could support bidirectional views without invalidating that model.
+The first design decision is a simplification: PostCode's projections and views are read-only. They do not directly modify the program or silently rewrite the material on which they are based. Humans and agents may still supply requirements, proposals, intentions, rationale, and other recorded architectural material for qualified investigation. The human continues to direct program changes by instructing coding agents in prose. This defers questions about semantics, authority, ambiguity, round-tripping, and implementation conformance that need not be answered to investigate the core projection model. Later versions could support bidirectional views without invalidating that model.
 
-The core projection pipeline is:
+For implemented software, the core projection pipeline is:
 
 ```text
 filesystem + Git
@@ -31,6 +35,8 @@ read-only view
 
 PostCode can also present runtime observations supplied by debuggers, profilers, tracers, test runners, or other external systems. Such observations remain qualified by the executions in which they were made; PostCode need not itself become an execution environment.
 
+PostCode also investigates participant-supplied material concerning hypothetical or intended architecture. This remains distinct from claims about implemented software. A lens applies to a modality only when its method supports that application.
+
 <a id="core-model-and-design-principles"></a>
 
 ## 2. Core Model and Design Principles
@@ -45,7 +51,7 @@ PostCode distinguishes four related concepts that should not be used interchange
 
 #### 2.1.1 Lens
 
-A **lens** describes the aspect of the program being investigated: the question being asked of it.
+A **lens** describes the aspect of a subject being investigated: the question being asked of it.
 
 Examples include dependencies, callers, references, construction, mutation, tests, behavior, history, rationale, and summary.
 
@@ -59,7 +65,7 @@ A lens may accept parameters that refine the information requested, such as focu
 
 #### 2.1.2 Projection
 
-A **projection** is the qualified information produced by applying a lens to a subject and a captured basis of one or more program states or observations.
+A **projection** is the qualified information produced by applying a lens to a subject and a captured basis. A **captured basis** identifies the specific input material used for that application and may contain one or more elements, including program states, observations, participant-supplied architectural material, or earlier projections.
 
 Conceptually:
 
@@ -67,7 +73,7 @@ Conceptually:
 projection = lens(captured_basis, subject, lens_parameters)
 ```
 
-The subject may be a repository, package, module, program entity, relationship, collection, or another concept exposed by PostCode. Most lenses concern one program state or set of observations; historical and comparison lenses may concern several ordered states.
+The subject may be a repository, package, module, program entity, relationship, collection, hypothetical element, intended design element, or another concept exposed by PostCode. Most lenses use a captured basis containing one program state, set of observations, item of participant-supplied architectural material, or earlier projection; historical and comparison lenses may use a basis containing several elements, ordered when the investigation requires it.
 
 A projection includes its content together with what establishes that content: its subject, lens, parameter values, captured basis, evidence, method, provenance, epistemological status, and limitations. Those elements remain associated even when the projection is reused or presented differently.
 
@@ -97,7 +103,7 @@ Conceptually:
 view = presentation(projections, presentation_context, presentation_parameters)
 ```
 
-A view may coordinate several separately qualified projections of the same subject, or projections across subjects or program states. `presentation_context` supplies circumstances relevant to rendering without adding claims about the program.
+A view may coordinate several separately qualified projections of the same subject, or projections across subjects or captured bases. `presentation_context` supplies circumstances relevant to rendering without adding architectural claims.
 
 Several independent views placed beside one another remain several views. A multi-projection view exists when one presentation establishes relationships among its projections that would be lost if they were presented independently; visual proximity or a shared container alone does not make them one view.
 
@@ -209,9 +215,9 @@ Trust is critical. If subtle errors cause the human to doubt every projection, P
 
 <a id="sources-of-program-knowledge"></a>
 
-### 2.3 Sources of Program Knowledge
+### 2.3 Sources of Architectural Knowledge
 
-Program understanding draws on epistemologically different sources. PostCode must not collapse them into a single category of facts.
+Architectural understanding draws on epistemologically different sources. PostCode must not collapse them into a single category of facts.
 
 <a id="derived-facts"></a>
 
@@ -223,7 +229,7 @@ Derived facts are established through defined analyses, such as import relations
 
 #### 2.3.2 Recorded assertions
 
-Comments, annotations, design documents, commit messages, issue discussions, and agent-supplied development context record claims about a program. PostCode can establish that an explanation was recorded and correlate it with history; that does not establish that the explanation is true, complete, or current.
+Comments, annotations, design documents, proposals, commit messages, issue discussions, and agent-supplied development context record architectural claims and intentions. PostCode can establish that an account was recorded and correlate it with history; that does not establish an explanatory claim as true, complete or current, or a proposal as feasible, accepted or realized in the implementation.
 
 <a id="behavioral-and-observational-evidence"></a>
 
@@ -239,11 +245,25 @@ Tests can be considered at distinct levels: their apparent intent, their source-
 
 Questions such as “Why does this exist?”, “What happened here?”, or “What would be affected if this went away?” inherently invite interpretation. Answers may combine structure, derived relationships, assertions, history, tests, runtime observations, and model-assisted synthesis. Their evidence and limitations remain visible.
 
+<a id="architectural-modalities"></a>
+
+### 2.4 Architectural Modalities
+
+Architectural accounts may concern different modalities:
+
+- **implemented architecture:** claims about actual software, supported and qualified by implementation evidence;
+- **hypothetical architecture:** alternatives under consideration, without implying acceptance, feasibility, or realization;
+- **intended architecture:** accepted requirements or design decisions describing what the software should do or how it should be structured.
+
+These are conceptual distinctions, not necessarily separate data models. They are distinct from provenance and epistemological status. An account of implemented responsibility may be interpretive; a hypothetical state machine may be recorded exactly as proposed while remaining untested, infeasible, or inconsistent with existing constraints. A proposal that becomes an intention retains the provenance and history of that transition. Observed behavior is evidence about particular executions rather than another account modality; it may support or challenge an account only within the scope of what was observed.
+
+PostCode applies architectural concepts and investigative capabilities across these modalities when their methods permit. It must not imply that every lens applies to every modality or that correspondence among accounts has been established when it remains interpretive. Sharing an account does not imply that architectural participants agree with it or with one another, and PostCode's own interpretations are not authoritative merely because they are shared.
+
 <a id="identity-and-continuity-of-attention"></a>
 
-### 2.4 Identity and Continuity of Attention
+### 2.5 Identity and Continuity of Attention
 
-PostCode does not presuppose persistent semantic identities for program entities or relationships, or a complete, authoritative architecture model. Entities and relationships are discovered from the implementation according to explicit analysis rules, with language-dependent guarantees.
+PostCode does not presuppose persistent semantic identities for architectural entities or relationships, or a complete, authoritative architecture model. Entities and relationships in implemented software are discovered according to explicit analysis rules, with language-dependent guarantees. Subjects introduced by hypothetical or intended accounts inherit the identity and provenance supplied by those accounts; correspondence with other accounts remains qualified.
 
 The design distinguishes continuity of human attention from continuity of the underlying program structure:
 
@@ -253,7 +273,7 @@ If an entity or relationship disappears, PostCode need not invent a conceptual s
 
 <a id="naming-and-terminology"></a>
 
-### 2.5 Naming and Terminology
+### 2.6 Naming and Terminology
 
 An entity's identity, its implementation identifier, and the label presented to the human are distinct.
 
@@ -287,7 +307,7 @@ selects a lens, a lens parameter, and a presentation.
 
 The resolved construction, consequential selection criteria, and omissions must remain inspectable. Interpretation may guide investigation and may itself be useful output, but must not masquerade as mechanically established truth.
 
-Resolving a request may require information that has not yet been established. Request interpretation may consume qualified information but does not itself derive program claims; obtaining such information is [request-scoped system-initiated investigation](#system-initiated-investigation). Outcomes—including candidates, ambiguity, incomplete coverage, and inability to resolve the request—remain attributable and qualified.
+Resolving a request may require information that has not yet been established. Request interpretation may consume qualified information but does not itself derive architectural claims; obtaining such information is [request-scoped system-initiated investigation](#system-initiated-investigation). Outcomes—including candidates, ambiguity, incomplete coverage, and inability to resolve the request—remain attributable and qualified.
 
 <a id="system-initiated-investigation"></a>
 
@@ -306,15 +326,13 @@ Request-scoped investigation remains PostCode-initiated even when its parent req
 
 The two forms must remain distinguishable. When system-initiated investigation influences what PostCode shows, selects, suggests, or reports, its relationship to any parent request or autonomous trigger, together with its relevant results and qualifications, must remain identifiable in the resulting investigation and observation records.
 
-<a id="investigation-context-and-continuity"></a>
+<a id="retained-architectural-understanding-and-continuity"></a>
 
-### 3.2 Investigation Context and Continuity
+### 3.2 Retained Architectural Understanding and Continuity
 
-An **investigation context** comprises the views accumulated as the human follows subjects, relationships, and questions, together with their captured bases and relevant lineage. PostCode preserves enough context to identify what each view shows and how it relates to the rest of the investigation.
+PostCode retains partial, qualified architectural understanding over time. It makes earlier accounts available to humans and agents and allows their underlying projections to be consulted, compared, or used as qualified inputs to later investigation. Later work can extend or challenge those accounts, including when examining the same software from different architectural perspectives. Relationships among retained views can preserve useful lineage, such as where a subject was discovered or which earlier information contributed to a comparison or summary. This does not require a single consolidated architecture model: accounts may overlap, disagree, or remain incomplete, and their evidence, qualifications, and revision history must remain distinguishable.
 
-An investigation may continue as the program changes, but newly captured information must not silently replace or become evidence for results based on an earlier state. Relationships among views can preserve useful lineage, such as where a subject was discovered or which earlier information contributed to a comparison or summary.
-
-PostCode may accumulate partial, qualified architectural understanding across investigations. Later investigations can reuse, extend, or challenge earlier accounts, including when examining the same software from different architectural perspectives. This does not require a single consolidated architecture model: accounts may overlap, disagree, or remain incomplete, and their evidence, qualifications, and revision history must remain distinguishable.
+As the program or other underlying material changes, subsequent projections may capture new bases. Information from a new basis must not silently replace or become evidence for results based on an earlier one.
 
 <a id="navigation-through-views"></a>
 
@@ -332,23 +350,28 @@ PostCode should not assume one uniquely correct conceptual hierarchy. Different 
 
 When an architectural information need cannot be met adequately through available views and investigation, PostCode must disclose the limitation rather than substitute programming-language source or a more certain-sounding explanation. Further qualified investigation may help, but some questions may remain unresolved.
 
-PostCode should provide a low-friction way for the human to report that a view or explanation is inadequate, with optional clarification. Such feedback is a report about the experience, not proof that a particular claim was wrong. Retain the associated view, subject, captured basis and investigation context where available, without requiring feedback before the human can continue.
+PostCode should provide a low-friction way for the human to report that a view or explanation is inadequate, with optional clarification. Such feedback is a report about the experience, not proof that a particular claim was wrong. Retain the associated view, subject, captured basis, and enough relevant surrounding activity to interpret the report, without requiring feedback before the human can continue.
 
+<a id="architectural-comparison-and-change"></a>
 <a id="revision-and-projection-comparison"></a>
 
-### 3.5 Revision and Projection Comparison
+### 3.5 Architectural Comparison and Change
+
+PostCode can compare qualified architectural accounts from a chosen perspective. The accounts may concern different historical states, an implemented state and a hypothetical alternative, competing alternatives, or an intended design and its implementation. Such comparisons share a need to identify supported correspondence, differences, consequences, and unresolved questions without implying that their evidentiary bases are equivalent.
+
+Presenting projections together permits direct comparison without implying that PostCode has derived claims about their relationship. Identifying correspondence, additions, removals, movement, significance, conformance, or contradiction requires a qualified comparison lens.
 
 During agent-mediated development, a central question is:
 
 > **What did the agent just change at the level at which I was thinking about the program?**
 
-Applying the same lens to a subject at two states and presenting the projections together permits direct comparison without implying that PostCode has derived a claim about the change. Identifying additions, removals, correspondence, movement, or significance instead requires a qualified comparison or conceptual-diff lens.
+Implementation review may compare the prior implementation, the intended change, and the resulting implementation. This distinguishes what changed from whether it changed as intended and from additional architectural consequences.
 
 <a id="conceptual-diffs"></a>
 
 #### 3.5.1 Conceptual Diffs
 
-A conceptual diff begins with change between program states and identifies the subjects and conceptual effects involved. It may be focused by dependencies, behavior, boundaries, tests, requirements, or a prose information need.
+A conceptual diff is an implemented-state case of architectural comparison. It begins with change between program states and identifies the subjects and conceptual effects involved. It may be focused by dependencies, behavior, boundaries, tests, requirements, or a prose information need.
 
 Several accounts of one change may be valid and differently grounded: a dependency change may be derived mechanically, movement of responsibility may be interpretation, behavioral preservation may be supported by tests, and correspondence to a requirement may be a recorded assertion. PostCode must expose these different perspectives and epistemological bases rather than imply a uniquely correct conceptual description.
 
@@ -358,7 +381,7 @@ Projection behavior itself must be stable or versioned enough that changes in Po
 
 ### 3.6 Agent Integration
 
-The human and coding agent should be able to discuss software using PostCode's projected concepts as shared referents. Otherwise the human must repeatedly translate an investigation back into filenames, symbols, and implementation detail, forfeiting much of the value of working at a conceptual level.
+Humans, design agents, and implementation agents should be able to discuss software using PostCode's projected concepts as shared referents. Design and implementation agents are roles rather than necessarily distinct systems; elsewhere in this document, **coding agent** refers generally to an agent acting in the implementation role. Without shared referents, the human must repeatedly translate an investigation back into filenames, symbols, and implementation detail, forfeiting much of the value of working at a conceptual level.
 
 A view's reported uncertainty and limitations can also become development feedback. The agent needs access to what PostCode reported, but a limitation is not itself an instruction to change the program.
 
@@ -366,25 +389,26 @@ A view's reported uncertainty and limitations can also become development feedba
 
 #### 3.6.1 Shared machine-readable context
 
-PostCode can expose machine-readable context representing the human's current investigation. Agent instructions can direct coding agents to use that context when interpreting the human's instructions.
+PostCode can expose machine-readable context for a current investigation, whether conducted by a human, an agent, or both. Agent instructions can direct design or implementation agents to use that context when interpreting human instructions, conducting their own investigations, or collaborating with other participants.
 
 The context should make focused views, underlying subjects and projections, captured bases, qualifications, relationships among views, and relevant source mappings available as shared referents. A reference to a projection over its captured basis must remain distinguishable from a reference to its underlying request repeated against current inputs. The context is generated rather than a canonical representation of the program and is subject to the [Generated-Output Evidence Boundary](#generated-output-evidence-boundary).
 
 This allows the human to refer to projected concepts in instructions to a coding agent—for example, “remove the dependency shown in the focused view” or “preserve the behavior represented here”—without reconstructing source-level coordinates.
 
+<a id="participant-supplied-architectural-material"></a>
 <a id="agent-supplied-context"></a>
 
-#### 3.6.2 Agent-supplied context
+#### 3.6.2 Participant-supplied architectural material
 
-Communication may also flow from the coding agent into PostCode. An agent can record its understanding of the task, correspondence between conceptual and implementation elements, rationale, constraints, uncertainty, verification, and suggested follow-up investigation.
+Communication may also flow from a human or external agent into PostCode. A participant can record requirements, proposals, intentions, its understanding of the task, correspondence among hypothetical, intended, and implemented elements, rationale, constraints, uncertainty, verification, and suggested follow-up investigation.
 
-Such context remains a recorded assertion or interpretation with agent provenance; structured form does not turn it into a derived fact.
+Such material remains a recorded assertion or interpretation with participant provenance; structured form does not turn it into a derived fact.
 
 <a id="interactive-agent-exchange"></a>
 
-#### 3.6.3 Interactive agent exchange
+#### 3.6.3 Agent investigation and exchange
 
-The context exchange may eventually become interactive: agents could request projections, refer to views through stable references, contribute rationale during development, or suggest further investigation. These capabilities build on the same shared-context and epistemological model.
+External agents can request projections, consult retained accounts, refer to views through stable references, contribute rationale during development, and suggest further investigation. The interface may vary, but these capabilities use the same investigation, shared-context, and epistemological model as human-facing use.
 
 <a id="research-observation-support"></a>
 
@@ -392,7 +416,9 @@ The context exchange may eventually become interactive: agents could request pro
 
 PostCode is used as the instrument of a research project. It therefore produces research-oriented observations about how its concepts and interactions function in practice, without requiring a separate research diary during every use.
 
-PostCode's observation facilities record relevant requests, choices, investigations, results, qualifications, navigation, reported inadequacy, investigation-context evolution, resource decisions, agent-context interaction, and contemporaneous subjective reports. Each record distinguishes human-, agent-, and PostCode-initiated activity; for PostCode-initiated investigation, it also distinguishes request-scoped from autonomous work and retains the parent request or autonomous trigger. The records preserve enough provenance to relate each to the PostCode version, repository state, session, and task.
+PostCode's observation facilities record relevant requests, choices, investigations, results, qualifications, navigation, reported inadequacy, resource decisions, agent-context interaction, and contemporaneous subjective reports. Each record distinguishes human-, agent-, and PostCode-initiated activity; for PostCode-initiated investigation, it also distinguishes request-scoped from autonomous work and retains the parent request or autonomous trigger. The records preserve enough provenance to relate each to the PostCode version, repository state, session, and task.
+
+Observation records should retain or reference enough surrounding requests, views, choices, captured bases, and relevant lineage to interpret each recorded event. They need not contain or duplicate PostCode's complete retained architectural understanding.
 
 For research use, PostCode delivers observation records to a designated research destination, subject to the [Generated-Output Evidence Boundary](#generated-output-evidence-boundary).
 
@@ -417,7 +443,8 @@ The following lens families illustrate kinds of questions that PostCode could su
 - **implementation relationships and flows:** callers, callees, references, construction, mutation, exports, dependencies, control flow, and data propagation;
 - **tests, behavior, and evidence:** test inventory, association, realization, observed behavior, apparent intent, supporting and contrary evidence, and history;
 - **history and change:** appearance, disappearance, revision comparison, and conceptual differences;
-- **rationale and requirements:** recorded rationale, stated or inferred requirements, design tradeoffs, and qualified explanations;
+- **architectural comparison:** correspondence and differences among implemented states, hypothetical alternatives, and intended designs, including consequences, conformance, and unresolved relationships;
+- **rationale and requirements:** recorded rationale, hypothetical and accepted designs, stated or inferred requirements, design tradeoffs, and qualified explanations;
 - **external dependencies:** libraries, services, tools, platforms, standards, and protocols;
 - **change coupling and evolution:** which architectural elements tend to change together, which decisions constrain later change, and how architectural accounts evolve over time.
 
