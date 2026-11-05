@@ -53,12 +53,15 @@ Two adjacent surfaces have different roles:
 
 - **Design conversation:** human questions, proposals, preferences and decisions,
   with the external agent's responses and references to PostCode accounts.
-- **PostCode:** an operating-model panel kept visible, plus a focused panel whose
-  context and architectural perspective can change. An alternatives context is
-  introduced when proposals are supplied. Evidence, qualification and earlier
-  accounts are available without requiring source-language literacy.
+- **PostCode:** the human opens and arranges supported architectural views as
+  panels. An operating-model panel plus a focused panel is one starting example,
+  not a required number or division of roles. The human may close the overview,
+  keep several focused accounts side by side, or open other supported views.
+  Evidence, qualification and earlier accounts are available without requiring
+  source-language literacy. "Reference surface" describes its role; the product
+  label in the sketch is **PostCode**.
 
-The operating-model panel anchors the forest: the application owns preparation
+In this example, the operating-model panel offers surrounding context: the application owns preparation
 and the operation; reusable Cockatiel policies govern execution; the application
 receives the eventual outcome. It is partial and does not describe every policy.
 The focused panel can examine breaker state, admission contracts, composition,
@@ -66,11 +69,56 @@ or proposed changes. Contexts and perspectives are UX hypotheses, not new domain
 objects selected by this sketch. Panels may be independently qualified Views;
 visual proximity supplies neither correspondence nor a coordinated Projection.
 
-The accompanying interactive storyboard tests this arrangement and changes of
-attention. It uses fixed example content; no inference, agent communication,
+The accompanying interactive storyboard tests possible arrangements and changes
+of attention. It allows opening, closing and reordering the supplied example
+panels, and changing architectural perspective within them. The limited example
+inventory is not the proposed product's complete panel vocabulary. Moving between
+storyboard moments enacts the scripted change of the initial focused panel; added
+reference panels keep their selected account versions. That is storyboard behavior,
+not authorization for agents to rearrange the human's surface automatically.
+It uses fixed example content; no inference, agent communication,
 repository watching or code modification occurs. Its sequence controls are
 storyboard controls, not a proposed workflow wizard. The durable content and
 assumptions of the exercise are recorded here independently of that display.
+
+## Presentation is part of the hypothesis
+
+Follow-up discussion, 2026-11-05: the usefulness of a persistent account may be
+highly sensitive to legibility and presentation, including type size, typography,
+color, contrast, density, hierarchy and the ease of recognizing qualifications.
+A poor experience with these drawings or styles would not establish that retained
+accounts are unhelpful. Conversely, attractive or readable panels would not prove
+better architectural reasoning. Evaluate both presentation quality and conceptual
+utility, and avoid judging either solely through an unrefined visual sketch.
+
+The revised storyboard exposes text-size and secondary-text-contrast adjustments
+through host design controls when available. These are exploratory presentation
+choices, not an adopted visual system or a substitute for human legibility review.
+
+## Inputs and participants
+
+The storyboard now shows an external annotation, **Inputs to PostCode**, for each
+moment. These are illustrative assignments of responsibility and operation intent;
+they are not existing CLI syntax, a production activity log, or claims about what
+executed in the original chat. They make explicit what drives the displayed result.
+
+| Moment | Inputs to PostCode and initiator |
+| --- | --- |
+| 1. Orientation | Human opens issue context and requests surrounding responsibilities and breaker account; design agent requests the selected exact accounts for discussion. PostCode performs the investigation supporting those requests. |
+| 2. Proposal | Design agent supplies the human's readiness idea and the reporter's alternative, with distinct origins and no inferred acceptance; requests contract analysis. Human displays the proposal contract. |
+| 3. Waiting | Human requests composition interactions; agent requests the resulting account and qualifications. PostCode investigates ordering and waiting. |
+| 4. Recovery | Design agent requests deeper examination of the transition trigger with earlier interpretation and implementation evidence. Human displays the result and may inspect the earlier wording or evidence. |
+| 5. Comparison | Design agent requests interaction comparison using supplied proposals and the implemented recovery account. Human displays that result and changes to ownership. |
+| 6. Intention | Human endorses a direction in the design conversation. Agent supplies that explicit endorsement, source, and unsettled commitments; human keeps its contract visible. |
+| 7. Repository change | Hypothetical prior user configuration enables monitoring. A monitor reports a new basis, marking older accounts without deriving impact; further investigation has not yet been requested. |
+
+Operations that add analysis remain attributed to a parent request. Supplying
+proposal material, requesting investigation, presenting an available account,
+changing layout, and sending selected accounts to an agent are distinct actions.
+Opening a panel does not by itself share it, and a design discussion does not by
+itself permit autonomous investigation or repository monitoring. Other assignments
+between human and agent may be equally useful; this sketch selects examples to
+make the coordination visible, not a mandatory workflow.
 
 ## Episode
 
@@ -233,8 +281,10 @@ should still expose what refresh and shared references would require.
 
 ## Questions to discuss after trying the sketch
 
-Does the always-visible operating model help, or become background furniture?
-When do we need a second panel rather than another perspective in the focused one?
+Which accounts would the human choose to keep visible? Does an operating model
+help, or become background furniture? When is another panel preferable to changing
+perspective in one already open? Are type, color, density and hierarchy adequate
+for evaluating the account's usefulness at all?
 Does the human actually consult the account, and can the agent use the same one
 without repeating everything? Can the human distinguish recorded need, implemented
 behavior, proposal and chosen intention at a glance? Which revisions deserve

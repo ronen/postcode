@@ -202,3 +202,11 @@ Cockatiel with an operating-model panel, a focused architectural panel, and a
 separate design conversation. It includes selected shared references, proposal
 inspection, corrections, the return to ownership, and a clearly hypothetical
 later repository-change beat. It is a design exercise, not a GUI implementation.
+
+In follow-up, the human emphasized presentation quality as a possible determinant
+of usefulness, challenged any requirement for exactly an overview and a focused
+panel, and requested explicit operation/input attribution by participant. The
+storyboard now treats those panels as an example arrangement, permits other
+supported views to be opened and arranged, and records who supplies material,
+requests analysis, displays accounts and shares references. The surface is labelled
+PostCode; the activity trace is a sketch annotation outside the product UI.
