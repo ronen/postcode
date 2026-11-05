@@ -324,7 +324,7 @@ Selecting unspecified elements of a view in order to answer an expressed informa
 
 Request-scoped investigation remains PostCode-initiated even when its parent request was initiated by a human or external agent. It remains request-scoped only while it serves that parent request; work that extends beyond that purpose or continues after the parent request is satisfied or cancelled is autonomous.
 
-The two forms must remain distinguishable. When system-initiated investigation influences what PostCode shows, selects, suggests, or reports, its relationship to any parent request or autonomous trigger, together with its relevant results and qualifications, must remain identifiable in the resulting investigation and observation records.
+The two forms must remain distinguishable. When system-initiated investigation influences what PostCode shows, selects, suggests, or reports, its relationship to any parent request or autonomous trigger, together with its relevant results and qualifications, must remain identifiable in the resulting investigation and in any [research records](#research-observation-support) that capture it.
 
 <a id="retained-architectural-understanding-and-continuity"></a>
 
@@ -414,13 +414,11 @@ External agents can request projections, consult retained accounts, refer to vie
 
 ### 3.7 Research Observation Support
 
-PostCode is used as the instrument of a research project. It therefore produces research-oriented observations about how its concepts and interactions function in practice, without requiring a separate research diary during every use.
+PostCode is used as the instrument of a research project. It should support observation of how its concepts and interactions function in practice without requiring a separate diary for every action.
 
-PostCode's observation facilities record relevant requests, choices, investigations, results, qualifications, navigation, reported inadequacy, resource decisions, agent-context interaction, and contemporaneous subjective reports. Each record distinguishes human-, agent-, and PostCode-initiated activity; for PostCode-initiated investigation, it also distinguishes request-scoped from autonomous work and retains the parent request or autonomous trigger. The records preserve enough provenance to relate each to the PostCode version, repository state, session, and task.
+Research records may preserve or reference interaction history, contemporaneous reports, relevant versions and repository states, and enough surrounding context to interpret what occurred. What is recorded should be driven by the research question rather than by a fixed comprehensive schema. Automatic recording is appropriate where retrospective reconstruction would be unreliable.
 
-Observation records should retain or reference enough surrounding requests, views, choices, captured bases, and relevant lineage to interpret each recorded event. They need not contain or duplicate PostCode's complete retained architectural understanding.
-
-For research use, PostCode delivers observation records to a designated research destination, subject to the [Generated-Output Evidence Boundary](#generated-output-evidence-boundary).
+For research use, PostCode delivers the resulting records to a designated research destination, subject to the [Generated-Output Evidence Boundary](#generated-output-evidence-boundary). Ordinary non-research use need not produce or export research records.
 
 <a id="projection-scope"></a>
 
