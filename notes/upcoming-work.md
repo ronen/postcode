@@ -158,7 +158,7 @@ Alphabetical by code.
   the first implementation to cover the entire journey.
 - **Sources:** [backlog: architectural accounts through concrete journeys](../docs/backlog.md#explore-architectural-accounts-through-journeys),
   [backlog: whole-journey UX review](../docs/backlog.md#review-the-investigation-ui-and-ux-as-a-whole),
-  [product design: investigation context and continuity](../foundation/product-design.md#investigation-context-and-continuity).
+  [product design: retained architectural understanding and continuity](../foundation/product-design.md#retained-architectural-understanding-and-continuity).
 
 <a id="present"></a>
 ### PRESENT — Account presentation and navigation
