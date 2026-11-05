@@ -177,3 +177,28 @@ distinguishes existing-system investigation from collaborative design, records
 shared external-agent context as a sketch assumption, and considers supplied
 hypotheticals as a possible further input to architectural investigation. None of
 these discussions selects hypothetical support as a first-slice requirement.
+
+<a id="always-available-reference-surface"></a>
+## Always-available reference surface
+
+Recorded: 2026-11-05
+
+The human proposed PostCode remaining available beside the design conversation,
+with persistent panels as a reference onto the software and its architecture.
+Repeated CLI requests would be cumbersome for this use. A graphical or terminal
+surface could support glancing, referring, and occasional focused investigation,
+without continually demanding the human's attention. The operation vocabulary
+still describes capabilities, but need not dictate a request/response rhythm.
+
+During development some panels might follow repository changes. Availability,
+currentness and exact-answer continuity are distinct: change detection does not
+establish architectural impact, new analysis must retain its basis and limitations,
+and a discussion reference must not silently change meaning. Fixed accounts and
+following panels are possible preferences; notification policy, automatic work
+and cross-change lifecycle remain unresolved capabilities.
+
+The [reference-surface storyboard](cockatiel-reference-surface-sketch.md) reworks
+Cockatiel with an operating-model panel, a focused architectural panel, and a
+separate design conversation. It includes selected shared references, proposal
+inspection, corrections, the return to ownership, and a clearly hypothetical
+later repository-change beat. It is a design exercise, not a GUI implementation.
