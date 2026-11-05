@@ -1,0 +1,9 @@
+# Proposed revisions to docs/capability-reference.md
+
+Replace the opening scope paragraph beginning “PostCode currently provides” with:
+
+PostCode currently provides a development CLI for investigating implemented architecture in one configured TypeScript project. Its retained interpretations originate in module investigation; qualified follow-up can consult those earlier interpretations within the active process. This does not implement investigation of hypothetical alternatives or intended designs, general capture of participant-supplied architectural material, or arbitrary earlier-Projection inputs. The broader [architectural scope](decisions/specialized-architectural-investigation.md#adoption-and-conformance) leaves this subset valid.
+
+The interactive shell retains an investigation within one process. There is no implemented GUI Workspace, general multi-Projection View composition, multi-state analysis or save/resume facility. The default command is `modules`; `summarize` is an explicit request for interpretation. An external agent may invoke documented CLI capabilities subject to their ordinary output and reference-lifetime contracts; this is not a shared-Workspace synchronization or general contribution interface.
+
+Keep the existing navigation-origin, observation-basis, presentation, feedback and reference-lifetime disclosures unchanged. “Partial investigation context” accurately describes the current lineage limitation and is not a claim to implement complete retained architectural understanding.
