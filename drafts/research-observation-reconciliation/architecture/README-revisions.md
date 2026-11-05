@@ -1,0 +1,5 @@
+# Proposed revisions to docs/architecture/README.md
+
+Insert this paragraph immediately after the “Observations and runtime boundaries” heading, preserving the existing description of current behavior.
+
+The [research recording policy](../decisions/research-question-driven-observation.md#research-capture) permits question-specific recording and ordinary non-research use without records. The CLI described here still automatically constructs and submits command batches; it has no public no-recording mode or selective capture interface. `command-execution.ts` also derives the shell's displayed-result feedback snapshot from those records, and `feedback.ts` embeds it without live-store lookup. Discarding sink output does not skip record construction. The [optional cleanup candidate](../backlog.md#separate-optional-research-recording-from-feedback-context) identifies this coupling; no runtime change accompanies the policy revision. Full operational attribution, qualifications, Investigator exposure/provenance and retained-answer selection remain independent of research delivery.
