@@ -120,6 +120,28 @@ itself permit autonomous investigation or repository monitoring. Other assignmen
 between human and agent may be equally useful; this sketch selects examples to
 make the coordination visible, not a mandatory workflow.
 
+## Revision informed by established concepts
+
+On 2026-11-06, the human clarified that established architecture resources should
+inform how accounts are defined, organized and presented without prescribing
+ATAM, ADD or another methodology to the user or to this journey. The
+[concepts and accounts note](established-concepts-and-accounts.md) records the
+sources, that boundary, and the reassessment of this sketch.
+
+The revised presentation states the question behind each selected perspective,
+offers relevant connections to other prepared accounts, and replaces a generic
+evidence notice with account-specific support and limits. For intended behavior,
+it also preserves participant rationale and unresolved commitments. These are
+examples of useful account content, not a uniform schema or mandatory panel
+checklist. The conversation and the episode below retain their original purpose.
+
+A connection is meaningful architectural content: application-supplied work
+provides the recovery trial; composition can consume capacity while waiting for
+that trial; a timer proposal changes who schedules eligibility without changing
+who supplies work. Clicking a connection opens the related prepared account at
+its selected basis. This requires qualified correspondence in the real system;
+the sketch does not establish it merely through a clickable link.
+
 ## Episode
 
 ### 1. Enter through the issue; glance outward

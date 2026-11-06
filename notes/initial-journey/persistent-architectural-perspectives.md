@@ -210,3 +210,16 @@ storyboard now treats those panels as an example arrangement, permits other
 supported views to be opened and arranged, and records who supplies material,
 requests analysis, displays accounts and shares references. The surface is labelled
 PostCode; the activity trace is a sketch annotation outside the product UI.
+
+<a id="established-concepts"></a>
+## Established concepts as account-design resources
+
+Recorded: 2026-11-06
+
+The human's "operationalizes established concepts" framing applies to what
+PostCode can represent, investigate and connect, not just tab labels. Established
+architecture resources can inform account content, relationships, supporting
+context and presentation. The human explicitly rejected making PostCode or this
+journey follow a particular formal methodology. The
+[concepts and accounts note](established-concepts-and-accounts.md) preserves the
+SEI references and the concrete reassessment of the reference-surface sketch.
