@@ -42,6 +42,8 @@ external timing workaround works and suggests eager transitions. That suggestion
 is available from the beginning; it is not a discovery manufactured at the end.
 
 The route retains all 30 original substantive exchanges, grouping some below.
+Blockquotes reproduce the full human turns verbatim from the source record,
+including proposals, decisions and asides; headings remain short navigation cues.
 It uses corrected understanding, with the earlier answers and changes accessible;
 it does not deliberately repeat the original mistakes. This retrospective exercise
 can show expressive coverage, not prove that a newcomer would choose these
@@ -50,7 +52,9 @@ selections or that PostCode would produce these answers reliably.
 <a id="orientation"></a>
 ## 1. “…what it's for…” — original exchange 1
 
-**Question in mind:** is job submission central to Cockatiel?
+**Original human turn — exchange 1:**
+
+> OK, back to the scenario.... my first question is "i don't really know much about cockatiel or what it's for.  is this job submission thing a central part of it or just a component that takes care of part of it?"
 
 **Selection:** issue → surrounding Cockatiel/application
 [context](architectural-concept-references.md#context) →
@@ -71,8 +75,13 @@ cross-module operating account, not merely the module containing the breaker.
 <a id="readiness"></a>
 ## 2. “…a new facility: readiness check…” — exchanges 2–3
 
-**Thought/input:** propose readiness; initially associate Cockatiel with background
-jobs. The proposal arrives through the assumed input mechanism.
+**Original human turn — exchange 2:**
+
+> ok, that seems to me to call for a new facility: readiness check
+
+**Original human turn — exchange 3:**
+
+> i agree.  since cockatiel seems to include managing queues of background jobs, securing an opportunity seems too synchronous.
 
 **Selections:** proposed readiness → [contract](architectural-concept-references.md#contract);
 job preparation/queueing → [ownership](architectural-concept-references.md#ownership)
@@ -94,8 +103,17 @@ waiting remains visible as a correction, examined in scene 5.
 <a id="scope"></a>
 ## 3. “…other mechanisms…” / “…overall stated purpose…” — exchanges 4–6
 
-**Questions in mind:** is breaker-based readiness the only option (4)? Should
-other mechanisms be supported (5)? Which fit the library (6)?
+**Original human turn — exchange 4:**
+
+> is using the existing circuit breaker necessarily the only way to perform a readiness check?
+
+**Original human turn — exchange 5:**
+
+> Anticipating the breaker will address the original request; But that is performing a "readiness check" of some sort, and so raises the question of if we're going to be doing that anyway, should we support other mechanisms too?
+
+**Original human turn — exchange 6:**
+
+> Also, which fit into Cockatiel's overall stated purpose and scope?
 
 **Selections:** known readiness candidates → compare
 [contracts](architectural-concept-references.md#contract) (4); compare
@@ -119,8 +137,10 @@ additional analytical requirement; a comparison menu does not do that work.
 <a id="preference"></a>
 ## 4. “…addresses the immediate need…” — exchange 7
 
-**Human input:** prefer a conservative change that fits current facilities and
-can grow without speculative features.
+**Original human turn — exchange 7:**
+
+> [okay, getting back to the dialog]
+> Probably best idea is to be conservative: design something that addresses the immediate need and meshes well with existing capabilities.  Design it so that it could grow if needed, but no point creating features that nobody has asked for yet.
 
 **Selection:** issue/design context → recorded
 [intentions and constraints](architectural-concept-references.md#rationale).
@@ -137,7 +157,9 @@ treating it as repository evidence or a Cockatiel maintainer requirement.
 <a id="waiting"></a>
 ## 5. “…make sense to unify…” — exchange 8
 
-**Question in mind:** do bulkhead and breaker readiness mean the same thing?
+**Original human turn — exchange 8:**
+
+> Also I'd like to understand more about the existing Bulkhead capacity readiness to see to what extent it would/wouldn't make sense to unify that with the circuit-breaker readiness
 
 **Selection:** breaker + bulkhead → compare
 [contracts](architectural-concept-references.md#contract); selected waiting cases →
@@ -159,8 +181,17 @@ say whether it describes a snapshot, waiting, or eventual execution.
 <a id="operating-model"></a>
 ## 6. “…overall theory of operation…” / “…policy object…” — exchanges 9–11
 
-**Questions in mind:** what is the API's operating model (9)? Are there policy
-objects (10)? Can breaker and bulkhead be combined (11)?
+**Original human turn — exchange 9:**
+
+> [aside: you're providing me with links to documentation/implementation but i'm deliberately not following them].  I don't really have full a picture in my head of the overall theory of operation... might be good to get a clear statement of it.  also the overall nature of the API, is it a collection of functions to queue things, or does the client create instances of jobs with their own manageable state, etc?
+
+**Original human turn — exchange 10:**
+
+> ok, so is there a "policy" object?
+
+**Original human turn — exchange 11:**
+
+> Cna the application combine a breaker and a bulkhead into a single policy?  or are those two different policies that can be used together?  or only one of them for a given operation request?
 
 **Selections:** Cockatiel → [interaction](architectural-concept-references.md#interaction)
 and [ownership](architectural-concept-references.md#ownership) (9);
@@ -185,8 +216,17 @@ failure-selection configuration.
 <a id="acceptance"></a>
 ## 7. “…available now…” / “…acceptable…” / “…explaining…” — exchanges 12–14
 
-**Thoughts/questions:** a policy query (12); accepting work to wait rather than
-starting now (13); reasons accompanying a negative answer (14).
+**Original human turn — exchange 12:**
+
+> ok, it seems like "is available now" could be a query supported by a policy?
+
+**Original human turn — exchange 13:**
+
+> or should the query be "acceptable" without "now", i.e. bulkhead has queue space and circuit breaker allows execution?
+
+**Original human turn — exchange 14:**
+
+> should "no" be accompanied by whatevr result information the policy provides explaining the queue state or breaker failure?
 
 **Selections:** supplied query alternatives → compare
 [contracts](architectural-concept-references.md#contract) (12–13);
@@ -207,6 +247,10 @@ conditions. The supplied candidates are hypotheses, not current policy APIs.
 <a id="need-check"></a>
 ## 8. “…address the original requestor's issue…” — exchange 15
 
+**Original human turn — exchange 15:**
+
+> ok.  confirming that this would address the original requestor's issue?
+
 **Selection:** query proposal + reported preparation case →
 [scenario-based assessment](architectural-concept-references.md#scenario).
 
@@ -224,6 +268,10 @@ inspectable.
 <a id="component-access"></a>
 ## 9. “…direct access to the breaker…” — exchange 16
 
+**Original human turn — exchange 16:**
+
+> in a typical application, even if bulkhead and breaker had been wrapped into a single policy, would the caller have direct access to the breaker?
+
 **Selection:** wrapped policies + caller →
 [ownership and access](architectural-concept-references.md#ownership).
 
@@ -239,8 +287,13 @@ usable without assuming either universal direct access or universal concealment.
 <a id="generic-interface"></a>
 ## 10. “…generic interface…” / “…other policy types…” — exchanges 17–18
 
-**Input/question:** propose acceptance on the common interface (17); discover
-that there are more policies (18).
+**Original human turn — exchange 17:**
+
+> ok, since "is acceptable" has well-defined meaning for bulkhead, for breaker, and for wrapped in either order, it seems to make sense to put  "is acceptable" on the generic interface; as long as the appropriate return type can be created/queried reasonably
+
+**Original human turn — exchange 18:**
+
+> oh, there are other policy types?
 
 **Selections:** shared-query proposal → compare component and composed
 [contracts](architectural-concept-references.md#contract) (17);
@@ -262,6 +315,10 @@ complete understanding before any design thought.
 <a id="outcomes"></a>
 ## 11. “…report failure/blocking…” — exchange 19
 
+**Original human turn — exchange 19:**
+
+> what mechanism(s) do policies currently use to report failure/blocking?
+
 **Selection:** policy execution → [contract](architectural-concept-references.md#contract),
 outcomes and notifications; composed failure →
 [interaction](architectural-concept-references.md#interaction).
@@ -280,8 +337,13 @@ advisory query, and local information from a whole-composition answer.
 <a id="stored-state"></a>
 ## 12. “…what does our proposed query add…” / “…good reason…” — exchanges 20–21
 
-**Questions in mind:** why isn't state inspection enough (20)? Why use lazy
-transitions (21)?
+**Original human turn — exchange 20:**
+
+> if the application can already inspect the breaker's current state, then what does our proposed query add / what is the original issue?
+
+**Original human turn — exchange 21:**
+
+> is there a goo reason the breaker stays open until the next atttempt?
 
 **Selections:** breaker → [state and transitions](architectural-concept-references.md#state),
 then the issue's [interaction](architectural-concept-references.md#interaction) (20);
@@ -301,6 +363,14 @@ authoritative explanation of intent.
 
 <a id="trial"></a>
 ## 13. “…half open…” / “…willing to do a trial…” — exchanges 22–23
+
+**Original human turn — exchange 22:**
+
+> I don't really know what "half open" means
+
+**Original human turn — exchange 23:**
+
+> ok, so if we added a query to breaker, it may need to trigger a trial?  then report no on further queries pending the result of the trial?   or would the query just indicate that it's willing to do a trial?
 
 **Selections:** selected half-open state →
 [state meaning](architectural-concept-references.md#state) and trial
@@ -323,6 +393,10 @@ to the same application ownership account from scene 6.
 <a id="reporter-evidence"></a>
 ## 14. “…the workaround was sufficient…” — exchange 24
 
+**Original human turn — exchange 24:**
+
+> so our query would still be just "is the breaker closed, or if not, has enough time gone by", which is what the original requestor's workaround did.  did the requestor report that the workaround was sufficient, just ugly?
+
 **Selection:** reported need →
 [inspect supporting material](architectural-concept-references.md#support-operations)
 → reporter's workaround assessment.
@@ -339,6 +413,14 @@ code is unnecessary.
 
 <a id="timer"></a>
 ## 15. “…closed or half-open…” / “…built-in timer delay…” — exchanges 25–26
+
+**Original human turn — exchange 25:**
+
+> their suggestion was automated state transitions, meaning that after the timer, the breaker automatically switches back to closed or half-open?
+
+**Original human turn — exchange 26:**
+
+> i thought cockatiel already has a built-in timer delay for breakers?
 
 **Selections:** automatic-transition proposal →
 [state and transitions](architectural-concept-references.md#state) (25);
@@ -358,6 +440,14 @@ available. A factual correction and a new hypothetical design are different thin
 
 <a id="notifications"></a>
 ## 16. “…events…” / “…its own polling…” — exchanges 27–28
+
+**Original human turn — exchange 27:**
+
+> i see.  are there already events for breaker transitions?
+
+**Original human turn — exchange 28:**
+
+> an event-based approach is arguably better than the query, since a query could lead to the application needing to do its own polling.   so that would actually argue for adding a bulit-in timer to trigger the state change
 
 **Selections:** breaker → [contract](architectural-concept-references.md#contract),
 notifications (27); query and automatic-transition candidates → compare
@@ -380,6 +470,10 @@ is not a universal conclusion.
 <a id="compatibility"></a>
 ## 17. “…backwards compatibility…” / “…timer management…” — exchange 29
 
+**Original human turn — exchange 29:**
+
+> there are two concerns:  backwards compatibility (which could be achieved through making this behavior optional, presuming that there's a backwards-compatible way of adding options), and then as you say the semantics and details of events and timer management
+
 **Selections:** optional automatic-transition proposal →
 [scenario-based assessment](architectural-concept-references.md#scenario),
 existing caller compatibility; timer →
@@ -401,8 +495,11 @@ answers or a demand to settle every detail in this journey.
 <a id="endpoint"></a>
 ## 18. “…that seems like the best approach…” — exchange 30
 
-**Human input:** endorse the opt-in automatic-transition direction within this
-exercise. That endorsement uses the assumed input mechanism.
+**Original human turn — exchange 30:**
+
+> yes that seems like the best approach.
+>
+> [at this point, are we done with our journey?]
 
 **Selection:** selected design → [rationale and intentions](architectural-concept-references.md#rationale),
 with its [exact supporting accounts](architectural-concept-references.md#support-operations)
