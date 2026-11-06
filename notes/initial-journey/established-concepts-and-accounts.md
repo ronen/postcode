@@ -109,3 +109,14 @@ The next useful review is to follow one relationship across perspectives and ask
 whether it helps reason about a consequential distinction. Presentation quality
 still affects that judgment. Better connections or richer metadata alone do not
 establish value over capable conversation with diagrams and notes.
+
+## Direct investigation through concept selections
+
+The [human + PostCode walkthrough](cockatiel-human-postcode-walkthrough.md) isolates
+direct investigation from design-agent coordination. Original human questions
+become questions in mind, pursued through selections at relevant scopes, without
+prose dialogue with PostCode. Proposal entry is assumed for this exercise; its
+mechanism remains unspecified. [Concept references](architectural-concept-references.md)
+ground every selection while distinguishing published meanings, our adaptations
+and supporting account operations. This supplements the reference-surface sketch;
+it does not choose a final interaction model or reject external collaboration.
