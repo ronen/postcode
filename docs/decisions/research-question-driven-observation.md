@@ -1,7 +1,7 @@
 # Research-question-driven observation
 
-Status: in review
-Decided: [set on acceptance]
+Status: accepted
+Decided: 2026-11-06
 Arising from: Human-directed reconciliation of the research-observation revision adopted in foundation/product-design.md at `60f11e2`, November 2026; human clarification on 2026-11-06 that study instructions or configuration establish research purpose and destination without per-session declarations, new application fields or a mandatory research-mode workflow
 Scope: Research capture and delivery, their separation from architectural provenance, and unchanged current recording support
 Supersedes:
