@@ -7,6 +7,7 @@ Scope: evaluation integration, investigator dialogue, evidence access, hosted-se
 Superseded in part:
 
 - [Start each operation fresh and permit bounded investigator dialogue](#start-each-operation-fresh-and-permit-bounded-investigator-dialogue) is replaced by [Representation-independent interpretation contracts](structured-investigram-content.md#generalize-interpretation-contracts). All other dialogue and execution requirements are carried forward by the successor decision.
+- [Attribute usage to execution independently of interpretation retention](#attribute-usage-to-execution-independently-of-interpretation-retention) is replaced in full by [execution usage](research-question-driven-observation.md#execution-usage).
 
 ## Context
 
