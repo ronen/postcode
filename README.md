@@ -2,11 +2,11 @@
 
 > *Humans should be able to understand, design, direct and evaluate software without needing to read or write its programming language.*
 
-PostCode is a specialized tool for architectural investigation and retained understanding. It supplies task-appropriate, qualified architectural accounts that humans and agents can consult, challenge, extend and compare, including within larger design conversations held elsewhere. It does not take responsibility for architectural decisions or require those conversations to take place inside PostCode.
+PostCode is an interactive window onto software architecture. It aims to present a software project through established architectural concepts—such as responsibility, ownership, boundaries and state transitions—and support investigation in those terms. These investigations can concern existing implementations, hypothetical alternatives or intended designs. The goal is for these accounts to help humans and agents understand the software, explore design choices, direct implementation and evaluate the results, without requiring them to read source code.
 
-Accounts preserve provenance, epistemological status and limitations, distinguishing derived facts, recorded assertions, observations and interpretations. The product design covers implemented, hypothetical and intended architecture; the current development CLI investigates implemented software within its documented limits. Useful direct human investigation and comparative investigative expertise remain research aspirations, not demonstrated advantages or prerequisites for specialization.
+Accounts preserve provenance, epistemological status and limitations, distinguishing derived facts, recorded assertions, observations and interpretations.
 
-PostCode's Projections and Views are read-only: they do not directly modify the program or silently rewrite their underlying material. Humans continue to direct program changes by instructing implementation agents.
+PostCode's Projections and Views are read-only: they do not directly modify the program or silently rewrite their underlying material. Humans continue to direct program changes by instructing implementation agents; PostCode provides context so that the terminology of the software investigation can also be used to direct changes.
 
 See the [research product design](foundation/product-design.md) for conceptual commitments, the [application specification](docs/app-specification.md) for intended application behavior and high-level design, and the [capability reference](docs/capability-reference.md) for the current toolbox.
 
