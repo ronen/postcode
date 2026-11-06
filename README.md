@@ -6,7 +6,7 @@ PostCode is an interactive window onto software architecture. It aims to present
 
 Accounts preserve provenance, epistemological status and limitations, distinguishing derived facts, recorded assertions, observations and interpretations.
 
-PostCode's Projections and Views are read-only: they do not directly modify the program or silently rewrite their underlying material. Humans continue to direct program changes by instructing implementation agents; PostCode provides context so that the terminology of the software investigation can also be used to direct changes.
+PostCode's Projections and Views are read-only: they do not directly modify the program or silently rewrite their underlying material. Humans continue to direct program changes by instructing implementation agents; PostCode-provided context can allow the terminology of the software investigation to also be used to direct changes.
 
 See the [research product design](foundation/product-design.md) for conceptual commitments, the [application specification](docs/app-specification.md) for intended application behavior and high-level design, and the [capability reference](docs/capability-reference.md) for the current toolbox.
 
