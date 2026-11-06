@@ -64,7 +64,7 @@ Presentation-only actions, including paging and reformatting, preserve the selec
 
 When the human has not expressed a more specific information need, PostCode may suggest a summary View as an initial View. Summary can also support recursive navigation; it is not a required default. A summary View may coordinate existing qualified results, show a synthesized summary Projection, or combine both. It does not require a summary Lens. [[Summary Views and navigation](decisions/coordinated-views-and-qualified-results.md#allow-summary-views-independently-of-summary-lenses)]
 
-Result/Presentation compatibility is an explicit contract between the qualified content a Lens implementation exposes and the inputs, options, preconditions and standard expansions a Presentation supports. Compatibility includes semantic meaning and qualified partial/unavailable cases, not only data shape or Lens identity. Planning uses it before Evaluation and validates the materialized result before arrangement. A missing compatible Presentation or failed materialization-dependent precondition without a permitted fallback returns a resolution result with a presentation-failure reason and references to any retained answers; it does not make the Lens inapplicable. Further required information returns through request coordination. Usage reports and resolution results are not Views merely because they are rendered. [[Compatibility](decisions/lens-application-and-request-outcomes.md#match-qualified-results-to-presentations-explicitly)] [[Reporting](decisions/lens-application-and-request-outcomes.md#report-actual-requests-and-outcomes)]
+Result/Presentation compatibility is an explicit contract between the qualified content a Lens implementation exposes and the inputs, options, preconditions and standard expansions a Presentation supports. Compatibility includes semantic meaning and qualified partial/unavailable cases, not only data shape or Lens identity. Planning uses it before Evaluation and validates the materialized result before arrangement. A missing compatible Presentation or failed materialization-dependent precondition without a permitted fallback returns a resolution result with a presentation-failure reason and references to any retained answers; it does not make the Lens inapplicable. Further required information returns through request coordination. Usage reports and resolution results are not Views merely because they are rendered. [[Compatibility](decisions/lens-application-and-request-outcomes.md#match-qualified-results-to-presentations-explicitly)] [[Reporting](decisions/research-question-driven-observation.md#request-reporting)]
 
 Replace the complete “Investigation context” definition; retain its existing explicit anchors.
 
@@ -75,3 +75,29 @@ Replace the complete “Investigation context” definition; retain its existing
 An **investigation context** comprises the Views accumulated while following subjects, relationships, and questions, together with their captured bases and relevant lineage. It identifies what each View shows and how it relates to the investigation. It can span Workspace arrangements and does not imply a separately stored context object, common captured state, or persistent Session. The [application specification](app-specification.md#workspaces-and-navigation) states the retained-lineage contract.
 
 This is local application terminology for Views, bases and lineage, not the definition of all [retained architectural understanding](../foundation/product-design.md#retained-architectural-understanding-and-continuity). It is distinct from an observation archive and the context supplied during an Investigator execution. Those responsibilities may refer to overlapping information without requiring one shared object. [[Retained understanding and context](decisions/research-question-driven-observation.md#retained-understanding-and-context)]
+
+Replace the complete “Evaluation” definition (decision-link update only); retain its existing explicit anchors.
+
+### Evaluation
+
+*[decision: [Initial core concepts](decisions/initial-core-concepts-decisions.md#distinguish-claim-content-evidence-qualification-and-evaluation)]*
+
+**Evaluation** is PostCode's attempt to materialize requested information through applicable analyses. Information requirements include those arising from lenses and any standard expansions requested by presentations. Execution constraints describe the conditions under which the attempt is made, rather than the question the lens asks.
+
+Requirements can also arise from system-initiated investigation serving an explicit parent request or authorized autonomous work. [[Investigation initiation](decisions/research-question-driven-observation.md#investigation-attribution)]
+
+Applicable analyses include interpretation, which produces investigrams and their supporting context. [[Interpretation and evaluation](decisions/investigator-execution-and-evidence-access.md#integrate-interpretation-with-evaluation-and-qualified-evidence-access)]
+
+An **evaluation outcome** describes what occurred in that attempt: applicability and availability, execution state, result materialization, relevant cost, and reasons for failure or stopping. **Materialization** is how much of the requested information has been produced. These dimensions are distinct from the epistemological status of any produced claim.
+
+An outcome can exist without a produced claim or entity, and an incomplete attempt can have usable qualified results. An established empty result is therefore different from the absence of a result. Evaluation outcome and Claim context describe different things even when an outcome helps explain a projection's coverage or limitations.
+
+Replace the complete “Investigation initiation” definition (decision-link update only); retain its existing explicit anchors.
+
+### Investigation initiation
+
+*[decision: [Investigation attribution](decisions/research-question-driven-observation.md#investigation-attribution)]*
+
+**System-initiated investigation** is additional investigation PostCode initiates without a separate human or external-agent request for that work. It can be **request-scoped**, serving an explicit parent request, or **autonomous**, with no parent request. The initiating actor is distinct from the actor authorizing the parent. Selecting unspecified elements to answer an expressed information need is request interpretation; the selected answer remains explicitly requested work. Obtaining additional qualified information needed to resolve the request can be system-initiated investigation.
+
+Request-scoped work serves its parent; work outside that purpose or continuing after the parent’s satisfaction or cancellation is autonomous. Resource governance and attribution obligations are in the [architectural constraints](architectural-constraints.md#investigation-initiation-and-request-attribution). These meanings do not prescribe a scheduler or separate visible View.
