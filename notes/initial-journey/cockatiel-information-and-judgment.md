@@ -73,11 +73,42 @@ responsibilities are not yet clearly separated in my understanding.
 **PostCode interaction:** From the issue, open the surrounding application/library
 context; select responsibilities at Cockatiel scope. No proposal is supplied.
 
-**What PostCode shows:** The application prepares work and owns its business job
-lifecycle. Cockatiel applies resilience policies to application-supplied operations.
-Its bulkhead can queue operations in memory while waiting for execution capacity;
-that is not a background-job service. The responsibility boundary is supported by
-the inspected documentation and implementation.
+**What PostCode shows:**
+
+- **Overall purpose:** Cockatiel is a resilience library: it controls how
+  application-supplied work is attempted when failures, delays or limited capacity
+  matter. It does not need to understand the business meaning of that work.
+- **The reporter's application:** accepts job requests, prepares work and owns
+  the business job lifecycle. Job identity, acknowledgment and stored outcomes
+  belong here, rather than to Cockatiel.
+- **Cockatiel's policy family:** named facilities with distinct responsibilities:
+
+  - **Circuit breaker:** withholds attempts after configured failures, then allows
+    limited trial executions to find out whether work can succeed again.
+  - **Bulkhead:** limits concurrent execution and can queue operations in memory
+    while they wait for capacity; refuses work when execution and queue capacity
+    are exhausted. This is not a durable background-job service.
+  - **Retry:** repeats an operation after selected failures, possibly with delays.
+  - **Timeout:** applies a time limit; stopping underlying work depends on
+    configuration and the operation's cooperation.
+  - **Fallback:** supplies an alternative value or action after a selected failure.
+  - **No-op:** passes execution through without adding a protection rule.
+- **The application's external dependency:** the thing the supplied work needs
+  to use in this issue. Its availability is a concern for the application;
+  Cockatiel's breaker regulates attempts based on observed outcomes, rather than
+  establishing the dependency's health directly.
+- **Relationships:** the application supplies an operation to a policy for
+  execution; that operation interacts with the dependency. Policies can be
+  combined around the same operation. The breaker is therefore part of
+  Cockatiel's protection machinery, while job submission belongs to the application.
+- **Connection to this issue:** the application wants to use breaker information
+  before spending resources on preparation. The requested change concerns when
+  that information is useful, not adding a job-submission subsystem to Cockatiel.
+- **Basis and scope:** these library responsibilities come from the inspected
+  documentation and implementation; the particular application need comes from
+  the issue report and has not been reproduced. The named items are architectural
+  subjects and policy types, not a claim about source-module decomposition or
+  an exhaustive inventory of the repository.
 
 **After:** The human could now place the issue across an application/library boundary
 and recognize why a resilience facility matters to preparation. This is an initial
@@ -85,7 +116,11 @@ orientation, not yet a complete operating model. The original dialogue's later
 questions show that an early explanation did not settle all of that understanding.
 
 **Review point:** This explanatory account is a substantive requirement. Whether
-it appears at entry or is opened here is a later sequence question.
+it appears at entry or is opened here is a later sequence question. The bullets
+specify candidate content, not a fixed layout or a demand that all detail appear
+at once. Naming the policy family here could answer a later question earlier;
+the original sequence remains a coverage reference, not a prediction that the
+human will still be surprised by other policy types at step 10.
 
 <a id="readiness"></a>
 ## 2. Proposing readiness and considering reservation
