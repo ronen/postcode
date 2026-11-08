@@ -52,10 +52,20 @@ identity, historical access after invalidation, or a general scheduler.
 
 Preserve CLI syntax, defaults, output meaning, bounds, reference allocation
 schedules, continuations, text/JSON human-output contract, status codes and
-automatic observation behavior. This is not a general CLI redesign. Internal
-types/import paths may change without compatibility shims. If implementation
+automatic observation behavior, except for the agreed outcome distinction below.
+This is not a general CLI redesign. Internal
+types/import paths may change without compatibility shims once their production,
+test and `scripts/` consumers are migrated. If implementation
 reveals a need for a consequential visible or identity change, bring that change
 back for agreement; experimental output status is not blanket authorization.
+
+The agreed visible change concerns `unknown-continuation`: when the application
+has produced/retrieved an answer but CLI arrangement cannot use a continuation,
+the application's work report is `completed`; the CLI publication/observation
+outcome remains a presentation failure with exit code 3. The observation's
+application work-status field therefore changes from `failed` to `completed` for
+this case. Malformed request syntax remains a refusal, and historical investigation
+failure remains separate. This exception does not authorize other visible changes.
 
 ## Preconditions and decisions
 
@@ -83,47 +93,60 @@ canonical destinations.
 
 ```mermaid
 flowchart TD
-  CLI[CLI input and interaction] --> CA[CLI request and Presentation adapter]
-  DIRECT[Direct typed caller] --> API[Internal application API]
-  CA --> API
-  API --> COORD[Resolution, requirements and request coordination]
-  COORD --> CORE[Evaluation, investigation and qualified construction]
-  COORD --> RETAIN[Fixed retained-answer resolution and reference binding]
-  CORE --> STORE[Session records and captured evidence]
-  RETAIN --> STORE
-  API --> CONTENT[Qualified content and operational outcomes]
-  CONTENT --> CA
-  CA --> OUTPUT[CLI Views, rendering and actual display receipt]
-  OUTPUT --> RECORD[Shared feedback and observation delivery services]
+  DIRECT[Direct in-process client] --> API[Internal application API]
+  subgraph Worker[Private CLI worker]
+    HOST[CLI operation host] --> CLIENT[CLI request and Presentation adapter]
+    CLIENT --> API
+    API --> CORE[Resolution, Evaluation, construction and exact retrieval]
+    CORE --> STORE[Session records and captured support]
+    API --> DATA[Qualified content and operational outcomes]
+    DATA --> CLIENT
+    CLIENT --> BIND[Operation-scoped CLI binding capability]
+    BIND --> STORE
+    CLIENT --> VIEW[CLI View and explicit arrangement key]
+  end
+  VIEW --> PARENT[Parent usage finalization and self-sufficient rendering]
+  PARENT --> PUB[Shared publication guard and CLI output]
+  PUB --> BATCH[CLI observation content and disclosure classification]
+  BATCH --> SINK[Neutral batch envelope, sink and acknowledgment]
+  PUB --> FEEDBACK[Feedback service using supplied display context]
+  FEEDBACK --> SINK
 ```
 
-Arrows express use/data flow, not a new stored pipeline. The same application
-implementation runs for direct callers and within the CLI worker. The CLI adapter
-inside that worker is a client, composed at the worker entry point; the application
-does not import it. Parent-side publication and usage finalization remain intact.
-No full-content worker transport for a new GUI or agent is needed to complete this
-task. Future hosts may reuse execution ownership without inheriting CLI requests.
+Arrows express use/data flow, not a new stored pipeline. The application engine
+can run in-process for direct clients or inside the CLI worker; the diagram's
+worker placement shows the CLI instance. The CLI client is composed at the worker
+entry, outside the application's dependency graph. It receives selected content,
+arranges it there, and keeps the existing worker-to-parent View/key delivery.
+Application code does not import that client. Parent-owned Git, investigator
+dialogues, credentials and authoritative usage retain their current ownership.
 
-Suggested logical homes are `src/lib/application/` for the intended service
-boundary and `src/lib/interfaces/cli/` for CLI coordination and Presentation code.
-Existing domain, provider and infrastructure modules can retain their locations.
-Move/split a module when its responsibility requires it; avoid a wholesale folder
-reorganization. Do not create empty GUI/agent packages or plugin extension points.
+Direct callers use the in-process asynchronous lifecycle, which cannot pre-empt
+synchronous compiler work in that thread. A GUI host will probably need worker
+hosting and a full-content transport built on the same contracts; that work belongs
+to MINIGUI. Deliver plain structured-clone-safe data now so it need not redesign
+semantic results. A browser cannot directly run this Node application API. Neither
+an additional worker facade nor a binding transport is required here.
+
+Suggested logical homes are `src/lib/application/` for intended service exports
+and `src/lib/interfaces/cli/` for CLI coordination/Presentation code. Keep coherent
+domain/provider/infrastructure modules where they are; avoid a repository-wide
+move or placeholder GUI/agent packages. Presentations may be shared by clients
+with compatible consumption contracts without becoming application dependencies.
 
 | Application or shared service owns | Client/host owns |
 | --- | --- |
-| Typed input validation, Lens applicability, qualified subject resolution, request/work attribution and outcomes | Argument parsing, word tokenization, CLI aliases, defaults arising from CLI interaction, help and prompts |
-| Requirements/precondition coordination, Evaluation, reuse, qualified construction and fixed answer retrieval | Presentation declarations, arranging supplied content, detail/page choices, terminal text, JSON View serialization and output safety |
-| Subject/answer reference validity, binding and immutable selection | Display labels, command spellings for continuations, focus and which answer to return to |
-| Semantic failure, invalidation and resource cleanup outcomes; usage/work state | SIGINT/EOF/TTY behavior, exit-code mapping, stdout/stderr and recovery guidance |
-| Provider selection/service setup, credential and account operations, explicit connection check | Environment/argument acquisition, intentional route choice and presentation of transmission/billing disclosures, browser interaction prompts |
-| Feedback report construction, observation batch/delivery mechanisms and typed delivery acknowledgment | Capturing what was actually displayed, optional feedback text, recording selection/destination and warning presentation |
+| Typed request validation, Lens applicability, qualified resolution, request/work attribution and outcomes | Argument parsing, word tokenization, aliases, interaction defaults, help and prompts |
+| Requirements/precondition coordination, Evaluation/reuse, interpretation selection into answers and exact retrieval | Presentation declarations, arranging supplied content, detail/page choices, text/JSON View output and output safety |
+| Precise reference validity, immutable selection and append-only alias infrastructure | Which answer to display; CLI-only arrangement-time alias requests through its scoped capability |
+| Typed execution/lifecycle outcomes, usage/progress and shared publication-validity policy | SIGINT/EOF/TTY behavior, host-supplied reference lifetime, exit codes, stdout/stderr and guidance |
+| Provider/account setup and explicit connection-check services | Environment/argument acquisition, intentional route choice, transmission/billing disclosures and sign-in interaction |
+| Neutral batch envelope, sink and acknowledgment; feedback report/submission using supplied context | CLI observation content construction and source classification, actual-display snapshots, feedback input and warnings |
 
 The host supplies project configuration and actual output locations. Application
 opening establishes their exclusion policy, shared by compiler and repository
-acquisition, and enforces it during validation. The application cannot guess every
-future output destination. Consolidate current CLI setup without inventing generic
-directory-name exclusions or weakening path/alias checks.
+acquisition, and enforces it during validation. It cannot guess every future output
+destination. Consolidate CLI setup without generic directory-name exclusions.
 
 ## Bounded contracts
 
@@ -132,17 +155,28 @@ choice. Export explicit service types from an intended entry point. Do not deriv
 the public-to-this-repository contract from a CLI function's `ReturnType`, expose a
 store, or require callers to assemble constructors and support traversals.
 
-### Requests and capability information
+### Request and lifecycle surface
 
-Support distinct typed forms:
+The operation table is the contract spine, not a frozen method-name or wire design.
+The application API is the request-validation boundary for direct callers; a
+TypeScript annotation is not proof that runtime input satisfies it.
 
-- **Information request:** canonical Lens identity, explicit subject designation,
-  Lens parameters and the current Session input context. Reuse the existing
-  designation variants and validation. A precise answer target is not a subject.
-- **Exact retained request:** a precise answer ID or existing Session-bound answer
-  alias, with optional content-consumption requirements. It has no new subject,
-  Lens parameters, replacement-following instruction or Evaluation plan.
-- **Operational usage request:** subjectless reporting, not a fake Lens/Projection.
+| Operation or channel | Input | Output and invariant |
+| --- | --- | --- |
+| Open | Project configuration, exclusions, configured dependencies/bounds, captured declarations and host context | Session or typed opening failure; no terminal or sink prerequisite |
+| Inspect capabilities | Captured catalog | Read-only Lens meaning, applicability/cardinality, parameters, result contracts and semantic requirement descriptors; no CLI format lists, executable registrations, subject-specific success claims or ranking |
+| Request information | Canonical Lens ID, explicit subject designation, semantic parameters and supported information requirements or a captured Presentation choice | Qualified selected answer or self-contained resolution result; invocation context is separate from answer identity |
+| Obtain exact retained answer | Precise Projection ID and optional supported content-consumption requirements | Fixed selected content/support, including both halves of associated inspection; no lookup, reselection, Evaluation, inference or acquisition |
+| Report usage | Explicit subjectless report request | Attempt/Session usage with its limitations; no fabricated Lens or Projection |
+| Receive work and attempt progress | Opening-time callbacks corresponding to existing `onWork`, `onProgress` and `onReport` | Immutable, correlated plain-data events and final reports; preserve attribution, order and usage ownership independently of rendering or recording |
+| Check, interrupt and close | Session/lifecycle operation or cancellation signal | Typed invalidation, interruption, closed, busy and cleanup outcomes; one active operation, no restart and separately reportable cleanup |
+| Guard publication | Execution/delivery context and host-owned output action | Shared pre/post-output checks and an outcome distinguishing withheld output from failure detected after output; output formatting remains client-owned |
+
+Precise IDs suffice for all answer, candidate and follow-up use. There is **no
+general compact-binding operation**. The CLI resolves its compact target syntax
+through application-owned alias infrastructure at composition. Already allocated
+coordination-time aliases may appear as optional fields; other clients can ignore
+them. A future external-agent short-reference contract is separate work.
 
 Request occurrence correlation and execution constraints remain separate from
 answer identity. Capture caller-owned inputs before asynchronous work; preserve
@@ -156,38 +190,38 @@ format/detail choices when separating the types. Shared attribution must preserv
 the complete generating and consuming parent descriptions without importing CLI
 renderers or treating client context as answer identity.
 
-Expose read-only descriptions of the current registered Lens meanings,
-applicability/cardinality and parameters from the same fixed catalog. This is
-existing capability metadata, not a recommendation engine or a claim that every
-listed question can currently succeed. Do not add subject search, automatic
-clarification, dynamic registration or future questions. CLI aliases and help
-remain in the CLI adapter.
-
 ### Content requirements and Presentation compatibility
 
-Separate semantic requests from rendering choices. Direct content access must
-not require `unicode`, `json`, `moreDetails`, CLI paging or terminal lifetimes.
-Reuse the finite current module/group expansion declarations and qualified
-result-family contracts for explicit content requirements. No arbitrary query
-language or schema negotiation is needed.
+Clients own Presentation declarations: acceptable content contracts, required
+standard expansions, preconditions and ordered fallbacks. Supply them once at
+client composition or Session opening. Application coordination validates semantic
+rules (including organization's `group-details` requirement), captures and freezes
+the declarations before work, and requests name choices among that snapshot. Do
+not accept replacement declarations per request or re-read later caller mutation.
+Capability metadata exposes semantic requirements, not CLI encoding choices.
 
-For a CLI request, its adapter interprets format/detail/page options using its
-captured Presentation declarations. It supplies compatible candidate contracts,
-their declared standard expansions, preconditions and ordered fallbacks to shared
-coordination. Shared coordination preserves the current order: prospective
-compatibility before lookup, subject-specific compatibility after resolution,
-requirements before Evaluation, and materialized compatibility before arrangement.
-The adapter must not duplicate lookup, decide whether partial content satisfies a
-semantic precondition, or silently discard explicit choices. A small neutral
-descriptor suffices; do not pass renderer callbacks or a store across this boundary.
+The CLI translates format/detail/page choices through its captured declarations.
+Shared coordination preserves prospective compatibility before lookup, refinement
+after subject resolution, required expansions before Evaluation, and materialized
+compatibility before arrangement. The client cannot duplicate lookup or fallback
+policy, silently relax explicit choices, or decide that partial information is an
+established empty result. Keep actual selection criteria inspectable from the
+captured declaration. No renderer callback or general planner is needed here.
 
-Keep the choice explanation from the captured declarations and actual selection.
-CLI format restrictions and option vocabulary are interface data, while required
-information and materialization are application contracts. The direct content
-route is intentionally usable without an available CLI Presentation. It validates
-requested support against the selected content family, and returns qualified
-partial/unavailable content where the current method permits it. It does not
-promise every possible expansion or silently broaden retained support.
+A direct information request without a Presentation acquires all current standard
+expansions for the subject kinds of its answer family. It may explicitly request a
+supported subset. This default follows subject-kind standard-expansion semantics;
+all current standard expansions are mechanical and inference-free. Expansions
+contribute to answer identity. Parity with current CLI defaults is a useful test,
+not the rationale. Revisit the default when a future subject kind introduces a
+costly expansion, such as inference. A subset changes requested support, not the
+Lens question, and missing/partial materialization remains qualified.
+
+Exact retrieval returns the answer's fixed selected content without adding these
+default expansions. Any explicit consumption requirements are checked against
+that support. In particular, the existing organization Presentation's requirement
+for `group-details` must not become a refusal of otherwise valid raw retrieval.
+An incompatible Presentation is different from unavailable answer content.
 
 ### Results and exact answers
 
@@ -196,14 +230,27 @@ resolution information, or a usage report. Opening failure and unexpected
 execution/cleanup errors remain separately typed; preserve the existing failure
 distinctions rather than hiding every condition in a success flag.
 
-An answer delivery supplies the precise answer identity and existing alias,
-semantic family/variant, complete immutable resolved content, relevant Evaluation
-outcomes and qualification, fixed mechanical/composite support, coordinated
-reference bindings, and any selected consumption contract. Carry request
+An answer delivery supplies the precise answer identity, semantic family/variant,
+immutable resolved selected content, relevant Evaluation outcomes and qualification,
+fixed mechanical/composite support and any selected consumption contract. Previously
+allocated aliases may be included, but retrieval does not promise or allocate a
+compact reference for every item. Carry request
 resolution/context, current work/usage and current request outcome beside that
-answer, not in its retained identity. Use the existing family content types where
+answer, not in its retained identity. Delivery context also carries `repositoryRoot`
+(or explicit unavailability), method provenance (`methods`) and host-supplied
+reference lifetime. The host knows whether the Session ends with this command;
+that lifetime is neither a Lens parameter nor a mere display preference, although
+it affects current View identity and continuation guidance. Use the existing family content types where
 they fit; split them from Presentation modules where necessary. Do not clone the
 entire Session or expose generic record enumeration merely for client convenience.
+
+Delivered answers, reports and progress events are plain, structured-clone-safe
+data: no store handles, compiler objects, class instances or functions. Service
+methods and configured callbacks are not part of these payloads. Clone/freeze at
+ownership boundaries so caller mutation cannot change retained content or earlier
+reports. For current eager families, full content means the entire selected
+materialized content before display bounds, not exhaustive analysis or a complete
+program capture. This does not prohibit later qualified lazy materialization.
 
 Preserve full correction/reconsideration and association snapshots, account
 composition, evidence/provenance, omission/availability distinctions and all
@@ -225,6 +272,37 @@ stable aliases, binding schedules, answer/View identity separation and explicit
 arrangement-key usage finalization. Retain the existing lifecycle limitation:
 invalidation/closure can make an immutable historical answer unavailable.
 
+### CLI binding and outcome boundaries
+
+The store retains append-only, never-rebind aliases. Preserve coordination-time
+allocations for name-lookup candidates and population construction in
+`subject-resolution.ts`, `module-selection.ts`, `organization/projections.ts` and
+`exports/content.ts`, plus existing answer-alias coordination. Do not suppress them
+for direct calls if that would change shared behavior; they are optional data to
+non-CLI clients.
+
+Arrangement-time binding is a capability supplied only to the CLI client at worker
+composition. Validate IDs/kinds against the answer's supplied reference population;
+provide no store/query/selection authority. Keep today's page-driven batches and
+order, including associated-listing binding last. Do not preallocate every
+reference in complete content or move all binding ahead of arrangement.
+
+The CLI worker's serialized requesting operation covers both the application call
+and CLI arrangement. Its scoped binding capability is usable only within that
+operation and is revoked on settlement, invalidation or close. It cannot escape
+into a returned payload or be used while another operation is running. Preserve
+validation around that compound operation. This is CLI-internal composition, not
+a new general API binding operation or callback supplied by ordinary clients.
+
+Separate application work outcome from client presentation/publication outcome.
+For an answer successfully produced/retrieved with `unknown-continuation`, keep
+application work `completed`, while CLI presentation/publication and observations
+record failure and exit 3. Do not retroactively edit the application's report.
+Preserve the qualified View, same answer, continuation guidance and historical
+outcome. Malformed syntax remains refused through the existing input path. The
+acceptance matrix must assert both statuses, including the agreed change to the
+observation work-status field.
+
 ### Lifecycle and delivery
 
 Opening takes explicit project/runtime dependencies, output exclusions and
@@ -240,22 +318,43 @@ reporting are shared; hosting and transport do not create another implementation
 of investigation policy. Preserve the current direct-runtime limitation that
 synchronous compiler work is not independently preemptible from that same thread.
 
-Default direct operations validate before and after execution. Preserve an
-explicit deferred-publication facility for hosts that need to check immediately
-before actual output and again afterward, as the CLI currently does. A caller
-using it owns those checks. No result may be presented as successfully delivered
-after detected invalidation; disclose a failure detected after emission. Document
-this contract at the application boundary, not solely in the CLI reference.
+Default direct operations validate before and after execution. A shared publication
+guard additionally applies the current best-effort pre-output and post-output
+checks for delayed display, so clients do not copy lifecycle policy. Replace the
+bare `deferPublicationCheck` API option with this guarded host path; any internal
+deferral is private to the guard and cannot bypass its checks. Preserve the CLI's
+existing validation phases, withholding before output and explicit invalidation
+if output was already emitted. Returning data does not establish later display
+validity. The guard owns checks/outcomes; the client owns actual output and records
+what was emitted. No new atomic freshness guarantee is implied.
 
-Feedback and delivery are cohesive companion services, not Session methods that
-require a project. A client supplies an immutable receipt of its actual output,
-available displayed artifacts and context, or explicitly supplies no context.
-Shared code constructs the self-contained feedback report and submits it without
-lookup or reconstruction. Return delivery rejection and post-acceptance cleanup
-warning distinctly; clients render them. No-recording direct use must not disable
-explicit feedback. Retain the CLI's current batch-shaped snapshot if that is the
-smallest safe adapter: a universal display-receipt schema and recording-policy
-redesign are not prerequisites.
+Expose typed lifecycle failures, reusing the existing invalidated, interrupted,
+closed and cleanup distinctions and adding a typed busy outcome for a concurrent
+call. Busy does not become an analysis failure or silently queue/restart work.
+Keep progress and final attempt reports correlated with the same request and
+available through terminal outcomes; discard late callbacks under the existing
+cancellation boundary. Report usage without reconstructing it from Views.
+
+Split `observations.ts` at its dependency boundary. The batch envelope, local sink,
+submission and typed acknowledgment belong in a neutral module with no CLI View
+or renderer imports, including through its type dependencies. CLI-specific batch
+content construction and source-disclosure classification stay with the CLI. The
+feedback service depends only on neutral contracts and accepts a supplied immutable
+snapshot of actual displayed artifacts/output or explicit context-free input.
+It constructs/submits the existing self-contained feedback report without live
+lookup, reconstruction or new investigation. Keep missing context explicit.
+
+Clients render acknowledgments, delivery rejection and accepted-delivery cleanup
+warnings. These outcomes do not erase delivered application results. The current
+batch-shaped display snapshot may remain if it depends only on the neutral envelope;
+no universal receipt schema or generalized batch builder is required. Preserve CLI
+automatic recording and its last-displayed-result behavior, including replacing an
+old answer with a subsequently displayed failure. Direct non-recording use still
+permits explicit feedback.
+
+This extraction relates to [optional recording and feedback context](../backlog.md#separate-optional-research-recording-from-feedback-context)
+but does not implement that item: no no-recording CLI option, recording-policy
+change or generalized event framework is included.
 
 Move production credential assembly and the explicit connection check out of
 `auth-command.ts`. Reuse existing credential/OAuth/agent services behind typed
@@ -266,39 +365,87 @@ policy or external provider behavior; validate these paths offline.
 
 ## Implementation milestones
 
-1. **Contracts and first vertical slice.** Separate semantic request/result and
-   content types from CLI Presentation/report modules. Establish the application
-   entry point, fixed catalog descriptions, neutral requirements and direct
-   module inventory plus typed refusal/usage. Adapt that CLI path through the same
-   API. Verify full content, qualification and equivalent CLI meaning before
-   extending to every family; temporary internal migration bridges may exist only
-   within the task.
-2. **All current answers and exact continuity.** Route organization, dependencies,
-   inspection, interpretation and the internal extension fixtures through shared
-   coordination. Split fixed retained-target/content preparation from arrangement.
-   Move reference coordination ahead of pure arrangement while preserving order.
-   Verify exact earlier answers after subsequent corrections and associations.
-3. **CLI and runtime completion.** Compose the CLI client in the worker; retain
-   existing parent publication/finalization and lifecycle behavior. Split report
-   data from terminal renderers, generate command continuations only in the CLI,
-   consolidate configuration/exclusion setup, and remove the old parallel request
-   path. Both one-shot and shell use the same adapter and application services.
-4. **Companion application services.** Extract account/configuration/check and
-   feedback/delivery behavior from command handlers; preserve actual-display
-   context and CLI observations. Test direct service use and CLI integration with
-   existing credential/provider doubles and collected sinks. No live account
-   mutation or paid inference is required.
-5. **Verification, documentation and review.** Run the matrix below and repository
-   checks. Update descriptive architecture, API lifecycle/usage documentation,
-   affected implementation conventions and interface documentation. Update STATUS
-   only for an externally meaningful capability/limitation change. Prepare the
-   integrated-review handoff under the task protocol; human confirmation, not a
-   clean test run, satisfies its review gate.
+### M1 — Establish a binding-sensitive application path
 
-The separation is complex enough that an intermediate independent review after
-milestone 2 should examine contract ownership and retained-answer fidelity before
-completing host/service migration. The human arranges reviewers under the review
-workflow; this plan does not delegate or schedule review automatically.
+Inventory production, tests and untyped `scripts/*.mjs` consumers of Session,
+request, CLI and worker results, including dynamic `_build` imports and instrumentation
+of worker files. Extract intended semantic request/result and lifecycle contracts,
+capability descriptions and captured requirements. Implement direct inventory,
+module `inspect` and exact retrieval, plus CLI `present`, through one shared engine.
+Keep CLI arrangement in its worker client and exercise operation-scoped alias
+binding there. Establish the shared publication guard, distinct work/presentation
+outcomes, structured-clone-safe delivery and typed busy behavior on this slice.
+
+Verify direct use without parser, renderer, terminal or sink; compare CLI behavior
+against the baseline except the explicitly agreed work-status change. Exercise
+caller mutation, malformed input, missing/incompatible subjects, complete/partial/
+empty content, subset/default expansions, exact retrieval and alias collisions.
+Preserve opening/exclusion and cleanup behavior.
+
+**Intermediate independent review checkpoint:** inspect dependency direction,
+capture-once declarations, precise-ID contracts, binding scope/order, separate
+outcomes and publication lifecycle before broad migration. A facade that calls
+CLI execution or returns bounded Views as content fails. So does a changed CLI
+allocation schedule, escaped binding capability or bypassed publication check.
+A necessary contract or scope change returns to the human. The human arranges the
+reviewer; this plan does not schedule or delegate review automatically.
+
+### M2 — Complete current information and exact-answer operations
+
+Migrate organization, dependencies, mixed/group/Investigram inspection,
+interpretation requests/follow-ups, resolution and usage. Reuse constructors,
+fixed content resolvers, evaluation and the investigator bridge. Exercise the
+nonpublic interpretive and exports fixtures without special facade branches.
+
+The direct API journey obtains modules, resolves a subject, investigates it using
+`ScriptedInvestigator`, follows an exact Investigram, accumulates corrections and
+associations, retrieves the earlier exact answer, and issues fresh selection.
+Assert the old answer's complete selected content/support/identity remain equal,
+while the fresh answer exposes the deliberate selection changes, including
+conflicts and reconsideration. Deny lookup, reselection, Evaluation and inference
+on exact access. Use real evidence access, validation and retention; substitute
+only the agent communication participant.
+
+### M3 — Complete CLI, script consumers and companion services
+
+Route both one-shot and shell through the application API and shared CLI adapter.
+Preserve private View/key transport and parent usage finalization/rendering;
+consolidate runtime/exclusion setup and retain signal/EOF behavior. Split request/
+report data from terminal text and generate command continuations only in the CLI.
+Remove obsolete parallel execution paths after consumers migrate.
+
+Move credential assembly and the explicit cost-bearing connection check out of
+command handlers, using existing services. Extract the neutral observation envelope,
+sink/acknowledgment and feedback service, while retaining CLI batch construction
+and source classification. Verify preflight ordering, disabled/invalid setup,
+route/billing and no-fallback rules, authentication without a project, context-free
+and displayed-result feedback, failed-display snapshot replacement and delivery
+failure isolation. Use offline credential/provider doubles, not live credentials
+or paid inference.
+
+Migrate all current `scripts/` consumers, including dynamic build-root imports and
+profiling/interruption harnesses. Type checking alone does not cover them. Verify
+changed imports and representative offline executions, including a controlled
+shell harness; do not import a live assessment script merely to test linkage if
+its top level initiates inference. Historical validation records remain unchanged.
+
+### M4 — Integrated verification, documentation and handoff
+
+Run the matrix below, `npm run check` and `npm test`. Exercise a small direct client
+and the CLI on the same deterministic fixture and record representative text/JSON
+comparisons. Review runtime and type dependencies; retain no CLI-only semantic
+execution path. Check script linkage/entry paths separately from TypeScript tests.
+
+Document the intended internal API and lifecycle examples in
+`docs/application-api.md`, linked from `docs/README.md`; maintain the descriptive
+boundary map in `docs/architecture/README.md` and affected implementation conventions.
+Update status/capability/CLI documentation only where descriptions actually change.
+Explain the agreed work-status exception and retain current limitations.
+
+Prepare the task protocol's integrated-review handoff and PR. The human arranges
+review and decides when its gate is sufficient. Passing checks is not authorization
+to close or merge implementation. No GUI, account diagram or live inference
+assessment is needed to complete this task.
 
 ## Verification and completion criteria
 
@@ -309,16 +456,19 @@ identity inputs to make comparisons pass. Extend existing tests where appropriat
 
 | Check | Required distinguishing evidence |
 | --- | --- |
-| Direct API, independent of interfaces | Import only the intended API and documented types in a small integration test. Open a fixture, list existing Lens meanings, request inventory/organization/dependencies/inspection, investigate and follow an Investigram, retrieve an exact answer, obtain usage, and close. No CLI parser, Presentation, terminal writer or sink is configured or invoked. |
+| Direct API, independent of interfaces | Import only the intended API and documented types in a small integration test. Open a fixture, list existing Lens meanings, request inventory/organization/dependencies/inspection, investigate and follow an Investigram, retrieve an exact answer, obtain usage, and close. No CLI parser, Presentation, terminal writer or sink is configured or invoked. Results/progress survive structured clone without capabilities or prototype behavior. |
 | Complete content | Use beyond-bound exports/documentation, dependency occurrences and association/revision content. Direct results retain full selected qualification/support while CLI output retains its honest bounds and omission counts. Source-bearing support is not automatically serialized to human-facing JSON. |
 | Qualified resolution | Missing/ambiguous names, actual precise references, incompatible bound targets, malformed/unrepresentable input, invalid parameters, no compatible Presentation, and materialization refusal. Inspect candidates, prerequisite qualification/work and retained answer pointers without later lookup or observations; distinguish valid empty/partial/unavailable answers. |
 | Fresh versus exact | In one Session obtain A, perform later work that adds corrections/associations/reconsideration, obtain fresh B, then retrieve and present exact A. Compare A's full content, support, snapshots and ID unchanged. Deny selection/Evaluation/provider calls on the exact path. Target originals and replacements explicitly; cover conflicting revisions and associated composites. |
 | CLI compatibility and consumption | One-shot and shell, Unicode/JSON, all existing command families, more detail, association/revision paging and unknown tokens, canonical aliases/precise targets and one-shot expiry. Same effective information requirements yield equivalent answers through API and CLI; different rendering preserves the answer and changes only applicable View/report identity. |
-| Compatibility planning | Preserve pre-lookup refusal, post-resolution family checks, fallback requirements before Evaluation, explicit option preservation and materialization checks. A raw content request succeeds independently of CLI Presentation availability. A retained request cannot acquire absent support even if that support exists elsewhere in the Session. |
-| Lifecycle and faults | Opening failure, changed/unverifiable input, interrupted work, late replies, provider failures, unexpected defects, sink rejection and unconfirmed cleanup. Default direct and deferred CLI checks preserve withholding/disclosure behavior. No restart, duplicated work or leaked ownership. Current usage remains available after interruption and is not charged again by exact access. |
-| Binding and identity | Same qualified application through name/precise designation; separate answer aliases; current allocation/collision schedules; all fixed off-page references; no mutation by subsequent selection. Parent usage finalization preserves the explicit arrangement key and idempotence. |
+| Compatibility planning | Preserve pre-lookup refusal, post-resolution family checks, fallback requirements before Evaluation, explicit option preservation and materialization checks. Captured declarations ignore later mutation; direct defaults acquire family standard expansions and explicit supported subsets remain distinct. A raw content request succeeds independently of CLI Presentation availability. A retained request cannot acquire absent support even if that support exists elsewhere in the Session. |
+| Lifecycle and faults | Opening failure, changed/unverifiable input, interrupted work, late replies, provider failures, unexpected defects, sink rejection and unconfirmed cleanup. Default direct and deferred CLI checks preserve withholding/disclosure behavior. No restart, duplicated work or leaked ownership. The shared guard covers withheld output and post-output invalidation without a public bypass flag. Current usage remains available after interruption and is not charged again by exact access. |
+| Binding and identity | Direct clients complete the journey with precise IDs alone. Preserve name/reference equivalent answers, optional coordination aliases, separate answer aliases and CLI page-driven allocation/collision schedules. Arrangement binds only its supplied population within the serialized worker operation, never after settlement/invalidation/close; do not eagerly allocate all off-page references. Parent finalization retains the explicit arrangement key and idempotence. |
 | Companion services | Account operations and explicit connection check through offline doubles, route/credential boundaries, context-free and displayed-result feedback, failed-display replacement of old feedback context, actual output and self-contained batches, visible delivery rejection/cleanup warnings without erasing results. No research capture required for direct operational attribution. |
-| Architectural dependency | Inspect runtime and type imports transitively from the application service and core. They do not reach CLI parsing, renderers, terminal helpers or CLI View types; worker composition is explicitly outside that graph. Client imports use the intended API, not stores, selectors or Evaluators. Add a focused boundary check using existing tooling if useful, without adding a dependency merely for this check. |
+| Progress and lifecycle types | Exercise `onWork`, `onProgress` and `onReport` equivalents, request correlation, final usage, caller mutation and late-callback suppression. Concurrent calls produce typed busy without affecting the active request; invalidation/interruption/cleanup retain distinct outcomes. |
+| Outcome separation | After successful answer delivery, unknown continuation gives application work `completed`, CLI presentation/publication failure and exit 3; the observation work-status field reflects that agreed change. Malformed syntax remains refusal and retained investigation failure is historical. |
+| Script consumers | Inventory static/dynamic `_build` imports and worker instrumentation in `scripts/`. Verify migrated imports and representative offline harness execution without triggering live assessments; record checks not covered by `npm run check`. |
+| Architectural dependency | Inspect runtime and type imports transitively from the application service and core. They do not reach CLI parsing, renderers, terminal helpers or CLI View types; worker composition is explicitly outside that graph. Client imports use the intended API, not stores, selectors or Evaluators. Use a focused import-graph check with existing tooling, including type imports and neutral envelope/source-classification types; no new dependency is needed. |
 
 Reuse relevant coverage in `request-model`, `subject-resolution`, `projection-content`,
 `presentation-compatibility`, `retained-presentation`, `investigation-selection`,
@@ -360,24 +510,41 @@ research-recording controls. It does not remediate the known captured-basis
 observation export or navigation-origin gaps. Do not use new observations for an
 assessment requiring those missing guarantees.
 
-## Risks and open choices
+GUI work must reuse or re-establish verified human-output disclosure/classification
+before exposing source-bearing API content. The present `source-disclosure.ts`
+classifies CLI Views and output, not arbitrary future GUI results. Shared
+Presentation utilities are possible but not a reason to assume GUI conformance.
 
-The human has agreed in principle with the full-content API, neutral
-requirements/compatibility split, retained CLI worker arrangement, inclusion of
-companion services and CLI preservation scope. These are the working direction
-for this plan. Review of the detailed contracts and governing revisions remains
-open before package approval and promotion; implementation is not authorized.
+[Presentation representation, F5](../backlog.md#decide-how-gui-presentations-and-their-parameters-are-represented)
+remains open for GUI choices. Precise IDs remove the need for this task to provide
+population-wide compact-alias coordination to GUI clients; the existing CLI-only
+schedule is preserved. This does not settle general GUI Presentation composition,
+layout or identity, nor short references for external agents. MINIGUI will probably
+need worker hosting plus full-content transport over these plain-data contracts;
+it will display names and keep precise IDs internally rather than use CLI `@` aliases.
 
-The main implementation risks are exposing source-bearing content through the
-wrong audience boundary; changing acquisition/alias schedules during extraction;
-losing frozen support behind a convenient live lookup; and moving usage/cleanup
-ownership into disposable state. The verification matrix targets these risks.
-Full content can be larger than a View; keep the current CLI worker delivery
-bounded and avoid gratuitous cloning. No speculative performance target or
-incremental transport is required.
+## Risks and review status
 
-If the neutral compatibility descriptor proves to require a general planner, or
-preserving current worker behavior requires domain code to import CLI adapters,
-return to planning with the concrete conflict. Do not widen this into a runtime
-rewrite. File names and helper extraction are routine choices within the accepted
-responsibilities; a new lifecycle, disclosure or identity policy is not.
+The human agreed with the original five recommendations and, in the merge
+direction, settled precise-ID clients/CLI-only arrangement binding, completed
+application work versus failed continuation presentation, capture-once declarations,
+family-standard direct defaults and neutral observation/feedback dependencies.
+These directions shape this merged draft. The detailed combined package remains
+in review before approval/promotion; implementation is not authorized.
+
+The independent reviews assessed two earlier packages. Their substantive findings
+are not treated as a closed checklist for this new package. Reassess applicability
+after the merge; only directed synthesis and applicable local wording corrections
+belong to this pass.
+
+Principal risks remain raw-support disclosure, altered acquisition/alias schedules,
+live lookup replacing fixed support, publication checks bypassed between layers,
+and usage/cleanup ownership lost with disposable state. Current CLI View/key
+transport stays bounded; avoid needless full-content cloning without inventing
+performance targets or caches.
+
+If neutral compatibility requires a general planner, scoped CLI binding cannot
+stay inside the requesting operation, or preserving the worker forces domain code
+to import CLI adapters, bring the concrete conflict back to planning. Routine
+signature/file-layout choices are implementation details; a new lifecycle,
+disclosure or identity policy is not.

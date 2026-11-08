@@ -18,9 +18,10 @@ The desired boundary covers existing functionality and allows later interfaces
 and account capabilities to evolve it. It does not select a graphical framework,
 external protocol or public library. The decisions below are interdependent.
 
-[Needs review] The human has agreed in principle with the five recommendations
-summarized in the package review guide. The detailed decision and coordinated
-governing revisions remain in review before acceptance and promotion. The wording
+[Needs review] The human has agreed with the five recommendations and supplied further
+contract directions for the combined plan. Those directions are reflected below.
+The detailed decision and coordinated governing revisions remain in review before
+acceptance and promotion. The wording
 below describes that agreed direction, not an adopted architecture.
 
 ## Decisions
@@ -30,15 +31,17 @@ below describes that agreed direction, not an adopted architecture.
 
 Application services own semantic request validation, qualified subject resolution,
 information requirements, Evaluation and investigation coordination, immutable
-answer construction and selection, exact retained-answer access, reference
+answer construction and interpretation selection into answers, exact retained-answer
+access, reference
 validity, operational outcomes and resource lifecycle. Interfaces invoke these
 services through explicit typed requests/results. They do not call lower-level
 selectors or stores to recreate an application operation.
 
-Interfaces own interaction, input syntax, surface-specific defaults and aliases,
+Interfaces own interaction, input syntax, surface-specific defaults and alias syntax,
 Presentation declarations, arrangement, rendering and output delivery. They may
 use shared Presentation utilities without making application execution depend on
-any particular renderer. Source-bearing internal content is not human disclosure
+any particular renderer. Clients remain free to choose which supplied answer to
+display. Source-bearing internal content is not human disclosure
 or an external-agent permission merely because it crosses this internal API.
 
 Shared account/provider, feedback and observation-delivery services remain
@@ -64,7 +67,10 @@ boundary isolates the responsibility that changes with application behavior.
 ### Deliver qualified answers independently of CLI Views
 
 An information request identifies the Lens, subject designation, semantic
-parameters and supported input context separately from client presentation.
+parameters and supported input context separately from client presentation. The
+application API is the request-validation boundary for direct callers: invalid
+inputs receive resolution outcomes; internal violations after validation remain
+defects. Static typing alone does not establish that runtime input is valid.
 An exact retained request identifies an answer rather than a repeated Lens
 application. Usage and unsuccessful resolution remain non-Projection outcomes.
 Keep request occurrence, current work/usage and delivery context separate from
@@ -73,7 +79,7 @@ the immutable answer's identity and retained semantic outcome.
 For the currently eager families, deliver complete resolved qualified content
 through the intended API. Reuse family contracts and expose the selected answer,
 supporting contexts/bases, relevant outcomes, relationships, full interpretation
-and revision/association snapshots and coordinated references. Preserve composite
+and revision/association snapshots and precise references. Preserve composite
 versus mechanical-support identity. Do not make bounded CLI JSON the content
 contract, or expose a general read-only store in place of that contract.
 
@@ -84,6 +90,19 @@ Unknown, foreign and wrong-kind targets and unsupported consumption requirements
 have explicit outcomes. Broken required support remains a defect. Retention does
 not extend Session lifetime, and exact access does not restore a discarded or
 invalidated Session.
+
+Precise IDs are sufficient for answers, resolution candidates and follow-up
+subjects. Compact aliases are a CLI typing affordance, not a required general
+client contract. Already allocated coordination aliases may accompany results as
+optional fields. A GUI displays names and retains precise IDs internally; whether
+external agents need short references is deferred to their interface design.
+
+Delivered content, reports and progress events are plain structured-clone-safe
+data, without class instances, functions, store handles or compiler objects. Keep
+host-supplied reference lifetime and publication context, including repository root
+or its unavailability and method provenance, beside the answer. One-shot expiry is
+a fact supplied by the host, not a Lens parameter. Preserve its effect on View
+identity and guidance without altering answer identity.
 
 This delivery is an internal application value, not a newly retained Projection
 or View, nor a promise of a stable external serialization. It need not be stored a
@@ -100,23 +119,30 @@ is the bounded reuse of existing capability needed here.
 <a id="requirements-and-presentations"></a>
 ### Share requirements coordination while clients own Presentations
 
-Content requests do not require a CLI Presentation. They can request supported
-information requirements through the current finite family/standard-expansion
-contracts. Presentation-driven requests still declare their requirements before
-Evaluation, preserving compatibility and materialization checks.
+Content requests do not require a CLI Presentation. By default, a direct
+information request acquires all current standard expansions for the subject kinds
+of its answer family; callers may request a supported subset. Standard expansions
+are domain-defined subject-kind detail and contribute to answer identity. Current
+standard expansions are mechanical and inference-free. Revisit the default if a
+future subject kind introduces a costly expansion, including inference. Matching
+today's CLI defaults is a verification convenience, not this policy's rationale.
+Exact retrieval never acquires missing expansions to satisfy this default.
 
-Each client owns its Presentation declarations and options. For an explicit
-Presentation, it supplies the shared coordinator with a captured, bounded
-description of acceptable content contracts, requirements, preconditions and
-fallbacks. Keep options that only affect rendering out of semantic Lens inputs.
+Clients own Presentation declarations: acceptable content contracts, requirements,
+preconditions and fallbacks. Supply them once at client composition or Session
+opening. Application coordination validates semantic rules, captures and freezes
+them before work; requests name choices among those captured declarations, not new
+per-request descriptors. Keep format/display eligibility client-owned and expose
+semantic requirement descriptors, not CLI format lists, as capability metadata.
+
 Coordination owns prospective and resolved-subject compatibility, acquisition of
-required information, materialization checks, actual selection and inspectable
-reasons. The client owns how its format/detail options select the permitted
-declarations. It cannot silently relax explicit choices or reinterpret partial
-materialization as an established empty answer.
+requirements before Evaluation, materialization checks, actual selection and its
+inspectable reasons. Clients cannot silently relax explicit choices or reinterpret
+partial materialization as an established empty answer. Arrangement and rendering
+can be shared by clients with compatible consumption contracts.
 
 Arrangement receives only fixed qualified content and supplied bindings or the
-already permitted binding-only capability. It cannot request missing work or read
+CLI-only scoped binding capability described below. It cannot request missing work or read
 current history. Exact content compatibility never acquires support absent from
 that answer. Rendering a different perspective is permitted only when supplied
 content establishes it; deriving another architectural claim requires analysis.
@@ -126,6 +152,40 @@ future client reproduce semantic selection rules. Putting terminal options and
 renderers in application execution would preserve the coupling being removed.
 Separating declarations from their rendering implementation preserves the current
 contracts without introducing a generic planner or plugin language.
+
+<a id="cli-bindings-and-outcomes"></a>
+### Keep compact binding CLI-scoped and distinguish presentation outcomes
+
+The store owns append-only, never-rebind alias infrastructure. Preserve shared
+coordination-time allocations for resolution candidates and constructed populations,
+and answer-alias coordination. Optional aliases do not oblige non-CLI clients to
+use them or require another interface's binding design now.
+
+Supply arrangement-time binding only to the CLI client at worker composition,
+validated against the answer's supplied reference population. Preserve today's
+page-driven batches/order; do not preallocate every reference in complete content.
+The serialized CLI requesting operation encloses application execution and CLI
+arrangement. Its binding capability expires at operation settlement and is revoked
+on invalidation or close. It has no query/selection authority, cannot escape in
+returned content, and is not a general API operation. Ordinary direct clients use
+precise IDs. No parent-to-worker binding bridge is introduced.
+
+Application work outcomes describe application work. When an answer has been
+produced/retrieved and CLI arrangement reports `unknown-continuation`, application
+work is `completed`; CLI publication and observation outcomes record presentation
+failure and exit status remains 3. Do not amend the completed application report to
+represent a client failure. The observation application-work-status field changes
+from `failed` to `completed` for this case; this is an agreed visible change.
+Malformed request syntax remains refusal and a retained investigation failure
+remains historical. Preserve the qualified View, selected answer and continuation
+behavior independently of those outcome distinctions.
+
+**Rationale and alternatives.** Display-driven alias allocation cannot be replaced
+by eager full-population binding without changing collision schedules. A general
+binding operation or bridge is unnecessary when only the CLI needs this affordance.
+Separating application and presentation outcomes avoids making successful exact
+retrieval depend on a CLI paging choice. Keeping command failure visible preserves
+the actual experience without misclassifying application work.
 
 <a id="runtime-and-publication"></a>
 ### Preserve runtime, publication and audience guarantees
@@ -141,16 +201,36 @@ investigation arrangement key, and self-sufficient parent usage finalization and
 rendering. Keep Git ownership, provider credentials/dialogues, usage accounting and
 observation delivery in the non-disposable parent where currently required. Direct
 callers own their resources in the calling process. Preserve one active operation,
-terminal cancellation, no late publication, and separate cleanup reporting. No new
-worker protocol for other clients is established by this decision.
+terminal cancellation, no late publication, and separate cleanup reporting. Expose the
+existing work/attempt progress and final-report channels through typed callbacks,
+independently of rendering and recording. Lifecycle outcomes distinguish busy,
+closed, invalidated, interrupted and incomplete cleanup; a concurrent call produces
+typed busy without disturbing the active operation. No new worker protocol for
+other clients is established by this decision. A GUI host will probably need worker
+hosting and full-content transport over the same plain-data contracts, without CLI
+alias binding; that belongs to its own task.
 
-Keep input validation before/after execution and the explicit deferred-publication
-contract with pre-output and post-output checks. Client receipt of content does
+Keep input validation before/after execution and share pre-output/post-output
+validity policy through a publication guard. A bare `deferPublicationCheck` flag is
+not a client escape hatch; any internal deferral is owned by the guarded path. Client receipt of content does
 not establish that it was shown or that validity was checked at a later display.
-Preserve the current CLI failure/status and output contracts, including human-facing
-JSON, source classification and terminal safety. A future external-agent interface
+Preserve the CLI failure/status and output contracts, including human-facing
+JSON, source classification and terminal safety, except for the explicitly agreed
+application-work-status change above. A future external-agent interface
 must declare its consumption/access contract separately; an agent invoking the
 current CLI still receives the CLI's human-facing output.
+
+Future human clients must reuse or re-establish verified intelligibility and
+source-disclosure classification for their actual output. Existing classification
+of CLI Views does not automatically establish that a GUI may display raw API
+content. The internal payload is not a ready-made public JSON or external-agent
+export.
+
+Observation batch content construction and classification over CLI Views remain
+CLI-owned. A neutral module owns the batch envelope, local sink and delivery
+acknowledgment, without type/runtime dependencies on CLI Views or classifiers.
+Feedback depends only on those neutral contracts. Generalized observation content
+construction and optional recording controls are outside this decision.
 
 Feedback uses available actual-display context and exact output without
 reconstruction or new investigation. Application attribution and usage do not
@@ -187,6 +267,11 @@ the companion plan do not yet conform to this stronger application boundary.
 Adoption is not a conformance claim. The associated implementation must establish
 conformance for all scoped current capabilities, with direct API and adapted CLI
 verification; no CLI-only semantic execution path is deferred past completion.
+
+The human-directed outcome distinction above is a scoped implementation/reporting
+change, not a relocation of worker alias allocation, arrangement-key transport or
+parent usage finalization. Preserve the remaining publication, qualification and
+identity contracts. No existing record's historical rationale is rewritten.
 
 The broader structured-account, account-presentation, GUI and external-agent work
 remains independent. It may revise the API. Known captured-basis observation

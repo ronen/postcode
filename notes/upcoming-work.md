@@ -210,6 +210,12 @@ Alphabetical by code.
   supply content, Presentations make it intelligible, and this item supplies the
   controls and interaction flow within the supported Session lifetime. Extend the
   API as needed within this task; full Workspace management and customization can wait.
+  Plan for a GUI host likely needing worker hosting and a full-content transport
+  over the shared API's plain, structured-clone-safe data. The direct in-process
+  host cannot pre-empt synchronous compiler work. GUI controls display names and
+  retain precise IDs internally; CLI compact `@` aliases and their binding transport
+  are not a GUI requirement. Reuse or establish verified human-output disclosure
+  for graphical presentations before exposing source-bearing internal content.
 - **Validation:** use the slice for actual investigation, including follow-up and
   reconsideration. CLI checks remain useful for core verification but do not
   establish the usefulness of the human experience. Once usable, trigger the

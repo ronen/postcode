@@ -5,9 +5,9 @@ Prepared: 2026-11-08
 Implementation baseline: `e9e4965d98aa7ab8c9c69469ea768141afce5c94`
 
 This is planning only. Nothing in this package approves implementation or changes
-governing material. The human has agreed in principle with the five recommendations
-below. The detailed package remains in review; no implementation task record has
-been opened.
+governing material. The human agreed with the five recommendations below and supplied the further
+merge directions recorded here. The combined package remains in review; no
+implementation task record has been opened.
 
 ## Reading and decisions
 
@@ -24,14 +24,76 @@ governing revisions, direct promotion, or authorize implementation.
 | Choice for discussion | Recommendation | Alternative and tradeoff |
 | --- | --- | --- |
 | What does the API return? | Complete, fixed, qualified answer content and explicit operational outcomes. CLI Views are built by a client adapter. | Returning current View JSON is cheaper initially, but makes display bounds and CLI disclosure policy the information boundary. Merely dropping `rendered` is insufficient. |
-| How does presentation influence acquisition? | Retain shared compatibility/requirements coordination, with interface-owned Presentation declarations translated to a small neutral contract. Also support requesting content without a Presentation. | Moving all compatibility into clients duplicates semantic checks; a universal Presentation/plugin framework is unnecessary. |
+| How does presentation influence acquisition? | Retain shared compatibility/requirements coordination, with client-owned declarations captured once at composition/opening. Direct content requests use current family standard expansions by default, with supported subsets explicit. | Moving all compatibility into clients duplicates semantic checks; a universal Presentation/plugin framework is unnecessary. |
 | Where does the CLI run its Presentation? | Preserve its private worker/parent arrangement and usage-finalization behavior. Inside the worker, a CLI client calls the application API, then arranges supplied content. | Moving all arrangement to the parent would send larger source-bearing content across the worker boundary and require revisiting accepted wire/identity provisions. That relocation is not needed for architectural separation. |
 | How much existing functionality is included? | Investigation, exact answers, operational reporting, output-boundary setup, and the existing provider/account and feedback operations, through cohesive services rather than one giant Session object. | Deferring account/feedback separation leaves application operations available only through command modules. New account management UX and recording modes remain out of scope. |
-| What compatibility is promised? | Preserve existing CLI capabilities, semantics and operational behavior; keep the API internal and evolvable. | Public SDK/versioned transport commitments would add lifecycle and compatibility work without a present client need. |
+| What compatibility is promised? | Preserve CLI capabilities and behavior except the agreed application work-status change for failed continuation presentation; keep the API internal and evolvable. | Public SDK/versioned transport commitments would add lifecycle and compatibility work without a present client need. |
 
 The third choice is a recommendation about implementation extent, not a requirement
 that all future clients use the CLI worker protocol. The application boundary is a
 logical dependency boundary; it need not coincide with a thread boundary.
+
+## Combined package and merge directions
+
+This package incorporates the independently developed `shared-application-api`
+draft at `35e4cb5`, alongside this package at `c59bff7`, both based on `e9e4965`.
+The branches' commits are preserved by integration into this planning branch.
+The duplicate draft is removed from the combined tree after incorporating its
+useful material; it remains available in Git history. No canonical plan or decision
+is promoted by this merge.
+
+The human directed synthesis after comparative and independent reviews. The later
+human directions settled the runtime and contract choices as follows:
+
+- Precise IDs are the general client contract. GUI clients display names and keep
+  IDs internally. Arrangement-time aliases are CLI-only, supplied at worker
+  composition and confined to that serialized requesting operation. Existing
+  shared coordination allocations stay intact and may yield optional alias fields.
+- CLI arrangement stays in the worker, with existing parent usage finalization and
+  View/arrangement-key delivery. No general `bind` API or worker binding bridge is
+  introduced. Plain structured-clone-safe delivery prepares for later GUI hosting.
+- A produced/retrieved answer with CLI `unknown-continuation` has completed
+  application work, failed CLI presentation/publication and exit code 3. Its
+  observation application-work-status field changes from `failed` to `completed`;
+  malformed syntax still follows the refusal path.
+- Client declarations are supplied once at composition/opening, semantically
+  validated and frozen. Requests name captured choices; capability metadata exposes
+  semantic requirements, not CLI format lists.
+- A direct information request defaults to all current standard expansions for
+  its answer family's subject kinds, with supported subsets explicit. This is a
+  domain default; current expansions are mechanical and inference-free. Future
+  costly expansions require revisiting it. Exact retrieval cannot acquire more.
+- The batch envelope, local sink and acknowledgment become neutral dependencies.
+  CLI observation content construction/classification remains CLI-owned. Feedback
+  uses only neutral contracts. Generalized batch construction and optional-recording
+  controls stay out of scope.
+
+| Material adopted from the other draft | Treatment in the combined package |
+| --- | --- |
+| Operation table | Spine of the plan's request/lifecycle surface; omit general compact binding under the later human direction |
+| Static descriptor capture | Client ownership retained, capture/validation before requests explicit |
+| Shared publication guard | Replaces the bare public `deferPublicationCheck` option, preserving pre/post-output checks |
+| Four milestones and early review | M1 includes inventory, module inspection and exact `present`, with binding/outcome pass/fail criteria |
+| Concrete direct journey | M2 covers modules → resolution → scripted investigation → follow-up → correction/association → exact earlier answer → fresh selection |
+| Identity, usage and lifetime checks | Combined with this package's compatibility and companion-service matrix |
+| Selected-content wording and non-export boundary | Avoid universal eager-materialization requirements; distinguish internal support from public output |
+| Shared Presentations and GUI-host limitations | Compatible clients can share Presentations; future GUI hosting/content transport and verified human disclosure remain explicit work |
+| Worker-backed facade and parent-side arrangement | Not adopted: retain the agreed in-process direct host and CLI worker arrangement, without moving usage finalization |
+| Whole-content transfer measurement | Not adopted for the CLI: its existing View/key transport stays in place |
+
+The synthesis also names progress callbacks, typed lifecycle/busy outcomes,
+host-owned reference lifetime, repository/method delivery context, and untyped
+`scripts/` consumers. It cites the existing Presentation/F5 and optional-recording
+backlog scope and adds the directed GUI-host consequence to the MINIGUI note.
+Local wording now distinguishes interpretation selection into an answer from a
+client choosing an answer to display, scopes complete content to current eager
+families, and identifies the application API as direct callers' validation boundary.
+
+This is a merge pass, not closure of the earlier independent reviews. Their
+substantive findings need reassessment against the combined package; no blanket
+resolution is claimed. The original review material is preserved separately and
+has not been edited. Required rationale and agreed directions are included here
+and in the plan/decision so the package does not depend on disposable review files.
 
 ## Findings from implementation inspection
 
@@ -120,12 +182,15 @@ is complete without producing any of those diagrams or implementing the journey.
 ## Governing impact and promotion
 
 The direction extends existing interface-independent analysis and qualified
-construction rules to an explicit application service boundary. No foundation,
+construction rules to an explicit application service boundary. The agreed
+continuation work-status exception is explicit in the plan and decision; other
+CLI preservation rules remain in force. No foundation,
 core-concept definition, Session lifetime, public compatibility promise or CLI
 retirement decision is changed. Existing accepted decisions are supplemented,
 not superseded, under the recommended worker arrangement. In particular, preserve
 worker-side alias allocation, the explicit investigation arrangement key and
-parent-side authoritative usage finalization.
+parent-side authoritative usage finalization. Shared publication policy is exposed
+through a guard without relaxing those existing checks.
 
 The governing revisions are additions: they remove no existing heading, anchor,
 definition or responsibility. Inspection of the current specification, constraints,
@@ -146,5 +211,5 @@ README is a review guide, not a proposed replacement for `docs/README.md`; dispo
 of it under human direction after promotion. No canonical document should link to
 this draft. Implementation requires separate authorization and its own task record.
 
-Verification of this package consists of source/document inspection, link and
-diff checks. Runtime validation is specified in the plan, not claimed as performed.
+Verification of this merge consists of source/document inspection, synthesis
+coverage, link and diff checks. Runtime validation is specified in the plan, not claimed as performed.
