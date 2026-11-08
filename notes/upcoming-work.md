@@ -1,6 +1,6 @@
 # Upcoming work
 
-Last considered: 2026-11-03
+Last considered: 2026-11-06
 
 A living document for keeping track of upcoming work and deciding what order to
 do it in, updated at each major checkpoint. It is a planning aid, not a governing
@@ -8,9 +8,10 @@ document.
 The [backlog](../docs/backlog.md), [candidate capabilities](candidate-capabilities.md),
 and [candidate UX](candidate-ux.md) hold the broader inventories.
 
-The current question is whether retained, qualified architectural accounts make
-reasoning across perspectives and revising understanding more useful or reliable
-than capable agent chat with repository access, diagrams, and retained notes.
+The current focus is useful investigation of a software project through established
+architectural concepts, with retained, qualified accounts that humans and agents
+can use in their design work. Comparison with capable general-purpose agents can
+inform evaluation; specialization does not depend on first demonstrating superiority.
 
 <a id="kinds-of-work"></a>
 <a id="legend"></a>
@@ -70,9 +71,9 @@ or useful design input. Codes identify items independently of ordering.
 flowchart TD
     JOURNEY["⚠️ JOURNEY — Architectural reasoning episode"] --> ACCOUNT["✦ ⚠️ ACCOUNT — Structured architectural accounts"]
     JOURNEY --> PRESENT["⚠️ ✦ PRESENT — Account presentation and navigation"]
+    JOURNEY --> AGENT["✦ ⚠️ AGENT — External-agent investigation and exchange"]
     ACCOUNT -. Content and qualification contracts .-> PRESENT
     PRESENT -. If a dedicated working surface is needed .-> GUI["✦ GUI — Bounded graphical investigation 🧱"]
-    ACCOUNT -. If external agent exchange is needed .-> AGENT["✦ ⚠️ AGENT — Coding-agent context exchange"]
 
     classDef default fill:#dbeafe,stroke:#64748b,color:#172554
 ```
@@ -82,11 +83,11 @@ flowchart TD
 
 | Position | Item | Why here / what could change it |
 | --- | --- | --- |
-| Next | [JOURNEY — Architectural reasoning episode](#journey) | Work through a concrete architectural judgment across perspectives, with example accounts and representations. Establish what needs to carry forward and what would count as improvement over chat. |
-| Once concrete examples establish the need | [ACCOUNT — Structured architectural accounts](#account) | Plan and implement the smallest account capability that supports the episode, alongside PRESENT. Use the resulting experiment to decide further architecture. |
-| Alongside ACCOUNT | [PRESENT — Account presentation and navigation](#present) | Make the selected account content, qualifications, and revisions usable in the episode. Evaluate reasoning and interaction together with retention. |
+| Next | [JOURNEY — Architectural reasoning episode](#journey) | Establish a concrete architectural question, useful example accounts, and how humans or external agents would use them. Identify enough requirements to choose the next bounded implementation. |
+| As required by the episode | [ACCOUNT — Structured architectural accounts](#account) | Plan and implement the smallest needed account capability, coordinating with PRESENT and AGENT where they use it. Use the resulting experience to decide further architecture. |
+| As required by the episode | [PRESENT — Account presentation and navigation](#present) | Make the selected account content, qualifications, and revisions usable. Develop alongside ACCOUNT where new content is needed; existing answers can also motivate presentation work. |
+| As required by the episode | [AGENT — External-agent investigation and exchange](#agent) | Support external design or implementation agents requesting investigations or using retained accounts. Assess existing CLI support first; neither structured accounts nor a preceding human GUI journey is a prerequisite. |
 | Conditional on interaction needs | [GUI — Bounded graphical investigation](#gui) | Build a dedicated working surface when its interactions are needed for the experiment or justified by its findings. Diagram presentation alone need not require the full GUI. |
-| Conditional on exchange needs | [AGENT — Coding-agent context exchange](#agent) | Bring forward if shared architectural references with an external coding agent are essential to the episode. Session-local exact-answer targeting is available; additional lifetime and basis-disclosure needs depend on the exchange. |
 
 <a id="item-catalog"></a>
 ## Item catalog
@@ -100,32 +101,34 @@ Alphabetical by code.
 - **Outcome:** successive investigations can reuse, extend, or challenge retained
   architectural understanding while preserving evidence, qualifications,
   conflicts, and access to earlier accounts.
-- **Scope:** the smallest capability needed by JOURNEY, evaluated with PRESENT
-  within the current Session lifetime. Start by assessing structured investigram
+- **Scope:** the smallest capability needed by JOURNEY, evaluated through its
+  selected human or agent interactions within the current Session lifetime.
+  Start by assessing structured investigram
   content and existing associations, retention, and replacement. Account shapes
   can follow the data needed by selected representations; a working account may
   comprise several investigrams.
 - **Decision:** what structure and selection are actually needed? Distinguish
-  revision status, applicability to a question, and the human's working selection.
+  revision status, applicability to a question, and the working selection for an investigation.
   Correspondence or synthesis requires qualified analysis. A universal schema,
   consolidated model, and general retrieval system are not assumed.
 - **Sources:** [backlog: architectural accounts through concrete journeys](../docs/backlog.md#explore-architectural-accounts-through-journeys),
   [decision: structured investigram content](../docs/decisions/structured-investigram-content.md).
 
 <a id="agent"></a>
-### AGENT — Coding-agent context exchange
+### AGENT — External-agent investigation and exchange
 
 - **Kind:** ✦ ⚠️
-- **Outcome:** an external coding agent can consume selected investigation context
+- **Outcome:** external design and implementation agents can request useful
+  investigations and consult qualified accounts during conversations held elsewhere,
   with clear scope, exact-result versus repeatable-request semantics, reference
-  lifetime, captured basis, source mappings, and relevant origin.
-- **Scope:** a first useful exchange selected for an architectural reasoning or
-  change-design episode; it need not wait for a GUI. Includes supplied PostCode
-  provenance when
-  output returns through repository material or agent contributions, so it is
-  not mistaken for independent corroboration. Persistence and richer Workspace
-  context are separate possibilities.
-- **Source:** [backlog: shared coding-agent context and feedback provenance](../docs/backlog.md#design-a-bounded-shared-context-interface-for-coding-agents).
+  lifetime, captured basis, implementation mappings, and relevant origin.
+- **Scope:** a bounded exchange selected for JOURNEY, including agent-led or mixed
+  investigation. Assess existing CLI capabilities before choosing additional
+  interfaces. Structured accounts, a GUI, participant-material ingestion, and
+  persistence are not prerequisites by assumption. Preserve supplied PostCode
+  provenance when output returns through repository material or contributions,
+  so it is not mistaken for independent corroboration.
+- **Source:** [backlog: external-agent investigation and context exchange](../docs/backlog.md#design-a-bounded-shared-context-interface-for-coding-agents).
 
 <a id="gui"></a>
 ### GUI — Bounded graphical investigation
@@ -144,21 +147,25 @@ Alphabetical by code.
 ### JOURNEY — Architectural reasoning episode
 
 - **Kind:** ⚠️
-- **Outcome:** a concrete episode showing what the human needs to understand or
-  decide, and where retained architectural accounts might improve that reasoning.
-- **Scope:** build on the Cockatiel chat experiment. A candidate episode moves
-  from responsibility/ownership to waiting or recovery behavior, then revisits
-  the earlier account. Use representative content and rough interactions;
-  manually prepared examples can expose requirements before implementation.
-  Keep assumed results distinguishable from demonstrated capabilities.
-- **Decision:** what carries forward, what requires new investigation, and what
-  is revised? Compare usefulness, effort, and reliability with capable chat,
-  including notes and diagrams. A successful rendering alone is insufficient.
-  The explored journey may include a design change or handoff without requiring
-  the first implementation to cover the entire journey.
+- **Outcome:** a concrete episode showing the architectural question, the accounts
+  needed to reason about it, and enough interaction detail to choose a bounded
+  implementation. It need not settle a complete UX design or comparative study.
+- **Scope:** direct human investigation, an external agent consulting PostCode,
+  or both, initially concerning implemented software. Build on the Cockatiel chat
+  experiment: responsibility/ownership, waiting or recovery behavior, and a return
+  to an earlier account remain candidate perspectives. Use representative content
+  and rough interactions; manually prepared examples can expose requirements.
+  Keep assumed results distinguishable from demonstrated capabilities. The wider
+  design conversation need not take place in PostCode.
+- **Decision:** what needs investigating, what carries forward, and what is revised?
+  Which parts need ACCOUNT, PRESENT, or AGENT beyond existing support? Assess
+  usefulness and reasoning quality, not merely successful rendering. Comparison
+  with capable chat, notes, and diagrams can inform that assessment. The explored
+  episode may include directing changes without requiring the first implementation
+  to cover the entire journey or add hypothetical/intended modalities.
 - **Sources:** [backlog: architectural accounts through concrete journeys](../docs/backlog.md#explore-architectural-accounts-through-journeys),
   [backlog: whole-journey UX review](../docs/backlog.md#review-the-investigation-ui-and-ux-as-a-whole),
-  [product design: investigation context and continuity](../foundation/product-design.md#investigation-context-and-continuity).
+  [product design: retained architectural understanding and continuity](../foundation/product-design.md#retained-architectural-understanding-and-continuity).
 
 <a id="present"></a>
 ### PRESENT — Account presentation and navigation
@@ -166,8 +173,8 @@ Alphabetical by code.
 - **Kind:** ⚠️ ✦
 - **Outcome:** useful architectural representations through which the human can
   change perspective, inspect qualifications, and revisit earlier or revised accounts.
-- **Scope:** the representations and navigation needed for JOURNEY, developed
-  alongside ACCOUNT and building on exact retained-answer presentation. Use
+- **Scope:** the representations and navigation needed for JOURNEY, coordinating
+  with ACCOUNT where new content is needed and building on exact retained-answer presentation. Use
   established architectural notations where they fit. Generating a diagram
   cannot supply missing semantics or strengthen a claim. Additional perspective
   content may require investigation rather than another rendering of one account.
@@ -200,7 +207,8 @@ use to test whether the foundation is right.
 - **Implement the required case with a credible route to generalization:** keep
   current capabilities working and explain how later extension fits.
 - **Make subsequent learning trustworthy:** fix a limitation before an assessment
-  relies on the missing guarantee.
+  relies on the missing guarantee. Select research capture for the actual question;
+  address recording or export gaps when that assessment depends on them.
 - **Prefer bounded outcomes and stopping points:** improved behavior, an enabled
   next step, or a resolved uncertainty.
 - **Clear small, well-understood items when convenient:** if finishing something
