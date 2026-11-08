@@ -53,6 +53,11 @@ the exact clicks and whether information is precomputed or produced on demand
 open. Intermediate actions are made explicit where they materially change the
 question or reveal a missing navigation route. This convention concerns the
 experience; it does not reclassify new analysis as presentation-only work.
+Verbs such as select, expand, follow and revisit describe human UI actions,
+not prose instructions for an agent to decide what to explore. Listed perspectives
+and relationships identify the information sought and possible routes to it;
+they do not prescribe a click for every bullet or a fixed order unless a subject
+must first be exposed before it can be selected.
 
 Names describe what the human can recognize, not implementation identifiers. A
 subject can be a policy type, architectural role, relationship or selected account
@@ -208,8 +213,9 @@ still associating Cockatiel with managing background jobs.
 
 - **Available subjects:** Circuit breaker, Bulkhead, application role and supplied
   operation from [step 1](#orientation).
-- **Request:** select inspection and execution contracts on the breaker; follow
-  the supplied-operation relationship to ownership. Revisit Bulkhead's queue role.
+- **Request:** select the breaker's inspection/execution contract and the
+  supplied operation's ownership. The displayed supplied-operation relationship
+  provides a route between them. Revisit Bulkhead's queue role if needed.
 - **Other input/access:** readiness/reservation ideas remain in the human's head.
   They are not previously identified program entities or submitted designs.
 
@@ -342,8 +348,8 @@ mean, and would that support unifying it with breaker readiness?
 
 - **Available subjects:** Circuit breaker and Bulkhead ([step 1](#orientation)),
   execution/admission, execution capacity and waiting queue ([step 2](#readiness)).
-- **Request:** open admission contracts for both policies; expand waiting cases.
-  Keep each case's conditions visible when consulting them together.
+- **Request:** select admission contracts for both policies, including their
+  waiting cases. The cases may appear initially or through expansion.
 - **Other input/access:** an earlier omission/correction can be inspected only if
   the original account is available. Here that history comes from the recorded
   dialogue; this reconstructed route has not itself generated an incorrect answer.
@@ -397,9 +403,10 @@ work together?
 - **Available subjects:** application role, supplied operation and policy family,
   including the “policies can be combined” relationship ([step 1](#orientation));
   waiting cases from [step 5](#waiting).
-- **Request:** open interaction and ownership at the application/library boundary.
-  Follow the combination relationship to an account of wrapping, then select each
-  ordering case it exposes. Do not start by selecting an unidentified composition.
+- **Request:** select interaction and ownership at the application/library
+  boundary. The displayed combination relationship provides access to wrapping
+  and its ordering cases. Those cases may be shown together or opened individually;
+  the route does not require selecting a composition before it has been identified.
 - **Other input/access:** no concrete wrapper instance from the reporter's
   application is supplied; the human asks about supported composition patterns.
 
@@ -639,8 +646,9 @@ that picture before deciding what additional reporting a query should offer.
 
 - **Available subjects:** common execution contract ([step 10](#generic-interface)),
   wait/refuse outcomes ([step 5](#waiting)), and component/wrapper roles (step 6).
-- **Request:** inspect outcomes and notifications; follow the relationship from
-  an inner outcome through an outer policy to the final caller outcome.
+- **Request:** select outcomes and notifications for policy execution, including
+  how an inner outcome reaches the final caller through an outer policy. Related
+  outcomes may be shown together or explored through their displayed relationships.
 - **Other input/access:** no hypothetical query is supplied; the request concerns
   existing reporting and its composition.
 
@@ -687,8 +695,8 @@ does the breaker stay open until an attempt arrives, and is there a good reason?
   human from outside reading.
 - **Request:** revisit that transition, expanding timing and trigger detail; inspect
   rationale/support associated with it separately from the behavioral account.
-- **Other input/access:** no maintainer explanation is supplied. Inspect whatever
-  rationale evidence is associated with the selected transition.
+- **Other input/access:** no maintainer explanation is supplied by the human;
+  the rationale selection concerns support associated with the known transition.
 
 **What PostCode shows:**
 
@@ -733,8 +741,10 @@ or merely indicate willingness to run one?
 - **Available subjects:** half-open and recovery trial ([step 5](#waiting)),
   open-to-half-open transition ([step 8](#need-check)), supplied operation and
   individual execution ([step 6](#operating-model)).
-- **Request:** select half-open within the breaker account; expand trial interaction
-  and concurrent callers, then follow the supplied-work relationship to ownership.
+- **Request:** select half-open within the breaker account, requesting trial
+  interaction, concurrent callers and ownership of the supplied work. The displayed
+  supplied-work relationship provides a route to ownership detail without fixing
+  the order in which that detail is opened.
 - **Other input/access:** the human considers the effects of a possible query;
   PostCode receives no proposed query to evaluate.
 
@@ -869,8 +879,10 @@ making the application poll, and favor an automatic transition over a new query?
 
 - **Available subjects:** breaker notifications ([step 11](#outcomes)) and states/
   transitions ([steps 8 and 12](#need-check)).
-- **Request:** expand the breaker's notification contract; follow each exposed
-  notification to the transition it reports. Revisit the elapsed-time trigger.
+- **Request:** select the breaker's notification contract and its associations
+  with state transitions, including the elapsed-time condition. The human can
+  follow a displayed notification/transition relationship; inspecting every event
+  separately is not required.
 - **Other input/access:** the human compares a new query with an automatic
   transition. Neither is supplied to PostCode for hypothetical comparison.
 
@@ -919,9 +931,10 @@ would constrain that work?
 - **Available subjects:** Circuit breaker, manual isolation and recovery delay
   ([step 7](#acceptance)), recovery transitions (steps 8/12), reopening after a
   trial outcome ([step 13](#trial)), and notifications ([step 16](#notifications)).
-- **Request:** on the breaker, inspect configuration/defaults, then ask for available
-  state/lifetime detail. Select isolation and reopening where already exposed;
-  request further detail on the breaker rather than guessing a restoration object.
+- **Request:** on the breaker, select configuration/defaults and state/lifetime
+  information, with isolation and reopening as already-exposed focuses. Further
+  detail is requested on the known breaker; no unidentified restoration object
+  must be selected first.
 - **Other input/access:** no timer proposal is supplied for analysis. Request
   lifecycle detail on the known breaker rather than introduce a proposed timer
   as though it were an existing subject.
