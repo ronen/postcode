@@ -64,14 +64,16 @@ inform evaluation; specialization does not depend on first demonstrating superio
 <a id="dependencies-and-decision-points"></a>
 ## Dependencies and decision points
 
-Dashed arrows show conditional contributions or useful design input.
+Solid arrows show prerequisites; dashed arrows show conditional contributions or useful design input.
 Codes identify items independently of ordering.
 
 ```mermaid
 flowchart TD
-    ACCOUNT["✦ ⚠️ ACCOUNT — Structured architectural accounts"] -. Content and qualification contracts .-> PRESENT["⚠️ ✦ PRESENT — Account presentation and navigation"]
-    PRESENT -. If a dedicated working surface is needed .-> GUI["✦ GUI — Bounded graphical investigation 🧱"]
-    AGENT["✦ ⚠️ AGENT — External-agent investigation and exchange"]
+    API["⚠️ 🧹 API — Shared internal application API"] --> ACCOUNT["✦ ⚠️ ACCOUNT — Structured architectural accounts"]
+    ACCOUNT --> PRESENT["⚠️ ✦ PRESENT — Account presentation and navigation"]
+    PRESENT --> MINIGUI["✦ MINIGUI — Minimal graphical investigation"]
+    MINIGUI -. Needs demonstrated through use .-> GUI["✦ GUI — Broader graphical investigation 🧱"]
+    API -. Shared application contracts .-> AGENT["✦ ⚠️ AGENT — External-agent investigation and exchange"]
 
     classDef default fill:#dbeafe,stroke:#64748b,color:#172554
 ```
@@ -81,10 +83,16 @@ flowchart TD
 
 | Position | Item | Why here / what could change it |
 | --- | --- | --- |
-| Next: bounded capability planning | [ACCOUNT — Structured architectural accounts](#account) | Use the completed exploration's connected account examples to choose a first implementation slice with PRESENT. Admission → trial → correction is a candidate; composition can test extension across accounts. |
-| Plan alongside ACCOUNT | [PRESENT — Account presentation and navigation](#present) | Exercise the account structure through selected architectural diagrams, qualifications, and access to earlier answers. A bounded rendering demonstration can precede the GUI. |
-| Movable, when a concrete exchange needs it | [AGENT — External-agent investigation and exchange](#agent) | Support external design or implementation agents requesting investigations or using retained accounts. Assess existing CLI support first; neither structured accounts nor a preceding human GUI journey is a prerequisite. |
-| Conditional on interaction needs | [GUI — Bounded graphical investigation](#gui) | Build a dedicated working surface when its interactions are needed for the experiment or justified by its findings. Diagram presentation alone need not require the full GUI. |
+| Next: plan and implement | [API — Shared internal application API](#api) | Establish the shared boundary for existing functionality, considering future use and modification by ACCOUNT, PRESENT, and MINIGUI. Verify it independently through existing capabilities and the CLI. |
+| After API | [ACCOUNT — Structured architectural accounts](#account) | Choose a bounded slice from the connected account examples and validate its suitability for representative diagrams. Admission → trial → correction is a candidate; composition can test extension across accounts. |
+| After ACCOUNT | [PRESENT — Account presentation and navigation](#present) | Plan against implemented accounts, then build representations, qualifications, and navigation for the graphical slice. |
+| After PRESENT | [MINIGUI — Minimal graphical investigation](#minigui) | Build a small graphical surface for actual human investigation using the available account and presentation capabilities. |
+| Movable, when a concrete exchange needs it | [AGENT — External-agent investigation and exchange](#agent) | Support external design or implementation agents requesting investigations or using retained accounts. Assess reusable investigation and exchange capabilities; neither retaining the interactive CLI, structured accounts, nor a preceding human GUI journey is a prerequisite. |
+| Following experience with MINIGUI | [GUI — Broader graphical investigation](#gui) | Extend the graphical experience where sustained use identifies valuable capabilities. May become several plans. |
+
+ACCOUNT, PRESENT, and MINIGUI can each modify the API as part of their own
+planning and implementation. Each task completes independently; later tasks
+plan against the implemented foundation rather than a chain of untested plans.
 
 <a id="item-catalog"></a>
 ## Item catalog
@@ -102,7 +110,7 @@ Alphabetical by code.
   account examples, within the current Session lifetime. Assess structured
   investigram content and existing associations, retention, and replacement.
   Account design and implementation must carry the semantic content needed by
-  a small set of architectural diagrams chosen with PRESENT—for example,
+  a small set of representative architectural diagrams—for example,
   structural, state, or interaction views. Their distinct information needs
   guide account structure; a working account may
   comprise several investigrams. The examples span policy kinds, instance roles,
@@ -115,9 +123,9 @@ Alphabetical by code.
   consolidated model, and general retrieval system are not assumed.
   Choose how the initial architectural subjects become available; a supplied
   fixture can test machinery without demonstrating end-to-end investigation.
-  Define offered questions with PRESENT so their meaning does not depend on the
-  human's unspoken purpose.
-- **Validation:** demonstrate with PRESENT that the selected diagrams can be
+  Define the meaning of offered questions so it does not depend on the human's
+  unspoken purpose; PRESENT can build their discoverable presentation.
+- **Validation:** demonstrate within ACCOUNT that the selected diagrams can be
   generated from retained account content without reconstructing missing
   architectural meaning during rendering. Universal notation support and stored
   layout choices are not required.
@@ -137,25 +145,78 @@ Alphabetical by code.
   with clear scope, exact-result versus repeatable-request semantics, reference
   lifetime, captured basis, implementation mappings, and relevant origin.
 - **Scope:** a bounded exchange selected for a concrete episode, including agent-led or mixed
-  investigation. Assess existing CLI capabilities before choosing additional
-  interfaces. Structured accounts, a GUI, participant-material ingestion, and
+  investigation. Assess the investigation and exchange capabilities currently
+  exposed through the CLI before choosing an agent-facing interface backed by
+  the [shared application API](#api). Reuse of
+  those capabilities does not depend on retaining the interactive human command
+  shell; any continuing command-line interface should serve concrete agent needs.
+  Structured accounts, a GUI, participant-material ingestion, and
   persistence are not prerequisites by assumption. Preserve supplied PostCode
   provenance when output returns through repository material or contributions,
   so it is not mistaken for independent corroboration.
 - **Source:** [backlog: external-agent investigation and context exchange](../docs/backlog.md#design-a-bounded-shared-context-interface-for-coding-agents).
 
+<a id="api"></a>
+<a id="shared-application-boundary"></a>
+### API — Shared internal application API
+
+- **Kind:** ⚠️ 🧹
+- **Outcome:** GUI, CLI, and agent interfaces call shared application capabilities
+  through explicit request and result contracts. Application and investigation
+  behavior lives behind that boundary; adapters handle interface mechanics and
+  may expose different subsets of capabilities.
+- **Scope:** assess and establish the shared boundary for existing functionality,
+  locating application behavior tied to the CLI and adapting the CLI to call
+  the API. Reuse existing contracts where suitable and move behavior as needed.
+  Design with future use and modification by ACCOUNT, PRESENT, and MINIGUI in
+  mind, using the journey and account examples to assess likely needs. Complete
+  this task independently; later capability tasks can extend the API when
+  planned and implemented. This is internal, without a commitment
+  to a public library, network service, or exhaustive API designed in advance.
+- **Decision:** which existing contracts already fit, where interface assumptions
+  leak into application behavior, and which responsibilities belong behind the
+  shared boundary? The direction is agreed; the extent of restructuring needs
+  assessment.
+- **Validation:** exercise existing capabilities directly through the API and
+  through the adapted CLI, preserving request and exact-result semantics.
+  Verify that application behavior is accessible without command parsing or
+  terminal formatting, and that interface adapters do not duplicate investigation
+  logic or establish Claims. Completion does not depend on a graphical caller.
+- **Source:** strategy discussion: shared application capabilities behind human
+  and agent interfaces.
+
 <a id="gui"></a>
-### GUI — Bounded graphical investigation
+### GUI — Broader graphical investigation
 
 - **Kind:** ✦
-- **Size:** 🧱 — a new graphical interface with integrated investigation flows
-  and formative evaluation, even within the bounded first journey.
-- **Outcome:** a useful graphical investigation on real repositories, with evidence,
-  qualifications, originals, replacements, conflicts, and reconsideration visible.
-  Evaluation includes sustained use and returning to earlier answers.
-- **Scope:** the interaction needs established through the account examples and PRESENT,
-  within the supported Session lifetime. May become several implementation plans.
+- **Size:** 🧱 — broader integrated investigation flows and formative evaluation;
+  likely several implementation plans.
+- **Outcome:** a graphical experience that supports sustained investigation on real
+  repositories beyond the first bounded slice.
+- **Scope:** needs demonstrated through MINIGUI use. Workspace management, richer
+  layouts, persistence, and customization are possible extensions, selected for
+  their value rather than assumed prerequisites for useful graphical investigation.
 - **Source:** [backlog: whole-journey UX review](../docs/backlog.md#review-the-investigation-ui-and-ux-as-a-whole).
+
+<a id="minigui"></a>
+### MINIGUI — Minimal graphical investigation
+
+- **Kind:** ✦
+- **Outcome:** a usable graphical slice for investigating one project, so human-use
+  evaluation can test more than typing commands and reading text results.
+- **Scope:** a few account presentations and diagrams, selection of subjects and
+  offered questions, following relationships, and returning to earlier or corrected
+  answers with their qualifications. Build on completed ACCOUNT and PRESENT: accounts
+  supply content, Presentations make it intelligible, and this item supplies the
+  controls and interaction flow within the supported Session lifetime. Extend the
+  API as needed within this task; full Workspace management and customization can wait.
+- **Validation:** use the slice for actual investigation, including follow-up and
+  reconsideration. CLI checks remain useful for core verification but do not
+  establish the usefulness of the human experience. Once usable, trigger the
+  [CLI retirement checkpoint](#cli-retirement-checkpoint).
+- **Sources:** strategy discussion: a graphical surface for first practical human use;
+  [journey outputs: investigation script](initial-journey/cockatiel-investigation-script.md),
+  [journey findings: implementation-validation checks](initial-journey/design-findings.md#implementation-validation).
 
 <a id="present"></a>
 ### PRESENT — Account presentation and navigation
@@ -164,7 +225,8 @@ Alphabetical by code.
 - **Outcome:** useful architectural representations through which the human can
   change perspective, inspect qualifications, and revisit earlier or revised accounts.
 - **Scope:** the representations and navigation needed for the selected account
-  slice, coordinating with ACCOUNT and building on exact retained-answer presentation. Use
+  slice, using implemented ACCOUNT capabilities and exact retained-answer presentation.
+  Extend the API as needed within this task. Use
   established architectural notations where they fit. Generating a diagram
   cannot supply missing semantics or strengthen a claim. Additional perspective
   content may require investigation rather than another rendering of one account.
@@ -174,11 +236,12 @@ Alphabetical by code.
   from displaying retained detail. Show consequential conditions and corrections
   while preserving access to earlier answers. Explore returning to a useful
   surrounding account; keeping it always visible remains a hypothesis.
-- **Validation:** include a bounded diagram-rendering demonstration in the first
-  account/presentation implementation, using an export or standalone renderer
+- **Validation:** build on ACCOUNT's diagram validation with a bounded
+  presentation and navigation demonstration, using an export or standalone renderer
   if sufficient. Check semantic fidelity, consequential scope and uncertainty,
   traceability to account content, and revised versus exact earlier answers.
-  Successful rendering alone is insufficient; a richer GUI can follow later.
+  Successful rendering alone is insufficient; MINIGUI supplies the first
+  interactive human-use evaluation.
 - **Decision:** what belongs in the main representation versus optional detail,
   and how are partiality, disagreement, and revision made usable? Investigation
   lineage and architectural relationships remain distinct.
@@ -240,3 +303,13 @@ At substantial completions, consequential findings, or changes in priority:
 Update the selection, ordering, and rationale accordingly. Item codes stay stable
 as priorities change; detailed outcomes and implementation history remain in
 their existing records.
+
+<a id="cli-retirement-checkpoint"></a>
+### CLI retirement checkpoint
+
+Once MINIGUI supports usable graphical investigation, assess whether to retire
+the interactive human CLI. Consider any continuing value in launching,
+authentication, debugging, automation, or agent-facing access separately:
+those facilities need not require retaining the interactive command shell.
+The checkpoint decides what remains useful and the cost of supporting it;
+neither retirement nor indefinite support for both interfaces is assumed.
