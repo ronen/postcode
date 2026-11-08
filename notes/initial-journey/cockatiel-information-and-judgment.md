@@ -138,10 +138,6 @@ starting leads, not names supplied because we already know the answer.
   then request its responsibility and surrounding Cockatiel context. The content
   below may include detail exposed through further UI selections within that
   account, under the walkthrough's reading convention.
-- **Other input/access:** name lookup and disambiguation are required interaction
-  support, not a presumed perfect match. If the name is unresolved or yields
-  several candidates, expose that choice. No GitHub ingestion, report analysis
-  or discovery of the reporter's application is needed.
 
 **What PostCode shows:**
 
@@ -219,8 +215,6 @@ still associating Cockatiel with managing background jobs.
 - **Request:** select the breaker's inspection/execution contract and the
   supplied operation's ownership. The displayed supplied-operation relationship
   provides a route between them. Revisit Bulkhead's queue role if needed.
-- **Other input/access:** readiness/reservation ideas remain in the human's head.
-  They are not previously identified program entities or submitted designs.
 
 **What PostCode shows:**
 
