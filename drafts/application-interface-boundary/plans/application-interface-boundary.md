@@ -52,20 +52,29 @@ identity, historical access after invalidation, or a general scheduler.
 
 Preserve CLI syntax, defaults, output meaning, bounds, reference allocation
 schedules, continuations, text/JSON human-output contract, status codes and
-automatic observation behavior, except for the agreed outcome distinction below.
+automatic observation behavior, except for the agreed outcome and identity/provenance
+changes below.
 This is not a general CLI redesign. Internal
 types/import paths may change without compatibility shims once their production,
-test and `scripts/` consumers are migrated. If implementation
+test and live `scripts/` consumers are migrated; historical checkpoint tools retain
+their documented build assumptions. If implementation
 reveals a need for a consequential visible or identity change, bring that change
 back for agreement; experimental output status is not blanket authorization.
 
-The agreed visible change concerns `unknown-continuation`: when the application
-has produced/retrieved an answer but CLI arrangement cannot use a continuation,
-the application's work report is `completed`; the CLI publication/observation
-outcome remains a presentation failure with exit code 3. The observation's
-application work-status field therefore changes from `failed` to `completed` for
-this case. Malformed request syntax remains a refusal, and historical investigation
-failure remains separate. This exception does not authorize other visible changes.
+The agreed outcome boundary finalizes application work independently of client
+presentation. Exact `present` with `unknown-continuation` changes application work
+from `failed` to `completed`; the command/observation remains failed with exit 3.
+The human also agreed that unexpected arrangement failures after completed
+application work must leave that work completed, preserving the client's failure
+classification and exit code. Application validity failures before finalization,
+syntax/compatibility refusals and historical investigation outcomes stay distinct.
+
+The human directed separation of Presentation-method versions from application
+identity within this task. Removing them from analysis-input and Session method
+capture changes provenance and may change downstream IDs and compact spellings
+across builds. Preserve their allocation algorithm, populations and order, not
+literal cross-build spellings. Within a Session, exact answers and bindings remain
+immutable. No other semantic/output change is authorized by these exceptions.
 
 ## Preconditions and decisions
 
@@ -83,11 +92,11 @@ Governing constraints include [qualified results and construction](../decisions/
 [generated-output boundaries](../decisions/generated-output-boundaries.md).
 Read their current successor mappings, not superseded clauses in isolation.
 
-The [internal API decision](../decisions/internal-application-api.md) and additions
-to the [application specification](../app-specification.md#application-interface-boundary)
-and [architectural constraints](../architectural-constraints.md#application-interface-boundary)
-must be accepted together before implementation. Their draft links name intended
-canonical destinations.
+The [internal API decision](../decisions/internal-application-api.md) and revisions
+to the [application specification](../app-specification.md#application-interface-boundary),
+[architectural constraints](../architectural-constraints.md#application-interface-boundary)
+and [core concepts](../core-concepts.md#evaluation) must be accepted together before
+implementation. Their draft links name intended canonical destinations.
 
 ## Responsibility and dependency design
 
@@ -99,7 +108,7 @@ flowchart TD
     CLIENT --> API
     API --> CORE[Resolution, Evaluation, construction and exact retrieval]
     CORE --> STORE[Session records and captured support]
-    API --> DATA[Qualified content and operational outcomes]
+    API --> DATA[Qualified content, coordinated bindings and operational outcomes]
     DATA --> CLIENT
     CLIENT --> BIND[Operation-scoped CLI binding capability]
     BIND --> STORE
@@ -115,8 +124,9 @@ flowchart TD
 
 Arrows express use/data flow, not a new stored pipeline. The application engine
 can run in-process for direct clients or inside the CLI worker; the diagram's
-worker placement shows the CLI instance. The CLI client is composed at the worker
-entry, outside the application's dependency graph. It receives selected content,
+worker placement shows the production CLI instance. The same CLI adapter also
+supports in-process composition for tests and controlled harnesses. Worker entry
+and in-process test assembly both stay outside the application dependency graph. It receives selected content,
 arranges it there, and keeps the existing worker-to-parent View/key delivery.
 Application code does not import that client. Parent-owned Git, investigator
 dialogues, credentials and authoritative usage retain their current ownership.
@@ -192,12 +202,22 @@ answer identity. Capture caller-owned inputs before asynchronous work; preserve
 malformed input and safe omission reasons without evaluating accessors. Refusals
 do not become defects, and defects after validation do not become ordinary refusals.
 
-Keep the CLI's supplied input and normalized presentation choices in its request/
-publication context, correlated with the application's semantic request and actual
-outcome. Do not reconstruct what was requested from the returned answer or lose
-format/detail choices when separating the types. Shared attribution must preserve
-the complete generating and consuming parent descriptions without importing CLI
-renderers or treating client context as answer identity.
+Capture optional client invocation data alongside the semantic request under the decision's
+[report-context contract](../decisions/internal-application-api.md#invocation-context).
+Application context contains the typed semantic request. A separate optional
+attachment carries client context. For the CLI this is its actual normalized
+request, including `presentation`,
+`referenceLifetime`, supplied designation and rejected-input representation. The
+application owns occurrence IDs, purpose, constraints, attribution and status; the
+client payload cannot overwrite them or select additional work. Capture/freeze it
+before asynchronous work and retain it in current and generating-parent contexts.
+
+Preserve the existing CLI `context.request` shape in `request-work`, resolution and
+usage reports and the observation `request` record. The CLI report adapter places
+the captured value in those existing fields; it does not infer it from the answer
+or reconstruct it from defaults. Application execution uses the separate validated
+semantic request. Direct callers need no CLI context. Compare complete report
+contexts, not just rendered answer content, across the extraction.
 
 ### Content requirements and Presentation compatibility
 
@@ -218,8 +238,20 @@ established empty result. Keep actual selection criteria inspectable from the
 captured declaration. No renderer callback or general planner is needed here.
 
 A direct information request without a Presentation acquires all current standard
-expansions for the subject kinds of its answer family. It may explicitly request a
-supported subset. This default follows subject-kind standard-expansion semantics;
+expansions that its resolved answer family's content contract carries. It may
+explicitly request a supported subset. Current defaults are:
+
+| Content contract | Default expansion requirements |
+| --- | --- |
+| Modules | Module standard expansions: exports, documentation, composition |
+| Organization | Module standard expansions and group-details |
+| Dependencies | Module standard expansions and group-details |
+| Module exports | Exports and documentation; this content contract does not carry composition |
+| Investigation, including Investigram inspection | None; a module subject does not imply module-detail acquisition |
+
+Module/group/mixed inspection uses its resolved mechanical contract; associated
+interpretation does not add expansion requirements. Lens-required support still
+applies independently. This default follows subject-kind standard-expansion semantics;
 all current standard expansions are mechanical and inference-free. Expansions
 contribute to answer identity. Parity with current CLI defaults is a useful test,
 not the rationale. Revisit the default when a future subject kind introduces a
@@ -234,8 +266,8 @@ An incompatible Presentation is different from unavailable answer content.
 
 ### Results and exact answers
 
-Return a discriminated application result with either an answer, self-contained
-resolution information, or a usage report. Opening failure and unexpected
+Information and exact-answer requests return an answer or self-contained resolution
+information. The separate subjectless usage operation returns a usage report. Opening failure and unexpected
 execution/cleanup errors remain separately typed; preserve the existing failure
 distinctions rather than hiding every condition in a success flag.
 
@@ -281,56 +313,112 @@ stable aliases, binding schedules, answer/View identity separation and explicit
 arrangement-key usage finalization. Retain the existing lifecycle limitation:
 invalidation/closure can make an immutable historical answer unavailable.
 
-### CLI binding and outcome boundaries
+### Reference allocation and the CLI operation scope
 
-The store retains append-only, never-rebind aliases. Preserve coordination-time
-allocations for name-lookup candidates and population construction in
-`subject-resolution.ts`, `module-selection.ts`, `organization/projections.ts` and
-`exports/content.ts`, plus existing answer-alias coordination. Do not suppress them
-for direct calls if that would change shared behavior; they are optional data to
-non-CLI clients.
+Follow the decision's [allocation and scope rules](../decisions/internal-application-api.md#cli-bindings-and-outcomes).
+The inventory below distinguishes population coordination from the narrower
+investigation binding port. Paths are under `src/lib/` at the assessment baseline;
+M1 checks every call site and captures collision-sensitive order before moving it.
+Supply coordinated maps as plain ID/alias entries, not store handles. Preserve
+existing allocations for direct calls too; other clients need not use the aliases.
 
-Arrangement-time binding is a capability supplied only to the CLI client at worker
-composition. Validate IDs/kinds against the answer's supplied reference population;
-provide no store/query/selection authority. Keep today's page-driven batches and
-order, including associated-listing binding last. Do not preallocate every
-reference in complete content or move all binding ahead of arrangement.
+| Existing site | Schedule and population | Target owner and delivery |
+| --- | --- | --- |
+| `subject-resolution.ts: resolveSubjects` | Relevant module/group population for settled name lookup; explicit candidates on refusal; reference classification itself allocates nothing | Application resolution, preserving kind/order and candidate bindings |
+| `module-selection.ts: selectResolvedModules` | Entire discovery module population before selected-module construction | Application construction coordination |
+| `organization/projections.ts` | Organization group population for selected-entity construction | Application construction coordination, before downstream module work |
+| `exports/content.ts` | Module basis population, then selected subjects, including precise outsiders | Application construction coordination |
+| `session.ts`, investigation/Investigram-inspection branch | Whole module population for module investigation Lenses, otherwise retained Investigram population, before Evaluation/selection | Application fresh-request coordination; never add history enumeration to exact retrieval |
+| `presentation.ts: createView` | Discovery modules then selected projection modules, population-wide | Extract wrapper's coordination to application; CLI receives module bindings |
+| `organization/presentation.ts: createOrganizationView` | Evaluation groups, selected groups, module evaluation population, then embedded-detail discovery/selected modules | Extract application coordination in that order; supply group/module/detail maps |
+| `dependencies/presentation.ts: createDependencyView` | Basis modules then selected projection modules | Extract application coordination; supply map |
+| `program-presentation.ts`, exports branch | Module basis then selected subject | Extract application coordination; supply subject binding |
+| `session.ts` and `retained-presentation.ts`, mechanical associated inspection | All associated matches, including off-page matches, after mechanical allocations and before continuation lookup/arrangement | Application coordination supplies full association map; never shrink to displayed rows |
+| `session.ts`, `retained-presentation.ts`, mechanical and investigation wrappers: `answerIds` | Separate answer-alias namespace at existing success/refusal/preparation points, before dependent arrangement | Application answer preparation supplies answer bindings; preserve exact/refused target behavior |
+| `investigation/presentation.ts: createInvestigationView` and exact investigation path | Bounded investigation traversal/revision-page batch, navigable module subjects, then any supplied candidate bindings; validate against `content.references` | CLI arrangement requests through revocable operation-local port; preserve batch/order |
+| `investigation/presentation.ts: arrangeInvestigationView`, historical-inspection association call | All association matches, off-page included, after displayed references, navigation and candidate bindings | Final whole-population batch through the same validated port; application-owned allocation stays at this position, not moved into early preallocation |
 
-Provide a trusted internal CLI-composition entry point, called `withCliOperation`
-here (final spelling is an implementation choice), separate from ordinary client
-exports. It acquires the application's one-operation guard once and supplies an
-operation-local executor plus the answer-scoped binding capability to the worker's
-CLI adapter. Both the ordinary API and this executor use the same request machinery;
-the adapter does not nest a normal guarded API call or bypass semantic validation.
-Keep the scope mechanism neutral: application/domain modules import no CLI View,
-renderer or adapter. Only trusted worker composition supplies the arrangement step.
+Mechanical content has no `references` population and needs no new one. Its
+existing populations drive application coordination and supplied maps. The scoped
+port is only for the investigation arrangement sites that already use
+`referenceBinding`, including their final whole-association batch; it does not
+replace mechanical population coordination. Do not
+preallocate the whole investigation reference population.
 
-Within this scope, validate inputs/Session, execute the semantic request and finalize
-its application work report, then arrange the supplied result while the operation
-guard remains held. Finalizing application work is not releasing the operation
-scope. Arrangement cannot authorize more Evaluation through the completed work.
-The post-execution validity check belongs after arrangement, never in the gap
-between request delivery and binding. Normally it runs before scope settlement;
-in the existing CLI deferred-publication path, the shared guard explicitly owns
-that check after worker delivery and before output, followed by the post-output
-check. This is private guarded composition, not a public deferral flag.
+Use a trusted internal operation-scope entry point (`withCliOperation` is an
+illustrative name) shared by worker and in-process CLI composition. It acquires
+the guard once and exposes a single-request executor backed by shared machinery,
+not a nested ordinary guarded API call. The scope owns capability expiry on
+settlement/throw/invalidation/close. No capability crosses worker transport.
 
-Release the operation guard and revoke binding authority on scope settlement,
-including failure; invalidation or close revokes authority immediately. An escaped
-capability cannot be used after settlement or during another operation. No binding
-capability crosses worker transport. Failures during arrangement or later validity
-checks affect the host/presentation/publication outcome without rewriting the
-already finalized application work report. Earlier application failures retain
-their own outcomes. Test this scope directly during M1, including throws and close.
+Complete application work collection before arrangement, including moving
+`consumeInterpretation(view.projection.id)` to the already selected composite
+`target` in the fresh mechanical path. Audit other post-arrangement
+`WorkScope.record` calls; arrangement adds no investigation work. Finalize application
+work after its required validity checks and before arrangement. Retain the operation
+guard until arrangement settles and revoke the port on every exit. The CLI's
+deferred check is explicitly owned by the publication path; it does not reopen
+work after arrangement or output failure. Test complete associated-inspection
+attribution and the terminal-status distinctions below.
 
-Separate application work outcome from client presentation/publication outcome.
-For an answer successfully produced/retrieved with `unknown-continuation`, keep
-application work `completed`, while CLI presentation/publication and observations
-record failure and exit 3. Do not retroactively edit the application's report.
-Preserve the qualified View, same answer, continuation guidance and historical
-outcome. Malformed syntax remains refused through the existing input path. The
-acceptance matrix must assert both statuses, including the agreed change to the
-observation work-status field.
+### Refusal and outcome compatibility
+
+Follow the [refusal/context decision](../decisions/internal-application-api.md#invocation-context).
+Client ownership of eligibility means the client declares its option policy;
+shared coordination still decides compatibility and issues resolution outcomes.
+Capture client-owned option eligibility as bounded declarative data over opaque
+option values and semantic facts already known to coordination (contract,
+cardinality, inspection/association/revision support). Preserve ordered fallbacks
+and reasons. This is a finite extraction of today's checks, not arbitrary client
+predicates or a plugin rule language. CLI syntax capture produces rejected-input
+data; the shared rejection/reporting machinery retains current parent versus
+worker execution and usage attribution.
+
+The matrix specifies current → target. Unless marked **changed**, every work
+status, command outcome/event, exit code and emitted report shape is unchanged.
+Rows assume no superseding publication/lifecycle failure. Identity/provenance
+fields also have the separately agreed method-capture changes; this matrix concerns
+request outcomes. `R` is the shared
+resolution report, rendered by the CLI and finalized with parent-owned usage;
+`U` is its usage counterpart. `—` means no non-View report. Command outcomes/events
+are CLI-only; direct calls have typed results/errors and work reports, not exit codes.
+
+| Condition | Detection now → target | Work now → target | Command outcome / event / exit | Non-View report source |
+| --- | --- | --- | --- | --- |
+| Argument/tokenization error before a request | CLI parser → CLI parser | Absent → absent | No command observation; one-shot exit 2; shell keeps its existing interaction | CLI diagnostic, no R |
+| Unrepresentable/malformed request, unknown Lens, malformed `after`/`revisionPage`, paging on a fresh request | Request capture; CLI parent handles wholly rejected input → CLI capture plus shared safe capture/rejection service, same parent path | refused → refused | refused / command-refused / 3 | Shared rejected-request R in parent; direct composition uses same service |
+| Invalid semantic parameters, designation or usage-report inputs | Session executor → shared request validation | refused → refused | refused / command-refused / 3 | R from application |
+| Prospective format/detail/paging ineligibility before lookup | Combined compatibility check → shared match of captured client declarations | refused → refused | refused / command-refused / 3 | R, presentation-unavailable |
+| Missing/ambiguous subject, unknown reference, answer-as-subject, unsupported subject, incomplete/unavailable lookup | Shared subject resolution → same | refused → refused | refused / command-refused / 3 | R with unchanged reason, candidates, prerequisite work and qualification |
+| Resolved-family incompatibility | Session compatibility → shared compatibility | refused → refused | refused / command-refused / 3 | R, presentation-unavailable |
+| Materialization precondition with no permitted fallback | Content compatibility → shared compatibility | refused → refused | refused / command-refused / 3 | R with fixed retained-answer pointers and qualification |
+| Exact unknown/unbound, foreign or wrong-kind answer | Retained target resolver → shared exact resolver | refused → refused | refused / command-refused / 3 | R, unknown-answer / foreign-answer / unsupported-answer |
+| Exact format/detail/paging incompatibility, absent group-details or other required retained support, unmet materialization precondition | Retained compatibility → shared matching of captured CLI declarations | refused → refused | refused / command-refused / 3 | R, presentation-unavailable; raw exact API retrieval without those requirements still succeeds |
+| Accepted fresh information or successful exact retrieval, including a historically failed answer | Session executor → application with CLI adapter | completed → completed | completed / command-completed / 0 | — |
+| Fresh interpretation attempt unavailable or not accepted | Investigation/application result → same | failed → failed | failed / command-failed / 3 | —; qualified View retains attempt outcome |
+| Well-formed but unknown continuation in `present` | CLI arrangement inside Session → CLI adapter inside scope | **failed → completed** | failed / command-failed / 3 | —; same qualified View and guidance |
+| Out-of-range revision page | Arrangement → CLI adapter | completed → completed | completed / command-completed / 0 | —; preserve current page bounds/qualification |
+| Valid subjectless usage request | Session executor → usage service | completed → completed | completed / command-completed / 0 | U |
+| Invalidation/interruption during request, before result delivery | Session/worker lifecycle → shared lifecycle | invalidated/interrupted → same | invalidated / session-invalidated / 2; interrupted / command-interrupted / 130 | No R; host error and available final usage |
+| Operational analysis failure or unexpected defect before application completion | Executor catch → shared execution catch | failed/defect → same | failed / command-failed / 3; defect / command-defect / 1 | No R; host error and available final usage |
+| Arrangement throw after completed application work | Executor catch → CLI adapter/scope catch | **failed/defect/invalidated/interrupted → completed**, according to the former thrown-error class | Same exception classification: failed / command-failed / 3; defect / command-defect / 1; invalidated / session-invalidated / 2; interrupted / command-interrupted / 130 | No R; host error and available final usage; no successful display inferred |
+| Direct-call post-execution invalidation | Direct Session post-check → direct API post-check, before work finalization | invalidated → invalidated | Not a CLI command | Typed lifecycle failure |
+| Concurrent or closed direct call | Session guard/lifecycle → shared guard with typed busy/closed outcomes | No new accepted work; active/previous report unchanged | Not a CLI command | Typed error; no queue, restart or fabricated request report |
+| CLI pre-output or post-output invalidation after delivered result | Parent publication check via worker → neutral guard via worker check transport | Already finalized result status → same (normally completed) | invalidated / session-invalidated / 2 | Preserve withholding before output; after output retain emitted View/R/U and disclose failure |
+| Host output exception after delivered result | Publication catch → host/guard catch | Already finalized result status → same | defect / command-defect / 1 | Preserve emitted-output bookkeeping and available final usage |
+| Sink rejection or cleanup warning after publication | Submission/host cleanup → neutral sink/host cleanup | Unchanged | Does not replace prior command outcome/exit | Warning/acknowledgment, no replacement R |
+
+Opening/configuration failures occur before request work: keep their typed opening
+or configuration result, CLI diagnostics/exit 2 (opening interruption 130), and
+absence of a fabricated request report. Preserve existing parent work sealing when
+a worker terminates before versus after its final report; do not reclassify an
+already sealed report. Add race tests at those actual boundaries.
+
+`unknown-continuation` is currently reachable only through `present`. Remove the
+unreachable fresh-request checks when splitting the executor, after confirming
+capture still rejects fresh paging. Keep batch `formatVersion: 4` under the
+experimental-output policy; document both agreed work-status changes explicitly. Mechanical partial/unavailable results retain their
+current qualified-success behavior; they are not all fresh investigation failures.
 
 ### Lifecycle and delivery
 
@@ -354,12 +442,19 @@ reporting are shared; hosting and transport do not create another implementation
 of investigation policy. Preserve the current direct-runtime limitation that
 synchronous compiler work is not independently preemptible from that same thread.
 
-Default direct operations validate before and after execution. A shared publication
+Default direct operations validate before and after execution, finalizing work
+only after the post-check succeeds. This is the ordinary client contract; a later
+client rendering failure leaves that final report unchanged. A shared publication
 guard additionally applies the current best-effort pre-output and post-output
 checks for delayed display, so clients do not copy lifecycle policy. Replace the
 bare `deferPublicationCheck` API option with this guarded host path; any internal
-deferral is private to the guard and cannot bypass its checks. Preserve the CLI's
-existing validation phases, withholding before output and explicit invalidation
+deferral remains a private CLI worker-protocol field owned by the guard and cannot
+bypass its checks. The neutral parent-side policy takes a `check` transport; in the
+CLI it sends checks to the worker before and after actual parent output. The CLI
+always uses this guarded deferral. In-process adapter tests use a local check
+transport to exercise the same guarded composition; ordinary API tests exercise
+the non-deferred lifecycle separately. No extra `withCliOperation` mode is required.
+Preserve the CLI's existing validation phases, withholding before output and explicit invalidation
 if output was already emitted. Returning data does not establish later display
 validity. The guard owns checks/outcomes; the client owns actual output and records
 what was emitted. No new atomic freshness guarantee is implied.
@@ -385,8 +480,10 @@ warnings. These outcomes do not erase delivered application results. The current
 batch-shaped display snapshot may remain if it depends only on the neutral envelope;
 no universal receipt schema or generalized batch builder is required. Preserve CLI
 automatic recording and its last-displayed-result behavior, including replacing an
-old answer with a subsequently displayed failure. Direct non-recording use still
-permits explicit feedback.
+old answer with a subsequently displayed failure. Direct non-recording clients
+currently get context-free feedback only. Displayed-result feedback remains a CLI
+capability because its snapshot is batch-shaped. A new client-specific display
+receipt/builder is separate work; do not build a substitute to broaden this task.
 
 This extraction relates to [optional recording and feedback context](../backlog.md#separate-optional-research-recording-from-feedback-context)
 but does not implement that item: no no-recording CLI option, recording-policy
@@ -408,12 +505,23 @@ request, CLI and worker results, including dynamic `_build` imports and instrume
 of worker files. Extract intended semantic request/result and lifecycle contracts,
 capability descriptions and captured requirements. Implement direct inventory,
 module `inspect` and exact retrieval, plus CLI `present`, through one shared engine.
-Keep CLI arrangement in its worker client and exercise operation-scoped alias
-binding there. Establish the shared publication guard, distinct work/presentation
+Compose the same CLI adapter in the worker and in-process test host; migrate
+representative existing `openSession`/`ViewRequest`/`rendered` tests to that adapter
+without replacing their behavioral assertions. Add direct API tests separately.
+Exercise the applicable allocation-table and outcome-matrix rows and scoped
+investigation binding in both hosts, including mechanical associated inspection
+and historical Investigram inspection. Establish the shared publication guard,
+distinct work/presentation
 outcomes, structured-clone-safe delivery and typed busy behavior on this slice.
+Separate application and CLI Presentation-method registries here too. Remove
+Presentation versions from `typescript/project.ts` input/Session capture and from
+application delivery assembly. Keep client provenance and existing View/key formulas
+in the adapter. Version the responsible changed capture/record methods with an
+explicit identity-impact explanation before recording comparison expectations.
 
 Verify direct use without parser, renderer, terminal or sink; compare CLI behavior
-against the baseline except the explicitly agreed work-status change. Exercise
+against the baseline except the explicitly agreed work-status and method-provenance
+changes. Confirm renderer-version changes cannot affect application identities. Exercise
 caller mutation, malformed input, missing/incompatible subjects, complete/partial/
 empty content, subset/default expansions, exact retrieval and alias collisions.
 Preserve opening/exclusion and cleanup behavior.
@@ -438,7 +546,7 @@ The direct API journey obtains modules, resolves a subject, investigates it usin
 associations, retrieves the earlier exact answer, and issues fresh selection.
 Assert the old answer's complete selected content/support/identity remain equal,
 while the fresh answer exposes the deliberate selection changes, including
-conflicts and reconsideration. Deny lookup, reselection, Evaluation and inference
+conflicts and reconsideration. Deny fresh subject discovery, reselection, Evaluation and inference
 on exact access. Use real evidence access, validation and retention; substitute
 only the agent communication participant.
 
@@ -448,10 +556,17 @@ Route both one-shot and shell through the application API and shared CLI adapter
 Preserve private View/key transport and parent usage finalization/rendering;
 consolidate runtime/exclusion setup and retain signal/EOF behavior. Split request/
 report data from terminal text and generate command continuations only in the CLI.
-Remove obsolete parallel execution paths after consumers migrate.
+Complete migration of the existing CLI-shaped in-process test corpus to the same
+adapter (roughly 18 files at baseline), retaining assertions and trusted injection
+seams. Remove obsolete parallel execution paths after live consumers migrate.
 
 Move credential assembly and the explicit cost-bearing connection check out of
-command handlers, using existing services. Extract the neutral observation envelope,
+command handlers, using existing services. Move `hostedDisclosure`,
+`chatGPTDisclosure` and command/doc-path guidance out of
+`investigation/openai/configuration.ts` into CLI policy. Return typed configuration
+reasons and let the CLI preserve the exact diagnostics. Keep `runAuthentication`'s
+process `SIGINT` handling in CLI host assembly and pass cancellation to services.
+Extract the neutral observation envelope,
 sink/acknowledgment and feedback service, while retaining CLI batch construction
 and source classification. Verify preflight ordering, disabled/invalid setup,
 route/billing and no-fallback rules, authentication without a project, context-free
@@ -459,28 +574,51 @@ and displayed-result feedback, failed-display snapshot replacement and delivery
 failure isolation. Use the retained trusted assembly seams with offline
 credential/provider doubles, not live credentials or paid inference.
 
-Migrate all current `scripts/` consumers, including dynamic build-root imports and
-profiling/interruption harnesses. Type checking alone does not cover them. Verify
-changed imports and representative offline executions, including a controlled
-shell harness; do not import a live assessment script merely to test linkage if
-its top level initiates inference. Historical validation records remain unchanged.
+Classify scripts during M1, then act by role:
+
+- Migrate live harnesses: `module-investigation/run-shell`, `diagnose-chatgpt`,
+  `verify-configuration`, injection helpers, `measure-*`, `probe-*`, profiling and
+  assessment tooling, and current direct/worker parity in `compare-session-requests`.
+  Inspect dynamic build-root imports and worker instrumentation as well as imports.
+- Preserve historical cross-build/checkpoint scripts and their recorded assumptions:
+  `compare-view-construction`, `compare-investigation-construction`,
+  `compare-investigation-revisions`, `compare-session-conversion` and
+  `compare-analysis`. Document supported checkpoint/build shapes in nearby comments
+  or existing harness documentation; do not retarget both builds to new internal
+  paths or retain product shims solely to make old checkpoint comparisons work.
+  The last two already use `cli.js`; their entry remains useful, but do not assume
+  their entire old assertion/normalization policy fits this extraction.
+
+Type checking alone does not cover scripts. Verify migrated imports and
+representative offline executions, including a controlled shell harness. Do not
+import a live assessment script merely to test linkage if its top level initiates
+inference. Historical validation records remain unchanged.
 
 ### M4 — Integrated verification, documentation and handoff
 
 Run the matrix below, `npm run check` and `npm test`. Exercise a small direct client
 and the CLI on the same deterministic fixture and record representative text/JSON
-comparisons. Review runtime and type dependencies; retain no CLI-only semantic
+comparisons through each build's stable `src/lib/cli.js` `runCli` entry. Use a
+focused current comparison harness, retaining the existing reference-aware
+comparison policy and explicitly accounting for the agreed status and provenance changes.
+Review runtime and type dependencies; retain no CLI-only semantic
 execution path. Check script linkage/entry paths separately from TypeScript tests.
 
-Document the intended internal API and lifecycle examples in
-`docs/application-api.md`, linked from `docs/README.md`; maintain the descriptive
-boundary map in `docs/architecture/README.md` and affected implementation conventions.
-Update status/capability/CLI documentation only where descriptions actually change.
-Explain the agreed work-status exception and retain current limitations.
+Document intended exports and lifecycle examples in entry-point TSDoc. Maintain
+the descriptive boundary map in `docs/architecture/README.md` and affected
+implementation conventions; do not add a standalone API inventory document.
+Update `docs/cli-reference.md`'s `request-work` description and `present`
+unknown-continuation wording, explicitly retaining batch format version 4. Update
+other status/capability documentation where descriptions actually change and retain
+current limitations.
 Advance responsible identity methods only when their actual semantics change,
 with an explicit comparison explanation. Account for the method registry entering
 analysis-input identity; a file move alone does not justify a method bump or
-normalizing away a resulting provenance difference.
+normalizing away a resulting provenance difference. Establish the human-directed
+[identity separation](../decisions/internal-application-api.md#method-provenance):
+application captures contain no client Presentation methods, and delivery adds only
+the methods responsible for the actual artifact. Check provenance and identity
+inputs separately from the import graph.
 
 Prepare the task protocol's integrated-review handoff and PR. The human arranges
 review and decides when its gate is sufficient. Passing checks is not authorization
@@ -492,7 +630,8 @@ assessment is needed to complete this task.
 Use real compiler/repository fixtures and `ScriptedInvestigator` at the existing
 communication substitution boundary. Compare semantics with the shared
 reference-aware comparison policy; do not erase qualification, support, order or
-identity inputs to make comparisons pass. Extend existing tests where appropriate.
+identity inputs to make comparisons pass. Record the deliberate method-capture
+transition and resulting reference mapping separately from unchanged semantic content. Extend existing tests where appropriate.
 
 | Check | Required distinguishing evidence |
 | --- | --- |
@@ -502,13 +641,15 @@ identity inputs to make comparisons pass. Extend existing tests where appropriat
 | Fresh versus exact | In one Session obtain A, perform later work that adds corrections/associations/reconsideration, obtain fresh B, then retrieve and present exact A. Compare A's full content, support, snapshots and ID unchanged. Deny selection/Evaluation/provider calls on the exact path. Target originals and replacements explicitly; cover conflicting revisions and associated composites. |
 | CLI compatibility and consumption | One-shot and shell, Unicode/JSON, all existing command families, more detail, association/revision paging, out-of-range pages and unknown/malformed tokens, canonical aliases/precise targets and one-shot expiry. Never reconstruct another page from bounded CLI JSON. Same effective information requirements yield equivalent answers through API and CLI; different rendering preserves the answer and changes only applicable View/report identity. |
 | Compatibility planning | Preserve pre-lookup refusal, post-resolution family checks, fallback requirements before Evaluation, explicit option preservation and materialization checks. Captured declarations ignore later mutation; direct defaults acquire family standard expansions and explicit supported subsets remain distinct. A raw content request succeeds independently of CLI Presentation availability. A retained request cannot acquire absent support even if that support exists elsewhere in the Session. |
-| Lifecycle and faults | Opening failure, changed/unverifiable input, interrupted work, late replies, provider failures, unexpected defects, sink rejection and unconfirmed cleanup. Default direct and guarded CLI checks preserve withholding/disclosure behavior. Verify one guard acquisition in `withCliOperation`, finalization before arrangement, post-arrangement validation ownership, and revocation on settlement/throw/invalidation/close. No restart, duplicated work or leaked ownership. The shared guard covers withheld output and post-output invalidation without a public bypass flag. Current usage remains available after interruption and is not charged again by exact access. |
-| Binding and identity | Direct clients complete the journey with precise IDs alone. Shared coordination also accepts bound input aliases and retains their supplied spelling/refusals in reporting. Preserve name/reference equivalent answers, optional coordination aliases, separate answer aliases and CLI page-driven allocation/collision schedules. Arrangement binds only its supplied population within the serialized worker operation, never after settlement/invalidation/close; do not eagerly allocate all off-page references. Parent finalization retains the explicit arrangement key and idempotence. |
+| Lifecycle and faults | Opening failure, changed/unverifiable input, interrupted work, late replies, provider failures, unexpected defects, sink rejection and unconfirmed cleanup. Default direct and guarded CLI checks preserve withholding/disclosure behavior. Verify one guard acquisition in `withCliOperation`, complete attribution before arrangement, application finalization before arrangement, direct post-check finalization and transported CLI publication checks, and revocation on settlement/throw/invalidation/close. No restart, duplicated work or leaked ownership. The shared guard covers withheld output and post-output invalidation without a public bypass flag. Current usage remains available after interruption and is not charged again by exact access. |
+| Binding and identity | Direct clients complete the journey with precise IDs alone. Shared coordination also accepts bound input aliases and retains their supplied spelling/refusals in reporting. Preserve name/reference equivalent answers, optional coordination aliases, separate answer aliases and each site's allocation schedule. Investigation arrangement binds only its supplied reference population; mechanical/association coordination remains population-wide, including the final historical-inspection association batch through the port. The port is usable within the serialized operation, never after settlement/invalidation/close; do not eagerly allocate the whole investigation reference population. Parent finalization retains the explicit arrangement key and idempotence. |
 | Companion services | Account operations and explicit connection check through offline doubles, route/credential boundaries, context-free and displayed-result feedback, failed-display replacement of old feedback context, actual output and self-contained batches, visible delivery rejection/cleanup warnings without erasing results. No research capture required for direct operational attribution. |
 | Progress and lifecycle types | Exercise `onWork`, `onProgress` and `onReport` equivalents, request correlation, final usage, caller mutation and late-callback suppression. Concurrent calls produce typed busy without affecting the active request; invalidation/interruption/cleanup retain distinct outcomes. |
-| Outcome separation | After successful answer delivery, unknown continuation gives application work `completed`, CLI presentation/publication failure and exit 3; the observation work-status field reflects that agreed change. Malformed syntax remains refusal and retained investigation failure is historical. |
-| Script consumers | Inventory static/dynamic `_build` imports and worker instrumentation in `scripts/`. Verify migrated imports and representative offline harness execution without triggering live assessments; record checks not covered by `npm run check`. |
-| Architectural dependency | Inspect runtime and type imports transitively from the application service and core. They do not reach CLI parsing, renderers, terminal helpers or CLI View types; worker composition is explicitly outside that graph. Client imports use the intended API, not stores, selectors or Evaluators. Use a focused import-graph check with existing tooling, including type imports and neutral envelope/source-classification types; no new dependency is needed. |
+| Method identity separation | Hold program inputs, semantic requirements and application methods fixed while changing only the test client Presentation method. Analysis-input, evidence, Evaluation and answer identities remain equal under the existing Session-reference comparison policy; affected View/arrangement identity and artifact provenance change. Application method changes still affect responsible identities. Assert application captures have no Presentation methods, preserve explicit usage-key finalization, and explain baseline-to-new provenance/reference differences rather than dropping them. |
+| Report and attribution preservation | Compare CLI resolution/usage JSON, observation request and request-work contexts, generating/consuming parents and all associated-inspection work entries. Exercise the complete outcome matrix, including rejected parent input, raw exact access, malformed versus unknown paging, scope throws and direct versus deferred post-check invalidation. |
+| Outcome separation | After exact `present` retrieval, unknown continuation gives application work `completed`, CLI presentation/publication failure and exit 3; the observation work-status field reflects that agreed change. Unexpected arrangement failure after completed application work also leaves work completed; verify the unchanged client failure outcome/diagnostic/exit and no false display receipt. Malformed syntax remains refusal and retained investigation failure is historical. |
+| Script consumers | Inventory static/dynamic `_build` imports and worker instrumentation in `scripts/`. Distinguish live harness migrations from historical checkpoint assumptions; compare builds through `runCli`. Verify representative offline execution without triggering live assessments; record checks not covered by `npm run check`. |
+| Architectural dependency | Inspect runtime and type imports transitively from the application service and core. They do not reach CLI parsing, renderers, terminal helpers or CLI View types; worker composition is explicitly outside that graph. Client imports use the intended API, not stores, selectors or Evaluators. Use the existing TypeScript compiler API to inspect source import edges, including `import type` and neutral envelope/source-classification dependencies; emitted JavaScript alone is insufficient. No new dependency is needed. Check method registry capture and delivered provenance separately. |
 
 Reuse relevant coverage in `request-model`, `subject-resolution`, `projection-content`,
 `presentation-compatibility`, `retained-presentation`, `investigation-selection`,
@@ -570,12 +711,15 @@ direction, settled precise-ID clients/CLI-only arrangement binding, completed
 application work versus failed continuation presentation, capture-once declarations,
 family-standard direct defaults and neutral observation/feedback dependencies.
 These directions shape this merged draft. The detailed combined package remains
-in review before approval/promotion; implementation is not authorized.
+in review before approval/promotion; implementation is not authorized. The subsequent
+human discussion added typed application context with optional client attachments,
+application completion independent of presentation failures, and method-identity
+separation to this task's scope.
 
-The independent reviews assessed two earlier packages. A subsequent completeness
-pass clarified alias resolution and the internal CLI operation scope. These passes
-do not constitute an independent review of the combined package; that review remains
-outstanding and must assess the package against governing documents and source.
+After the earlier reviews and completeness pass, an independent review assessed
+the combined package at `a4cd56f`. Its findings led to the allocation table, outcome
+matrix, context and method-identity decisions and core-concept revisions. The revised
+package, including the subsequent human directions, needs review before approval.
 
 Principal risks remain raw-support disclosure, altered acquisition/alias schedules,
 live lookup replacing fixed support, publication checks bypassed between layers,

@@ -63,6 +63,48 @@ application policy. A new public service would add compatibility, deployment and
 authorization obligations without evidence of need. A small internal service
 boundary isolates the responsibility that changes with application behavior.
 
+<a id="invocation-context"></a>
+### Preserve typed application attribution and separate client context
+
+Application requests and work
+contexts describe the validated semantic operation, requirements and application
+outcome. The application owns request correlation, purpose, execution constraints,
+generating/consuming parents and work status. These contracts do not require CLI
+format/detail fields or a Presentation.
+
+A client may supply an optional, plain-data invocation attachment. Capture it
+safely before asynchronous work, retaining representation/omission limits rather
+than invoking accessors. Freeze it and carry it alongside application context,
+including earlier parent contexts, without interpreting it as semantic authority
+or including it in answer identity. The application never infers a request from
+the resulting answer. Direct clients can omit the attachment entirely.
+
+The CLI supplies its actual normalized invocation, including Presentation choices,
+reference lifetime and supplied alias spelling. Its reporting adapter uses this
+captured data to preserve existing `context.request` fields in CLI resolution and
+usage JSON, observation requests and `request-work`, including generating parents.
+Application types do not import the CLI context shape. The adapter projects existing
+captured values into legacy fields; it does not reproduce request coordination,
+work attribution, defaults or outcome decisions. Other clients consume the typed
+application context and choose their own reporting representation.
+
+Client-owned option eligibility is declarative input to shared compatibility.
+The application matches opaque option values against captured client declarations
+and semantic facts, preserving prospective refusal before lookup, resolved-family
+checks and materialized compatibility. It owns resolution/refusal reporting even
+when the unsatisfied condition was declared by a client. This finite matching
+contract introduces neither executable client predicates nor a general rule engine.
+Malformed CLI options remain rejected-input data through the shared safe-capture
+and rejection path; retain the CLI parent's existing wholly-rejected-input route.
+Do not convert these refusals into rendering exceptions.
+
+**Rationale and alternatives.** Shared attribution needs the actual initiating
+request and its parent history. Making the semantic context an opaque CLI request
+would prevent a clean client-independent contract. Reconstructing invocation data
+from answers loses explicit choices and cannot recover earlier parent requests.
+A separate optional attachment preserves that information while the CLI-specific
+output shape stays in its adapter and can retire with it.
+
 <a id="qualified-content-delivery"></a>
 ### Deliver qualified answers independently of CLI Views
 
@@ -125,8 +167,12 @@ is the bounded reuse of existing capability needed here.
 ### Share requirements coordination while clients own Presentations
 
 Content requests do not require a CLI Presentation. By default, a direct
-information request acquires all current standard expansions for the subject kinds
-of its answer family; callers may request a supported subset. Standard expansions
+information request acquires the current subject-kind standard expansions carried
+by its resolved answer family's content contract; callers may request a supported
+subset. This means module expansions for module content, module and group expansions
+for organization/dependency content, exports/documentation for module-export
+content, and none for investigation content. Interpretation of a module does not
+implicitly acquire its mechanical expansions. Required Lens support remains separate. Standard expansions
 are domain-defined subject-kind detail and contribute to answer identity. Current
 standard expansions are mechanical and inference-free. Revisit the default if a
 future subject kind introduces a costly expansion, including inference. Matching
@@ -137,8 +183,10 @@ Clients own Presentation declarations: acceptable content contracts, requirement
 preconditions and fallbacks. Supply them once at client composition or Session
 opening. Application coordination validates semantic rules, captures and freezes
 them before work; requests name choices among those captured declarations, not new
-per-request descriptors. Keep format/display eligibility client-owned and expose
-semantic requirement descriptors, not CLI format lists, as capability metadata.
+per-request descriptors. Keep format/display policy client-owned while shared
+coordination performs the declarative eligibility match and produces refusals as
+specified above. Expose semantic requirement descriptors, not CLI format lists,
+as capability metadata.
 
 Coordination owns prospective and resolved-subject compatibility, acquisition of
 requirements before Evaluation, materialization checks, actual selection and its
@@ -147,7 +195,7 @@ partial materialization as an established empty answer. Arrangement and renderin
 can be shared by clients with compatible consumption contracts.
 
 Arrangement receives only fixed qualified content and supplied bindings or the
-CLI-only scoped binding capability described below. It cannot request missing work or read
+scoped binding capability currently supplied to the CLI as described below. It cannot request missing work or read
 current history. Exact content compatibility never acquires support absent from
 that answer. Rendering a different perspective is permitted only when supplied
 content establishes it; deriving another architectural claim requires analysis.
@@ -161,40 +209,70 @@ contracts without introducing a generic planner or plugin language.
 <a id="cli-bindings-and-outcomes"></a>
 ### Keep compact binding CLI-scoped and distinguish presentation outcomes
 
-The store owns append-only, never-rebind alias infrastructure. Preserve shared
-coordination-time allocations for resolution candidates and constructed populations,
-and answer-alias coordination. Optional aliases do not oblige non-CLI clients to
-use them or require another interface's binding design now.
+The store owns append-only, never-rebind alias infrastructure. Application
+coordination owns population-wide mechanical allocations, fresh investigation-Lens
+pre-allocation, resolution candidates, all association matches including off-page
+matches, and separate answer aliases. Extract those allocations from current
+mechanical Presentation wrappers without changing their relative order; supply
+ID/alias maps to mechanical arrangement. Historical Investigram inspection keeps
+its association allocation at the final port call described below. Exact access uses fixed support and never adds history enumeration.
+Optional aliases do not oblige direct clients to use them.
 
-Supply arrangement-time binding only to the CLI client at worker composition,
-validated against the answer's supplied reference population. Preserve today's
-page-driven batches/order; do not preallocate every reference in complete content.
-A trusted internal CLI operation-scope entry point encloses application execution
-and CLI arrangement under one acquisition of the application guard. It exposes an
-operation-local executor using the same shared request machinery, not a nested
-normal guarded call, and remains separate from ordinary client exports. Application
-work is finalized inside the scope before arrangement; that does not settle the
-scope or release binding authority. The post-execution validity check is after
-arrangement, normally before scope settlement, or owned by the guarded CLI
-publication path after worker delivery and before output. Post-output checking
-remains required. Application code does not import the CLI adapter.
+The narrower port remains for investigation-View arrangement. Validate
+each complete batch against the investigation content's `references` population
+before allocation. Preserve traversal/revision-page order and subsequent navigable
+module and any supplied candidate bindings. Historical Investigram inspection
+then requests its complete association population through this port, including
+off-page matches, after the displayed/navigation/candidate batches. That final
+batch is population-wide, not page-driven, and cannot be moved ahead of arrangement
+without changing allocation order. Mechanical content needs no new
+reference-population schema.
+Do not shrink mechanical/association populations to displayed rows or eagerly
+bind the whole investigation population. The companion plan inventories the sites.
 
-Its binding capability expires at scope settlement, including failure, and is
-revoked on invalidation or close. Later arrangement/publication failures do not
-rewrite an already finalized application report. It has no query/selection authority,
-cannot escape in
-returned content, and is not a general API operation. Ordinary direct clients use
-precise IDs. No parent-to-worker binding bridge is introduced.
+Supply this port only to the current CLI adapter at trusted composition, in its
+worker or in-process test host. This is the current implementation scope, not a
+revocation of the accepted permission for other Presentations to use a suitably
+scoped port. Another client requires its own design; there is no general binding
+API or parent-to-worker binding bridge.
 
-Application work outcomes describe application work. When an answer has been
-produced/retrieved and CLI arrangement reports `unknown-continuation`, application
-work is `completed`; CLI publication and observation outcomes record presentation
-failure and exit status remains 3. Do not amend the completed application report to
-represent a client failure. The observation application-work-status field changes
-from `failed` to `completed` for this case; this is an agreed visible change.
-Malformed request syntax remains refusal and a retained investigation failure
-remains historical. Preserve the qualified View, selected answer and continuation
-behavior independently of those outcome distinctions.
+A trusted internal operation-scope entry point acquires the application guard once,
+providing a single-request executor over the same shared machinery and a revocable
+binding capability. It does not nest an ordinary guarded call. Application code
+imports no CLI adapter. The scope remains held through arrangement; revoke binding
+on settlement, throw, invalidation or close, and permit no escape in returned data.
+
+Application work finishes when
+its request and required application validity checks finish. Complete all attribution
+before finalization, including consumption of the selected associated-inspection
+composite currently recorded after arrangement. Arrangement cannot append work to
+a finalized report. A direct call's post-execution check precedes finalization,
+so an invalidated direct result still has work status `invalidated`.
+
+The CLI's trusted deferred path finalizes application work before arrangement and
+retains the operation guard through arrangement. Its parent publication guard owns
+the deferred validity checks. An expected `unknown-continuation` or unexpected
+arrangement failure after application completion does not rewrite that report;
+client presentation/publication has its own outcome. Application failures before
+completion retain their distinct statuses. Parent interruption preserves whether
+application completion was actually reported; a missing terminal report is not
+inferred to have completed.
+
+For `present` with `unknown-continuation`, application work changes from `failed`
+to `completed`, while the CLI command/observation remains failed with exit 3 and
+the same qualified View/guidance. The human also agreed that an unexpected
+arrangement exception after completed work likewise leaves that report completed,
+while the CLI keeps its exception classification, diagnostic and exit code.
+This is an additional visible work-status change, agreed in the subsequent
+general-boundary discussion rather than implied by the original exception.
+Malformed input and compatibility refusals remain refused. Already-finalized work
+stays unchanged when later publication fails,
+as in the existing deferred CLI path. Retained investigation failure stays historical.
+
+Keep observation batches at `formatVersion: 4`, with the new work-status meanings
+explicitly documented under the experimental-output policy; no historical records
+are rewritten or migration promised. The plan's outcome matrix enumerates the
+changes and unchanged cases for verification.
 
 **Rationale and alternatives.** Display-driven alias allocation cannot be replaced
 by eager full-population binding without changing collision schedules. A general
@@ -209,8 +287,10 @@ the actual experience without misclassifying application work.
 The internal API is callable in-process using the current asynchronous lifecycle.
 The CLI continues to run compiler work in its private worker. A CLI client at that
 worker's composition boundary invokes application services and then arranges the
-supplied answer. Application and domain modules do not import that client.
-Presentation location does not change its responsibility.
+supplied answer. Compose that same adapter in-process for tests and controlled
+harnesses; do not preserve a second CLI-shaped Session implementation. Application
+and domain modules do not import that client. Presentation location does not change
+its responsibility.
 
 Retain worker-side binding/alias coordination, the explicit usage-independent
 investigation arrangement key, and self-sufficient parent usage finalization and
@@ -228,11 +308,15 @@ alias binding; that belongs to its own task.
 
 Keep input validation before/after execution and share pre-output/post-output
 validity policy through a publication guard. A bare `deferPublicationCheck` flag is
-not a client escape hatch; any internal deferral is owned by the guarded path. Client receipt of content does
-not establish that it was shown or that validity was checked at a later display.
+not a client escape hatch. The CLI guard is neutral parent-side policy parameterized
+by a check transport; its private worker-protocol deferral field transfers check
+ownership to that guarded path. The CLI always defers to pre-output/post-output
+checks through the worker; ordinary direct calls retain their own pre/post-execution
+checks. In-process adapter tests can use local check transport. Client receipt of
+content does not establish display or a later validity check.
 Preserve the CLI failure/status and output contracts, including human-facing
 JSON, source classification and terminal safety, except for the explicitly agreed
-application-work-status change above. A future external-agent interface
+application-work-status changes and method-provenance separation in this decision. A future external-agent interface
 must declare its consumption/access contract separately; an agent invoking the
 current CLI still receives the CLI's human-facing output.
 
@@ -250,8 +334,10 @@ construction and optional recording controls are outside this decision.
 
 Feedback uses available actual-display context and exact output without
 reconstruction or new investigation. Application attribution and usage do not
-depend on research capture. Preserve explicit feedback delivery even when a caller
-does not record ordinary requests. Keep delivery rejection distinct from accepted
+depend on research capture. Direct non-recording clients currently have context-free
+feedback. Displayed-result feedback remains CLI-only because its supplied snapshot
+uses CLI batch-shaped records; another client's receipt/builder is separate work.
+Keep delivery rejection distinct from accepted
 delivery with a cleanup warning, and neither erases the delivered application
 result. Preserve current CLI observation behavior and known export limitations.
 
@@ -261,12 +347,65 @@ Using the CLI worker as a composition host lets the existing ownership and
 identity contracts remain intact. Turning observation storage into the source of
 application state would violate its distinct lifetime and optional research role.
 
+<a id="method-provenance"></a>
+### Separate application methods from Presentation methods
+
+The human directed identity separation within this task. Split the captured method
+registry by responsibility. Application analysis inputs and Session method provenance
+include application/domain/provider methods only; client Presentation methods belong
+to the client that produces the View. A Presentation-method change alone must not
+change analysis-input, evidence, Evaluation or Projection identity. Application
+method changes continue to affect their responsible identities.
+
+At the baseline, `identity.ts` mixes `presentation`, `investigationPresentation`
+and `exportsPresentation` with application methods; `typescript/project.ts` captures
+the entire registry in analysis inputs and Session provenance. Remove those three
+Presentation entries from the application capture. Move the definitions to a
+client-owned registry, retaining the shared mechanical method for module,
+organization and dependency Views. Audit imports and every consumer of delivered
+`methods`; the application executor must stop appending investigation Presentation
+provenance. No presentation registry is injected into analysis merely to recreate
+the old dependency.
+
+Clients append the methods actually responsible for their delivered artifact to
+its provenance. CLI View and investigation arrangement/finalization formulas keep
+their responsible Presentation methods and authoritative usage inputs. A future
+GUI defines its own Presentation method provenance without changing the Session.
+The application API returns application provenance, and the CLI adapter supplies
+CLI-specific method context for its output and observations. Do not claim a renderer
+was used merely because its version is registered.
+
+This deliberately changes the captured input/provenance model. Advance responsible
+identity methods for that semantic change, including the input-capture method and
+Session record method as applicable, with a concrete before/after explanation.
+Downstream hashes and compact spellings may change across the baseline boundary;
+no cross-build identity equality or persisted-reference migration is promised.
+Preserve all other captured values, content, qualification, within-Session exact
+identity and allocation schedule. Comparison must account for referential changes
+explicitly rather than dropping provenance fields or globally normalizing hashes.
+
+**Rationale and alternatives.** Retaining the mixed registry would make every
+application client depend on CLI renderer versions even after import separation,
+and would complicate CLI retirement. The one-time identity/provenance change is
+within this task's human-directed scope. It establishes the same separation for
+future clients without designing their View formulas or a method-plugin framework.
+
 ## Governing impact and conformance
 
-This decision supplements existing decisions; it does not supersede a headed
-decision or change a core-concept definition. Add the explicit boundary to
-`app-specification.md` and `architectural-constraints.md` on acceptance. No
-foundation or development-process revision is required.
+Add the boundary to `app-specification.md` and `architectural-constraints.md` and
+revise the complete Evaluation and Expansion definitions in `core-concepts.md`
+together on acceptance. Standard detail may be required directly, explicitly or
+by request default, without a Presentation; its subject-kind meaning and separation
+from another Lens question remain unchanged. These are governing proposals, not
+changes made by adopting a draft. No foundation or development-process revision
+is required.
+
+This decision supplements the existing answer/View identity rules. It replaces the
+implementation's mixed method capture with the separated provenance rule above;
+the earlier decision's description of the provider's then-current registry capture
+is not a requirement to retain that incidental coupling. Current CLI-only port
+provisioning scopes this implementation without withdrawing the existing broader
+Presentation permission. No whole headed decision is superseded.
 
 Preserve the current successors in
 [research-question-driven observation](research-question-driven-observation.md),
@@ -284,10 +423,11 @@ Adoption is not a conformance claim. The associated implementation must establis
 conformance for all scoped current capabilities, with direct API and adapted CLI
 verification; no CLI-only semantic execution path is deferred past completion.
 
-The human-directed outcome distinction above is a scoped implementation/reporting
-change, not a relocation of worker alias allocation, arrangement-key transport or
-parent usage finalization. Preserve the remaining publication, qualification and
-identity contracts. No existing record's historical rationale is rewritten.
+The outcome distinctions above and the human-directed method-provenance separation
+are explicit implementation/reporting changes. Neither relocates worker alias
+allocation, arrangement-key transport or parent usage finalization. Preserve the
+remaining publication, qualification and identity contracts. No existing record's
+historical rationale is rewritten.
 
 The broader structured-account, account-presentation, GUI and external-agent work
 remains independent. It may revise the API. Known captured-basis observation

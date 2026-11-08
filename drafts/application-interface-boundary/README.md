@@ -15,7 +15,8 @@ Read the [implementation plan](plans/application-interface-boundary.md), the
 [decision draft](decisions/internal-application-api.md), and the proposed
 [specification](app-specification-revisions.md) and
 [constraint](architectural-constraints-revisions.md) additions together, along with
-the related [backlog revision](backlog-revisions.md).
+the [core-concept revisions](core-concepts-revisions.md) and related
+[backlog revision](backlog-revisions.md).
 
 Discussion outcome: the human said, “For the discussion choices listed in the
 README, I think i agree with your recommendations”. This establishes the working
@@ -28,9 +29,9 @@ governing revisions, direct promotion, or authorize implementation.
 | How does presentation influence acquisition? | Retain shared compatibility/requirements coordination, with client-owned declarations captured once at composition/opening. Direct content requests use current family standard expansions by default, with supported subsets explicit. | Moving all compatibility into clients duplicates semantic checks; a universal Presentation/plugin framework is unnecessary. |
 | Where does the CLI run its Presentation? | Preserve its private worker/parent arrangement and usage-finalization behavior. Inside the worker, a CLI client calls the application API, then arranges supplied content. | Moving all arrangement to the parent would send larger source-bearing content across the worker boundary and require revisiting accepted wire/identity provisions. That relocation is not needed for architectural separation. |
 | How much existing functionality is included? | Investigation, exact answers, operational reporting, output-boundary setup, and the existing provider/account and feedback operations, through cohesive services rather than one giant Session object. | Deferring account/feedback separation leaves application operations available only through command modules. New account management UX and recording modes remain out of scope. |
-| What compatibility is promised? | Preserve CLI capabilities and behavior except the agreed application work-status change for failed continuation presentation; keep the API internal and evolvable. | Public SDK/versioned transport commitments would add lifecycle and compatibility work without a present client need. |
+| What compatibility is promised? | Preserve CLI capabilities and behavior except the agreed application/client outcome separation and method-provenance identity change; keep the API internal and evolvable. | Public SDK/versioned transport commitments would add lifecycle and compatibility work without a present client need. |
 
-Rows 2 and 5 incorporate the later human directions recorded below; the quoted
+Rows 2 and 5 incorporate the later merge and full-review discussion directions below; the quoted
 agreement referred to the original recommendations, before those refinements.
 
 The third choice is a recommendation about implementation extent, not a requirement
@@ -50,13 +51,13 @@ The human directed synthesis after comparative and independent reviews. The late
 human directions settled the runtime and contract choices as follows:
 
 - Precise IDs are the general client contract. GUI clients display names and keep
-  IDs internally. Arrangement-time aliases are CLI-only, supplied at worker
-  composition and confined to that serialized requesting operation. Existing
+  IDs internally. The current arrangement-time port is supplied to the CLI adapter
+  at trusted composition and confined to that serialized requesting operation. Existing
   shared coordination allocations stay intact and may yield optional alias fields.
 - CLI arrangement stays in the worker, with existing parent usage finalization and
   View/arrangement-key delivery. No general `bind` API or worker binding bridge is
   introduced. Plain structured-clone-safe delivery prepares for later GUI hosting.
-- A produced/retrieved answer with CLI `unknown-continuation` has completed
+- An exact answer retrieved by `present` with CLI `unknown-continuation` has completed
   application work, failed CLI presentation/publication and exit code 3. Its
   observation application-work-status field changes from `failed` to `completed`;
   malformed syntax still follows the refusal path.
@@ -64,7 +65,7 @@ human directions settled the runtime and contract choices as follows:
   validated and frozen. Requests name captured choices; capability metadata exposes
   semantic requirements, not CLI format lists.
 - A direct information request defaults to all current standard expansions for
-  its answer family's subject kinds, with supported subsets explicit. This is a
+  its answer family's supported content, with subsets explicit. This is a
   domain default; current expansions are mechanical and inference-free. Future
   costly expansions require revisiting it. Exact retrieval cannot acquire more.
 - The batch envelope, local sink and acknowledgment become neutral dependencies.
@@ -95,21 +96,45 @@ Local wording now distinguishes interpretation selection into an answer from a
 client choosing an answer to display, scopes complete content to current eager
 families, and identifies the application API as direct callers' validation boundary.
 
-This is a merge pass, not closure of the earlier independent reviews. Their
-substantive findings need reassessment against the combined package; no blanket
-resolution is claimed. The original review material is preserved separately and
-has not been edited. Required rationale and agreed directions are included here
-and in the plan/decision so the package does not depend on disposable review files.
+The merge and completeness checks were followed by a fresh independent review of
+`a4cd56f`. This revision addresses its findings and incorporates the subsequent
+human discussion. The review assessed an earlier draft, so its receipt does not
+approve these revisions or establish implementation conformance. Review material
+remains disposable and unmodified; required rationale is included in this package.
 
-The subsequent completeness pass clarified that shared coordination continues to
-resolve input aliases per request, preserving supplied designations and refusals.
-It also names the trusted internal CLI operation scope: acquire the guard once,
-finalize application work before arrangement, and retain the scope through
-arrangement with explicit validity-check ownership and capability revocation.
-Trusted test/assessment injections, identity-method change criteria and out-of-range
-paging checks are explicit. The related F5 backlog revision removes the obsolete
-compact-binding prerequisite while retaining its GUI Presentation questions.
-A fresh independent review of the combined package remains outstanding.
+### Directions agreed after the full review
+
+- Application request/attribution context is typed and interface-independent. A
+  separate optional captured client attachment preserves actual invocation data;
+  clients may omit it. The CLI adapter uses its attachment to preserve existing
+  report/observation shapes without making those shapes the application contract.
+- Application work finishes independently of later presentation failures. This
+  extends the original unknown-continuation exception to unexpected arrangement
+  failures after completed work, retaining the client's own failure outcome. Direct
+  application validity checks still run before direct-call work finalization.
+- Separate Presentation-method versions from application identity in this task.
+  Remove them from analysis-input/Session method capture, retain them in responsible
+  View identity/provenance, and explicitly account for the one-time downstream
+  identity/reference changes. A retained mixed registry was considered and rejected.
+
+### Changes prepared for renewed review
+
+| Area | Draft treatment |
+| --- | --- |
+| Allocation ownership | Per-site schedule/owner/population table; mechanical and association allocations remain population-wide application coordination. Only investigation arrangement uses the scoped port, including its final whole-association batch after displayed bindings. |
+| Refusals and outcomes | Explicit detection/work/command/event/exit/report matrix, declarative client eligibility checked by shared coordination, parent rejection retained, and agreed status changes distinguished. |
+| Request and parent context | Typed semantic attribution plus captured optional client attachment; CLI output mapping retains format/detail/lifetime and exact supplied spelling. |
+| Governing direct requirements | Complete Evaluation/Expansion revisions; default requirements scoped to content contracts, with no investigation expansions and only exports/documentation for exports content. |
+| Lifecycle and attribution | Neutral parent guard with worker check transport/private deferral, direct post-check before finalization, associated-inspection attribution collected before arrangement, revocation on every scope exit. |
+| Identity and provenance | Explicit application/client method separation, responsible method-version changes, renderer-only identity tests and honest baseline comparisons. |
+| Tests, scripts and services | Same CLI adapter hosted in-process and in worker, preserved test assertions, live versus historical script classification, named provider-disclosure/diagnostic/SIGINT ownership. |
+| Documentation and scope | Entry-point TSDoc instead of a new API-inventory document, context-free direct feedback limit, current-scope binding wording, unreachable fresh paging branches removed in implementation, version-four observation meanings and CLI docs named. |
+
+The allocation table and outcome matrix are implementation/checking inventories;
+the decision owns the contract rationale, and governing additions state the broad
+invariants. The F5 backlog revision leaves GUI Presentation design open. No
+`notes/upcoming-work.md` changes are included. The revised package requires review
+and human approval before promotion or implementation.
 
 ## Findings from implementation inspection
 
@@ -198,21 +223,24 @@ is complete without producing any of those diagrams or implementing the journey.
 ## Governing impact and promotion
 
 The direction extends existing interface-independent analysis and qualified
-construction rules to an explicit application service boundary. The agreed
-continuation work-status exception is explicit in the plan and decision; other
-CLI preservation rules remain in force. No foundation,
-core-concept definition, Session lifetime, public compatibility promise or CLI
-retirement decision is changed. Existing accepted decisions are supplemented,
-not superseded, under the recommended worker arrangement. In particular, preserve
-worker-side alias allocation, the explicit investigation arrangement key and
-parent-side authoritative usage finalization. Shared publication policy is exposed
-through a guard without relaxing those existing checks.
+construction to an application service boundary. The decision explicitly covers
+the agreed application/client outcome distinction and method-identity separation.
+Its Evaluation/Expansion refinements permit direct content requirements while
+preserving the meaning of a Lens question. No foundation, Session lifetime,
+public compatibility promise or CLI retirement decision changes.
 
-The governing revisions are additions: they remove no existing heading, anchor,
-definition or responsibility. Inspection of the current specification, constraints,
-concepts and decision successor references identified no historical citation that
-needs clarification for these additions. Recheck inbound references if discussion
-changes this into replacement or supersession of an existing rule.
+Existing accepted decisions are supplemented, not replaced as whole headed units.
+Current CLI provisioning does not revoke their permission for a suitably scoped
+binding port in a future Presentation. Preserve worker-side allocation, explicit
+arrangement-key transport and parent authoritative usage finalization. Separating
+the mixed method registry changes captured provenance and resulting identities,
+not those ownership rules or existing View identity inputs.
+
+The specification and constraint revisions add the boundary. The core-concept
+revision replaces complete definitions while preserving their headings and anchors.
+Inbound references continue to denote Evaluation and Expansion under the clarified
+meaning. No immutable historical record is edited; adoption must include the new
+decision and coordinated governing revisions together.
 
 Review authority comes from the current successors, especially
 `research-question-driven-observation.md`, rather than superseded universal
@@ -220,12 +248,12 @@ recording clauses. The current CLI's automatic version-four batches remain
 supported behavior. The known captured-basis export and navigation-origin gaps
 remain disclosed and outside this plan; no new reliance on them is proposed.
 
-On human approval, promote the plan and decision, merge the two governing
-additions and the F5 backlog revision, and update their canonical indexes atomically.
+On human approval, promote the plan and decision, merge the specification/constraint
+additions, core-concept replacements and F5 backlog revision, and update their canonical indexes atomically.
 The plan already carries the necessary future-use context without depending on these notes. This package
 README is a review guide, not a proposed replacement for `docs/README.md`; dispose
 of it under human direction after promotion. No canonical document should link to
 this draft. Implementation requires separate authorization and its own task record.
 
-Verification of this merge consists of source/document inspection, synthesis
-coverage, link and diff checks. Runtime validation is specified in the plan, not claimed as performed.
+Verification of this draft revision consists of source/document inspection,
+review coverage, link and diff checks. Runtime validation is specified in the plan, not claimed as performed.
