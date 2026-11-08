@@ -158,7 +158,10 @@ starting leads, not names supplied because we already know the answer.
   outcomes, where needed, are outside Cockatiel's responsibilities. This is an
   architectural responsibility boundary; PostCode has no particular caller
   application to describe in this route.
-- **Cockatiel's policy family:** named facilities with distinct responsibilities:
+- **Policy:** an element that governs execution of application-supplied work
+  according to configured rules. Cockatiel applications create policy instances
+  and can reuse them across operations or combine them with other policies.
+- **Cockatiel's policy family:** kinds of Policy with distinct responsibilities:
 
   - **Circuit breaker:** withholds attempts after configured failures, then allows
     limited trial executions to find out whether work can succeed again.
@@ -259,8 +262,8 @@ about possible scope, not a commitment to generalize.
 
 **PostCode interaction:**
 
-- **Available subjects:** Cockatiel, policy family, Circuit breaker, Bulkhead and
-  external dependency role from [step 1](#orientation); inspection/capacity aspects
+- **Available subjects:** Cockatiel, Policy, its policy family, Circuit breaker,
+  Bulkhead and external dependency role from [step 1](#orientation); inspection/capacity aspects
   from [step 2](#readiness).
 - **Request:** revisit responsibilities and documented purpose; expand the meaning
   of the breaker's state information and the bulkhead's capacity information.
@@ -400,10 +403,10 @@ work together?
 
 **PostCode interaction:**
 
-- **Available subjects:** application role, supplied operation and policy family,
-  including the “policies can be combined” relationship ([step 1](#orientation));
-  waiting cases from [step 5](#waiting).
-- **Request:** select interaction and ownership at the application/library
+- **Available subjects:** Policy, application role, supplied operation and policy
+  family, including the “policies can be combined” relationship
+  ([step 1](#orientation)); waiting cases from [step 5](#waiting).
+- **Request:** select Policy's interaction and ownership at the application/library
   boundary. The displayed combination relationship provides access to wrapping
   and its ordering cases. Those cases may be shown together or opened individually;
   the route does not require selecting a composition before it has been identified.
@@ -415,9 +418,11 @@ work together?
 - **Application role:** creates and retains policy instances, chooses which calls
   share them, and supplies operations. Cockatiel does not automatically group
   operations by the external service they contact.
-- **Reusable policy instance:** carries configured policy behavior across calls.
-  A shared breaker retains failure/recovery state; a shared bulkhead retains
-  capacity counts and its waiting queue.
+- **Reusable policy instance:** expand the instance notion introduced with Policy
+  at step 1. An instance carries configured policy behavior across calls; a shared
+  breaker retains failure/recovery state, while a shared bulkhead retains capacity
+  counts and its waiting queue. This describes the operating model, not a discovered
+  runtime instance in a particular application.
 - **Individual execution:** is a particular use of a policy with a supplied
   operation. Its own progress, such as retry attempts, is distinct from shared
   policy state. Its result is pending until it completes with a value or error.
@@ -441,9 +446,10 @@ ordering matters. They are better positioned to reason about where a query belon
 Learning that instances compose does not yet establish what a combined query
 would promise, and the source-language object model need not be deciphered.
 
-**Review point:** This is likely useful earlier, but we preserve its position here.
-Responsibilities alone do not communicate the operating model; relationships
-between the accounts are part of the information need.
+**Review point:** This expands the brief Policy account from step 1; it need not
+introduce the concept for the first time. More of this detail might be useful earlier,
+but we preserve the sequence here. Responsibilities alone do not communicate the
+operating model; relationships between the accounts are part of the information need.
 
 <a id="acceptance"></a>
 ## 7. Choosing what an acceptance query should promise
@@ -455,8 +461,9 @@ queueing, would better express what I need. Should a negative answer explain why
 
 **PostCode interaction:**
 
-- **Available subjects:** admission outcomes and waiting cases ([step 5](#waiting)),
-  component instances and composition orderings ([step 6](#operating-model)).
+- **Available subjects:** Policy and its named types ([step 1](#orientation)),
+  admission outcomes and waiting cases ([step 5](#waiting)), and component instances
+  and composition orderings ([step 6](#operating-model)).
 - **Request:** revisit the admission accounts; expand state/capacity inspection and
   the meaning of refusal information. Select the policy or its exposed outcome,
   with contract/state as the requested perspective.
@@ -592,17 +599,18 @@ have not considered?
 
 **PostCode interaction:**
 
-- **Available subjects:** policy family and all six named types ([step 1](#orientation)),
-  common execution model and wrapping cases ([step 6](#operating-model)).
-- **Request:** revisit the family with contract as the perspective; expand the
-  meaning of shared execution and reuse the composition waiting accounts.
+- **Available subjects:** Policy, its family and all six named types
+  ([step 1](#orientation)); the execution model and wrapping cases
+  ([step 6](#operating-model)).
+- **Request:** select Policy's common execution contract, then consult its named
+  kinds for their particular contracts. Reuse the composition waiting accounts.
 - **Other input/access:** the generic acceptance interface is a human proposal,
   not an existing interface discovered by the selection.
 
 **What PostCode shows:**
 
-- **Common execution contract:** members of the policy family accept supplied
-  work for governed execution and report its eventual outcome. Sharing this role
+- **Policy — common execution contract:** members of the policy family accept
+  supplied work for governed execution and report its eventual outcome. Sharing this role
   does not establish a common pre-execution acceptance query.
 - **Circuit breaker and Bulkhead:** revisit the state/capacity and waiting contracts
   already exposed, including each mechanism's refusal conditions.
@@ -644,8 +652,9 @@ that picture before deciding what additional reporting a query should offer.
 
 **PostCode interaction:**
 
-- **Available subjects:** common execution contract ([step 10](#generic-interface)),
-  wait/refuse outcomes ([step 5](#waiting)), and component/wrapper roles (step 6).
+- **Available subjects:** Policy ([step 1](#orientation)) and its common execution
+  contract ([step 10](#generic-interface)), wait/refuse outcomes ([step 5](#waiting)),
+  and component/wrapper roles (step 6).
 - **Request:** select outcomes and notifications for policy execution, including
   how an inner outcome reaches the final caller through an outer policy. Related
   outcomes may be shown together or explored through their displayed relationships.
@@ -1030,7 +1039,7 @@ The simpler route relies on a provisional set of connected accounts:
 | Account or coordinated information | What must be intelligible | Human use it supports |
 | --- | --- | --- |
 | Application/library context and operating model | Supplied work, responsibility boundary, reusable state, per-call progress and composition | Place the issue; notice relevant scope and control choices |
-| Policy family, contracts and access | Coverage beyond breaker/bulkhead; observable outcomes and component access | Consider where a proposed facility belongs |
+| Policy, its family, contracts and access | The shared execution-governing role, its kinds and instance model; observable outcomes and component access | Consider where a proposed facility belongs |
 | State and interaction | Stored state, conditions, triggers, waiting, concurrency and elapsed time | Understand recovery; reason about an early query or changed trigger |
 | Library evidence, rationale and revisions | What is supported, interpreted, corrected or unknown about the library | Assess confidence and revisit the basis of understanding; issue reading remains outside PostCode |
 | Participant intentions, if supplied | What the human proposes or chooses, with attribution and exact references | Resume the investigation or explain a direction later |
