@@ -3,10 +3,15 @@
 Last considered: 2026-11-08
 
 A living document for keeping track of upcoming work and deciding what order to
-do it in, updated at each major checkpoint. It is a planning aid, not a governing
-document.
+do it in. Major checkpoints are useful occasions to reconsider it in strategy
+discussion. It is a planning aid, not a governing document.
 The [backlog](../docs/backlog.md), [candidate capabilities](candidate-capabilities.md),
 and [candidate UX](candidate-ux.md) hold the broader inventories.
+
+Maintain this document through human-led strategy discussion. Edit it only when
+the human explicitly requests changes to this document; general authorization to
+prepare or promote a planning package does not include it. Report implications
+for upcoming work separately rather than including proposed revisions in the package.
 
 The current focus is useful investigation of a software project through established
 architectural concepts, with retained, qualified accounts that humans and agents
@@ -300,9 +305,9 @@ At substantial completions, consequential findings, or changes in priority:
 - Which listed items should move down, return to the broader inventory, or drop out?
 - Have dependencies or conditional choices changed?
 
-Update the selection, ordering, and rationale accordingly. Item codes stay stable
-as priorities change; detailed outcomes and implementation history remain in
-their existing records.
+These questions guide human-led reconsideration of the selection, ordering, and
+rationale. Item codes stay stable as priorities change; detailed outcomes and
+implementation history remain in their existing records.
 
 <a id="cli-retirement-checkpoint"></a>
 ### CLI retirement checkpoint
