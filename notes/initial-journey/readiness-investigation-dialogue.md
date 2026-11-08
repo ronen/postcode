@@ -1127,7 +1127,7 @@ For Cockatiel, my suggested small comparison would use **the same objects in thr
 
 The test would be whether those pictures help you explain the system and notice useful questions—including whether “ready for a trial” has accidentally become “healthy” in your understanding.
 
-I’ve saved the [research shortlist and implications](design-findings.md#visual-precedents) and linked it into our exploration notes. These are promising precedents, not yet evidence that pictures improve this journey.
+I’ve saved the [research shortlist and implications](README.md#historical-visual-shortlist) and linked it into our exploration notes. These are promising precedents, not yet evidence that pictures improve this journey.
 
 <a id="working-account-extraction"></a>
 ## Design debrief: carrying understanding into another investigation

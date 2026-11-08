@@ -70,9 +70,11 @@ investigation from presenting an exact retained answer.
 
 Assess those needs against the [current capabilities](../../docs/capability-reference.md).
 Existing qualified interpretation, correction and exact-answer support are useful
-foundations, rather than proof of the full experience. Choose an evaluation
-appropriate to the first capability, including separate assessment of analytical
-fidelity and presentation. A further full journey is not required merely to use
+foundations, rather than proof of the full experience. Use the consolidated
+[capability-planning inputs](design-findings.md#capability-planning-inputs) for the
+account and navigation map, core/presentation split and conditional prerequisites.
+The [implementation-validation checks](design-findings.md#implementation-validation)
+preserve concrete evaluation criteria, including both correction episodes. A further full journey is not required merely to use
 these examples. Broader sequencing belongs to the strategy/planning work.
 
 <a id="basis"></a>
@@ -108,3 +110,43 @@ and the separate visual-research summary were removed at closeout after carrying
 forward their useful material. Their evolution remains in Git. The source dialogue's
 substantive exchanges, working-account input and received picture artifacts remain
 preserved; editorial navigation links have been maintained.
+
+<a id="archive"></a>
+## Exact earlier material
+
+The nine removed documents are available at commit
+`942475f33198d72397ee1410d6e3ca7f6c72ce4e` (short name `942475f`). Paths below are
+relative to `notes/initial-journey/`. These versions preserve the exploration at
+that point; later governing decisions and the curated outputs take precedence.
+
+| File at `942475f` | Material to consult when needed |
+| --- | --- |
+| `first-useful-investigation.md` | Journey method, scenario candidates, original capability and Presentation dependencies |
+| `persistent-architectural-perspectives.md` | Scope/perspective movement, persistent reference surfaces and follow-on assumptions |
+| `established-concepts-and-accounts.md` | Use of SEI concepts in account design without adopting a methodology |
+| `cockatiel-conceptual-operations-sketch.md` | Operation vocabulary, design-agent context and hypothetical/conditional-account discussion |
+| `cockatiel-human-postcode-walkthrough.md` | Verbatim questions, concept selections and earlier capability breakdown |
+| `cockatiel-information-and-judgment.md` | Detailed before/after reconstruction, account requirements, navigation findings and validation checklist |
+| `cockatiel-reference-surface-sketch.md` | Participant/input attribution, external-agent reference surface and optional repository-change beat |
+| `cockatiel-dialogue-standalone.md` | Edited shareable version of the first 30 exchanges |
+| `pictorial-representation-research.md` | Original visual-research shortlist and its proposed comparisons |
+
+Read any file from a repository checkout with `git show`, for example:
+
+```sh
+git show 942475f:notes/initial-journey/cockatiel-conceptual-operations-sketch.md
+```
+
+<a id="historical-visual-shortlist"></a>
+### Original visual-research shortlist
+
+The dialogue's “research shortlist and implications” link refers to the original
+`pictorial-representation-research.md`, rather than its later consolidation:
+
+```sh
+git show 942475f:notes/initial-journey/pictorial-representation-research.md
+```
+
+The [consolidated visual precedents](design-findings.md#visual-precedents) are a
+separate current reading aid. This archive pointer preserves which document the
+recorded message referred to without implying the two texts are identical.
