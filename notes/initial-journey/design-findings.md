@@ -116,7 +116,7 @@ persistent model, ongoing synchronization or a general retrieval architecture.
 <a id="capability-planning-inputs"></a>
 ## Capability-planning inputs
 
-This restores the concrete planning inputs from the intermediate walkthroughs.
+These are the concrete planning inputs from the intermediate walkthroughs.
 They are candidate needs for the selected episode, to be narrowed during planning,
 rather than approved implementation requirements. The
 [connected examples](cockatiel-account-examples.md) give the smaller worked case.
@@ -174,8 +174,10 @@ summary nor a dependency landscape has been selected as the solution.
 ### Presentation contracts and conditional prerequisites
 
 For the bounded slice, specify the needed selection, sorting, bounds, expansions,
-partial/unavailable-result handling and reference coordination. Current bounded
-JSON output is not necessarily the entire information available to an analysis.
+partial/unavailable-result handling and reference coordination. An incomplete or
+unavailable result must remain distinguishable from a complete “nothing exists”
+answer. Current bounded JSON output is not necessarily the entire information
+available to an analysis.
 Consequential qualifications must be visible without hover; type, density, contrast
 and layout are part of whether the proposed reference surface works.
 
@@ -184,7 +186,8 @@ basis and correction/association snapshot. Distinguish disclosure of retained de
 fresh investigation and selection of newer content. Show current revision status
 separately from historical content where needed. Preserve actual navigation origin
 without inventing evidence dependence or human reliance. Session-local retention is
-sufficient to start; a pinned program revision is not persistence across restart.
+sufficient to start; neither an input pin nor an exported reference makes an answer
+durable across restart.
 
 Relevant planning dependencies are:
 

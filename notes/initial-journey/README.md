@@ -74,8 +74,9 @@ foundations, rather than proof of the full experience. Use the consolidated
 [capability-planning inputs](design-findings.md#capability-planning-inputs) for the
 account and navigation map, core/presentation split and conditional prerequisites.
 The [implementation-validation checks](design-findings.md#implementation-validation)
-preserve concrete evaluation criteria, including both correction episodes. A further full journey is not required merely to use
-these examples. Broader sequencing belongs to the strategy/planning work.
+preserve concrete evaluation criteria, including both correction episodes. A further
+full journey is not required merely to use these examples. Broader sequencing belongs
+to the strategy/planning work.
 
 <a id="basis"></a>
 ## Basis and research material
