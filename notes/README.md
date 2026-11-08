@@ -15,6 +15,8 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 - [Upcoming work](upcoming-work.md)
 - [Candidate capabilities](candidate-capabilities.md)
 - [Candidate UX](candidate-ux.md)
+- [Human understanding and agency](human-understanding-and-agency.md)
 - [Dependency landscape](dependency-landscape.md)
 - [Explorative capabilities](explorative-capabilities.md)
+- [Completed initial-journey exploration](initial-journey/README.md): investigation script, connected account examples, concept references, and supporting research.
 - GUI: [design kickoff](gui/design-kickoff.md), [analysis needs](gui/analysis-needs.md), [visual language](gui/visual-language.md)

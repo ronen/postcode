@@ -1,0 +1,176 @@
+COCKATIEL: FOUR VIEWS OF A WORKING ACCOUNT
+Companion captions, traceability and production notes
+Produced 14 October 2026
+
+SOURCE AND STATUS
+
+Sole source of Cockatiel-specific claims: cockatiel-working-account.md,
+dated 2026-10-14, version "first extraction from the completed investigation".
+Its status is exploratory, non-governing agent synthesis for review and reuse.
+It describes investigation revision f48bea55022ab15ab07eb52a79bfc1e661300fd4;
+"current" in the pictures means that inspected revision, not today's upstream.
+The account cites planning commit 97907b7 and exchanges 1-30 as its provenance.
+Those underlying materials were not consulted for these pictures.
+
+The account is qualified evidence from documentation and static inspection.
+These illustrations add no software verification. They tell a new explanatory
+story, not a reconstruction of the unavailable investigation conversation.
+The three input files have not been changed.
+
+CAPTIONS AND CLAIM-TO-SOURCE MAP
+
+01 / THE APPLICATION OWNS THE JOB; POLICIES GOVERN EXECUTION
+Caption: Separate the application's business lifecycle from policy-controlled
+execution, and distinguish reusable policy state from progress in one call.
+
+Source heading: "What Cockatiel does and who owns what".
+- First paragraph: application supplies an operation; policy applies configured
+  rules; execution yields an eventual value or error; business meaning is not
+  required by Cockatiel.
+- Second paragraph: application creates and retains instances and chooses
+  sharing; owns identities, preparation, acknowledgments and stored outcomes.
+  Breaker state and bulkhead counts/queue persist across calls; retry attempts
+  are per execution. There is no automatic grouping by contacted service.
+- Policy table: the retry-attempt illustration draws on retry's broad role.
+
+02 / STARTING, WAITING AND SUCCEEDING ARE DIFFERENT
+Caption: Compare starting, acceptance into an in-memory wait, and refusal;
+then see why a capacity/state snapshot does not promise future admission.
+
+Source heading: "Admission, waiting and recovery".
+- First two paragraphs: immediate start, accepted waiting and success differ;
+  inspection reserves no permission; bulkhead exposes execution and queue
+  capacity; queued work remains pending in memory, without a durable job lifecycle.
+- Third paragraph: closed/open/half-open roles, manual isolation, and the
+  default single-trial example. Other calls wait for the trial and face the
+  resulting decision, which can refuse them. Half-open is not proof of health.
+Source heading: "What failures and notifications tell the caller".
+- First paragraph: admission refusals have distinct error types; waiting
+  itself is not failure. The picture does not name or collapse those types.
+
+03 / THE OUTSIDE POLICY CONTROLS CALLS INTO THE INSIDE
+Caption: Nested boundaries show what is already held or admitted when a
+call encounters a second policy. The retry loop shows repeated entry through
+the same breaker, rather than a bypass around it.
+
+Source heading: "How policies work together".
+- First paragraph: wrapping retains component instances and separate states;
+  outer policies control calls into the next policy.
+- Second paragraph: both order-dependent waiting cases and retry outside
+  a breaker are explicitly described. These are possible situations, not
+  unconditional outcomes of those compositions.
+Source heading: "What failures and notifications tell the caller".
+- First two paragraphs: outer retry/fallback may handle an inner failure;
+  events describe local activity, not one composition-wide report.
+
+04 / MOVE THE TRANSITION, NOT THE WORK
+Caption: Align current and proposed behavior at the same three landmarks.
+The proposed timer changes when state becomes half-open; application work
+still needs a later execution, and successful recovery is still unknown.
+
+Source heading: "Admission, waiting and recovery".
+- Fourth and fifth paragraphs: opening records time/delay; a later eligible
+  execution triggers half-open and supplies the trial. Time passage and state
+  reads alone do not transition. Existing events report actual transitions;
+  delay expiry alone currently emits no transition event.
+Source heading: "Human intent and the chosen direction".
+- "Reported need": costly preparation and state-check suppression of recovery;
+  this is reported, not reproduced. The reporter's timing workaround is not drawn.
+- "Human preference": immediate scope, existing facilities, room to grow.
+- "Chosen direction within the simulation": opt-in automatic transition at
+  recovery-delay expiry, default unchanged, existing state/event facility,
+  no automatic work and no established successful recovery.
+- Endorsement and "Still to settle": no implementation/handoff authorization,
+  no maintainer acceptance; all listed unresolved categories appear in the view.
+Source heading: "How the account and the design direction changed".
+- Final two table rows distinguish the factual correction about lazy
+  transitions from the design choice to prefer automatic opt-in transitions
+  over the earlier generic acceptance-query proposal.
+
+VISUAL LANGUAGE AND ASSUMPTIONS
+
+Tickets denote operation invocations, except the explicitly labelled business
+job folder in view 1. They are not messages, threads, durable queue entries,
+or a claim about data representation. A repeated ticket along an arrow is the
+same call at successive positions. Arrows show call progression, return,
+repetition or time as labelled; they do not specify physical transport.
+
+Open-topped slots show occupancy; nested outlines show policy wrapping, not
+deployment or ownership of the supplied work. The circuit symbol deliberately
+uses electrical semantics: a closed circuit allows passage, an open circuit
+withholds it. The half-open arrow means limited trials, not a fractional opening.
+Solid account illustrations, the dashed purple proposal, a labelled human
+preference, and question-mark items distinguish epistemic/design status without
+depending on colour alone. Red means blocking/refusal here, not policy failure
+classification in general. Amber marks waiting/trial situations.
+
+Illustrative choices, not configured defaults or measured traces:
+- View 1 uses three retry-progress marks solely to show per-call progress.
+- View 2 chooses one execution slot and one queue slot for visible occupancy.
+  Its snapshot example assumes another call takes capacity between inspection
+  and execution. No ordering or fairness rule is implied.
+- View 3A assumes a trial is already active and the outer bulkhead has admitted
+  the pictured waiting call. The "busy" indicator is breaker status, not a
+  second call occupying that same slot. The active trial's origin is not shown.
+- View 3B assumes capacity is held by other work and queue space is available;
+  that other work's origin is unspecified. Repeated trial tickets show one call.
+- View 4 shows ordinary recovery with no intervening isolation, reopening or
+  restoration. Those cases are unresolved, not covered by the timeline. Its
+  notice/inspect-to-prepare arrow is a possible application use of the proposed
+  facility, not a mandated workflow, exact event sequence, or reservation.
+
+VISUAL REFERENCES ACTUALLY USED
+
+Gregor Hohpe and Bobby Woolf, Enterprise Integration Patterns, Introduction
+and Message Filter example: compact functional symbols and composable paths.
+No published icon was copied. Message-discarding and messaging semantics are
+not imported into the Cockatiel pictures.
+https://www.enterpriseintegrationpatterns.com/patterns/messaging/Introduction.html
+https://www.enterpriseintegrationpatterns.com/patterns/messaging/Filter.html
+
+Simon Brown, C4 model, Notation: explicit scope, understandable labels and
+redundant visual coding. These are not formal C4 diagrams or deployment views.
+https://c4model.com/diagrams/notation
+
+Bret Victor, Learnable Programming (2012): make flow and state visible;
+show successive positions and matched time landmarks for comparison.
+These are static conceptual views, not live execution visualizations.
+https://worrydream.com/LearnableProgramming/
+
+All four consulted pages were accessible. Other supplied references were not
+needed for this focused treatment and were not consulted. No other external
+sources, Cockatiel documentation/source/issue, chats or project materials were
+retrieved. The citations in the working account were treated as provenance only.
+
+GAPS AND CONSEQUENTIAL LIMITATIONS
+
+The account leaves timer ordering, stale/duplicate transitions, restoration,
+lifetime/liveness, compatibility and reproduction unresolved. There is no
+basis here for an exact implementation, timer API, schedule or verified test.
+Notification is shown as a facility, not a promise about event order or delivery.
+
+These views select the account's operating and recovery story. They omit the
+full policy family; failure-selection configuration versus executable policy
+naming; unsuccessful returned results versus exceptions; the breaker-refusal
+exception to ordinary operation-failure events; and direct breaker-reference
+availability as an application-interface choice. The generic acceptance-query
+contract was not completed. Inspection is not presented as that missing API.
+
+They do not cover other recovery-sampling configurations, cancellation details,
+or an overall execution budget across attempts, delays, queues and recovery
+waiting. The account explicitly leaves the budget investigation unstarted.
+The pictures are not a complete state machine and do not establish why the
+maintainers chose lazy transitions. The account labels that rationale inference.
+
+FILES AND EDITING
+
+cockatiel-illustrated.pdf: four vector pages, matching the four rendered PNGs.
+01-ownership.svg through 04-recovery-change.svg: editable vector sources with
+live text and original symbols. Any SVG editor can modify them directly.
+render.py: regenerates all SVGs, PNGs and the PDF using Python 3 standard
+library and the rsvg-convert command from librsvg; no network access needed.
+Font: Arial, with Helvetica/sans-serif fallbacks. Different installed fonts may
+change layout. PNGs are 2000 x 1375; SVGs retain a 1600 x 1100 viewBox.
+
+The PDF was rendered back to PNG and visually inspected for layout. That is
+artifact quality assurance only, not a runtime check of Cockatiel behavior.

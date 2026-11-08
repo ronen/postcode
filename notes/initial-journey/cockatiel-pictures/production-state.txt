@@ -1,0 +1,89 @@
+PRODUCTION STATE / COCKATIEL ILLUSTRATIONS
+Recorded 14 October 2026, during the producing session.
+
+AGENT AND MODEL
+- Agent identity supplied by the environment: Codex, a GPT-based assistant,
+  running in ChatGPT Work Mode through an API/tool environment.
+- Exact model name, checkpoint/version and inference configuration: not
+  exposed to the assistant in the available session metadata. Not inferred
+  from the names of models offered by the delegation tool.
+- Role: primary agent /root. No subagents were spawned; no parallel agent
+  work or independent agent review was performed.
+- This is a self-report of visible state and actions, not a complete execution
+  environment manifest or independently attested model provenance.
+
+CONTEXT PRESENT AT THE START
+- The user's request, the three supplied Markdown files, general system and
+  developer instructions, tool descriptions and available-skill catalogs.
+- Automatically supplied cross-conversation memory was also visible. It
+  included a broad PostCode research/project summary and other personal
+  context. This was therefore not a context-free or blinded orientation test.
+- The original Cockatiel investigation dialogue was not supplied or retrieved.
+- No personal-context retrieval, other chat retrieval, project investigation,
+  Cockatiel source/documentation lookup or issue lookup was performed.
+- Cockatiel-specific substantive claims were taken from the supplied working
+  account, not from remembered facts. The separate notes identify interpretive
+  choices, omissions and illustrative assumptions.
+
+FILES READ
+- pictures-agent-prompt.md, complete: task, source boundaries and deliverables.
+- cockatiel-working-account.md, complete: dated 2026-10-14; version "first
+  extraction from the completed investigation"; exploratory/non-governing.
+- visual-language-references.md, complete: permitted visual-design sources.
+- The input files were read through the available file connector and not edited.
+
+SKILLS ACTUALLY READ / APPLIED
+- openai-library:library (cloud package c0/library): read the supplied files
+  and prepare persistence of the resulting artifacts. Also read its prepared
+  upload and writeback/conflict references, and fetched its current upload,
+  hosted-app and file-transfer helper scripts.
+- pdf:pdf (executor PDF plugin version 26.1007.11041): artifact-operation
+  marker, portable PDF output, rendering back to images and visual review.
+  PDF was generated from SVG via librsvg/Cairo rather than ReportLab, since
+  librsvg was already available and preserved the vector illustrations.
+- No image-generation, visualization-app, Sites, Pages, presentation,
+  personal-context or pet skill was applied. No GUI/application was built.
+
+TOOLS AND METHODS ACTUALLY USED
+- functions.exec: tool orchestration and independent read batches.
+- skills.read: skill instructions and supporting helper resources.
+- Library file read: complete contents of the three supplied files.
+- Web open: only the four permitted reference pages listed below.
+- exec_command and apply_patch: Python/SVG authoring, local rendering,
+  packaging and file-save preparation.
+- view_image: inspection of rendered PDF pages; layout revised and relevant
+  pages re-rendered/reviewed.
+- Python standard library: SVG text construction, paths, ZIP packaging, JSON.
+- rsvg-convert/librsvg: PNG rasterization and four-page vector PDF generation.
+- pdfinfo and pdftoppm/Poppler: PDF page count/format check and image rendering.
+- Reported versions: Python 3.14.8; rsvg-convert 2.63.2; Cairo 1.18.6;
+  Pango 1.58.2; HarfBuzz 14.6.0; Fontconfig 2.18.3; pdftoppm 26.10.0.
+- No image-generation model was used: precise diagram geometry and text were
+  authored directly. No Cockatiel code was executed or modified.
+
+PERMITTED EXTERNAL PAGES CONSULTED
+- Enterprise Integration Patterns: Introduction and Message Filter example.
+- Simon Brown's C4 model: Notation.
+- Bret Victor: Learnable Programming (2012).
+All were accessible. The companion notes give their full URLs and explain
+their limited use as visual-design references rather than software evidence.
+
+LOCAL ACCESS SCOPE
+- Working directory: /Users/ronen/Documents/Codex/2026-10-14/new-chat.
+- Shell: zsh; host filesystem paths are macOS-style.
+- An initial Markdown filename listing in the new working directory returned
+  no files. No project contents were read. Subsequent local discovery located
+  rendering tools and the installed PDF artifact-operation helper.
+- New deliverables were authored under output/cockatiel; QA and transfer
+  intermediates under tmp. The rendering script is included for reproducibility.
+
+REVIEW AND LIMITS
+- Single-agent review against the supplied account, followed by visual PDF QA.
+- No runtime reproduction, tests of library behavior, independent source
+  verification, human comprehension test or maintainer review.
+- Diagram corrections included fitting tickets inside capacity slots,
+  clarifying repeated tickets as successive positions of one call, showing
+  the composition's return path from policies, and separating breaker "busy"
+  status from the waiting operation occupying a bulkhead slot.
+- This note records observable production context, not private internal
+  reasoning, a token-level transcript or hidden system/developer instructions.
