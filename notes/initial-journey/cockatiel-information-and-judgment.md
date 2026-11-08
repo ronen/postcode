@@ -609,9 +609,10 @@ have not considered?
   Similar terminology is insufficient to assert uniform policy semantics.
 
 **After:** The human might recognize that the initial generalization covered too
-little of the family, or promised too much about future execution. The original
-proposal and surprise at other policies are recorded; a rejection at this point
-is not. In this route the policy names already appeared at step 1, so this can be
+little of the family, or promised too much about future execution. In the original
+dialogue, the human proposed a generic interface and then discovered there were
+other policy types; they did not explicitly reject the proposal at that point.
+In this route the policy names already appeared at step 1, so this can be
 a return to overlooked information rather than the discovery of previously absent
 policy types. They could refine, narrow or retain the idea. Our assessment: information
 supporting a shared vocabulary was not sufficient to establish a shared contract.
