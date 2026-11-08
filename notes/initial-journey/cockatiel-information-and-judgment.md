@@ -55,8 +55,11 @@ The human observed that prominently available information could change the order
 the operating model might be consulted well before step 6. Holding the order fixed
 tests information needs, not likely navigation behavior. Grouped steps are not
 atomic requests, and later revisiting a question does not mean earlier content was
-absent or necessarily understood. The route uses corrected accounts rather than
-deliberately reenacting mistakes from the dialogue.
+absent or necessarily understood. Most accounts use the corrected understanding
+from the dialogue. One error-and-correction episode is explicitly reconstructed:
+step 2 omits breaker waiting, and step 5 informs the human of that correction.
+The annotation identifying the initial error is for readers of this sketch, not
+information PostCode already shows the human at step 2.
 
 **PostCode interaction** describes the human side: available subjects they refer
 to, the request they make, and any other material supplied or access needed.
@@ -113,9 +116,11 @@ or the reporter's workaround and proposal. Connections between library behavior
 and that scenario belong to the human's reasoning. Returning to the issue is an
 outside-PostCode activity. Historical dialogue and the working account support
 our design notes; they are not implicitly preloaded into the simulated product.
-Optional correction inspection uses only explicitly available library-account
-material, not the entire original conversation. Optional capture of human intent
-likewise conveys only what the human supplies, with no automatic issue context.
+The step 5 correction targets the library account presented and retained at
+step 2; it does not require importing the original conversation. The separate
+optional timing-correction example at step 15 requires explicitly available
+library-account material. Optional capture of human intent likewise conveys only
+what the human supplies, with no automatic issue context.
 
 The [concept references](architectural-concept-references.md) ground context,
 responsibility, ownership/access, contract, state, interaction and rationale.
@@ -234,8 +239,10 @@ still associating Cockatiel with managing background jobs.
   retained state. Reading it does not itself supply application work or reserve
   an opportunity to execute.
 - **Execution/admission:** an application supplies an operation for execution;
-  policy behavior determines whether it proceeds, waits or is refused. The
-  detailed cases can be expanded on the policy.
+  the selected policy governs whether and how it proceeds.
+- **Circuit breaker — initial admission account:** presents three cases: normal
+  work allowed, a recovery attempt allowed, or work blocked. This is the account
+  available to the human at this step.
 - **Bulkhead — capacity and waiting queue:** execution capacity and queue capacity
   are resources controlled by the bulkhead, separate from the application's
   business job records.
@@ -246,12 +253,21 @@ still associating Cockatiel with managing background jobs.
   inspection and execution. This explains a limit of existing observations; it
   is not a specified contract for the human's proposed readiness query.
 
+**Sketch annotation — error in the initial result:** the breaker's three-case
+account above omits callers waiting while a recovery trial is occupied. It can
+mislead the human into treating recovery eligibility as immediate availability.
+This annotation identifies the error for our review; it is not a warning already
+given to the human. [Step 5](#waiting) reconstructs its discovery and correction
+from the original dialogue.
+
 **After:** The human might infer that observing current conditions could avoid some
 wasted preparation without securing later execution. In the dialogue they agreed
 to explore that weaker promise. Our assessment: the boundary clarification helps,
 but neither asynchrony nor queueing rules out reservation. Whether a weaker promise
 is sufficient remains a design judgment, and the proposed readiness check's precise
-meaning remains unsettled.
+meaning remains unsettled. The incomplete breaker account may also leave them
+unaware that execution can wait for a recovery decision; that omission has not yet
+been corrected in this sequence.
 
 <a id="scope"></a>
 ## 3. Other mechanisms and fit with the library
@@ -333,17 +349,17 @@ and PostCode has not adopted it as a Cockatiel maintainer requirement.
 [Original step 5, exchange 8](cockatiel-human-postcode-walkthrough.md#waiting)
 
 **Before:** Bulkhead also seems to expose capacity readiness. What does it actually
-mean, and would that support unifying it with breaker readiness?
+mean, and would that support unifying it with breaker readiness? The earlier
+breaker account offered normal/trial/blocked cases; I have not yet been told that
+another caller can wait while a trial is occupied.
 
 **PostCode interaction:**
 
 - **Available subjects:** Circuit breaker and Bulkhead ([step 1](#orientation)),
-  execution/admission, execution capacity and waiting queue ([step 2](#readiness)).
-- **Request:** select admission contracts for both policies, including their
-  waiting cases. The cases may appear initially or through expansion.
-- **Other input/access:** optional correction inspection requires the earlier
-  library account and its corrected version to be explicitly available. The
-  recorded dialogue supplies the example; this route has not generated that history.
+  the retained initial breaker admission account, execution capacity and waiting
+  queue ([step 2](#readiness)).
+- **Request:** select admission contracts for both policies and expand their
+  capacity/admission detail.
 
 **What PostCode shows:**
 
@@ -358,9 +374,17 @@ mean, and would that support unifying it with breaker readiness?
 - **Waiting caller → trial outcome:** after that wait, the breaker decision can
   still refuse the caller. Waiting for a recovery decision is therefore different
   from waiting for an execution slot.
-- **Correction detail, if opened:** the original dialogue's normal/trial/blocked
-  account omitted waiting; the later account adds it. The original and correction
-  are separately attributable, rather than silently rewriting one another.
+- **PostCode informs the human of a correction to the earlier detail:** the
+  [step 2](#readiness) breaker account omitted a waiting case. Further analysis
+  identifies that, in the default single-trial case, another caller can wait for
+  the occupied trial's outcome and may then be refused. Recovery eligibility
+  therefore does not mean every caller can begin a trial immediately. This notice
+  accompanies the new account; the human need not open correction details to
+  learn that the earlier explanation changed.
+- **Correction access:** identify the exact earlier admission account, the corrected
+  account and the reason for the change. Both versions and their supporting basis
+  remain inspectable. Preserve the earlier answer rather than silently rewriting
+  it. The sketch leaves the notification's UI form open.
 - **Conditions:** these are static interpretations of the inspected revision.
   Other recovery sampling configurations were not worked through. The start/wait/
   refuse cases are policy-scoped subjects, not a generic new acceptance API.
@@ -368,9 +392,11 @@ mean, and would that support unifying it with breaker readiness?
   within the breaker account, providing a route to the closer examination in
   [step 13](#trial).
 
-**After:** Shared admission vocabulary might lead the human toward a common query.
-The waiting details give them reason to distinguish immediate progress from
-acceptance and eventual execution. Our assessment: the resemblance is a reasonable
+**After:** The human has been informed that the earlier breaker account omitted
+waiting and can revisit any reasoning based on its three cases. Shared admission
+vocabulary might still lead them toward a common query. The corrected waiting
+details give them reason to distinguish immediate progress from acceptance and
+eventual execution. Our assessment: the resemblance is a reasonable
 lead, but it does not establish a common contract. Composition and the rest of the
 policy family still matter; the human remains positioned to investigate, not to
 regard unification as settled.
@@ -991,7 +1017,8 @@ accounts to design something new.
 | Human-read issue → name lookup → Cockatiel context (step 1) | Circuit breaker, CircuitBreakerPolicy and CircuitState are leads the human supplies; the report stays outside PostCode. | Repository selection, semantic name resolution/disambiguation and a route to surrounding context. |
 | Policy combination → wrapping cases (step 6) | Follow the relation exposed at step 1, then select an ordering case from the resulting account. | An analytical account exposing navigable relationships, not just text mentioning composition. |
 | Half-open → trial interaction (steps 5/8 → 13) | A state is first named within the breaker account, then becomes a selectable subject. | Stable subject meaning and retained-account references across perspectives. |
-| Current answer → earlier wording/correction (steps 5 and 15) | Historical errors belong to the recorded dialogue, not automatically to this new route. | Exact earlier material and correction associations if offered; no invented correction history. |
+| Step 2 account → correction notification at step 5 | The sketch explicitly presents an incomplete breaker account, then informs the human that it omitted waiting. | Retain the exact earlier account, supply it as correction context, and expose the correction and reason with the new answer; preserve inspection of both versions. |
+| Optional earlier timing wording/correction (step 15) | The separate timing error remains a historical example, not an error enacted by this route. | Exact earlier material and correction associations if offered; no assumed access to the original dialogue. |
 | Human rereads report → relates it to library behavior (steps 8, 12, 14–15) | Outside reading supplies the gate, workaround assessment and suggestion; PostCode supplies only library accounts. | No issue ingestion required. The human makes the cross-source connection; their reading is not proof of a fix. |
 | Breaker → lifecycle detail (step 17) | A known subject can be used to request a new perspective without guessing a new entity. | Deeper evidence/investigation where this record has only a concern or incomplete account. |
 | Human idea → retained intention (steps 4 and 18) | New participant material needs explicit supply, not navigation to an existing program element. | Capture is optional here and distinct from hypothetical analysis. |
@@ -1029,10 +1056,13 @@ competent delivery here does not establish that the capabilities exist today.
   unknown maintainer intent, illustrative cases and actual application observations.
   Possible caller arrangements do not establish usage prevalence. The external issue
   and the human's design ideas stay outside the account unless explicitly supplied.
-- **Earlier answers and corrections:** where offered, provide the exact earlier
-  account, its correction and their relationship. Do not invent a history for this
-  reconstructed route. A retained human choice should identify the exact supporting
-  accounts selected, without turning the choice into independently verified analysis.
+- **Earlier answers and corrections:** test the explicit step 2 → step 5 episode:
+  the new answer informs the human of the omission, identifies the exact earlier
+  account and provides the corrected account and reason. Notification must not
+  depend on opening correction details; both versions remain inspectable. The
+  separate step 15 timing example still requires its own earlier material. A
+  retained human choice should identify the exact supporting accounts selected,
+  without turning the choice into independently verified analysis.
 - **Optional capture and stopping:** if supplied preferences or decisions are retained,
   preserve their attribution and status. The human can also use the accounts and
   stop without creating a decision record, receiving a verdict or requesting a recap.
