@@ -3,15 +3,15 @@
 Started: 2026-10-14
 Status: simulated investigation reached a decision endpoint; exploratory, non-governing
 
-Companion to [First useful graphical investigation](first-useful-investigation.md).
+Research source for the [completed initial-journey exploration](README.md).
 The human authorized recording the dialogue as it develops. This is a simulation
 of investigation with an agent, not a run of PostCode or proof that its existing
 capabilities produce these answers. No Cockatiel or GUI implementation is authorized.
 
-A [standalone edited version](cockatiel-dialogue-standalone.md) presents the
-opening and 30 substantive exchanges without research-process material or
-references to these planning documents. This source record remains unchanged
-in its substantive dialogue.
+Retained to examine how human questions, agent contributions, corrections and
+gradual orientation shaped the investigation and subsequent product direction.
+The final [investigation script](cockatiel-investigation-script.md) is a separate
+reconstruction of PostCode use; this source preserves the substantive dialogue.
 
 ## Recording convention and basis
 
@@ -19,9 +19,11 @@ The numbered exchanges below preserve the substantive human and assistant messag
 verbatim, including uncertainty, proposals, and later corrections. Tool activity
 and progress commentary are omitted; evidence access is described separately.
 Keep subsequent clarifications as new exchanges rather than repairing earlier
-answers. Link destinations have been updated for relocation into
-`notes/initial-journey/`; substantive dialogue wording is preserved. Research observations at the end are editorial interpretation, not part
-of the simulated response or agreed product requirements.
+answers. Repository link destinations were updated for relocation and the
+2026-11-08 curation; substantive dialogue wording is preserved. The original
+exploration files remain in Git at `942475f`. Research observations at the end are
+editorial interpretation, not part of the simulated response or agreed product
+requirements.
 
 The exercise uses [Cockatiel issue #111](https://github.com/connor4312/cockatiel/issues/111)
 and repository revision `f48bea55022ab15ab07eb52a79bfc1e661300fd4`.
@@ -1125,7 +1127,7 @@ For Cockatiel, my suggested small comparison would use **the same objects in thr
 
 The test would be whether those pictures help you explain the system and notice useful questions—including whether “ready for a trial” has accidentally become “healthy” in your understanding.
 
-I’ve saved the [research shortlist and implications](/Users/ronen/postcode/app-worktrees/graphical-investigation-journey/notes/initial-journey/pictorial-representation-research.md) and linked it into our exploration notes. These are promising precedents, not yet evidence that pictures improve this journey.
+I’ve saved the [research shortlist and implications](design-findings.md#visual-precedents) and linked it into our exploration notes. These are promising precedents, not yet evidence that pictures improve this journey.
 
 <a id="working-account-extraction"></a>
 ## Design debrief: carrying understanding into another investigation
@@ -1154,7 +1156,7 @@ second investigation has begun.
 
 Yes—those serve complementary purposes. **The dialogue preserves how we arrived here; an extracted account makes what we currently think easier to inspect and reuse.** The extraction also exposes choices about what to retain, qualify or leave unresolved.
 
-I’ve made a [first working account](/Users/ronen/postcode/app-worktrees/graphical-investigation-journey/notes/initial-journey/cockatiel-working-account.md), covering:
+I’ve made a [first working account](cockatiel-working-account.md), covering:
 
 - Objects, responsibilities, policy composition and behavior.
 - Supporting dialogue passages and the evidence cited there.

@@ -4,9 +4,9 @@ Recorded: 2026-11-06
 Status: exploratory grounding, not an adopted taxonomy or prescribed methodology
 
 These references ground the displayed content and selections in the
-[detailed walkthrough](cockatiel-information-and-judgment.md) and
-[standalone script](cockatiel-investigation-script.md), as well as the earlier
-[human + PostCode walkthrough](cockatiel-human-postcode-walkthrough.md).
+[investigation script](cockatiel-investigation-script.md) and
+[connected account examples](cockatiel-account-examples.md). The
+[exploration entry point](README.md) describes their outcome and basis.
 Definitions below are brief paraphrases; **application** identifies our adaptation.
 They do not establish that PostCode implements the corresponding analysis.
 References belong in these design notes; whether the product exposes them is open.
@@ -20,7 +20,7 @@ architectural view is not identical to PostCode's instantiated Presentation (Vie
 <a id="mnemonics"></a>
 ## Mnemonics used in the sketches
 
-Each displayed item in the detailed walkthrough and standalone script links to
+Each displayed item in the script and the concrete example accounts links to
 its corresponding entry below. Mnemonics identify the kind of information, not
 a prescribed control, Lens definition or independent proof of a Cockatiel claim.
 Two labels indicate complementary aspects of one item. The mapping records the

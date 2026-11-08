@@ -56,8 +56,8 @@ Annotations identifying the initial errors are for readers of the script.
 These episodes specify the experience once an investigation identifies a correction.
 They provide no evidence of reliable error discovery or automatic consistency checking.
 
-The [detailed exploration](cockatiel-information-and-judgment.md) records the basis
-and design discussion. Everything needed to follow this episode is included here.
+The [exploration entry point](README.md) records the outcome, evidence and remaining
+planning questions. Everything needed to follow this episode is included here.
 
 <a id="journey-scope"></a>
 ## Deliberate scope choices
