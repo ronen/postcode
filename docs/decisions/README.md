@@ -62,20 +62,15 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 <a id="accepted-decisions"></a>
 ## Accepted decisions
 
-- [Specialize in architectural investigation and retained understanding](specialized-architectural-investigation.md)
-
-- [Human-facing architectural representations](human-facing-architectural-representations.md)
+- [Research-question-driven observation](research-question-driven-observation.md)
+- [Specialize in architectural investigation and retained understanding](specialized-architectural-investigation.md) — partially superseded; see the record’s heading mappings.
+- [Human-facing architectural representations](human-facing-architectural-representations.md) — partially superseded; see the record’s heading mappings.
 - [Allow structured investigram content](structured-investigram-content.md) — partially superseded; its accumulation requirement and representation-independent interpretation contracts remain accepted.
-
-- [Present exact retained answers independently of fresh selection](exact-retained-answer-presentation.md)
-
-- [Compact interface attribution and complete operational results](compact-attribution-and-complete-results.md)
-- [Separate research concepts from application specification](application-specification-boundaries.md)
-
+- [Present exact retained answers independently of fresh selection](exact-retained-answer-presentation.md) — partially superseded; see the record’s heading mappings.
+- [Separate research concepts from application specification](application-specification-boundaries.md) — partially superseded; see the record’s heading mappings.
 - [Coordinate Views while preserving qualified results](coordinated-views-and-qualified-results.md) — partially superseded; see the record’s heading mappings.
 - [Hosted authentication and billing routes](hosted-authentication-and-billing.md)
 - [Private investigator reference transport](investigator-reference-transport.md)
-
 - [Investigation operations and lenses](investigation-operations-and-lenses.md)
 - [Investigrams and progressive investigation](investigrams-and-progressive-investigation.md) — partially superseded; see the record’s heading mappings.
 - [Investigator execution and evidence access](investigator-execution-and-evidence-access.md) — partially superseded; see the record’s heading mappings.
@@ -94,9 +89,8 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 - [Module composition property decision](module-composition-property-decision.md)
 - [Dependency and organization integration decisions](dependency-organization-integration-decisions.md)
 - [Subject-kind standard expansion decision](subject-kind-standard-expansion-decision.md)
-
-- [Lens application, request outcomes and qualified answer identity](lens-application-and-request-outcomes.md)
-- [Qualified construction under the request model](qualified-construction-under-the-request-model.md)
+- [Lens application, request outcomes and qualified answer identity](lens-application-and-request-outcomes.md) — partially superseded; see the record’s heading mappings.
+- [Qualified construction under the request model](qualified-construction-under-the-request-model.md) — partially superseded; see the record’s heading mappings.
 - [Experimental structured outputs during early development](experimental-structured-outputs.md)
 
 ## Suggested Contents

@@ -10,6 +10,7 @@ Superseded in part:
 - [Record normal view production automatically](#record-normal-view-production-automatically) is replaced by [Command-scoped observations with session correlation](transient-analysis-sessions.md#command-scoped-observations-with-session-correlation).
 
 - [Defer contemporaneous note capture](#defer-contemporaneous-note-capture) is replaced by [Initial feedback interaction](human-facing-architectural-representations.md#initial-feedback-interaction). The replacement includes the [feedback observation contract](human-facing-architectural-representations.md#feedback-observations).
+- [Keep observations separate from `ProgramRecordStore`](#keep-observations-separate-from-programrecordstore) is replaced in full by [observation lifetime](research-question-driven-observation.md#observation-lifetime).
 
 ## Context
 

@@ -26,6 +26,8 @@ Supersedes:
 Superseded in part:
 
 - [Retained domain and storage boundaries](#retained-domain-and-storage-boundaries) is replaced in full by [Generalize Lens results and View composition](coordinated-views-and-qualified-results.md#generalize-lens-results-and-view-composition), [Preserve immutable results under bindings and refresh](coordinated-views-and-qualified-results.md#preserve-immutable-results-under-bindings-and-refresh), and [Retain unaffected domain and storage commitments](coordinated-views-and-qualified-results.md#retain-unaffected-domain-and-storage-commitments).
+- [Command-scoped observations with session correlation](#command-scoped-observations-with-session-correlation) is replaced in full by [research capture](research-question-driven-observation.md#research-capture).
+- [Stable inputs as the session precondition](#stable-inputs-as-the-session-precondition) is replaced in full by [validity and recording](research-question-driven-observation.md#validity-and-recording).
 
 ## Context
 
