@@ -82,7 +82,7 @@ flowchart TD
 | Position | Item | Why here / what could change it |
 | --- | --- | --- |
 | Next: bounded capability planning | [ACCOUNT — Structured architectural accounts](#account) | Use the completed exploration's connected account examples to choose a first implementation slice with PRESENT. Admission → trial → correction is a candidate; composition can test extension across accounts. |
-| Plan alongside ACCOUNT | [PRESENT — Account presentation and navigation](#present) | Choose the minimum presentation and navigation needed to exercise that slice, including qualifications and access to earlier answers. The exploration supplies examples, not a settled interface. |
+| Plan alongside ACCOUNT | [PRESENT — Account presentation and navigation](#present) | Exercise the account structure through selected architectural diagrams, qualifications, and access to earlier answers. A bounded rendering demonstration can precede the GUI. |
 | Movable, when a concrete exchange needs it | [AGENT — External-agent investigation and exchange](#agent) | Support external design or implementation agents requesting investigations or using retained accounts. Assess existing CLI support first; neither structured accounts nor a preceding human GUI journey is a prerequisite. |
 | Conditional on interaction needs | [GUI — Bounded graphical investigation](#gui) | Build a dedicated working surface when its interactions are needed for the experiment or justified by its findings. Diagram presentation alone need not require the full GUI. |
 
@@ -100,18 +100,32 @@ Alphabetical by code.
   conflicts, and access to earlier accounts.
 - **Scope:** a bounded slice drawn from the completed exploration's connected
   account examples, within the current Session lifetime. Assess structured
-  investigram content and existing associations, retention, and replacement. Account shapes
-  can follow the data needed by selected representations; a working account may
-  comprise several investigrams.
+  investigram content and existing associations, retention, and replacement.
+  Account design and implementation must carry the semantic content needed by
+  a small set of architectural diagrams chosen with PRESENT—for example,
+  structural, state, or interaction views. Their distinct information needs
+  guide account structure; a working account may
+  comprise several investigrams. The examples span policy kinds, instance roles,
+  states, and executions; responsibility-focused investigation can inform those
+  accounts without requiring a separate Lens. Preserve the known account/answer
+  origin of follow-up selections, independently of evidence support or human reliance.
 - **Decision:** what structure and selection are actually needed? Distinguish
   revision status, applicability to a question, and the working selection for an investigation.
   Correspondence or synthesis requires qualified analysis. A universal schema,
   consolidated model, and general retrieval system are not assumed.
   Choose how the initial architectural subjects become available; a supplied
   fixture can test machinery without demonstrating end-to-end investigation.
+  Define offered questions with PRESENT so their meaning does not depend on the
+  human's unspoken purpose.
+- **Validation:** demonstrate with PRESENT that the selected diagrams can be
+  generated from retained account content without reconstructing missing
+  architectural meaning during rendering. Universal notation support and stored
+  layout choices are not required.
 - **Sources:** [journey outputs: connected account examples](initial-journey/cockatiel-account-examples.md),
   [journey findings: capability-planning inputs](initial-journey/design-findings.md#capability-planning-inputs),
   [backlog: architectural accounts through concrete journeys](../docs/backlog.md#explore-architectural-accounts-through-journeys),
+  [candidate capabilities: responsibility-focused investigation](candidate-capabilities.md#responsibility-focused-investigation),
+  [backlog: navigation origins](../docs/backlog.md#assess-and-preserve-navigation-origin-lineage),
   [decision: structured investigram content](../docs/decisions/structured-investigram-content.md).
 
 <a id="agent"></a>
@@ -156,12 +170,26 @@ Alphabetical by code.
   content may require investigation rather than another rendering of one account.
   Resolve composition, reference coordination, and View identity as needed by
   these interactions; broader GUI architecture follows concrete requirements.
+  Make subject-specific questions discoverable, with new investigation distinct
+  from displaying retained detail. Show consequential conditions and corrections
+  while preserving access to earlier answers. Explore returning to a useful
+  surrounding account; keeping it always visible remains a hypothesis.
+- **Validation:** include a bounded diagram-rendering demonstration in the first
+  account/presentation implementation, using an export or standalone renderer
+  if sufficient. Check semantic fidelity, consequential scope and uncertainty,
+  traceability to account content, and revised versus exact earlier answers.
+  Successful rendering alone is insufficient; a richer GUI can follow later.
 - **Decision:** what belongs in the main representation versus optional detail,
   and how are partiality, disagreement, and revision made usable? Investigation
   lineage and architectural relationships remain distinct.
+  Use structured qualification where it serves the selected interactions, without
+  requiring a general visual taxonomy or a project-wide overview.
 - **Sources:** [journey outputs: investigation script](initial-journey/cockatiel-investigation-script.md),
   [journey outputs: connected account examples](initial-journey/cockatiel-account-examples.md),
   [journey findings: implementation-validation checks](initial-journey/design-findings.md#implementation-validation),
+  [candidate UX: discoverable questions](candidate-ux.md#discoverable-questions-and-named-actions),
+  [candidate UX: qualification and changing accounts](candidate-ux.md#qualification-and-changing-accounts),
+  [candidate UX: available orientation](candidate-ux.md#orientation-that-remains-in-view),
   [backlog: Presentation representation, F5](../docs/backlog.md#decide-how-gui-presentations-and-their-parameters-are-represented),
   [backlog: additional-detail placement](../docs/backlog.md#review-more-details-information-placement),
   [backlog: navigation origins](../docs/backlog.md#assess-and-preserve-navigation-origin-lineage),
