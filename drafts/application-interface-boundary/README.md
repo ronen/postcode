@@ -131,18 +131,18 @@ remains disposable and unmodified; required rationale is included in this packag
 | Tests, scripts and services | Same CLI adapter hosted in-process and in worker, preserved test assertions, live versus historical script classification, named provider-disclosure/diagnostic/SIGINT ownership. |
 | Documentation and scope | Entry-point TSDoc instead of a new API-inventory document, context-free direct feedback limit, current-scope binding wording, unreachable fresh paging branches removed in implementation, version-four observation meanings and CLI docs named. |
 
-The re-review at `244871f` found the earlier findings addressed and recommended
-approval once the parser/capture outcome rows were corrected. This revision makes
-that correction and clarifies attachment assembly, the historical benchmark pair,
-method-split sequencing, optional historical-inspection aliases and deferred-check
-wording. Those corrections have been checked against source; they are not themselves
-a new independent review or human approval.
+The second re-review at `fb8686e` confirmed the six earlier findings resolved and
+found no remaining approval blockers. Its non-blocking note is now explicit in the
+script table: migrated profiling and partial-session harnesses support older builds
+only when their internal module/export shape matches the harness. Instrumentation
+targets must migrate with the code. This final clarification is source-checked;
+review recommendations do not constitute human approval.
 
 The allocation table and outcome matrix are implementation/checking inventories;
 the decision owns the contract rationale, and governing additions state the broad
 invariants. The F5 backlog revision leaves GUI Presentation design open. No
-`notes/upcoming-work.md` changes are included. The revised package requires review
-and human approval before promotion or implementation.
+`notes/upcoming-work.md` changes are included. The package awaits human approval
+before promotion; implementation still requires separate authorization.
 
 ## Findings from implementation inspection
 
