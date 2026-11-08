@@ -18,8 +18,10 @@ The desired boundary covers existing functionality and allows later interfaces
 and account capabilities to evolve it. It does not select a graphical framework,
 external protocol or public library. The decisions below are interdependent.
 
-[Needs review] The human must accept these choices before promotion. The wording
-below describes the recommended decision, not an already settled architecture.
+[Needs review] The human has agreed in principle with the five recommendations
+summarized in the package review guide. The detailed decision and coordinated
+governing revisions remain in review before acceptance and promotion. The wording
+below describes that agreed direction, not an adopted architecture.
 
 ## Decisions
 

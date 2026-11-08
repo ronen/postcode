@@ -362,10 +362,11 @@ assessment requiring those missing guarantees.
 
 ## Risks and open choices
 
-[Needs review] Accept or revise the recommended full-content API, neutral
+The human has agreed in principle with the full-content API, neutral
 requirements/compatibility split, retained CLI worker arrangement, inclusion of
-companion services and CLI preservation scope before approval. These are human
-decisions, not instructions to the implementing agent to choose silently.
+companion services and CLI preservation scope. These are the working direction
+for this plan. Review of the detailed contracts and governing revisions remains
+open before package approval and promotion; implementation is not authorized.
 
 The main implementation risks are exposing source-bearing content through the
 wrong audience boundary; changing acquisition/alias schedules during extraction;

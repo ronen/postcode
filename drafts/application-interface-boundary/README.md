@@ -5,8 +5,9 @@ Prepared: 2026-11-08
 Implementation baseline: `e9e4965d98aa7ab8c9c69469ea768141afce5c94`
 
 This is planning only. Nothing in this package approves implementation or changes
-governing material. The recommendations below require human discussion and
-acceptance. No implementation task record has been opened.
+governing material. The human has agreed in principle with the five recommendations
+below. The detailed package remains in review; no implementation task record has
+been opened.
 
 ## Reading and decisions
 
@@ -14,6 +15,11 @@ Read the [implementation plan](plans/application-interface-boundary.md), the
 [decision draft](decisions/internal-application-api.md), and the proposed
 [specification](app-specification-revisions.md) and
 [constraint](architectural-constraints-revisions.md) additions together.
+
+Discussion outcome: the human said, “For the discussion choices listed in the
+README, I think i agree with your recommendations”. This establishes the working
+direction for all five choices. It does not yet adopt the detailed decision and
+governing revisions, direct promotion, or authorize implementation.
 
 | Choice for discussion | Recommendation | Alternative and tradeoff |
 | --- | --- | --- |
