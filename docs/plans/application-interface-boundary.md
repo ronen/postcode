@@ -1,6 +1,6 @@
 # Separate application functionality from its interfaces
 
-Status: in review
+Status: approved
 Created: 2026-11-08
 Updated: 2026-11-08
 Superseded by:
@@ -92,11 +92,11 @@ Governing constraints include [qualified results and construction](../decisions/
 [generated-output boundaries](../decisions/generated-output-boundaries.md).
 Read their current successor mappings, not superseded clauses in isolation.
 
-The [internal API decision](../decisions/internal-application-api.md) and revisions
-to the [application specification](../app-specification.md#application-interface-boundary),
+The [internal API decision](../decisions/internal-application-api.md) and coordinated
+revisions to the [application specification](../app-specification.md#application-interface-boundary),
 [architectural constraints](../architectural-constraints.md#application-interface-boundary)
-and [core concepts](../core-concepts.md#evaluation) must be accepted together before
-implementation. Their draft links name intended canonical destinations.
+and [core concepts](../core-concepts.md#evaluation) were accepted with this plan.
+Adoption does not establish implementation conformance or authorize implementation.
 
 ## Responsibility and dependency design
 
@@ -726,22 +726,13 @@ layout or identity, nor short references for external agents. MINIGUI will proba
 need worker hosting plus full-content transport over these plain-data contracts;
 it will display names and keep precise IDs internally rather than use CLI `@` aliases.
 
-## Risks and review status
+## Approval and implementation risks
 
-The human agreed with the original five recommendations and, in the merge
-direction, settled precise-ID clients/CLI-only arrangement binding, completed
-application work versus failed continuation presentation, capture-once declarations,
-family-standard direct defaults and neutral observation/feedback dependencies.
-These directions shape this merged draft. The detailed combined package remains
-in review before approval/promotion; implementation is not authorized. The subsequent
-human discussion added typed application context with optional client attachments,
-application completion independent of presentation failures, and method-identity
-separation to this task's scope.
-
-After the earlier reviews and completeness pass, an independent review assessed
-the combined package at `a4cd56f`. Its findings led to the allocation table, outcome
-matrix, context and method-identity decisions and core-concept revisions. The revised
-package, including the subsequent human directions, needs review before approval.
+Approved on 2026-11-08 after independent review and correction of the planning
+package. The accepted direction includes typed application context with optional
+client attachments, application completion independent of presentation failures,
+and method-identity separation. Implementation requires separate authorization
+and a task record; this plan is not active implementation work.
 
 Principal risks remain raw-support disclosure, altered acquisition/alias schedules,
 live lookup replacing fixed support, publication checks bypassed between layers,

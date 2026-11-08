@@ -1,7 +1,7 @@
 # Establish an internal application API independent of interfaces
 
-Status: in review
-Decided: pending human acceptance
+Status: accepted
+Decided: 2026-11-08
 Arising from: [Application/interface separation](../plans/application-interface-boundary.md)
 Scope: existing application capabilities, their internal client boundary, CLI adaptation and extension policy
 
@@ -17,12 +17,6 @@ new clients to reproduce resolution, retention, qualification and lifecycle poli
 The desired boundary covers existing functionality and allows later interfaces
 and account capabilities to evolve it. It does not select a graphical framework,
 external protocol or public library. The decisions below are interdependent.
-
-[Needs review] The human has agreed with the five recommendations and supplied further
-contract directions for the combined plan. Those directions are reflected below.
-The detailed decision and coordinated governing revisions remain in review before
-acceptance and promotion. The wording
-below describes that agreed direction, not an adopted architecture.
 
 ## Decisions
 
@@ -405,13 +399,12 @@ future clients without designing their View formulas or a method-plugin framewor
 
 ## Governing impact and conformance
 
-Add the boundary to `app-specification.md` and `architectural-constraints.md` and
-revise the complete Evaluation and Expansion definitions in `core-concepts.md`
-together on acceptance. Standard detail may be required directly, explicitly or
-by request default, without a Presentation; its subject-kind meaning and separation
-from another Lens question remain unchanged. These are governing proposals, not
-changes made by adopting a draft. No foundation or development-process revision
-is required.
+This decision is adopted together with the application boundary in
+`app-specification.md` and `architectural-constraints.md` and the revised Evaluation
+and Expansion definitions in `core-concepts.md`. Standard detail may be required
+directly, explicitly or by request default, without a Presentation; its subject-kind
+meaning and separation from another Lens question remain unchanged. No foundation
+or development-process revision is required. Adoption does not authorize implementation.
 
 This decision supplements the existing answer/View identity rules. It replaces the
 implementation's mixed method capture with the separated provenance rule above;
@@ -428,7 +421,7 @@ the [qualified construction identity rules](qualified-construction-under-the-req
 [reference designation rules](precise-subject-designations-and-lookup-bindings.md),
 and [execution ownership](execution-ownership-and-cancellation.md). Worker alias
 allocation, arrangement-key transport and authoritative parent finalization remain
-unchanged under this proposal, so their preservation clauses require no exception.
+unchanged under this decision, so their preservation clauses require no exception.
 
 The baseline Session, request/report and account-command couplings identified in
 the companion plan do not yet conform to this stronger application boundary.
