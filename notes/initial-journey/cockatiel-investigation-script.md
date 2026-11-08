@@ -53,9 +53,35 @@ inspection at revision `f48bea55022ab15ab07eb52a79bfc1e661300fd4`; the report wa
 read on 2026-10-14. Runtime behavior and the proposed change remain to be validated.
 Two errors are deliberately included, followed by explicit correction notices.
 Annotations identifying the initial errors are for readers of the script.
+These episodes specify the experience once an investigation identifies a correction.
+They provide no evidence of reliable error discovery or automatic consistency checking.
 
 The [detailed exploration](cockatiel-information-and-judgment.md) records the basis
 and design discussion. Everything needed to follow this episode is included here.
+
+<a id="journey-scope"></a>
+## Deliberate scope choices
+
+This journey concentrates on understanding implemented software and choosing a
+direction for further design. We leave the following capabilities for other journeys:
+
+- Supplying hypothetical or intended architecture as subjects for PostCode analysis.
+- Asking PostCode to compare a proposal with the implementation, compare alternative
+  designs, assess their effects on constraints or quality concerns, or check whether
+  implemented behavior conforms to a stated intention.
+- Having PostCode ingest the issue or participate in the design conversation.
+
+The human develops alternatives and intentions themselves. Steps 4 and 18 retain
+optional recording of a preference or chosen direction, with attribution; this is
+distinct from investigating an intended design. Comparing existing library behavior,
+such as the two composition orders, remains part of the journey. These boundaries
+focus the exercise rather than restrict PostCode's broader product scope.
+
+A small set of [connected account examples](cockatiel-account-examples.md) makes
+the selection-to-answer relationship concrete for admission, recovery and composition.
+Each selection requests defined information independently of the human's unspoken
+question. Those examples supply detail for this part of the script, leaving the
+rest at sketch level.
 
 <a id="orientation"></a>
 ## 1. What is Cockatiel for?
@@ -75,8 +101,8 @@ surrounding context. `CircuitState` is another available name lead.
 - **Cockatiel** is a resilience library governing attempts to execute
   application-supplied work under failures, delays and capacity limits.
   [[RESP]](architectural-concept-references.md#responsibility)
-- **Application** supplies the work and owns its business meaning, job identity,
-  preparation, acknowledgment and stored outcomes.
+- **Application** supplies operations, decides when to invoke them, and manages
+  the surrounding workflow and application data.
   [[CONTEXT]](architectural-concept-references.md#context) [[OWNERSHIP]](architectural-concept-references.md#ownership)
 - **Policy** governs execution according to configured rules. Applications create
   policy instances, reuse them across operations and combine them.
@@ -116,7 +142,7 @@ the supplied-operation relationship to ownership; revisit Bulkhead's queue role.
   **recovery attempt allowed**, and **work blocked**.
   [[INTERFACE]](architectural-concept-references.md#interface) [[STATE]](architectural-concept-references.md#state)
 - Bulkhead owns execution capacity and an in-memory waiting queue. The application
-  owns its business jobs and work performed outside policy execution.
+  manages its surrounding workflow, data and work outside policy execution.
   [[OWNERSHIP]](architectural-concept-references.md#ownership) [[CONTEXT]](architectural-concept-references.md#context)
 - State and capacity can change between inspection and execution. Inspection
   reserves neither permission nor capacity.

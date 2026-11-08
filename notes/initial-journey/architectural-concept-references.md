@@ -208,3 +208,5 @@ requires PostCode to inform the human when each correction appears; inspecting
 both versions and their basis remains available. Notification form and delivery
 are presentation requirements to design, rather than a V&B concept or evidence
 that this journey is already implemented.
+The scripted corrections assume an investigation has identified the error; they
+provide no evidence of reliable discovery or automatic consistency across accounts.

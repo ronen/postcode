@@ -60,6 +60,9 @@ from the dialogue. Two error-and-correction episodes are explicitly reconstructe
 step 2 omits breaker waiting, corrected at step 5; step 12 uses misleading timer
 wording, corrected at step 15. The annotations identifying the initial errors are
 for readers of this sketch, not warnings already shown to the human at those steps.
+The episodes specify what happens once a later investigation identifies an error.
+They do not demonstrate reliable correction discovery or automatic consistency
+checking; those need separate capability assessment.
 
 **PostCode interaction** describes the human side: available subjects they refer
 to, the request they make, and any other material supplied or access needed.
@@ -82,6 +85,11 @@ the exact clicks and whether information is precomputed or produced on demand
 open. Intermediate actions are made explicit where they materially change the
 question or reveal a missing navigation route. This convention concerns the
 experience; it does not reclassify new analysis as presentation-only work.
+The [connected account examples](cockatiel-account-examples.md) make a small part
+of this route tangible: the initially available subjects and choices, the meaning
+of each selection, and the resulting information. Selection meanings must stand
+independently of the human's silent question; an account may expose more than they
+immediately need.
 Verbs such as select, expand, follow and revisit describe human UI actions,
 not prose instructions for an agent to decide what to explore. Listed perspectives
 and relationships identify the information sought and possible routes to it;
@@ -141,6 +149,24 @@ correspondence is analytical work, not a rendering operation. A supplied human
 conclusion retains its provenance and does not become independently supported
 PostCode analysis merely by being recorded.
 
+<a id="journey-scope"></a>
+## Deliberate scope choices
+
+The route exercises accounts of implemented software and human reasoning from
+them. It leaves supplying hypothetical/intended architecture for investigation,
+proposal-versus-implementation comparison, comparison of alternative designs,
+assessment of their effects on constraints or quality concerns, and conformance
+to a supplied intention for other journeys. Issue ingestion and an integrated
+design conversation are also outside this route.
+
+Human-generated alternatives, preferences and choices remain part of the episode.
+Optional capture at steps 4 and 18 records attributed human material; it does not
+request analysis of an intended design. Comparison of existing behavior, including
+composition orders, remains included. These are boundaries of the exercise rather
+than limits on adopted PostCode scope. The
+[script's scope statement](cockatiel-investigation-script.md#journey-scope) carries
+the same distinction for standalone readers.
+
 <a id="orientation"></a>
 ## 1. What Cockatiel is for
 
@@ -181,11 +207,10 @@ starting leads, not names supplied because we already know the answer.
   application-supplied work is attempted when failures, delays or limited capacity
   matter. It does not need to understand the business meaning of that work.
   [[RESP]](architectural-concept-references.md#responsibility)
-- **Application role in Cockatiel's operating model:** the caller supplies the
-  work that policies govern. Business job identity, acknowledgment and stored
-  outcomes, where needed, are outside Cockatiel's responsibilities. This is an
-  architectural responsibility boundary; PostCode has no particular caller
-  application to describe in this route.
+- **Application role in Cockatiel's operating model:** the caller supplies
+  operations, decides when to invoke them, and manages the surrounding workflow
+  and application data. Policies govern the execution entrusted to them. This
+  describes the library's application boundary.
   [[CONTEXT]](architectural-concept-references.md#context) [[OWNERSHIP]](architectural-concept-references.md#ownership)
 - **Policy:** an element that governs execution of application-supplied work
   according to configured rules. Cockatiel applications create policy instances
@@ -267,7 +292,7 @@ still associating Cockatiel with managing background jobs.
   [[INTERFACE]](architectural-concept-references.md#interface) [[STATE]](architectural-concept-references.md#state)
 - **Bulkhead — capacity and waiting queue:** execution capacity and queue capacity
   are resources controlled by the bulkhead, separate from the application's
-  business job records.
+  surrounding workflow and data.
   [[OWNERSHIP]](architectural-concept-references.md#ownership) [[CONTEXT]](architectural-concept-references.md#context)
 - **Application role → supplied operation:** the caller controls work outside
   the policy-governed execution. The library account does not identify a particular
@@ -1036,14 +1061,9 @@ work, as they explicitly did in the dialogue. They may identify event ordering,
 duplicate transitions, obsolete timers, restoration and lifetime as concerns. In
 the actual conversation, the agent contributed that detailed list; the simplified
 route does not establish that the human would derive all of it independently.
-The direction can be worth pursuing without those questions being answered.
-
-**Review point:** For this sketch's endpoint—a direction for further design—do
-we need to fill in any of the missing existing behavior around configuration,
-isolation/reopening, restoration or lifetime, or can those remain explicit follow-up
-needs? If more is needed, identify the concrete account content to add. This is a
-choice about the information included in the sketch, not a request for PostCode
-to evaluate the proposed timer or enumerate all its risks.
+For this sketch's endpoint, the missing configuration/lifecycle detail remains
+explicit follow-up work. Choosing a direction for further design does not require
+an implementation-ready timer decision.
 
 <a id="endpoint"></a>
 ## 18. Endorsing the direction and stopping
@@ -1197,8 +1217,10 @@ competent delivery here does not establish that the capabilities exist today.
   waiting case (step 2 → step 5) and misleading timer wording (step 12 → step 15).
   Each new answer informs the human of the error, identifies the exact earlier
   account and provides the corrected account and reason. Notification must not
-  depend on opening correction details; both versions remain inspectable. A
-  retained human choice should identify the exact supporting accounts selected,
+  depend on opening correction details; both versions remain inspectable. Assess
+  discovery of omissions or misleading explanations separately: these two seeded
+  episodes establish no automatic detection or consistency guarantee. A retained
+  human choice should identify the exact supporting accounts selected,
   without turning the choice into independently verified analysis.
 - **Optional capture and stopping:** if supplied preferences or decisions are retained,
   preserve their attribution and status. The human can also use the accounts and
@@ -1207,12 +1229,11 @@ competent delivery here does not establish that the capabilities exist today.
 <a id="discussion-and-next-exercise"></a>
 ## Discussion points and whether another journey is needed
 
-The remaining explicit per-step review point is [step 17](#compatibility):
-whether to add existing configuration/lifecycle detail before the chosen endpoint
-or leave the stated gaps for later investigation. The other former review points
-restated content already specified, working assumptions or later validation needs;
-they no longer appear as separate discussion obligations. Further content questions
-can still emerge as we read through the steps.
+The episode ends with a direction for further design. The configuration/lifecycle
+gaps in [step 17](#compatibility) remain explicit follow-up work rather than a
+reason to extend this sketch. Former review points that restated specified content,
+working assumptions or later validation needs are no longer separate discussion
+obligations. Further content questions can still emerge as the examples are used.
 
 Each after section now exposes both possible progress and limits to that progress.
 A selection-only route must not acquire the original agent's suggestions and
@@ -1220,11 +1241,9 @@ critiques invisibly. Equally, it need not reproduce every conversational contrib
 to be useful: understanding enough to choose a direction for further investigation
 can be a meaningful endpoint.
 
-**Recommendation for discussion:** consider the remaining content question before
-producing another full journey. If uncertainty concerns account content, refine
-the accounts directly.
-If it concerns what a user would naturally examine and infer from what is visible,
-a short hypothetical natural investigation would test something different: begin
-with the human's issue-derived name leads, make the operating model readily
-available, and follow the information the human actually wants next. It need not reenact all 30 exchanges. That remains
-a possible next exercise, not one performed or selected here.
+**Next use:** the [connected account examples](cockatiel-account-examples.md)
+make a small selection-to-answer sequence concrete for account/presentation
+planning. Refine those examples where content or selection meaning is underspecified.
+A further journey or usability exercise can later explore what a human naturally
+examines and understands; it is not a prerequisite for using this sketch as planning
+input.
