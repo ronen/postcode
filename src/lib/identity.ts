@@ -3,15 +3,13 @@ import type { RecordId, SessionId } from './records.js';
 
 /** Bump the responsible method whenever its analysis/identity/projection semantics change. */
 export const methods = {
-  inputs: 'postcode/observed-inputs@6',
-  records: 'postcode/program-records@22',
+  inputs: 'postcode/observed-inputs@7',
+  records: 'postcode/program-records@23',
   content: 'postcode/subject-content@1',
   exportsProjection: 'postcode/module-exports-projection@1',
-  exportsPresentation: 'postcode/module-exports-presentation@5',
   investigation: 'postcode/investigation@14',
   investigationEvaluation: 'postcode/investigation-evaluation@3',
   investigationProjection: 'postcode/investigation-projection@4',
-  investigationPresentation: 'postcode/investigation-presentation@23',
   discovery: 'postcode/typescript-modules@13',
   evaluation: 'postcode/evaluate-modules@5',
   dependencies: 'postcode/typescript-dependencies@3',
@@ -21,7 +19,6 @@ export const methods = {
   dependencyOrganization: 'postcode/dependency-organization@1',
   projection: 'postcode/projection@13',
   expansions: 'postcode/typescript-expansions@3',
-  presentation: 'postcode/presentation@38',
   handles: 'postcode/module-handles@5',
   organization: 'postcode/organization@3',
 } as const;

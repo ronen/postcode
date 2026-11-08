@@ -21,6 +21,7 @@ import type { RequestContext, ResolutionReport, UsageReport } from './request-re
 import { arrangeAssociatedInspection } from './investigation/associations.js';
 import { selectAssociatedInspection } from './investigation/selection.js';
 import { presentRetained } from './retained-presentation.js';
+import { artifactMethods } from './interfaces/cli/methods.js';
 import { methods } from './identity.js';
 import { investigationEvaluation } from './investigation/evaluation.js';
 import type { InvestigationDependencies } from './investigation/evaluation.js';
@@ -212,7 +213,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       const repository = sessionContext.repository ? store.get(sessionContext.repository) : null;
       return { ...result, context,
         repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
-        methods: [...sessionContext.methods, methods.investigationPresentation] };
+        methods: artifactMethods(sessionContext.methods, result.view) };
     }
     if (request.kind === 'present') throw new Error('Inconsistent captured request');
     const parameterError = invalidParameters(context.request, catalog.lenses);
@@ -287,7 +288,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
       if (sessionContext.kind !== 'session') throw new Error('Expected session');
       const repository = sessionContext.repository ? store.get(sessionContext.repository) : null;
       return { kind: 'view' as const, context, resolution, view, investigationArrangementKey, rendered: renderInvestigationView(view), repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
-        methods: [...sessionContext.methods, methods.investigationEvaluation, methods.investigationPresentation],
+        methods: artifactMethods([...sessionContext.methods, methods.investigationEvaluation], view),
         failed: !!investigationLens && (!result?.evaluation || result.evaluation.outcome.kind !== 'accepted') || view.investigations?.status === 'unknown-continuation' };
     }
     if (!mechanical) throw new Error('Missing mechanical implementation');
@@ -316,7 +317,7 @@ function requestExecutor(store: MemoryProgramRecordStore, analysis: ModuleAnalys
     if (sessionContext.kind !== 'session') throw new Error('Expected analysis session');
     const captured = sessionContext.repository ? store.get(sessionContext.repository) : null;
     const repositoryRoot = captured?.kind === 'repository-evidence' && captured.capture.status === 'available' ? captured.capture.evidence.root : null;
-    return { kind: 'view' as const, context, resolution, view, investigationArrangementKey: null, rendered, repositoryRoot, methods: constructed.associatedSubjects ? [...sessionContext.methods, methods.investigationPresentation] : sessionContext.methods,
+    return { kind: 'view' as const, context, resolution, view, investigationArrangementKey: null, rendered, repositoryRoot, methods: artifactMethods(sessionContext.methods, view),
       ...('investigations' in view && view.investigations?.status === 'unknown-continuation' ? { failed: true } : {}) };
   };
 }

@@ -1,0 +1,34 @@
+src/lib/retained-presentation.ts:60:  const answerReference = store.answerIds([answer.id]).get(answer.id)!;
+src/lib/retained-presentation.ts:79:      revisionPage: request.presentation.revisionPage ?? 1 }, null, usage, referenceBinding(store, session, baseContent.value.references));
+src/lib/retained-presentation.ts:85:    view = arrangeAssociatedInspection(view, content.value, store.entityIds(content.value.projection.associated, 'investigram'), request.presentation.after, request.referenceLifetime);
+src/lib/presentation.ts:74:  const population = store.entityIds(content.discovery.modules, 'module');
+src/lib/presentation.ts:75:  const ids = new Map([...population, ...store.entityIds(projection.modules, 'module')]);
+src/lib/presentation.ts:76:  return arrangeModuleView(content, ids, presentation, title, resolution, { ...context, answerReference: context.answerReference ?? store.answerIds([projection.id]).get(projection.id)! });
+src/lib/organization/presentation.ts:108:  const population = store.entityIds(content.evaluation.groups, 'group');
+src/lib/organization/presentation.ts:109:  const groups = new Map([...population, ...store.entityIds(projection.groups, 'group')]);
+src/lib/organization/presentation.ts:110:  const modules = store.entityIds(content.moduleEvaluation.modules, 'module');
+src/lib/organization/presentation.ts:111:  const detail = content.moduleDetail ? new Map([...store.entityIds(content.moduleDetail.discovery.modules, 'module'), ...store.entityIds(content.moduleDetail.projection.modules, 'module')]) : new Map<RecordId, string>();
+src/lib/organization/presentation.ts:112:  return arrangeOrganizationView(content, { groups, modules, detail }, presentation, title, resolution, { ...context, answerReference: context.answerReference ?? store.answerIds([projection.id]).get(projection.id)! });
+src/lib/records.ts:225:  entityIds(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): ReadonlyMap<RecordId, string>;
+src/lib/records.ts:226:  answerIds(ids: readonly RecordId[]): ReadonlyMap<RecordId, string>;
+src/lib/subject-resolution.ts:94:      for (const [id, reference] of store.entityIds(ids, kind)) bindings.set(id, reference);
+src/lib/module-selection.ts:8:  store.entityIds(evaluation.modules, 'module');
+src/lib/organization/projections.ts:36:    store.entityIds(evaluation.groups, 'group');
+src/lib/session.ts:202:        const bindings = store.answerIds(result.retainedAnswers);
+src/lib/session.ts:237:          support: resolution?.support ?? [], retainedAnswers: [...store.answerIds(retainedAnswers)].map(([id, reference]) => ({ id, reference })) } });
+src/lib/session.ts:273:      if (definition.subjects.includes('module') && investigationLens) store.entityIds(basis.modules, 'module');
+src/lib/session.ts:274:      else store.entityIds(store.investigations(session).flatMap(item => item.investigrams), 'investigram');
+src/lib/session.ts:306:      answerReference: store.answerIds([target]).get(target)! };
+src/lib/session.ts:310:      view = arrangeAssociatedInspection(view, associated, store.entityIds(associated.projection.associated, 'investigram'), undefined, request.referenceLifetime);
+src/lib/reference-binding.ts:10:export function referenceBinding(store: ProgramRecordStore, session: SessionId,
+src/lib/reference-binding.ts:21:    return store.entityIds(ids, kind);
+src/lib/memory-store.ts:474:  answerIds(ids: readonly RecordId[]): ReadonlyMap<RecordId, string> {
+src/lib/memory-store.ts:494:  entityIds(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): ReadonlyMap<RecordId, string> {
+src/lib/program-presentation.ts:14:  context = { ...context, answerReference: context.answerReference ?? store.answerIds([content.value.projection.id]).get(content.value.projection.id)! };
+src/lib/program-presentation.ts:20:      store.entityIds(content.value.basis.modules, 'module');
+src/lib/program-presentation.ts:21:      const bindings = store.entityIds([content.value.projection.subject], 'module');
+src/lib/exports/content.ts:19:  store.entityIds(basis.modules, 'module'); store.entityIds(subjects, 'module');
+src/lib/dependencies/presentation.ts:67:  const population = store.entityIds(content.basis.modules, 'module');
+src/lib/dependencies/presentation.ts:68:  const ids = new Map([...population, ...store.entityIds(projection.modules, 'module')]);
+src/lib/dependencies/presentation.ts:69:  return arrangeDependencyView(content, ids, presentation, resolution, { ...context, answerReference: context.answerReference ?? store.answerIds([projection.id]).get(projection.id)! });
+src/lib/investigation/presentation.ts:51:  return arrangeInvestigationView(content, { ...request, title, answerReference: request.answerReference ?? store.answerIds([content.projection.id]).get(content.projection.id)! }, reporting, usage, referenceBinding(store, session, content.references));

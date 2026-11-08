@@ -1,3 +1,4 @@
+import { presentationMethods } from '../src/lib/interfaces/cli/methods.js';
 import { usageSummary } from '../src/lib/investigation/reporting.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -70,7 +71,7 @@ test('exports uses common resolution and retains its own qualified answer withou
   assert.equal(first.view.presentation.decision!.criteria.contract, 'module-exports');
   assert.equal(first.view.title, 'Module exports');
   assert.ok(first.methods.includes(methods.exportsProjection));
-  assert.ok(first.methods.includes(methods.exportsPresentation));
+  assert.ok(first.methods.includes(presentationMethods.exportsPresentation));
   const presented = requireView(await active.execute({ kind: 'present', target: first.view.projection.id, presentation: { ...json, moreDetails: true } }));
   assert.equal(presented.view.schema, 'postcode-module-exports-view/1-experimental');
   assert.equal(presented.view.projection.id, first.view.projection.id);

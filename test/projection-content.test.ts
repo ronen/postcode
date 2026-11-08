@@ -1,3 +1,4 @@
+import { presentationMethods } from '../src/lib/interfaces/cli/methods.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -5,7 +6,7 @@ import path from 'node:path';
 import { test } from 'node:test';
 import type { TestContext } from 'node:test';
 import { evaluateModules } from '../src/lib/evaluation.js';
-import { identityReference, methods, recordId } from '../src/lib/identity.js';
+import { identityReference, recordId } from '../src/lib/identity.js';
 import { resolveModuleProjection } from '../src/lib/module-content.js';
 import { arrangeModuleView, createView, renderUnicode, renderView } from '../src/lib/presentation.js';
 import { inspect, modules } from './projection-helpers.js';
@@ -321,11 +322,11 @@ test('mechanical View identities include resolution context and use the shared p
   const presentation = { format: 'json' as const, moreDetails: false };
   const views = [createView(store, modules(store, evaluation), presentation, 'Modules'), createOrganizationView(store, organizationProjection, presentation, 'Organization'),
     createDependencyView(store, dependencyProjection, presentation)];
-  assert.equal(methods.presentation, 'postcode/presentation@38');
+  assert.equal(presentationMethods.presentation, 'postcode/presentation@38');
   for (const [index, view] of views.entries()) {
     const kind = ['view', 'organization-view', 'dependency-view'][index]!;
     const key: Record<string, unknown> = { selectionMode: 'fresh', referenceLifetime: 'session', projection: identityReference(view.projection.session, view.projection.id), presentation,
-      ...('title' in view ? { title: view.title } : {}), resolution: null, method: methods.presentation };
+      ...('title' in view ? { title: view.title } : {}), resolution: null, method: presentationMethods.presentation };
     assert.equal(view.id, recordId(view.projection.session, kind, key));
     assert.notEqual(view.id, recordId(view.projection.session, kind, { ...key, method: 'postcode/presentation@29' }));
   }
