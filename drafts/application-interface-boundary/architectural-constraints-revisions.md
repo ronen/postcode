@@ -1,0 +1,14 @@
+# Proposed revisions to docs/architectural-constraints.md
+
+Add the following section immediately before **Views and analysis boundary**.
+Retain that section and all existing qualification, reference, source, execution
+and observation constraints unchanged.
+
+<a id="application-interface-boundary"></a>
+## Application and interface boundary
+
+- Own semantic request resolution, information requirements, Evaluation and investigation coordination, retained-answer selection and access, reference validity and operational outcomes in shared application services. Interfaces invoke explicit internal contracts and do not reproduce those operations through direct store, selector or Evaluator access. Keep application/domain dependencies independent of CLI, GUI and external-agent adapters. [[Shared application boundary](decisions/internal-application-api.md#shared-application-boundary)]
+- Deliver the complete selected qualified answer and its relevant support independently of interface display bounds and rendering. Keep resolution, current invocation reporting and usage distinct from retained answer identity. Do not expose a mutable or general queryable store as the client contract. Internal content delivery is not automatically human output or authorized external machine evidence delivery. [[Qualified content delivery](decisions/internal-application-api.md#qualified-content-delivery)]
+- Distinguish information requests, exact retained-answer access and operational reports at the application boundary. Exact access follows fixed retained support without reselection, Evaluation or new evidence; preserve historical content/outcomes, qualification and revision/association snapshots under the supported Session lifetime. [[Qualified content delivery](decisions/internal-application-api.md#qualified-content-delivery)]
+- Keep input syntax, interface defaults, Presentation options, arrangement and output presentation in clients. Share semantic requirements and compatibility coordination; permit direct content requests without a Presentation. Presentation requirements do not authorize arrangement to acquire information or silently change the question or selected answer. [[Requirements and Presentations](decisions/internal-application-api.md#requirements-and-presentations)]
+- Preserve resource ownership, cancellation, publication validity, usage, credentials, actual-display feedback and delivery outcomes across the application boundary. Thread/process placement does not transfer semantic responsibility to an interface, and research capture is not required for operational attribution. Clients may expose different subsets of the internal API; this boundary creates no public transport or compatibility commitment. [[Runtime and publication](decisions/internal-application-api.md#runtime-and-publication)]
