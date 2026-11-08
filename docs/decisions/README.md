@@ -62,6 +62,8 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 <a id="accepted-decisions"></a>
 ## Accepted decisions
 
+- [Internal application API independent of interfaces](internal-application-api.md)
+
 - [Research-question-driven observation](research-question-driven-observation.md)
 - [Specialize in architectural investigation and retained understanding](specialized-architectural-investigation.md) — partially superseded; see the record’s heading mappings.
 - [Human-facing architectural representations](human-facing-architectural-representations.md) — partially superseded; see the record’s heading mappings.

@@ -6,7 +6,7 @@ Use descriptive, unnumbered filenames, such as `initial-product-slice.md` or `ag
 
 ## Approved work
 
-No approved plans currently await implementation.
+- [Application/interface boundary](application-interface-boundary.md) — approved; establish an internal application API, adapt the CLI, and separate application and Presentation-method identity. Implementation is not yet authorized.
 
 ## Completed work
 
