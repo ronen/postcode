@@ -106,8 +106,9 @@ remains disposable and unmodified; required rationale is included in this packag
 
 - Application request/attribution context is typed and interface-independent. A
   separate optional captured client attachment preserves actual invocation data;
-  clients may omit it. The CLI adapter uses its attachment to preserve existing
-  report/observation shapes without making those shapes the application contract.
+  clients may omit it. The CLI reporting adapter combines client-owned attachment
+  fields with typed application context to preserve existing report/observation
+  shapes without duplicating semantic normalization.
 - Application work finishes independently of later presentation failures. This
   extends the original unknown-continuation exception to unexpected arrangement
   failures after completed work, retaining the client's own failure outcome. Direct
@@ -121,14 +122,21 @@ remains disposable and unmodified; required rationale is included in this packag
 
 | Area | Draft treatment |
 | --- | --- |
-| Allocation ownership | Per-site schedule/owner/population table; mechanical and association allocations remain population-wide application coordination. Only investigation arrangement uses the scoped port, including its final whole-association batch after displayed bindings. |
+| Allocation ownership | Per-site schedule/owner/population table; mechanical and mechanical-association allocations remain population-wide application coordination. Investigation arrangement uses the CLI port, including its final whole-association batch after displayed bindings; direct clients need not receive those optional aliases. |
 | Refusals and outcomes | Explicit detection/work/command/event/exit/report matrix, declarative client eligibility checked by shared coordination, parent rejection retained, and agreed status changes distinguished. |
 | Request and parent context | Typed semantic attribution plus captured optional client attachment; CLI output mapping retains format/detail/lifetime and exact supplied spelling. |
 | Governing direct requirements | Complete Evaluation/Expansion revisions; default requirements scoped to content contracts, with no investigation expansions and only exports/documentation for exports content. |
 | Lifecycle and attribution | Neutral parent guard with worker check transport/private deferral, direct post-check before finalization, associated-inspection attribution collected before arrangement, revocation on every scope exit. |
-| Identity and provenance | Explicit application/client method separation, responsible method-version changes, renderer-only identity tests and honest baseline comparisons. |
+| Identity and provenance | Separate early method-provenance commit and before/after comparison, followed by extraction against that post-split build; renderer-only identity tests and explicit explanation of further identity changes. |
 | Tests, scripts and services | Same CLI adapter hosted in-process and in worker, preserved test assertions, live versus historical script classification, named provider-disclosure/diagnostic/SIGINT ownership. |
 | Documentation and scope | Entry-point TSDoc instead of a new API-inventory document, context-free direct feedback limit, current-scope binding wording, unreachable fresh paging branches removed in implementation, version-four observation meanings and CLI docs named. |
+
+The re-review at `244871f` found the earlier findings addressed and recommended
+approval once the parser/capture outcome rows were corrected. This revision makes
+that correction and clarifies attachment assembly, the historical benchmark pair,
+method-split sequencing, optional historical-inspection aliases and deferred-check
+wording. Those corrections have been checked against source; they are not themselves
+a new independent review or human approval.
 
 The allocation table and outcome matrix are implementation/checking inventories;
 the decision owns the contract rationale, and governing additions state the broad

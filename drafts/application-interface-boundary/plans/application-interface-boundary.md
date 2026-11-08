@@ -202,22 +202,28 @@ answer identity. Capture caller-owned inputs before asynchronous work; preserve
 malformed input and safe omission reasons without evaluating accessors. Refusals
 do not become defects, and defects after validation do not become ordinary refusals.
 
-Capture optional client invocation data alongside the semantic request under the decision's
-[report-context contract](../decisions/internal-application-api.md#invocation-context).
-Application context contains the typed semantic request. A separate optional
-attachment carries client context. For the CLI this is its actual normalized
-request, including `presentation`,
-`referenceLifetime`, supplied designation and rejected-input representation. The
-application owns occurrence IDs, purpose, constraints, attribution and status; the
-client payload cannot overwrite them or select additional work. Capture/freeze it
-before asynchronous work and retain it in current and generating-parent contexts.
+Capture optional client-owned invocation fields alongside the semantic request
+under the decision's [report-context contract](../decisions/internal-application-api.md#invocation-context).
+The attachment is not a second normalized semantic request. The application owns
+occurrence IDs, purpose, constraints, attribution and status; the attachment cannot
+overwrite them or select additional work. Safely capture/freeze supplied fields
+before asynchronous work and retain them with current and generating-parent contexts.
 
-Preserve the existing CLI `context.request` shape in `request-work`, resolution and
-usage reports and the observation `request` record. The CLI report adapter places
-the captured value in those existing fields; it does not infer it from the answer
-or reconstruct it from defaults. Application execution uses the separate validated
-semantic request. Direct callers need no CLI context. Compare complete report
-contexts, not just rendered answer content, across the extraction.
+| Report input | Producer and authority |
+| --- | --- |
+| Canonical Lens ID, catalog question, semantic designation, normalized parameters and program-input meaning | Shared application normalization against the captured catalog; return these in typed context |
+| Supplied command/reference spelling, Presentation choices and their interface defaults, host reference lifetime | CLI input/host adapter; safely captured as client fields, with no second semantic normalization |
+| Rejected-input details and representation/omission limits | Shared safe capture/validation reports typed problems and preserved data; CLI-owned input representation remains in the attachment |
+| Legacy CLI `context.request` | CLI reporting adapter combines the two captured sources, preserving current field shape/order and values |
+
+Preserve the existing CLI `context.request` in `request-work`, resolution/usage
+reports and observation requests, including earlier generating parents. The report
+adapter neither computes catalog questions/designation semantics again nor asks the
+application to construct a CLI-shaped request. It does not infer choices from the
+answer or reapply defaults during reporting. Compare serialized context fields as
+well as full reports under the existing occurrence/reference comparison policy and
+explicit method-provenance exceptions. Direct clients use typed semantic context
+and need no CLI attachment or legacy projection.
 
 ### Content requirements and Presentation compatibility
 
@@ -336,13 +342,16 @@ existing allocations for direct calls too; other clients need not use the aliase
 | `session.ts` and `retained-presentation.ts`, mechanical associated inspection | All associated matches, including off-page matches, after mechanical allocations and before continuation lookup/arrangement | Application coordination supplies full association map; never shrink to displayed rows |
 | `session.ts`, `retained-presentation.ts`, mechanical and investigation wrappers: `answerIds` | Separate answer-alias namespace at existing success/refusal/preparation points, before dependent arrangement | Application answer preparation supplies answer bindings; preserve exact/refused target behavior |
 | `investigation/presentation.ts: createInvestigationView` and exact investigation path | Bounded investigation traversal/revision-page batch, navigable module subjects, then any supplied candidate bindings; validate against `content.references` | CLI arrangement requests through revocable operation-local port; preserve batch/order |
-| `investigation/presentation.ts: arrangeInvestigationView`, historical-inspection association call | All association matches, off-page included, after displayed references, navigation and candidate bindings | Final whole-population batch through the same validated port; application-owned allocation stays at this position, not moved into early preallocation |
+| `investigation/presentation.ts: arrangeInvestigationView`, historical-inspection association call | All association matches, off-page included, after displayed references, navigation and candidate bindings | Final whole-population batch through the same validated port; CLI-port allocation stays at this position over the application-supplied population, not moved into early preallocation |
 
 Mechanical content has no `references` population and needs no new one. Its
 existing populations drive application coordination and supplied maps. The scoped
 port is only for the investigation arrangement sites that already use
 `referenceBinding`, including their final whole-association batch; it does not
-replace mechanical population coordination. Do not
+replace mechanical population coordination. A direct client receives the already
+coordinated association aliases for mechanical associated inspection, but historical
+Investigram inspection promises no new association aliases unless the CLI port
+allocates them. These optional bindings do not affect precise-ID access. Do not
 preallocate the whole investigation reference population.
 
 Use a trusted internal operation-scope entry point (`withCliOperation` is an
@@ -370,9 +379,10 @@ Capture client-owned option eligibility as bounded declarative data over opaque
 option values and semantic facts already known to coordination (contract,
 cardinality, inspection/association/revision support). Preserve ordered fallbacks
 and reasons. This is a finite extraction of today's checks, not arbitrary client
-predicates or a plugin rule language. CLI syntax capture produces rejected-input
-data; the shared rejection/reporting machinery retains current parent versus
-worker execution and usage attribution.
+predicates or a plugin rule language. CLI parser errors remain client errors before
+application request capture. Programmatic callers that bypass parsing still use
+shared safe capture/rejection, preserving parent versus worker execution and usage
+attribution.
 
 The matrix specifies current → target. Unless marked **changed**, every work
 status, command outcome/event, exit code and emitted report shape is unchanged.
@@ -385,8 +395,9 @@ are CLI-only; direct calls have typed results/errors and work reports, not exit 
 
 | Condition | Detection now → target | Work now → target | Command outcome / event / exit | Non-View report source |
 | --- | --- | --- | --- | --- |
-| Argument/tokenization error before a request | CLI parser → CLI parser | Absent → absent | No command observation; one-shot exit 2; shell keeps its existing interaction | CLI diagnostic, no R |
-| Unrepresentable/malformed request, unknown Lens, malformed `after`/`revisionPage`, paging on a fresh request | Request capture; CLI parent handles wholly rejected input → CLI capture plus shared safe capture/rejection service, same parent path | refused → refused | refused / command-refused / 3 | Shared rejected-request R in parent; direct composition uses same service |
+| Argument/tokenization error before a request | CLI parser → CLI parser | Absent → absent | One-shot: no command observation, exit 2. Shell: refused / command-refused, continues interaction without assigning command exit 3 | CLI diagnostic, no R or request-work |
+| Malformed `--after`/`--revision-page`, paging on a fresh command, or other parser-rejected command syntax | CLI parser → CLI parser, before application capture | Absent → absent | Same parser outcomes: one-shot exit 2 without observation; shell refused / command-refused and continues | CLI diagnostic, no R or request-work |
+| Unrepresentable/malformed request, unknown Lens, malformed `after`/`revisionPage` or fresh paging supplied programmatically past the CLI parser | Request capture; parent handles wholly rejected input → shared safe capture/rejection service, same parent path for CLI-shaped calls | refused → refused | When passed through `publishCommand`: refused / command-refused / 3. Direct execute callers receive a refusal with no automatic command event/exit | Shared rejected-request R in parent or local composition; not the parser-error route |
 | Invalid semantic parameters, designation or usage-report inputs | Session executor → shared request validation | refused → refused | refused / command-refused / 3 | R from application |
 | Prospective format/detail/paging ineligibility before lookup | Combined compatibility check → shared match of captured client declarations | refused → refused | refused / command-refused / 3 | R, presentation-unavailable |
 | Missing/ambiguous subject, unknown reference, answer-as-subject, unsupported subject, incomplete/unavailable lookup | Shared subject resolution → same | refused → refused | refused / command-refused / 3 | R with unchanged reason, candidates, prerequisite work and qualification |
@@ -500,28 +511,36 @@ policy or external provider behavior; validate these paths offline.
 
 ### M1 — Establish a binding-sensitive application path
 
-Inventory production, tests and untyped `scripts/*.mjs` consumers of Session,
-request, CLI and worker results, including dynamic `_build` imports and instrumentation
-of worker files. Extract intended semantic request/result and lifecycle contracts,
-capability descriptions and captured requirements. Implement direct inventory,
-module `inspect` and exact retrieval, plus CLI `present`, through one shared engine.
-Compose the same CLI adapter in the worker and in-process test host; migrate
-representative existing `openSession`/`ViewRequest`/`rendered` tests to that adapter
-without replacing their behavioral assertions. Add direct API tests separately.
-Exercise the applicable allocation-table and outcome-matrix rows and scoped
-investigation binding in both hosts, including mechanical associated inspection
-and historical Investigram inspection. Establish the shared publication guard,
-distinct work/presentation
-outcomes, structured-clone-safe delivery and typed busy behavior on this slice.
-Separate application and CLI Presentation-method registries here too. Remove
-Presentation versions from `typescript/project.ts` input/Session capture and from
-application delivery assembly. Keep client provenance and existing View/key formulas
-in the adapter. Version the responsible changed capture/record methods with an
-explicit identity-impact explanation before recording comparison expectations.
+Inventory production, tests and untyped script consumers recursively, including
+dynamic build-root imports and worker instrumentation. Then establish two explicit
+implementation checkpoints, in order:
+
+1. **Method-provenance checkpoint.** Make the registry/capture separation a separate
+   early commit before extracting request execution or changing outcome handling.
+   Work through the existing entry points: remove Presentation versions from
+   `typescript/project.ts` input/Session capture, group them with client methods,
+   preserve responsible View/key formulas, and separate application from artifact
+   provenance. Version the responsible changed capture/record methods. Compare the
+   original build with this build, recording the exact provenance and downstream
+   reference changes and verifying unchanged semantic content/outcomes. Record both
+   commit/build identities and retain this post-split build as the extraction baseline.
+   Do not combine this deliberate identity transition with the extraction comparison.
+2. **Boundary slice.** Extract intended semantic request/result and lifecycle
+   contracts, capability descriptions and captured requirements. Implement direct
+   inventory, module `inspect` and exact retrieval, plus CLI `present`, through one
+   shared engine. Compose the same CLI adapter in the worker and in-process test
+   host; migrate representative `openSession`/`ViewRequest`/`rendered` tests without
+   discarding their behavioral assertions, and add direct API tests separately.
+   Move client-specific delivery assembly to the adapter. Exercise applicable
+   allocation/outcome rows and scoped binding in both hosts, including mechanical
+   associated inspection and historical Investigram inspection. Establish the shared
+   publication guard, distinct work/presentation outcomes, plain-data delivery and
+   typed busy behavior. Compare this slice with the post-split build: only the agreed
+   outcome changes may now differ; no further method-capture differences are hidden.
 
 Verify direct use without parser, renderer, terminal or sink; compare CLI behavior
-against the baseline except the explicitly agreed work-status and method-provenance
-changes. Confirm renderer-version changes cannot affect application identities. Exercise
+against the post-split baseline except the explicitly agreed work-status changes.
+Confirm renderer-version changes cannot affect application identities. Exercise
 caller mutation, malformed input, missing/incompatible subjects, complete/partial/
 empty content, subset/default expansions, exact retrieval and alias collisions.
 Preserve opening/exclusion and cleanup behavior.
@@ -574,20 +593,20 @@ and displayed-result feedback, failed-display snapshot replacement and delivery
 failure isolation. Use the retained trusted assembly seams with offline
 credential/provider doubles, not live credentials or paid inference.
 
-Classify scripts during M1, then act by role:
+Classify scripts during M1, then act by role (names below omit `.mjs`):
 
-- Migrate live harnesses: `module-investigation/run-shell`, `diagnose-chatgpt`,
-  `verify-configuration`, injection helpers, `measure-*`, `probe-*`, profiling and
-  assessment tooling, and current direct/worker parity in `compare-session-requests`.
-  Inspect dynamic build-root imports and worker instrumentation as well as imports.
-- Preserve historical cross-build/checkpoint scripts and their recorded assumptions:
-  `compare-view-construction`, `compare-investigation-construction`,
-  `compare-investigation-revisions`, `compare-session-conversion` and
-  `compare-analysis`. Document supported checkpoint/build shapes in nearby comments
-  or existing harness documentation; do not retarget both builds to new internal
-  paths or retain product shims solely to make old checkpoint comparisons work.
-  The last two already use `cli.js`; their entry remains useful, but do not assume
-  their entire old assertion/normalization policy fits this extraction.
+| Role | Scripts and treatment |
+| --- | --- |
+| Live CLI, measurement and parity harnesses | Migrate `compare-session-requests`, `measure-session-journey`, `measure-partial-session`, `probe-session-interruption`, `probe-compiler-interruption`, `profile-analysis` and `assess-human-output`; inspect dynamic imports and instrumentation as well as static imports. |
+| Live investigation assessment support | Review/migrate `module-investigation/run-shell`, `diagnose-chatgpt`, `verify-configuration`, `injected-setup`, `check-browser`, `request-budget` and `usage-report`. Data-only or dependency-independent helpers may need no changes; preserve their current behavior and fixture files. |
+| Historical cross-build comparisons | Preserve `compare-view-construction`, `compare-investigation-construction`, `compare-investigation-revisions`, `compare-session-conversion` and `compare-analysis` with their recorded checkpoint/build assumptions. The last two use `cli.js`, but their old assertion policy is not automatically the extraction oracle. |
+| Historical cross-build benchmark pair | Preserve `benchmark-analysis` with its child `measure-analysis` as checkpoint tooling. The child loads parser and sink modules from each supplied build; do not naively migrate those paths or claim it works across the extraction boundary. New benchmark compatibility is not required for this task. |
+| Shared fixture/build helper | Review `comparison-fixtures` as support shared by historical and current harnesses. Preserve existing exports/behavior for historical consumers; place new comparison-specific behavior in the focused extraction harness if needed. |
+
+Document historical build assumptions in nearby comments or existing harness
+documentation; do not retarget both builds to new internal paths or retain product
+shims solely for checkpoint tools. This classification covers all current script
+entry points and helpers; recheck for additions at implementation start.
 
 Type checking alone does not cover scripts. Verify migrated imports and
 representative offline executions, including a controlled shell harness. Do not
@@ -600,7 +619,10 @@ Run the matrix below, `npm run check` and `npm test`. Exercise a small direct cl
 and the CLI on the same deterministic fixture and record representative text/JSON
 comparisons through each build's stable `src/lib/cli.js` `runCli` entry. Use a
 focused current comparison harness, retaining the existing reference-aware
-comparison policy and explicitly accounting for the agreed status and provenance changes.
+comparison policy. Preserve the two-checkpoint evidence from M1: original to
+post-method-split for provenance/identity changes, then post-split to final extraction
+for the agreed outcome changes. Report any further identity-method change separately
+with its reason; do not absorb it into the earlier allowed difference.
 Review runtime and type dependencies; retain no CLI-only semantic
 execution path. Check script linkage/entry paths separately from TypeScript tests.
 
@@ -646,7 +668,7 @@ transition and resulting reference mapping separately from unchanged semantic co
 | Companion services | Account operations and explicit connection check through offline doubles, route/credential boundaries, context-free and displayed-result feedback, failed-display replacement of old feedback context, actual output and self-contained batches, visible delivery rejection/cleanup warnings without erasing results. No research capture required for direct operational attribution. |
 | Progress and lifecycle types | Exercise `onWork`, `onProgress` and `onReport` equivalents, request correlation, final usage, caller mutation and late-callback suppression. Concurrent calls produce typed busy without affecting the active request; invalidation/interruption/cleanup retain distinct outcomes. |
 | Method identity separation | Hold program inputs, semantic requirements and application methods fixed while changing only the test client Presentation method. Analysis-input, evidence, Evaluation and answer identities remain equal under the existing Session-reference comparison policy; affected View/arrangement identity and artifact provenance change. Application method changes still affect responsible identities. Assert application captures have no Presentation methods, preserve explicit usage-key finalization, and explain baseline-to-new provenance/reference differences rather than dropping them. |
-| Report and attribution preservation | Compare CLI resolution/usage JSON, observation request and request-work contexts, generating/consuming parents and all associated-inspection work entries. Exercise the complete outcome matrix, including rejected parent input, raw exact access, malformed versus unknown paging, scope throws and direct versus deferred post-check invalidation. |
+| Report and attribution preservation | Compare CLI resolution/usage JSON, observation request and request-work contexts, generating/consuming parents and all associated-inspection work entries; preserve serialized context fields from their application/client sources without duplicate normalization. Exercise the complete outcome matrix, including parser errors in one-shot versus shell, programmatic rejected parent input, raw exact access, malformed versus unknown paging, scope throws and direct versus deferred post-check invalidation. |
 | Outcome separation | After exact `present` retrieval, unknown continuation gives application work `completed`, CLI presentation/publication failure and exit 3; the observation work-status field reflects that agreed change. Unexpected arrangement failure after completed application work also leaves work completed; verify the unchanged client failure outcome/diagnostic/exit and no false display receipt. Malformed syntax remains refusal and retained investigation failure is historical. |
 | Script consumers | Inventory static/dynamic `_build` imports and worker instrumentation in `scripts/`. Distinguish live harness migrations from historical checkpoint assumptions; compare builds through `runCli`. Verify representative offline execution without triggering live assessments; record checks not covered by `npm run check`. |
 | Architectural dependency | Inspect runtime and type imports transitively from the application service and core. They do not reach CLI parsing, renderers, terminal helpers or CLI View types; worker composition is explicitly outside that graph. Client imports use the intended API, not stores, selectors or Evaluators. Use the existing TypeScript compiler API to inspect source import edges, including `import type` and neutral envelope/source-classification dependencies; emitted JavaScript alone is insufficient. No new dependency is needed. Check method registry capture and delivered provenance separately. |

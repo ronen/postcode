@@ -66,8 +66,7 @@ boundary isolates the responsibility that changes with application behavior.
 <a id="invocation-context"></a>
 ### Preserve typed application attribution and separate client context
 
-Application requests and work
-contexts describe the validated semantic operation, requirements and application
+Application requests and work contexts describe the validated semantic operation, requirements and application
 outcome. The application owns request correlation, purpose, execution constraints,
 generating/consuming parents and work status. These contracts do not require CLI
 format/detail fields or a Presentation.
@@ -79,14 +78,21 @@ including earlier parent contexts, without interpreting it as semantic authority
 or including it in answer identity. The application never infers a request from
 the resulting answer. Direct clients can omit the attachment entirely.
 
-The CLI supplies its actual normalized invocation, including Presentation choices,
-reference lifetime and supplied alias spelling. Its reporting adapter uses this
-captured data to preserve existing `context.request` fields in CLI resolution and
-usage JSON, observation requests and `request-work`, including generating parents.
-Application types do not import the CLI context shape. The adapter projects existing
-captured values into legacy fields; it does not reproduce request coordination,
-work attribution, defaults or outcome decisions. Other clients consume the typed
-application context and choose their own reporting representation.
+The CLI attachment contains client-owned fields: supplied command/reference
+spellings, Presentation choices with interface defaults, host reference lifetime
+and safely represented CLI input. It does not contain a separately computed
+semantic request. Shared application normalization returns the canonical Lens ID,
+catalog question, semantic designation, normalized parameters and program-input
+meaning in typed context; safe capture/validation returns rejection details and
+representation limits. There is only one semantic normalization authority.
+
+The CLI reporting adapter combines these captured sources into the existing
+`context.request` shape for resolution/usage JSON, observation requests and
+`request-work`, including earlier generating parents. It preserves serialized
+fields and values without recomputing semantic defaults or deriving requests from
+answers. Application types neither import nor construct the CLI context shape.
+Other clients consume typed application context and choose their own reporting
+representation; they need no legacy request projection.
 
 Client-owned option eligibility is declarative input to shared compatibility.
 The application matches opaque option values against captured client declarations
@@ -94,9 +100,11 @@ and semantic facts, preserving prospective refusal before lookup, resolved-famil
 checks and materialized compatibility. It owns resolution/refusal reporting even
 when the unsatisfied condition was declared by a client. This finite matching
 contract introduces neither executable client predicates nor a general rule engine.
-Malformed CLI options remain rejected-input data through the shared safe-capture
-and rejection path; retain the CLI parent's existing wholly-rejected-input route.
-Do not convert these refusals into rendering exceptions.
+Malformed command options rejected by the CLI parser remain parser errors: one-shot
+exit 2 without a command observation, or shell refusal observation without request
+work or a resolution report. Programmatic CLI-shaped callers bypassing that parser
+still use shared safe capture/rejection, including the parent's wholly-rejected-input
+route. Do not convert either refusal path into a rendering exception.
 
 **Rationale and alternatives.** Shared attribution needs the actual initiating
 request and its parent history. Making the semantic context an opaque CLI request
@@ -211,11 +219,12 @@ contracts without introducing a generic planner or plugin language.
 
 The store owns append-only, never-rebind alias infrastructure. Application
 coordination owns population-wide mechanical allocations, fresh investigation-Lens
-pre-allocation, resolution candidates, all association matches including off-page
-matches, and separate answer aliases. Extract those allocations from current
+pre-allocation, resolution candidates, all mechanical associated-inspection matches
+including off-page matches, and separate answer aliases. Extract those allocations from current
 mechanical Presentation wrappers without changing their relative order; supply
 ID/alias maps to mechanical arrangement. Historical Investigram inspection keeps
-its association allocation at the final port call described below. Exact access uses fixed support and never adds history enumeration.
+its association allocation at the final CLI-port call described below. Exact access
+uses fixed support and never adds history enumeration.
 Optional aliases do not oblige direct clients to use them.
 
 The narrower port remains for investigation-View arrangement. Validate
@@ -226,7 +235,11 @@ then requests its complete association population through this port, including
 off-page matches, after the displayed/navigation/candidate batches. That final
 batch is population-wide, not page-driven, and cannot be moved ahead of arrangement
 without changing allocation order. Mechanical content needs no new
-reference-population schema.
+reference-population schema. The historical-inspection batch is a CLI-port request
+over application-supplied IDs; direct clients do not trigger that allocation. Direct
+mechanical associated inspection does receive its coordinated association bindings,
+while direct historical Investigram inspection need not receive new association
+aliases. Aliases are optional; precise-ID navigation remains sufficient in both.
 Do not shrink mechanical/association populations to displayed rows or eagerly
 bind the whole investigation population. The companion plan inventories the sites.
 

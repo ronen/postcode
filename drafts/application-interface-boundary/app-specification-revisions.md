@@ -46,7 +46,7 @@ Application work and client presentation/publication have distinct outcomes. An
 answer successfully produced or retrieved remains completed application work when
 subsequent client presentation fails; the client still reports its failure.
 Application validity requirements must be satisfied before completing application
-work, with any guarded host deferral explicit. Compact
+work, except where a guarded host explicitly takes ownership of those checks. Compact
 alias handling preserves existing request and reference behavior without making
 aliases a prerequisite for other clients.
 [[CLI binding and outcomes](decisions/internal-application-api.md#cli-bindings-and-outcomes)]
