@@ -42,6 +42,8 @@ deliberately reenacting mistakes from the dialogue.
 
 **PostCode interaction** describes the human side: available subjects they refer
 to, the request they make, and any other material supplied or access needed.
+Include an **Other input/access** entry only when it identifies an additional
+input or access requirement for that step.
 **What PostCode shows** describes the result, including named subjects introduced
 by the account. A **Newly selectable** note appears only where it clarifies a later
 selection; it is not a second inventory required at every step.
@@ -261,10 +263,6 @@ about possible scope, not a commitment to generalize.
   from [step 2](#readiness).
 - **Request:** revisit responsibilities and documented purpose; expand the meaning
   of the breaker's state information and the bulkhead's capacity information.
-- **Other input/access:** active probes or application health signals are not
-  selectable Cockatiel facilities established by these accounts. Access to the
-  original agent's candidate list would be separate attributed material; otherwise
-  alternatives must come from the human or a further investigation.
 
 **What PostCode shows:**
 
@@ -310,8 +308,6 @@ grow without implementing unrequested features.
   [steps 1–3](#orientation); the issue remains outside PostCode.
 - **Request:** none. Optionally supply the scope preference against the selected
   breaker inquiry; this records human intent without supplying or analyzing the issue.
-- **Other input/access:** intention capture is assumed, not a route through an
-  already-existing Cockatiel entity. Continuing without capture is valid.
 
 **What PostCode shows:**
 
@@ -347,9 +343,9 @@ mean, and would that support unifying it with breaker readiness?
   execution/admission, execution capacity and waiting queue ([step 2](#readiness)).
 - **Request:** select admission contracts for both policies, including their
   waiting cases. The cases may appear initially or through expansion.
-- **Other input/access:** an earlier omission/correction can be inspected only if
-  the original account is available. Here that history comes from the recorded
-  dialogue; this reconstructed route has not itself generated an incorrect answer.
+- **Other input/access:** optional correction inspection requires the earlier
+  library account and its corrected version to be explicitly available. The
+  recorded dialogue supplies the example; this route has not generated that history.
 
 **What PostCode shows:**
 
@@ -404,8 +400,6 @@ work together?
   boundary. The displayed combination relationship provides access to wrapping
   and its ordering cases. Those cases may be shown together or opened individually;
   the route does not require selecting a composition before it has been identified.
-- **Other input/access:** no concrete wrapper instance from the reporter's
-  application is supplied; the human asks about supported composition patterns.
 
 **What PostCode shows:**
 
@@ -461,8 +455,6 @@ queueing, would better express what I need. Should a negative answer explain why
 - **Request:** revisit the admission accounts; expand state/capacity inspection and
   the meaning of refusal information. Select the policy or its exposed outcome,
   with contract/state as the requested perspective.
-- **Other input/access:** “available now” and “acceptable” are candidate meanings
-  considered by the human, not existing generic policy queries to select.
 
 **What PostCode shows:**
 
@@ -509,9 +501,6 @@ it says open. That report is my context, not an account held by PostCode.
   stored state ([step 2](#readiness)) and recovery delay ([step 7](#acceptance)).
 - **Request:** expand the breaker's state meanings and transition/admission
   conditions. No request asks PostCode to inspect the reported preparation gate.
-- **Other input/access:** the human consults the issue separately and mentally
-  compares it with the library account. Neither the issue nor the candidate query
-  is supplied to PostCode.
 
 **What PostCode shows:**
 
@@ -557,8 +546,6 @@ practical.
   relationships from [step 6](#operating-model); application role from step 1.
 - **Request:** on that composition model, select ownership/access. Expand the
   caller arrangements exposed by the account.
-- **Other input/access:** no application-specific caller arrangement or usage
-  survey is supplied; the human asks about possible access through the model.
 
 **What PostCode shows:**
 
@@ -598,8 +585,6 @@ have not considered?
   ([step 6](#operating-model)).
 - **Request:** select Policy's common execution contract, then consult its named
   kinds for their particular contracts. Reuse the composition waiting accounts.
-- **Other input/access:** the generic acceptance interface is a human proposal,
-  not an existing interface discovered by the selection.
 
 **What PostCode shows:**
 
@@ -652,8 +637,6 @@ that picture before deciding what additional reporting a query should offer.
 - **Request:** select outcomes and notifications for policy execution, including
   how an inner outcome reaches the final caller through an outer policy. Related
   outcomes may be shown together or explored through their displayed relationships.
-- **Other input/access:** no hypothetical query is supplied; the request concerns
-  existing reporting and its composition.
 
 **What PostCode shows:**
 
@@ -698,8 +681,6 @@ does the breaker stay open until an attempt arrives, and is there a good reason?
   human from outside reading.
 - **Request:** revisit that transition, expanding timing and trigger detail; inspect
   rationale/support associated with it separately from the behavioral account.
-- **Other input/access:** no maintainer explanation is supplied by the human;
-  the rationale selection concerns support associated with the known transition.
 
 **What PostCode shows:**
 
@@ -748,8 +729,6 @@ or merely indicate willingness to run one?
   interaction, concurrent callers and ownership of the supplied work. The displayed
   supplied-work relationship provides a route to ownership detail without fixing
   the order in which that detail is opened.
-- **Other input/access:** the human considers the effects of a possible query;
-  PostCode receives no proposed query to evaluate.
 
 **What PostCode shows:**
 
@@ -797,9 +776,6 @@ reported experience, not my reproduction or proof across configurations.
   [steps 8 and 12](#need-check) remain available as library reference material.
 - **Request:** none is needed to learn what the reporter said. The human reads
   the GitHub issue separately, optionally revisiting those library accounts.
-- **Other input/access:** the report and workaround remain outside PostCode.
-  There is no issue record, captured issue evidence or reporter-assessment subject
-  to select in this route.
 
 **What PostCode shows:**
 
@@ -837,10 +813,6 @@ The report provides the suggestion; it has not been supplied to PostCode.
   ([step 8](#need-check)), with timing detail from [step 12](#stored-state).
 - **Request:** revisit the library's transition triggers and effects. If a retained
   timing explanation and correction are independently available, inspect them.
-- **Other input/access:** the human consults the reporter's suggestion outside
-  PostCode. Any optional correction access concerns explicitly available
-  library-account material, not an imported issue or full dialogue. The timer
-  design remains in the human's reasoning.
 
 **What PostCode shows:**
 
@@ -886,8 +858,6 @@ making the application poll, and favor an automatic transition over a new query?
   with state transitions, including the elapsed-time condition. The human can
   follow a displayed notification/transition relationship; inspecting every event
   separately is not required.
-- **Other input/access:** the human compares a new query with an automatic
-  transition. Neither is supplied to PostCode for hypothetical comparison.
 
 **What PostCode shows:**
 
@@ -938,9 +908,6 @@ would constrain that work?
   information, with isolation and reopening as already-exposed focuses. Further
   detail is requested on the known breaker; no unidentified restoration object
   must be selected first.
-- **Other input/access:** no timer proposal is supplied for analysis. Request
-  lifecycle detail on the known breaker rather than introduce a proposed timer
-  as though it were an existing subject.
 
 **What PostCode shows:**
 
@@ -992,9 +959,6 @@ immediate need. Have I reached enough understanding to stop investigating for no
   The earlier scope preference is available as a record only if captured at step 4.
 - **Request:** none to decide. Optionally supply a chosen direction and rationale
   for retention, selecting exact supporting accounts already consulted.
-- **Other input/access:** the chosen direction and any explanation are supplied
-  by the human. Capturing them neither imports the issue nor requests hypothetical
-  evaluation or authorizes implementation.
 
 **What PostCode shows:**
 
