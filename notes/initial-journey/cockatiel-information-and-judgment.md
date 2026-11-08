@@ -56,10 +56,10 @@ the operating model might be consulted well before step 6. Holding the order fix
 tests information needs, not likely navigation behavior. Grouped steps are not
 atomic requests, and later revisiting a question does not mean earlier content was
 absent or necessarily understood. Most accounts use the corrected understanding
-from the dialogue. One error-and-correction episode is explicitly reconstructed:
-step 2 omits breaker waiting, and step 5 informs the human of that correction.
-The annotation identifying the initial error is for readers of this sketch, not
-information PostCode already shows the human at step 2.
+from the dialogue. Two error-and-correction episodes are explicitly reconstructed:
+step 2 omits breaker waiting, corrected at step 5; step 12 uses misleading timer
+wording, corrected at step 15. The annotations identifying the initial errors are
+for readers of this sketch, not warnings already shown to the human at those steps.
 
 **PostCode interaction** describes the human side: available subjects they refer
 to, the request they make, and any other material supplied or access needed.
@@ -116,11 +116,10 @@ or the reporter's workaround and proposal. Connections between library behavior
 and that scenario belong to the human's reasoning. Returning to the issue is an
 outside-PostCode activity. Historical dialogue and the working account support
 our design notes; they are not implicitly preloaded into the simulated product.
-The step 5 correction targets the library account presented and retained at
-step 2; it does not require importing the original conversation. The separate
-optional timing-correction example at step 15 requires explicitly available
-library-account material. Optional capture of human intent likewise conveys only
-what the human supplies, with no automatic issue context.
+The corrections at steps 5 and 15 target library accounts presented and retained
+at steps 2 and 12 respectively; neither requires importing the original
+conversation. Optional capture of human intent likewise conveys only what the
+human supplies, with no automatic issue context.
 
 The [concept references](architectural-concept-references.md) ground context,
 responsibility, ownership/access, contract, state, interaction and rationale.
@@ -676,8 +675,9 @@ does the breaker stay open until an attempt arrives, and is there a good reason?
 
 **What PostCode shows:**
 
-- **Revisited transition:** reuse open-to-half-open and its execution trigger
-  from step 8; do not silently select a different meaning of readiness.
+- **Revisited transition — initial timing wording:** “The transition into recovery
+  happens when execution is attempted, not automatically when the timer expires.”
+  This is the explanation shown to the human at this step.
 - **Opening time + recovery delay:** opening records the timing basis used by a
   later execution's elapsed-time check. Reading stored state performs no transition.
 - **Illustrative timing case:** with a 30-second recovery delay, stored state may
@@ -693,12 +693,22 @@ does the breaker stay open until an attempt arrives, and is there a good reason?
   advantages were the maintainers' reasons. The interpretation and the lack of
   maintainer evidence remain visible independently of the behavioral explanation.
 
+**Sketch annotation — misleading wording in the initial result:** “the timer
+expires” suggests that a scheduled timer exists, even though the explanation
+correctly says execution triggers the transition. The timing mechanism checks
+elapsed time when execution arrives; there is no independently scheduled recovery
+transition timer. The other detail here does not remove the ambiguity introduced
+by that wording. This is an annotation for our review, not a warning shown to the
+human at this point. [Step 15](#timer) explicitly corrects the explanation.
+
 **After:** The human could now articulate what an eligibility query adds beyond
 stored state, connect the mechanism to the reported gate they read outside
 PostCode, and consider whether the inferred advantages matter to them. The
 explanation supports a mechanism, not a proven history of why
 it was chosen. A deeper rationale investigation might be needed if that history
-would change the decision.
+would change the decision. Despite the clock-checking detail, “timer expires” may
+leave the human imagining an existing timer whose effects could be changed; that
+misleading wording has not yet been corrected in this sequence.
 
 <a id="trial"></a>
 ## 13. Understanding half-open and choosing whether a query acts
@@ -783,34 +793,44 @@ a previous reading.
 **Before:** From rereading the issue outside PostCode, I see a suggestion for
 automatic transitions. Did the reporter mean closed or half-open? I thought
 Cockatiel already had a timer delay, so I may be misunderstanding what would change.
-The report provides the suggestion; it has not been supplied to PostCode.
+The step 12 explanation used “timer expires,” which may have contributed to that
+impression. The report provides the suggestion; it has not been supplied to PostCode.
 
 **PostCode interaction:**
 
 - **Available subjects:** open/half-open/closed and execution-triggered transition
-  ([step 8](#need-check)), with timing detail from [step 12](#stored-state).
-- **Request:** revisit the library's transition triggers and effects. If a retained
-  timing explanation and correction are independently available, inspect them.
+  ([step 8](#need-check)), with the retained timing explanation from
+  [step 12](#stored-state).
+- **Request:** revisit the library's transition triggers and expand the timing
+  mechanism and its effects.
 
 **What PostCode shows:**
 
-- **Existing recovery delay:** reuse the opening-time/delay/elapsed-check account
-  from step 12. It describes a condition checked by execution, not an existing
-  timer that changes state independently.
+- **Existing recovery delay:** opening records a time and recovery delay. An
+  arriving execution checks whether enough time has elapsed and can then trigger
+  the recovery transition. The mechanism schedules no independent recovery timer;
+  passing time alone runs no action to change the state.
 - **Existing recovery states:** half-open allows a trial; closing depends on
   recovery under the configured rules. Passing time alone is not evidence of health.
-- **Earlier library wording and correction, only if available:** an explanation
-  using “timer expires” should remain distinguishable from its correction to
-  elapsed-time checking on execution. The historical dialogue illustrates this
-  need; it does not give this route automatic access to that conversation or
-  establish that the same error occurred here.
+- **PostCode informs the human of a correction to the earlier detail:** the
+  [step 12](#stored-state) phrase “timer expires” misleadingly suggested a scheduled
+  timer. The corrected explanation is: “The transition into recovery happens when
+  execution is attempted after the recovery delay has elapsed.” This corrects the
+  account's wording; it does not describe a change to Cockatiel. The notice accompanies
+  the new account, without requiring the human to open correction details.
+- **Correction access:** identify the exact earlier timing explanation, its corrected
+  version and the reason for the change. Both versions and their supporting basis
+  remain inspectable; the earlier answer is preserved. The notification's UI form
+  remains unspecified.
 - **Scope:** the result describes current library behavior. It includes no account
   of the reporter's intention and no comparison with the human's unprovided timer
   proposal.
 
-**After:** The human can distinguish having a delay from scheduling an action at
-its expiry, and relate that distinction to the suggestion they read. They might
-formulate automatic open-to-half-open as the desired change: eligibility changes,
+**After:** The human has been informed that PostCode's earlier timer wording was
+misleading. They can distinguish having a delay from scheduling an action at its
+expiry, revisit their earlier impression and relate the distinction to the
+suggestion they read. They might formulate automatic open-to-half-open as the
+desired change: eligibility changes,
 while work and demonstrated recovery still follow execution. That formulation
 is their interpretation/design choice, not PostCode's interpretation of the
 reporter's words or a behavior discovered in the implementation. Timer and event
@@ -1018,7 +1038,7 @@ accounts to design something new.
 | Policy combination → wrapping cases (step 6) | Follow the relation exposed at step 1, then select an ordering case from the resulting account. | An analytical account exposing navigable relationships, not just text mentioning composition. |
 | Half-open → trial interaction (steps 5/8 → 13) | A state is first named within the breaker account, then becomes a selectable subject. | Stable subject meaning and retained-account references across perspectives. |
 | Step 2 account → correction notification at step 5 | The sketch explicitly presents an incomplete breaker account, then informs the human that it omitted waiting. | Retain the exact earlier account, supply it as correction context, and expose the correction and reason with the new answer; preserve inspection of both versions. |
-| Optional earlier timing wording/correction (step 15) | The separate timing error remains a historical example, not an error enacted by this route. | Exact earlier material and correction associations if offered; no assumed access to the original dialogue. |
+| Step 12 timing explanation → correction notification at step 15 | The sketch explicitly uses misleading “timer expires” wording, then corrects it to elapsed-time checking on execution. | Retain the exact earlier explanation, supply it as correction context, and expose the correction and reason with the new answer; preserve inspection of both versions. |
 | Human rereads report → relates it to library behavior (steps 8, 12, 14–15) | Outside reading supplies the gate, workaround assessment and suggestion; PostCode supplies only library accounts. | No issue ingestion required. The human makes the cross-source connection; their reading is not proof of a fix. |
 | Breaker → lifecycle detail (step 17) | A known subject can be used to request a new perspective without guessing a new entity. | Deeper evidence/investigation where this record has only a concern or incomplete account. |
 | Human idea → retained intention (steps 4 and 18) | New participant material needs explicit supply, not navigation to an existing program element. | Capture is optional here and distinct from hypothetical analysis. |
@@ -1056,11 +1076,11 @@ competent delivery here does not establish that the capabilities exist today.
   unknown maintainer intent, illustrative cases and actual application observations.
   Possible caller arrangements do not establish usage prevalence. The external issue
   and the human's design ideas stay outside the account unless explicitly supplied.
-- **Earlier answers and corrections:** test the explicit step 2 → step 5 episode:
-  the new answer informs the human of the omission, identifies the exact earlier
+- **Earlier answers and corrections:** test both explicit episodes: the omitted
+  waiting case (step 2 → step 5) and misleading timer wording (step 12 → step 15).
+  Each new answer informs the human of the error, identifies the exact earlier
   account and provides the corrected account and reason. Notification must not
-  depend on opening correction details; both versions remain inspectable. The
-  separate step 15 timing example still requires its own earlier material. A
+  depend on opening correction details; both versions remain inspectable. A
   retained human choice should identify the exact supporting accounts selected,
   without turning the choice into independently verified analysis.
 - **Optional capture and stopping:** if supplied preferences or decisions are retained,
