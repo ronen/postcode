@@ -14,7 +14,8 @@ implementation task record has been opened.
 Read the [implementation plan](plans/application-interface-boundary.md), the
 [decision draft](decisions/internal-application-api.md), and the proposed
 [specification](app-specification-revisions.md) and
-[constraint](architectural-constraints-revisions.md) additions together.
+[constraint](architectural-constraints-revisions.md) additions together, along with
+the related [backlog revision](backlog-revisions.md).
 
 Discussion outcome: the human said, “For the discussion choices listed in the
 README, I think i agree with your recommendations”. This establishes the working
@@ -28,6 +29,9 @@ governing revisions, direct promotion, or authorize implementation.
 | Where does the CLI run its Presentation? | Preserve its private worker/parent arrangement and usage-finalization behavior. Inside the worker, a CLI client calls the application API, then arranges supplied content. | Moving all arrangement to the parent would send larger source-bearing content across the worker boundary and require revisiting accepted wire/identity provisions. That relocation is not needed for architectural separation. |
 | How much existing functionality is included? | Investigation, exact answers, operational reporting, output-boundary setup, and the existing provider/account and feedback operations, through cohesive services rather than one giant Session object. | Deferring account/feedback separation leaves application operations available only through command modules. New account management UX and recording modes remain out of scope. |
 | What compatibility is promised? | Preserve CLI capabilities and behavior except the agreed application work-status change for failed continuation presentation; keep the API internal and evolvable. | Public SDK/versioned transport commitments would add lifecycle and compatibility work without a present client need. |
+
+Rows 2 and 5 incorporate the later human directions recorded below; the quoted
+agreement referred to the original recommendations, before those refinements.
 
 The third choice is a recommendation about implementation extent, not a requirement
 that all future clients use the CLI worker protocol. The application boundary is a
@@ -94,6 +98,16 @@ substantive findings need reassessment against the combined package; no blanket
 resolution is claimed. The original review material is preserved separately and
 has not been edited. Required rationale and agreed directions are included here
 and in the plan/decision so the package does not depend on disposable review files.
+
+The subsequent completeness pass clarified that shared coordination continues to
+resolve input aliases per request, preserving supplied designations and refusals.
+It also names the trusted internal CLI operation scope: acquire the guard once,
+finalize application work before arrangement, and retain the scope through
+arrangement with explicit validity-check ownership and capability revocation.
+Trusted test/assessment injections, identity-method change criteria and out-of-range
+paging checks are explicit. The related F5 backlog revision removes the obsolete
+compact-binding prerequisite while retaining its GUI Presentation questions.
+A fresh independent review of the combined package remains outstanding.
 
 ## Findings from implementation inspection
 
@@ -205,8 +219,8 @@ supported behavior. The known captured-basis export and navigation-origin gaps
 remain disclosed and outside this plan; no new reliance on them is proposed.
 
 On human approval, promote the plan and decision, merge the two governing
-additions, and update their canonical indexes atomically. The plan already carries
-the necessary future-use context without depending on these notes. This package
+additions and the F5 backlog revision, and update their canonical indexes atomically.
+The plan already carries the necessary future-use context without depending on these notes. This package
 README is a review guide, not a proposed replacement for `docs/README.md`; dispose
 of it under human direction after promotion. No canonical document should link to
 this draft. Implementation requires separate authorization and its own task record.

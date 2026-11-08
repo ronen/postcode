@@ -93,8 +93,13 @@ invalidated Session.
 
 Precise IDs are sufficient for answers, resolution candidates and follow-up
 subjects. Compact aliases are a CLI typing affordance, not a required general
-client contract. Already allocated coordination aliases may accompany results as
-optional fields. A GUI displays names and retains precise IDs internally; whether
+client contract. Shared request coordination nevertheless continues to accept
+Session aliases in reference designations and exact-answer targets. Resolve them
+per request, preserving the supplied spelling in normalized context and attribution
+and preserving current refusals; do not move lookup or unbound-alias handling into
+the CLI. Precise IDs being sufficient does not make them the only valid input.
+Already allocated coordination aliases may accompany results as optional fields.
+A GUI displays names and retains precise IDs internally; whether
 external agents need short references is deferred to their interface design.
 
 Delivered content, reports and progress events are plain structured-clone-safe
@@ -164,9 +169,20 @@ use them or require another interface's binding design now.
 Supply arrangement-time binding only to the CLI client at worker composition,
 validated against the answer's supplied reference population. Preserve today's
 page-driven batches/order; do not preallocate every reference in complete content.
-The serialized CLI requesting operation encloses application execution and CLI
-arrangement. Its binding capability expires at operation settlement and is revoked
-on invalidation or close. It has no query/selection authority, cannot escape in
+A trusted internal CLI operation-scope entry point encloses application execution
+and CLI arrangement under one acquisition of the application guard. It exposes an
+operation-local executor using the same shared request machinery, not a nested
+normal guarded call, and remains separate from ordinary client exports. Application
+work is finalized inside the scope before arrangement; that does not settle the
+scope or release binding authority. The post-execution validity check is after
+arrangement, normally before scope settlement, or owned by the guarded CLI
+publication path after worker delivery and before output. Post-output checking
+remains required. Application code does not import the CLI adapter.
+
+Its binding capability expires at scope settlement, including failure, and is
+revoked on invalidation or close. Later arrangement/publication failures do not
+rewrite an already finalized application report. It has no query/selection authority,
+cannot escape in
 returned content, and is not a general API operation. Ordinary direct clients use
 precise IDs. No parent-to-worker binding bridge is introduced.
 
