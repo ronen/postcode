@@ -78,9 +78,15 @@ context; select responsibilities at Cockatiel scope. No proposal is supplied.
 - **Overall purpose:** Cockatiel is a resilience library: it controls how
   application-supplied work is attempted when failures, delays or limited capacity
   matter. It does not need to understand the business meaning of that work.
-- **The reporter's application:** accepts job requests, prepares work and owns
-  the business job lifecycle. Job identity, acknowledgment and stored outcomes
-  belong here, rather than to Cockatiel.
+- **Application role in Cockatiel's operating model:** the caller supplies the
+  work that policies govern. Business job identity, acknowledgment and stored
+  outcomes, where needed, are outside Cockatiel's responsibilities. This is an
+  architectural responsibility boundary, not an account of how the reporter's
+  application implements those concerns.
+- **Reported application scenario:** the issue describes an application handling
+  background jobs that wants to check breaker eligibility before costly
+  preparation. This information comes from the issue report; the application
+  itself was not inspected.
 - **Cockatiel's policy family:** named facilities with distinct responsibilities:
 
   - **Circuit breaker:** withholds attempts after configured failures, then allows
@@ -93,20 +99,22 @@ context; select responsibilities at Cockatiel scope. No proposal is supplied.
     configuration and the operation's cooperation.
   - **Fallback:** supplies an alternative value or action after a selected failure.
   - **No-op:** passes execution through without adding a protection rule.
-- **The application's external dependency:** the thing the supplied work needs
-  to use in this issue. Its availability is a concern for the application;
-  Cockatiel's breaker regulates attempts based on observed outcomes, rather than
-  establishing the dependency's health directly.
-- **Relationships:** the application supplies an operation to a policy for
-  execution; that operation interacts with the dependency. Policies can be
-  combined around the same operation. The breaker is therefore part of
-  Cockatiel's protection machinery, while job submission belongs to the application.
+- **External dependency in the reported scenario:** the supplied work needs
+  something outside the application to be available. Separately, the breaker
+  account explains that Cockatiel regulates attempts based on observed outcomes;
+  it does not directly establish the dependency's health.
+- **Relationships in the operating model:** the application supplies an operation
+  to a policy for execution, and policies can be combined around that operation.
+  In the reported scenario, the work uses an external dependency. Connecting that
+  scenario to the library model explains the issue; it does not establish the
+  reporter's internal application structure.
 - **Connection to this issue:** the application wants to use breaker information
   before spending resources on preparation. The requested change concerns when
   that information is useful, not adding a job-submission subsystem to Cockatiel.
 - **Basis and scope:** these library responsibilities come from the inspected
   documentation and implementation; the particular application need comes from
-  the issue report and has not been reproduced. The named items are architectural
+  the issue report. The application was not inspected and the reported problem
+  has not been reproduced. The named items are architectural
   subjects and policy types, not a claim about source-module decomposition or
   an exhaustive inventory of the repository.
 
