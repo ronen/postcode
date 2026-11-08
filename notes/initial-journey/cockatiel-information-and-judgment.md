@@ -156,13 +156,17 @@ The route exercises accounts of implemented software and human reasoning from
 them. It leaves supplying hypothetical/intended architecture for investigation,
 proposal-versus-implementation comparison, comparison of alternative designs,
 assessment of their effects on constraints or quality concerns, and conformance
-to a supplied intention for other journeys. Issue ingestion and an integrated
-design conversation are also outside this route.
+to a supplied intention for other journeys. Historical comparison of architecture
+or behavior across program revisions, including investigation of why it changed,
+is also outside this route, along with issue ingestion and an integrated design
+conversation.
 
 Human-generated alternatives, preferences and choices remain part of the episode.
 Optional capture at steps 4 and 18 records attributed human material; it does not
 request analysis of an intended design. Comparison of existing behavior, including
-composition orders, remains included. These are boundaries of the exercise rather
+composition orders, remains included. So does revisiting earlier answers and
+corrections over the same program revision: account revision is distinct from
+historical change to the software. These are boundaries of the exercise rather
 than limits on adopted PostCode scope. The
 [script's scope statement](cockatiel-investigation-script.md#journey-scope) carries
 the same distinction for standalone readers.

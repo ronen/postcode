@@ -28,7 +28,9 @@ staged to exercise correction delivery, not to demonstrate reliable detection.
 The account content concerns implemented library behavior. Half-open concurrency
 uses the default single-trial case; other sampling configurations remain unexamined.
 Application-specific behavior and proposed changes stay in the human's reasoning.
-The script's [scope choices](cockatiel-investigation-script.md#journey-scope) apply.
+The examples revisit and correct accounts over one program revision; historical
+comparison across program revisions is outside this exercise. The script's
+[scope choices](cockatiel-investigation-script.md#journey-scope) apply.
 
 For inspection of supporting material, these evidence references inherit the
 original investigation's citations:

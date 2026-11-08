@@ -69,13 +69,18 @@ direction for further design. We leave the following capabilities for other jour
 - Asking PostCode to compare a proposal with the implementation, compare alternative
   designs, assess their effects on constraints or quality concerns, or check whether
   implemented behavior conforms to a stated intention.
+- Historical comparisons across program revisions: examining how architecture or
+  behavior changed over time and investigating the reasons for those changes.
 - Having PostCode ingest the issue or participate in the design conversation.
 
 The human develops alternatives and intentions themselves. Steps 4 and 18 retain
 optional recording of a preference or chosen direction, with attribution; this is
 distinct from investigating an intended design. Comparing existing library behavior,
-such as the two composition orders, remains part of the journey. These boundaries
-focus the exercise rather than restrict PostCode's broader product scope.
+such as the two composition orders, remains part of the journey. Revisiting earlier
+answers and their corrections over the same program revision also remains included;
+that concerns the evolution of an account, rather than changes to the software.
+These boundaries focus the exercise rather than restrict PostCode's broader product
+scope.
 
 A small set of [connected account examples](cockatiel-account-examples.md) makes
 the selection-to-answer relationship concrete for admission, recovery and composition.
