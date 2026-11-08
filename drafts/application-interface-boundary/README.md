@@ -88,7 +88,9 @@ human directions settled the runtime and contract choices as follows:
 The synthesis also names progress callbacks, typed lifecycle/busy outcomes,
 host-owned reference lifetime, repository/method delivery context, and untyped
 `scripts/` consumers. It cites the existing Presentation/F5 and optional-recording
-backlog scope and adds the directed GUI-host consequence to the MINIGUI note.
+backlog scope and retains the GUI-host consequences in the plan and decision.
+Updates to `notes/upcoming-work.md` are handled separately and are outside this
+package's scope.
 Local wording now distinguishes interpretation selection into an answer from a
 client choosing an answer to display, scopes complete content to current eager
 families, and identifies the application API as direct callers' validation boundary.
