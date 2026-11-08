@@ -39,22 +39,25 @@ atomic requests, and later revisiting a question does not mean earlier content w
 absent or necessarily understood. The route uses corrected accounts rather than
 deliberately reenacting mistakes from the dialogue.
 
-Interaction annotations distinguish **available subjects**, **request**, **newly
-exposed subjects**, and **other input/access** where needed. Names describe what
-the human can recognize, not implementation identifiers. A subject can be a policy
-type, an architectural role, a relationship, or a selected aspect of an account;
-it need not be a source-code component. State, responsibility and contract are
-perspectives; a particular state or transition can become a subject when an account
-exposes it for further selection. Naming something in prose alone does not provide
-that selection: the indicated routes are requirements for this sketch, not delivered
-navigation capabilities.
+**PostCode interaction** describes the human side: available subjects they refer
+to, the request they make, and any other material supplied or access needed.
+**What PostCode shows** describes the result, including named subjects introduced
+by the account. A **Newly selectable** note appears only where it clarifies a later
+selection; it is not a second inventory required at every step.
+
+Names describe what the human can recognize, not implementation identifiers. A
+subject can be a policy type, architectural role, relationship or selected account
+aspect; it need not be a source-code component. State, responsibility and contract
+are perspectives; a particular state or transition can become a subject when an
+account exposes it for further selection. Naming something in prose alone does
+not provide that selection: the indicated routes are requirements for this sketch,
+not delivered navigation capabilities.
 
 References to earlier steps identify the account in which a subject became
-available. They do not establish that the human noticed or understood it. “Newly
-exposed” describes the result of the request, not a subject the user must somehow
-select before it exists. Cases of a supported operating model remain distinct from
-runtime instances or claims about the reporter's uninspected application. Requests
-for further detail can return partial or unavailable information.
+available. They do not establish that the human noticed or understood it. Cases of
+a supported operating model remain distinct from runtime instances or claims
+about the reporter's uninspected application. Requests for further detail can
+return partial or unavailable information.
 
 ## Basis and assumptions
 
@@ -94,9 +97,6 @@ responsibilities are not yet clearly separated in my understanding.
   context. These are supplied starting material, not discoveries by PostCode.
 - **Request:** open Cockatiel's surrounding context and responsibilities, keeping
   the reported scenario distinguishable from the general application role.
-- **Newly exposed subjects:** application role, reported preparation scenario,
-  policy family and its six named types, supplied operation, external dependency
-  role, and the relationship “policies can be combined.”
 - **Other input/access:** making the issue and its repository association available
   is an assumed entry facility. This does not establish automatic issue ingestion
   or discovery of the reporter's application.
@@ -173,8 +173,6 @@ still associating Cockatiel with managing background jobs.
   operation from [step 1](#orientation).
 - **Request:** select inspection and execution contracts on the breaker; follow
   the supplied-operation relationship to ownership. Revisit Bulkhead's queue role.
-- **Newly exposed subjects:** stored breaker state, execution/admission, bulkhead
-  execution capacity and waiting queue. These are aspects of the selected policies.
 - **Other input/access:** readiness/reservation ideas remain in the human's head.
   They are not previously identified program entities or submitted designs.
 
@@ -223,7 +221,6 @@ about possible scope, not a commitment to generalize.
   from [step 2](#readiness).
 - **Request:** revisit responsibilities and documented purpose; expand the meaning
   of the breaker's state information and the bulkhead's capacity information.
-- **Newly exposed subjects:** no additional implemented mechanism is assumed.
 - **Other input/access:** active probes or application health signals are not
   selectable Cockatiel facilities established by these accounts. Access to the
   original agent's candidate list would be separate attributed material; otherwise
@@ -273,7 +270,6 @@ grow without implementing unrequested features.
   [steps 1–3](#orientation); no new information request is required.
 - **Request:** none. Optionally supply the scope preference for retention against
   the issue; this records human intent without asking for analysis.
-- **Newly exposed subjects:** a human scope-preference record only if supplied.
 - **Other input/access:** intention capture is assumed, not a route through an
   already-existing Cockatiel entity. Continuing without capture is valid.
 
@@ -310,8 +306,6 @@ mean, and would that support unifying it with breaker readiness?
   execution/admission, execution capacity and waiting queue ([step 2](#readiness)).
 - **Request:** open admission contracts for both policies; expand waiting cases.
   Keep each case's conditions visible when consulting them together.
-- **Newly exposed subjects:** start/wait/refuse outcomes, recovery trial, waiting
-  caller and half-open recovery state, all scoped to the policy account.
 - **Other input/access:** an earlier omission/correction can be inspected only if
   the original account is available. Here that history comes from the recorded
   dialogue; this reconstructed route has not itself generated an incorrect answer.
@@ -335,6 +329,9 @@ mean, and would that support unifying it with breaker readiness?
 - **Conditions:** these are static interpretations of the inspected revision.
   Other recovery sampling configurations were not worked through. The start/wait/
   refuse cases are policy-scoped subjects, not a generic new acceptance API.
+- **Newly selectable:** half-open and its recovery-trial interaction are exposed
+  within the breaker account, providing a route to the closer examination in
+  [step 13](#trial).
 
 **After:** Shared admission vocabulary might lead the human toward a common query.
 The waiting details give them reason to distinguish immediate progress from
@@ -365,11 +362,8 @@ work together?
 - **Request:** open interaction and ownership at the application/library boundary.
   Follow the combination relationship to an account of wrapping, then select each
   ordering case it exposes. Do not start by selecting an unidentified composition.
-- **Newly exposed subjects:** reusable policy instance, individual execution,
-  shared breaker state, shared bulkhead capacity, combined execution entry, and
-  “Bulkhead outside Circuit breaker” / “Circuit breaker outside Bulkhead” cases.
-- **Other input/access:** these are supported composition patterns. No concrete
-  wrapper instance in the reporter's application has been located or supplied.
+- **Other input/access:** no concrete wrapper instance from the reporter's
+  application is supplied; the human asks about supported composition patterns.
 
 **What PostCode shows:**
 
@@ -393,6 +387,9 @@ work together?
   through static interpretation. They are not observed executions or identified
   objects in the reporter's application. The combination relationship from step 1
   is expanded here into selectable patterns.
+- **Newly selectable:** the wrapping account exposes the two named ordering
+  cases above. The human can select either case to inspect its interaction and
+  ownership, without needing to identify a concrete application wrapper.
 
 **After:** The human could form a more usable model of the library and recognize why
 ordering matters. They are better positioned to reason about where a query belongs.
@@ -418,9 +415,6 @@ queueing, would better express what I need. Should a negative answer explain why
 - **Request:** revisit the admission accounts; expand state/capacity inspection and
   the meaning of refusal information. Select the policy or its exposed outcome,
   with contract/state as the requested perspective.
-- **Newly exposed subjects:** manual isolation, recovery delay and last-failure
-  information in the breaker account; execution-slot and queue-slot availability
-  in the bulkhead account.
 - **Other input/access:** “available now” and “acceptable” are candidate meanings
   considered by the human, not existing generic policy queries to select.
 
@@ -467,9 +461,6 @@ problem, or have I drifted toward a different problem?
   stored state ([step 2](#readiness)) and recovery delay ([step 7](#acceptance)).
 - **Request:** reopen the reported gate and expand the breaker's transition
   conditions. Relate the two accounts through the reported use of the breaker.
-- **Newly exposed subjects:** closed/open states and the open-to-half-open
-  transition, including its execution trigger and elapsed-time condition; the
-  report's state-only preparation gate.
 - **Other input/access:** the intended query stays in the human's reasoning.
   The issue supplies the application gate; PostCode has not discovered it in
   application source.
@@ -516,10 +507,8 @@ practical.
   relationships from [step 6](#operating-model); application role from step 1.
 - **Request:** on that composition model, select ownership/access. Expand the
   caller arrangements exposed by the account.
-- **Newly exposed subjects:** assembling caller, caller given only a protected
-  operation, and the retained-reference versus execution-access relationships.
-- **Other input/access:** these are alternative supported usage arrangements,
-  not observed instances or a population of “typical” applications.
+- **Other input/access:** no application-specific caller arrangement or usage
+  survey is supplied; the human asks about possible access through the model.
 
 **What PostCode shows:**
 
@@ -558,8 +547,6 @@ have not considered?
   common execution model and wrapping cases ([step 6](#operating-model)).
 - **Request:** revisit the family with contract as the perspective; expand the
   meaning of shared execution and reuse the composition waiting accounts.
-- **Newly exposed subjects:** common execution contract as a selectable account
-  aspect; no new policy type is needed because the family was already named.
 - **Other input/access:** the generic acceptance interface is a human proposal,
   not an existing interface discovered by the selection.
 
@@ -612,8 +599,6 @@ that picture before deciding what additional reporting a query should offer.
   wait/refuse outcomes ([step 5](#waiting)), and component/wrapper roles (step 6).
 - **Request:** inspect outcomes and notifications; follow the relationship from
   an inner outcome through an outer policy to the final caller outcome.
-- **Newly exposed subjects:** operation failure, admission refusal, selected
-  failure-valued result, final value/error, and policy-local notifications.
 - **Other input/access:** no hypothetical query is supplied; the request concerns
   existing reporting and its composition.
 
@@ -659,10 +644,8 @@ does the breaker stay open until an attempt arrives, and is there a good reason?
   transition ([steps 7–8](#acceptance)), plus the reported preparation gate (step 8).
 - **Request:** revisit that transition, expanding timing and trigger detail; inspect
   rationale/support associated with it separately from the behavioral account.
-- **Newly exposed subjects:** opening time and elapsed-time check; any rationale
-  item is attributed interpretation, not another implemented component.
-- **Other input/access:** maintainer rationale is not established. Selecting a
-  rationale perspective must allow that qualified absence, rather than invent intent.
+- **Other input/access:** no maintainer explanation is supplied. Inspect whatever
+  rationale evidence is associated with the selected transition.
 
 **What PostCode shows:**
 
@@ -707,8 +690,6 @@ or merely indicate willingness to run one?
   individual execution ([step 6](#operating-model)).
 - **Request:** select half-open within the breaker account; expand trial interaction
   and concurrent callers, then follow the supplied-work relationship to ownership.
-- **Newly exposed subjects:** trial eligibility, trial in progress and trial outcome
-  as distinguishable aspects of that interaction.
 - **Other input/access:** the human considers the effects of a possible query;
   PostCode receives no proposed query to evaluate.
 
@@ -755,8 +736,6 @@ sufficient but awkward, or did it still fail in some important way?
   the reported gate ([step 8](#need-check)).
 - **Request:** inspect supporting report material, then select the workaround
   statement exposed there. This is provenance access, not a policy perspective.
-- **Newly exposed subjects:** reporter's external timing workaround and their
-  sufficiency assessment, each attributed to the report.
 - **Other input/access:** a retained capture or explicit source access is needed.
   For this exercise the recorded reading supplies it; silently fetching a changed
   live issue would not reproduce the same evidence.
@@ -801,8 +780,6 @@ would change.
   ([step 14](#reporter-evidence)).
 - **Request:** revisit transition triggers/effects and inspect the report's
   suggestion. If available, inspect the original timing wording and correction.
-- **Newly exposed subjects:** the reporter's automatic-transition suggestion as
-  attributed proposal material, not as an implemented timer.
 - **Other input/access:** correction history belongs to the recorded dialogue;
   it is not evidence that this reconstructed interaction previously made that error.
   A detailed timer design remains in the human's reasoning.
@@ -849,8 +826,6 @@ making the application poll, and favor an automatic transition over a new query?
   transitions ([steps 8 and 12](#need-check)).
 - **Request:** expand the breaker's notification contract; follow each exposed
   notification to the transition it reports. Revisit the elapsed-time trigger.
-- **Newly exposed subjects:** break, half-open, reset and state-change notifications
-  and their relationships to the existing transitions.
 - **Other input/access:** the human compares a new query with an automatic
   transition. Neither is supplied to PostCode for hypothetical comparison.
 
@@ -902,11 +877,9 @@ would constrain that work?
 - **Request:** on the breaker, inspect configuration/defaults, then ask for available
   state/lifetime detail. Select isolation and reopening where already exposed;
   request further detail on the breaker rather than guessing a restoration object.
-- **Newly exposed subjects:** breaker options as a configuration aspect. Restoration
-  and timer lifetime may appear only as unresolved information needs here.
-- **Other input/access:** this basis does not provide a complete lifecycle account
-  or a new timer implementation. Any further investigation must return its actual
-  coverage or limitation; an appealing perspective name cannot fill that gap.
+- **Other input/access:** no timer proposal is supplied for analysis. Request
+  lifecycle detail on the known breaker rather than introduce a proposed timer
+  as though it were an existing subject.
 
 **What PostCode shows:**
 
@@ -958,7 +931,6 @@ immediate need. Have I reached enough understanding to stop investigating for no
   The earlier scope preference is available as a record only if captured at step 4.
 - **Request:** none to decide. Optionally supply a chosen direction and rationale
   for retention, selecting exact supporting accounts already consulted.
-- **Newly exposed subjects:** a human decision/intention record only if supplied.
 - **Other input/access:** the opt-in timer direction originates with the human.
   Capturing it does not request hypothetical evaluation or authorize implementation.
 
