@@ -294,18 +294,19 @@ about possible scope, not a commitment to generalize.
   what future facilities fit the product remains open.
 
 **After:** The human has grounds to consider whether a common concept is useful,
-without assuming permission, capacity and health mean the same thing. They might
-bring probes or health signals from architectural knowledge. In the original
-dialogue, the agent introduced those alternatives; the displayed current accounts
-do not establish that the human would independently generate that set. A broader
-scope decision remains open.
+without assuming permission, capacity and health mean the same thing. For this
+exercise, assume the human generates their own alternatives, drawing on their
+knowledge and the understanding of Cockatiel provided by PostCode. Probes or health
+signals are possible examples; they need not reproduce the original agent's exact
+suggestions. The human judges which alternatives fit the library's purpose and
+the need they are addressing. A broader scope decision remains open.
 
 **Review point:** Does the account make Cockatiel's documented purpose and the
 responsibilities and limits of its existing mechanisms accessible enough for the
 human to reason about scope? Permission to attempt, capacity to admit work and
 knowledge of dependency health must remain distinguishable. Generating new
-mechanisms is not needed to replace reading the existing software; alternatives
-from the original dialogue remain separate contributions.
+mechanisms is the human's contribution in this exercise, informed by the account
+of existing software.
 
 <a id="preference"></a>
 ## 4. Choosing conservative scope
@@ -1050,11 +1051,12 @@ scenario would be an explicit extension, not information inferred from a name le
 
 The main route has deliberately removed hypothetical comparison requests. It
 therefore cannot simply inherit everything the original conversational agent
-contributed. In particular, generation of alternative mechanisms (step 3) and
-timer-specific risk analysis (step 17) need an explicit source if retained. Their
-absence need not prevent an initial design direction, but can reduce the scope
-or confidence of what the human is positioned to decide. These are consequential
-limits to discuss, not failures to conceal to keep the journey moving.
+contributed. In step 3, we assume the human generates their own alternatives;
+PostCode supplies the account of existing software that informs that reasoning.
+The original agent's timer-specific risk analysis (step 17) remains a separate
+contribution with an explicit source if retained. Its absence need not prevent an
+initial design direction, but can reduce the scope or confidence of what the human
+is positioned to decide.
 
 The before/after commentary is our design analysis, not application telemetry.
 The human's silent conclusion creates no obligation to infer or store a mental
