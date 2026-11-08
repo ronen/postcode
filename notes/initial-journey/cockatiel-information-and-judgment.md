@@ -46,6 +46,14 @@ to, the request they make, and any other material supplied or access needed.
 by the account. A **Newly selectable** note appears only where it clarifies a later
 selection; it is not a second inventory required at every step.
 
+**What PostCode shows** can span both the initial display and information the
+human exposes through additional selections, expansion or following displayed
+relationships within that step. It need not appear all at once. This sketch leaves
+the exact clicks and whether information is precomputed or produced on demand
+open. Intermediate actions are made explicit where they materially change the
+question or reveal a missing navigation route. This convention concerns the
+experience; it does not reclassify new analysis as presentation-only work.
+
 Names describe what the human can recognize, not implementation identifiers. A
 subject can be a policy type, architectural role, relationship or selected account
 aspect; it need not be a source-code component. State, responsibility and contract
@@ -122,8 +130,9 @@ starting leads, not names supplied because we already know the answer.
   and uses “circuit breaker” or `CircuitBreakerPolicy` to locate a subject.
   `CircuitState` is an additional lead if needed; the issue itself is not supplied.
 - **Request:** inspect the meaning of the matched subject before choosing it;
-  then request its responsibility and surrounding Cockatiel context. Follow the
-  resulting application/library and policy-family relationships as useful.
+  then request its responsibility and surrounding Cockatiel context. The content
+  below may include detail exposed through further UI selections within that
+  account, under the walkthrough's reading convention.
 - **Other input/access:** name lookup and disambiguation are required interaction
   support, not a presumed perfect match. If the name is unresolved or yields
   several candidates, expose that choice. No GitHub ingestion, report analysis
