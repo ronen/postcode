@@ -33,6 +33,15 @@ identify where requesting it might add value. Optional capture of an intention
 or proposal is distinguished from asking PostCode to analyze it. This is a
 simplification for the exercise, not a restriction on PostCode's adopted scope.
 
+For this exercise, assess PostCode as a window onto the software: does it provide
+and make accessible the architectural information the human would otherwise need
+to obtain by reading source, sufficiently to reason about the change under
+consideration? This does not require reproducing every implementation detail or
+acting as a design analyst. A human can misunderstand source code too; success
+means supporting informed reasoning, not guaranteeing correct human conclusions.
+PostCode remains responsible for the fidelity and qualifications of its own
+accounts, including making relevant detail and supporting evidence accessible.
+
 The human observed that prominently available information could change the order:
 the operating model might be consulted well before step 6. Holding the order fixed
 tests information needs, not likely navigation behavior. Grouped steps are not
@@ -240,12 +249,15 @@ still associating Cockatiel with managing background jobs.
 wasted preparation without securing later execution. In the dialogue they agreed
 to explore that weaker promise. Our assessment: the boundary clarification helps,
 but neither asynchrony nor queueing rules out reservation. Whether a weaker promise
-is sufficient remains a design judgment, and the query's meaning is still unsettled.
+is sufficient remains a design judgment, and the proposed readiness check's precise
+meaning remains unsettled.
 
-**Review point:** An accurate account can expose the distinction without knowing
-what is in the human's head. A silent misunderstanding is not automatically
-available for PostCode to diagnose. Explicit analysis of a reservation proposal
-would add value if its coordination obligations become consequential.
+**Review point:** Does this window onto Cockatiel provide enough information to
+reason about observation versus reservation without reading source? In particular,
+can the human see what inspection does, what execution does, who controls the work,
+and what can change between inspection and execution? The human judges what a
+proposed readiness check should promise; PostCode need not assess that proposal
+to make the existing behavior understandable.
 
 <a id="scope"></a>
 ## 3. Other mechanisms and fit with the library
