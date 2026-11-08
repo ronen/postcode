@@ -1,7 +1,7 @@
 # Cockatiel: information consulted and human judgment
 
 Recorded: 2026-11-07
-Revised: 2026-11-08 — concrete account content and subject navigation
+Revised: 2026-11-08 — human-read issue, name leads and library-only investigation
 Status: exploratory companion pass; not an implementation plan or chosen UX
 
 ## Purpose and reading convention
@@ -25,7 +25,8 @@ to understand, accept or rely on it. The after section can examine a tempting
 inference as well as useful progress. A recorded proposal is evidence of what the
 human expressed, not a complete account of their reasoning.
 
-The working route emphasizes accounts of existing software and the reported need.
+The working route emphasizes accounts of existing software that the human relates
+to a reported need read outside PostCode.
 The human considers design ideas without necessarily supplying them to PostCode.
 Hypothetical comparison is not required in these interactions; review points
 identify where requesting it might add value. Optional capture of an intention
@@ -64,9 +65,24 @@ return partial or unavailable information.
 Cockatiel content comes from the [working account](cockatiel-working-account.md)
 and original dialogue, at revision `f48bea55022ab15ab07eb52a79bfc1e661300fd4`,
 issue #111 read on 2026-10-14. This pass adds no code inspection, execution or
-PostCode inference. What PostCode shows below is illustrative account content,
+PostCode inference. For the 2026-11-08 revision, the author reread the
+[issue body](https://github.com/connor4312/cockatiel/issues/111) to confirm the starting
+terms circuit breaker, CircuitState and CircuitBreakerPolicy. That editorial check
+is not an action performed by PostCode in the journey or a new validation of the
+application's behavior. What PostCode shows below is illustrative account content,
 not actual product output. Original static interpretations, reported experiences,
 corrections and unresolved cases retain their qualifications.
+
+**Information boundary for this route:** the human reads the issue outside
+PostCode. PostCode receives the selected Cockatiel repository and the human's name
+leads/selections, not the issue text, its URL, the reported application scenario,
+or the reporter's workaround and proposal. Connections between library behavior
+and that scenario belong to the human's reasoning. Returning to the issue is an
+outside-PostCode activity. Historical dialogue and the working account support
+our design notes; they are not implicitly preloaded into the simulated product.
+Optional correction inspection uses only explicitly available library-account
+material, not the entire original conversation. Optional capture of human intent
+likewise conveys only what the human supplies, with no automatic issue context.
 
 The [concept references](architectural-concept-references.md) ground context,
 responsibility, ownership/access, contract, state, interaction and rationale.
@@ -87,34 +103,47 @@ PostCode analysis merely by being recorded.
 
 [Original step 1 and question](cockatiel-human-postcode-walkthrough.md#orientation)
 
-**Before:** I know little about Cockatiel. Is job submission its central purpose, or
-one component of a larger system? The issue's application context and the library's
-responsibilities are not yet clearly separated in my understanding.
+**Before:** I have read the GitHub issue outside PostCode, but know little about
+Cockatiel. Is the job-submission activity described there part of the library, or
+an application using it? I have encountered these names:
+
+- **circuit breaker:** a term in the report's prose, giving me an architectural lead.
+- **CircuitBreakerPolicy:** a name in the issue's example that may identify the
+  relevant policy in Cockatiel.
+- **CircuitState:** another name in that example, apparently related to its states.
+
+Recognizing those names does not mean I understand the programming language,
+the example's syntax, or the relationship between the named things. They are
+starting leads, not names supplied because we already know the answer.
 
 **PostCode interaction:**
 
-- **Entry subjects:** the human brings issue #111 and its Cockatiel repository
-  context. These are supplied starting material, not discoveries by PostCode.
-- **Request:** open Cockatiel's surrounding context and responsibilities, keeping
-  the reported scenario distinguishable from the general application role.
-- **Other input/access:** making the issue and its repository association available
-  is an assumed entry facility. This does not establish automatic issue ingestion
-  or discovery of the reporter's application.
+- **Entry context and name leads:** the human selects the Cockatiel repository
+  and uses “circuit breaker” or `CircuitBreakerPolicy` to locate a subject.
+  `CircuitState` is an additional lead if needed; the issue itself is not supplied.
+- **Request:** inspect the meaning of the matched subject before choosing it;
+  then request its responsibility and surrounding Cockatiel context. Follow the
+  resulting application/library and policy-family relationships as useful.
+- **Other input/access:** name lookup and disambiguation are required interaction
+  support, not a presumed perfect match. If the name is unresolved or yields
+  several candidates, expose that choice. No GitHub ingestion, report analysis
+  or discovery of the reporter's application is needed.
 
 **What PostCode shows:**
 
+- **Meaning of the name leads:** the matched `CircuitBreakerPolicy` subject is
+  explained as the circuit-breaker policy. If the human uses `CircuitState`, the
+  result identifies it as the breaker's state vocabulary, not a particular live
+  breaker or a separate job system. These are illustrative semantic lookup results;
+  resolving the names and their relationship requires supported analysis.
 - **Overall purpose:** Cockatiel is a resilience library: it controls how
   application-supplied work is attempted when failures, delays or limited capacity
   matter. It does not need to understand the business meaning of that work.
 - **Application role in Cockatiel's operating model:** the caller supplies the
   work that policies govern. Business job identity, acknowledgment and stored
   outcomes, where needed, are outside Cockatiel's responsibilities. This is an
-  architectural responsibility boundary, not an account of how the reporter's
-  application implements those concerns.
-- **Reported application scenario:** the issue describes an application handling
-  background jobs that wants to check breaker eligibility before costly
-  preparation. This information comes from the issue report; the application
-  itself was not inspected.
+  architectural responsibility boundary; PostCode has no particular caller
+  application to describe in this route.
 - **Cockatiel's policy family:** named facilities with distinct responsibilities:
 
   - **Circuit breaker:** withholds attempts after configured failures, then allows
@@ -127,36 +156,35 @@ responsibilities are not yet clearly separated in my understanding.
     configuration and the operation's cooperation.
   - **Fallback:** supplies an alternative value or action after a selected failure.
   - **No-op:** passes execution through without adding a protection rule.
-- **External dependency in the reported scenario:** the supplied work needs
-  something outside the application to be available. Separately, the breaker
-  account explains that Cockatiel regulates attempts based on observed outcomes;
-  it does not directly establish the dependency's health.
+- **External dependency as an illustrative role:** application-supplied work
+  might call an external service. Cockatiel's breaker regulates attempts based
+  on observed outcomes; it does not directly establish that service's health.
+  This illustrates a use of the library, not a discovered application dependency.
 - **Relationships in the operating model:** the application supplies an operation
   to a policy for execution, and policies can be combined around that operation.
-  In the reported scenario, the work uses an external dependency. Connecting that
-  scenario to the library model explains the issue; it does not establish the
-  reporter's internal application structure.
-- **Connection to this issue:** the application wants to use breaker information
-  before spending resources on preparation. The requested change concerns when
-  that information is useful, not adding a job-submission subsystem to Cockatiel.
-- **Basis and scope:** these library responsibilities come from the inspected
-  documentation and implementation; the particular application need comes from
-  the issue report. The application was not inspected and the reported problem
-  has not been reproduced. The named items are architectural
-  subjects and policy types, not a claim about source-module decomposition or
-  an exhaustive inventory of the repository.
+  An operation can interact with an external dependency in the illustrative
+  usage above; that relationship does not assert a specific application's structure.
+- **Basis and scope:** these responsibilities and relationships come from the
+  library documentation and implementation, with the usage illustration labelled
+  as such. The named items are architectural subjects and policy types, not a
+  source-module decomposition or an exhaustive repository inventory. No issue
+  analysis or application-specific claim is part of this result.
 
-**After:** The human could now place the issue across an application/library boundary
-and recognize why a resilience facility matters to preparation. This is an initial
-orientation, not yet a complete operating model. The original dialogue's later
-questions show that an early explanation did not settle all of that understanding.
+**After:** The human could connect the library's application/policy boundary to the
+job-submission issue they read. That connection is their reasoning: PostCode has
+not explained the reporter's application or inferred why the human asked. The
+names now have enough meaning to select relevant architectural information without
+reading source syntax. This remains initial orientation, not a complete operating
+model; the original dialogue's later questions show that an early explanation
+did not settle all of that understanding.
 
-**Review point:** This explanatory account is a substantive requirement. Whether
-it appears at entry or is opened here is a later sequence question. The bullets
-specify candidate content, not a fixed layout or a demand that all detail appear
-at once. Naming the policy family here could answer a later question earlier;
-the original sequence remains a coverage reference, not a prediction that the
-human will still be surprised by other policy types at step 10.
+**Review point:** This explanatory account is a substantive requirement. Can the
+human locate the relevant subject from issue-supplied names without reading code?
+The lookup must distinguish a policy from state vocabulary, rather than silently
+choose an answer. Whether surrounding context appears immediately or is opened
+next remains a UI question. The bullets specify candidate content, not a fixed
+layout or a demand that all detail appear at once. Naming the policy family here
+could answer later questions earlier; the sequence remains a coverage reference.
 
 <a id="readiness"></a>
 ## 2. Proposing readiness and considering reservation
@@ -187,9 +215,9 @@ still associating Cockatiel with managing background jobs.
 - **Bulkhead — capacity and waiting queue:** execution capacity and queue capacity
   are resources controlled by the bulkhead, separate from the application's
   business job records.
-- **Application role → supplied operation:** preparation is the application's
-  activity before the protected execution in the reported scenario. The general
-  ownership account does not establish the reporter's internal implementation.
+- **Application role → supplied operation:** the caller controls work outside
+  the policy-governed execution. The library account does not identify a particular
+  job-preparation sequence; the human connects it to what they read in the issue.
 - **Timing qualification:** state and available capacity can change between
   inspection and execution. This explains a limit of existing observations; it
   is not a specified contract for the human's proposed readiness query.
@@ -234,10 +262,10 @@ about possible scope, not a commitment to generalize.
   measure dependency health. This expands the capacity aspect exposed in step 2.
 - **Cockatiel purpose and policy family:** reuse step 1's resilience-library
   description and named responsibilities, with documentation attribution.
-- **Relationship to external dependency:** the application-supplied operation
-  contacts the dependency in the reported scenario; the policies govern that
-  operation. An external health signal is not established by either of these
-  policy-state accounts.
+- **Relationship to an illustrative external dependency:** application-supplied
+  work may contact a service while policies govern its execution. An external
+  health signal is not established by either policy-state account. No particular
+  application or dependency is identified.
 - **Scope of the account:** no active-probe or general readiness facility is
   identified by this material. That is a limit of what has been established here,
   not an exhaustive search proving that no related mechanism exists. Deciding
@@ -266,23 +294,24 @@ grow without implementing unrequested features.
 
 **PostCode interaction:**
 
-- **Available subjects:** issue/report context and library responsibilities from
-  [steps 1–3](#orientation); no new information request is required.
-- **Request:** none. Optionally supply the scope preference for retention against
-  the issue; this records human intent without asking for analysis.
+- **Available subjects:** Circuit breaker and library responsibilities from
+  [steps 1–3](#orientation); the issue remains outside PostCode.
+- **Request:** none. Optionally supply the scope preference against the selected
+  breaker inquiry; this records human intent without supplying or analyzing the issue.
 - **Other input/access:** intention capture is assumed, not a route through an
   already-existing Cockatiel entity. Continuing without capture is valid.
 
 **What PostCode shows:**
 
-- **Retained reference material:** the issue need and existing responsibility
-  accounts remain as previously shown; this turn produces no new software claim.
+- **Retained reference material:** the existing library responsibility accounts
+  remain as shown; this turn produces no new software claim or report of the issue.
 - **Optional human preference record:** if supplied, it says to address the
   immediate need, fit existing facilities and leave room for growth without
   building unrequested features. Its author is the human in this exercise.
-- **Association and limit:** attach that preference to the issue/design inquiry,
-  rather than to Cockatiel as a maintainer-approved requirement. Without capture,
-  there is no new preference record to select later.
+- **Association and limit:** associate that preference with the selected breaker
+  inquiry. Any reference to “the immediate need” remains the human's wording,
+  not evidence that PostCode knows the external issue. Without capture, there is
+  no new preference record; with capture, it is not a maintainer requirement.
 
 **After:** The human has set a criterion for later judgment. This preference was
 explicit in the original dialogue. It does not settle which mechanism fits best,
@@ -452,45 +481,49 @@ conditions, races or contradictions, rather than restating the human's choice.
 
 [Original step 8, exchange 15](cockatiel-human-postcode-walkthrough.md#need-check)
 
-**Before:** I have a candidate query in mind. Would it address the reporter's original
-problem, or have I drifted toward a different problem?
+**Before:** I have a candidate query in mind. Would it address the reporter's
+original problem? I return to the issue outside PostCode if necessary: the reported
+application checks stored state before costly preparation and withholds work while
+it says open. That report is my context, not an account held by PostCode.
 
 **PostCode interaction:**
 
-- **Available subjects:** reported preparation scenario ([step 1](#orientation)),
+- **Available subjects:** Circuit breaker identified at [step 1](#orientation),
   stored state ([step 2](#readiness)) and recovery delay ([step 7](#acceptance)).
-- **Request:** reopen the reported gate and expand the breaker's transition
-  conditions. Relate the two accounts through the reported use of the breaker.
-- **Other input/access:** the intended query stays in the human's reasoning.
-  The issue supplies the application gate; PostCode has not discovered it in
-  application source.
+- **Request:** expand the breaker's state meanings and transition/admission
+  conditions. No request asks PostCode to inspect the reported preparation gate.
+- **Other input/access:** the human consults the issue separately and mentally
+  compares it with the library account. Neither the issue nor the candidate query
+  is supplied to PostCode.
 
 **What PostCode shows:**
 
-- **Reported preparation gate:** the issue describes checking stored breaker
-  state before costly preparation and withholding work while it says open.
 - **Circuit breaker — closed/open/half-open:** closed permits ordinary execution;
   open withholds attempts; half-open is the recovery-trial state. Manual isolation
   remains distinct from ordinary timed recovery.
 - **Open-to-half-open transition:** an arriving execution checks elapsed recovery
   time and, when eligible, triggers the transition and supplies trial work.
   Elapsing time or reading stored state alone does not do so.
-- **Connection between report and mechanism:** withholding every execution while
-  stored state remains open can also withhold the trigger for recovery. This is
-  an interpretation connecting a reported gate with supported library behavior.
-- **Basis and limit:** the gate comes from the issue, the breaker mechanism from
-  static inspection. Neither the reporter's application nor the human's candidate
-  query has been tested. The account does not certify a proposed fix.
+- **Execution dependency:** while no execution arrives, this recovery transition
+  has no execution trigger. This describes library behavior for any applicable
+  caller; it is not an analysis of the reporter's preparation gate.
+- **Basis and limit:** the account comes from the inspected library behavior.
+  It establishes neither a particular application's behavior nor whether the
+  human's proposed query would solve that application's problem.
 
-**After:** The human might conclude that recognizing trial eligibility before
-preparation addresses the stated obstacle. That is a conditional inference: it
-depends on the proposed query having that meaning, and it guarantees neither later
-admission nor success. In the original dialogue the human requested confirmation;
-we have not observed them make this comparison unaided.
+**After:** The human can connect the reported withholding of work to the library's
+need for an arriving execution, and might conclude that recognizing trial eligibility
+before preparation addresses the obstacle. Both the cross-source connection and
+the judgment about the proposed query belong to the human here. They depend on
+interpreting the report correctly and on the query having the intended meaning;
+they guarantee neither later admission nor success. The original conversation
+requested confirmation from an agent; this route has not demonstrated equivalent
+unaided reasoning.
 
-**Review point:** If this comparison is difficult, asking PostCode to evaluate the
-proposal against the reported scenario could add useful scrutiny. Neither that
-assessment nor the human's inference should become a claim of a verified fix.
+**Review point:** If the comparison is difficult, having PostCode assess the scenario
+could add scrutiny, but it would require explicitly supplying scenario material
+and would extend this simpler route. Neither the human's inference nor a future
+assessment should be mistaken for a verified fix.
 
 <a id="component-access"></a>
 ## 9. Access to a wrapped breaker
@@ -641,7 +674,8 @@ does the breaker stay open until an attempt arrives, and is there a good reason?
 **PostCode interaction:**
 
 - **Available subjects:** stored breaker state, recovery delay and open-to-half-open
-  transition ([steps 7–8](#acceptance)), plus the reported preparation gate (step 8).
+  transition ([steps 7–8](#acceptance)); the reported gate is known only to the
+  human from outside reading.
 - **Request:** revisit that transition, expanding timing and trigger detail; inspect
   rationale/support associated with it separately from the behavioral account.
 - **Other input/access:** no maintainer explanation is supplied. Inspect whatever
@@ -657,8 +691,9 @@ does the breaker stay open until an attempt arrives, and is there a good reason?
   still say open at 31 seconds. An otherwise eligible arriving execution can
   transition to half-open and supply a trial. These numbers illustrate the account;
   they are not measurements of the reporter's application.
-- **Reported gate:** return to the issue's withholding of work, showing why no
-  arriving execution means no recovery trigger in this case.
+- **No arriving execution:** without that trigger the stored open state can
+  persist despite elapsed delay. This is the library's behavior, not a report of
+  why any particular application has stopped submitting work.
 - **Inferred rationale:** work-driven recovery avoids scheduling a transition
   solely because time passes; avoiding idle timers is a possible advantage.
 - **Unknown rationale:** the original investigator did not establish that those
@@ -666,8 +701,9 @@ does the breaker stay open until an attempt arrives, and is there a good reason?
   maintainer evidence remain visible independently of the behavioral explanation.
 
 **After:** The human could now articulate what an eligibility query adds beyond
-stored state, and consider whether the inferred advantages of the current design
-matter to them. The explanation supports a mechanism, not a proven history of why
+stored state, connect the mechanism to the reported gate they read outside
+PostCode, and consider whether the inferred advantages matter to them. The
+explanation supports a mechanism, not a proven history of why
 it was chosen. A deeper rationale investigation might be needed if that history
 would change the decision.
 
@@ -728,61 +764,61 @@ as observational just because that is the preferred direction.
 [Original step 14, exchange 24](cockatiel-human-postcode-walkthrough.md#reporter-evidence)
 
 **Before:** This sounds much like the reporter's workaround. Did they say it was
-sufficient but awkward, or did it still fail in some important way?
+sufficient but awkward, or did it still fail in some important way? I reopen the
+issue outside PostCode and read the reporter's assessment. For this recorded case,
+the report says the external timing workaround worked but was clumsy. This is
+reported experience, not my reproduction or proof across configurations.
 
 **PostCode interaction:**
 
-- **Available subjects:** issue #111/report context ([step 1](#orientation)) and
-  the reported gate ([step 8](#need-check)).
-- **Request:** inspect supporting report material, then select the workaround
-  statement exposed there. This is provenance access, not a policy perspective.
-- **Other input/access:** a retained capture or explicit source access is needed.
-  For this exercise the recorded reading supplies it; silently fetching a changed
-  live issue would not reproduce the same evidence.
+- **Available subjects:** stored state and elapsed-time checking from
+  [steps 8 and 12](#need-check) remain available as library reference material.
+- **Request:** none is needed to learn what the reporter said. The human reads
+  the GitHub issue separately, optionally revisiting those library accounts.
+- **Other input/access:** the report and workaround remain outside PostCode.
+  There is no issue record, captured issue evidence or reporter-assessment subject
+  to select in this route.
 
 **What PostCode shows:**
 
-- **External timing workaround:** the report describes application-side timing
-  logic to recognize the opportunity for another attempt despite stored open state.
-- **Reporter assessment:** the recorded reading says the workaround worked but
-  was clumsy. This supports a claim about the reporter's experience, not general
-  sufficiency across applications and configurations.
-- **Evidence identity:** identify issue #111, the reporter as the source of the
-  statement, and the reading date, 2026-10-14. The live issue is not an immutable
-  capture of that reading.
-- **Evidence limit:** this sketch has the recorded investigation and its source
-  attribution, not a newly verified full issue snapshot. A future evidence facility
-  should disclose which exact material is retained rather than imply that a live
-  link preserves an earlier version. No application reproduction accompanies it.
+- **Unchanged library reference:** the retained breaker-state and timing accounts
+  remain accessible if the human wants to compare them with the external reading.
+- **No new result:** PostCode does not report what the author said, summarize the
+  workaround or claim to verify its sufficiency. Those facts have not been supplied
+  to it.
 
-**After:** The human might view the opportunity as better library support for an
-already workable approach. They can assess the value of simplification without
-inventing an unmet correctness need. The report alone does not determine whether
-a library addition is worthwhile.
+**After:** The human might now view the opportunity as better library support for
+an already workable approach. That change in thinking comes from their outside
+reading, interpreted alongside library understanding. It does not require a new
+PostCode answer. The report alone does not determine whether an addition is
+worthwhile, and the live issue should not be mistaken for an immutable record of
+a previous reading.
 
-**Review point:** This is evidence access rather than a new architecture perspective.
-The source's scope must survive presentation; reporting sufficiency is not the
-same as validating it.
+**Review point:** A useful journey can include outside reading. This step no longer
+tests PostCode's ability to access issue evidence; library evidence access remains
+relevant elsewhere. Adding report capture or analysis later would be a separate
+capability, not something implicitly required to keep this step moving.
 
 <a id="timer"></a>
 ## 15. Distinguishing recovery delay from an automatic transition
 
 [Original step 15, exchanges 25–26](cockatiel-human-postcode-walkthrough.md#timer)
 
-**Before:** Did the reporter mean automatic transition to closed or half-open? I
-thought Cockatiel already had a timer delay, so I may be misunderstanding what
-would change.
+**Before:** From rereading the issue outside PostCode, I see a suggestion for
+automatic transitions. Did the reporter mean closed or half-open? I thought
+Cockatiel already had a timer delay, so I may be misunderstanding what would change.
+The report provides the suggestion; it has not been supplied to PostCode.
 
 **PostCode interaction:**
 
 - **Available subjects:** open/half-open/closed and execution-triggered transition
-  ([step 8](#need-check)); timing detail ([step 12](#stored-state)); issue evidence
-  ([step 14](#reporter-evidence)).
-- **Request:** revisit transition triggers/effects and inspect the report's
-  suggestion. If available, inspect the original timing wording and correction.
-- **Other input/access:** correction history belongs to the recorded dialogue;
-  it is not evidence that this reconstructed interaction previously made that error.
-  A detailed timer design remains in the human's reasoning.
+  ([step 8](#need-check)), with timing detail from [step 12](#stored-state).
+- **Request:** revisit the library's transition triggers and effects. If a retained
+  timing explanation and correction are independently available, inspect them.
+- **Other input/access:** the human consults the reporter's suggestion outside
+  PostCode. Any optional correction access concerns explicitly available
+  library-account material, not an imported issue or full dialogue. The timer
+  design remains in the human's reasoning.
 
 **What PostCode shows:**
 
@@ -791,22 +827,22 @@ would change.
   timer that changes state independently.
 - **Existing recovery states:** half-open allows a trial; closing depends on
   recovery under the configured rules. Passing time alone is not evidence of health.
-- **Reporter suggestion:** the recorded issue reading includes a suggestion for
-  automatic transitions. Show it as attributed proposal material, distinct from
-  existing behavior; it does not specify a complete timer/event contract here.
-- **Earlier wording and correction, if opened:** the original dialogue used
-  “timer expires,” then clarified that the current mechanism checks elapsed time
-  on execution. Show the actual earlier answer and correction with their basis,
-  not a fabricated error in this reconstructed route.
-- **Unresolved design:** whether and how an opt-in timer should trigger half-open
-  is still the human's candidate direction. PostCode has not compared a supplied
-  implementation of it with current behavior in this pass.
+- **Earlier library wording and correction, only if available:** an explanation
+  using “timer expires” should remain distinguishable from its correction to
+  elapsed-time checking on execution. The historical dialogue illustrates this
+  need; it does not give this route automatic access to that conversation or
+  establish that the same error occurred here.
+- **Scope:** the result describes current library behavior. It includes no account
+  of the reporter's intention and no comparison with the human's unprovided timer
+  proposal.
 
 **After:** The human can distinguish having a delay from scheduling an action at
-its expiry. They might formulate automatic open-to-half-open as the desired change:
-eligibility changes, while work and demonstrated recovery still follow execution.
-That specific formulation is design reasoning, not an existing behavior discovered
-in the implementation. Its timer/event details remain open.
+its expiry, and relate that distinction to the suggestion they read. They might
+formulate automatic open-to-half-open as the desired change: eligibility changes,
+while work and demonstrated recovery still follow execution. That formulation
+is their interpretation/design choice, not PostCode's interpretation of the
+reporter's words or a behavior discovered in the implementation. Timer and event
+details remain open.
 
 **Review point:** The current-behavior account must resolve the factual ambiguity.
 Comparing an explicitly supplied transition design could later check its effects,
@@ -926,13 +962,14 @@ immediate need. Have I reached enough understanding to stop investigating for no
 
 **PostCode interaction:**
 
-- **Available subjects:** issue context, existing transition/notification accounts
+- **Available subjects:** existing library transition/notification accounts
   ([steps 12–16](#stored-state)), and any disclosed gaps from [step 17](#compatibility).
   The earlier scope preference is available as a record only if captured at step 4.
 - **Request:** none to decide. Optionally supply a chosen direction and rationale
   for retention, selecting exact supporting accounts already consulted.
-- **Other input/access:** the opt-in timer direction originates with the human.
-  Capturing it does not request hypothetical evaluation or authorize implementation.
+- **Other input/access:** the chosen direction and any explanation are supplied
+  by the human. Capturing them neither imports the issue nor requests hypothetical
+  evaluation or authorizes implementation.
 
 **What PostCode shows:**
 
@@ -973,7 +1010,7 @@ The simpler route relies on a provisional set of connected accounts:
 | Application/library context and operating model | Supplied work, responsibility boundary, reusable state, per-call progress and composition | Place the issue; notice relevant scope and control choices |
 | Policy family, contracts and access | Coverage beyond breaker/bulkhead; observable outcomes and component access | Consider where a proposed facility belongs |
 | State and interaction | Stored state, conditions, triggers, waiting, concurrency and elapsed time | Understand recovery; reason about an early query or changed trigger |
-| Supporting evidence, rationale and revisions | What is reported, interpreted, corrected or unknown | Assess confidence and revisit the basis of understanding |
+| Library evidence, rationale and revisions | What is supported, interpreted, corrected or unknown about the library | Assess confidence and revisit the basis of understanding; issue reading remains outside PostCode |
 | Participant intentions, if supplied | What the human proposes or chooses, with attribution and exact references | Resume the investigation or explain a direction later |
 
 These are content needs, not prescribed panels or Lens definitions. Interaction
@@ -989,6 +1026,12 @@ relationship or consequence, that remains analysis requiring a qualified basis.
 Presentation beside other information does not itself produce a supported
 PostCode comparison. Optional capture of a human proposal is likewise distinct
 from evaluating it.
+
+Reading the issue and connecting it to library accounts are human activities in
+this route. PostCode need not know the reported gate, workaround or proposal to
+provide useful reference information. Step 14 can therefore involve no new PostCode
+result. If the human later wants a scenario-specific assessment, supplying that
+scenario would be an explicit extension, not information inferred from a name lead.
 
 The main route has deliberately removed hypothetical comparison requests. It
 therefore cannot simply inherit everything the original conversational agent
@@ -1016,11 +1059,11 @@ accounts to design something new.
 
 | Route | What this pass makes explicit | Remaining dependency |
 | --- | --- | --- |
-| Issue → Cockatiel context (step 1) | The issue/repository association is a starting lead; the application scenario is reported material. | A way to supply/access that material; no automatic application discovery assumed. |
+| Human-read issue → name lookup → Cockatiel context (step 1) | Circuit breaker, CircuitBreakerPolicy and CircuitState are leads the human supplies; the report stays outside PostCode. | Repository selection, semantic name resolution/disambiguation and a route to surrounding context. |
 | Policy combination → wrapping cases (step 6) | Follow the relation exposed at step 1, then select an ordering case from the resulting account. | An analytical account exposing navigable relationships, not just text mentioning composition. |
 | Half-open → trial interaction (steps 5/8 → 13) | A state is first named within the breaker account, then becomes a selectable subject. | Stable subject meaning and retained-account references across perspectives. |
 | Current answer → earlier wording/correction (steps 5 and 15) | Historical errors belong to the recorded dialogue, not automatically to this new route. | Exact earlier material and correction associations if offered; no invented correction history. |
-| Report → workaround/suggestion (steps 14–15) | These are attributed external material, not facts derived from library code. | Honest capture/version disclosure; a live URL does not preserve the old reading. |
+| Human rereads report → relates it to library behavior (steps 8, 12, 14–15) | Outside reading supplies the gate, workaround assessment and suggestion; PostCode supplies only library accounts. | No issue ingestion required. The human makes the cross-source connection; their reading is not proof of a fix. |
 | Breaker → lifecycle detail (step 17) | A known subject can be used to request a new perspective without guessing a new entity. | Deeper evidence/investigation where this record has only a concern or incomplete account. |
 | Human idea → retained intention (steps 4 and 18) | New participant material needs explicit supply, not navigation to an existing program element. | Capture is optional here and distinct from hypothetical analysis. |
 
@@ -1055,6 +1098,6 @@ can be a meaningful endpoint.
 full journey. If uncertainty concerns account content, refine the accounts directly.
 If it concerns what a user would naturally examine and infer from what is visible,
 a short hypothetical natural investigation would test something different: begin
-at the issue, make the operating model readily available, and follow the information
-the human actually wants next. It need not reenact all 30 exchanges. That remains
+with the human's issue-derived name leads, make the operating model readily
+available, and follow the information the human actually wants next. It need not reenact all 30 exchanges. That remains
 a possible next exercise, not one performed or selected here.
