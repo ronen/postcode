@@ -29,8 +29,8 @@ The working route emphasizes accounts of existing software that the human relate
 to a reported need read outside PostCode.
 The human considers design ideas without necessarily supplying them to PostCode.
 Hypothetical comparison is not required in these interactions; review points
-identify where requesting it might add value. Optional capture of an intention
-or proposal is distinguished from asking PostCode to analyze it. This is a
+assess whether the existing-software accounts support the human's reasoning.
+Optional capture of an intention or proposal is distinguished from asking PostCode to analyze it. This is a
 simplification for the exercise, not a restriction on PostCode's adopted scope.
 
 For this exercise, assess PostCode as a window onto the software: does it provide
@@ -300,10 +300,12 @@ dialogue, the agent introduced those alternatives; the displayed current account
 do not establish that the human would independently generate that set. A broader
 scope decision remains open.
 
-**Review point:** The origin of alternatives is a real dependency, not something
-hidden inside “show responsibility.” Reusing the earlier candidate list would be
-consulting attributed material; generating new candidates or assessing their fit
-would be an additional contribution. Discuss whether this simpler route is enough.
+**Review point:** Does the account make Cockatiel's documented purpose and the
+responsibilities and limits of its existing mechanisms accessible enough for the
+human to reason about scope? Permission to attempt, capacity to admit work and
+knowledge of dependency health must remain distinguishable. Generating new
+mechanisms is not needed to replace reading the existing software; alternatives
+from the original dialogue remain separate contributions.
 
 <a id="preference"></a>
 ## 4. Choosing conservative scope
@@ -389,10 +391,11 @@ lead, but it does not establish a common contract. Composition and the rest of t
 policy family still matter; the human remains positioned to investigate, not to
 regard unification as settled.
 
-**Review point:** Discuss whether these accounts make the differences clear enough,
-or whether an explicit comparison of existing behavior is needed. Side-by-side
-placement is presentation; new semantic correspondence is analytical content.
-Neither requires a verdict on the desirability of unification.
+**Review point:** Can the human compare when each policy starts, waits and refuses
+work, and what determines the outcome after waiting? These distinctions should be
+accessible without reconstructing control flow from source. Side-by-side placement
+may help; any comparison PostCode asserts needs an analytical basis. Whether the
+mechanisms should share a readiness interface remains the human's judgment.
 
 <a id="operating-model"></a>
 ## 6. Understanding policy objects and composition
@@ -446,10 +449,11 @@ ordering matters. They are better positioned to reason about where a query belon
 Learning that instances compose does not yet establish what a combined query
 would promise, and the source-language object model need not be deciphered.
 
-**Review point:** This expands the brief Policy account from step 1; it need not
-introduce the concept for the first time. More of this detail might be useful earlier,
-but we preserve the sequence here. Responsibilities alone do not communicate the
-operating model; relationships between the accounts are part of the information need.
+**Review point:** Can the human follow supplied work through reusable policy
+instances, distinguish shared state from per-call progress, and see how wrapping
+order changes execution and waiting? Responsibilities alone do not communicate
+this operating model. This expands step 1's Policy account; the information may
+be consulted earlier even though this coverage sequence places it here.
 
 <a id="acceptance"></a>
 ## 7. Choosing what an acceptance query should promise
@@ -493,9 +497,11 @@ choices intelligible; they do not force them or finish the result-type design.
 A plausible interpretation of “acceptable” still needs conditions, especially for
 compositions whose state changes while work waits.
 
-**Review point:** Hypothetical analysis is not required just because the human is
-designing. Its additional benefit would be checking a supplied promise for missing
-conditions, races or contradictions, rather than restating the human's choice.
+**Review point:** Can the human distinguish immediate execution, admission to wait,
+later refusal and eventual outcome, and see the limits of state/capacity snapshots?
+These are the existing-software facts needed to reason about what a readiness
+check could promise. Choosing that promise and its result type belongs to the
+human; the window must expose the conditions that could limit it.
 
 <a id="need-check"></a>
 ## 8. Assessing whether the proposal addresses the reported need
@@ -538,10 +544,11 @@ they guarantee neither later admission nor success. The original conversation
 requested confirmation from an agent; this route has not demonstrated equivalent
 unaided reasoning.
 
-**Review point:** If the comparison is difficult, having PostCode assess the scenario
-could add scrutiny, but it would require explicitly supplying scenario material
-and would extend this simpler route. Neither the human's inference nor a future
-assessment should be mistaken for a verified fix.
+**Review point:** Does the breaker account expose the conditions and trigger for
+leaving open state clearly enough for the human to relate them to the gate described
+in the issue? PostCode supplies the library behavior; the human brings the reported
+application behavior and judges whether their proposed change addresses it.
+Assessing or verifying that proposal is not required of the window.
 
 <a id="component-access"></a>
 ## 9. Access to a wrapped breaker
@@ -628,10 +635,11 @@ a return to overlooked information rather than the discovery of previously absen
 policy types. They could refine, narrow or retain the idea. Our assessment: information
 supporting a shared vocabulary was not sufficient to establish a shared contract.
 
-**Review point:** Do these existing-behavior accounts expose the difficulty clearly
-enough? If not, analyzing the supplied contract against a concrete counterexample
-could materially improve judgment. Keeping the decision human-owned must not
-excuse concealing contrary behavior in PostCode's accounts.
+**Review point:** Can the human inspect the shared execution contract, each policy
+kind's distinct behavior, and the effects of composition and waiting? The account
+must make differences accessible rather than imply uniform semantics from shared
+names. That supports the human's assessment of a generic interface without
+requiring PostCode to test or decide the proposed contract.
 
 <a id="outcomes"></a>
 ## 11. Understanding existing failure reporting
@@ -674,9 +682,10 @@ outcome, and use current conventions when imagining query results. Existing
 reporting does not dictate the new query's shape. This step primarily answers a
 behavioral question; a design verdict is unnecessary.
 
-**Review point:** These are substantive answers for PostCode to explain. They should
-not require the human to reconstruct behavior from an unfamiliar implementation
-language merely because the subsequent design judgment is theirs.
+**Review point:** Can the human trace local refusal, pending waiting and operation
+failure through composed policies to the outcome and notifications seen by the
+caller? This is existing behavior the window must explain without requiring the
+human to reconstruct it from an unfamiliar implementation language.
 
 <a id="stored-state"></a>
 ## 12. Understanding stored state and considering the existing rationale
@@ -766,10 +775,11 @@ the original question alone did not settle it. The human might also infer that
 several callers observing eligibility could all prepare work; whether this race
 is acceptable is unresolved.
 
-**Review point:** Clear trial semantics are required account content. If the human
-needs confidence about races or effects of a specific query design, explicit
-hypothetical analysis has a concrete purpose. Do not quietly define the proposal
-as observational just because that is the preferred direction.
+**Review point:** Does the account distinguish eligibility, a trial actually running,
+its supplied work, its outcome and the behavior of concurrent callers? The human
+needs these existing semantics to reason about observation versus action and
+possible races. The account must not silently assign either meaning to their
+proposed query.
 
 <a id="reporter-evidence"></a>
 ## 14. Checking what the reporter actually said
@@ -850,9 +860,11 @@ is their interpretation/design choice, not PostCode's interpretation of the
 reporter's words or a behavior discovered in the implementation. Timer and event
 details remain open.
 
-**Review point:** The current-behavior account must resolve the factual ambiguity.
-Comparing an explicitly supplied transition design could later check its effects,
-but understanding what is implemented should not depend on doing that analysis.
+**Review point:** Can the human see what records the delay, what checks elapsed time,
+and what actually triggers the state transition? This must distinguish a timing
+condition from an independently scheduled action. If earlier wording obscured that
+distinction, its correction should be accessible. The human can then reason about
+changing the trigger without PostCode analyzing a timer proposal.
 
 <a id="notifications"></a>
 ## 16. Considering notification rather than querying
@@ -896,11 +908,11 @@ benefit, not a universal advantage—an application could query on incoming requ
 The displayed existing contract does not by itself prove how newly timed events
 would behave or what they would cost.
 
-**Review point:** Discuss whether the human has enough to prefer a direction.
-Analysis of a supplied timer/event proposal could expose ordering or lifecycle
-interactions that change the choice; merely restating “events avoid polling”
-would add little. The transcript does not establish that every timer cost was
-weighed before the preference was expressed.
+**Review point:** Can the human see which existing transitions emit notifications,
+what causes those transitions, and whether time passing alone produces an event?
+These relationships support reasoning about queries, polling and notifications.
+The preference for an event-driven design is the human's; any unknown ordering or
+lifecycle behavior should be identifiable and available for further investigation.
 
 <a id="compatibility"></a>
 ## 17. Separating compatibility from timer semantics
@@ -950,11 +962,13 @@ the actual conversation, the agent contributed that detailed list; the simplifie
 route does not establish that the human would derive all of it independently.
 The direction can be worth pursuing without those questions being answered.
 
-**Review point:** This is a strong candidate for useful additional hypothetical
-analysis: connect a supplied timer design to lifecycle cases the human might miss.
-Do not smuggle the original agent's timer risk analysis into a supposedly
-existing-behavior-only display. A complete design is unnecessary for the endpoint,
-but the source and coverage of the unresolved concerns matter.
+**Review point:** Does the window expose existing configuration/default behavior,
+isolation, reopening, restoration and lifetime behavior far enough for the human
+to reason about adding an optional timer? The current restoration/lifetime gaps
+are limits of this account; further inspection may be needed. Identifying all risks
+of a new timer is not a condition of success for the window, but relevant existing
+behavior must be accessible or its absence explicit. The original agent's
+timer-specific risk analysis remains a separate contribution.
 
 <a id="endpoint"></a>
 ## 18. Endorsing the direction and stopping
@@ -1080,14 +1094,14 @@ in PostCode. The account and navigation requirements need evaluation together.
 
 The most consequential review points are:
 
-- **Steps 3 and 5:** whether current responsibilities and behavior support the
-  human's scope/unification reasoning, and where additional candidate mechanisms
-  come from.
-- **Steps 7 and 10:** whether existing accounts reveal enough to qualify a common
-  contract, or whether analyzing the supplied proposal against a counterexample
-  adds material value.
-- **Steps 16 and 17:** whether existing state/events support choosing a direction,
-  and what important timer interactions a human might miss without further help.
+- **Steps 3 and 5:** whether purpose, responsibilities and admission/waiting
+  behavior are sufficiently accessible for the human's scope/unification reasoning.
+- **Steps 7 and 10:** whether snapshot limits, policy-specific contracts and
+  composition behavior give the human the information needed to assess a common
+  readiness contract.
+- **Steps 16 and 17:** whether transition triggers, notifications, configuration
+  and lifecycle behavior are accessible enough to reason about a timer-based
+  direction, and where the existing-software account needs further investigation.
 
 Each after section now exposes both possible progress and limits to that progress.
 A selection-only route must not acquire the original agent's suggestions and
