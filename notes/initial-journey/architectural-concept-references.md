@@ -3,7 +3,9 @@
 Recorded: 2026-11-06
 Status: exploratory grounding, not an adopted taxonomy or prescribed methodology
 
-These references ground the selections in the
+These references ground the displayed content and selections in the
+[detailed walkthrough](cockatiel-information-and-judgment.md) and
+[standalone script](cockatiel-investigation-script.md), as well as the earlier
 [human + PostCode walkthrough](cockatiel-human-postcode-walkthrough.md).
 Definitions below are brief paraphrases; **application** identifies our adaptation.
 They do not establish that PostCode implements the corresponding analysis.
@@ -14,8 +16,41 @@ concepts. We inspected the cited portions, not the entire V&B book. This exercis
 adopts neither a documentation template nor an ATAM/ADD workflow. A V&B
 architectural view is not identical to PostCode's instantiated Presentation (View).
 
+
+<a id="mnemonics"></a>
+## Mnemonics used in the sketches
+
+Each displayed item in the detailed walkthrough and standalone script links to
+its corresponding entry below. Mnemonics identify the kind of information, not
+a prescribed control, Lens definition or independent proof of a Cockatiel claim.
+Two labels indicate complementary aspects of one item. The mapping records the
+primary correspondence; qualifications and evidence apply to every account.
+Even the deliberately erroneous initial explanations receive concept labels:
+classification does not certify correctness.
+
+| Mnemonic | Correspondence |
+| --- | --- |
+| [CONTEXT](#context) | Surrounding participants and architectural boundaries |
+| [RESP](#responsibility) | Element roles, responsibilities and family/catalog |
+| [OWNERSHIP](#ownership) | Creation, retention, control, access and resource lifetime |
+| [INTERFACE](#interface) | Observable promises, usage restrictions, results and effects |
+| [STATE](#state) | States, transition conditions, triggers and effects |
+| [INTERACTION](#interaction) | Execution sequences, composition, waiting and concurrent callers |
+| [SCENARIO](#scenario) | Quality concerns and assessment of alternatives under conditions |
+| [RATIONALE](#rationale) | Reasons, constraints, preferences and intentions |
+| [ACCOUNT](#account) | PostCode account selection, navigation, retention and supplied records |
+| [BASIS](#basis) | Evidence, provenance, scope, qualifications and information gaps |
+| [CORRECTION](#correction) | Explicit revision notices and access to earlier/corrected accounts |
+
+The first eight are architectural concepts with the source meanings and adaptations
+below. ACCOUNT, BASIS and CORRECTION are PostCode support entries, grounded in its
+own model. A record of human intent can therefore carry RATIONALE for its content
+and ACCOUNT for its retention. The present route leaves design alternatives and
+judgments to the human; its displayed execution examples use INTERACTION, while
+SCENARIO remains available for a route that requests quality-based assessment.
+
 <a id="context"></a>
-## Context and boundary
+## CONTEXT — Context and boundary
 
 **Source meaning:** a context diagram relates the system, or selected part, to its
 environment. See Clements, *Comparing the SEI’s Views and Beyond Approach…*,
@@ -26,7 +61,7 @@ issue. The result need not be a diagram. Moving outward follows architectural
 relationships, not necessarily filesystem containment.
 
 <a id="responsibility"></a>
-## Responsibility and element catalog
+## RESP — Responsibility and element catalog
 
 **Source meaning:** V&B's element catalog describes elements and their properties;
 component-and-connector views concern interacting runtime elements. See the same
@@ -40,7 +75,7 @@ not a claim that V&B defines a universal “Responsibility” viewpoint. Catalog
 selection exposes the relevant family of elements and the limits of its coverage.
 
 <a id="ownership"></a>
-## Ownership, access and lifetime
+## OWNERSHIP — Ownership, access and lifetime
 
 **Source meaning:** interface usage restrictions can distinguish actors' access,
 modification rights, concurrency limits and assumptions about other resources.
@@ -54,7 +89,8 @@ memory ownership, or a V&B allocation view by default. Lifecycle questions combi
 these relations with behavior; they are not answered by the label alone.
 
 <a id="contract"></a>
-## Interface and contract
+<a id="interface"></a>
+## INTERFACE — Interface and contract
 
 **Source meaning:** an interface account includes supplied resources, their
 semantics and usage restrictions. Semantics include results, state changes,
@@ -67,7 +103,7 @@ notification. We emphasize semantics intelligible without programming-language
 syntax. An inferred implemented contract and a proposed promise remain distinct.
 
 <a id="state"></a>
-## State and transitions
+## STATE — State and transitions
 
 **Source meaning:** state-based descriptions characterize reactions to events from
 a given state; timing and ordering constraints are part of behavior. See Bachmann
@@ -80,7 +116,7 @@ relevant conditions; selecting a transition distinguishes elapsed time from an
 action triggered by a timer. No particular statechart notation is required.
 
 <a id="interaction"></a>
-## Interaction and execution scenarios
+## INTERACTION — Interaction and execution scenarios
 
 **Source meaning:** trace-oriented behavior describes sequences of activity or
 interaction responding to a particular stimulus; one trace does not cover all
@@ -92,7 +128,7 @@ conditions. Composition order, waiting and resource occupancy belong in the
 account. A reconstructed possible sequence is not an observed execution.
 
 <a id="scenario"></a>
-## Quality concerns and scenario-based assessment
+## SCENARIO — Quality concerns and scenario-based assessment
 
 **Source meaning:** ATAM scenarios specify a stimulus, conditions and observable
 response; analysis relates decisions to quality goals and uncertainty. See
@@ -106,7 +142,7 @@ ATAM session or a claim of formal evaluation. “Compare” requests analysis; t
 concept reference does not supply the alternatives or prove the conclusion.
 
 <a id="rationale"></a>
-## Rationale, constraints and intentions
+## RATIONALE — Rationale, constraints and intentions
 
 **Source meaning:** V&B architecture background explains why the design arose;
 see [section 2.5, printed page 6](https://www.sei.cmu.edu/documents/2072/2005_004_001_14498.pdf#page=17).
@@ -132,3 +168,43 @@ They must identify the selected meaning and basis. In particular, inspecting wha
 an issue reporter said is a provenance question; forcing it into an architectural
 view category would obscure rather than clarify it. Human proposal entry and
 endorsement are inputs, not analytical conclusions or navigation operations.
+
+<a id="account"></a>
+### ACCOUNT — Selection, navigation and retained material
+
+**Local meaning:** selecting subjects and related accounts, expanding detail,
+revisiting exact answers, and retaining explicitly supplied preferences or choices.
+Name lookup may itself require semantic analysis; this entry identifies the
+account/navigation role rather than classifying its implementation as presentation.
+See the [working-through-qualified-views contract](../../docs/app-specification.md#working-through-qualified-views)
+and [retained answer presentation](../../docs/decisions/exact-retained-answer-presentation.md).
+
+**Application:** name matches, newly selectable subjects, unchanged reference
+material and optional human records. Use an architectural label as well when an
+item describes the record's substantive content.
+
+<a id="basis"></a>
+### BASIS — Evidence, qualifications and gaps
+
+**Local meaning:** the material and interpretation supporting an account, its
+provenance, applicable conditions, coverage and limits. See the
+[captured-basis model](../../docs/core-concepts.md#captured-basis) and
+[qualified results](../../docs/decisions/coordinated-views-and-qualified-results.md).
+
+**Application:** static-versus-observed behavior, illustrations, inferred reasons,
+unknown maintainer intent, missing lifecycle detail and the status of human choices.
+The label identifies these disclosures; it does not establish the underlying claim.
+
+<a id="correction"></a>
+### CORRECTION — Revisions and retained earlier answers
+
+**Local meaning:** explicitly relate an earlier account to a proposed replacement,
+with correction reasons and qualifications, preserving both accounts and earlier
+answers. See the [investigram and correction model](../../docs/decisions/investigrams-and-progressive-investigation.md)
+and [architectural constraints](../../docs/architectural-constraints.md).
+
+**Application:** the waiting correction and timer-wording correction. The sketch
+requires PostCode to inform the human when each correction appears; inspecting
+both versions and their basis remains available. Notification form and delivery
+are presentation requirements to design, rather than a V&B concept or evidence
+that this journey is already implemented.

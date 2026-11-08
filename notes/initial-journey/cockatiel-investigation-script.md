@@ -36,6 +36,12 @@ span an initial account and detail exposed through those selections. Accounts
 remain available to revisit, with their qualifications and supporting evidence.
 The particular controls, panel arrangement and use of diagrams are left open.
 
+Bracketed labels such as [[INTERFACE]](architectural-concept-references.md#interface)
+link each displayed item to its [concept reference](architectural-concept-references.md#mnemonics).
+These are editorial correspondence labels. ACCOUNT, BASIS and CORRECTION identify
+PostCode's supporting account operations and qualifications; the other labels
+identify architectural concepts.
+
 The human reads the issue separately. PostCode receives the Cockatiel repository
 and the selected subjects and perspectives. The human relates its library accounts
 to the application described in the issue and supplies their own design alternatives.
@@ -65,22 +71,28 @@ surrounding context. `CircuitState` is another available name lead.
 
 - **CircuitBreakerPolicy** identifies the circuit-breaker policy;
   **CircuitState** names its state vocabulary.
+  [[ACCOUNT]](architectural-concept-references.md#account)
 - **Cockatiel** is a resilience library governing attempts to execute
   application-supplied work under failures, delays and capacity limits.
+  [[RESP]](architectural-concept-references.md#responsibility)
 - **Application** supplies the work and owns its business meaning, job identity,
   preparation, acknowledgment and stored outcomes.
+  [[CONTEXT]](architectural-concept-references.md#context) [[OWNERSHIP]](architectural-concept-references.md#ownership)
 - **Policy** governs execution according to configured rules. Applications create
   policy instances, reuse them across operations and combine them.
+  [[RESP]](architectural-concept-references.md#responsibility) [[OWNERSHIP]](architectural-concept-references.md#ownership)
 - **Circuit breaker** withholds attempts after configured failures and later allows
   limited trials. **Bulkhead** limits concurrent execution and queues work in memory
   while capacity is occupied, refusing calls when execution and queue capacity are
   exhausted. **Retry** repeats selected failed operations. **Timeout** limits time,
   with stopping behavior dependent on configuration and cooperation. **Fallback**
   supplies an alternative after selected failure. **No-op** passes execution through.
+  [[RESP]](architectural-concept-references.md#responsibility)
 - **Relationships:** the application supplies an operation to a policy; policies
   can combine around that operation. An illustrative operation calls an external
   service. The breaker learns from execution outcomes; permission to attempt work
   is distinct from evidence that the service is healthy.
+  [[CONTEXT]](architectural-concept-references.md#context) [[INTERACTION]](architectural-concept-references.md#interaction)
 
 **After:** I place the reported job lifecycle on the application side. Cockatiel
 provides reusable execution controls. The named policies and relationships give
@@ -99,12 +111,16 @@ the supplied-operation relationship to ownership; revisit Bulkhead's queue role.
 
 - Reading breaker state observes retained information; execution supplies work
   for the policy to govern.
+  [[STATE]](architectural-concept-references.md#state) [[INTERFACE]](architectural-concept-references.md#interface)
 - The initial breaker admission account lists three cases: **normal work allowed**,
   **recovery attempt allowed**, and **work blocked**.
+  [[INTERFACE]](architectural-concept-references.md#interface) [[STATE]](architectural-concept-references.md#state)
 - Bulkhead owns execution capacity and an in-memory waiting queue. The application
   owns its business jobs and work performed outside policy execution.
+  [[OWNERSHIP]](architectural-concept-references.md#ownership) [[CONTEXT]](architectural-concept-references.md#context)
 - State and capacity can change between inspection and execution. Inspection
   reserves neither permission nor capacity.
+  [[INTERFACE]](architectural-concept-references.md#interface) [[INTERACTION]](architectural-concept-references.md#interaction)
 
 *Script annotation: the three-case breaker account omits waiting while a recovery
 trial is occupied. Step 5 corrects this omission.*
@@ -124,12 +140,16 @@ breaker and Bulkhead. Expand their state and capacity information.
 **PostCode shows:**
 
 - Breaker permission reflects failure/recovery rules and previously observed outcomes.
+  [[STATE]](architectural-concept-references.md#state) [[INTERFACE]](architectural-concept-references.md#interface)
 - Bulkhead capacity describes room to execute or wait.
+  [[INTERFACE]](architectural-concept-references.md#interface)
 - An application-supplied operation may contact an external dependency. A separate
   health signal would answer a different question from policy permission or capacity.
+  [[CONTEXT]](architectural-concept-references.md#context) [[INTERFACE]](architectural-concept-references.md#interface)
 - The documented scope centers on resilience policies around supplied work. These
   accounts identify no general readiness or active-probe facility; their coverage
   is qualified rather than an exhaustive survey.
+  [[RESP]](architectural-concept-references.md#responsibility) [[BASIS]](architectural-concept-references.md#basis)
 
 **After:** I generate alternatives using my own knowledge and this understanding.
 Permission, capacity and health are distinct kinds of information. I can consider
@@ -144,8 +164,12 @@ room to grow as demand emerges.
 **Interaction:** Continue with the breaker inquiry. Optionally record that preference
 against it.
 
-**PostCode shows:** The existing responsibility accounts remain available. If the
-preference is supplied, it is retained as the human's stated intent.
+**PostCode shows:**
+
+- The existing responsibility accounts remain available.
+  [[ACCOUNT]](architectural-concept-references.md#account)
+- If the preference is supplied, it is retained as the human's stated intent.
+  [[RATIONALE]](architectural-concept-references.md#rationale) [[ACCOUNT]](architectural-concept-references.md#account)
 
 **After:** I have a criterion for judging alternatives: a focused addition that fits
 the library.
@@ -163,18 +187,23 @@ expand capacity and admission detail. The earlier breaker account remains availa
 
 - **Bulkhead:** starts work when execution capacity is free; queues it when only
   waiting capacity remains; refuses it when both are exhausted.
+  [[INTERFACE]](architectural-concept-references.md#interface) [[INTERACTION]](architectural-concept-references.md#interaction)
 - **Circuit breaker:** in the default single-trial recovery case, another caller
   can wait while the trial is occupied. The trial's outcome determines the later
   decision, which can still refuse that caller.
+  [[STATE]](architectural-concept-references.md#state) [[INTERACTION]](architectural-concept-references.md#interaction)
 - **Correction notice:** “The earlier normal/trial/blocked account omitted waiting
   during an occupied recovery trial. Recovery eligibility does not mean every
   caller can start a trial immediately.” The notice identifies the earlier account
   and the corrected one, with the reason and supporting evidence accessible.
+  [[CORRECTION]](architectural-concept-references.md#correction)
 - **Different waiting commitments:** Bulkhead waits for execution capacity;
   the breaker caller waits for a recovery decision. Both calls remain pending.
+  [[INTERACTION]](architectural-concept-references.md#interaction) [[INTERFACE]](architectural-concept-references.md#interface)
 - **Recovery subject:** half-open and its trial interaction are available for
   closer inspection. Other recovery sampling configurations remain outside this
   account's explored cases.
+  [[ACCOUNT]](architectural-concept-references.md#account) [[BASIS]](architectural-concept-references.md#basis)
 
 **After:** I learn that the earlier explanation was incomplete and can reconsider
 any reasoning based on it. The shared start/wait/refuse vocabulary is useful, but
@@ -193,16 +222,22 @@ relationship and inspect both wrapping orders.
 
 - **Application:** creates policy instances, chooses which calls share them and
   supplies operations.
+  [[OWNERSHIP]](architectural-concept-references.md#ownership)
 - **Reusable policy instance:** carries configuration and shared state. A breaker
   retains failure/recovery state; a bulkhead retains capacity counts and its queue.
+  [[OWNERSHIP]](architectural-concept-references.md#ownership) [[STATE]](architectural-concept-references.md#state)
 - **Individual execution:** runs supplied work through a policy, with its own
   progress and eventual value or error.
+  [[INTERACTION]](architectural-concept-references.md#interaction) [[INTERFACE]](architectural-concept-references.md#interface)
 - **Combined execution:** the outer policy calls into the next. Component instances
   and their states remain distinct.
+  [[INTERACTION]](architectural-concept-references.md#interaction) [[OWNERSHIP]](architectural-concept-references.md#ownership)
 - **Bulkhead outside breaker:** work can occupy a bulkhead execution slot while
   waiting for the breaker recovery decision.
+  [[INTERACTION]](architectural-concept-references.md#interaction) [[OWNERSHIP]](architectural-concept-references.md#ownership)
 - **Breaker outside bulkhead:** a recovery attempt can be admitted by the breaker
   and then wait for bulkhead capacity.
+  [[INTERACTION]](architectural-concept-references.md#interaction) [[OWNERSHIP]](architectural-concept-references.md#ownership)
 
 **After:** I can distinguish reusable policy state from an individual operation.
 Order affects what waits and which resources it holds. A combined readiness
@@ -220,11 +255,16 @@ refusal information for the named policies.
 **PostCode shows:**
 
 - Bulkhead distinguishes room to start immediately from room to queue.
+  [[INTERFACE]](architectural-concept-references.md#interface)
 - Breaker recovery eligibility depends on elapsed delay as well as stored state.
+  [[STATE]](architectural-concept-references.md#state)
 - Manual isolation holds the breaker open separately from its ordinary recovery delay.
+  [[STATE]](architectural-concept-references.md#state)
 - Last-failure information describes previous failure, with its historical scope.
+  [[STATE]](architectural-concept-references.md#state) [[INTERFACE]](architectural-concept-references.md#interface)
 - Starting, waiting, later refusal and eventual outcome are distinct. Conditions
   observed now can change before the operation reaches a policy.
+  [[INTERFACE]](architectural-concept-references.md#interface) [[INTERACTION]](architectural-concept-references.md#interaction)
 
 **After:** I consider a check that includes waiting and gives reasons. I still need
 to decide what a positive answer promises and how much later uncertainty is acceptable.
@@ -241,9 +281,12 @@ Compare them mentally with the issue read separately.
 **PostCode shows:**
 
 - Stored open state can persist after the recovery delay.
+  [[STATE]](architectural-concept-references.md#state)
 - An arriving execution checks recovery eligibility and can move the breaker into
   half-open to try the supplied work.
+  [[STATE]](architectural-concept-references.md#state) [[INTERACTION]](architectural-concept-references.md#interaction)
 - Reading the stored state leaves it unchanged.
+  [[STATE]](architectural-concept-references.md#state) [[INTERFACE]](architectural-concept-references.md#interface)
 
 **After:** I connect the application's gate with the library's execution trigger.
 Recognizing eligibility before preparation looks capable of addressing that
@@ -260,9 +303,12 @@ caller arrangements.
 **PostCode shows:**
 
 - The caller assembling the policies can retain a direct reference to the breaker.
+  [[OWNERSHIP]](architectural-concept-references.md#ownership)
 - A caller given only a protected operation may have access solely to execution.
+  [[OWNERSHIP]](architectural-concept-references.md#ownership) [[INTERFACE]](architectural-concept-references.md#interface)
 - These are supported arrangements; evidence about their prevalence is unavailable
   in this account.
+  [[BASIS]](architectural-concept-references.md#basis)
 
 **After:** A breaker-specific facility can serve some callers. Whether a common
 facility would be more useful depends partly on application boundaries.
@@ -279,11 +325,15 @@ kinds and revisit the wrapping cases.
 **PostCode shows:**
 
 - The common role is governed execution of supplied work and reporting its outcome.
+  [[INTERFACE]](architectural-concept-references.md#interface)
 - Breaker and Bulkhead have admission restrictions based on state and capacity.
+  [[INTERFACE]](architectural-concept-references.md#interface)
 - Retry, Timeout, Fallback and No-op govern different aspects: repeated attempts,
   time limits, alternative outcomes and pass-through execution.
+  [[RESP]](architectural-concept-references.md#responsibility) [[INTERFACE]](architectural-concept-references.md#interface)
 - An outer policy may delay reaching an inner one. A negative component snapshot
   taken beforehand need not predict final refusal by the combination.
+  [[INTERACTION]](architectural-concept-references.md#interaction) [[INTERFACE]](architectural-concept-references.md#interface)
 
 **After:** I notice that a shared execution interface does not settle a shared
 pre-execution promise. I can refine, narrow or retain the idea with those differences
@@ -301,12 +351,16 @@ through an outer policy to the final caller.
 
 - Waiting leaves an execution pending. Admission refusal produces an identifiable
   refusal error; an operation that runs and fails is a different case.
+  [[INTERFACE]](architectural-concept-references.md#interface)
 - Configuration can classify thrown errors or returned values as unsuccessful.
   A classified return value can remain a value.
+  [[INTERFACE]](architectural-concept-references.md#interface)
 - An outer retry or fallback can respond to an inner failure before the final
   result reaches the caller.
+  [[INTERACTION]](architectural-concept-references.md#interaction) [[INTERFACE]](architectural-concept-references.md#interface)
 - Policy-local events describe that policy's activity. Breaker admission refusals
   do not use its ordinary operation-failure event path.
+  [[INTERFACE]](architectural-concept-references.md#interface)
 
 **After:** I distinguish admission, progress and final outcome. Those existing
 conventions inform my thinking about explanations without determining the new
@@ -325,12 +379,16 @@ then inspect the evidence and qualifications attached to its rationale.
 
 - The initial timing explanation says: “The transition into recovery happens when
   execution is attempted, not automatically when the timer expires.”
+  [[STATE]](architectural-concept-references.md#state)
 - Opening records a time and delay for a later execution's elapsed-time check.
+  [[STATE]](architectural-concept-references.md#state) [[INTERFACE]](architectural-concept-references.md#interface)
 - With an illustrative 30-second delay, the state can still be open at 31 seconds;
   an eligible execution can move it to half-open and supply a trial.
+  [[INTERACTION]](architectural-concept-references.md#interaction) [[STATE]](architectural-concept-references.md#state)
 - Keeping recovery driven by incoming work avoids scheduling transitions solely
   because time passes. This is an inferred advantage; maintainer intent has not
   been established by the supporting material.
+  [[RATIONALE]](architectural-concept-references.md#rationale) [[BASIS]](architectural-concept-references.md#basis)
 
 *Script annotation: “timer expires” misleadingly suggests a scheduled timer exists,
 despite the surrounding clock-checking explanation. Step 15 corrects this wording.*
@@ -352,10 +410,13 @@ and ownership of supplied work.
 
 - Half-open permits limited recovery trials. A trial runs ordinary work supplied
   by the application.
+  [[STATE]](architectural-concept-references.md#state) [[INTERACTION]](architectural-concept-references.md#interaction)
 - Eligibility and an executing trial are distinct. Trial outcomes determine recovery
   under configured rules: success can close the breaker; failure can reopen it.
+  [[STATE]](architectural-concept-references.md#state)
 - In the default single-trial case, other callers can wait for that outcome and
   then encounter its admission decision, including refusal.
+  [[INTERACTION]](architectural-concept-references.md#interaction) [[INTERFACE]](architectural-concept-references.md#interface)
 
 **After:** Reporting eligibility and initiating work would be different promises.
 I lean toward observation, while recognizing that several callers could prepare
@@ -371,6 +432,7 @@ or that it was awkward?
 as a reference.
 
 **PostCode shows:** The retained state and timing accounts remain available.
+[[ACCOUNT]](architectural-concept-references.md#account)
 
 **After:** The reporter says an external elapsed-time workaround works but is clumsy.
 I now see the opportunity as better library support for a reported workable approach.
@@ -389,12 +451,15 @@ mechanism, using the retained explanation as context.
 
 - Opening records a time and recovery delay. An arriving execution checks elapsed
   time and can trigger recovery. The mechanism schedules no independent recovery timer.
+  [[STATE]](architectural-concept-references.md#state) [[INTERACTION]](architectural-concept-references.md#interaction)
 - **Correction notice:** “The earlier phrase ‘timer expires’ misleadingly suggested
   a scheduled timer. The transition into recovery happens when execution is attempted
   after the recovery delay has elapsed.” The earlier explanation, corrected account,
   reason and supporting evidence are available to inspect.
+  [[CORRECTION]](architectural-concept-references.md#correction)
 - Half-open permits trial work. Closing depends on recovery under the configured
   rules; passing time alone does not demonstrate health.
+  [[STATE]](architectural-concept-references.md#state)
 
 **After:** I distinguish a delay from a scheduled action and revise my earlier
 impression. An automatic open-to-half-open transition now looks like a concrete
@@ -413,10 +478,13 @@ with state transitions.
 
 - Existing events report breaking/opening, entering half-open, resetting to closed,
   and changes of stored state.
+  [[INTERFACE]](architectural-concept-references.md#interface) [[STATE]](architectural-concept-references.md#state)
 - The current execution-triggered transitions produce notifications. Delay expiry
   alone produces neither the recovery transition nor its notification.
+  [[STATE]](architectural-concept-references.md#state) [[INTERFACE]](architectural-concept-references.md#interface)
 - The application supplies trial work; a transition notification is separate from
   executing that work. Event ordering coverage is limited to the static account.
+  [[INTERACTION]](architectural-concept-references.md#interaction) [[OWNERSHIP]](architectural-concept-references.md#ownership)
 
 **After:** I favor exploring an automatic transition that uses the existing event
 facility to announce eligibility. That could help an application waiting to resume;
@@ -435,10 +503,13 @@ focusing on the already exposed isolation, reopening and transition behavior.
 
 - An existing options mechanism is a plausible extension point. Compatibility with
   a particular new option remains unverified.
+  [[INTERFACE]](architectural-concept-references.md#interface) [[BASIS]](architectural-concept-references.md#basis)
 - Current default recovery is triggered by execution. Manual isolation and reopening
   are relevant existing state changes.
+  [[STATE]](architectural-concept-references.md#state) [[OWNERSHIP]](architectural-concept-references.md#ownership)
 - The available account has incomplete restoration and lifetime detail. These gaps
   remain visible as subjects for further investigation.
+  [[OWNERSHIP]](architectural-concept-references.md#ownership) [[BASIS]](architectural-concept-references.md#basis)
 
 **After:** I separate a compatibility strategy from the remaining design work.
 I can ask how a proposed timer would interact with isolation, reopening and event
@@ -452,9 +523,14 @@ ordering, while leaving a fuller account of lifecycle constraints for follow-up.
 **Interaction:** Optionally record the choice and rationale, selecting the exact
 accounts that informed it.
 
-**PostCode shows:** The consulted accounts remain available, including earlier
-versions, corrections and qualifications. If supplied, the human's choice is retained
-with its selected references and outstanding questions.
+**PostCode shows:**
+
+- The consulted accounts remain available, including earlier versions, corrections
+  and qualifications.
+  [[ACCOUNT]](architectural-concept-references.md#account) [[CORRECTION]](architectural-concept-references.md#correction)
+- If supplied, the human's choice is retained with its selected references and
+  outstanding questions.
+  [[RATIONALE]](architectural-concept-references.md#rationale) [[ACCOUNT]](architectural-concept-references.md#account)
 
 **After:** I choose to pursue an opt-in automatic open-to-half-open transition when
 the recovery delay elapses, using the existing state/event model and preserving
