@@ -488,15 +488,47 @@ novel relationship topics can remain qualified explanatory content until a suita
 structured contract is defined. Arbitrary edge labels alone do not grant that
 contract or establish diagram semantics.
 
-Exact selection of a relationship claim/account supports investigation of the
-asserted connection in its context. If multiple accounts need a continuing shared
-relationship referent, give that relationship an explicit subject identity R,
-distinct from the immutable accounts C1/C2 that describe or challenge it. This is
-the same subject-versus-description distinction used for Half-open. Begin with
-addressable/selectable relationship claims; do not require an additional separately
-maintained relationship identity for every displayed edge. The item/account
-partition and correction target still obey whole-investigram replacement unless
-separately revised.
+The human asks whether giving relationships subject identities from introduction
+would be simpler. Revised recommendation: give each explicitly modeled architectural
+relationship a subject identity R from the outset, distinct from immutable accounts
+C1/C2 describing or challenging it. Use the same declaration, reference and retention
+mechanisms as other subjects, while preserving the distinction between relationship
+and entity. This removes a later promotion step and the need for navigation to
+switch between claim-only and relationship-subject targets. Exact claims/accounts
+remain selectable for their own historical content. This is a recommendation under
+discussion, not an adopted decision. The item/account partition and correction target
+still obey whole-investigram replacement unless separately revised.
+
+For example, R can designate the waiting relationship between an execution role
+and the breaker's recovery decision; C1 describes its circumstances and C2 corrects
+its release/admission conditions. The relationship subject retains an attributable
+introduction identifying what is being discussed. Participant roles, direction,
+conditions and other architectural assertions remain qualified account content;
+do not create an unqualified mutable edge alongside the accounts. Diagrams use
+selected qualified descriptions, not identity records alone.
+
+Tradeoffs of identities from the outset:
+
+- More declared subjects and references, and discovery must distinguish entities,
+  relationships and the accounts about them. Use local references within a result
+  and atomic validation/allocation to introduce connected subjects together.
+- Defining when a revised description still concerns R remains necessary. Additional
+  conditions may refine the same relation; a new endpoint, changed relation meaning
+  or split may identify something different. Qualified analysis must express the
+  chosen continuity rather than an automatic rule based solely on field differences.
+- Independent investigations may introduce duplicate relationships. Equal endpoint
+  IDs and labels do not automatically merge them; correspondence stays qualified.
+  Explicitly reusing an existing R avoids duplicate creation when it is supplied.
+- A rejected or disputed relation remains a retained referent with contrary accounts;
+  its identity must not imply that the relation is established or currently operative.
+
+No important semantic capability is lost; the principal cost is earlier identity
+and reference bookkeeping. The scope is explicitly modeled architectural
+relationships, not every incidental prose connection, account association or
+provenance link. This chooses no universal graph schema, durable cross-Session
+identity or automatic equivalence method. The original claim-first recommendation
+saved some identities but introduced a lifecycle distinction that now appears less
+valuable than a uniform subject mechanism.
 
 Correction of C1 to C2 can retain R when they concern the same connection with a
 better description. A discovered different connection, split or mistaken identity
