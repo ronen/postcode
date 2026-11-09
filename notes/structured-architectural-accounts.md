@@ -360,3 +360,36 @@ explicit investigram associations as a foundation, extending subject kinds and
 content as needed. Whether an item is a whole investigram or an addressable portion
 remains open, especially because correction and complete-delivery rules currently
 operate on whole investigrams.
+
+## Item identity, labels and indexing
+
+The human asks whether associated items use fixed keywords or investigator-chosen
+semantic labels that later investigations reuse for updates. Recommended separation:
+an exact retained item/account reference identifies the update target; a freely
+chosen title explains its meaning; explicit subject associations support retrieval;
+scope and qualifications distinguish applicability. A label is neither a unique key
+nor a guarantee of equivalent content. Same titles can concern different cases;
+equivalent questions can have different titles. Corrections may revise titles while
+retaining an explicit link to the earlier account.
+
+Begin with subject-to-account indexing and exact account lookup. A subject query can
+offer IDs, informative titles, scope, revision context and attributable descriptions,
+then permit retrieval of full qualified content. Substantive descriptive listings
+count as exposure under existing citation rules; they do not establish complete
+delivery for correction. A later investigator selects a candidate on meaning,
+retrieves the required content and returns an explicit correction target or a new
+associated item. Never infer replacement from equal or similar labels. Multiple
+candidates, partial retrieval and omitted population remain explicit.
+
+Do not require a universal keyword taxonomy initially. Use a small explicit
+vocabulary only where a concrete operation or content consumer needs a defined
+contract (for example identifying definitions, or a supported state/interaction
+content form). Free-form tags may aid discovery but cannot silently acquire those
+contracts. Content-form validation preserves declared structural meaning without
+establishing behavioral truth. A title alone cannot supply diagram semantics.
+
+For the first slice, prefer whole-investigram references for independently
+correctable items where coherent, reusing current retention/correction identities.
+Finer content addresses remain possible but do not by themselves authorize
+sub-investigram replacement. Automated semantic retrieval or keyword normalization
+is a later need to justify, not necessary for the small subject-associated set.
