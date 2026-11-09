@@ -17,8 +17,9 @@ presentation/navigation work and the minimal GUI follow separately.
 
 Work is isolated on `codex/structured-architectural-accounts`, based on
 `1805b3131fb57d2cdee93e059688045961ef8ec2`; local main matched fetched origin/main.
-The human authorized these evolving notes. No design agreements beyond the
-request's constraints have yet been reached.
+The human authorized these evolving notes. The scope is being explored
+conditionally; the emerging preference is an explicit subject identity whose
+qualified descriptions can be corrected. No representation decision is adopted.
 
 ## Inspected basis and existing machinery
 
@@ -189,7 +190,8 @@ representative diagram consumers and independent semantic checks.
 
 Discussion on 2026-11-09 proceeds conditionally with admission → trial → correction
 and composition as a design probe. The human requested clarification of scoped
-subjects; the following is a proposal, not an accepted representation decision.
+subjects; the following records the initial proposal. The subsequent discussion
+below revises the preferred separation of subject identity and description.
 
 Interpret account-scoped as **introduced and grounded by an exact account**, not
 confined to use inside it or defined by every claim that account makes. Let H1
@@ -251,3 +253,37 @@ provenance and occasional duplicate designations. The key open choice is whether
 replacements may reuse unchanged scoped declarations (recommended) or must always
 mint new declarations plus correspondence, which gives stricter version separation
 but adds identity churn even for an ordinary correction of behavior.
+
+## Emerging direction: subject identity with revisable descriptions
+
+The human finds it useful to know H1 and H2 concern the same thing, suggesting a
+Half-open identity whose definition through H1 can be superseded through H2.
+Prefer this separation for further exploration: S is the subject identity; H1 and
+H2 are immutable qualified descriptions of S. This changes the illustrative use of
+H1/H2 above, where they denoted subject declarations. An introducing account keeps
+its discovery provenance without permanently owning all later descriptions of S.
+
+S has an exact reference distinct from the label “Half-open.” Its identity is
+scoped and grounded in the investigated architecture; its descriptions, behavioral
+claims, associations and qualifications remain attributable to their accounts.
+It need not promise global identity, a complete model or persistence after Session
+end. This fits the governing distinction between an Entity and claims about it;
+the representation and method establishing this particular identity remain open.
+
+In the bounded example, ADMISSION-1 describes S through H1; TRIAL-1 investigates S
+with H1 as supplied context; ADMISSION-2 corrects that description through H2 while
+explicitly retaining S. Selection of S can obtain applicable retained descriptions
+and revision context. Exact H1 or ANSWER-1 access still preserves the original.
+The request must retain which descriptive context was actually selected/supplied;
+a stable subject alone does not identify an immutable answer or a reusable attempt.
+
+No single mutable definition should silently settle conflicts. A working selection
+may prefer H2 under explicit replacement rules while retaining H1 and alternatives.
+If descriptions were introduced independently, their correspondence requires
+qualified analysis before joint treatment as one subject. A conflated concept may
+instead require splitting subjects; a correction need not preserve identity.
+Shared subject identity supports alignment but does not establish agreement,
+behavioral truth, or citation exposure. Reconsideration continues to follow actual
+account exposure. Open next: how subjects are introduced/reused, how qualified
+identity assertions can themselves be challenged, and how subject requests choose
+and capture descriptive context without silently changing earlier requests.
