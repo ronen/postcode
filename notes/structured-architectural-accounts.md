@@ -381,12 +381,21 @@ retrieves the required content and returns an explicit correction target or a ne
 associated item. Never infer replacement from equal or similar labels. Multiple
 candidates, partial retrieval and omitted population remain explicit.
 
-Do not require a universal keyword taxonomy initially. Use a small explicit
-vocabulary only where a concrete operation or content consumer needs a defined
-contract (for example identifying definitions, or a supported state/interaction
-content form). Free-form tags may aid discovery but cannot silently acquire those
-contracts. Content-form validation preserves declared structural meaning without
-establishing behavioral truth. A title alone cannot supply diagram semantics.
+Agreement in discussion: use a small defined vocabulary for items PostCode needs
+to handle specially, including for UI purposes, implemented so it can be extended
+as PostCode grows. Investigations can also invent new topics; the vocabulary does
+not bound what can be investigated or recorded. This is an exploratory design
+agreement, not an adopted schema or implementation authorization.
+
+Recognized roles/content forms have explicit contracts (for example identifying
+definitions, or supported state/interaction content). Investigation-defined topics
+have meaningful labels and use supported qualified content forms without requiring
+a new registered category. A novel label does not itself install specialized UI
+behavior or acquire a recognized contract. Both kinds retain exact IDs, subject
+associations, scope, evidence, provenance and correction history; updates target
+IDs, not labels. Content-form validation preserves declared structural meaning
+without establishing behavioral truth. A title alone cannot supply diagram semantics.
+Exact initial vocabulary and its extension mechanism remain to be designed.
 
 For the first slice, prefer whole-investigram references for independently
 correctable items where coherent, reusing current retention/correction identities.
