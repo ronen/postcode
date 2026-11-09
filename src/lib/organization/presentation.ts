@@ -125,6 +125,7 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
   presentation: PresentedOptions, title: string, resolution?: ResolutionContext, context: AnswerContext = {}): QualifiedOrganizationView {
   validatePresentationContent({ contract: 'organization', value: content });
   const { projection, evaluation: outcome, repository: captured } = content;
+  if (!projection.expansions.requested.includes('group-details')) throw new Error('Organization presentation requires evaluated group-details');
   const policy = organizationDisplayPolicy(projection.subject, presentation);
   if (presentation.moreDetails && !policy.source) throw new Error('More details require selected organization content');
   const evidence = captured.capture.status === 'available' ? captured.capture.evidence : null;

@@ -134,6 +134,7 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
           async execute(request, execution = {}) {
             allowed(); if (used) throw new Error('An operation scope accepts exactly one request'); used = true;
             const result = await perform(freezeOwned(structuredClone(request)), freezeOwned(structuredClone(execution)), true);
+            allowed();
             if (result.kind === 'answer' && result.answer.content.contract === 'investigation' && result.answer.mechanical === null) port = referenceBinding(state!.store, id, result.answer.content.value.references);
             return result;
           },

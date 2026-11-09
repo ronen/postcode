@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import type { TestContext } from 'node:test';
 import { writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { temporaryDirectory } from './cli-helpers.js';
 import { openApplication } from '../src/lib/application/index.js';
@@ -29,6 +30,40 @@ function denyAcquisition(t: TestContext) {
     t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw Error(`Exact retrieval called ${method}`); });
   }
 }
+
+test('raw organization subsets remain retrievable without Presentation expansions', async t => {
+  const options = fixture(t);
+  execFileSync('git', ['init', '-q'], { cwd: path.dirname(options.configPath) });
+  const opened = await openApplication(options, {}, { ...defaultCatalog,
+    presentations: defaultCatalog.presentations!.map(applicationPresentation) });
+  assert.equal(opened.status, 'opened'); const session = opened.session; t.after(() => session.close());
+  const request = { kind: 'lens', lens: 'organization', designation: { kind: 'configured-project' } } as const;
+  const subset = await session.execute({ ...request, requirements: { modules: [], groups: [] } });
+  assert.equal(subset.kind, 'answer'); assert.equal(subset.answer.content.contract, 'organization');
+  assert.equal(subset.attribution.status, 'completed');
+  const content = subset.answer.content.value;
+  assert.ok(content.groups.length > 0);
+  assert.deepEqual(content.projection.expansions.requested, []);
+  assert.deepEqual(content.projection.expansions.groups, []);
+  assert.deepEqual(content.moduleEvaluations, []);
+  const before = structuredClone(subset.answer);
+  const full = await session.execute(request);
+  assert.equal(full.kind, 'answer'); assert.equal(full.answer.content.contract, 'organization');
+  assert.ok(full.answer.content.value.projection.expansions.requested.includes('group-details'));
+  assert.notEqual(full.answer.id, subset.answer.id);
+  denyAcquisition(t);
+  for (const requirements of [undefined, { modules: [], groups: [] }]) {
+    const raw = await session.execute({ kind: 'present', target: subset.answer.id, ...(requirements ? { requirements } : {}) });
+    assert.equal(raw.kind, 'answer'); assert.equal(raw.attribution.status, 'completed');
+    assert.deepEqual(raw.answer, before);
+  }
+  const refused = await session.execute({ kind: 'present', target: subset.answer.id,
+    consumption: { presentations: ['organization'], options: json } });
+  assert.equal(refused.kind, 'resolution'); assert.equal(refused.attribution.status, 'refused');
+  assert.equal(refused.resolution.reason, 'presentation-unavailable');
+  assert.match(refused.resolution.explanation, /group details not selected/);
+  assert.deepEqual(refused.resolution.retainedAnswers, [{ id: subset.answer.id, reference: subset.answerReference }]);
+});
 
 test('direct exact exports refuses missing declared support without enriching the retained answer', async t => {
   const opened = await openApplication(fixture(t), {}, { ...definitions, presentations: definitions.presentations.map(applicationPresentation) });

@@ -111,6 +111,34 @@ test('publication distinguishes withheld, output failure and invalidation after 
   assert.equal(output.status, 'output-failed');
 });
 
+test('closing from completed work refuses scoped delivery with SessionClosed and keeps final work', async t => {
+  let close: (() => Promise<void>) | undefined, closing: Promise<void> | undefined;
+  let finished = 0;
+  const opened = await openApplication(fixture(t), {
+    onWork(event) {
+      if (event.kind === 'finish' && close) { finished++; closing = close(); }
+    },
+  });
+  assert.equal(opened.status, 'opened'); const session = opened.session;
+  t.after(() => session.close());
+  const retained = await session.execute({ kind: 'lens', lens: 'summarize', designation: { kind: 'name', value: 'entry' } });
+  assert.equal(retained.kind, 'answer'); assert.equal(retained.answer.content.contract, 'investigation');
+  close = () => session.close();
+  let delivered = false;
+  let escaped!: ReferenceBinding;
+  await assert.rejects(withCliOperation(session, async scope => {
+    escaped = scope.bindings;
+    await scope.execute({ kind: 'present', target: retained.answer.id });
+    delivered = true;
+  }), SessionClosed);
+  await closing;
+  assert.equal(delivered, false);
+  assert.equal(finished, 1);
+  assert.equal(session.work()!.status, 'completed');
+  assert.throws(() => escaped.bind([], 'module'), SessionClosed);
+  await assert.rejects(session.execute({ kind: 'report', report: 'usage' }), SessionClosed);
+});
+
 test('direct post-execution validation precedes application completion', async t => {
   const f = fixture(t); let changed = false;
   const opened = await openApplication(f, { onWork(event) {
