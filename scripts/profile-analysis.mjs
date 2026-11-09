@@ -3,7 +3,8 @@ import { cpSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-// Optional source build lets the same harness instrument an older compiled revision.
+// Optional source builds must expose the current application/CLI module and export
+// shape. This live profiler does not bridge pre-extraction checkpoints.
 const destination = path.resolve(process.argv[2] ?? path.join(root, '_build/profile'));
 const source = path.resolve(process.argv[3] ?? path.join(root, '_build'));
 if (destination === source) throw Error('The instrumented copy must not replace the source build');
@@ -21,10 +22,12 @@ const groups = {
   projections: ['modules', 'inspect'],
   'organization/projections': ['organization', 'inspectOrganization'],
   'dependencies/projections': ['dependencyStructure', 'dependencyChildren', 'dependencyParents'],
-  presentation: ['createView', 'renderView'],
-  'organization/presentation': ['createOrganizationView', 'renderOrganizationView'],
-  'dependencies/presentation': ['createDependencyView', 'renderDependencyView'],
-  observations: ['observationBatch'],
+  presentation: ['arrangeModuleView', 'renderView'],
+  'organization/presentation': ['arrangeOrganizationView', 'renderOrganizationView'],
+  'dependencies/presentation': ['arrangeDependencyView', 'renderDependencyView'],
+  'interfaces/cli/observations': ['observationBatch'],
+  'application/session': ['openApplication'],
+  'interfaces/cli/application': ['openCliSession'],
 };
 for (const [file, names] of Object.entries(groups)) {
   const filename = path.join(destination, 'src/lib', file + '.js');

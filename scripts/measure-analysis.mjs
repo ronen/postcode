@@ -1,3 +1,8 @@
+// Historical checkpoint tool: retain its recorded internal build/export and
+// assertion assumptions. It is not the application-boundary extraction oracle;
+// compatibility with post-extraction builds is not promised.
+// The supplied build must expose cli.runCli, commands.parseCommand and the
+// old observations.localFileObservationSink entry; paths intentionally stay old.
 // One fresh-process CLI invocation with real local observation delivery.
 // Usage: node [--cpu-prof --cpu-prof-dir=...] scripts/measure-analysis.mjs BUILD REPORT CLI_ARGS...
 import { writeFileSync } from 'node:fs';

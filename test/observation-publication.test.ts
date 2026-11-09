@@ -3,8 +3,9 @@ import { test } from 'node:test';
 import path from 'node:path';
 import { mkdir, open, link, unlink, readFile, readdir, stat, writeFile } from 'node:fs/promises';
 import type { FileHandle } from 'node:fs/promises';
-import { localFileObservationSink, commandObservation } from '../src/lib/observations.js';
-import { submitObservation } from '../src/lib/command-execution.js';
+import { localFileObservationSink } from '../src/lib/application/observations.js';
+import { commandObservation } from '../src/lib/interfaces/cli/observations.js';
+import { submitObservation } from '../src/lib/interfaces/cli/observations.js';
 import { temporaryDirectory } from './cli-helpers.js';
 
 const now = () => new Date('2026-09-28T23:59:59.123Z');

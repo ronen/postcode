@@ -15,7 +15,7 @@ import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { modules } from './projection-helpers.js';
 import { openWorkerCliSession, openCliSession as openSession, SessionInvalidated, AnalysisFailure } from '../src/lib/interfaces/cli/application.js';
 import type { ProgramRecord } from '../src/lib/records.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
 import { moduleStandardExpansions } from '../src/lib/records.js';
 
 async function temporary(run: (root: string, configPath: string) => void | Promise<void>, include = false) {

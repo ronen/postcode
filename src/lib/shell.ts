@@ -1,23 +1,20 @@
-import { publishFeedback } from './feedback.js';
-import type { DisplayedResult } from './feedback.js';
+import { publishFeedback } from './interfaces/cli/feedback.js';
+import type { DisplayedResult } from './application/feedback.js';
 import { CleanupIncomplete } from './execution-errors.js';
-import path from 'node:path';
 import { createInterface } from 'node:readline';
 import { Writable } from 'node:stream';
 import { commandWords, help, parseCommand } from './commands.js';
 import type { CliEnvironment } from './cli.js';
-import { CommandInterrupted, interactiveSession } from './interactive-session.js';
-import { commandObservation, localFileObservationSink } from './observations.js';
-import { publishCommand, submitObservation, openFailureText } from './command-execution.js';
+import { CommandInterrupted } from './execution-errors.js';
+import { createCliRuntime } from './interfaces/cli/runtime.js';
+import { commandObservation, submitObservation } from './interfaces/cli/observations.js';
+import { publishCommand, openFailureText } from './command-execution.js';
 import { inlineText } from './terminal-text.js';
 
 export async function runShell(options: { configPath: string; json: boolean }, environment: CliEnvironment): Promise<number> {
   const input = environment.input ?? process.stdin;
   if (!input.isTTY) { environment.stderr('Interactive shell requires terminal stdin; piped and command-file input are unsupported.\n'); return 2; }
-  const destination = path.resolve(environment.checkout, '_observations');
-  const localSink = localFileObservationSink(destination, options.configPath);
-  const sink = environment.sink ?? localSink;
-  const remote = interactiveSession({ configPath: options.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] }, { ...(environment.selectInvestigator ? { selectInvestigator: environment.selectInvestigator } : {}), ...(environment.investigator ? { investigator: environment.investigator } : {}), ...(environment.investigationBounds ? { investigationBounds: environment.investigationBounds } : {}) });
+  const { localSink, sink, remote } = createCliRuntime(options.configPath, environment);
   let busy = true;
   let inputClosed = false;
   let readline: ReturnType<typeof createInterface> | undefined;

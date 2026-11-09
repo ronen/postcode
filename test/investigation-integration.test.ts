@@ -1,8 +1,9 @@
 import { publishCommand } from '../src/lib/command-execution.js';
-import { publishFeedback, type DisplayedResult } from '../src/lib/feedback.js';
-import { finalizeRequestReport } from '../src/lib/request-reporting.js';
+import type { DisplayedResult } from '../src/lib/application/feedback.js';
+import { publishFeedback } from '../src/lib/interfaces/cli/feedback.js';
+import { finalizeRequestReport } from '../src/lib/interfaces/cli/request-reporting.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import type { UsageReport } from '../src/lib/request-reporting.js';
+import type { UsageReport } from '../src/lib/interfaces/cli/report-contracts.js';
 import { requireView, requireResolution } from './request-helpers.js';
 import { InvestigatorReferences } from '../src/lib/investigation/openai/references.js';
 import assert from 'node:assert/strict';
@@ -22,7 +23,7 @@ import type { SubmittedInvestigram, AgentReply, InvestigatorAgent, ReportedUsage
 import { finalizeInvestigationUsage, renderInvestigationView } from '../src/lib/investigation/presentation.js';
 import type { InvestigationView } from '../src/lib/investigation/presentation.js';
 import type { InvestigationUsageReport } from '../src/lib/investigation/reporting.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
 import type { RecordId } from '../src/lib/records.js';
 import { investigationBounds } from '../src/lib/investigation/execute.js';
 
@@ -492,7 +493,7 @@ test('shell rejects known investigram subjects for mechanical and summary lenses
     sink: { async submit(batch) { batches.push(batch); driver.run(() => {
       if (batches.length === 1) reference = (batch.records.find(item => item.kind === 'qualified-view')!.value as InvestigationView).references[0]!.reference;
       else {
-        const data = batch.records.find(item => item.kind === 'resolution-result')!.value as import('../src/lib/request-reporting.js').ResolutionReport;
+        const data = batch.records.find(item => item.kind === 'resolution-result')!.value as import('../src/lib/interfaces/cli/report-contracts.js').ResolutionReport;
         assert.equal(data.resolution.reason, 'unsupported-subject');
         assert.equal(data.resolution.candidates[0]!.kind, 'investigram');
         assert.deepEqual(data.resolution.retainedAnswers, []);
@@ -683,14 +684,14 @@ for (const format of ['json', 'unicode'] as const) test(`progressive worker lens
   assert.equal(batches.length, 8);
   const expectedLenses = ['summarize', 'decompose', 'explain', 'examine', 'examine', 'inspect', 'inspect'];
   for (const [index, lens] of expectedLenses.entries()) {
-    const context = batches[index]!.records.find(item => item.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
+    const context = batches[index]!.records.find(item => item.kind === 'request')!.value as import('../src/lib/interfaces/cli/report-contracts.js').RequestContext;
     assert.equal(context.request.kind, 'lens');
     if (context.request.kind !== 'lens') throw new Error('Expected Lens request');
     assert.equal(context.request.lens, lens);
     assert.equal(context.request.designation.kind, index === 0 || index === 6 ? 'name' : 'reference');
     assert.deepEqual(context.request.parameters, {});
   }
-  const usageRequest = batches[7]!.records.find(item => item.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
+  const usageRequest = batches[7]!.records.find(item => item.kind === 'request')!.value as import('../src/lib/interfaces/cli/report-contracts.js').RequestContext;
   assert.equal(usageRequest.request.kind, 'report');
   assert.ok(!batches[7]!.events.some(item => item.type === 'view-produced'));
   assert.ok(batches.every((batch, index) => index === 5 || !batch.events.some(item => item.type === 'attribution-disclosed')));

@@ -1,7 +1,7 @@
-import type { RecordId } from './records.js';
-import type { NormalizedRequest } from './requests.js';
-import type { Presentation } from './presentation.js';
-import { inlineText } from './terminal-text.js';
+import type { RecordId } from '../../records.js';
+import type { NormalizedRequest } from '../../requests.js';
+import type { Presentation } from '../../presentation.js';
+import { inlineText } from '../../terminal-text.js';
 
 /** Supplied by Session coordination, independently of Presentation selection. */
 export interface AnswerContext {

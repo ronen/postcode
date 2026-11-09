@@ -16,8 +16,8 @@ import type { LensViewRequest, ViewRequest } from '../src/lib/requests.js';
 import { parseCommand } from '../src/lib/commands.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import { finalizeInvestigationUsage } from '../src/lib/investigation/presentation.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
-import type { RequestContext } from '../src/lib/request-reporting.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
+import type { RequestContext } from '../src/lib/interfaces/cli/report-contracts.js';
 import { SessionClosed, SessionInvalidated } from '../src/lib/execution-errors.js';
 
 const json = { format: 'json' as const, moreDetails: false };

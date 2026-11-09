@@ -11,8 +11,8 @@ import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import { normalizeRequest } from '../src/lib/requests.js';
 import type { ViewRequest } from '../src/lib/requests.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
-import type { RequestContext } from '../src/lib/request-reporting.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
+import type { RequestContext } from '../src/lib/interfaces/cli/report-contracts.js';
 
 const presentation = { format: 'json' as const, moreDetails: false };
 const base = { lens: 'organization', selector: null, presentation };

@@ -8,7 +8,7 @@ import { ScriptedInvestigator } from './investigator-double.js';
 import { openWorkerCliSession, openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
 import { CommandInterrupted } from '../src/lib/execution-errors.js';
 import { initiation, RequestWork, WorkReportState, recordExpansionWork } from '../src/lib/work-attribution.js';
 import type { WorkReport, AttributedWork } from '../src/lib/work-attribution.js';

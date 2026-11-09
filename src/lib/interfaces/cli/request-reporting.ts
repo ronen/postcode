@@ -1,37 +1,16 @@
-import type { ResolutionInformation } from './application/reports.js';
-export type { ResolutionInformation } from './application/reports.js';
-import { diagnosticLines, withDiagnosticMeanings } from './diagnostic-view.js';
+import { answerSubjectGuidance } from './subject-guidance.js';
+import type { RequestContext, ResolutionReport, UsageReport } from './report-contracts.js';
+export type { ResolutionInformation } from '../../application/reports.js';
+import { diagnosticLines, withDiagnosticMeanings } from '../../diagnostic-view.js';
 import { referenceNotice } from './answer-presentation.js';
-import { summarizeWork } from './work-attribution.js';
-import type { InitiationContext, WorkReport } from './work-attribution.js';
-import { usageSummary } from './investigation/reporting.js';
-import { freezeOwned } from './immutable.js';
-import { completedMaterialization } from './evaluation-state.js';
-import { inlineText } from './terminal-text.js';
-import { usageLines } from './investigation/presentation.js';
-import type { InvestigationUsageReport } from './investigation/reporting.js';
-import type { NormalizedRequest } from './requests.js';
-import type { SessionId } from './records.js';
-
-export interface RequestContext extends InitiationContext {
-  readonly request: NormalizedRequest;
-}
-export interface ResolutionReport {
-  readonly schema: 'postcode-resolution/1-experimental';
-  readonly session: SessionId;
-  readonly context: RequestContext;
-  readonly resolution: ResolutionInformation;
-  readonly referenceNotice?: string;
-  readonly usage: InvestigationUsageReport;
-  readonly attribution?: WorkReport;
-}
-export interface UsageReport {
-  readonly schema: 'postcode-investigation-usage/1-experimental';
-  readonly session: SessionId;
-  readonly context: RequestContext;
-  readonly usage: InvestigationUsageReport;
-  readonly attribution?: WorkReport;
-}
+import { summarizeWork } from '../../work-attribution.js';
+import { usageSummary } from '../../investigation/reporting.js';
+import { freezeOwned } from '../../immutable.js';
+import { completedMaterialization } from '../../evaluation-state.js';
+import { inlineText } from '../../terminal-text.js';
+import { usageLines } from '../../investigation/presentation.js';
+import type { InvestigationUsageReport } from '../../investigation/reporting.js';
+import type { SessionId } from '../../records.js';
 
 const resolutionGuidance = 'No answer was produced for this request. Use a listed candidate or a supported designation; ask a coding agent to resolve reported project problems before retrying.';
 
@@ -69,7 +48,7 @@ export function renderRequestReport(report: ResolutionReport | UsageReport): str
 
 export function finalizeRequestReport<T extends ResolutionReport | UsageReport>(report: T, usage: InvestigationUsageReport): T {
   return freezeOwned(withDiagnosticMeanings({ ...report, usage,
-    ...(report.schema === 'postcode-resolution/1-experimental' ? { resolution: { ...report.resolution, guidance: resolutionGuidance } } : {}) }));
+    ...(report.schema === 'postcode-resolution/1-experimental' ? { resolution: { ...report.resolution, ...(report.resolution.reason === 'answer-as-subject' ? { explanation: answerSubjectGuidance } : {}), guidance: resolutionGuidance } } : {}) }));
 }
 
 /** Both direct and worker-facing boundaries refuse invalid input without evaluating it. */

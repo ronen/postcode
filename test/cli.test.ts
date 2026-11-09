@@ -1,4 +1,4 @@
-import type { ResolutionReport } from '../src/lib/request-reporting.js';
+import type { ResolutionReport } from '../src/lib/interfaces/cli/report-contracts.js';
 import { invokeCli, temporaryDirectory } from './cli-helpers.js';
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
@@ -7,8 +7,8 @@ import path from 'node:path';
 import { test } from 'node:test';
 import { normalizeSession } from './helpers.js';
 import { runCli } from '../src/lib/cli.js';
-import { localFileObservationSink } from '../src/lib/observations.js';
-import type { ObservationBatch, ObservationSink } from '../src/lib/observations.js';
+import { localFileObservationSink } from '../src/lib/application/observations.js';
+import type { ObservationBatch, ObservationSink } from '../src/lib/application/observations.js';
 import { renderUnicode } from '../src/lib/presentation.js';
 import type { QualifiedView } from '../src/lib/presentation.js';
 import { codePointLength, displayWidth } from '../src/lib/terminal-layout.js';

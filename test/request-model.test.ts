@@ -7,9 +7,9 @@ import { openWorkerCliSession, openCliSession as openSession } from '../src/lib/
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
-import type { ResolutionReport, UsageReport, RequestContext } from '../src/lib/request-reporting.js';
-import { finalizeRequestReport } from '../src/lib/request-reporting.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
+import type { ResolutionReport, UsageReport, RequestContext } from '../src/lib/interfaces/cli/report-contracts.js';
+import { finalizeRequestReport } from '../src/lib/interfaces/cli/request-reporting.js';
 import { requireView } from './request-helpers.js';
 
 const configPath = path.resolve('fixtures/dependency-journey/tsconfig.json');

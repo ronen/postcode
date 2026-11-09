@@ -17,7 +17,7 @@ import { renderView } from '../src/lib/presentation.js';
 import { renderOrganizationView } from '../src/lib/organization/presentation.js';
 import { renderDependencyView } from '../src/lib/dependencies/presentation.js';
 import { presentQualification } from '../src/lib/qualification-view.js';
-import { observationBatch, commandObservation } from '../src/lib/observations.js';
+import { observationBatch, commandObservation } from '../src/lib/interfaces/cli/observations.js';
 import { investigationInstructions } from '../src/lib/investigation/execute.js';
 import { assertionContent, documentationLines } from '../src/lib/documentation-view.js';
 

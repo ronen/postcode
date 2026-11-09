@@ -1,6 +1,6 @@
 import { presentationMethods } from '../interfaces/cli/methods.js';
-import { answerContinuations } from '../answer-presentation.js';
-import type { AnswerDisplay } from '../answer-presentation.js';
+import { answerContinuations } from '../interfaces/cli/answer-presentation.js';
+import type { AnswerDisplay } from '../interfaces/cli/answer-presentation.js';
 import type { Presentation } from '../presentation.js';
 import { validatePresentationContent } from '../presentation-contracts.js';
 import { revisionPage } from './revision-page.js';

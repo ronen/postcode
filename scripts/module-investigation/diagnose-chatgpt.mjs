@@ -1,7 +1,7 @@
 /** Explicit, at-most-one-inference diagnostic. Uses PostCode's credential boundary;
  * emits allowlisted structure only, never raw headers, bodies or credentials. */
 import { pathToFileURL } from 'node:url';
-import { checkChatGPTConnection, productionChatGPTCredentials } from '../../_build/src/lib/investigation/openai/auth-command.js';
+import { checkChatGPTConnection, productionChatGPTCredentials } from '../../_build/src/lib/application/accounts.js';
 
 const kind = value => value === null ? 'null' : Array.isArray(value) ? 'array' : typeof value;
 const statuses = ['completed', 'failed', 'incomplete', 'queued', 'in_progress', 'cancelled'];

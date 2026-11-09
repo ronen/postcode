@@ -11,7 +11,7 @@ import { recordId } from '../src/lib/identity.js';
 import { resolveModuleProjection } from '../src/lib/module-content.js';
 import { finalizeInvestigationUsage } from '../src/lib/investigation/presentation.js';
 import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
-import { renderRequestReport } from '../src/lib/request-reporting.js';
+import { renderRequestReport } from '../src/lib/interfaces/cli/request-reporting.js';
 import { captureCatalog, defaultCatalog } from '../src/lib/request-catalog.js';
 import { presentations, settlePresentation, validatePresentationContent } from '../src/lib/presentation-contracts.js';
 import type { PresentationDefinition } from '../src/lib/presentation-contracts.js';

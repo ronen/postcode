@@ -1,20 +1,20 @@
 import { randomUUID } from 'node:crypto';
-import { publishFeedback } from './feedback.js';
-import { runAuthentication } from './investigation/openai/auth-command.js';
+import { publishFeedback } from './interfaces/cli/feedback.js';
+import { runAuthentication } from './interfaces/cli/authentication.js';
 import type { ChatGPTCredentials } from './investigation/openai/chatgpt-credentials.js';
 import type { InvestigationRequest, InvestigatorAgent } from './investigation/contracts.js';
 import type { InvestigationBounds } from './investigation/execute.js';
 import path from 'node:path';
 import type { Readable } from 'node:stream';
-import { localFileObservationSink } from './observations.js';
-import type { ObservationSink } from './observations.js';
-import { interactiveSession } from './interactive-session.js';
+import { localFileObservationSink } from './application/observations.js';
+import type { ObservationSink } from './application/observations.js';
+import { createCliRuntime } from './interfaces/cli/runtime.js';
 import { CommandInterrupted, CleanupIncomplete } from './execution-errors.js';
 import { inlineText } from './terminal-text.js';
 import { help, parseCommand } from './commands.js';
 import { publishCommand, openFailureText } from './command-execution.js';
 import { runShell } from './shell.js';
-import { configuredInvestigator, hostedDisclosure, chatGPTDisclosure } from './investigation/openai/configuration.js';
+import { configureCliInvestigator as configuredInvestigator, hostedDisclosure, chatGPTDisclosure } from './interfaces/cli/investigator-policy.js';
 
 export interface CliEnvironment {
   /** Internal communication-boundary injection for tests and assessment. */
@@ -54,9 +54,7 @@ export async function runCli(args: readonly string[], environment: CliEnvironmen
     }
   }
   if (parsed.kind === 'shell') return runShell(parsed, environment);
-  const destination = path.resolve(environment.checkout, '_observations');
-  const localSink = localFileObservationSink(destination, parsed.configPath);
-  const remote = interactiveSession({ configPath: parsed.configPath, excludedOutputDirectories: [destination, path.resolve(environment.checkout, '_build')] }, { ...(environment.selectInvestigator ? { selectInvestigator: environment.selectInvestigator } : {}), ...(environment.investigator ? { investigator: environment.investigator } : {}), ...(environment.investigationBounds ? { investigationBounds: environment.investigationBounds } : {}) });
+  const { localSink, sink, remote } = createCliRuntime(parsed.configPath, environment);
   const interrupt = () => { void remote.interrupt().catch(() => {}); };
   process.on('SIGINT', interrupt);
   try {
@@ -70,7 +68,7 @@ export async function runCli(args: readonly string[], environment: CliEnvironmen
     if (opened.status !== 'opened') { environment.stderr(openFailureText(opened)); return 2; }
     environment.stderr(`Local observations: ${inlineText(localSink.destination)} (may contain repository-derived text and explicitly requested source locations).\n`);
     return await publishCommand({ id: opened.id, execute: remote.execute, check: remote.check, usage: remote.usage, work: remote.work }, parsed.request, args, parsed.configPath, 1,
-      environment, environment.sink ?? localSink);
+      environment, sink);
   } finally {
     process.removeListener('SIGINT', interrupt);
     try { await remote.close(); }

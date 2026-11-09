@@ -7,11 +7,8 @@ import type { QualifiedDependencyView } from './dependencies/presentation.js';
 import type { InvestigationView } from './investigation/presentation.js';
 import type { ModuleExportsView } from './exports/presentation.js';
 
-export type SourceDisclosureLevel = 'diagnostic-locations' | NonNullable<QualifiedView['moreDetails']>['level']
-  | NonNullable<QualifiedOrganizationView['moreDetails']>['level']
-  | NonNullable<QualifiedDependencyView['moreDetails']>['level']
-  | NonNullable<InvestigationView['moreDetails']>['level'];
-export type SourceDisclosureForm = 'locations' | 'excerpts';
+import type { SourceDisclosureLevel, SourceDisclosureForm } from './application/observations.js';
+export type { SourceDisclosureLevel, SourceDisclosureForm } from './application/observations.js';
 
 /** Classify the bounded source fields actually rendered by each presentation.
  * Requests, empty containers, evidence IDs and omission counts are not disclosure.

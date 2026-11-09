@@ -4,7 +4,7 @@ import type { QualifiedOrganizationView } from './organization/presentation.js';
 import type { QualifiedDependencyView } from './dependencies/presentation.js';
 import type { ModuleExportsView } from './exports/presentation.js';
 import type { InvestigationView } from './investigation/presentation.js';
-import type { ResolutionReport, UsageReport } from './request-reporting.js';
+import type { ResolutionReport, UsageReport } from './interfaces/cli/report-contracts.js';
 import { inlineText } from './terminal-text.js';
 type Diagnostic = ClaimContextRecord['diagnostics'][number];
 

@@ -6,7 +6,7 @@ import { temporaryDirectory } from './cli-helpers.js';
 import { openWorkerCliSession } from '../src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
 import type { WorkReport } from '../src/lib/work-attribution.js';
 
 for (const host of ['in-process', 'worker'] as const) test(`unknown continuation fails CLI presentation while application work stays completed (${host})`, async t => {

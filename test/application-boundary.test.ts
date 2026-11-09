@@ -46,14 +46,14 @@ test('direct application returns complete module support and exact answers witho
   await assert.rejects(session.execute({ kind: 'report', report: 'usage' }), SessionClosed);
 });
 
-test('application runtime and type imports do not reach CLI, Views or terminal helpers', () => {
+test('application and companion service runtime/type imports do not reach CLI, Views or terminal helpers', () => {
   const root = path.resolve('src/lib');
   const seen = new Set<string>();
   function visit(file: string, chain: string[]): void {
     if (seen.has(file)) return;
     seen.add(file);
     const relative = path.relative(root, file);
-    assert.doesNotMatch(relative, /(^interfaces\/cli\/|(^|\/)(cli|commands|shell|interactive-session|session-worker|session-protocol|presentation|program-presentation|retained-presentation|request-reporting|terminal-text|terminal-layout|answer-presentation|source-disclosure|observations)\.ts$)/, chain.join(' -> '));
+    assert.doesNotMatch(relative, /(^interfaces\/cli\/|(^|\/)(cli|commands|shell|interactive-session|session-worker|session-protocol|presentation|program-presentation|retained-presentation|request-reporting|terminal-text|terminal-layout|answer-presentation|source-disclosure)\.ts$)/, chain.join(' -> '));
     const source = ts.createSourceFile(file, readFileSync(file, 'utf8'), ts.ScriptTarget.Latest, true);
     const inspect = (node: ts.Node): void => {
       const specifier = ts.isImportDeclaration(node) || ts.isExportDeclaration(node) ? node.moduleSpecifier
@@ -67,6 +67,6 @@ test('application runtime and type imports do not reach CLI, Views or terminal h
     };
     inspect(source);
   }
-  visit(path.join(root, 'application/index.ts'), []);
+  for (const entry of ['index', 'accounts', 'observations', 'feedback']) visit(path.join(root, `application/${entry}.ts`), []);
   assert.ok(seen.size > 30, 'inspect the transitive graph, including type imports');
 });

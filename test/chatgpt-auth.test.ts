@@ -10,7 +10,7 @@ import { withCredentialLock, CredentialError, keychainEntryStore } from '../src/
 import type { CredentialStore } from '../src/lib/investigation/openai/credential-store.js';
 import { oauthService, verifyIdentity, issuer, scopes, resource } from '../src/lib/investigation/openai/oauth.js';
 import type { OAuthService, OAuthRegistration, TokenSet } from '../src/lib/investigation/openai/oauth.js';
-import { configuredInvestigator } from '../src/lib/investigation/openai/configuration.js';
+import { configuredInvestigator } from '../src/lib/application/accounts.js';
 import { runCli } from '../src/lib/cli.js';
 
 const pair = await generateKeyPair('RS256'), jwk = await exportJWK(pair.publicKey), keys = createLocalJWKSet({ keys: [{ ...jwk, kid: 'test' }] });

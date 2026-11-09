@@ -3,7 +3,7 @@ import type { WorkReport } from './work-attribution.js';
 import { captureRequest } from './requests.js';
 import { captureCatalog, defaultCatalog } from './request-catalog.js';
 import type { RequestCatalog } from './request-catalog.js';
-import { finalizeRequestReport, renderRequestReport, rejectedRequestResult } from './request-reporting.js';
+import { finalizeRequestReport, renderRequestReport, rejectedRequestResult } from './interfaces/cli/request-reporting.js';
 import { freezeOwned } from './immutable.js';
 import type { InvestigationRequest, AgentIdentity, InvestigatorAgent, AgentDialogue, AgentReply, AttemptReport, CallUsage } from './investigation/contracts.js';
 import { finalizeInvestigationUsage, renderInvestigationView } from './investigation/presentation.js';

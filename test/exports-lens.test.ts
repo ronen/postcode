@@ -24,8 +24,8 @@ import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { sourceDisclosure } from '../src/lib/source-disclosure.js';
 import { settlePresentation } from '../src/lib/presentation-contracts.js';
 import type { EvaluationRecord } from '../src/lib/records.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
-import type { RequestContext } from '../src/lib/request-reporting.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
+import type { RequestContext } from '../src/lib/interfaces/cli/report-contracts.js';
 
 const json = { format: 'json' as const, moreDetails: false };
 const unicode = { format: 'unicode' as const, moreDetails: false };

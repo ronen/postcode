@@ -4,7 +4,7 @@ import { PassThrough } from 'node:stream';
 import { test } from 'node:test';
 import { commandWords, parseCommand } from '../src/lib/commands.js';
 import { runCli } from '../src/lib/cli.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
 import { interactionDriver, invokeCli } from './cli-helpers.js';
 
 test('strict option grammar applies before help in both interfaces', () => {
@@ -92,7 +92,7 @@ test('shell records scanner refusals and then accepts a quoted literal selector'
   assert.match(errors, /ambiguous\. Did you forget/);
   assert.match(errors, /To specify an option argument starting with a dash use '--project=-XYZ'\./);
   assert.doesNotMatch(errors, /\\u000a/);
-  const report = batches[3]!.records.find(item => item.kind === 'resolution-result')!.value as import('../src/lib/request-reporting.js').ResolutionReport;
+  const report = batches[3]!.records.find(item => item.kind === 'resolution-result')!.value as import('../src/lib/interfaces/cli/report-contracts.js').ResolutionReport;
   assert.equal(report.resolution.reason, 'missing');
   assert.ok(report.context.request.kind === 'lens');
   assert.deepEqual(report.context.request.designation, { kind: 'name', value: '@literal' });

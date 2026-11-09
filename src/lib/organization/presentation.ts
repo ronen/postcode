@@ -1,7 +1,7 @@
 import { presentationMethods } from '../interfaces/cli/methods.js';
 import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
-import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../answer-presentation.js';
-import type { AnswerContext, AnswerDisplay } from '../answer-presentation.js';
+import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../interfaces/cli/answer-presentation.js';
+import type { AnswerContext, AnswerDisplay } from '../interfaces/cli/answer-presentation.js';
 import { validatePresentationContent, presentationChanges } from '../presentation-contracts.js';
 import type { PresentedOptions } from '../presentation-contracts.js';
 import { lookupDescription, lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';

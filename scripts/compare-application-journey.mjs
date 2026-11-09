@@ -27,7 +27,10 @@ async function journey(build, configPath, selector, collision, host) {
   let sequence = 0;
   crypto.randomUUID = () => `00000000-0000-4000-8000-${String(++sequence).padStart(12, '0')}`;
   syncBuiltinESMExports();
-  const { openSession } = await load(build, 'session.js');
+  // Preserve the recorded pre-extraction baseline's module/export shape.
+  const openSession = build === beforeBuild
+    ? (await load(build, 'session.js')).openSession
+    : (await load(build, 'interfaces/cli/application.js')).openCliSession;
   const { MemoryProgramRecordStore } = await load(build, 'memory-store.js');
   const trace = [], progress = [], results = [], originals = {};
   for (const method of ['entityIds', 'answerIds']) {

@@ -1,4 +1,5 @@
-import { isAnswerReference, answerSubjectGuidance } from './answer-references.js';
+import { answerSubjectGuidance } from './interfaces/cli/subject-guidance.js';
+import { isAnswerReference } from './answer-references.js';
 import { parseArgs } from 'node:util';
 import path from 'node:path';
 import type { ViewRequest } from './interfaces/cli/application.js';

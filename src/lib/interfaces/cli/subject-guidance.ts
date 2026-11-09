@@ -1,0 +1,1 @@
+export const answerSubjectGuidance = 'An answer reference is not a Lens subject. Use present with that answer in the active shell Session that retains it. References expire with their Session; to begin new work, open postcode shell and request the information there.';

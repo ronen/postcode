@@ -8,8 +8,8 @@ import { temporaryDirectory, interactionDriver } from './cli-helpers.js';
 import { runCli } from '../src/lib/cli.js';
 import { ScriptedInvestigator } from './investigator-double.js';
 import type { EvidenceResponse } from '../src/lib/evidence-access.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
-import { observationBatch } from '../src/lib/observations.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
+import { observationBatch } from '../src/lib/interfaces/cli/observations.js';
 import type { InvestigationView } from '../src/lib/investigation/presentation.js';
 import { renderInvestigationView } from '../src/lib/investigation/presentation.js';
 import type { QualifiedView } from '../src/lib/presentation.js';
@@ -64,7 +64,7 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
   driver.verify(); assert.equal(code, 0, stderr); assert.equal(batches.length, commands.length + 1);
   for (let index = 0; index < commands.length; index++) {
     const command = commands[index]!, batch = batches[index + 1]!;
-    const request = batch.records.find(item => item.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
+    const request = batch.records.find(item => item.kind === 'request')!.value as import('../src/lib/interfaces/cli/report-contracts.js').RequestContext;
     assert.equal(request.request.presentation.moreDetails, command.includes('--more-details'), command);
     const rendered = batch.records.find(item => item.kind === 'rendered-output')!.value as string;
     assert.ok(stdout.includes(rendered));

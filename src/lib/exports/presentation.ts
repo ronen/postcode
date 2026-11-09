@@ -1,8 +1,8 @@
 import { presentationMethods } from '../interfaces/cli/methods.js';
 import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
 import { sourceAttribution } from '../evidence-view.js';
-import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../answer-presentation.js';
-import type { AnswerContext } from '../answer-presentation.js';
+import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../interfaces/cli/answer-presentation.js';
+import type { AnswerContext } from '../interfaces/cli/answer-presentation.js';
 import { documentationLines, documentationNotice, presentDocumentation } from '../documentation-view.js';
 import { exportRoles, exportRoutes } from '../export-view.js';
 import { freezeOwned } from '../immutable.js';

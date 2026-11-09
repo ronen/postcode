@@ -1,5 +1,6 @@
 import { publishCommand } from '../src/lib/command-execution.js';
-import { publishFeedback, type DisplayedResult } from '../src/lib/feedback.js';
+import type { DisplayedResult } from '../src/lib/application/feedback.js';
+import { publishFeedback } from '../src/lib/interfaces/cli/feedback.js';
 import { AnalysisFailure, CommandInterrupted } from '../src/lib/execution-errors.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
@@ -7,7 +8,7 @@ import { PassThrough } from 'node:stream';
 import path from 'node:path';
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { runCli } from '../src/lib/cli.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
 import { parseCommand } from '../src/lib/commands.js';
 import { temporaryDirectory, interactionDriver } from './cli-helpers.js';
 

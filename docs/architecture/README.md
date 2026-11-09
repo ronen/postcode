@@ -96,11 +96,31 @@ support, including historical failed or unavailable outcomes, without new analys
 Captured catalogs also support the internal interpretation and exports fixtures
 through the same execution and exact-access paths.
 
-This boundary implements M1 and M2 of the
+Account/provider services are available separately at `application/accounts.ts`.
+They assemble existing credential services, return typed configuration reasons,
+and expose the explicitly requested, cost-bearing connection check without
+opening a project. `interfaces/cli/investigator-policy.ts` owns route disclosures
+and command/document guidance, including credential failures during an exchange.
+The CLI authentication host owns process signals and passes cancellation to the
+services. Neither preflight nor ordinary authentication starts the connection check.
+
+`application/observations.ts` owns the version-four envelope, sink acceptance,
+failure-isolated delivery and local file sink. `application/feedback.ts` prepares
+feedback from caller-supplied displayed artifacts, or from context-free input;
+it does not inspect a Session or reconstruct source context. CLI observation
+construction, source classification, warning text, feedback rendering, report
+rendering and command continuations remain client responsibilities. Report data
+contracts are separate from terminal rendering. The shell and one-shot host share
+`interfaces/cli/runtime.ts` for worker assembly and output-directory exclusions;
+their signal and EOF policies remain in their respective hosts.
+
+This boundary implements M1–M3 of the
 [application interface plan](../plans/application-interface-boundary.md).
-Account/configuration service separation, neutral observation/feedback services,
-and live script migration remain later
-milestones; their existing code should not be read as completed boundary work.
+Live scripts and CLI-shaped in-process tests use the shared CLI adapter; the old
+`session.ts` import shim is removed. Historical cross-build tools keep their
+documented checkpoint module/export assumptions and are not an extraction oracle.
+The live profiler and partial-session measurement support older builds only when
+those builds expose the migrated harness's expected modules, exports and View shape.
 
 <a id="request-publication"></a>
 ## Request publication
@@ -549,7 +569,7 @@ been removed. One selector can match multiple names/handles without choosing one
 
 ## Observations and runtime boundaries
 
-The [research recording policy](../decisions/research-question-driven-observation.md#research-capture) permits question-specific recording and ordinary non-research use without records. The CLI described here still automatically constructs and submits command batches; it has no public no-recording mode or selective capture interface. `command-execution.ts` also derives the shell's displayed-result feedback snapshot from those records, and `feedback.ts` embeds it without live-store lookup. Discarding sink output does not skip record construction. The [optional cleanup candidate](../backlog.md#separate-optional-research-recording-from-feedback-context) identifies this coupling; no runtime change accompanies the policy revision. Full operational attribution, qualifications, Investigator exposure/provenance and retained-answer selection remain independent of research delivery. Study instructions or configuration can designate the current local folder as the research destination; automatic local capture alone does not establish research use. No research-mode workflow or new application fields accompany that responsibility rule.
+The [research recording policy](../decisions/research-question-driven-observation.md#research-capture) permits question-specific recording and ordinary non-research use without records. The CLI described here still automatically constructs and submits command batches; it has no public no-recording mode or selective capture interface. `command-execution.ts` also derives the shell's displayed-result feedback snapshot from those records, and `application/feedback.ts` embeds it without live-store lookup. Discarding sink output does not skip record construction. The [optional cleanup candidate](../backlog.md#separate-optional-research-recording-from-feedback-context) identifies this coupling; no runtime change accompanies the policy revision. Full operational attribution, qualifications, Investigator exposure/provenance and retained-answer selection remain independent of research delivery. Study instructions or configuration can designate the current local folder as the research destination; automatic local capture alone does not establish research use. No research-mode workflow or new application fields accompany that responsibility rule.
 
 The observation sink remains separate from the program store. Version-four batches
 carry command correlation, actual normalized requests, outcomes, qualified artifacts

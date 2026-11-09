@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import type { TestContext } from 'node:test';
 import { runCli } from '../src/lib/cli.js';
-import type { ObservationBatch, ObservationSink } from '../src/lib/observations.js';
+import type { ObservationBatch, ObservationSink } from '../src/lib/application/observations.js';
 
 export async function invokeCli(args: string[], options: {
   cwd?: string; checkout?: string; sink?: ObservationSink; expectedWarning?: boolean;
