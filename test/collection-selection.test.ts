@@ -9,7 +9,7 @@ import { inspectOrganization, organization } from '../src/lib/organization/proje
 import { dependencyChildren, dependencyParents, dependencyStructure } from '../src/lib/dependencies/projections.js';
 import { recordId } from '../src/lib/identity.js';
 import type { EvaluationRecord, RecordId } from '../src/lib/records.js';
-import { openSession } from '../src/lib/session.js';
+import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { requireResolution } from './request-helpers.js';
 

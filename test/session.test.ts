@@ -2,7 +2,7 @@ import { requireView, programOutput } from './request-helpers.js';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { test } from 'node:test';
-import { openSession } from '../src/lib/session.js';
+import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { observationBatch } from '../src/lib/observations.js';
 import type { ObservationBatch } from '../src/lib/observations.js';
 import { publishCommand } from '../src/lib/command-execution.js';

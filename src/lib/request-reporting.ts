@@ -1,3 +1,5 @@
+import type { ResolutionInformation } from './application/reports.js';
+export type { ResolutionInformation } from './application/reports.js';
 import { diagnosticLines, withDiagnosticMeanings } from './diagnostic-view.js';
 import { referenceNotice } from './answer-presentation.js';
 import { summarizeWork } from './work-attribution.js';
@@ -9,23 +11,10 @@ import { inlineText } from './terminal-text.js';
 import { usageLines } from './investigation/presentation.js';
 import type { InvestigationUsageReport } from './investigation/reporting.js';
 import type { NormalizedRequest } from './requests.js';
-import type { RecordId, SessionId } from './records.js';
-import type { LookupSupport, SubjectResolution } from './subject-resolution.js';
+import type { SessionId } from './records.js';
 
 export interface RequestContext extends InitiationContext {
   readonly request: NormalizedRequest;
-}
-export interface ResolutionInformation {
-  readonly reason: 'unknown-answer' | 'foreign-answer' | 'unsupported-answer' | 'presentation-unavailable' | 'invalid-parameters' | 'invalid-designation' | 'invalid-report-inputs' | 'invalid-request' | Exclude<SubjectResolution['status'], 'resolved'>;
-  readonly explanation: string;
-  readonly guidance?: string;
-  readonly candidates: readonly { readonly id: RecordId; readonly kind: 'module' | 'group' | 'investigram'; readonly reference: string }[];
-  readonly criteria: readonly string[];
-  readonly qualifications: readonly string[];
-  readonly prerequisites: readonly RecordId[];
-  readonly retainedAnswers: readonly { readonly id: RecordId; readonly reference: string }[];
-  readonly support?: readonly LookupSupport[];
-  readonly representationLimits?: readonly string[];
 }
 export interface ResolutionReport {
   readonly schema: 'postcode-resolution/1-experimental';

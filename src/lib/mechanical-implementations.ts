@@ -1,9 +1,10 @@
 import { canonical } from './identity.js';
 import { freezeOwned } from './immutable.js';
-import { lenses } from './requests.js';
-import type { LensDefinition, ResultContract, NormalizedRequest } from './requests.js';
+import { lenses } from './application/lenses.js';
+import type { LensDefinition, ResultContract } from './application/lenses.js';
+import type { SemanticRequest as NormalizedRequest } from './application/requests.js';
 import type { SubjectResolution } from './subject-resolution.js';
-import type { PresentationContent } from './presentation-contracts.js';
+import type { QualifiedContent as PresentationContent } from './application/content.js';
 import type { ProgramRecordStore, RecordId, ModuleExpansion, ProjectionRecord } from './records.js';
 import { moduleStandardExpansions } from './records.js';
 import { groupStandardExpansions } from './organization/records.js';

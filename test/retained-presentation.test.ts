@@ -8,7 +8,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { temporaryDirectory } from './cli-helpers.js';
 import { requireView, requireResolution } from './request-helpers.js';
-import { openSession } from '../src/lib/session.js';
+import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { captureRequest } from '../src/lib/requests.js';

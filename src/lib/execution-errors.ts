@@ -6,6 +6,9 @@ export class SessionInvalidated extends Error {
 export class CommandInterrupted extends Error {
   constructor() { super('Command interrupted; session ended.'); }
 }
+export class SessionBusy extends Error {
+  constructor() { super('Concurrent session command'); }
+}
 export class SessionClosed extends Error {
   constructor() { super('Session is closed'); }
 }

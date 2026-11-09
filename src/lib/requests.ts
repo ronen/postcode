@@ -1,41 +1,11 @@
+import { captureFields, normalizeInformation, invalidParameters as semanticParameters, invalidDesignation as semanticDesignation, invalidReportInputs as semanticReportInputs } from './application/requests.js';
 import { freezeOwned } from './immutable.js';
 import type { Presentation } from './presentation.js';
-import type { InvestigationOperation } from './investigation/contracts.js';
 
-export type PublicLensId = 'modules' | 'inspect' | 'organization' | 'dependency-structure' | 'dependency-children' | 'dependency-parents'
-  | 'summarize' | 'explain' | 'decompose' | 'examine';
-export type LensId = string;
-export type SubjectKind = 'configured-project' | 'repository' | 'module' | 'group' | 'investigram';
-export type SubjectDesignation = { readonly kind: 'default' | 'configured-project' | 'repository' | 'missing' }
-  | { readonly kind: 'name' | 'reference'; readonly value: string };
-/** Request parameters cross the worker boundary as JSON data. */
-export type ParameterValue = null | boolean | number | string | readonly ParameterValue[] | { readonly [key: string]: ParameterValue };
-export type ResultContract = 'modules' | 'organization' | 'dependencies' | 'investigation' | 'module-exports';
-export interface LensDefinition {
-  readonly id: LensId;
-  readonly question: string;
-  readonly title: string;
-  readonly subjects: readonly SubjectKind[];
-  readonly cardinality: 'one' | 'collection' | 'population';
-  readonly parameters: Readonly<Record<string, never>>;
-  readonly requirements: { readonly kind: 'modules' | 'organization' | 'dependencies' | 'inspection' | 'exports'; readonly implementation: string }
-    | { readonly kind: 'interpretation'; readonly operation: InvestigationOperation };
-  readonly results: readonly ResultContract[];
-}
-
-/** Semantic policy shared by coordination and the internal application boundary. */
-export const lenses: Readonly<Record<PublicLensId, LensDefinition>> = freezeOwned({
-  modules: { id: 'modules', title: 'Modules', question: 'Which modules are discovered for the configured project?', subjects: ['configured-project'], cardinality: 'population', parameters: {}, requirements: { kind: 'modules', implementation: 'module-inventory' }, results: ['modules'] },
-  organization: { id: 'organization', title: 'Organization', question: 'How is the designated project or repository organized?', subjects: ['configured-project', 'repository'], cardinality: 'population', parameters: {}, requirements: { kind: 'organization', implementation: 'organization' }, results: ['organization'] },
-  'dependency-structure': { id: 'dependency-structure', title: 'Dependencies', question: 'What is the configured project’s direct dependency structure?', subjects: ['configured-project'], cardinality: 'population', parameters: {}, requirements: { kind: 'dependencies', implementation: 'dependency-structure' }, results: ['dependencies'] },
-  'dependency-children': { id: 'dependency-children', title: 'Children', question: 'Which modules does the subject directly depend on?', subjects: ['module'], cardinality: 'collection', parameters: {}, requirements: { kind: 'dependencies', implementation: 'dependency-children' }, results: ['dependencies'] },
-  'dependency-parents': { id: 'dependency-parents', title: 'Parents', question: 'Which modules directly depend on the subject?', subjects: ['module'], cardinality: 'collection', parameters: {}, requirements: { kind: 'dependencies', implementation: 'dependency-parents' }, results: ['dependencies'] },
-  inspect: { id: 'inspect', title: 'Inspect', question: 'What qualified information is established about the subject?', subjects: ['module', 'group', 'investigram'], cardinality: 'collection', parameters: {}, requirements: { kind: 'inspection', implementation: 'inspection' }, results: ['modules', 'organization', 'investigation'] },
-  summarize: { id: 'summarize', title: 'Module summary', question: 'What does this module apparently do?', subjects: ['module'], cardinality: 'one', parameters: {}, requirements: { kind: 'interpretation', operation: 'functionality' }, results: ['investigation'] },
-  explain: { id: 'explain', title: 'Explain · investigram', question: 'What clarification makes this interpreted aspect more understandable?', subjects: ['investigram'], cardinality: 'one', parameters: {}, requirements: { kind: 'interpretation', operation: 'clarification' }, results: ['investigation'] },
-  decompose: { id: 'decompose', title: 'Decompose · investigram', question: 'What smaller aspects make up this interpretation?', subjects: ['investigram'], cardinality: 'one', parameters: {}, requirements: { kind: 'interpretation', operation: 'decomposition' }, results: ['investigation'] },
-  examine: { id: 'examine', title: 'Examine · investigram', question: 'What can further investigation establish about this interpreted aspect?', subjects: ['investigram'], cardinality: 'one', parameters: {}, requirements: { kind: 'interpretation', operation: 'examination' }, results: ['investigation'] },
-});
+export { lenses } from './application/lenses.js';
+export type { PublicLensId, LensId, SubjectKind, SubjectDesignation, ParameterValue, ResultContract, LensDefinition } from './application/lenses.js';
+import { lenses } from './application/lenses.js';
+import type { LensId, LensDefinition, SubjectDesignation, ParameterValue } from './application/lenses.js';
 
 /** Command spellings are interface aliases, never normalized Lens identities. */
 export const commandLenses = freezeOwned({
@@ -91,54 +61,10 @@ export type RejectedRequest = RequestChoices & {
 export type CapturedRequest = { readonly input: ViewRequest; readonly normalized: NormalizedRequest }
   | { readonly input: null; readonly normalized: RejectedRequest };
 
-/** A rejected value must never make its own report unserializable. */
-function representationProblem(value: unknown, field: string, ancestors = new Set<object>()): { field: string; reason: string } | null {
-  if (value === null || typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number' && Number.isFinite(value)) return null;
-  if (typeof value === 'number') return { field, reason: 'Non-finite numbers cannot be represented as JSON request data.' };
-  if (typeof value !== 'object') return { field, reason: `A ${typeof value} value cannot be represented as JSON request data.` };
-  if (ancestors.has(value)) return { field, reason: 'A cyclic value cannot be represented as JSON request data.' };
-  if (!Array.isArray(value) && Object.getPrototypeOf(value) !== Object.prototype && Object.getPrototypeOf(value) !== null) {
-    return { field, reason: 'Only plain objects and arrays can be represented as structured request data.' };
-  }
-  if (Array.isArray(value) && (Object.keys(value).length !== value.length || Object.keys(value).some((key, index) => key !== String(index)))) return { field, reason: 'Sparse arrays or array properties cannot be preserved as JSON request data.' };
-  ancestors.add(value);
-  try {
-    for (const key of Reflect.ownKeys(value)) {
-      if (typeof key === 'symbol') return { field, reason: 'Symbol keys cannot be represented as JSON request data.' };
-      if (Array.isArray(value) && key === 'length') continue;
-      const descriptor = Object.getOwnPropertyDescriptor(value, key)!;
-      if (!descriptor.enumerable) return { field: `${field}.${key}`, reason: 'Non-enumerable properties cannot be preserved as JSON request data.' };
-      if (!('value' in descriptor)) return { field: `${field}.${key}`, reason: 'Accessor properties cannot be captured as request data without executing caller code.' };
-      const problem = representationProblem(descriptor.value, `${field}.${key}`, ancestors);
-      if (problem) return problem;
-    }
-    return null;
-  } finally { ancestors.delete(value); }
-}
-
 /** Capture before any asynchronous work; only known input defects become refusals. */
 export function captureRequest(request: ViewRequest, catalog: Readonly<Record<string, LensDefinition>> = lenses): CapturedRequest {
-  const fields: [string, ParameterValue][] = [], problems: RejectedInputProblem[] = [];
-  for (const key of Reflect.ownKeys(request)) {
-    if (typeof key === 'symbol') {
-      problems.push({ field: '(symbol key)', reason: 'Symbol-keyed input cannot be represented in a request report.', representation: 'omitted' });
-      continue;
-    }
-    const descriptor = Object.getOwnPropertyDescriptor(request, key)!;
-    if (!('value' in descriptor)) {
-      problems.push({ field: key, reason: 'Accessor input cannot be captured without executing caller code.', representation: 'omitted', omittedField: key });
-      continue;
-    }
-    if (descriptor.value === undefined) continue;
-    const problem = representationProblem(descriptor.value, key);
-    if (problem) { problems.push({ ...problem, representation: 'omitted', omittedField: key }); continue; }
-    try { fields.push([key, structuredClone(descriptor.value) as ParameterValue]); }
-    catch (error) {
-      if (!(error instanceof DOMException) || error.name !== 'DataCloneError') throw error;
-      problems.push({ field: key, reason: 'This value cannot be cloned across the request boundary.', representation: 'omitted', omittedField: key });
-    }
-  }
-  const input = Object.fromEntries(fields);
+  const captured = captureFields(request);
+  const input = { ...captured.input }, problems: RejectedInputProblem[] = [...captured.problems];
   const present = input.kind === 'present';
   const problem = (field: string, reason: string) => problems.push({ field, reason,
     representation: Object.hasOwn(input, field) ? 'preserved' : 'absent' });
@@ -223,37 +149,16 @@ function normalizeCapturedRequest(request: ViewRequest, catalog: Readonly<Record
   const designation: SubjectDesignation = request.selector !== null
     ? { kind: request.reference === true ? 'reference' : 'name', value: request.selector }
     : request.subject !== undefined ? { kind: request.subject === 'project' ? 'configured-project' : 'repository' }
-      : { kind: definition.cardinality === 'population' ? 'default' : 'missing' };
-  return freezeOwned(structuredClone({ ...choices, kind: 'lens', lens: definition.id, question: definition.question,
-    designation, parameters: request.parameters === undefined ? {} : request.parameters, programInput: 'session-configured-project' }));
+      : { kind: 'default' };
+  return freezeOwned({ ...choices, ...normalizeInformation(id, designation, request.parameters === undefined ? {} : request.parameters, catalog) });
 }
 
 export function invalidParameters(request: NormalizedRequest, catalog: Readonly<Record<string, LensDefinition>> = lenses): string | null {
-  if (request.kind !== 'lens') return null;
-  if (!request.parameters || typeof request.parameters !== 'object' || Array.isArray(request.parameters) || Object.getPrototypeOf(request.parameters) !== Object.prototype) return 'Lens parameters must be an object.';
-  const unexpected = Object.keys(request.parameters).filter(key => !Object.hasOwn(catalog[request.lens]!.parameters, key));
-  return unexpected.length ? `Lens ${request.lens} declares no parameters; unexpected: ${unexpected.join(', ')}.` : null;
+  return semanticParameters(request, catalog);
 }
-
-/** Reject designation modes whose incompatibility is known without subject lookup. */
 export function invalidDesignation(request: NormalizedRequest, supplied: LensViewRequest, catalog: Readonly<Record<string, LensDefinition>> = lenses): string | null {
-  if (request.kind !== 'lens') return null;
-  const definition = catalog[request.lens]!;
-  if (supplied.subject !== undefined && supplied.selector !== null) return 'Supply either a selector or a project/repository subject, not both.';
-  if (request.designation.kind === 'missing') return `Lens ${definition.id} requires a subject designation.`;
-  if (request.designation.kind === 'configured-project' || request.designation.kind === 'repository') {
-    if (!definition.subjects.includes(request.designation.kind)) return `Lens ${definition.id} does not apply to ${request.designation.kind}.`;
-  }
-  if ((request.designation.kind === 'name' || request.designation.kind === 'reference') && definition.cardinality === 'population') {
-    return `Lens ${definition.id} requires a project or repository subject, not a selector.`;
-  }
-  if (request.designation.kind === 'name' && !definition.subjects.some(kind => kind === 'module' || kind === 'group')) {
-    return `Lens ${definition.id} requires a precise investigram reference; investigrams cannot be designated by name.`;
-  }
-  return null;
+  return semanticDesignation(request, catalog, supplied.subject !== undefined && supplied.selector !== null);
 }
-
 export function invalidReportInputs(request: NormalizedRequest): string | null {
-  return request.kind === 'report' && request.suppliedInputs
-    ? 'Usage is subjectless and accepts no selector, subject, reference designation, or nonempty parameters.' : null;
+  return semanticReportInputs(request, request.kind === 'report' && !!request.suppliedInputs);
 }

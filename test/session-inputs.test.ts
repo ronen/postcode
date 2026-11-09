@@ -13,7 +13,7 @@ import { evaluateModules } from '../src/lib/evaluation.js';
 import { evidenceAccess } from '../src/lib/evidence-access.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { modules } from './projection-helpers.js';
-import { openSession, SessionInvalidated, AnalysisFailure } from '../src/lib/session.js';
+import { openCliSession as openSession, SessionInvalidated, AnalysisFailure } from '../src/lib/interfaces/cli/application.js';
 import type { ProgramRecord } from '../src/lib/records.js';
 import type { ObservationBatch } from '../src/lib/observations.js';
 import { moduleStandardExpansions } from '../src/lib/records.js';
@@ -269,19 +269,26 @@ test('direct execution keeps two checks while publication performs three without
   const source = path.join(root, 'entry.ts');
   writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
   writeFileSync(source, 'export const entry = 1;');
-  const opened = (await openSession({ configPath }));
+  const { openApplication } = await import('../src/lib/application/index.js');
+  const { openWorkerCliSession } = await import('../src/lib/interfaces/cli/application.js');
+  const semantic = { kind: 'lens', lens: 'modules', designation: { kind: 'configured-project' } } as const;
+  const direct = await openApplication({ configPath });
+  assert.equal(direct.status, 'opened');
+  t.after(() => direct.session.close());
+  const opened = (await openWorkerCliSession({ configPath }));
   if (opened.status !== 'opened') throw new Error('Expected project');
   const { session } = opened;
   try {
-    requireView(await session.execute(request));
+    assert.equal((await direct.session.execute(semantic)).kind, 'answer');
     const read = ts.sys.readFile;
     let checks = 0;
     t.mock.method(ts.sys, 'readFile', (name: string, encoding?: string) => {
       if (name === source) checks++;
       return read(name, encoding);
     });
-    requireView(await session.execute(request));
+    assert.equal((await direct.session.execute(semantic)).kind, 'answer');
     assert.equal(checks, 2);
+    requireView(await session.execute(request));
     checks = 0;
     let published = false, observed = false;
     assert.equal(await publishCommand(session, request, 'modules', configPath, 1,

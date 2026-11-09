@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import path from 'node:path';
 import { lenses, normalizeRequest } from '../src/lib/requests.js';
 import type { LensId, LensViewRequest as ViewRequest } from '../src/lib/requests.js';
-import { openSession } from '../src/lib/session.js';
+import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';

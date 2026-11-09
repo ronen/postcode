@@ -3,7 +3,7 @@ import path from 'node:path';
 import { test } from 'node:test';
 import { writeFileSync } from 'node:fs';
 import { temporaryDirectory } from './cli-helpers.js';
-import { openSession } from '../src/lib/session.js';
+import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { discover } from './helpers.js';
 import { requireView } from './request-helpers.js';
 import { inspect } from '../src/lib/projections.js';

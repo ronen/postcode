@@ -1,3 +1,4 @@
+import { guardPublication } from './application/publication.js';
 import type { DisplayedResult } from './feedback.js';
 import { initiation } from './work-attribution.js';
 import type { WorkReport } from './work-attribution.js';
@@ -9,7 +10,7 @@ import type { InvestigationUsageReport } from './investigation/reporting.js';
 import { commandObservation, observationBatch } from './observations.js';
 import type { ObservationSink } from './observations.js';
 import { AnalysisFailure, SessionInvalidated } from './execution-errors.js';
-import type { ViewRequest, ExecutionOptions } from './session.js';
+import type { ViewRequest, ExecutionOptions } from './interfaces/cli/application.js';
 import { CommandInterrupted } from './execution-errors.js';
 import type { ExecutedRequest } from './session-protocol.js';
 import { inlineText } from './terminal-text.js';
@@ -45,11 +46,11 @@ export async function publishCommand(session: {
   let status: 'completed' | 'refused' | 'invalidated' | 'failed' | 'defect' | 'interrupted' = 'completed', code = 0;
   try {
     context = initiation(normalizeRequest(request));
-    const result = await session.execute(request, { deferPublicationCheck: true, requestId: context.id });
-    await session.check();
-    output.stdout(result.rendered);
-    stdout = result.rendered; published = result;
-    await session.check();
+    const result = await session.execute(request, { requestId: context.id });
+    const publication = await guardPublication(() => session.check(), () => {
+      output.stdout(result.rendered); stdout = result.rendered; published = result;
+    });
+    if (publication.status !== 'published') throw publication.error;
     if ('failed' in result && result.failed) { status = result.kind === 'resolution' ? 'refused' : 'failed'; code = 3; }
   } catch (error) {
     status = error instanceof SessionInvalidated ? 'invalidated' : error instanceof CommandInterrupted ? 'interrupted'

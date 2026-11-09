@@ -8,7 +8,7 @@ import path from 'node:path';
 import { writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { temporaryDirectory } from './cli-helpers.js';
-import { openSession } from '../src/lib/session.js';
+import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { requireView } from './request-helpers.js';
 import { defaultCatalog } from '../src/lib/request-catalog.js';
 import { exportsLens } from '../src/lib/mechanical-implementations.js';

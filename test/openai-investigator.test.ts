@@ -15,7 +15,7 @@ import type { AgentInput, AttemptReport, ReportedUsage } from '../src/lib/invest
 import type { RecordId } from '../src/lib/records.js';
 import type { ObservationBatch } from '../src/lib/observations.js';
 import { runCli } from '../src/lib/cli.js';
-import { openSession } from '../src/lib/session.js';
+import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { temporaryDirectory, interactionDriver } from './cli-helpers.js';
 
 const sentinel = 'postcode-sentinel-secret-not-a-real-key';

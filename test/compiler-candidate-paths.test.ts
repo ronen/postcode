@@ -5,7 +5,7 @@ import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { PassThrough } from 'node:stream';
 import { captureInputs } from '../src/lib/typescript/inputs.js';
-import { openSession, SessionInvalidated } from '../src/lib/session.js';
+import { openCliSession as openSession, SessionInvalidated } from '../src/lib/interfaces/cli/application.js';
 import { runCli } from '../src/lib/cli.js';
 import { temporaryDirectory, invokeCli, interactionDriver } from './cli-helpers.js';
 

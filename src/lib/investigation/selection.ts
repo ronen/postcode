@@ -1,5 +1,5 @@
-import type { LensDefinition } from '../requests.js';
-import { lenses } from '../requests.js';
+import type { LensDefinition } from '../application/lenses.js';
+import { lenses } from '../application/lenses.js';
 import type { Investigram } from './contracts.js';
 import { methods, recordId } from '../identity.js';
 import type { ProgramRecordStore, RecordId, SessionId } from '../records.js';

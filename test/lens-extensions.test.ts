@@ -6,7 +6,7 @@ import path from 'node:path';
 import { temporaryDirectory } from './cli-helpers.js';
 import { ScriptedInvestigator, syntheticUsage } from './investigator-double.js';
 import { requireResolution, requireView } from './request-helpers.js';
-import { openSession } from '../src/lib/session.js';
+import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import type { ObservationBatch } from '../src/lib/observations.js';

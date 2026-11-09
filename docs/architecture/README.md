@@ -43,6 +43,51 @@ Recorded output remains evidence of what PostCode displayed, but observations do
 
 The product permits a summary suggestion when no more specific information need has been expressed; it does not require a summary-first default. The current no-argument CLI command lists modules, and `summarize` requests the implemented module interpretation. This is compatible with the optional suggestion, although the CLI does not provide a general summary View selector. Adoption of the conceptual model changes neither command behavior nor the current schema and identity contracts.
 
+<a id="application-entry"></a>
+## Internal application entry
+
+`src/lib/application/index.ts` supplies the in-process application lifecycle and
+explicit request/delivery types. `openApplication` captures the project options,
+semantic catalog and optional client Presentation declarations. A caller can
+execute `{ kind: 'lens', lens: 'modules', designation: { kind: 'configured-project' } }`,
+inspect a returned precise module ID with the `reference` designation, and retrieve
+an exact answer with `{ kind: 'present', target: answer.id }`. The caller separately
+awaits `close()`. This is an internal Node entry, without a package API or browser
+runtime. Synchronous compiler work cannot be preempted in the calling thread.
+
+Answer delivery contains complete selected qualified content and fixed support,
+including both the composite and mechanical content of associated inspection.
+It contains neither a rendered View nor a store handle. Direct requests default
+to standard expansions for the resolved content contract, or accept supported
+subsets. Exact requests use only retained support. Invocation attachments are
+captured separately from semantic request meaning; neither occurrence context
+nor Presentation choices enter answer identity. Capabilities expose Lens meaning
+and semantic requirements without implementation registrations or output formats.
+
+`interfaces/cli/application.ts` is the shared adapter for the private worker and
+in-process CLI tests. It supplies captured declarative option constraints, projects
+the application context back to the existing CLI report shape, and arranges
+supplied content and coordinated aliases. Investigation arrangement uses a
+revocable, validated binding port under one operation guard. Application work is
+finalized before arrangement. An unknown continuation or client arrangement
+failure cannot turn completed application work into failed application work.
+The CLI still owns presentation/command failure, output, observation construction
+and parent usage finalization.
+
+Ordinary application execution checks input validity before and after work.
+CLI publication uses the shared `guardPublication` before and after output;
+the worker transfers these final checks to its parent. The in-process CLI test
+host uses local guarded delivery. Overlapping direct operations raise `SessionBusy`;
+invalidation and interruption are terminal. Closing releases retained domain
+state while preserving final reports and usage. Presentation method versions are
+client artifact provenance and are absent from captured application methods.
+
+This boundary implements the M1 slice of the
+[application interface plan](../plans/application-interface-boundary.md).
+Account/configuration service separation, neutral observation/feedback services,
+live script migration and broader direct investigation journeys remain later
+milestones; their existing code should not be read as completed boundary work.
+
 <a id="request-publication"></a>
 ## Request publication
 
@@ -56,7 +101,7 @@ map to normalized Lens identities; dependency identities agree with retained ans
 Missing or incompatible designation modes are refused before Evaluation. Usage is
 subjectless and refuses extraneous designation or parameter inputs. Unknown names
 and malformed designation/reference choices produce rejected-input context before
-lookup. Direct and worker requests require a string or null selector; optional
+lookup. In-process CLI-adapter and worker requests require a string or null selector; optional
 reference, subject and reference-lifetime choices must have their supported types
 and values. Organization construction takes its scope from the normalized designation.
 Unrepresentable values also produce rejected-input context and a resolution report,

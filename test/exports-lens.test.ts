@@ -15,7 +15,7 @@ import { arrangeModuleExports, exportsPresentation, renderModuleExports } from '
 import { exportsLens } from '../src/lib/mechanical-implementations.js';
 import { captureCatalog, defaultCatalog } from '../src/lib/request-catalog.js';
 import type { RequestCatalog } from '../src/lib/request-catalog.js';
-import { openSession } from '../src/lib/session.js';
+import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import { evaluateModules } from '../src/lib/evaluation.js';

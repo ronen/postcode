@@ -4,7 +4,7 @@ import { completedMaterialization } from './evaluation-state.js';
 import { moduleMatches } from './module-selection.js';
 import type { ClaimContextRecord, EvaluationRecord, EvaluationState, ProgramRecordStore, RecordId, SessionId } from './records.js';
 import type { OrganizationEvaluationRecord } from './organization/records.js';
-import type { LensDefinition, SubjectDesignation } from './requests.js';
+import type { LensDefinition, SubjectDesignation } from './application/lenses.js';
 
 export type EntityKind = 'module' | 'group' | 'investigram';
 export interface ResolvedSubject {

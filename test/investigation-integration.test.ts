@@ -15,7 +15,7 @@ import { Worker } from 'node:worker_threads';
 import type { WorkerReply, WorkerRequest } from '../src/lib/session-protocol.js';
 import { temporaryDirectory, interactionDriver } from './cli-helpers.js';
 import { ScriptedInvestigator, syntheticUsage } from './investigator-double.js';
-import { openSession } from '../src/lib/session.js';
+import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { runCli } from '../src/lib/cli.js';
 import type { EvidenceResponse } from '../src/lib/evidence-access.js';
 import type { SubmittedInvestigram, AgentReply, InvestigatorAgent, ReportedUsage } from '../src/lib/investigation/contracts.js';
