@@ -16,6 +16,10 @@ Before opening the record, the human selected the starting-point action in respo
 
 Main was published and verified equal to origin/main at `815f2378a5e6f2d4ca36884e4a8547a42f6c49ca`. Implementation uses `codex/application-interface-boundary` in `../app-worktrees/application-interface-boundary`.
 
+2026-11-09:
+
+> The M1 review gate is satisfied. Please proceed to M2 as per the approved plan.
+
 ## Outcome
 
 2026-11-09: M1 is implemented through the required intermediate review checkpoint. Method provenance was separated in `b4dc07b`; the application boundary and shared CLI adapter are implemented at `94f3c5046115687205b695aafa33bba9c35fef96`. [Draft PR #13](https://github.com/ronen/postcode/pull/13) contains the task branch. The [M1 handoff](../reviews/application-interface-boundary/2026-11-09-m1-boundary-handoff.md) is committed for human-arranged independent review. Implementation stops at that gate; the task remains active, with M2–M4 work still required.
