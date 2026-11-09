@@ -1,8 +1,8 @@
 # Separate application functionality from its interfaces
 
-Status: active
+Status: completed
 Opened: 2026-11-08
-Closed:
+Closed: 2026-11-09
 
 ## Task
 
@@ -48,6 +48,14 @@ Main was published and verified equal to origin/main at `815f2378a5e6f2d4ca36884
 
 2026-11-09: Retrieved and preserved the complete [integrated Copilot review as round 2](../reviews/application-interface-boundary/2026-11-09-integrated-boundary-round-2-copilot-findings.md) in `5f6c991`, including its overall report and all three referenced annotations, before correction. Accepted its new inherited-option finding and corrected it in `f3465dd7d3fe54b807e4ea4914e86b6f6a313219`: consumption eligibility now reads only own option values, preserving absent/present/truthy/always semantics and ordinary validation of explicitly supplied prototype-named keys. The carried raw-organization finding remains accepted and was already corrected in `9202fce`; its fresh/exact regression was reverified. Copilot reports the earlier completed-work session-close finding resolved, and that regression also passes. No finding is rejected or deferred. The existing [integrated disposition](../reviews/application-interface-boundary/2026-11-09-integrated-boundary-disposition.md) records both rounds, corrections and verification. The original handoff remains applicable. The task stays active pending the human's final gate decision, without closure or merge authorization.
 
+2026-11-09 — final outcome: M1–M4 of the approved plan are complete, including the independent reviews and all accepted corrections. The internal application entry supplies complete selected content, exact retained answers, typed lifecycle and attribution independently of CLI presentation. Both CLI hosts share the adapter; companion services, live consumers and documentation use the intended boundaries. The deliberate method-provenance transition and agreed application-versus-presentation outcome change are separately verified. There are no material unapproved deviations or unresolved in-scope findings. Public transport, GUI, persistent workspaces, captured-basis export and navigation-origin remediation remain the plan's explicit non-goals.
+
+The human accepted the final integrated review gate and completion:
+
+> OK, unless there's anything else you can think of, I think this task is complete.
+
+The [final disposition](../reviews/application-interface-boundary/2026-11-09-integrated-boundary-disposition.md) records this acceptance. The implementation is complete at `f3465dd7d3fe54b807e4ea4914e86b6f6a313219`; subsequent changes are review and task records only. PR #13 remains the integration vehicle.
+
 ## Verification
 
 The [separate method checkpoint](../validation/application-interface-boundary/provenance-checkpoint.md) records original-to-post-split evidence. [Boundary verification](../validation/application-interface-boundary/boundary-checkpoint.md) records the extraction baseline, exact final implementation/build identity, checks and limitations: 638 passing full-suite tests on the preceding extraction build, 51 passing focused tests after final refinements, 21 passing stable CLI comparisons, and 60 passing retained-answer/allocation cases across in-process and worker hosts with ordinary and forced-collision fixtures. No live credentials or paid inference were used. These are implementing-agent checks, not independent-review findings or human acceptance.
@@ -69,3 +77,5 @@ M4 verification at `e7de4b1`: `npm test -- --test-concurrency=2` passed **664/66
 Integrated round 1 correction verification at `6191231`: the new correlation regression first failed on the reviewed runtime with `Missing expected rejection`, then passed after correction. The final test covers preserved/omitted malformed values, accessor suppression, capture ownership under caller mutation, no application work, continued Session use and valid/empty/generated correlations. The focused application suite passed 12 tests; the final `npm test -- --test-concurrency=2` run passed **665/665 tests** with no failures, skips or cancellations. Type and whitespace checks passed. All **21 stable CLI and 60 both-host/collision journey comparisons** passed with unchanged policy and baseline. Corrected emitted-source digest: `a9fcd566d8b6150575985c230d89d5fc34ec7f28217305a1fe285673f710f97c`. No identity methods or CLI output semantics changed; no live credentials or paid inference were used. These are correction checks, not an independent rereview or human gate acceptance.
 
 Integrated Copilot correction verification at `f3465dd`: all three new eligibility-mode regressions first reproduced `Non-serializable identity input` on the reviewed code, then passed after correction. All **18 focused lifecycle/exact-compatibility tests** and the full **668/668 offline tests** passed, with no failures, skips or cancellations. The new cases cover absent and explicit true/false own values for constructor/toString/__proto__, fresh and exact requests, completed/refused attribution, and unchanged retained answers. Build, type and whitespace checks passed. All **21 stable CLI and 60 both-host/collision retained-answer/allocation comparisons** passed against the unchanged post-provenance baseline and comparison policy. Corrected emitted-source digest: `a0b9dcb40bdce0f562a6eacf71e851a20b9ae3eaf3bc72cfaf2493a165786580`. All four retrieved component bodies were verified verbatim against the paginated API responses; no conversation comments were returned. No method versions or identity policy changed, and no live credentials or paid inference were used. These are implementing-agent checks, not an independent rereview or human gate acceptance.
+
+Closure verification: reviewed the approved completion criteria against the integrated verification matrix and both integrated review rounds. The final implementation has 668/668 passing offline tests, 21 passing stable CLI comparisons and 60 passing retained-answer/allocation comparisons, plus passing build, type and whitespace checks as recorded above. No code changed after those checks, so they were not repeated for closure-only records. The worktree was clean before the closing task-record edit. No live inference assessment was performed or required. The human's final acceptance satisfies the remaining review gate.
