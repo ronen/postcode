@@ -184,3 +184,70 @@ Further decisions: exact boundaries of interpretation units; initial subject
 discovery; request/perspective meanings; per-part support and qualifications;
 content-delivery completeness/bounds; subject continuity under replacement;
 representative diagram consumers and independent semantic checks.
+
+## Half-open walkthrough: account-scoped subjects
+
+Discussion on 2026-11-09 proceeds conditionally with admission → trial → correction
+and composition as a design probe. The human requested clarification of scoped
+subjects; the following is a proposal, not an accepted representation decision.
+
+Interpret account-scoped as **introduced and grounded by an exact account**, not
+confined to use inside it or defined by every claim that account makes. Let H1
+designate the Half-open state category of the identified breaker policy at the
+captured revision, introduced by ADMISSION-1. It is neither a particular runtime
+state occurrence nor the recovery-trial execution. Its declaration has an owner,
+meaning, architectural context and qualified support. Most behavioral conditions,
+including the default single-trial scope of a particular explanation, belong to
+claims rather than automatically becoming subject identity. The exact boundary
+between defining context and claim scope remains to be specified.
+
+1. ADMISSION-1 declares H1 and makes admission claims referring to it. The state-of
+   relationship is a qualified claim, not something inferred from record nesting.
+2. Selecting H1 for concurrent-caller investigation preserves that exact target,
+   requested perspective and available navigation origin. Supply its declaration
+   and supporting account context as interpretation; acquire program evidence
+   separately. Origin does not establish reliance or truth. The fixture supplies
+   complete ADMISSION-1 if the follow-up is to correct it.
+3. TRIAL-1 explicitly reuses H1, adds claims about waiting and outcomes, and may
+   introduce shared-instance and execution roles of its own. It is a separate
+   result, not a new child appended to ADMISSION-1. New relationships and account
+   associations require qualified attribution. An exact shared designation permits
+   a consumer to align the selected subject without reconciling its claims.
+4. When correcting only the admission omission, ADMISSION-2 can explicitly reuse
+   H1. Its richer admission claims do not require a newly designated state. The
+   reporting investigation establishes this treatment; a renderer does not infer
+   it from matching labels. Retaining H1 does not preserve ADMISSION-1's erroneous
+   claims as truth. The replacement's composition remains disjoint as required;
+   sharing a subject reference is not sharing a composition child.
+5. If the correction instead changes what the subject denotes (for example,
+   Half-open actually conflated a breaker state with an executing trial), introduce
+   H2, or several subjects for a split. Preserve H1, state what was mistaken, and
+   record qualified correspondence where support permits. An account replacement
+   alone does not supply an element-to-element mapping. No implicit retargeting or
+   requirement for a one-to-one successor follows.
+
+ANSWER-1 keeps its original selection and correction snapshot. A later working
+answer can select ADMISSION-2 and TRIAL-1, both referring to H1. A fresh investigation
+of H1 is distinct from exact retrieval of ANSWER-1: it retains the chosen referent
+while receiving correction-aware context under a declared selection policy.
+For the bounded example, explicitly supply the originating account and applicable
+correction context; inclusion of other associated accounts is a separate selection,
+not permission to supply all history. If H1 was replaced by H2, selecting H1 still
+targets H1 and discloses the correction; following H2 is an explicit new selection.
+
+Existing reconsideration remains conservatively account-based: an earlier result
+exposed to ADMISSION-1 may need reconsideration even if it concerned only the
+unchanged state designation. The generating evaluation's existing per-correction
+exemptions apply; sharing H1 neither propagates nor clears reconsideration by itself.
+Do not introduce element-level dependency tracking to suppress these warnings in
+the first slice without a separate justification.
+
+Composition can reuse H1 alongside a new breaker instance role in each wrapping
+pattern, with qualified relationships between them. It cannot identify two instance
+roles as the same runtime object merely because both concern the breaker kind.
+An independently introduced Half-open designation is not automatically H1; its
+correspondence needs analysis. This trades a global subject registry for explicit
+provenance and occasional duplicate designations. The key open choice is whether
+replacements may reuse unchanged scoped declarations (recommended) or must always
+mint new declarations plus correspondence, which gives stricter version separation
+but adds identity churn even for an ordinary correction of behavior.
