@@ -402,3 +402,40 @@ correctable items where coherent, reusing current retention/correction identitie
 Finer content addresses remain possible but do not by themselves authorize
 sub-investigram replacement. Automated semantic retrieval or keyword normalization
 is a later need to justify, not necessary for the small subject-associated set.
+
+## Subjects referred to by an account's content
+
+The human identifies a further output need: besides declaring new subjects, an
+investigation should explicitly list existing subjects its main content refers to
+(analogous to objects/referents in language). Prefer “subject references” or
+“referents” as working terminology; “subject” remains the investigative role and
+does not imply grammatical subject position or sole ownership of an account.
+
+Recommended distinction: an account introduces subjects through declarations,
+refers to existing subjects by exact ID, and revises earlier information through
+explicit correction targets. Referring to a subject requires neither redeclaring
+it nor updating its definition. New subjects use submission-local references until
+atomic acceptance resolves them; references in main content can identify both
+newly declared and earlier subjects. Attach reference scope to the content it
+actually concerns, rather than assuming every descendant discusses every subject
+mentioned in the result's root.
+
+For TRIAL-1, Half-open and an already known shared breaker role can be existing
+referents, while a waiting execution role may be introduced locally. The main
+interaction account connects them through qualified claims. A reference inventory
+allows navigation and reverse lookup of referring accounts, but does not supply
+the interaction relationships or their semantics by itself. Structured claims can
+use those references as endpoints/participants. Prose can retain an explicit
+referent inventory without requiring token-level annotation initially.
+
+Keep “refers to this subject” distinct from the existing qualified association
+“describes this subject,” and both distinct from the selected input subject and
+evidential support. An index may expose either role explicitly; it must not silently
+promote every mention into a descriptive association. Output reference lists also
+do not establish which prior account content was supplied to the investigation;
+citation exposure continues to come from actual context delivery.
+
+Existing `Referent.subjects` already offers a reference-list precedent alongside
+separate qualified associations. Extend/reconcile these responsibilities rather
+than introduce duplicate fields with unclear ownership. Exact naming, role
+classification and integration with the new subject declarations remain open.
