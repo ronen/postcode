@@ -543,3 +543,50 @@ the exact claim or an explicitly exposed shared relationship subject. Deduplicat
 labels/endpoints or selecting a primary correction cannot silently reconcile
 conflicts. Keep architectural relationship claims distinct from account-subject
 associations, composition, citations, correction links and navigation lineage.
+
+## Alternative: create shared subjects on first exploration
+
+The human proposes lazy creation: initially designate something by its account and
+the name used there; when first explored, create a subject and associate it with
+that account. Keep this as an alternative to identities from introduction, not a
+settled reversal of the previous recommendation. It can apply to entity-like and
+relationship referents through the same subject mechanism.
+
+Two cases have different costs. If the account already explicitly identifies the
+referent and its meaning, the deferred step may be allocation/binding only. If it
+contains only a prose mention, establishing what it denotes or extracting a new
+definition is qualified analysis, attributed as a prerequisite of the exploration
+request. It can report ambiguity or inability to establish a useful subject.
+Selection does not itself establish the architectural meaning of the selected text.
+
+The clearest structured variant uses an exact account ID plus a stable local key,
+with a human-facing name and qualified description. Account-plus-name can be a lookup
+designation if it resolves unambiguously; repeated names within an account and
+ambiguous occurrences must not silently collapse. This local declaration already
+supplies scoped identity; laziness mainly postpones creation of a shared subject.
+Repeated resolution of the same declared local target should return the same bound
+subject. An already explicit existing-subject reference needs no new subject.
+
+Creation retains the subject and an attributable mapping/association from the exact
+origin account/local target to it, without rewriting the immutable account's
+referent list or an earlier answer. The link records when/how the subject was
+identified from the account, not a claim that the original result declared an ID
+that did not yet exist. A fresh inspection can select this later information; exact
+retrieval remains fixed. This needs an explicit application operation and retained
+link representation; the current presentation binding port does not authorize
+semantic subject creation or extra analysis.
+
+Correction before or after creation preserves exact origins: exploring ADMISSION-1's
+Half-open does not silently target ADMISSION-2. Supply applicable correction context;
+record reuse/correspondence explicitly when the replacement concerns the same
+subject. Different account/local targets with matching names do not automatically
+share identity. Lazy creation thus still needs cross-account correspondence rules.
+
+Benefits: less advance declaration of subjects nobody follows; natural elaboration
+from selected content; possible reuse of prose accounts. Costs: local and shared
+reference forms, a retained mapping lifecycle, possible first-follow-up analysis,
+and no shared-subject index for unpromoted content. Diagrams still require explicit
+relationship/participant semantics even before shared subject IDs exist; lazy IDs
+cannot substitute for that content. Compare eager and lazy forms on Half-open and
+one relationship before choosing. A hybrid could defer unneeded shared identities
+while creating them when generation already needs cross-account reference.
