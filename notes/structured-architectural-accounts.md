@@ -287,3 +287,48 @@ behavioral truth, or citation exposure. Reconsideration continues to follow actu
 account exposure. Open next: how subjects are introduced/reused, how qualified
 identity assertions can themselves be challenged, and how subject requests choose
 and capture descriptive context without silently changing earlier requests.
+
+## Candidate creation and update mechanism
+
+The human proposes investigation output containing new subjects `{name, definition}`,
+PostCode-assigned internal IDs, later context containing subjects and IDs, and
+updates `{id, definition}` targeting identity rather than potentially reused names.
+This is a promising mechanism under discussion, not an adopted output schema.
+
+- New declarations also need submission-local keys so relationships and claims in
+  the same result can refer to them before PostCode assigns retained IDs. Validate
+  local references and existing Session references, then atomically retain subjects,
+  defining interpretation, other claims and corrections. Existing investigram
+  local-ID allocation is a precedent, not current subject-creation support.
+- Definitions are qualified interpretation with attributable scope, evidence and
+  generating provenance, including qualified relationships to surrounding subjects.
+  These may share enclosing account support where applicable; duplication on every
+  field is unnecessary. Validation establishes structural acceptance, not truth.
+- Later investigator context supplies exact subject IDs, relevant definitions and
+  their exact account references, scope/qualification and correction context. Names
+  aid recognition/lookup; IDs identify targets. The actual supplied content and
+  completeness remain recorded. A bare ID does not establish corrective authority.
+- An update adds a new immutable definition/account for the same subject. A
+  replacement identifies both the subject ID and the exact earlier definition's
+  owning account being corrected, with reason and support. Subject ID alone cannot
+  identify which account is superseded when several descriptions exist. Current
+  corrections replace whole investigrams; field-level definition patches are not
+  already supported. Definition/account partition must preserve that contract or
+  explicitly revise it. Reuse existing correction machinery rather than introduce
+  a second independently evolving definition-history mechanism.
+- New behavioral information can simply be another qualified account about the
+  existing subject. It need not rewrite the identifying definition or supersede
+  a complementary perspective. Distinguish addition from replacement explicitly.
+- Fresh selection may prefer a replacement with conflict disclosure; earlier
+  definitions, exact answers and supplied-context records remain fixed. A stable
+  subject ID is insufficient as the sole reuse key for an investigation whose
+  selected descriptive context changes; retain effective input selection.
+- Duplicate names are valid. Unknown/foreign IDs or invalid local references reject
+  the submission without partial retention. Independently introduced duplicates
+  require qualified correspondence; no automatic name-based merge. If a correction
+  changes the referent itself, creating/reconciling subjects is distinct from
+  revising a definition of an unchanged subject.
+
+Recommended initial distinction: a concise qualified identifying definition for
+each subject, with richer admission/state/interaction accounts referring to it.
+The definition is revisable, but need not absorb every newly learned fact.
