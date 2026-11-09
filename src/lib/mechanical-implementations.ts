@@ -60,11 +60,11 @@ function dependency(definition: LensDefinition, direction: 'structure' | 'childr
     const outcome = evaluateDependencies(store, analysis, expansions.modules, work);
     const basis = store.get(outcome.moduleEvaluation);
     if (basis.kind !== 'evaluation') throw new Error('Expected dependency module basis');
-    const placement = evaluateOrganization(store, basis, expansions.groups, work);
-    const expanded = evaluateDependencyOrganization(store, outcome, placement, work);
+    const placement = expansions.groups.includes('group-details') ? evaluateOrganization(store, basis, expansions.groups, work) : null;
+    const expanded = placement ? evaluateDependencyOrganization(store, outcome, placement, work).id : null;
     work.check();
-    const projection = direction === 'structure' ? dependencyStructure(store, outcome, expanded.id)
-      : direction === 'children' ? dependencyChildren(store, outcome, subjects, expanded.id) : dependencyParents(store, outcome, subjects, expanded.id);
+    const projection = direction === 'structure' ? dependencyStructure(store, outcome, expanded)
+      : direction === 'children' ? dependencyChildren(store, outcome, subjects, expanded) : dependencyParents(store, outcome, subjects, expanded);
     return result({ contract: 'dependencies', value: resolveDependencyProjection(store, projection) });
   } };
 }

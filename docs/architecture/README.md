@@ -85,10 +85,21 @@ invalidation and interruption are terminal. Closing releases retained domain
 state while preserving final reports and usage. Presentation method versions are
 client artifact provenance and are absent from captured application methods.
 
-This boundary implements the M1 slice of the
+The same engine serves organization, dependency structure/children/parents,
+group and mixed inspection, interpretation follow-ups, resolution and usage.
+Dependency organization detail is constructed only when group details are
+requested. Direct interpretation journeys use the real evidence, validation and
+retention path with a substituted agent communication participant in tests.
+Fresh selection can expose later corrections, conflicts, associations and
+reconsideration; exact retrieval preserves the earlier answer's full content and
+support, including historical failed or unavailable outcomes, without new analysis or inference.
+Captured catalogs also support the internal interpretation and exports fixtures
+through the same execution and exact-access paths.
+
+This boundary implements M1 and M2 of the
 [application interface plan](../plans/application-interface-boundary.md).
 Account/configuration service separation, neutral observation/feedback services,
-live script migration and broader direct investigation journeys remain later
+and live script migration remain later
 milestones; their existing code should not be read as completed boundary work.
 
 <a id="request-publication"></a>
