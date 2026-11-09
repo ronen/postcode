@@ -72,22 +72,24 @@ test('one operation guard spans arrangement, expires bindings and preserves comp
   const opened = await openApplication(fixture(t), { investigation: { agent: new ScriptedInvestigator([() => ({ kind: 'ended' })]) } });
   assert.equal(opened.status, 'opened'); const session = opened.session; t.after(() => session.close());
   let escaped!: ReferenceBinding;
+  let escapedCheck!: () => Promise<void>;
   await assert.rejects(withCliOperation(session, async scope => {
     const result = await scope.execute({ kind: 'lens', lens: 'modules', question: lenses.modules.question,
       designation: { kind: 'configured-project' }, parameters: {}, programInput: 'session-configured-project' });
     assert.equal(result.attribution.status, 'completed');
-    escaped = scope.bindings;
+    escaped = scope.bindings; escapedCheck = scope.check;
     await assert.rejects(session.execute({ kind: 'report', report: 'usage' }), SessionBusy);
     await assert.rejects(session.check(), SessionBusy);
     throw Error('Client arrangement failed');
   }), /Client arrangement failed/);
   assert.equal(session.work()!.status, 'completed');
   assert.throws(() => escaped.bind([], 'module'), /expired/);
+  await assert.rejects(escapedCheck(), /expired/);
   await withCliOperation(session, async scope => {
     const result = await scope.execute({ kind: 'lens', lens: 'summarize', question: lenses.summarize.question,
       designation: { kind: 'name', value: 'entry' }, parameters: {}, programInput: 'session-configured-project' });
     assert.equal(result.kind, 'answer'); assert.equal(result.answer.content.contract, 'investigation');
-    escaped = scope.bindings;
+    escaped = scope.bindings; escapedCheck = scope.check;
     const reference = result.answer.content.value.references.find(item => item.kind === 'module')!;
     assert.ok(reference);
     assert.throws(() => scope.bindings.bind([reference.id, 'foreign' as RecordId], 'module'), /outside/);
@@ -95,6 +97,7 @@ test('one operation guard spans arrangement, expires bindings and preserves comp
     assert.ok(scope.bindings.bind([reference.id], 'module').get(reference.id));
   });
   assert.throws(() => escaped.bind([], 'module'), /expired/);
+  await assert.rejects(escapedCheck(), /expired/);
   await session.close(); assert.throws(() => escaped.bind([], 'module'), SessionClosed);
 });
 
@@ -135,4 +138,16 @@ test('direct inventory retains qualified partial support and complete empty popu
   assert.equal(result.kind, 'answer'); assert.equal(result.answer.content.contract, 'modules');
   assert.equal(result.answer.content.value.modules.length, 0);
   assert.equal(result.attribution.status, 'completed');
+});
+
+test('unrepresentable invocation attachments are attributed to the attachment, not the accepted request', async t => {
+  const opened = await openApplication(fixture(t)); assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
+  class Attachment { label = 'class instance'; }
+  for (const invocation of [() => 1, new Map(), new Attachment(), null, [], 'text', 42]) {
+    const result = await opened.session.execute({ kind: 'report', report: 'usage' }, { invocation } as unknown as ExecutionContext);
+    assert.equal(result.kind, 'usage'); assert.equal(result.attribution.status, 'completed');
+    assert.deepEqual(result.context.invocation, { fields: {}, problems: [{ field: 'invocation',
+      reason: 'An invocation attachment must be a plain object.', representation: 'omitted', omittedField: 'invocation' }] });
+    assert.deepEqual(structuredClone(result), result);
+  }
 });

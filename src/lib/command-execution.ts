@@ -38,6 +38,8 @@ export async function publishCommand(session: {
   readonly id: string;
   execute(request: ViewRequest, execution?: ExecutionOptions): ExecutedRequest | Promise<ExecutedRequest>;
   check(): void | Promise<void>;
+  /** A local host keeps its operation scope through the actual output action. */
+  publish?(request: ViewRequest, execution: ExecutionOptions, output: (result: ExecutedRequest) => void): Promise<ExecutedRequest>;
   usage?(): InvestigationUsageReport;
   work?(): WorkReport | undefined;
 }, request: ViewRequest, supplied: unknown, configPath: string, command: number, output: Output, sink: ObservationSink, onDisplayed?: (result: DisplayedResult) => void): Promise<number> {
@@ -46,11 +48,15 @@ export async function publishCommand(session: {
   let status: 'completed' | 'refused' | 'invalidated' | 'failed' | 'defect' | 'interrupted' = 'completed', code = 0;
   try {
     context = initiation(normalizeRequest(request));
-    const result = await session.execute(request, { requestId: context.id });
-    const publication = await guardPublication(() => session.check(), () => {
+    const display = (result: ExecutedRequest) => {
       output.stdout(result.rendered); stdout = result.rendered; published = result;
-    });
-    if (publication.status !== 'published') throw publication.error;
+    };
+    const result = session.publish ? await session.publish(request, { requestId: context.id }, display)
+      : await session.execute(request, { requestId: context.id });
+    if (!session.publish) {
+      const publication = await guardPublication(() => session.check(), () => display(result));
+      if (publication.status !== 'published') throw publication.error;
+    }
     if ('failed' in result && result.failed) { status = result.kind === 'resolution' ? 'refused' : 'failed'; code = 3; }
   } catch (error) {
     status = error instanceof SessionInvalidated ? 'invalidated' : error instanceof CommandInterrupted ? 'interrupted'

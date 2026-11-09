@@ -117,7 +117,7 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
       const supplied = captureFields(execution);
       const requestId = typeof supplied.input.requestId === 'string' ? supplied.input.requestId : undefined;
       const descriptor = execution && typeof execution === 'object' ? Object.getOwnPropertyDescriptor(execution, 'invocation') : undefined;
-      const invocation = descriptor && 'value' in descriptor && descriptor.value !== undefined ? captureFields(descriptor.value)
+      const invocation = descriptor && 'value' in descriptor && descriptor.value !== undefined ? captureFields(descriptor.value, 'invocation')
         : supplied.problems.some(problem => problem.omittedField === 'invocation') ? { input: {}, problems: supplied.problems.filter(problem => problem.omittedField === 'invocation') } : undefined;
       return operation(() => perform(captured, { ...(requestId ? { requestId } : {}), ...(invocation ? { invocation: { fields: invocation.input, problems: invocation.problems } } : {}) }, false));
     },
@@ -130,6 +130,7 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
       const allowed = () => { alive(); if (invalid) throw new SessionInvalidated(); if (!active) throw new Error('Operation binding capability expired'); };
       try {
         return await client({
+          async check() { allowed(); await check(); allowed(); },
           async execute(request, execution = {}) {
             allowed(); if (used) throw new Error('An operation scope accepts exactly one request'); used = true;
             const result = await perform(freezeOwned(structuredClone(request)), freezeOwned(structuredClone(execution)), true);

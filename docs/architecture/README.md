@@ -76,8 +76,11 @@ and parent usage finalization.
 
 Ordinary application execution checks input validity before and after work.
 CLI publication uses the shared `guardPublication` before and after output;
-the worker transfers these final checks to its parent. The in-process CLI test
-host uses local guarded delivery. Overlapping direct operations raise `SessionBusy`;
+the worker transfers these final checks to its parent. The in-process CLI host
+keeps its operation scope through local delivery and uses the scope’s internal
+validity transport. When `publishCommand` receives that host, it delegates actual
+output to its scoped publication operation, so one pre/post-output guard covers
+the display without re-entering the public Session guard. Overlapping direct operations raise `SessionBusy`;
 invalidation and interruption are terminal. Closing releases retained domain
 state while preserving final reports and usage. Presentation method versions are
 client artifact provenance and are absent from captured application methods.

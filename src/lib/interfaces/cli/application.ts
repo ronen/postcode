@@ -1,6 +1,7 @@
 import { openApplication } from '../../application/index.js';
 import type { ApplicationDependencies, AnswerDelivery, ProjectOptions, PresentationDeclaration, ParameterValue } from '../../application/index.js';
 import type { SemanticRequest } from '../../application/requests.js';
+import type { ClientOperation } from '../../application/operation-scope.js';
 import { withCliOperation, evaluateOperation } from '../../application/operation-scope.js';
 import { guardPublication } from '../../application/publication.js';
 import { captureRequest } from '../../requests.js';
@@ -114,45 +115,60 @@ async function compose(options: ProjectOptions, lifetime: ApplicationDependencie
     { lenses: catalog.lenses, operations: catalog.operations, presentations: catalog.presentations.map(applicationPresentation) });
   if (opened.status !== 'opened') return opened;
   const application = opened.session;
+  // Capture before entering the asynchronous scope; both delivery hosts use this
+  // same preparation and arrangement path.
+  function prepare(request: ViewRequest, execution: ExecutionOptions) {
+    execution = { ...execution };
+    const captured = captureRequest(request, catalog.lenses);
+    const { presentation, referenceLifetime, ...meaning } = captured.normalized;
+    const { suppliedInputs, ...semantic } = meaning as typeof meaning & { suppliedInputs?: ParameterValue };
+    const normalized: SemanticRequest = freezeOwned({ ...semantic,
+      ...(semantic.kind === 'lens' || semantic.kind === 'present' ? { consumption: { presentations: catalog.presentations.map(item => item.id), options: { ...presentation } } } : {}) });
+    const invocation = { fields: { presentation: presentation as unknown as ParameterValue, referenceLifetime,
+      ...(suppliedInputs === undefined ? {} : { suppliedInputs }) }, problems: [] };
+    return async (operation: ClientOperation) => {
+      const delivery = await operation.execute(normalized, { ...execution, invocation, referenceLifetime, constraints: {
+        reportHasInputs: suppliedInputs !== undefined, conflictingDesignation: !!captured.input && captured.input.kind !== 'present' && captured.input.subject !== undefined && captured.input.selector !== null,
+      } });
+      const delivered = { ...delivery, usage: cliUsage(delivery.usage) };
+      const context = cliContext(delivered.context) as RequestContext;
+      const attribution = cliWork(delivered.attribution);
+      if (delivered.kind === 'answer') {
+        const arranged = arrange(delivered, context, operation.bindings);
+        return { kind: 'view' as const, context, ...arranged, attribution, ...(delivered.resolution ? { resolution: delivered.resolution } : {}), repositoryRoot: delivered.repositoryRoot,
+          methods: artifactMethods(delivered.methods, arranged.view) };
+      }
+      if (delivered.kind === 'resolution') {
+        const report: ResolutionReport = finalizeRequestReport({ schema: 'postcode-resolution/1-experimental', session: application.id, context,
+          usage: delivered.usage, ...(delivered.referenceNotice ? { referenceNotice: referenceNotice(delivered.referenceLifetime) } : {}), resolution: delivered.resolution, attribution }, delivered.usage);
+        return { kind: 'resolution' as const, context, report, attribution, rendered: renderRequestReport(report), failed: true };
+      }
+      const report: UsageReport = freezeOwned({ schema: 'postcode-investigation-usage/1-experimental', session: application.id, context, usage: delivered.usage, attribution });
+      return { kind: 'usage' as const, context, report, attribution, rendered: renderRequestReport(report), failed: false };
+    };
+  }
+  type Result = Awaited<ReturnType<ReturnType<typeof prepare>>>;
+  async function run(request: ViewRequest, execution: ExecutionOptions = {}, output?: (result: Result) => void | Promise<void>): Promise<Result> {
+    const prepared = prepare(request, { ...execution });
+    return withCliOperation(application, async operation => {
+      const result = await prepared(operation);
+      if (!transported) {
+        // Keep the accepted operation guarded through local delivery/publication.
+        // This check transport does not re-enter the public operation guard.
+        const publication = await guardPublication(operation.check, () => output?.(result));
+        if (publication.status !== 'published') throw publication.error;
+      }
+      return result;
+    });
+  }
   return { status: 'opened' as const, session: {
     id: application.id, check: application.check, usage: () => cliUsage(application.usage()), close: application.close,
     work: () => { const work = application.work(); return work ? cliWork(work) : undefined; },
     evaluateInvestigation: (request: InvestigationRequest) => evaluateOperation(application, request),
-    async execute(request: ViewRequest, execution: ExecutionOptions = {}) {
-      execution = { ...execution };
-      const captured = captureRequest(request, catalog.lenses);
-      const { presentation, referenceLifetime, ...meaning } = captured.normalized;
-      const { suppliedInputs, ...semantic } = meaning as typeof meaning & { suppliedInputs?: ParameterValue };
-      const normalized: SemanticRequest = freezeOwned({ ...semantic,
-        ...(semantic.kind === 'lens' || semantic.kind === 'present' ? { consumption: { presentations: catalog.presentations.map(item => item.id), options: { ...presentation } } } : {}) });
-      const invocation = { fields: { presentation: presentation as unknown as ParameterValue, referenceLifetime,
-        ...(suppliedInputs === undefined ? {} : { suppliedInputs }) }, problems: [] };
-      const result = await withCliOperation(application, async operation => {
-        const delivery = await operation.execute(normalized, { ...execution, invocation, referenceLifetime, constraints: {
-          reportHasInputs: suppliedInputs !== undefined, conflictingDesignation: !!captured.input && captured.input.kind !== 'present' && captured.input.subject !== undefined && captured.input.selector !== null,
-        } });
-        const delivered = { ...delivery, usage: cliUsage(delivery.usage) };
-        const context = cliContext(delivered.context) as RequestContext;
-        const attribution = cliWork(delivered.attribution);
-        if (delivered.kind === 'answer') {
-          const arranged = arrange(delivered, context, operation.bindings);
-          return { kind: 'view' as const, context, ...arranged, attribution, ...(delivered.resolution ? { resolution: delivered.resolution } : {}), repositoryRoot: delivered.repositoryRoot,
-            methods: artifactMethods(delivered.methods, arranged.view) };
-        }
-        if (delivered.kind === 'resolution') {
-          const report: ResolutionReport = finalizeRequestReport({ schema: 'postcode-resolution/1-experimental', session: application.id, context,
-            usage: delivered.usage, ...(delivered.referenceNotice ? { referenceNotice: referenceNotice(delivered.referenceLifetime) } : {}), resolution: delivered.resolution, attribution }, delivered.usage);
-          return { kind: 'resolution' as const, context, report, attribution, rendered: renderRequestReport(report), failed: true };
-        }
-        const report: UsageReport = freezeOwned({ schema: 'postcode-investigation-usage/1-experimental', session: application.id, context, usage: delivered.usage, attribution });
-        return { kind: 'usage' as const, context, report, attribution, rendered: renderRequestReport(report), failed: false };
-      });
-      if (!transported) {
-        const publication = await guardPublication(application.check, () => {});
-        if (publication.status !== 'published') throw publication.error;
-      }
-      return result;
-    },
+    execute: (request: ViewRequest, execution: ExecutionOptions = {}) => run(request, execution),
+    // Local output uses the same guard as local delivery, exactly once. Worker
+    // output belongs to the parent, so that host deliberately has no such method.
+    ...(!transported ? { publish: (request: ViewRequest, execution: ExecutionOptions, output: (result: Result) => void | Promise<void>) => run(request, execution, output) } : {}),
   } };
 }
 export type CliResult = Awaited<ReturnType<Extract<Awaited<ReturnType<typeof openCliSession>>, { status: 'opened' }>['session']['execute']>>;

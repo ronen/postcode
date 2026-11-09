@@ -7,6 +7,8 @@ import type { InvestigationSelection } from '../investigation/evaluation.js';
 import type { InitiationContext, WorkReport } from '../work-attribution.js';
 export interface ClientOperation {
   execute(request: SemanticRequest, context?: { readonly requestId?: string; readonly invocation?: CapturedInvocation; readonly referenceLifetime?: 'session' | 'command'; readonly constraints?: InputConstraints }): Promise<ApplicationResult>;
+  /** Validity transport while this scope already owns the operation guard. */
+  check(): Promise<void>;
   readonly bindings: ReferenceBinding;
 }
 export interface OperationHost {

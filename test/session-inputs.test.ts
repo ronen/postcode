@@ -13,7 +13,7 @@ import { evaluateModules } from '../src/lib/evaluation.js';
 import { evidenceAccess } from '../src/lib/evidence-access.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { modules } from './projection-helpers.js';
-import { openCliSession as openSession, SessionInvalidated, AnalysisFailure } from '../src/lib/interfaces/cli/application.js';
+import { openWorkerCliSession, openCliSession as openSession, SessionInvalidated, AnalysisFailure } from '../src/lib/interfaces/cli/application.js';
 import type { ProgramRecord } from '../src/lib/records.js';
 import type { ObservationBatch } from '../src/lib/observations.js';
 import { moduleStandardExpansions } from '../src/lib/records.js';
@@ -137,7 +137,7 @@ test('publication observes invalidation before and after output without fabricat
     writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     const source = path.join(root, 'entry.ts');
     writeFileSync(source, 'export const original = 1;');
-    const opened = (await openSession({ configPath }));
+    const opened = (await openWorkerCliSession({ configPath }));
     if (opened.status !== 'opened') throw new Error('Expected project');
     const { session } = opened;
     let output = '', error = '';
@@ -270,7 +270,6 @@ test('direct execution keeps two checks while publication performs three without
   writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
   writeFileSync(source, 'export const entry = 1;');
   const { openApplication } = await import('../src/lib/application/index.js');
-  const { openWorkerCliSession } = await import('../src/lib/interfaces/cli/application.js');
   const semantic = { kind: 'lens', lens: 'modules', designation: { kind: 'configured-project' } } as const;
   const direct = await openApplication({ configPath });
   assert.equal(direct.status, 'opened');

@@ -5,7 +5,7 @@ import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { temporaryDirectory } from './cli-helpers.js';
 import { ScriptedInvestigator } from './investigator-double.js';
-import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
+import { openWorkerCliSession, openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import type { ObservationBatch } from '../src/lib/observations.js';
@@ -422,7 +422,7 @@ test('hundreds of modules produce boundary-sized expansion reports with complete
 });
 
 test('non-View publication keeps full attribution despite sink rejection and summarizes only rendered detail', async t => {
-  const f = fixture(t), opened = await openSession({ configPath: f.configPath });
+  const f = fixture(t), opened = await openWorkerCliSession({ configPath: f.configPath });
   assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
   const established = await opened.session.execute(inventory);
   let result: Awaited<ReturnType<typeof opened.session.execute>> | undefined;
@@ -452,7 +452,7 @@ test('non-View publication keeps full attribution despite sink rejection and sum
 });
 
 test('a deferred publication invalidation keeps execution completion distinct from command outcome', async t => {
-  const f = fixture(t), opened = await openSession({ configPath: f.configPath });
+  const f = fixture(t), opened = await openWorkerCliSession({ configPath: f.configPath });
   assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
   const batches: ObservationBatch[] = [], output: string[] = [];
   const code = await publishCommand({ ...opened.session, async execute(request, execution) {

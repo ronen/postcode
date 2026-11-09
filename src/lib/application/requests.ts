@@ -44,11 +44,11 @@ export type SemanticRequest = ConsumptionRequirements & (
 );
 
 /** Safe ownership transfer, shared by interface adapters and the direct boundary. */
-export function captureFields(value: unknown): { readonly input: Readonly<Record<string, ParameterValue>>; readonly problems: readonly InputProblem[] } {
+export function captureFields(value: unknown, field: 'request' | 'invocation' = 'request'): { readonly input: Readonly<Record<string, ParameterValue>>; readonly problems: readonly InputProblem[] } {
   const fields: [string, ParameterValue][] = [], problems: InputProblem[] = [];
   if (!value || typeof value !== 'object' || Array.isArray(value)
     || Object.getPrototypeOf(value) !== Object.prototype && Object.getPrototypeOf(value) !== null) {
-    return freezeOwned({ input: {}, problems: [{ field: 'request', reason: 'A request must be a plain object.', representation: 'omitted' }] });
+    return freezeOwned({ input: {}, problems: [{ field, reason: field === 'request' ? 'A request must be a plain object.' : 'An invocation attachment must be a plain object.', representation: 'omitted', ...(field === 'request' ? {} : { omittedField: field }) }] });
   }
   for (const key of Reflect.ownKeys(value)) {
     if (typeof key === 'symbol') {
