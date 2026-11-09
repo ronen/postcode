@@ -18,8 +18,10 @@ presentation/navigation work and the minimal GUI follow separately.
 Work is isolated on `codex/structured-architectural-accounts`, based on
 `1805b3131fb57d2cdee93e059688045961ef8ec2`; local main matched fetched origin/main.
 The human authorized these evolving notes. The scope is being explored
-conditionally; the emerging preference is an explicit subject identity whose
-qualified descriptions can be corrected. No representation decision is adopted.
+conditionally. Discussion agreements include explicit subject identities with
+revisable qualified descriptions, extensible recognized item kinds alongside open
+topics, and subject identities as a core aspect of the retained architectural model.
+No representation decision is adopted.
 
 ## Inspected basis and existing machinery
 
@@ -439,3 +441,29 @@ Existing `Referent.subjects` already offers a reference-list precedent alongside
 separate qualified associations. Extend/reconcile these responsibilities rather
 than introduce duplicate fields with unclear ownership. Exact naming, role
 classification and integration with the new subject declarations remain open.
+
+## Retained architectural model
+
+The human identifies the collection of subject identities as a core aspect of the
+retained architectural model. Carry this forward as a design premise: these are
+retained architectural referents across investigations, not merely navigation IDs
+attached to individual answers.
+
+The emerging model comprises those subjects together with qualified definitions,
+accounts and relationship claims referring to them, their supporting bases and
+provenance, and their correction/conflict history. Working selections and exact
+answers identify particular uses of that retained material. This describes logical
+responsibilities, not a decision for a new graph database, single store or universal
+schema. Existing mechanical subjects and qualified information remain relevant;
+the model is not necessarily composed exclusively of interpretation.
+
+Shared subject identity permits accounts to accumulate around a continuing
+referent without making their claims mutually consistent or authoritative. The
+model can be partial and contested. This is compatible with the foundation's
+allowance for accumulated understanding without requiring a single consolidated
+authoritative architecture model. It does not promise cross-Session persistence
+or identity across changed program states.
+
+Subject introduction, qualified reuse/correspondence, and later correction of
+mistaken identity therefore deserve explicit core treatment. Interface indexing
+and layout consume that model; they do not establish its architectural claims.
