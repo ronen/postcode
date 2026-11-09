@@ -114,13 +114,18 @@ contracts are separate from terminal rendering. The shell and one-shot host shar
 `interfaces/cli/runtime.ts` for worker assembly and output-directory exclusions;
 their signal and EOF policies remain in their respective hosts.
 
-This boundary implements M1–M3 of the
+This boundary implements the application and companion-service extraction in the
 [application interface plan](../plans/application-interface-boundary.md).
 Live scripts and CLI-shaped in-process tests use the shared CLI adapter; the old
 `session.ts` import shim is removed. Historical cross-build tools keep their
 documented checkpoint module/export assumptions and are not an extraction oracle.
 The live profiler and partial-session measurement support older builds only when
 those builds expose the migrated harness's expected modules, exports and View shape.
+The small [direct client](../../test/application-client.ts) imports only the intended
+application entry and its exported types. Its integration test compares answers on
+the same fixture with Unicode/JSON CLI output, retaining full content in the direct
+client and explicit display bounds in the CLI. This verification does not extend
+the existing single-project, unchanged-input or source-disclosure guarantees.
 
 <a id="request-publication"></a>
 ## Request publication
@@ -313,10 +318,12 @@ updates, rather than repeatedly transmitting the accumulated report. Entries are
 frozen once; full immutable report containers are built on demand. The parent
 seals received facts on forced termination and labels the report incomplete; late
 messages cannot replace it. Thrown execution failures preserve completed boundary
-facts while disclosing that work without returned outcomes is unknown. Version-two
+facts while disclosing that work without returned outcomes is unknown. Version-four
 command observations include the work report for successful, refused and abnormal
 requests independently of sink success. Publication validity/outcome remains distinct
-from execution completion: a later input check can suppress a completed result.
+from application completion: arrangement failure or an unknown continuation can
+fail the command after work completes, and a later input check can suppress a
+completed result. Direct clients receive work reports without research recording.
 Closing releases core state while already returned report snapshots remain usable.
 This is bounded attribution at existing boundaries, not an autonomous scheduler,
 request store or post-Session export of captured program inputs.
