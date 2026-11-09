@@ -1,3 +1,8 @@
+// Historical checkpoint tool: retain its recorded internal build/export and
+// assertion assumptions. It is not the application-boundary extraction oracle;
+// compatibility with post-extraction builds is not promised.
+// Requires both builds to expose the old observations module plus the
+// investigation/presentation and association constructor contracts used below.
 // Task-specific full View/rendering/binding/observation comparison. No field redaction.
 // Usage: node scripts/compare-investigation-construction.mjs BEFORE_BUILD AFTER_BUILD REPORT
 import assert from 'node:assert/strict';

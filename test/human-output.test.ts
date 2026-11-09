@@ -8,7 +8,7 @@ import path from 'node:path';
 import { writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { temporaryDirectory } from './cli-helpers.js';
-import { openSession } from '../src/lib/session.js';
+import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { requireView } from './request-helpers.js';
 import { defaultCatalog } from '../src/lib/request-catalog.js';
 import { exportsLens } from '../src/lib/mechanical-implementations.js';
@@ -17,7 +17,7 @@ import { renderView } from '../src/lib/presentation.js';
 import { renderOrganizationView } from '../src/lib/organization/presentation.js';
 import { renderDependencyView } from '../src/lib/dependencies/presentation.js';
 import { presentQualification } from '../src/lib/qualification-view.js';
-import { observationBatch, commandObservation } from '../src/lib/observations.js';
+import { observationBatch, commandObservation } from '../src/lib/interfaces/cli/observations.js';
 import { investigationInstructions } from '../src/lib/investigation/execute.js';
 import { assertionContent, documentationLines } from '../src/lib/documentation-view.js';
 

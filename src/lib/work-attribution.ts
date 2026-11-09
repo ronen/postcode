@@ -3,7 +3,8 @@ import { freezeOwned } from './immutable.js';
 import { investigationBounds } from './investigation/bounds.js';
 import type { InvestigationBounds } from './investigation/bounds.js';
 import type { InvestigationRequest, InvestigatorTool, ToolResponse, AccountContext, ContextDelivery } from './investigation/contracts.js';
-import type { NormalizedRequest } from './requests.js';
+import type { SemanticRequest, InputProblem } from './application/requests.js';
+import type { ParameterValue } from './application/lenses.js';
 import type { EvidenceResponse } from './evidence-delivery.js';
 import type { EvaluationState, ProgramRecordStore, RecordId } from './records.js';
 
@@ -12,7 +13,8 @@ export interface InitiationContext {
   /** The entry point knows its caller role, not whether that caller is a human. */
   readonly initiator: 'caller';
   readonly purpose: string;
-  readonly request: NormalizedRequest | { readonly kind: 'operation'; readonly operation: InvestigationRequest };
+  readonly request: SemanticRequest | { readonly kind: 'operation'; readonly operation: InvestigationRequest };
+  readonly invocation?: { readonly fields: Readonly<Record<string, ParameterValue>>; readonly problems: readonly InputProblem[] };
   readonly constraints: {
     readonly wholeRequestBudget: null;
     readonly investigation: InvestigationBounds;

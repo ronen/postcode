@@ -1,8 +1,9 @@
+import { presentationMethods } from './interfaces/cli/methods.js';
 import { diagnosticLines, withDiagnosticMeanings } from './diagnostic-view.js';
 import { sourceAttribution } from './evidence-view.js';
 import type { SourceAttribution } from './evidence-view.js';
-import { answerIdentity, answerDisplay, answerLines, continuationLines } from './answer-presentation.js';
-import type { AnswerContext, AnswerDisplay } from './answer-presentation.js';
+import { answerIdentity, answerDisplay, answerLines, continuationLines } from './interfaces/cli/answer-presentation.js';
+import type { AnswerContext, AnswerDisplay } from './interfaces/cli/answer-presentation.js';
 import { documentationLabel, documentationLines, documentationNotice, presentDocumentation } from './documentation-view.js';
 import { exportRoles, exportRoutes } from './export-view.js';
 import type { Documentation } from './documentation-view.js';
@@ -22,7 +23,7 @@ import { completedMaterialization } from './evaluation-state.js';
 import { compositionView, compositionAnnotation } from './composition-view.js';
 import type { CompositionView } from './composition-view.js';
 import { inlineText, terminalText } from './terminal-text.js';
-import { identityReference, methods, recordId } from './identity.js';
+import { identityReference, recordId } from './identity.js';
 import { moduleStandardExpansions } from './records.js';
 import type { Claim, ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleExpansion, ProgramRecordStore, RecordId, SessionRecord, SourceEvidenceRecord, SymbolClaim } from './records.js';
 
@@ -140,7 +141,7 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
   const collapsed = policy.collapseExternal ? modules.filter(module => !module.discoveryFacets.includes('project')) : [];
   const listed = policy.collapseExternal ? modules.filter(module => module.discoveryFacets.includes('project')) : modules;
   const result: QualifiedView = {
-    ...answerDisplay(context), schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation, ...answerIdentity(context) }),
+    ...answerDisplay(context), schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: presentationMethods.presentation, ...answerIdentity(context) }),
     title,
     ...(resolution ? { resolution } : {}),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,

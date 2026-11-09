@@ -5,7 +5,7 @@ import { temporaryDirectory } from './cli-helpers.js';
 import { test } from 'node:test';
 import { discover } from './helpers.js';
 import { requireResolution, requireView } from './request-helpers.js';
-import { openSession } from '../src/lib/session.js';
+import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';

@@ -1,36 +1,18 @@
-import type { WorkReport } from './work-attribution.js';
-import type { SubjectResolution } from './subject-resolution.js';
-import type { RequestContext, ResolutionReport, UsageReport } from './request-reporting.js';
-import { inlineText } from './terminal-text.js';
-import { sourceDisclosure, diagnosticLocations } from './source-disclosure.js';
-import type { SourceDisclosureLevel, SourceDisclosureForm } from './source-disclosure.js';
-import type { InvestigationUsageReport } from './investigation/reporting.js';
-import type { InvestigationView } from './investigation/presentation.js';
-import type { QualifiedDependencyView } from './dependencies/presentation.js';
-import { randomUUID, createHash } from 'node:crypto';
-import { mkdir, open, link, unlink } from 'node:fs/promises';
-import path from 'node:path';
-import type { QualifiedView } from './presentation.js';
-import type { QualifiedOrganizationView } from './organization/presentation.js';
-import type { ModuleExportsView } from './exports/presentation.js';
+import type { WorkReport } from '../../work-attribution.js';
+import type { SubjectResolution } from '../../subject-resolution.js';
+import type { RequestContext, ResolutionReport, UsageReport } from './report-contracts.js';
+import { inlineText } from '../../terminal-text.js';
+import { sourceDisclosure, diagnosticLocations } from '../../source-disclosure.js';
+import type { InvestigationUsageReport } from '../../investigation/reporting.js';
+import type { InvestigationView } from '../../investigation/presentation.js';
+import type { QualifiedDependencyView } from '../../dependencies/presentation.js';
+import { randomUUID } from 'node:crypto';
+import type { QualifiedView } from '../../presentation.js';
+import type { QualifiedOrganizationView } from '../../organization/presentation.js';
+import type { ModuleExportsView } from '../../exports/presentation.js';
 
-export interface ObservationBatch {
-  readonly formatVersion: 4;
-  readonly id: string;
-  readonly session: string;
-  readonly command: number;
-  readonly records: readonly { readonly id: string; readonly kind: 'request' | 'analysis-context' | 'qualified-view' | 'rendered-output' | 'command-outcome' | 'investigation-usage' | 'resolution-result' | 'resolution-information' | 'usage-report' | 'request-work' | 'inadequacy-feedback' | 'representation-limit'; readonly value: unknown }[];
-  readonly events: readonly {
-    readonly id: string; readonly type: 'view-produced' | 'attribution-disclosed' | 'command-completed' | 'command-refused' | 'session-invalidated' | 'command-failed' | 'command-defect' | 'command-interrupted' | 'inadequacy-reported' | 'representation-limited' | 'additional-detail-requested' | 'source-displayed';
-    readonly request: string; readonly analysis?: string; readonly feedback?: string; readonly view?: string; readonly rendered: string;
-    readonly sourceLevel?: SourceDisclosureLevel;
-    readonly sourceForms?: readonly SourceDisclosureForm[];
-  }[];
-}
-
-export interface ObservationSink {
-  submit(batch: ObservationBatch): Promise<{ readonly accepted: true } | { readonly accepted: false; readonly reason: string }>;
-}
+import { deliverObservation } from '../../application/observations.js';
+import type { ObservationBatch, ObservationSink } from '../../application/observations.js';
 
 /** No UUID registry, historical reads, producer retention policy, or operational-store dependency. */
 export function observationBatch(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView | ModuleExportsView, rendered: string, context: {
@@ -59,48 +41,6 @@ export function observationBatch(view: QualifiedView | QualifiedOrganizationView
     ...(disclosed?.forms.includes('excerpts') ? [{ id: randomUUID(), type: 'source-displayed' as const, ...references, sourceLevel: disclosed.level, sourceForms: disclosed.forms }] : []),
     ...(disclosed ? [{ id: randomUUID(), type: 'attribution-disclosed' as const, ...references, sourceLevel: disclosed.level, sourceForms: disclosed.forms }] : []),
   ] };
-}
-
-/** The generic acceptance contract stays unchanged; local publication can additionally report cleanup. */
-export function localFileObservationSink(directory: string, configPath: string | null, options: {
-  now?: () => Date;
-  io?: { mkdir: typeof mkdir; open: typeof open; link: typeof link; unlink: typeof unlink };
-} = {}) {
-  const absolute = configPath === null ? null : path.resolve(configPath);
-  const label = path.basename(path.dirname(absolute ?? '')).normalize('NFKD').replace(/[^a-zA-Z0-9_-]+/g, '-')
-    .replace(/^-+|-+$/g, '').slice(0, 64).toLowerCase() || 'project';
-  const key = createHash('sha256').update(absolute ?? '').digest('hex').slice(0, 6);
-  const destination = path.join(path.resolve(directory), absolute === null ? 'context-free' : `${label}-${key}`);
-  const io = options.io ?? { mkdir, open, link, unlink };
-  const reason = (error: unknown) => error instanceof Error ? error.message : String(error);
-  return { destination, async submit(batch: ObservationBatch) {
-    const timestamp = (options.now ?? (() => new Date()))().toISOString();
-    const datedDirectory = path.join(destination, timestamp.slice(0, 10));
-    const filename = path.join(datedDirectory, `${timestamp.slice(11).replaceAll(':', '-')}_${batch.id}.json`);
-    const staging = path.join(datedDirectory, `.staging-${randomUUID()}`);
-    let owned = false, published = false;
-    let file: Awaited<ReturnType<typeof open>> | undefined;
-    try {
-      // mkdir recursive's mode applies only to newly created directories.
-      await io.mkdir(datedDirectory, { recursive: true, mode: 0o700 });
-      file = await io.open(staging, 'wx', 0o600);
-      owned = true;
-      await file.writeFile(`${JSON.stringify(batch)}\n`);
-      await file.close(); file = undefined;
-      await io.link(staging, filename);
-      published = true;
-      await io.unlink(staging); owned = false;
-      return { accepted: true as const };
-    } catch (error) {
-      const problems = [reason(error)];
-      if (file) { try { await file.close(); } catch (cleanup) { problems.push(`staging close: ${reason(cleanup)}`); } }
-      if (owned && !published) {
-        try { await io.unlink(staging); } catch (cleanup) { problems.push(`staging cleanup: ${reason(cleanup)}`); }
-      }
-      return published ? { accepted: true as const, cleanupWarning: `Observation published; staging cleanup failed: ${problems.join('; ')}` }
-        : { accepted: false as const, reason: problems.join('; ') };
-    }
-  } };
 }
 
 /** Non-View reports disclose only their actually rendered diagnostic provenance; no View is fabricated. */
@@ -154,3 +94,12 @@ function representedLimits(value: unknown): string[] {
   }
   return [...new Set(limits)];
 }
+
+export async function submitObservation(sink: ObservationSink, batch: ObservationBatch, output: { stdout(text: string): void; stderr(text: string): void }) {
+  const acknowledgement = await deliverObservation(sink, batch);
+  if (acknowledgement.accepted && 'cleanupWarning' in acknowledgement && typeof acknowledgement.cleanupWarning === 'string') {
+    output.stderr(`WARNING: ${inlineText(acknowledgement.cleanupWarning)}\n`);
+  }
+  if (!acknowledgement.accepted) output.stderr(`WARNING: observation not recorded: ${inlineText(acknowledgement.reason)}\n`);
+}
+

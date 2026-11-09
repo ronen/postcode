@@ -1,3 +1,4 @@
+import { programOutput } from '../_build/test/request-helpers.js';
 import assert from 'node:assert/strict';
 import { cpSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -7,10 +8,12 @@ import { pathToFileURL } from 'node:url';
 
 // PostCode-sized partial-expansion regression and descriptive latency/retention probe.
 // An older build can be measured with: <runtime-src-directory> --allow-retries.
+// It must expose interfaces/cli/application.openCliSession and this View shape.
+// Pre-extraction checkpoints are deliberately not supported by this live harness.
 assert.ok(global.gc, 'Run with --expose-gc');
 const runtime = path.resolve(process.argv[2] ?? '_build/src');
 const expectReuse = !process.argv.includes('--allow-retries');
-const { openSession } = await import(pathToFileURL(path.join(runtime, 'lib/session.js')).href);
+const { openCliSession: openSession } = await import(pathToFileURL(path.join(runtime, 'lib/interfaces/cli/application.js')).href);
 const collect = async () => {
   for (let i = 0; i < 3; i++) { global.gc(); await new Promise(resolve => setImmediate(resolve)); }
   return process.memoryUsage();
@@ -37,7 +40,7 @@ for (const partial of [false, true]) {
     assert.equal(inventory.view.schema, 'postcode-view/1-experimental');
     assert.equal(inventory.view.evaluations.some(item => item.materialization === 'partial'), partial);
     const population = inventory.view.modules.length;
-    const subject = inventory.view.modules.find(item => item.handle === 'session');
+    const subject = inventory.view.modules.find(item => item.handle === 'work-attribution');
     assert.ok(subject);
     const commands = [request, { ...request, lens: 'dependencies' }, { ...request, lens: 'organization' },
       { ...request, lens: 'inspect', selector: subject.entityId, reference: true },
@@ -54,7 +57,7 @@ for (const partial of [false, true]) {
         const began = performance.now();
         const result = await session.execute(command);
         const milliseconds = performance.now() - began;
-        if (expectReuse) assert.deepEqual(result, retained[index], `Unexpected retry: ${partial ? 'partial' : 'clean'} ${command.lens}`);
+        if (expectReuse) assert.deepEqual(programOutput(result), programOutput(retained[index]), `Unexpected retry: ${partial ? 'partial' : 'clean'} ${command.lens}`);
         projections[index].add(result.view.projection.id);
         const memory = await collect();
         samples.push({ round, lens: command.lens, milliseconds, heapUsed: memory.heapUsed, rss: memory.rss });

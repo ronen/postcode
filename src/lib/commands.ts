@@ -1,7 +1,8 @@
-import { isAnswerReference, answerSubjectGuidance } from './answer-references.js';
+import { answerSubjectGuidance } from './interfaces/cli/subject-guidance.js';
+import { isAnswerReference } from './answer-references.js';
 import { parseArgs } from 'node:util';
 import path from 'node:path';
-import type { ViewRequest } from './session.js';
+import type { ViewRequest } from './interfaces/cli/application.js';
 import { commandLenses } from './requests.js';
 import type { CommandLens } from './requests.js';
 import { inlineText } from './terminal-text.js';

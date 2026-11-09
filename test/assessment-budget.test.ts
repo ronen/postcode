@@ -101,3 +101,28 @@ test('frozen setup sequence selects attributed participants in order and refuses
   }
   assert.equal(JSON.parse(readFileSync(budget, 'utf8')).requests.length, 0);
 });
+
+test('assessment runner drives the real CLI shell with scripted investigation and feedback offline', async t => {
+  const { runAssessment } = await import(new URL('../../scripts/module-investigation/run-shell.mjs', import.meta.url).href);
+  const root = temporaryDirectory(t, 'postcode-assessment-real-shell-');
+  const project = path.join(root, 'tsconfig.json'), budget = path.join(root, 'budget.json'), setup = path.join(root, 'setup.json'), output = path.join(root, 'capture');
+  writeFileSync(project, '{"compilerOptions":{"noLib":true,"types":[]},"files":["sample.ts"]}');
+  writeFileSync(path.join(root, 'sample.ts'), 'export const sample = 1;\n');
+  writeFileSync(budget, JSON.stringify({ ceiling: 0, requests: [] }));
+  writeFileSync(setup, JSON.stringify({ id: 'offline-shell', prose: 'Controlled interpretation.', qualifications: ['Scripted offline context.'] }));
+  let tokens = 0, posts = 0;
+  const exit = await runAssessment({ id: 'offline-real-shell', project, output, budget, setup, pass: 'test', json: true,
+    commands: ['summarize sample', 'feedback incomplete', 'exit'] }, {
+    verify() {}, onError(error: unknown) { throw error; },
+    session: async () => ({ token: async () => { tokens++; throw new Error('No credentials authorized'); }, watch: () => () => {} }),
+    fetch: async () => { posts++; throw new Error('No requests authorized'); },
+  });
+  assert.equal(exit, 0); assert.equal(tokens, 0); assert.equal(posts, 0);
+  const batches = readFileSync(path.join(output, 'observations.jsonl'), 'utf8').trim().split('\n').map(line => JSON.parse(line));
+  assert.equal(batches.length, 3);
+  assert.ok(batches[0].records.some((record: any) => record.kind === 'qualified-view'));
+  const feedback = batches[1].records.find((record: any) => record.kind === 'inadequacy-feedback').value;
+  assert.deepEqual(feedback.target, { command: 1, status: 'completed' });
+  assert.equal(feedback.context, 'displayed-result');
+  assert.equal(JSON.parse(readFileSync(budget, 'utf8')).requests.length, 0);
+});

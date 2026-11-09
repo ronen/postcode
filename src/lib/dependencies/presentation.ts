@@ -1,8 +1,9 @@
+import { presentationMethods } from '../interfaces/cli/methods.js';
 import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
 import { sourceAttribution, detailRecord } from '../evidence-view.js';
 import type { SourceAttribution, DetailRecord } from '../evidence-view.js';
-import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../answer-presentation.js';
-import type { AnswerContext, AnswerDisplay } from '../answer-presentation.js';
+import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../interfaces/cli/answer-presentation.js';
+import type { AnswerContext, AnswerDisplay } from '../interfaces/cli/answer-presentation.js';
 import { validatePresentationContent, presentationChanges } from '../presentation-contracts.js';
 import type { PresentedOptions } from '../presentation-contracts.js';
 import { lookupDescription, lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';
@@ -10,7 +11,7 @@ import type { ResolutionContext } from '../resolution-context.js';
 import { completedMaterialization } from '../evaluation-state.js';
 import { compositionAnnotation, compositionView } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
-import { identityReference, methods, recordId } from '../identity.js';
+import { identityReference, recordId } from '../identity.js';
 import { moduleStandardExpansions } from '../records.js';
 import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecord, ProgramRecordStore, RecordId } from '../records.js';
 import { inlineText } from '../terminal-text.js';
@@ -195,7 +196,7 @@ export function arrangeDependencyView(content: DependencyProjectionContent, ids:
   sourceItems.sort((a, b) => sourcePriority(a) - sourcePriority(b));
   const result: QualifiedDependencyView = {
     ...answerDisplay(context), schema: 'postcode-dependency-view/1-experimental',
-    id: recordId(projection.session, 'dependency-view', { method: methods.presentation, projection: identityReference(projection.session, projection.id), presentation, ...answerIdentity(context), resolution: resolutionContextIdentity(projection.session, resolution) }),
+    id: recordId(projection.session, 'dependency-view', { method: presentationMethods.presentation, projection: identityReference(projection.session, projection.id), presentation, ...answerIdentity(context), resolution: resolutionContextIdentity(projection.session, resolution) }),
     ...(resolution ? { resolution } : {}),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       subjectRole: projection.subjectRole, coverageScope: projection.coverageScope, parameters: projection.parameters, selection: projection.selection },

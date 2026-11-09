@@ -1,0 +1,2759 @@
+{
+  "baselineCommit": "b4dc07b",
+  "implementationCommit": "94f3c5046115687205b695aafa33bba9c35fef96",
+  "beforeEmittedSourceSha256": "70d8d8bebfe283fc06e770300df52ee3fe267a5e99cc8eaa95ebc6f998b62c02",
+  "afterEmittedSourceSha256": "33590e52f979721b7639179b7a45cb7f2f608cbbe5009b1c927f44bea5d317bb",
+  "cliCases": [
+    {
+      "args": [
+        "modules"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 99
+    },
+    {
+      "args": [
+        "modules",
+        "--json"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 99
+    },
+    {
+      "args": [
+        "organization",
+        "project"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 88
+    },
+    {
+      "args": [
+        "organization",
+        "project",
+        "--json"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 88
+    },
+    {
+      "args": [
+        "organization",
+        "repository"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 88
+    },
+    {
+      "args": [
+        "organization",
+        "repository",
+        "--json"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 88
+    },
+    {
+      "args": [
+        "inspect",
+        "forward"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 83
+    },
+    {
+      "args": [
+        "inspect",
+        "forward",
+        "--json"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 83
+    },
+    {
+      "args": [
+        "inspect",
+        "forward",
+        "--more-details"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 88
+    },
+    {
+      "args": [
+        "inspect",
+        "forward",
+        "--more-details",
+        "--json"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 88
+    },
+    {
+      "args": [
+        "dependencies"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 153
+    },
+    {
+      "args": [
+        "dependencies",
+        "--json"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 153
+    },
+    {
+      "args": [
+        "dependencies",
+        "--more-details"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 179
+    },
+    {
+      "args": [
+        "dependencies",
+        "--more-details",
+        "--json"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 179
+    },
+    {
+      "args": [
+        "children",
+        "forward",
+        "--more-details"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 128
+    },
+    {
+      "args": [
+        "children",
+        "forward",
+        "--more-details",
+        "--json"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 128
+    },
+    {
+      "args": [
+        "parents",
+        "forward",
+        "--more-details"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 124
+    },
+    {
+      "args": [
+        "parents",
+        "forward",
+        "--more-details",
+        "--json"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 124
+    },
+    {
+      "args": [
+        "inspect",
+        "does-not-exist",
+        "--json"
+      ],
+      "exit": 3,
+      "equal": true,
+      "comparedReferenceCount": 69
+    },
+    {
+      "args": [
+        "usage",
+        "--json"
+      ],
+      "exit": 0,
+      "equal": true,
+      "comparedReferenceCount": 1
+    },
+    {
+      "args": [
+        "summarize",
+        "forward",
+        "--json"
+      ],
+      "exit": 3,
+      "equal": true,
+      "comparedReferenceCount": 11
+    }
+  ],
+  "journeyFixture": {
+    "deterministicSources": [
+      "UUID source",
+      "attempt clock"
+    ],
+    "hosts": [
+      "in-process",
+      "worker"
+    ],
+    "collision": "A controlled SHA-256 digest-prefix fixture in both builds; production allocation algorithm unchanged.",
+    "cases": [
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "lens": "modules",
+          "selector": null,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:projection:3465406b36baae136728f17afd5db3ce8a107c9057101ecbc082f105c6656c03"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "lens": "inspect",
+          "selector": "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+          "reference": true,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "group",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:group:344f71b802f3867bcc0da3f0b84be92fdae7e2ef59f7eb43e079484f337e02a4",
+              "session:00000000-0000-4000-8000-000000000001:group:d59cb1d6ed5c3f80bb058c11f405499f81c4321d149aed09632d1106f184dfd8",
+              "session:00000000-0000-4000-8000-000000000001:group:8cc331fecac31345b98d6ea39d7860a60ed077f8fd2597a7d0df3b5010124057"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:c439b27e8937f8d6836c89d40420af55f5b78cb29be4461b52e8ad7dd1d9cd48"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "kind": "present",
+          "target": "answer-c439b27e",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:c439b27e8937f8d6836c89d40420af55f5b78cb29be4461b52e8ad7dd1d9cd48"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "kind": "present",
+          "target": "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:c439b27e8937f8d6836c89d40420af55f5b78cb29be4461b52e8ad7dd1d9cd48",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false,
+            "after": "investigram-00000000"
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:c439b27e8937f8d6836c89d40420af55f5b78cb29be4461b52e8ad7dd1d9cd48"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": true,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "kind": "present",
+          "target": "session:00000000-0000-4000-8000-000000000001:projection:3465406b36baae136728f17afd5db3ce8a107c9057101ecbc082f105c6656c03",
+          "presentation": {
+            "format": "json",
+            "moreDetails": true
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:projection:3465406b36baae136728f17afd5db3ce8a107c9057101ecbc082f105c6656c03"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:projection:3465406b36baae136728f17afd5db3ce8a107c9057101ecbc082f105c6656c03"
+            ]
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "lens": "summarize",
+          "selector": "forward",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:e5ec35dc9ec682b6d0211be2a5ce30a6a8d633c3e78cdab085b03d83c28985cd"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:89d8d769e06f641ef374f336152c80499e3d47e0720ad821655ec65204d3a171"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "lens": "inspect",
+          "selector": "session:00000000-0000-4000-8000-000000000001:investigram:89d8d769e06f641ef374f336152c80499e3d47e0720ad821655ec65204d3a171",
+          "reference": true,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:89d8d769e06f641ef374f336152c80499e3d47e0720ad821655ec65204d3a171"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:82fb40d7cc9a6feda2465ecf7bc1a3cc6830a49d696f55e7a281853623a3bea7"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:89d8d769e06f641ef374f336152c80499e3d47e0720ad821655ec65204d3a171"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "kind": "present",
+          "target": "answer-82fb40d7",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:82fb40d7cc9a6feda2465ecf7bc1a3cc6830a49d696f55e7a281853623a3bea7"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:89d8d769e06f641ef374f336152c80499e3d47e0720ad821655ec65204d3a171"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "kind": "present",
+          "target": "answer-82fb40d7",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false,
+            "after": "investigram-00000000"
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:82fb40d7cc9a6feda2465ecf7bc1a3cc6830a49d696f55e7a281853623a3bea7"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:89d8d769e06f641ef374f336152c80499e3d47e0720ad821655ec65204d3a171"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": true,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "lens": "inspect",
+          "selector": "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+          "reference": true,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "group",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:group:344f71b802f3867bcc0da3f0b84be92fdae7e2ef59f7eb43e079484f337e02a4",
+              "session:00000000-0000-4000-8000-000000000001:group:d59cb1d6ed5c3f80bb058c11f405499f81c4321d149aed09632d1106f184dfd8",
+              "session:00000000-0000-4000-8000-000000000001:group:8cc331fecac31345b98d6ea39d7860a60ed077f8fd2597a7d0df3b5010124057"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:c439b27e8937f8d6836c89d40420af55f5b78cb29be4461b52e8ad7dd1d9cd48"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "kind": "present",
+          "target": "answer-c439b27e",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:c439b27e8937f8d6836c89d40420af55f5b78cb29be4461b52e8ad7dd1d9cd48"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "lens": "usage",
+          "selector": null,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "lens": "modules",
+          "selector": null,
+          "parameters": null,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "lens": "usage",
+          "selector": "forward",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": false,
+        "request": {
+          "lens": "inspect",
+          "selector": "forward",
+          "subject": "project",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "lens": "modules",
+          "selector": null,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:projection:12345678452251d2a26ee106db7b53a71b1cc3a754a968fd55fda98ddb83e686"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "lens": "inspect",
+          "selector": "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+          "reference": true,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "group",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:group:1234567802f3867bcc0da3f0b84be92fdae7e2ef59f7eb43e079484f337e02a4",
+              "session:00000000-0000-4000-8000-000000000001:group:12345678ed5c3f80bb058c11f405499f81c4321d149aed09632d1106f184dfd8",
+              "session:00000000-0000-4000-8000-000000000001:group:12345678cac31345b98d6ea39d7860a60ed077f8fd2597a7d0df3b5010124057"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:123456784f0aaca62a37d25f6434d1739d5dd108f3c25773bc8d0e1dce97bb07"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "kind": "present",
+          "target": "answer-123456784",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:123456784f0aaca62a37d25f6434d1739d5dd108f3c25773bc8d0e1dce97bb07"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "kind": "present",
+          "target": "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:123456784f0aaca62a37d25f6434d1739d5dd108f3c25773bc8d0e1dce97bb07",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false,
+            "after": "investigram-00000000"
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:123456784f0aaca62a37d25f6434d1739d5dd108f3c25773bc8d0e1dce97bb07"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": true,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "kind": "present",
+          "target": "session:00000000-0000-4000-8000-000000000001:projection:12345678452251d2a26ee106db7b53a71b1cc3a754a968fd55fda98ddb83e686",
+          "presentation": {
+            "format": "json",
+            "moreDetails": true
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:projection:12345678452251d2a26ee106db7b53a71b1cc3a754a968fd55fda98ddb83e686"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:projection:12345678452251d2a26ee106db7b53a71b1cc3a754a968fd55fda98ddb83e686"
+            ]
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "lens": "summarize",
+          "selector": "forward",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:12345678c24369b1ee4bc7cebf89f32c70e2dd94b914cc78013fcf1a74a30f20"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:12345678a12ffdd912703698417a06cef16be8566357183d8019233ebf8efca2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "lens": "inspect",
+          "selector": "session:00000000-0000-4000-8000-000000000001:investigram:12345678a12ffdd912703698417a06cef16be8566357183d8019233ebf8efca2",
+          "reference": true,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:12345678a12ffdd912703698417a06cef16be8566357183d8019233ebf8efca2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:1234567805f3440ae6d5a4106f90164d487f4aecc08067d2a051f7b0db41e5be"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:12345678a12ffdd912703698417a06cef16be8566357183d8019233ebf8efca2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "kind": "present",
+          "target": "answer-123456780",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:1234567805f3440ae6d5a4106f90164d487f4aecc08067d2a051f7b0db41e5be"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:12345678a12ffdd912703698417a06cef16be8566357183d8019233ebf8efca2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "kind": "present",
+          "target": "answer-123456780",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false,
+            "after": "investigram-00000000"
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:1234567805f3440ae6d5a4106f90164d487f4aecc08067d2a051f7b0db41e5be"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:12345678a12ffdd912703698417a06cef16be8566357183d8019233ebf8efca2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": true,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "lens": "inspect",
+          "selector": "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+          "reference": true,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "group",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:group:1234567802f3867bcc0da3f0b84be92fdae7e2ef59f7eb43e079484f337e02a4",
+              "session:00000000-0000-4000-8000-000000000001:group:12345678ed5c3f80bb058c11f405499f81c4321d149aed09632d1106f184dfd8",
+              "session:00000000-0000-4000-8000-000000000001:group:12345678cac31345b98d6ea39d7860a60ed077f8fd2597a7d0df3b5010124057"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:123456784f0aaca62a37d25f6434d1739d5dd108f3c25773bc8d0e1dce97bb07"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "kind": "present",
+          "target": "answer-123456784",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:123456784f0aaca62a37d25f6434d1739d5dd108f3c25773bc8d0e1dce97bb07"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "lens": "usage",
+          "selector": null,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "lens": "modules",
+          "selector": null,
+          "parameters": null,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "lens": "usage",
+          "selector": "forward",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "in-process",
+        "collision": true,
+        "request": {
+          "lens": "inspect",
+          "selector": "forward",
+          "subject": "project",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "lens": "modules",
+          "selector": null,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:projection:3465406b36baae136728f17afd5db3ce8a107c9057101ecbc082f105c6656c03"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "lens": "inspect",
+          "selector": "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+          "reference": true,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "group",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:group:344f71b802f3867bcc0da3f0b84be92fdae7e2ef59f7eb43e079484f337e02a4",
+              "session:00000000-0000-4000-8000-000000000001:group:d59cb1d6ed5c3f80bb058c11f405499f81c4321d149aed09632d1106f184dfd8",
+              "session:00000000-0000-4000-8000-000000000001:group:8cc331fecac31345b98d6ea39d7860a60ed077f8fd2597a7d0df3b5010124057"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:c439b27e8937f8d6836c89d40420af55f5b78cb29be4461b52e8ad7dd1d9cd48"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "kind": "present",
+          "target": "answer-c439b27e",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:c439b27e8937f8d6836c89d40420af55f5b78cb29be4461b52e8ad7dd1d9cd48"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "kind": "present",
+          "target": "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:c439b27e8937f8d6836c89d40420af55f5b78cb29be4461b52e8ad7dd1d9cd48",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false,
+            "after": "investigram-00000000"
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:c439b27e8937f8d6836c89d40420af55f5b78cb29be4461b52e8ad7dd1d9cd48"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": true,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "kind": "present",
+          "target": "session:00000000-0000-4000-8000-000000000001:projection:3465406b36baae136728f17afd5db3ce8a107c9057101ecbc082f105c6656c03",
+          "presentation": {
+            "format": "json",
+            "moreDetails": true
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:projection:3465406b36baae136728f17afd5db3ce8a107c9057101ecbc082f105c6656c03"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:projection:3465406b36baae136728f17afd5db3ce8a107c9057101ecbc082f105c6656c03"
+            ]
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "lens": "summarize",
+          "selector": "forward",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:e5ec35dc9ec682b6d0211be2a5ce30a6a8d633c3e78cdab085b03d83c28985cd"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:89d8d769e06f641ef374f336152c80499e3d47e0720ad821655ec65204d3a171"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "lens": "inspect",
+          "selector": "session:00000000-0000-4000-8000-000000000001:investigram:89d8d769e06f641ef374f336152c80499e3d47e0720ad821655ec65204d3a171",
+          "reference": true,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:89d8d769e06f641ef374f336152c80499e3d47e0720ad821655ec65204d3a171"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:82fb40d7cc9a6feda2465ecf7bc1a3cc6830a49d696f55e7a281853623a3bea7"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:89d8d769e06f641ef374f336152c80499e3d47e0720ad821655ec65204d3a171"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "kind": "present",
+          "target": "answer-82fb40d7",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:82fb40d7cc9a6feda2465ecf7bc1a3cc6830a49d696f55e7a281853623a3bea7"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:89d8d769e06f641ef374f336152c80499e3d47e0720ad821655ec65204d3a171"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "kind": "present",
+          "target": "answer-82fb40d7",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false,
+            "after": "investigram-00000000"
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:82fb40d7cc9a6feda2465ecf7bc1a3cc6830a49d696f55e7a281853623a3bea7"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:89d8d769e06f641ef374f336152c80499e3d47e0720ad821655ec65204d3a171"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": true,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "lens": "inspect",
+          "selector": "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+          "reference": true,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "group",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:group:344f71b802f3867bcc0da3f0b84be92fdae7e2ef59f7eb43e079484f337e02a4",
+              "session:00000000-0000-4000-8000-000000000001:group:d59cb1d6ed5c3f80bb058c11f405499f81c4321d149aed09632d1106f184dfd8",
+              "session:00000000-0000-4000-8000-000000000001:group:8cc331fecac31345b98d6ea39d7860a60ed077f8fd2597a7d0df3b5010124057"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:c439b27e8937f8d6836c89d40420af55f5b78cb29be4461b52e8ad7dd1d9cd48"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "kind": "present",
+          "target": "answer-c439b27e",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:c439b27e8937f8d6836c89d40420af55f5b78cb29be4461b52e8ad7dd1d9cd48"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:be55d3b3002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:e0512c61ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:65e451e5ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:96a4ec5a44578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:cf4e61a9a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:6d42a63693def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "lens": "usage",
+          "selector": null,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "lens": "modules",
+          "selector": null,
+          "parameters": null,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "lens": "usage",
+          "selector": "forward",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": false,
+        "request": {
+          "lens": "inspect",
+          "selector": "forward",
+          "subject": "project",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "lens": "modules",
+          "selector": null,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:projection:12345678452251d2a26ee106db7b53a71b1cc3a754a968fd55fda98ddb83e686"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "lens": "inspect",
+          "selector": "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+          "reference": true,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "group",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:group:1234567802f3867bcc0da3f0b84be92fdae7e2ef59f7eb43e079484f337e02a4",
+              "session:00000000-0000-4000-8000-000000000001:group:12345678ed5c3f80bb058c11f405499f81c4321d149aed09632d1106f184dfd8",
+              "session:00000000-0000-4000-8000-000000000001:group:12345678cac31345b98d6ea39d7860a60ed077f8fd2597a7d0df3b5010124057"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:123456784f0aaca62a37d25f6434d1739d5dd108f3c25773bc8d0e1dce97bb07"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "kind": "present",
+          "target": "answer-123456784",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:123456784f0aaca62a37d25f6434d1739d5dd108f3c25773bc8d0e1dce97bb07"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "kind": "present",
+          "target": "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:123456784f0aaca62a37d25f6434d1739d5dd108f3c25773bc8d0e1dce97bb07",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false,
+            "after": "investigram-00000000"
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:123456784f0aaca62a37d25f6434d1739d5dd108f3c25773bc8d0e1dce97bb07"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": true,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "kind": "present",
+          "target": "session:00000000-0000-4000-8000-000000000001:projection:12345678452251d2a26ee106db7b53a71b1cc3a754a968fd55fda98ddb83e686",
+          "presentation": {
+            "format": "json",
+            "moreDetails": true
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:projection:12345678452251d2a26ee106db7b53a71b1cc3a754a968fd55fda98ddb83e686"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:projection:12345678452251d2a26ee106db7b53a71b1cc3a754a968fd55fda98ddb83e686"
+            ]
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "lens": "summarize",
+          "selector": "forward",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:12345678c24369b1ee4bc7cebf89f32c70e2dd94b914cc78013fcf1a74a30f20"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:12345678a12ffdd912703698417a06cef16be8566357183d8019233ebf8efca2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "lens": "inspect",
+          "selector": "session:00000000-0000-4000-8000-000000000001:investigram:12345678a12ffdd912703698417a06cef16be8566357183d8019233ebf8efca2",
+          "reference": true,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:12345678a12ffdd912703698417a06cef16be8566357183d8019233ebf8efca2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:1234567805f3440ae6d5a4106f90164d487f4aecc08067d2a051f7b0db41e5be"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:12345678a12ffdd912703698417a06cef16be8566357183d8019233ebf8efca2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "kind": "present",
+          "target": "answer-123456780",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:1234567805f3440ae6d5a4106f90164d487f4aecc08067d2a051f7b0db41e5be"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:12345678a12ffdd912703698417a06cef16be8566357183d8019233ebf8efca2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "kind": "present",
+          "target": "answer-123456780",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false,
+            "after": "investigram-00000000"
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:1234567805f3440ae6d5a4106f90164d487f4aecc08067d2a051f7b0db41e5be"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigram:12345678a12ffdd912703698417a06cef16be8566357183d8019233ebf8efca2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": true,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "lens": "inspect",
+          "selector": "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+          "reference": true,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "entityIds",
+            "kind": "group",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:group:1234567802f3867bcc0da3f0b84be92fdae7e2ef59f7eb43e079484f337e02a4",
+              "session:00000000-0000-4000-8000-000000000001:group:12345678ed5c3f80bb058c11f405499f81c4321d149aed09632d1106f184dfd8",
+              "session:00000000-0000-4000-8000-000000000001:group:12345678cac31345b98d6ea39d7860a60ed077f8fd2597a7d0df3b5010124057"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:123456784f0aaca62a37d25f6434d1739d5dd108f3c25773bc8d0e1dce97bb07"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "kind": "present",
+          "target": "answer-123456784",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [
+          {
+            "operation": "answerIds",
+            "kind": "answer",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:investigation-selection-projection:123456784f0aaca62a37d25f6434d1739d5dd108f3c25773bc8d0e1dce97bb07"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678002ee0c233fb3ea187d5d38e333f3cb3e6593cf8d53b58e15c88f218",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ee2ff0fd4563046359d17fd7beb255e18abb3e0a0a98ae0e4670e05d",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678ca2bc2eeea756c93bc27c9175f040c644e47a06f52f45b40344ba559",
+              "session:00000000-0000-4000-8000-000000000001:module:1234567844578f3b826a6fd55824364bcdc5b5d1236c0659db7e63a3ecac4824",
+              "session:00000000-0000-4000-8000-000000000001:module:12345678a73f5c2bb22245dd00b2221d6bbdf819dab6322ed431930a03c972d2"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "module",
+            "ids": [
+              "session:00000000-0000-4000-8000-000000000001:module:1234567893def5852dfdc1699e4d44e75679097f9cc5608053eb932265b6d63a"
+            ]
+          },
+          {
+            "operation": "entityIds",
+            "kind": "investigram",
+            "ids": []
+          }
+        ],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "lens": "usage",
+          "selector": null,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "lens": "modules",
+          "selector": null,
+          "parameters": null,
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "lens": "usage",
+          "selector": "forward",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      },
+      {
+        "host": "worker",
+        "collision": true,
+        "request": {
+          "lens": "inspect",
+          "selector": "forward",
+          "subject": "project",
+          "presentation": {
+            "format": "json",
+            "moreDetails": false
+          }
+        },
+        "allocations": [],
+        "allowedWorkStatusChange": false,
+        "equal": true
+      }
+    ]
+  }
+}

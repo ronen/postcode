@@ -1,4 +1,4 @@
-import type { AnswerContext } from './answer-presentation.js';
+import type { AnswerContext } from './interfaces/cli/answer-presentation.js';
 import { createView, renderView } from './presentation.js';
 import { createOrganizationView, renderOrganizationView } from './organization/presentation.js';
 import { createDependencyView, renderDependencyView } from './dependencies/presentation.js';

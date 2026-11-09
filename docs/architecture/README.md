@@ -43,6 +43,90 @@ Recorded output remains evidence of what PostCode displayed, but observations do
 
 The product permits a summary suggestion when no more specific information need has been expressed; it does not require a summary-first default. The current no-argument CLI command lists modules, and `summarize` requests the implemented module interpretation. This is compatible with the optional suggestion, although the CLI does not provide a general summary View selector. Adoption of the conceptual model changes neither command behavior nor the current schema and identity contracts.
 
+<a id="application-entry"></a>
+## Internal application entry
+
+`src/lib/application/index.ts` supplies the in-process application lifecycle and
+explicit request/delivery types. `openApplication` captures the project options,
+semantic catalog and optional client Presentation declarations. A caller can
+execute `{ kind: 'lens', lens: 'modules', designation: { kind: 'configured-project' } }`,
+inspect a returned precise module ID with the `reference` designation, and retrieve
+an exact answer with `{ kind: 'present', target: answer.id }`. The caller separately
+awaits `close()`. This is an internal Node entry, without a package API or browser
+runtime. Synchronous compiler work cannot be preempted in the calling thread.
+
+Answer delivery contains complete selected qualified content and fixed support,
+including both the composite and mechanical content of associated inspection.
+It contains neither a rendered View nor a store handle. Direct requests default
+to standard expansions for the resolved content contract, or accept supported
+subsets. Exact requests use only retained support. Invocation attachments are
+captured separately from semantic request meaning; neither occurrence context
+nor Presentation choices enter answer identity. Capabilities expose Lens meaning
+and semantic requirements without implementation registrations or output formats.
+
+`interfaces/cli/application.ts` is the shared adapter for the private worker and
+in-process CLI tests. It supplies captured declarative option constraints, projects
+the application context back to the existing CLI report shape, and arranges
+supplied content and coordinated aliases. Investigation arrangement uses a
+revocable, validated binding port under one operation guard. Application work is
+finalized before arrangement. An unknown continuation or client arrangement
+failure cannot turn completed application work into failed application work.
+The CLI still owns presentation/command failure, output, observation construction
+and parent usage finalization.
+
+Ordinary application execution checks input validity before and after work.
+CLI publication uses the shared `guardPublication` before and after output;
+the worker transfers these final checks to its parent. The in-process CLI host
+keeps its operation scope through local delivery and uses the scope’s internal
+validity transport. When `publishCommand` receives that host, it delegates actual
+output to its scoped publication operation, so one pre/post-output guard covers
+the display without re-entering the public Session guard. Overlapping direct operations raise `SessionBusy`;
+invalidation and interruption are terminal. Closing releases retained domain
+state while preserving final reports and usage. Presentation method versions are
+client artifact provenance and are absent from captured application methods.
+
+The same engine serves organization, dependency structure/children/parents,
+group and mixed inspection, interpretation follow-ups, resolution and usage.
+Dependency organization detail is constructed only when group details are
+requested. Direct interpretation journeys use the real evidence, validation and
+retention path with a substituted agent communication participant in tests.
+Fresh selection can expose later corrections, conflicts, associations and
+reconsideration; exact retrieval preserves the earlier answer's full content and
+support, including historical failed or unavailable outcomes, without new analysis or inference.
+Captured catalogs also support the internal interpretation and exports fixtures
+through the same execution and exact-access paths.
+
+Account/provider services are available separately at `application/accounts.ts`.
+They assemble existing credential services, return typed configuration reasons,
+and expose the explicitly requested, cost-bearing connection check without
+opening a project. `interfaces/cli/investigator-policy.ts` owns route disclosures
+and command/document guidance, including credential failures during an exchange.
+The CLI authentication host owns process signals and passes cancellation to the
+services. Neither preflight nor ordinary authentication starts the connection check.
+
+`application/observations.ts` owns the version-four envelope, sink acceptance,
+failure-isolated delivery and local file sink. `application/feedback.ts` prepares
+feedback from caller-supplied displayed artifacts, or from context-free input;
+it does not inspect a Session or reconstruct source context. CLI observation
+construction, source classification, warning text, feedback rendering, report
+rendering and command continuations remain client responsibilities. Report data
+contracts are separate from terminal rendering. The shell and one-shot host share
+`interfaces/cli/runtime.ts` for worker assembly and output-directory exclusions;
+their signal and EOF policies remain in their respective hosts.
+
+This boundary implements the application and companion-service extraction in the
+[application interface plan](../plans/application-interface-boundary.md).
+Live scripts and CLI-shaped in-process tests use the shared CLI adapter; the old
+`session.ts` import shim is removed. Historical cross-build tools keep their
+documented checkpoint module/export assumptions and are not an extraction oracle.
+The live profiler and partial-session measurement support older builds only when
+those builds expose the migrated harness's expected modules, exports and View shape.
+The small [direct client](../../test/application-client.ts) imports only the intended
+application entry and its exported types. Its integration test compares answers on
+the same fixture with Unicode/JSON CLI output, retaining full content in the direct
+client and explicit display bounds in the CLI. This verification does not extend
+the existing single-project, unchanged-input or source-disclosure guarantees.
+
 <a id="request-publication"></a>
 ## Request publication
 
@@ -56,7 +140,7 @@ map to normalized Lens identities; dependency identities agree with retained ans
 Missing or incompatible designation modes are refused before Evaluation. Usage is
 subjectless and refuses extraneous designation or parameter inputs. Unknown names
 and malformed designation/reference choices produce rejected-input context before
-lookup. Direct and worker requests require a string or null selector; optional
+lookup. In-process CLI-adapter and worker requests require a string or null selector; optional
 reference, subject and reference-lifetime choices must have their supported types
 and values. Organization construction takes its scope from the normalized designation.
 Unrepresentable values also produce rejected-input context and a resolution report,
@@ -234,10 +318,12 @@ updates, rather than repeatedly transmitting the accumulated report. Entries are
 frozen once; full immutable report containers are built on demand. The parent
 seals received facts on forced termination and labels the report incomplete; late
 messages cannot replace it. Thrown execution failures preserve completed boundary
-facts while disclosing that work without returned outcomes is unknown. Version-two
+facts while disclosing that work without returned outcomes is unknown. Version-four
 command observations include the work report for successful, refused and abnormal
 requests independently of sink success. Publication validity/outcome remains distinct
-from execution completion: a later input check can suppress a completed result.
+from application completion: arrangement failure or an unknown continuation can
+fail the command after work completes, and a later input check can suppress a
+completed result. Direct clients receive work reports without research recording.
 Closing releases core state while already returned report snapshots remain usable.
 This is bounded attribution at existing boundaries, not an autonomous scheduler,
 request store or post-Session export of captured program inputs.
@@ -490,7 +576,7 @@ been removed. One selector can match multiple names/handles without choosing one
 
 ## Observations and runtime boundaries
 
-The [research recording policy](../decisions/research-question-driven-observation.md#research-capture) permits question-specific recording and ordinary non-research use without records. The CLI described here still automatically constructs and submits command batches; it has no public no-recording mode or selective capture interface. `command-execution.ts` also derives the shell's displayed-result feedback snapshot from those records, and `feedback.ts` embeds it without live-store lookup. Discarding sink output does not skip record construction. The [optional cleanup candidate](../backlog.md#separate-optional-research-recording-from-feedback-context) identifies this coupling; no runtime change accompanies the policy revision. Full operational attribution, qualifications, Investigator exposure/provenance and retained-answer selection remain independent of research delivery. Study instructions or configuration can designate the current local folder as the research destination; automatic local capture alone does not establish research use. No research-mode workflow or new application fields accompany that responsibility rule.
+The [research recording policy](../decisions/research-question-driven-observation.md#research-capture) permits question-specific recording and ordinary non-research use without records. The CLI described here still automatically constructs and submits command batches; it has no public no-recording mode or selective capture interface. `command-execution.ts` also derives the shell's displayed-result feedback snapshot from those records, and `application/feedback.ts` embeds it without live-store lookup. Discarding sink output does not skip record construction. The [optional cleanup candidate](../backlog.md#separate-optional-research-recording-from-feedback-context) identifies this coupling; no runtime change accompanies the policy revision. Full operational attribution, qualifications, Investigator exposure/provenance and retained-answer selection remain independent of research delivery. Study instructions or configuration can designate the current local folder as the research destination; automatic local capture alone does not establish research use. No research-mode workflow or new application fields accompany that responsibility rule.
 
 The observation sink remains separate from the program store. Version-four batches
 carry command correlation, actual normalized requests, outcomes, qualified artifacts

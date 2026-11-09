@@ -1,10 +1,11 @@
+import { programOutput } from '../_build/test/request-helpers.js';
 import { comparisonFixture, fixtures } from './comparison-fixtures.mjs';
 import { withComparisonSessions } from '../_build/test/session-comparison.js';
 import { normalizeSession as normalize } from '../_build/test/comparison.js';
 import assert from 'node:assert/strict';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { openSession } from '../_build/src/lib/session.js';
+import { openCliSession as openSession } from '../_build/src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../_build/src/lib/interactive-session.js';
 const reports = [];
 for (const fixture of fixtures) {
@@ -29,7 +30,7 @@ for (const fixture of fixtures) {
       const result = await session.execute(command);
       if (command.reference) {
         assert.equal(result.view.projection.selection.matches, 1);
-        assert.equal(result.view.projection.parameters.selector, command.selector);
+        assert.equal(result.context.request.designation.value, command.selector);
       }
       return result;
     }
@@ -43,13 +44,13 @@ for (const fixture of fixtures) {
         try {
           const single = await execute(fresh.session, command);
           const accumulated = await execute(shell, command);
-          assert.deepEqual(normalize(accumulated), normalize(single), `${fixture}: ${JSON.stringify(command)}`);
+          assert.deepEqual(normalize(programOutput(accumulated)), normalize(programOutput(single)), `${fixture}: ${JSON.stringify(command)}`);
           expected.push(accumulated);
         } finally { await fresh.session.close(); }
       }
       for (const index of [...commands.keys()].reverse()) {
-        assert.deepEqual(normalize(await execute(reversed, commands[index])), normalize(expected[index]), `${fixture}: reordered ${index}`);
-        assert.deepEqual(await execute(shell, commands[index]), expected[index], `${fixture}: retained ${index}`);
+        assert.deepEqual(normalize(programOutput(await execute(reversed, commands[index]))), normalize(programOutput(expected[index])), `${fixture}: reordered ${index}`);
+        assert.deepEqual(programOutput(await execute(shell, commands[index])), programOutput(expected[index]), `${fixture}: retained ${index}`);
       }
       reports.push({ fixture, requests: commands.length, referenceRequests: commands.filter(command => command.reference).length,
         comparisons: commands.length * 3, equivalent: true });

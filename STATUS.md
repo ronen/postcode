@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-10-13
+Last reviewed: 2026-11-09
 
 PostCode is currently available as a development CLI for investigating one
 configured TypeScript project.
@@ -9,6 +9,12 @@ This page summarizes current capabilities and significant limits. The [capabilit
 
 ## Implemented capabilities
 
+- **[Internal application entry](docs/architecture/README.md#application-entry).**
+  In-process Node clients can request complete qualified content, follow precise
+  subjects, retrieve exact retained answers and receive work/usage reports without
+  CLI rendering or observation recording. The CLI uses the same execution engine.
+  Account/configuration, observation delivery and feedback are separate services.
+  This is an internal entry, without a stable public transport or browser runtime.
 - **[Interactive investigation](docs/cli-reference.md#commands).**
   A session shell supports successive questions, stable references to previously
   displayed subjects, and reuse of accumulated analysis.

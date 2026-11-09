@@ -1,3 +1,8 @@
+// Historical checkpoint tool: retain its recorded internal build/export and
+// assertion assumptions. It is not the application-boundary extraction oracle;
+// compatibility with post-extraction builds is not promised.
+// Its measure-analysis child expects each build to contain cli.runCli,
+// commands.parseCommand and observations.localFileObservationSink.
 // Sequential paired fresh processes; no timing assertions belong in the test suite.
 // Usage: node scripts/benchmark-analysis.mjs BEFORE_BUILD AFTER_BUILD OUTPUT_DIRECTORY [SAMPLES=3]
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';

@@ -1,3 +1,8 @@
+// Historical checkpoint tool: retain its recorded internal build/export and
+// assertion assumptions. It is not the application-boundary extraction oracle;
+// compatibility with post-extraction builds is not promised.
+// Requires the checkpoint createView/createOrganizationView/createDependencyView
+// signatures, source-disclosure module and old View-ID rewrite policy.
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { writeFileSync } from 'node:fs';

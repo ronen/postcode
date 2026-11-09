@@ -3,13 +3,13 @@ import { test } from 'node:test';
 import path from 'node:path';
 import { lenses, normalizeRequest } from '../src/lib/requests.js';
 import type { LensId, LensViewRequest as ViewRequest } from '../src/lib/requests.js';
-import { openSession } from '../src/lib/session.js';
+import { openWorkerCliSession, openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
-import type { ResolutionReport, UsageReport, RequestContext } from '../src/lib/request-reporting.js';
-import { finalizeRequestReport } from '../src/lib/request-reporting.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
+import type { ResolutionReport, UsageReport, RequestContext } from '../src/lib/interfaces/cli/report-contracts.js';
+import { finalizeRequestReport } from '../src/lib/interfaces/cli/request-reporting.js';
 import { requireView } from './request-helpers.js';
 
 const configPath = path.resolve('fixtures/dependency-journey/tsconfig.json');
@@ -119,7 +119,7 @@ for (const kind of ['usage', 'resolution', 'view'] as const) {
 }
 
 for (const afterOutput of [false, true]) test(`non-View publication checks inputs ${afterOutput ? 'after' : 'before'} output`, async t => {
-  const opened = await openSession({ configPath });
+  const opened = await openWorkerCliSession({ configPath });
   if (opened.status !== 'opened') throw new Error('Expected project');
   t.after(() => opened.session.close());
   const { SessionInvalidated } = await import('../src/lib/execution-errors.js');

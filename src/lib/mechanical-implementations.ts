@@ -1,9 +1,10 @@
 import { canonical } from './identity.js';
 import { freezeOwned } from './immutable.js';
-import { lenses } from './requests.js';
-import type { LensDefinition, ResultContract, NormalizedRequest } from './requests.js';
+import { lenses } from './application/lenses.js';
+import type { LensDefinition, ResultContract } from './application/lenses.js';
+import type { SemanticRequest as NormalizedRequest } from './application/requests.js';
 import type { SubjectResolution } from './subject-resolution.js';
-import type { PresentationContent } from './presentation-contracts.js';
+import type { QualifiedContent as PresentationContent } from './application/content.js';
 import type { ProgramRecordStore, RecordId, ModuleExpansion, ProjectionRecord } from './records.js';
 import { moduleStandardExpansions } from './records.js';
 import { groupStandardExpansions } from './organization/records.js';
@@ -59,11 +60,11 @@ function dependency(definition: LensDefinition, direction: 'structure' | 'childr
     const outcome = evaluateDependencies(store, analysis, expansions.modules, work);
     const basis = store.get(outcome.moduleEvaluation);
     if (basis.kind !== 'evaluation') throw new Error('Expected dependency module basis');
-    const placement = evaluateOrganization(store, basis, expansions.groups, work);
-    const expanded = evaluateDependencyOrganization(store, outcome, placement, work);
+    const placement = expansions.groups.includes('group-details') ? evaluateOrganization(store, basis, expansions.groups, work) : null;
+    const expanded = placement ? evaluateDependencyOrganization(store, outcome, placement, work).id : null;
     work.check();
-    const projection = direction === 'structure' ? dependencyStructure(store, outcome, expanded.id)
-      : direction === 'children' ? dependencyChildren(store, outcome, subjects, expanded.id) : dependencyParents(store, outcome, subjects, expanded.id);
+    const projection = direction === 'structure' ? dependencyStructure(store, outcome, expanded)
+      : direction === 'children' ? dependencyChildren(store, outcome, subjects, expanded) : dependencyParents(store, outcome, subjects, expanded);
     return result({ contract: 'dependencies', value: resolveDependencyProjection(store, projection) });
   } };
 }

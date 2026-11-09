@@ -5,7 +5,7 @@ import path from 'node:path';
 import { PassThrough } from 'node:stream';
 import { runCli } from '../src/lib/cli.js';
 import { outputBoundary, OutputBoundaryFailure } from '../src/lib/output-boundary.js';
-import { openSession, SessionInvalidated } from '../src/lib/session.js';
+import { openCliSession as openSession, SessionInvalidated } from '../src/lib/interfaces/cli/application.js';
 import { temporaryDirectory } from './cli-helpers.js';
 import { invokeCli } from './cli-helpers.js';
 

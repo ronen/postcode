@@ -4,7 +4,7 @@ import { chatGPTInvestigator } from '../src/lib/investigation/openai/adapter.js'
 import type { OpenAIExchange } from '../src/lib/investigation/openai/adapter.js';
 import type { AgentInput, ReportedUsage } from '../src/lib/investigation/contracts.js';
 import type { RecordId } from '../src/lib/records.js';
-import { checkChatGPTConnection } from '../src/lib/investigation/openai/auth-command.js';
+import { checkChatGPTConnection } from '../src/lib/application/accounts.js';
 import type { ChatGPTCredentials } from '../src/lib/investigation/openai/chatgpt-credentials.js';
 import { CredentialError } from '../src/lib/investigation/openai/credential-store.js';
 

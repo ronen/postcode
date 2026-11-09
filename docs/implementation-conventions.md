@@ -12,6 +12,7 @@ Agents may update this document only as part of authorized implementation work t
 - Keep test fixtures under `fixtures/` when they represent repositories or external inputs rather than unit-local test data.
 - Keep repository-input fixtures outside the application's compile include list.
 - Put build output under the Git-ignored `_build/` directory.
+- Use `src/lib/application/index.ts` for direct semantic operations and the separate `application/accounts.ts`, `application/observations.ts` and `application/feedback.ts` companion services. CLI-shaped in-process consumers use `interfaces/cli/application.ts`; both CLI hosts share its runtime assembly. Keep command guidance, terminal rendering and continuation generation under the CLI boundary, separate from request/report data and service reasons. Historical script imports retain their recorded checkpoint assumptions rather than requiring product compatibility shims. [[Internal application API](decisions/internal-application-api.md)]
 
 ## TypeScript style
 

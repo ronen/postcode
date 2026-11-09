@@ -2,9 +2,9 @@ import { requireView, programOutput } from './request-helpers.js';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { test } from 'node:test';
-import { openSession } from '../src/lib/session.js';
-import { observationBatch } from '../src/lib/observations.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
+import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
+import { observationBatch } from '../src/lib/interfaces/cli/observations.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import { commandWords, parseCommand } from '../src/lib/commands.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
@@ -43,13 +43,13 @@ test('published navigation observations distinguish session references from exac
         { async submit(batch) { observed = batch; return { accepted: true }; } });
       assert.equal(code, item.matches ? 0 : 3, item.command);
       assert.equal(observed!.session, session.id);
-      const recorded = observed!.records.find(record => record.kind === 'request')!.value as import('../src/lib/request-reporting.js').RequestContext;
+      const recorded = observed!.records.find(record => record.kind === 'request')!.value as import('../src/lib/interfaces/cli/report-contracts.js').RequestContext;
       assert.equal(recorded.request.kind, 'lens');
       if (recorded.request.kind !== 'lens') throw new Error('Expected Lens request');
       assert.equal(recorded.request.designation.kind, item.reference ? 'reference' : 'name', item.command);
       assert.deepEqual(recorded.request.parameters, {});
       if (!item.matches) {
-        const report = observed!.records.find(record => record.kind === 'resolution-result')!.value as import('../src/lib/request-reporting.js').ResolutionReport;
+        const report = observed!.records.find(record => record.kind === 'resolution-result')!.value as import('../src/lib/interfaces/cli/report-contracts.js').ResolutionReport;
         assert.equal(report.resolution.reason, item.reference ? 'unknown-reference' : 'missing');
         assert.equal(observed!.events.some(event => event.type === 'view-produced'), false);
         continue;

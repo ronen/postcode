@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
 import { normalizeSession } from './helpers.js';
-import type { ObservationSink } from '../src/lib/observations.js';
+import type { ObservationSink } from '../src/lib/application/observations.js';
 import { createOrganizationView, organizationPresentationRequirements, renderOrganizationView } from '../src/lib/organization/presentation.js';
 import type { QualifiedOrganizationView } from '../src/lib/organization/presentation.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';

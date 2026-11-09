@@ -1,3 +1,8 @@
+// Historical checkpoint tool: retain its recorded internal build/export and
+// assertion assumptions. It is not the application-boundary extraction oracle;
+// compatibility with post-extraction builds is not promised.
+// Loads cli.runCli in each build and uses the old whole-observation comparison
+// policy, without current request-work occurrence normalization.
 import { comparisonFixture, fixtures, commands, buildIdentity } from './comparison-fixtures.mjs';
 import { normalizeSession as normalize } from '../_build/test/comparison.js';
 import assert from 'node:assert/strict';

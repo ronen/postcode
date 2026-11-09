@@ -15,7 +15,7 @@ export interface ChatGPTSession {
 }
 const renewalMarginMilliseconds = 60_000;
 const planEnabled = (tokens?: TokenSet) => !!tokens?.scopes.includes('chatgpt.tokens.use.direct') && tokens.scopes.includes('resource.invoke');
-const unavailable = () => new CredentialError('reauthorization_required', 'ChatGPT sign-in is required. Run postcode auth chatgpt sign-in in your own terminal. No API billing fallback was used.');
+const unavailable = () => new CredentialError('reauthorization_required', 'ChatGPT sign-in is required. No API billing fallback was used.');
 function decode(raw: string | undefined): Vault {
   if (raw === undefined) return { version: 1, issuer, hostId: `urn:uuid:${randomUUID()}`, registrations: [] };
   try {
@@ -84,7 +84,7 @@ export function chatGPTCredentials(store: CredentialStore, oauth: OAuthService, 
       const selected = await store.exclusive(async () => {
         const v = await read(), r = v.registrations.find(r => r.label === v.active);
         if (!r?.tokens || !r.identity) throw unavailable();
-        if (!planEnabled(r.tokens)) throw new CredentialError('plan_permission_required', 'Signed in, but ChatGPT plan usage was not granted. Use postcode auth chatgpt sign-in <label> --consent to request it, or explicitly choose API billing.');
+        if (!planEnabled(r.tokens)) throw new CredentialError('plan_permission_required', 'Signed in, but ChatGPT plan usage was not granted.');
         return { label: r.label, session: r.session };
       });
       async function current(): Promise<{ vault: Vault; registration: Registration & { tokens: TokenSet } }> {

@@ -1,3 +1,8 @@
+// Historical checkpoint tool: retain its recorded internal build/export and
+// assertion assumptions. It is not the application-boundary extraction oracle;
+// compatibility with post-extraction builds is not promised.
+// Requires InvestigationRevisions in both builds and revisionPage in the
+// after build, with the recorded revision fixture and report shape below.
 // Task verification: compare the pre-boundary delivery with the unpaged derivation + adapter.
 // Usage: node scripts/compare-investigation-revisions.mjs BEFORE_BUILD AFTER_BUILD [REPORT]
 import assert from 'node:assert/strict';

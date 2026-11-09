@@ -1,3 +1,4 @@
+import { programOutput } from '../_build/test/request-helpers.js';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { PassThrough } from 'node:stream';
@@ -6,7 +7,7 @@ import { buildIdentity } from './comparison-fixtures.mjs';
 import { writeFileSync } from 'node:fs';
 const build = path.resolve(process.argv[4] ?? '_build');
 const { runCli } = await import(pathToFileURL(path.join(build, 'src/lib/cli.js')));
-const { openSession } = await import(pathToFileURL(path.join(build, 'src/lib/session.js')));
+const { openCliSession: openSession } = await import(pathToFileURL(path.join(build, 'src/lib/interfaces/cli/application.js')));
 
 // Run with --expose-gc; measurements are descriptive, never test thresholds.
 const configPath = path.resolve(process.argv[2] ?? 'tsconfig.json');
@@ -36,7 +37,7 @@ let journeyMs, live;
 try {
   const firstStarted = performance.now();
   first = await run('modules');
-  const selected = first.view.modules.find(item => item.handle === 'session') ?? first.view.modules[0];
+  const selected = first.view.modules.find(item => item.handle === 'work-attribution') ?? first.view.modules[0];
   await run('inspect', selected.entityId, { reference: true });
   const dependency = await run('dependencies');
   const subject = dependency.view.modules.find(item => item.handle === selected.handle) ?? dependency.view.modules[0];
@@ -48,8 +49,8 @@ try {
   const organization = await run('organization', null, { subject: 'repository' });
   const group = organization.view.groups.find(item => item.name === 'lib') ?? organization.view.groups[0];
   if (group) await run('inspect', group.entityId, { reference: true });
-  assert.deepEqual(await run('modules'), first);
-  assert.deepEqual(await run('dependencies'), dependency);
+  assert.deepEqual(programOutput(await run('modules')), programOutput(first));
+  assert.deepEqual(programOutput(await run('dependencies')), programOutput(dependency));
   journeyMs = performance.now() - firstStarted;
   live = await collect();
 } finally { await opened.session.close(); }
@@ -75,7 +76,7 @@ const shellExit = await runCli(['shell', '--project', configPath, '--json'], {
       shellSamples.push({ command: currentCommand, milliseconds: performance.now() - commandStarted,
         rss: process.memoryUsage().rss, outcome: batch.records.find(record => record.kind === 'command-outcome')?.value.status });
       let next;
-      if (batch.command === 1) { shellSubject = view.modules.find(item => item.handle === 'session') ?? view.modules[0]; next = `inspect @${shellSubject.entityId}`; }
+      if (batch.command === 1) { shellSubject = view.modules.find(item => item.handle === 'work-attribution') ?? view.modules[0]; next = `inspect @${shellSubject.entityId}`; }
       else if (batch.command === 2) next = 'dependencies';
       else if (batch.command === 3) next = `children @${shellSubject.entityId}`;
       else if (batch.command === 4) { shellChild = view.modules.find(item => item.id !== shellSubject.id) ?? shellSubject; next = `parents @${shellChild.entityId}`; }

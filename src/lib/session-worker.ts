@@ -2,7 +2,7 @@ import type { RecordId } from './records.js';
 import type { AgentIdentity, AgentReply, InvestigationRequest, InvestigatorAgent, ReportedUsage } from './investigation/contracts.js';
 import type { InvestigationBounds } from './investigation/execute.js';
 import { parentPort, workerData } from 'node:worker_threads';
-import { openSession } from './session.js';
+import { openWorkerCliSession as openSession } from './interfaces/cli/application.js';
 import type { RequestCatalog } from './request-catalog.js';
 import type { ProjectOptions } from './typescript/project.js';
 import { encodeError, decodeError } from './session-protocol.js';

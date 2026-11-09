@@ -1,3 +1,8 @@
+// Historical checkpoint tool: retain its recorded internal build/export and
+// assertion assumptions. It is not the application-boundary extraction oracle;
+// compatibility with post-extraction builds is not promised.
+// Loads cli.runCli in each build but assumes the original session-conversion
+// observation and output comparison policy; it has no extraction allowances.
 import assert from 'node:assert/strict';
 import { cpSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';

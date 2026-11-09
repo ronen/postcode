@@ -1,9 +1,10 @@
+import { presentationMethods } from '../interfaces/cli/methods.js';
 import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
 import { assertionContent } from '../documentation-view.js';
 import { presentQualification } from '../qualification-view.js';
 import { detailRecord } from '../evidence-view.js';
-import { answerIdentity, answerDisplay, answerLines, answerContinuations, continuationLines } from '../answer-presentation.js';
-import type { AnswerContext } from '../answer-presentation.js';
+import { answerIdentity, answerDisplay, answerLines, answerContinuations, continuationLines } from '../interfaces/cli/answer-presentation.js';
+import type { AnswerContext } from '../interfaces/cli/answer-presentation.js';
 import { validatePresentationContent, presentationChanges } from '../presentation-contracts.js';
 import type { PresentedOptions } from '../presentation-contracts.js';
 import { lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';
@@ -17,7 +18,7 @@ import { selectInvestigation } from './selection.js';
 import { referenceBinding } from '../reference-binding.js';
 import type { ReferenceBinding } from '../reference-binding.js';
 import { arrangeAssociatedInvestigations, associationContinuation, renderAssociatedInvestigations } from './associations.js';
-import { identityReference, methods, recordId } from '../identity.js';
+import { identityReference, recordId } from '../identity.js';
 import { freezeOwned } from '../immutable.js';
 import { inlineText, terminalText } from '../terminal-text.js';
 import type { ProgramRecordStore, RecordId, SessionId, ProgramRecord } from '../records.js';
@@ -188,7 +189,7 @@ export function arrangeInvestigationView(content: InvestigationProjectionContent
   const projection = { id: content.projection.id,
     session, lens: selection.lens, variant: selection.variant, subject: 'selected-subjects', parameters: {},
     selection: { matches: selected.length, status: selection.status } };
-  const arrangementKey = recordId(session, 'investigation-arrangement', [methods.investigationPresentation, identityReference(session, projection.id),
+  const arrangementKey = recordId(session, 'investigation-arrangement', [presentationMethods.investigationPresentation, identityReference(session, projection.id),
     request.presentation, request.title, associationContinuation(session, selection.associated, associatedReferences, request.after),
     request.revisionPage ?? 1, answerIdentity(request), resolutionContextIdentity(session, request.resolution),
     reporting ? { ...reporting, attempt: identityReference(session, reporting.attempt) } : null]);
@@ -217,7 +218,7 @@ export function arrangeInvestigationView(content: InvestigationProjectionContent
 export function finalizeInvestigationUsage<T extends { readonly id: RecordId;
   readonly projection: { readonly id: RecordId; readonly session: SessionId }; readonly usage: InvestigationUsageReport }>(view: T, usage: InvestigationUsageReport, arrangementKey: RecordId): T {
   const session = view.projection.session;
-  const id = recordId(session, 'investigation-view', [methods.investigationPresentation, identityReference(session, arrangementKey), usage]);
+  const id = recordId(session, 'investigation-view', [presentationMethods.investigationPresentation, identityReference(session, arrangementKey), usage]);
   return freezeOwned(withDiagnosticMeanings({ ...view, id, usage }));
 }
 export type InvestigationView = ReturnType<typeof arrangeInvestigationView>['view'];

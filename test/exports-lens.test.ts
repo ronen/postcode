@@ -1,3 +1,4 @@
+import { presentationMethods } from '../src/lib/interfaces/cli/methods.js';
 import { usageSummary } from '../src/lib/investigation/reporting.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -14,7 +15,7 @@ import { arrangeModuleExports, exportsPresentation, renderModuleExports } from '
 import { exportsLens } from '../src/lib/mechanical-implementations.js';
 import { captureCatalog, defaultCatalog } from '../src/lib/request-catalog.js';
 import type { RequestCatalog } from '../src/lib/request-catalog.js';
-import { openSession } from '../src/lib/session.js';
+import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
@@ -23,8 +24,8 @@ import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { sourceDisclosure } from '../src/lib/source-disclosure.js';
 import { settlePresentation } from '../src/lib/presentation-contracts.js';
 import type { EvaluationRecord } from '../src/lib/records.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
-import type { RequestContext } from '../src/lib/request-reporting.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
+import type { RequestContext } from '../src/lib/interfaces/cli/report-contracts.js';
 
 const json = { format: 'json' as const, moreDetails: false };
 const unicode = { format: 'unicode' as const, moreDetails: false };
@@ -70,7 +71,7 @@ test('exports uses common resolution and retains its own qualified answer withou
   assert.equal(first.view.presentation.decision!.criteria.contract, 'module-exports');
   assert.equal(first.view.title, 'Module exports');
   assert.ok(first.methods.includes(methods.exportsProjection));
-  assert.ok(first.methods.includes(methods.exportsPresentation));
+  assert.ok(first.methods.includes(presentationMethods.exportsPresentation));
   const presented = requireView(await active.execute({ kind: 'present', target: first.view.projection.id, presentation: { ...json, moreDetails: true } }));
   assert.equal(presented.view.schema, 'postcode-module-exports-view/1-experimental');
   assert.equal(presented.view.projection.id, first.view.projection.id);

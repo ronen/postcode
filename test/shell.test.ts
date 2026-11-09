@@ -6,7 +6,7 @@ import path from 'node:path';
 import { test } from 'node:test';
 import { runCli } from '../src/lib/cli.js';
 import { commandWords, parseCommand } from '../src/lib/commands.js';
-import type { ObservationBatch } from '../src/lib/observations.js';
+import type { ObservationBatch } from '../src/lib/application/observations.js';
 import type { QualifiedView } from '../src/lib/presentation.js';
 import { normalizeSession } from './helpers.js';
 
@@ -151,7 +151,7 @@ for (const terminal of ['dumb', 'xterm']) test(`idle Ctrl-C discards its input l
 
 test('expected analysis failure, defect and interruption are distinct and never invent views', async () => {
   const { publishCommand } = await import('../src/lib/command-execution.js');
-  const { AnalysisFailure } = await import('../src/lib/session.js');
+  const { AnalysisFailure } = await import('../src/lib/application/index.js');
   const { CommandInterrupted } = await import('../src/lib/interactive-session.js');
   for (const [error, expectedCode, expectedEvent] of [
     [new AnalysisFailure('temporarily unavailable'), 3, 'command-failed'],

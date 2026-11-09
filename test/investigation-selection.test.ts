@@ -452,7 +452,7 @@ test('exact retained presentation keeps combined pages and frozen correction/ass
   const { presentRetained, resolveRetainedContent } = await import('../src/lib/retained-presentation.js');
   const { captureCatalog, defaultCatalog } = await import('../src/lib/request-catalog.js');
   const { captureRequest } = await import('../src/lib/requests.js');
-  const { continuationCommand } = await import('../src/lib/answer-presentation.js');
+  const { continuationCommand } = await import('../src/lib/interfaces/cli/answer-presentation.js');
   const { parseCommand, commandWords } = await import('../src/lib/commands.js');
   const f = fixture(), { store, session, id, module } = f;
   const initial = f.publish([{ name: 'root', children: ['short'], evidence: [id('capture')] }, { name: 'short' }], [], { supplied: [id('capture')] });

@@ -42,7 +42,6 @@ export function resolveOrganizationProjection(store: Pick<ProgramRecordStore, 'g
   const retained = store.get(projection.id);
   if (retained.kind !== 'organization-projection') throw new Error('Expected retained organization-projection');
   projection = retained;
-  if (!projection.expansions.requested.includes('group-details')) throw new Error('Organization presentation requires evaluated group-details');
   const evaluation = store.get(projection.evaluation);
   if (evaluation.kind !== 'organization-evaluation') throw new Error('Expected organization evaluation');
   const repository = store.get(evaluation.repository);

@@ -136,7 +136,9 @@ before project opening.
 Retained failure or unavailable outcomes remain visible as answer semantics.
 Successfully presenting one completes the current command (exit 0), without reporting
 a new investigation attempt or adding provider usage. An unknown continuation remains
-a failed command. Input invalidation, cancellation and Session closure retain their
+a failed presentation/command (exit 3), while the application work that retrieved
+the exact answer is completed. Malformed continuation syntax remains a refusal.
+Input invalidation, cancellation and Session closure retain their
 existing limits; `present` adds no persistence or post-invalidation access.
 
 ## First use
@@ -803,7 +805,8 @@ the same usage-report family as explicit `usage` output: `schema`, `session`, an
 absent for the abnormal final-usage supplement on stderr. The enclosing command
 observation identifies the interrupted or failed request.
 
-Command observations also contain a `request-work` record with the initiating request,
+Observation batches retain format version 4. Command observations also contain a
+`request-work` record with the initiating request,
 its purpose and inherited investigation guards, qualified prerequisite outcomes,
 actual provider/evaluation reuse, and current consumption of retained information.
 First-generating attribution remains separate from later requests. Evidence-query
@@ -823,8 +826,13 @@ Expansion groups preserve record identities and origins under
 their shared qualification. Successful View JSON
 remains a View, with the separate execution work report retained in its observation.
 Attempt usage details include their originating parent context.
-Work status describes execution; a later publication check can withhold a completed
-result, so the separate command outcome can still be `invalidated`.
+Work status describes application execution and is finalized before CLI arrangement.
+An unknown continuation or an unexpected arrangement failure can therefore leave
+work `completed` while the separate command outcome is `failed` or `defect`.
+A later publication check can withhold a completed result, so the command outcome
+can also be `invalidated`. The work report preserves what completed; it does not
+claim that presentation or publication succeeded. Direct application clients receive
+these operational reports without configuring a renderer or observation sink.
 
 Correction metadata listings are bounded separately from account bodies: at most
 256 displaced accounts, 256 accompanying correction references and 256 revision

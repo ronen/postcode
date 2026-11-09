@@ -1,11 +1,12 @@
-import { answerContinuations } from '../answer-presentation.js';
-import type { AnswerDisplay } from '../answer-presentation.js';
+import { presentationMethods } from '../interfaces/cli/methods.js';
+import { answerContinuations } from '../interfaces/cli/answer-presentation.js';
+import type { AnswerDisplay } from '../interfaces/cli/answer-presentation.js';
 import type { Presentation } from '../presentation.js';
 import { validatePresentationContent } from '../presentation-contracts.js';
 import { revisionPage } from './revision-page.js';
 import type { InvestigationProjectionContent } from './content.js';
 import { freezeOwned } from '../immutable.js';
-import { identityReference, methods, recordId } from '../identity.js';
+import { identityReference, recordId } from '../identity.js';
 import { inlineText } from '../terminal-text.js';
 import type { RecordId, SessionId } from '../records.js';
 
@@ -59,7 +60,7 @@ export function arrangeAssociatedInspection<T extends { readonly id: RecordId; r
   const projection = { ...view.projection, id: selection.id, variant: 'associated-inspection' as const, mechanical: selection.mechanical };
   return freezeOwned({ ...view, projection, investigations,
     continuations: answerContinuations(selection.id, { ...view, answerReference: view.answerReference ?? undefined }, view.presentation, { after, next: investigations.next, unknownContinuation: investigations.status === 'unknown-continuation' }),
-    id: recordId(session, 'associated-inspection-view', [methods.investigationPresentation, identityReference(session, projection.id),
+    id: recordId(session, 'associated-inspection-view', [presentationMethods.investigationPresentation, identityReference(session, projection.id),
       identityReference(session, view.id), associationContinuation(session, selection.associated, references, after), lifetime, view.selectionMode]) });
 }
 export function renderAssociatedInvestigations(value: AssociatedInvestigations | undefined): string {

@@ -8,7 +8,7 @@ import type { Worker } from 'node:worker_threads';
 import { GitExecutionOwner, executionLimits } from '../src/lib/git-execution.js';
 import { CleanupIncomplete, CommandInterrupted, GitFailure, SessionClosed } from '../src/lib/execution-errors.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
-import { openSession, SessionInvalidated } from '../src/lib/session.js';
+import { openCliSession as openSession, SessionInvalidated } from '../src/lib/interfaces/cli/application.js';
 import { captureRepository } from '../src/lib/repository/capture.js';
 import { temporaryDirectory } from './cli-helpers.js';
 import { writeFileSync } from 'node:fs';

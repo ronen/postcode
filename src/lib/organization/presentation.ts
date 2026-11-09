@@ -1,6 +1,7 @@
+import { presentationMethods } from '../interfaces/cli/methods.js';
 import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
-import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../answer-presentation.js';
-import type { AnswerContext, AnswerDisplay } from '../answer-presentation.js';
+import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../interfaces/cli/answer-presentation.js';
+import type { AnswerContext, AnswerDisplay } from '../interfaces/cli/answer-presentation.js';
 import { validatePresentationContent, presentationChanges } from '../presentation-contracts.js';
 import type { PresentedOptions } from '../presentation-contracts.js';
 import { lookupDescription, lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';
@@ -11,7 +12,7 @@ import { displayWidth, padDisplay } from '../terminal-layout.js';
 import { compositionView, compositionAnnotation } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
 import path from 'node:path';
-import { identityReference, methods, recordId } from '../identity.js';
+import { identityReference, recordId } from '../identity.js';
 import { arrangeModuleView, renderUnicode } from '../presentation.js';
 import type { QualifiedView } from '../presentation.js';
 import type { ClaimContextRecord, EvaluationState, ModuleClaim, ProgramRecordStore, RecordId } from '../records.js';
@@ -124,6 +125,7 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
   presentation: PresentedOptions, title: string, resolution?: ResolutionContext, context: AnswerContext = {}): QualifiedOrganizationView {
   validatePresentationContent({ contract: 'organization', value: content });
   const { projection, evaluation: outcome, repository: captured } = content;
+  if (!projection.expansions.requested.includes('group-details')) throw new Error('Organization presentation requires evaluated group-details');
   const policy = organizationDisplayPolicy(projection.subject, presentation);
   if (presentation.moreDetails && !policy.source) throw new Error('More details require selected organization content');
   const evidence = captured.capture.status === 'available' ? captured.capture.evidence : null;
@@ -195,7 +197,7 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
   });
   const result: QualifiedOrganizationView = {
     ...answerDisplay(context), schema: 'postcode-organization-view/1-experimental',
-    id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: methods.presentation, ...answerIdentity(context) }),
+    id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: presentationMethods.presentation, ...answerIdentity(context) }),
     title,
     ...(resolution ? { resolution } : {}),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,

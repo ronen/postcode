@@ -1,11 +1,12 @@
+import { presentationMethods } from '../interfaces/cli/methods.js';
 import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
 import { sourceAttribution } from '../evidence-view.js';
-import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../answer-presentation.js';
-import type { AnswerContext } from '../answer-presentation.js';
+import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../interfaces/cli/answer-presentation.js';
+import type { AnswerContext } from '../interfaces/cli/answer-presentation.js';
 import { documentationLines, documentationNotice, presentDocumentation } from '../documentation-view.js';
 import { exportRoles, exportRoutes } from '../export-view.js';
 import { freezeOwned } from '../immutable.js';
-import { identityReference, methods, recordId } from '../identity.js';
+import { identityReference, recordId } from '../identity.js';
 import { presentQualification } from '../qualification-view.js';
 import { lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';
 import type { ResolutionContext } from '../resolution-context.js';
@@ -47,7 +48,7 @@ export function arrangeModuleExports(content: ModuleExportsContent, reference: s
     qualifications: content.contexts.map(item => presentQualification(item.context)),
     omittedExports: content.exports.length - exports.length,
     ...(presentation.moreDetails ? { moreDetails: { level: 'declaration-locations' as const, items: [...sources.values()].map(sourceAttribution) } } : {}) };
-  return freezeOwned(withDiagnosticMeanings({ ...view, id: recordId(session, 'module-exports-view', [methods.exportsPresentation, identityReference(session, id), title,
+  return freezeOwned(withDiagnosticMeanings({ ...view, id: recordId(session, 'module-exports-view', [presentationMethods.exportsPresentation, identityReference(session, id), title,
     presentation, identityReference(session, subject), answerIdentity(context), resolutionContextIdentity(session, resolution)]) }));
 }
 export type ModuleExportsView = ReturnType<typeof arrangeModuleExports>;

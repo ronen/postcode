@@ -1,0 +1,138 @@
+src/lib/session-protocol.ts:4:import type { openSession, ViewRequest, ExecutionOptions } from './session.js';
+src/lib/session-protocol.ts:8:type Opened = Extract<Awaited<ReturnType<typeof openSession>>, { status: 'opened' }>;
+src/lib/session-protocol.ts:10:export type Opening = { status: 'opened'; id: SessionId } | Exclude<Awaited<ReturnType<typeof openSession>>, Opened>;
+src/lib/session-protocol.ts:28:export type WorkerRequest = { type: 'execute'; operation: number; request: ViewRequest; execution: ExecutionOptions }
+test/compiler-candidate-paths.test.ts:8:import { openSession, SessionInvalidated } from '../src/lib/session.js';
+test/compiler-candidate-paths.test.ts:44:      const opened = await openSession({ configPath, excludedOutputDirectories: outputs });
+test/request-model.test.ts:5:import type { LensId, LensViewRequest as ViewRequest } from '../src/lib/requests.js';
+test/request-model.test.ts:6:import { openSession } from '../src/lib/session.js';
+test/request-model.test.ts:47:  const opened = await openSession({ configPath });
+test/request-model.test.ts:73:  const opened = await openSession({ configPath });
+test/request-model.test.ts:95:    const request: ViewRequest = kind === 'usage' ? { lens: 'usage', selector: null, presentation }
+test/request-model.test.ts:122:  const opened = await openSession({ configPath });
+test/request-model.test.ts:146:  const opened = await openSession({ configPath });
+test/request-model.test.ts:168:  const opened = await openSession({ configPath });
+test/request-model.test.ts:172:  const requests: ViewRequest[] = [];
+test/request-model.test.ts:201:  const opened = await openSession({ configPath });
+test/request-model.test.ts:226:  const opened = await openSession({ configPath });
+test/request-model.test.ts:231:    const result = await opened.session.execute({ lens, selector: null, presentation } as ViewRequest);
+test/request-model.test.ts:249:    const request = normalizeRequest({ lens: 'inspect', selector: 'entry', parameters, presentation } as ViewRequest);
+test/request-model.test.ts:261:  const opened = await openSession({ configPath });
+test/request-model.test.ts:274:    ] as ViewRequest[]) {
+test/request-model.test.ts:322:  const request = { lens: 'modules', selector: null, get presentation(): never { reads++; throw new Error('Must not reread rejected input'); } } as ViewRequest;
+test/presentation-compatibility.test.ts:13:import { openSession } from '../src/lib/session.js';
+test/presentation-compatibility.test.ts:29:  const opened = await openSession(fixture(t), {}, { ...defaultCatalog, presentations: definitions });
+test/human-output.test.ts:4:import type { ViewRequest } from '../src/lib/requests.js';
+test/human-output.test.ts:11:import { openSession } from '../src/lib/session.js';
+test/human-output.test.ts:32:  const opened = await openSession({ configPath: path.join(root, 'tsconfig.json') }, {}, {
+test/human-output.test.ts:92:  const rejected = await session.execute({ lens: 'inspect', selector: () => {}, presentation: { format, moreDetails: false } } as unknown as ViewRequest);
+test/human-output.test.ts:121:  const opened = await openSession({ configPath: path.join(root, 'tsconfig.json') }, {}, {
+test/human-output.test.ts:190:  const opened = await openSession({ configPath: path.join(root, 'tsconfig.json') }, { investigation: { agent } });
+test/human-output.test.ts:228:  const opened = await openSession({ configPath: path.join(root, 'tsconfig.json') });
+test/human-output.test.ts:233:  const rejected = await opened.session.execute({ lens: 'inspect', selector: callerData, presentation: { format, moreDetails: false } } as unknown as ViewRequest);
+test/human-output.test.ts:259:  const opened = await openSession({ configPath: path.join(root, 'tsconfig.json') });
+test/human-output.test.ts:264:      ...(omit ? { parameters: { unrepresentable: () => {} } } : {}), presentation: { format, moreDetails: false } } as unknown as ViewRequest);
+src/lib/session-worker.ts:5:import { openSession } from './session.js';
+src/lib/session-worker.ts:52:let opened: Awaited<ReturnType<typeof openSession>>;
+src/lib/session-worker.ts:95:  opened = await openSession(configuration, { runGit, onWork: progress => send({ type: 'work-progress', operation, progress }), investigation: {
+src/lib/requests.ts:48:export interface LensViewRequest {
+src/lib/requests.ts:66:export type ViewRequest = LensViewRequest | PresentRequest;
+src/lib/requests.ts:74:  | { readonly kind: 'report'; readonly report: 'usage'; readonly suppliedInputs?: Pick<LensViewRequest, 'selector' | 'subject' | 'reference' | 'parameters'> }
+src/lib/requests.ts:91:export type CapturedRequest = { readonly input: ViewRequest; readonly normalized: NormalizedRequest }
+src/lib/requests.ts:120:export function captureRequest(request: ViewRequest, catalog: Readonly<Record<string, LensDefinition>> = lenses): CapturedRequest {
+src/lib/requests.ts:191:  const snapshot = freezeOwned(input) as unknown as ViewRequest;
+src/lib/requests.ts:196:export function normalizeRequest(request: ViewRequest): NormalizedRequest {
+src/lib/requests.ts:200:function normalizeCapturedRequest(request: ViewRequest, catalog: Readonly<Record<string, LensDefinition>>): NormalizedRequest {
+src/lib/requests.ts:239:export function invalidDesignation(request: NormalizedRequest, supplied: LensViewRequest, catalog: Readonly<Record<string, LensDefinition>> = lenses): string | null {
+test/session-inputs.test.ts:16:import { openSession, SessionInvalidated, AnalysisFailure } from '../src/lib/session.js';
+test/session-inputs.test.ts:68:      const opened = (await openSession({ configPath }));
+test/session-inputs.test.ts:94:    const opened = (await openSession({ configPath, excludedOutputDirectories: [output] }));
+test/session-inputs.test.ts:140:    const opened = (await openSession({ configPath }));
+test/session-inputs.test.ts:213:      const opened = (await openSession({ configPath }));
+test/session-inputs.test.ts:243:      const opened = (await openSession({ configPath }));
+test/session-inputs.test.ts:272:  const opened = (await openSession({ configPath }));
+test/session-inputs.test.ts:369:    const opened = (await openSession({ configPath }));
+src/lib/commands.ts:4:import type { ViewRequest } from './session.js';
+src/lib/commands.ts:79:  | { kind: 'view'; configPath: string; request: ViewRequest };
+test/openai-investigator.test.ts:18:import { openSession } from '../src/lib/session.js';
+test/openai-investigator.test.ts:218:  const opened = await openSession({ configPath }, { investigation: { agent } });
+test/work-attribution.test.ts:8:import { openSession } from '../src/lib/session.js';
+test/work-attribution.test.ts:45:function view(result: Awaited<ReturnType<Extract<Awaited<ReturnType<typeof openSession>>, { status: 'opened' }>['session']['execute']>>) {
+test/work-attribution.test.ts:53:  const opened = await openSession({ configPath });
+test/work-attribution.test.ts:141:  const opened = await openSession({ configPath: fixture(t, true).configPath }, { investigation: { agent, bounds } });
+test/work-attribution.test.ts:204:  const opened = await openSession({ configPath: f.configPath }, { investigation: { agent } });
+test/work-attribution.test.ts:212:  const limited = await openSession({ configPath: f.configPath }, { investigation: {
+test/work-attribution.test.ts:271:  const f = fixture(t), opened = await openSession({ configPath: f.configPath });
+test/work-attribution.test.ts:325:  const opened = await openSession({ configPath: fixture(t).configPath }, { signal: controller.signal,
+test/work-attribution.test.ts:399:  const opened = await openSession({ configPath: project.configPath }, { onWork(progress) {
+test/work-attribution.test.ts:425:  const f = fixture(t), opened = await openSession({ configPath: f.configPath });
+test/work-attribution.test.ts:455:  const f = fixture(t), opened = await openSession({ configPath: f.configPath });
+test/work-attribution.test.ts:479:  const opened = await openSession({ configPath: fixture(t).configPath });
+test/investigation-integration.test.ts:18:import { openSession } from '../src/lib/session.js';
+test/investigation-integration.test.ts:57:  const opened = await openSession({ configPath: f.configPath }, { investigation: agent ? { agent } : {} });
+test/investigation-integration.test.ts:315:  const opened = await openSession({ configPath: f.configPath }, { investigation: { agent } });
+test/request-designation-input.test.ts:9:import { openSession } from '../src/lib/session.js';
+test/request-designation-input.test.ts:13:import type { ViewRequest } from '../src/lib/requests.js';
+test/request-designation-input.test.ts:32:  const opened = await openSession({ configPath }); assert.equal(opened.status, 'opened');
+test/request-designation-input.test.ts:41:      const request = { ...base, subject } as unknown as ViewRequest;
+test/request-designation-input.test.ts:95:      const request = input as unknown as ViewRequest;
+test/request-designation-input.test.ts:144:    const result = normalizeRequest(input as unknown as ViewRequest);
+test/request-designation-input.test.ts:154:  const missing = normalizeRequest({ ...base, selector: undefined } as unknown as ViewRequest);
+test/request-designation-input.test.ts:162:    const result = normalizeRequest(input as unknown as ViewRequest);
+test/request-designation-input.test.ts:169:    const result = normalizeRequest(input as unknown as ViewRequest);
+test/collection-selection.test.ts:12:import { openSession } from '../src/lib/session.js';
+test/collection-selection.test.ts:115:  const opened = await openSession({ configPath });
+test/answer-identity.test.ts:6:import { openSession } from '../src/lib/session.js';
+test/answer-identity.test.ts:21:  const opened = await openSession({ configPath });
+test/exports-lens.test.ts:17:import { openSession } from '../src/lib/session.js';
+test/exports-lens.test.ts:52:  const opened = await openSession(options, {}, definitions);
+src/lib/command-execution.ts:12:import type { ViewRequest, ExecutionOptions } from './session.js';
+src/lib/command-execution.ts:38:  execute(request: ViewRequest, execution?: ExecutionOptions): ExecutedRequest | Promise<ExecutedRequest>;
+src/lib/command-execution.ts:42:}, request: ViewRequest, supplied: unknown, configPath: string, command: number, output: Output, sink: ObservationSink, onDisplayed?: (result: DisplayedResult) => void): Promise<number> {
+test/session.test.ts:5:import { openSession } from '../src/lib/session.js';
+test/session.test.ts:18:  const opened = (await openSession({ configPath }));
+test/session.test.ts:68:    const result = (await openSession({ configPath }));
+test/session.test.ts:117:  const opened = (await openSession({ configPath }));
+test/session.test.ts:136:    const fresh = (await openSession({ configPath }));
+test/session.test.ts:160:  const opened = (await openSession({ configPath }));
+test/output-boundary.test.ts:8:import { openSession, SessionInvalidated } from '../src/lib/session.js';
+test/output-boundary.test.ts:43:  const refused = await openSession({ configPath, excludedOutputDirectories: [output] });
+test/output-boundary.test.ts:59:  const opening = openSession(options); options.excludedOutputDirectories.length = 0;
+test/output-boundary.test.ts:81:    const opened = await openSession({ configPath, excludedOutputDirectories: [output] });
+test/retained-presentation.test.ts:11:import { openSession } from '../src/lib/session.js';
+test/retained-presentation.test.ts:15:import type { LensViewRequest, ViewRequest } from '../src/lib/requests.js';
+test/retained-presentation.test.ts:36:  const f = fixture(t), opened = await openSession(f);
+test/retained-presentation.test.ts:44:  const requests: LensViewRequest[] = [
+test/retained-presentation.test.ts:137:  const opened = await openSession(f);
+test/retained-presentation.test.ts:184:    const report = requireResolution(await active.execute(request as ViewRequest));
+test/retained-presentation.test.ts:228:  const direct = worker ? null : await openSession(options, { investigation });
+test/lens-extensions.test.ts:9:import { openSession } from '../src/lib/session.js';
+test/lens-extensions.test.ts:54:    await assert.rejects(openSession({ configPath: '/catalog-rejection-must-not-open/tsconfig.json' }, {}, supplied), reason);
+test/lens-extensions.test.ts:88:  const opened = await openSession(fixture(t), { investigation: { agent: investigator } }, catalog());
+test/lens-extensions.test.ts:127:  const opened = await openSession(fixture(t), { investigation: { agent: investigator } }, catalog());
+test/lens-extensions.test.ts:143:  const opened = await openSession(fixture(t), {}, catalog());
+test/lens-extensions.test.ts:152:  const production = await openSession(fixture(t));
+test/lens-extensions.test.ts:163:  const pending = openSession(fixture(t), { investigation: { agent: investigator } }, definitions);
+test/lens-extensions.test.ts:210:  const opened = await openSession(options, { investigation: { agent: investigator } }, catalog());
+test/lens-extensions.test.ts:226:    const opened = await openSession(fixture(t), { investigation: { agent: investigator } }, catalog());
+src/lib/interactive-session.ts:17:import type { ViewRequest, ExecutionOptions } from './session.js';
+src/lib/interactive-session.ts:152:  const send = async (message: { type: 'check' } | { type: 'execute'; request: ViewRequest; execution: ExecutionOptions }) => {
+src/lib/interactive-session.ts:163:    async execute(request: ViewRequest, execution: ExecutionOptions = {}): Promise<ExecutedRequest> {
+src/lib/session.ts:17:import type { ViewRequest, CapturedRequest, ResultContract } from './requests.js';
+src/lib/session.ts:18:export type { ViewRequest } from './requests.js';
+src/lib/session.ts:55:export async function openSession(options: ProjectOptions, lifetime: { runGit?: RunGit; signal?: AbortSignal; investigation?: InvestigationDependencies; onWork?: (progress: WorkProgress) => void } = {}, definitions: RequestCatalog = defaultCatalog) {
+src/lib/session.ts:145:    execute: (request: ViewRequest, execution: ExecutionOptions = {}) => {
+test/subject-resolution.test.ts:8:import { openSession } from '../src/lib/session.js';
+test/subject-resolution.test.ts:79:  const opened = await openSession({ configPath });
+test/subject-resolution.test.ts:105:  const other = await openSession({ configPath });
+test/subject-resolution.test.ts:117:  const opened = await openSession({ configPath });
+test/subject-resolution.test.ts:142:  const opened = await openSession({ configPath });
+test/subject-resolution.test.ts:260:  const opened = await openSession({ configPath: path.join(root, 'tsconfig.json') });
+test/execution-ownership.test.ts:11:import { openSession, SessionInvalidated } from '../src/lib/session.js';
+test/execution-ownership.test.ts:177:  const first = await openSession({ configPath }, { runGit });
+test/execution-ownership.test.ts:183:  const second = await openSession({ configPath }, { runGit });
+test/execution-ownership.test.ts:189:  const third = await openSession({ configPath }, { runGit });
+test/execution-ownership.test.ts:194:  await assert.rejects(openSession({ configPath }, { runGit: async () => { throw new CleanupIncomplete('controlled Git child'); } }), CleanupIncomplete);
+src/lib/investigation/presentation.ts:29:export interface InvestigationViewRequest extends AnswerContext {
+src/lib/investigation/presentation.ts:44:export function createInvestigationView(store: ProgramRecordStore, session: SessionId, request: InvestigationViewRequest,
+src/lib/investigation/presentation.ts:56:  options: Omit<InvestigationViewRequest, 'lens' | 'definition' | 'title'> & { readonly title: string }, reporting: InvestigationReporting | null,

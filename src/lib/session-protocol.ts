@@ -1,7 +1,7 @@
 import type { WorkProgress } from './work-attribution.js';
 import type { RecordId, SessionId } from './records.js';
 import type { AgentInput, AgentReply, AgentIdentity, InvestigationRequest, AttemptReport, ReportedUsage } from './investigation/contracts.js';
-import type { openSession, ViewRequest, ExecutionOptions } from './session.js';
+import type { openCliSession as openSession, ViewRequest, ExecutionOptions } from './interfaces/cli/application.js';
 import type { GitRequest, GitResult } from './git-execution.js';
 import { AnalysisFailure, SessionInvalidated, CleanupIncomplete, GitFailure } from './execution-errors.js';
 

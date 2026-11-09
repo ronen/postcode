@@ -8,7 +8,7 @@ import { pathToFileURL } from 'node:url';
 import { verifyConfiguration } from './verify-configuration.mjs';
 import { runCli } from '../../_build/src/lib/cli.js';
 import { chatGPTInvestigator } from '../../_build/src/lib/investigation/openai/adapter.js';
-import { productionChatGPTCredentials } from '../../_build/src/lib/investigation/openai/auth-command.js';
+import { productionChatGPTCredentials } from '../../_build/src/lib/application/accounts.js';
 import { injectedSetup } from './injected-setup.mjs';
 import { requestBudget } from './request-budget.mjs';
 
