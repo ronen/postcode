@@ -72,7 +72,7 @@ export function capturePresentations(source: readonly PresentationDeclaration[])
 export function unsupportedOptions(declaration: PresentationDeclaration, choice: ConsumptionChoice, facts: readonly ConsumptionFact[]): readonly string[] {
   const unknown = Object.keys(choice.options).filter(option => !declaration.eligibility.some(rule => rule.option === option));
   return [...unknown, ...declaration.eligibility.flatMap(rule => {
-    const value = choice.options[rule.option];
+    const value = Object.hasOwn(choice.options, rule.option) ? choice.options[rule.option] : undefined;
     if (rule.when === 'present' && value === undefined || rule.when === 'truthy' && !value) return [];
     const valid = (!rule.values || rule.values.some(allowed => canonical(allowed) === canonical(value ?? null)))
       && (!rule.requires || rule.requires.every(fact => facts.includes(fact)));

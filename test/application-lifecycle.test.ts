@@ -51,6 +51,32 @@ test('direct requests capture caller data and declarations, honor subsets and re
   assert.equal(exact.kind, 'answer'); assert.deepEqual(exact.answer, before);
 });
 
+for (const when of ['present', 'truthy', 'always'] as const) test(`consumption ${when} rules consider only supplied own option values`, async t => {
+  const declarations: PresentationDeclaration[] = [{ id: 'summary', contract: 'modules', default: true,
+    requirements: { modules: [], groups: [] }, precondition: 'qualified',
+    eligibility: ['constructor', 'toString', '__proto__'].map(option => ({ option, when, values: [true], label: option })) }];
+  const opened = await openApplication(fixture(t), {}, { lenses, operations, presentations: declarations });
+  assert.equal(opened.status, 'opened'); const session = opened.session; t.after(() => session.close());
+  const raw = await session.execute(inventory); assert.equal(raw.kind, 'answer');
+  for (const request of [inventory, { kind: 'present', target: raw.answer.id } as const]) {
+    for (const [options, accepted] of [
+      [{}, when !== 'always'],
+      [JSON.parse('{"constructor":true,"toString":true,"__proto__":true}'), true],
+      [JSON.parse('{"constructor":false,"toString":false,"__proto__":false}'), when === 'truthy'],
+    ] as const) {
+      const result = await session.execute({ ...request, consumption: { presentations: ['summary'], options } });
+      if (accepted) {
+        assert.equal(result.kind, 'answer'); assert.equal(result.consumption!.selected.id, 'summary');
+        assert.equal(result.attribution.status, 'completed');
+        if (request.kind === 'present') assert.deepEqual(result.answer, raw.answer);
+      } else {
+        assert.equal(result.kind, 'resolution'); assert.equal(result.resolution.reason, 'presentation-unavailable');
+        assert.equal(result.attribution.status, 'refused');
+      }
+    }
+  }
+});
+
 test('direct boundary rejects malformed data without invoking accessors and preserves omitted attachment fields', async t => {
   const opened = await openApplication(fixture(t)); assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
   for (const request of [null, [], { ...inventory, lens: 'unknown' }, { ...inventory, designation: { kind: 'reference', value: 4 } },
