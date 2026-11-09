@@ -544,49 +544,57 @@ labels/endpoints or selecting a primary correction cannot silently reconcile
 conflicts. Keep architectural relationship claims distinct from account-subject
 associations, composition, citations, correction links and navigation lineage.
 
-## Alternative: create shared subjects on first exploration
+## Flexible introduction: shared subjects, local targets and prose
 
-The human proposes lazy creation: initially designate something by its account and
-the name used there; when first explored, create a subject and associate it with
-that account. Keep this as an alternative to identities from introduction, not a
-settled reversal of the previous recommendation. It can apply to entity-like and
-relationship referents through the same subject mechanism.
+The human first proposed lazy subject creation on exploration, then a fluid model
+allowing three routes together. Carry this forward for design rather than forcing
+one creation policy for all content:
 
-Two cases have different costs. If the account already explicitly identifies the
-referent and its meaning, the deferred step may be allocation/binding only. If it
-contains only a prose mention, establishing what it denotes or extracting a new
-definition is qualified analysis, attributed as a prerequisite of the exploration
-request. It can report ambiguity or inability to establish a useful subject.
-Selection does not itself establish the architectural meaning of the selected text.
+- An investigation explicitly declares subjects for central findings or other
+  useful shared referents. Importance is the investigation's judgment, not a
+  prerequisite that every subject must satisfy.
+- It can give other content account-local identifiers for possible later promotion.
+  An exact account ID plus local key identifies the target; the displayed name is
+  not required to be unique. A repeated promotion resolves to the same bound subject.
+- It can leave content as ordinary prose. If the human follows “Half Open,” retain
+  a subject with an initial contextual definition: “Half Open as used in account A.”
+  Later investigation can supply a more precise superseding definition.
 
-The clearest structured variant uses an exact account ID plus a stable local key,
-with a human-facing name and qualified description. Account-plus-name can be a lookup
-designation if it resolves unambiguously; repeated names within an account and
-ambiguous occurrences must not silently collapse. This local declaration already
-supplies scoped identity; laziness mainly postpones creation of a shared subject.
-Repeated resolution of the same declared local target should return the same bound
-subject. An already explicit existing-subject reference needs no new subject.
+The third route refines the earlier analysis: allocating a subject for an explicit
+contextual designation need not first extract or establish its architectural meaning.
+The initial definition preserves a focus, not an assertion that a particular state,
+runtime object or relationship has been identified correctly. Retain exact account
+identity, the selected wording and occurrence/context where available, plus origin
+in the human's selection and the source account's qualifications. Do not invent
+semantic certainty from that act of selection. Investigation is required when
+establishing a stronger definition, resolving ambiguous meaning or making new claims.
 
-Creation retains the subject and an attributable mapping/association from the exact
-origin account/local target to it, without rewriting the immutable account's
-referent list or an earlier answer. The link records when/how the subject was
-identified from the account, not a claim that the original result declared an ID
-that did not yet exist. A fresh inspection can select this later information; exact
-retrieval remains fixed. This needs an explicit application operation and retained
-link representation; the current presentation binding port does not authorize
-semantic subject creation or extra analysis.
+All routes converge on the same subject mechanism, with attributable immutable
+definitions/accounts and precise IDs. For example, S42 initially has D0 (“Half Open
+as used in ADMISSION-1”); a subsequent interpretation supplies D1 describing the
+breaker recovery state. S42 can continue while D1 explicitly supersedes D0. D0 is
+not retroactively enriched, and clarification need not imply its contextual wording
+was false. Exact revision/correction terminology and account partition remain open.
 
-Correction before or after creation preserves exact origins: exploring ADMISSION-1's
-Half-open does not silently target ADMISSION-2. Supply applicable correction context;
-record reuse/correspondence explicitly when the replacement concerns the same
-subject. Different account/local targets with matching names do not automatically
-share identity. Lazy creation thus still needs cross-account correspondence rules.
+Repeated prose names can have ambiguous meanings. Capture a selected occurrence
+when possible, or preserve the unresolved designation rather than silently choosing
+a meaning. If further investigation discovers conflation or several referents,
+describe that result and introduce separate subjects as needed. Equal names in
+different accounts never automatically establish identity. Type-specific Lens
+applicability cannot be inferred from an unresolved contextual definition.
 
-Benefits: less advance declaration of subjects nobody follows; natural elaboration
-from selected content; possible reuse of prose accounts. Costs: local and shared
-reference forms, a retained mapping lifecycle, possible first-follow-up analysis,
-and no shared-subject index for unpromoted content. Diagrams still require explicit
-relationship/participant semantics even before shared subject IDs exist; lazy IDs
-cannot substitute for that content. Compare eager and lazy forms on Half-open and
-one relationship before choosing. A hybrid could defer unneeded shared identities
-while creating them when generation already needs cross-account reference.
+Promotion retains a new mapping/qualified association to the exact originating
+account/local target or prose selection; it does not rewrite the account's referent
+list or an earlier answer. Fresh inspection can select the later association.
+This needs an explicit application operation and retained link representation;
+the current presentation binding port does not authorize subject creation. Following
+an old account preserves that origin and supplies applicable correction context,
+rather than silently targeting a replacement account.
+
+Benefits: no obligation to anticipate every useful subject or formalize all prose;
+the model can grow around actual investigation. Costs: several designation routes,
+local-to-shared mappings, initially underdetermined subjects and qualified refinement/
+correspondence rules. Only promoted subjects appear in the shared-subject index.
+Diagrams still require explicit relationship/participant semantics in selected
+accounts; contextual subjects alone do not supply those meanings. Probe all three
+routes with Half-open and a relationship before settling the implementation shape.
