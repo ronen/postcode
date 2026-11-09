@@ -24,6 +24,10 @@ Main was published and verified equal to origin/main at `815f2378a5e6f2d4ca36884
 
 > ok, proceed to M3
 
+2026-11-09, after discussing proceeding directly to integrated verification and review:
+
+> ok, proceed to M4
+
 ## Outcome
 
 2026-11-09: M1 is implemented through the required intermediate review checkpoint. Method provenance was separated in `b4dc07b`; the application boundary and shared CLI adapter are implemented at `94f3c5046115687205b695aafa33bba9c35fef96`. [Draft PR #13](https://github.com/ronen/postcode/pull/13) contains the task branch. The [M1 handoff](../reviews/application-interface-boundary/2026-11-09-m1-boundary-handoff.md) is committed for human-arranged independent review. Implementation stops at that gate; the task remains active, with M2–M4 work still required.
