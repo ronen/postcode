@@ -467,3 +467,47 @@ or identity across changed program states.
 Subject introduction, qualified reuse/correspondence, and later correction of
 mistaken identity therefore deserve explicit core treatment. Interface indexing
 and layout consume that model; they do not establish its architectural claims.
+
+## Relationships as content and investigative subjects
+
+The human asks whether relationships are account items, subjects themselves, or
+both. Governing concepts already distinguish a relationship from a qualified claim
+asserting it, and allow a relationship to play the role of investigative subject.
+Recommended design: relationships are expressed through structured qualified
+claims in accounts, and can be explicitly selected for further investigation.
+These roles need not require duplicate substantive content or a new entity kind.
+
+A relationship item identifies its meaning, participant references and their roles,
+relevant conditions/scope, and attributable evidence/provenance/qualification.
+For example: Half-open is a state of the breaker policy kind; or a waiting execution
+waits for a recovery decision of a shared breaker role during an occupied trial.
+Do not force every relationship into two unlabelled endpoints. An interaction or
+transition may need several participants, meaningful order, triggers and effects.
+The small supported content vocabulary defines semantics consumers rely on;
+novel relationship topics can remain qualified explanatory content until a suitable
+structured contract is defined. Arbitrary edge labels alone do not grant that
+contract or establish diagram semantics.
+
+Exact selection of a relationship claim/account supports investigation of the
+asserted connection in its context. If multiple accounts need a continuing shared
+relationship referent, give that relationship an explicit subject identity R,
+distinct from the immutable accounts C1/C2 that describe or challenge it. This is
+the same subject-versus-description distinction used for Half-open. Begin with
+addressable/selectable relationship claims; do not require an additional separately
+maintained relationship identity for every displayed edge. The item/account
+partition and correction target still obey whole-investigram replacement unless
+separately revised.
+
+Correction of C1 to C2 can retain R when they concern the same connection with a
+better description. A discovered different connection, split or mistaken identity
+requires explicit new referents/correspondence rather than retargeting R. A denial
+or unresolved conflict can remain an account about R; retaining its identity does
+not assert that the alleged connection exists. Shared endpoints or relation labels
+alone do not establish sameness across accounts or configurations.
+
+For diagrams, an edge is a depiction of selected qualified relationship claims,
+with access to their support and unresolved alternatives. Following it can target
+the exact claim or an explicitly exposed shared relationship subject. Deduplicating
+labels/endpoints or selecting a primary correction cannot silently reconcile
+conflicts. Keep architectural relationship claims distinct from account-subject
+associations, composition, citations, correction links and navigation lineage.
