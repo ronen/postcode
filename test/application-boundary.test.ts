@@ -53,7 +53,7 @@ test('application and companion service runtime/type imports do not reach CLI, V
     if (seen.has(file)) return;
     seen.add(file);
     const relative = path.relative(root, file);
-    assert.doesNotMatch(relative, /(^interfaces\/cli\/|(^|\/)(cli|commands|shell|interactive-session|session-worker|session-protocol|presentation|program-presentation|retained-presentation|request-reporting|terminal-text|terminal-layout|answer-presentation|source-disclosure)\.ts$)/, chain.join(' -> '));
+    assert.doesNotMatch(relative, /(^interfaces\/cli\/|^(requests|request-catalog|presentation-contracts|diagnostic-view)\.ts$|(^|\/)(cli|commands|shell|interactive-session|session-worker|session-protocol|presentation|program-presentation|retained-presentation|request-reporting|terminal-text|terminal-layout|answer-presentation|source-disclosure)\.ts$)/, chain.join(' -> '));
     const source = ts.createSourceFile(file, readFileSync(file, 'utf8'), ts.ScriptTarget.Latest, true);
     const inspect = (node: ts.Node): void => {
       const specifier = ts.isImportDeclaration(node) || ts.isExportDeclaration(node) ? node.moduleSpecifier

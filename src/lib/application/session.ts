@@ -15,8 +15,8 @@ import { openTypeScriptProject } from '../typescript/project.js';
 import type { ProjectOptions } from '../typescript/project.js';
 import { referenceBinding } from '../reference-binding.js';
 import type { ReferenceBinding, ReferenceKind } from '../reference-binding.js';
-import { captureApplicationRequest, captureFields } from './requests.js';
-import type { SemanticRequest, InputConstraints } from './requests.js';
+import { captureApplicationRequest, captureFields, InvalidRequestId } from './requests.js';
+import type { SemanticRequest, InputConstraints, InputProblem } from './requests.js';
 import { applicationCatalog, captureApplicationCatalog } from './catalog.js';
 import type { ApplicationCatalog } from './catalog.js';
 import type { ApplicationSession, OpenApplicationResult, ApplicationDependencies, ApplicationContext, ApplicationResult, CapturedInvocation } from './contracts.js';
@@ -116,10 +116,16 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
       const captured = captureApplicationRequest(request, catalog.lenses);
       const supplied = captureFields(execution);
       const requestId = typeof supplied.input.requestId === 'string' ? supplied.input.requestId : undefined;
+      const correlationProblems: InputProblem[] = supplied.problems.filter(problem => problem.omittedField === 'requestId');
+      if (Object.hasOwn(supplied.input, 'requestId') && requestId === undefined) correlationProblems.push({ field: 'requestId',
+        reason: 'Request correlation must be a string.', representation: 'preserved' });
+      if (correlationProblems.length) return operation(async () => {
+        throw new InvalidRequestId({ input: Object.hasOwn(supplied.input, 'requestId') ? { requestId: supplied.input.requestId! } : {}, problems: correlationProblems });
+      });
       const descriptor = execution && typeof execution === 'object' ? Object.getOwnPropertyDescriptor(execution, 'invocation') : undefined;
       const invocation = descriptor && 'value' in descriptor && descriptor.value !== undefined ? captureFields(descriptor.value, 'invocation')
         : supplied.problems.some(problem => problem.omittedField === 'invocation') ? { input: {}, problems: supplied.problems.filter(problem => problem.omittedField === 'invocation') } : undefined;
-      return operation(() => perform(captured, { ...(requestId ? { requestId } : {}), ...(invocation ? { invocation: { fields: invocation.input, problems: invocation.problems } } : {}) }, false));
+      return operation(() => perform(captured, { ...(requestId !== undefined ? { requestId } : {}), ...(invocation ? { invocation: { fields: invocation.input, problems: invocation.problems } } : {}) }, false));
     },
     interrupt: () => dispose(new CommandInterrupted()),
     async close() { state = undefined; lifetime.signal?.removeEventListener('abort', interrupt); await dispose(new SessionClosed()); },

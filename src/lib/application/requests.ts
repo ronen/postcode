@@ -35,6 +35,17 @@ export interface RejectedInput {
   readonly input: Readonly<Record<string, ParameterValue>>;
   readonly problems: readonly InputProblem[];
 }
+
+/** Invalid occurrence correlation refuses a direct call before application work.
+ * Safe rejected data and explicit omission reasons remain available to the caller. */
+export class InvalidRequestId extends TypeError {
+  readonly captured: ReturnType<typeof captureFields>;
+  constructor(captured: ReturnType<typeof captureFields>) {
+    super('Request correlation must be a string; omit requestId to generate a correlation ID.');
+    this.name = 'InvalidRequestId';
+    this.captured = freezeOwned(captured);
+  }
+}
 export type SemanticRequest = ConsumptionRequirements & (
   | { readonly kind: 'lens'; readonly lens: string; readonly question: string; readonly designation: SubjectDesignation;
       readonly parameters: Readonly<Record<string, ParameterValue>>; readonly programInput: 'session-configured-project' }

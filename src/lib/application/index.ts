@@ -26,6 +26,8 @@
  * Opening can return project-open-failed or throw a lifecycle/cleanup failure.
  * execute returns answer, resolution or usage; resolution is qualified refusal,
  * not an empty answer. Typed lifecycle errors remain distinct from result data.
+ * Invalid requestId correlation rejects with InvalidRequestId before work begins;
+ * its captured input/problems preserve safe values or explicit omission reasons.
  * onWork and investigator onProgress/onReport callbacks receive owned cloneable
  * reports. Call interrupt() for terminal cancellation, then separately await
  * close(); usage() and work() remain available for final accounting. */
@@ -33,6 +35,7 @@ export { openApplication } from './session.js';
 export type { ApplicationSession, ApplicationResult, AnswerDelivery, ResolutionDelivery, UsageDelivery,
   SelectedAnswer, ApplicationContext, ApplicationDependencies, ExecutionContext, OpenApplicationResult, Capability, ProjectOptions } from './contracts.js';
 export type { ApplicationRequest, SemanticRequest, InformationRequirements, ConsumptionChoice, InputProblem } from './requests.js';
+export { InvalidRequestId } from './requests.js';
 export type { QualifiedContent } from './content.js';
 export type { ApplicationCatalog } from './catalog.js';
 export type { PresentationDeclaration, ConsumptionDecision, OptionEligibility } from './consumption.js';

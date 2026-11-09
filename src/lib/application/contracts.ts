@@ -51,6 +51,8 @@ export interface UsageDelivery extends ApplicationDelivery { readonly kind: 'usa
 export type ApplicationResult = AnswerDelivery | ResolutionDelivery | UsageDelivery;
 export type PreparedResult = ApplicationResult extends infer T ? T extends ApplicationResult ? Omit<T, 'attribution'> : never : never;
 export interface ExecutionContext {
+  /** Supplied strings are preserved, including empty strings. Invalid values
+   * reject with InvalidRequestId; omission/undefined generates a correlation ID. */
   readonly requestId?: string;
   /** Opaque caller-owned reporting fields; never semantic authority or answer identity. */
   readonly invocation?: Readonly<Record<string, ParameterValue>>;

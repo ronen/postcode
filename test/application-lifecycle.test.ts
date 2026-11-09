@@ -4,7 +4,7 @@ import type { TestContext } from 'node:test';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { temporaryDirectory } from './cli-helpers.js';
-import { openApplication, guardPublication, SessionBusy, SessionClosed, SessionInvalidated } from '../src/lib/application/index.js';
+import { openApplication, guardPublication, SessionBusy, SessionClosed, SessionInvalidated, InvalidRequestId } from '../src/lib/application/index.js';
 import type { ApplicationRequest, ExecutionContext, PresentationDeclaration } from '../src/lib/application/index.js';
 import { withCliOperation } from '../src/lib/application/operation-scope.js';
 import { lenses } from '../src/lib/application/lenses.js';
@@ -177,5 +177,46 @@ test('unrepresentable invocation attachments are attributed to the attachment, n
     assert.deepEqual(result.context.invocation, { fields: {}, problems: [{ field: 'invocation',
       reason: 'An invocation attachment must be a plain object.', representation: 'omitted', omittedField: 'invocation' }] });
     assert.deepEqual(structuredClone(result), result);
+  }
+});
+
+test('invalid direct request correlation is refused without losing safe input or executing accessors', async t => {
+  let started = 0, accessed = 0;
+  const opened = await openApplication(fixture(t), { onWork() { started++; } });
+  assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
+  const cases: { execution: unknown; representation: 'preserved' | 'omitted'; value?: unknown }[] = [
+    ...[42, false, null, { nested: ['safe', 7] }, []].map(value => ({ execution: { requestId: value }, representation: 'preserved' as const, value })),
+    { execution: { get requestId() { accessed++; throw Error('Accessor ran'); } }, representation: 'omitted' },
+    { execution: { requestId: () => 42 }, representation: 'omitted' },
+    { execution: { requestId: NaN }, representation: 'omitted' },
+  ];
+  for (const item of cases) {
+    await assert.rejects(opened.session.execute({ kind: 'report', report: 'usage' }, item.execution as ExecutionContext), error => {
+      assert.ok(error instanceof InvalidRequestId);
+      assert.equal(error.name, 'InvalidRequestId');
+      const captured = error.captured;
+      assert.deepEqual(captured.input, item.representation === 'preserved' ? { requestId: item.value } : {});
+      assert.equal(captured.problems[0]!.field, 'requestId');
+      assert.equal(captured.problems[0]!.representation, item.representation);
+      if (item.representation === 'omitted') assert.equal(captured.problems[0]!.omittedField, 'requestId');
+      assert.deepEqual(structuredClone(captured), captured);
+      assert.ok(Object.isFrozen(captured));
+      return true;
+    });
+  }
+  const changing = { requestId: { label: 'before' } };
+  const rejected = opened.session.execute({ kind: 'report', report: 'usage' }, changing as unknown as ExecutionContext);
+  changing.requestId.label = 'after';
+  await assert.rejects(rejected, error => {
+    assert.ok(error instanceof InvalidRequestId);
+    assert.deepEqual(error.captured.input, { requestId: { label: 'before' } });
+    return true;
+  });
+  assert.equal(accessed, 0); assert.equal(started, 0); assert.equal(opened.session.work(), undefined);
+  for (const requestId of ['kept', '', undefined]) {
+    const result = await opened.session.execute({ kind: 'report', report: 'usage' }, { ...(requestId === undefined ? {} : { requestId }) });
+    assert.equal(result.kind, 'usage'); assert.equal(result.attribution.status, 'completed');
+    if (requestId !== undefined) assert.equal(result.context.id, requestId);
+    else assert.ok(result.context.id.length > 0);
   }
 });
