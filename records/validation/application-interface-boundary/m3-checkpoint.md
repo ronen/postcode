@@ -1,0 +1,45 @@
+# M3 CLI consumers and companion services
+
+Date: 2026-11-09
+Task: [Application interface boundary](../../tasks/2026-11-08-application-interface-boundary.md)
+Plan: [Application interface boundary](../../../docs/plans/application-interface-boundary.md)
+Implementation: `0bb2580156bc6c12b09282827a052d64e5c02479`
+Prior M2 implementation: `aa84ed8208948210b51c5f34b7775c5e05a33c4d`
+Extraction baseline: `b4dc07b`
+Baseline emitted-source SHA-256: `70d8d8bebfe283fc06e770300df52ee3fe267a5e99cc8eaa95ebc6f998b62c02`
+M3 emitted-source SHA-256: `ea0f6443e707cdb57788c7d2eb48bbf3fc4c1afe2386d79d4f90b39524bd795e`
+
+## Implementation and scope
+
+The human authorized proceeding to M3 after M2. One-shot and shell now share runtime assembly and output-directory exclusions, as well as the existing application engine and CLI adapter. Private worker View/arrangement-key transport and parent usage finalization remain unchanged. Signal handling and EOF ownership remain in the hosts.
+
+Account/provider assembly and the explicitly requested cost-bearing connection check are available through `application/accounts.ts`, using the existing credential and provider services. Configuration returns typed reasons. CLI policy owns route disclosures and command/document guidance, including guidance for credentials revoked after preflight. Authentication command parsing, output and process SIGINT handling now reside in the CLI, passing cancellation into the services. Ordinary setup does not perform the connection check or switch billing routes.
+
+`application/observations.ts` supplies the neutral version-four envelope, sink acknowledgment, failure-isolated delivery and local file sink. `application/feedback.ts` prepares owned feedback snapshots and attaches caller-supplied rendering. Neither opens a project, investigates, corrects an account or reconstructs missing source context. The CLI retains View-specific batch construction, source-disclosure classification, terminal warnings and feedback rendering. Displayed-result feedback still consumes the CLI's supplied observation-shaped snapshot; this does not introduce a general display-receipt contract or resolve the separately recorded research/feedback coupling.
+
+Report data contracts are separate from rendering. Command continuations and answer-as-subject shell guidance belong to the CLI. Neutral subject-resolution and credential reasons omit shell commands, while the adapter restores the existing CLI wording. Existing in-process CLI tests use the shared adapter and updated intended service entries. The temporary root `session.ts` shim and obsolete mixed-responsibility modules are removed; no alternate semantic executor remains.
+
+The architecture map and implementation conventions describe the implemented entries, ownership and script practices. No method versions, identity formulas, record formats, batch version, output semantics or comparison allowances changed. The [M1 provenance checkpoint](boundary-checkpoint.md) remains separate, and historical validation/review records remain unchanged. M3 adds no GUI, public transport, persistence or captured-basis export.
+
+## Script migration
+
+- `compare-session-requests`, `measure-session-journey`, `measure-partial-session` and `assess-human-output` use `interfaces/cli/application.openCliSession`. Live program-output comparisons reuse the existing test helper that separates invocation context/work from program output; precise IDs, compact bindings, support, output and ordering remain compared. The supplied selector is checked in normalized request context, where designation now belongs, rather than in Projection parameters. The repository-sized probe uses `work-attribution` as its stable subject after removal of the root session module.
+- `profile-analysis` instruments current arrangement functions, CLI observation construction and application opening. It and `measure-partial-session` document that older-build modes require the migrated module/export and View shapes. Both interruption probes were inspected and executed: their stable CLI, worker and compiler instrumentation targets remain valid and needed no edits.
+- `module-investigation/run-shell` and `diagnose-chatgpt` use the account service entry. `verify-configuration`, `injected-setup`, `check-browser`, `request-budget` and `usage-report` retain their existing dependency-independent behavior and fixture contracts; their imports were checked separately. `comparison-fixtures` retains its exports and behavior for historical and current callers.
+- Historical construction/revision/session-conversion/analysis comparisons and the benchmark/measurement pair retain their old build paths and assertions. Nearby comments identify those assumptions. In particular, historical `measure-analysis` still expects the old observations module; the product does not retain a shim for it.
+- The focused extraction journey oracle loads `session.openSession` from its recorded pre-extraction baseline and `interfaces/cli/application.openCliSession` from the final build. Only this entry selection changed; its assertions, deterministic occurrence sources, reference/allocation policy and explicit M1 outcome allowance did not change. The stable `runCli` extraction oracle is unchanged.
+
+## Verification
+
+- A fresh build was emitted after moving the previous build aside. Obsolete generated modules were confirmed absent, preventing stale files from satisfying migrated imports. `npm run build`, `npm run check` and `git diff --check` passed.
+- The full offline suite, `node --test --test-concurrency=2 _build/test/*.test.js`, passed **663/663 tests**, without failures, skips or environment exceptions. Local loopback access was enabled for authentication fixtures. All 25 focused service/feedback/observation tests also passed.
+- The application runtime/type dependency test now traverses all four intended entries: application, accounts, observations and feedback. None reaches CLI, View or terminal modules. New tests verify typed unavailable reasons, no cross-route reads, no implicit connection check, mid-exchange credential guidance, owned feedback snapshots, context-free behavior and delivery failure isolation.
+- Existing tests retain authentication without a project, preflight ordering, disabled/invalid setup, billing/no-fallback, cancellation, failed-display snapshot replacement, observation publication/cleanup and terminal/JSON assertions. A new controlled assessment test drives the real CLI shell through scripted investigation, displayed-result feedback and exit, with credential-token and fetch tripwires: both remain at zero and the request ledger remains empty.
+- All **21 stable CLI cases** and **60 retained-answer/allocation cases** pass against the post-provenance baseline, across in-process and worker hosts with ordinary and forced-prefix-collision fixtures. Both reports identify the emitted-source digests above; no method-split allowance is used.
+- Eight additional deterministic baseline checks compare complete output, exit status and observation batches for help, authentication status/reauthorization, text/JSON context-free feedback, unknown provider, unavailable API credentials and unavailable ChatGPT credentials. All agree; no provider requests occur.
+- The live session comparison passes **288 complete View/output comparisons** across four fixtures, including reversed/repeated request order and compact references. Session measurement completes 11 direct requests and 11 shell requests on the dependency journey fixture, all shell outcomes completed.
+- Syntax and built named-export linkage were checked for all 14 live/assessment entry points, without importing inference-starting assessment entry points. Nineteen named built exports resolved. The profiler successfully rewrites a disposable current build and runs a real CLI inspection through instrumented application, arrangement, worker and observation boundaries.
+- Both compiler interruption probes pass with 80,000 declarations: normal controls publish and exit 0, interrupted runs publish no View and exit 130. The shell probe records only the interruption event for the cancelled command; the one-shot probe confirms process SIGINT reaches worker disposal.
+- The repository-sized clean and unresolved-re-export projects each complete four rounds of five warmed Lens requests (**40 measured requests** total). Every repeated program output remains equal, with one distinct Projection per Lens in each project; partial materialization is retained in the partial fixture. This checks the migrated measurement path and reuse assertions, without imposing a latency or memory threshold.
+
+No live credentials or paid inference were used. Measurement timings are descriptive and are not performance guarantees or thresholds. These are implementing-agent checks, not independent review or human acceptance of final integration. M3 is complete; M4 integrated verification, remaining documentation and final review handoff remain within the active task.
