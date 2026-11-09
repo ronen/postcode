@@ -293,7 +293,9 @@ and capture descriptive context without silently changing earlier requests.
 The human proposes investigation output containing new subjects `{name, definition}`,
 PostCode-assigned internal IDs, later context containing subjects and IDs, and
 updates `{id, definition}` targeting identity rather than potentially reused names.
-This is a promising mechanism under discussion, not an adopted output schema.
+The human endorsed this direction and its creation/update refinements in discussion.
+This is an emerging design agreement, not an adopted output schema or authorization
+to implement; representation and account partition remain open.
 
 - New declarations also need submission-local keys so relationships and claims in
   the same result can refer to them before PostCode assigns retained IDs. Validate
@@ -332,3 +334,29 @@ This is a promising mechanism under discussion, not an adopted output schema.
 Recommended initial distinction: a concise qualified identifying definition for
 each subject, with richer admission/state/interaction accounts referring to it.
 The definition is revisable, but need not absorb every newly learned fact.
+
+## Information associated with a subject
+
+The human asks whether subjects can have other associated items besides definitions.
+Recommended direction: the subject is a stable referent for multiple qualified
+items; a definition is one role among them. Half-open could have identifying
+descriptions, state-of relationships, admission rules, transition accounts,
+concurrent-caller interactions, and recorded limitations or unresolved questions.
+These examples guide the bounded capability, not a universal category catalogue.
+
+Keep substantive information in qualified accounts/claims and associate it explicitly
+with subjects. An interaction can concern Half-open, a shared breaker role and
+individual executions without duplicating the account under each subject. Association
+roles explain relevance; they do not themselves assert state ownership, causality
+or other program relationships. Those remain qualified content. Evidence supports
+particular claims/accounts, rather than automatically corroborating everything
+associated with a subject. Revision history concerns those accounts and is surfaced
+through subject inspection without becoming a behavioral property of the subject.
+
+Addition of a complementary account differs from correction of an identified
+account; neither mutates subject identity. Working selection chooses exact qualified
+items for a question without implying a single reconciled description. Reuse existing
+explicit investigram associations as a foundation, extending subject kinds and
+content as needed. Whether an item is a whole investigram or an addressable portion
+remains open, especially because correction and complete-delivery rules currently
+operate on whole investigrams.
