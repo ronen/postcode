@@ -8,9 +8,10 @@ or implementation authorization. Recommendations and unresolved choices remain
 open. The [discussion notes](structured-architectural-accounts.md) retain the
 alternatives, implementation inspection and research behind this synthesis.
 
-Review follow-up: the [review assessment](structured-architectural-accounts.md#review-assessment-unresolved-contracts-2026-11-10)
-identifies unresolved terminology, addressing, request/selection and completeness
-contracts in this version. Its proposed scope reduction has not been agreed.
+This version incorporates the clarifications from the
+[review assessment](structured-architectural-accounts.md#review-assessment-unresolved-contracts-2026-11-10).
+Remaining choices are marked **Needs design** where they arise and collected below.
+The proposed reduction of first-delivery scope has not been agreed.
 
 The [foundation](../foundation/README.md), [application specification](../docs/app-specification.md),
 [core concepts](../docs/core-concepts.md), [architectural constraints](../docs/architectural-constraints.md)
@@ -41,11 +42,12 @@ This vocabulary describes responsibilities, not storage tables or public API typ
 
 | Concept | Proposed responsibility |
 | --- | --- |
-| Subject | An identified referent that investigations and information can concern: a module, policy kind, state, instance role, execution role, relationship, or account itself. Names aid recognition; IDs establish reference. |
+| Subject | The governing role: what a Lens investigates or a claim concerns. Entities, relationships, collections and investigrams can play this role; it is not another entity kind. |
+| Retained subject reference | Working terminology for the common identity/reference mechanism. It identifies the referent playing the subject role without turning every referent into an Entity. Names aid recognition; references preserve the established identity. |
 | Qualified item | Information about one or more subjects, with attributable scope, evidence, method/provenance and limitations. Definitions are one kind of information among others. |
 | Investigram | The existing immutable unit of retained interpretation, potentially containing structured content and prose. Mechanical claims retain their own character and guarantees. |
-| Architectural account | A coherent explanation that may occupy one or several investigrams. This need not introduce another retained aggregate type. |
-| Working selection | Exact qualified parts selected for a question, with selection basis and revision context. Selection does not establish a synthesized explanation. |
+| Architectural account | A coherent explanation that may occupy one or several investigrams. The explanatory term alone does not give a collection an identity or make it a correction target. |
+| Working selection | Exact qualified parts selected for a question, with selection basis and revision context. A retained selection is immutable; a changed selection produces another answer rather than mutating it. Selection does not establish a synthesized explanation. |
 | Exact answer | The existing fixed record of selected content and support, including the revision/association context captured for that answer. |
 
 The retained architectural model comprises subjects, qualified information,
@@ -53,6 +55,24 @@ relationships, support and revision/conflict history. It can be partial, contest
 and incomplete. Identity does not establish that a hypothesized relationship exists
 or that an account is correct. Cross-Session persistence and correspondence across
 program revisions are outside this first scope.
+
+For precise addressing in this note, “account A” means an identified investigram
+unless explicitly described as a collection. Correction targets are investigram IDs;
+local designations belong to an exact investigram. A multi-investigram explanation
+can be identified through a retained selected answer without a mutable account
+aggregate. A reference to that answer is distinct from references to its constituents.
+
+**Needs design — interpreted identity.** Governing documents allow implemented
+architectural subjects but do not specify the proposed allocation/continuity rules
+for interpreted referents such as Half-open. Specify their grounding, scope and
+guarantees, and assess the corresponding decision/document changes. Do not silently
+redefine Subject or extend Entity to cover every addressable thing.
+
+**Needs design — selection owner.** Prefer extending the existing immutable
+investigation-selection Projection for retained selected answers. Its Lens/question,
+parameters, supported constituents and selection policy need a contract. Investigation
+input selections and mutable future Workspace/View choices remain distinct uses;
+they do not make the retained answer mutable or require a Workspace in this slice.
 
 ### One mechanism across producers
 
@@ -67,6 +87,13 @@ same-Session identity and capture rules. Interpretation uses supplied IDs and ne
 declarations. A compiler-derived export claim and an interpreted responsibility
 account can concern the same module M without sharing an epistemic guarantee.
 Mechanical results do not become investigrams to fit the common mechanism.
+
+The shared contract includes qualified-information retention as well as identity
+and indexing; it need not eagerly compute every mechanical item before Lens
+evaluation. Shared allocation does not prevent independent discoveries of duplicate
+referents, including an interpreter describing a symbol whose mechanical ID it was
+not supplied. Reuse known references; preserve unresolved duplicates for qualified
+correspondence rather than promising automatic semantic deduplication.
 
 A policy kind implemented by M may be a different subject, connected by a qualified
 implementation relationship. What something is, how it was discovered, and how a
@@ -83,7 +110,8 @@ including identifying descriptions and the structured forms needed by the select
 diagrams. Investigations can invent meaningful topics using supported qualified
 content forms. The initial recognized vocabulary remains to be chosen.
 
-Exact item/account references identify correction targets. Titles or topic labels
+Exact investigram references identify interpretation correction targets; a finer
+item address does not authorize a sub-investigram patch. Titles or topic labels
 support discovery; matching labels never imply replacement or equivalence. An
 invented topic does not acquire specialized rendering behavior by its name.
 
@@ -103,7 +131,10 @@ Keep these relationships distinct:
 The selected input subject and actual prior-content exposure are separate again.
 Extend the existing referent/association machinery rather than maintain duplicate
 inventories with unclear ownership. Index results expose IDs, roles, titles, scope
-and revision context; substantive summaries count as exposure, not complete delivery.
+and revision context; substantive titles and summaries count as exposure, not
+complete delivery. Rich listings can therefore broaden later reconsideration.
+**Needs design:** choose useful listing content and bounds while preserving those
+exposure rules; relabeling substantive text as metadata cannot avoid them.
 
 ## Introduction and change
 
@@ -113,13 +144,24 @@ Allow three routes into the same subject mechanism:
    submission-local key, a name and an attributable identifying description.
    PostCode validates the result and assigns a retained ID. Other content in the
    same result can use that local key before allocation.
-2. **Local designation.** An account gives something a local key without creating
-   a shared subject yet. Later exploration can promote the exact account/key pair;
+2. **Local designation.** An investigram gives something a local key without creating
+   a shared subject yet. Later exploration can promote the exact investigram/key pair;
    repeated promotion resolves to its established binding.
 3. **Prose selection.** A human follows wording such as “Half Open.” PostCode can
    establish “Half Open as used in account A,” retaining the exact account and
    selected occurrence/context where available. This records a focus, not an
-   inferred precise architectural definition.
+   inferred precise architectural definition. The initial designation is an
+   attributed selection record, not an investigram fabricated from the human action.
+
+Submission-local subject keys and investigram-local designation keys have different
+owners and must remain distinguishable. Equal local keys in ADMISSION-1 and its
+replacement do not establish continuity. Reuse an existing shared subject reference
+or retain an explicit mapping with appropriate support; never inherit by spelling.
+
+**Needs design — prose selection.** Define the selection record's qualification,
+reference shape and repeated-selection behavior. An exact investigram plus stable
+occurrence selector is a candidate for idempotence, not a selected ID formula.
+Repeated wording alone does not identify an occurrence or resolve its meaning.
 
 All routes preserve origin. Later accounts can improve a subject's definition, but
 do not retrospectively enrich the original. Promotion adds a retained mapping or
@@ -129,7 +171,7 @@ Subject creation needs an application operation; presentation binding is insuffi
 
 Later context supplies subject IDs, relevant exact descriptions and qualifications.
 New information identifies the subject ID. Replacement also identifies the exact
-earlier account, its replacement and a supported reason: subject ID alone cannot
+earlier investigram, its replacement and a supported reason: subject ID alone cannot
 choose among several descriptions. Validate local/existing references and accept
 the result atomically, with no partial subject creation on rejection.
 
@@ -146,6 +188,11 @@ from record kind and producer provenance. A free-form assertion that something i
 a module cannot grant compiler capabilities; Lens applicability also requires the
 actual supported analysis context.
 
+**Needs design — interpretive Lens offers.** Define what makes a question applicable
+to a qualified or initially unknown subject, the support it requires, and how an
+offer is explained. Classification may inform this without becoming established
+fact. Deferring compiler capabilities does not by itself settle interpretive offers.
+
 Relationships may themselves have subject identities and qualified accounts. Use
 the same explicit/local/prose routes rather than requiring every relationship to
 become a shared subject immediately. A relationship account supplies participants,
@@ -157,6 +204,12 @@ qualified correspondence and preserve both references and their original account
 If S0 conflates two things, record that finding and introduce/reference S1 and S2.
 Do not automatically distribute old claims or edges between them. A legitimate
 whole with two parts is not necessarily a conflation.
+
+A correspondence or conflation finding alone does not trigger the existing
+correction-based reconsideration machinery. An explicit correction of an identifying
+investigram can trigger its established propagation; merely referring to the same
+subject is not an exposure dependency. **Needs design:** decide whether that limit
+is sufficient initially or whether further impact signaling is required.
 
 Initially, prefer recording and exposing these accounts over automatic merging,
 transitive equivalence, pooled histories or graph rewriting. Later reconciliation
@@ -176,11 +229,15 @@ and its discovery are staged. This proposal adds no verification of library beha
    recovery configuration. It introduces Half-open S, or exposes a local designation
    that can be promoted. Its description H1 distinguishes the state from a trial
    execution. ANSWER-1 fixes the selected content and support.
-3. **Follow-up.** The human selects S for concurrent callers and outcomes. Context
-   includes its selected definition, qualifications and exact earlier-account
-   references. To correct ADMISSION-1, the investigator must receive the target's
+3. **Follow-up.** The human selects S for concurrent callers and outcomes. The
+   request form remains unresolved: it could investigate S with explicitly selected
+   earlier context, or investigate ADMISSION-1 with a declared focus on S. In either
+   case distinguish the subject, information need, selected descriptive context and
+   navigation origin. To correct ADMISSION-1, the investigator must receive the target's
    complete own content, referent and qualifications, and obtain supporting program
-   evidence. An ID or subject summary does not suffice.
+   evidence. An ID or subject summary does not suffice. Existing account follow-up
+   also uses bounded delivery, so neither route guarantees correction eligibility
+   without checking what was actually supplied.
 4. **Extension and correction.** TRIAL-1 reuses S, distinguishes the shared breaker
    instance role from execution roles, and accounts for waiting and later outcomes.
    The result also supplies ADMISSION-2 and an explicit correction of ADMISSION-1.
@@ -195,7 +252,12 @@ and its discovery are staged. This proposal adds no verification of library beha
 
 H1/H2 illustrate subject-definition revision where a definition changes; they need
 not be extra independently retained objects in every admission correction. An
-omission in admission behavior may leave the identifying description unchanged.
+omission in admission behavior may leave the definition's meaning unchanged. If H1
+is embedded in the root's own content, however, replacing the root replaces that
+content too and the replacement must supply its description. A separate definition
+child is independently correctable; root replacement does not automatically carry
+that child or a corrected successor into its new composition. The example has not
+yet selected a root/child partition or its resulting answer selection.
 
 Preserve three independent dimensions:
 
@@ -215,6 +277,11 @@ correspondence and synthesis establishing new claims require qualified analysis.
 Capture actual selected input context: a stable subject ID alone is insufficient
 as a reuse key when its supplied descriptions change.
 
+**Needs design — request and origin.** Specify the request alternative above,
+context acquisition/selection policy and effective-input identity. Origin records
+lineage; it affects answer/reuse identity when it changes substantive selected input
+or qualification, not merely because the human reached the same request differently.
+
 ### Composition as a design probe
 
 Test both wrapping orders using separately qualified breaker and bulkhead accounts.
@@ -226,6 +293,12 @@ A new composition interpretation can reuse subject IDs and accounts while
 establishing these relationships with evidence. Selecting component accounts side
 by side does not establish composition semantics. Reusing a policy kind does not
 identify instance roles in two patterns as the same runtime object.
+
+**Needs design — contextual referents.** Distinguish Half-open as a state category
+from that state as held by a particular breaker role in a composition pattern.
+Retain the state, role and pattern context explicitly. Determine whether a compound
+reference suffices or independently investigated applications need their own identity;
+neither flat labels nor a universal contextual-identity primitive is assumed.
 
 Recommend probing this representation now; whether a full generated composition
 investigation belongs in the first implemented capability remains open.
@@ -249,11 +322,30 @@ complete a partial state machine. Shape/reference checks establish well-formedne
 not behavioral correctness. Missing meaning remains visible or prevents the
 unsupported depiction.
 
+Combining accounts in a view requires exact identity guarantees or qualified
+correspondence for each alignment. Shared relationship IDs are one route, not a
+requirement to identify every prose relationship. Without established correspondence,
+retain separate depictions, disclose unresolved alignment, or decline the combined
+view; never merge transitions merely by endpoints. **Needs design:** inventory the
+specific shared transitions/roles needed by these diagrams and their supplied
+identity/correspondence evidence.
+
 Prefer coherent whole investigrams for independently correctable interpretive items
 initially. An account may select several such units. Fine-grained content addresses
 can aid navigation without implying fine-grained replacement. Current corrections
 replace whole investigrams and require complete target delivery; partition content
-accordingly or motivate an explicit governing change.
+accordingly or motivate an explicit governing change. Subordinate investigrams offer
+a middle option: coherent fixed composition with independently correctable parts.
+Complete target delivery concerns the target's own required content, not its entire
+descendant subtree. Child replacement and root replacement must be worked through
+separately; a new tree cannot simply adopt an old child by implication.
+
+**Prerequisite — structured delivery.** Before using corrections on structured
+content, specify how all required own content, referent information and attributable
+qualifications are delivered, how bounded excerpts/omissions are reported, and how
+actual deliveries establish completeness. Update content-part tracking and context
+transport accordingly. Shape validity, an ID, or a diagram's selected fields cannot
+substitute for complete delivery. The exact rules depend on the chosen forms.
 
 ## Existing machinery and application boundary
 
@@ -264,10 +356,22 @@ the [application API](../src/lib/application/index.ts). It currently has prose-o
 investigation content, module/investigram investigation targets, and narrower
 subject resolution. The proposed model is not already supported.
 
+Concrete constraints confirmed in the review:
+
+| Current contract | Required design treatment |
+| --- | --- |
+| `correctedSubjects` admits module, symbol, group and repository-artifact; acceptance adds corrected-subject associations | Extend validation and association semantics to the intended referents, preserving explicit correction subjects. |
+| Investigrams and provenance require `originatingModule` | Specify attributable originating architectural context for the new request types. Do not silently turn an interpreted implementation relationship into a mechanical context/identity guarantee. |
+| Investigation parameters are empty and nonempty parameters are rejected | Give concurrent-callers and other questions declared Lens/operation meaning, with meaningful parameters if needed. Parameters are not mandatory when distinct declared questions suffice; effective-input identity must capture the chosen semantics. |
+| Context parts are prose, referent and qualifications | Establish structured-content completeness and bounded-delivery rules before the correction path is used. |
+
+These are design obligations for the capability, not authorization to alter the
+contracts now. Originating-context representation and request semantics remain open.
+
 The capability needs a continuous path through:
 
-- Common subject declaration/reuse, contextual promotion and lookup, integrated
-  with existing mechanical identity and qualified information.
+- Common subject declaration/reuse and lookup, integrated with existing mechanical
+  identity and qualified information; contextual promotion if included in the slice.
 - Structured submission, reference/support validation, immutable retention,
   and explicit subject-reference/description indexing.
 - Applicable subject/Lens requests with declared question meaning and selected
@@ -284,9 +388,15 @@ promise of a public API or general query store.
 
 Recommend one mechanical producer and subsequent interpretation sharing the subject
 mechanism; admission/follow-up/correction; explicit selection and exact historical
-access; and the representative diagram content above. Exercise all three subject
-introduction routes, with their implementation priority still open. Keep composition
-as a representation probe unless discussion makes it a delivery requirement.
+access; and the representative diagram content above. Preserve all three introduction
+routes in the design, but distinguish model coverage from first delivery.
+
+**Scope choice remains open.** The initial proposal exercised all routes through
+implementation. The review recommends explicit introduction/reuse as the delivered
+path, with local/prose promotion, correspondence/conflation and composition as
+design or fixture probes initially. That narrower path is the current recommendation
+for discussion, not an agreed reduction. A fixture using seeded material does not
+demonstrate an implemented promotion or reconciliation operation.
 
 Validation needs several kinds of evidence:
 
@@ -294,7 +404,8 @@ Validation needs several kinds of evidence:
   scripted investigator communication. Check reference integrity, duplicate names,
   atomic rejection, full/partial delivery, unsupported corrections, conflicts,
   continuity and unchanged exact answers. Include promotion and qualified
-  correspondence/conflation examples.
+  correspondence/conflation at the level selected by the scope decision, explicitly
+  distinguishing model probes from delivered application operations.
 - **A real investigation:** start at an ordinary supported entry, discover a usable
   subject, follow it, reuse actual retained content and acquire program evidence.
   Assess semantic fidelity independently. Seeded orientation does not demonstrate
@@ -309,27 +420,31 @@ account reconciliation, full presentation/navigation and the minimal GUI.
 
 ## Choices to discuss before a planning package
 
-1. **Item and correction boundaries.** Prefer whole-investigram independently
-   correctable items. Work through whether definitions/classifications belong in
-   separate small units or coherent larger accounts. Smaller units reduce unrelated
-   correction exposure but can fragment explanations and increase bookkeeping.
-   Resolve how clarification of a contextual definition differs from correction.
-2. **Follow-up context and working selection.** Prefer explicit selections plus
-   originating content and relevant correction context initially. Specify how other
-   associated items are offered/retrieved, completeness for each form, and effective
-   input selection for reuse. Automatic semantic selection adds analysis obligations.
-3. **Shared-mechanism migration and entry.** Decide which existing producers/subject
+1. **Identity and addressing.** Specify guarantees for interpreted referents of
+   implemented architecture, including contextual roles and governing changes.
+   Keep exact investigram addresses separate from selected collections. Settle local
+   key namespaces, cross-correction mappings and prose-selection identity where needed.
+2. **Item and correction boundaries.** Work through an embedded definition, a
+   subordinate definition investigram and a separately selected definition. Show root
+   and child correction behavior and the resulting answer selection. Resolve how
+   clarification of a contextual definition differs from correction.
+3. **Request, context and selection.** Choose subject investigation versus focused
+   account follow-up; define originating context, selected input and lineage.
+   Assess the proposed placement of retained selections in the Projection model,
+   with declared question meaning.
+   Specify interpretive Lens applicability and listing/exposure tradeoffs.
+4. **Content and delivery.** Choose forms that supply the diagrams, define their
+   complete/bounded delivery contracts before corrections, and establish the precise
+   identity or correspondence needed for combined views. Formal validity and semantic
+   fidelity remain separate checks.
+5. **Shared-mechanism migration and entry.** Decide which existing producers/subject
    kinds migrate first and how ordinary entry reaches the first interpreted subject.
    A mechanical module plus interpretation is a useful minimum demonstration, not
    proof of complete migration. Transitional representations need explicit bounds.
-4. **Content forms and subject introduction.** Choose the smallest recognized forms
-   that supply the three diagrams, and specify local/prose promotion and unknown
-   classification. Useful investigation should not require fully classified subjects
-   or treat arbitrary labels as machine-understood semantics.
-5. **Composition and reconciliation depth.** Decide whether fixtures/design probes
-   suffice initially, or whether first delivery must generate composition and
-   operationalize merge/split navigation. Broader coverage tests extension sooner
-   but adds scope beyond the core continuity/correction thread.
+6. **Delivery boundary.** Choose between the broader first scope and the review's
+   explicit-introduction path with other mechanisms probed. Decide whether the
+   absence of subject-wide reconsideration for standalone conflation findings is
+   acceptable initially. Broader coverage tests extension sooner but increases scope.
 
 ## Designs and theories to build on
 
