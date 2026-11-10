@@ -343,6 +343,32 @@ Neither adopts DEFINITIONS-1 or appends to INTRO-1. The correction's reason,
 qualifications and evidence remain accessible as reporting content. S and its
 identifying description are unchanged by this behavioral correction.
 
+### Proposed common relationship representation applied to this result
+
+Keep the current correction example while testing a common representation for
+account relationships. At the conceptual level the follow-up supplies:
+
+| Supplied content | Responsibility |
+| --- | --- |
+| TRIAL-1 | Qualified architectural explanation of concurrent callers and recovery. |
+| ADMISSION-2 | Complete qualified admission account, usable without reading a comparison to ADMISSION-1. |
+| Relationship claim K | States that ADMISSION-2 corrects ADMISSION-1, reported by TRIAL-1, with reason, affected subject P, scope, qualifications and evidence. |
+
+The relationship claim is retained with its own address; existing corrections
+already have such identities. The reporter attribution does not require another
+investigation or an extra explanatory account solely to hold K. One investigation
+supplies the accounts and qualified relationship together. Exact wire packaging and
+composition remain open: this does not introduce a flat multi-root submission by
+implication. PostCode resolves new-account local references, verifies eligible older
+references and support, and accepts the result atomically.
+
+The proposed common machinery could also retain an alternative relationship with
+the same reporting/support responsibilities but no automatic correction effects.
+An inconsistency finding could instead name earlier accounts and explain the tension
+without a replacement. Preserve type-specific endpoint roles and validation; do not
+treat a new discriminator as sufficient to implement all cases. For this staged
+misleading admission account, correction remains the intended relationship.
+
 TRIAL-1 is the correction reporter, so the reason and qualifications belong to its
 own substantive content. Correcting TRIAL-1 later preserves that original reasoning
 and correction record; it does not automatically revoke or retarget the admission
