@@ -719,3 +719,58 @@ explicit; current interpretation correction contracts still apply to investigram
 The eventual plan should exercise at least one mechanical producer and a subsequent
 interpretation through the shared mechanism, including exact retrieval. Broader
 migration scope is an explicit planning choice, not implementation authorization.
+
+## Knowledge-representation precedents (exploratory, 2026-11-10)
+
+The human asks whether this design repeats older knowledge-representation work and
+its failures, clarifying that building on existing designs/theories matters more
+than choosing libraries. Assessment: the connection is real and useful; stable
+referents, qualified descriptions, relationships as referents, and revision/support
+tracking should not be treated as novel inventions. Bounded application alone is
+not sufficient protection against expensive formalization or brittle assumptions.
+
+Relevant precedents and proposed lessons:
+
+- [Minsky's frames](https://dspace.mit.edu/entities/publication/0eca0164-cb5f-42de-8c86-43f54b23306d)
+  organize structured descriptions and expectations. Borrow structured descriptions,
+  but do not turn a subject into one mutable authoritative bundle or silently fill
+  missing architectural information from defaults.
+- [Doyle's truth-maintenance system](https://dspace.mit.edu/entities/publication/5377b306-4ecc-4687-b1f5-78cbb4a0543a)
+  and [de Kleer's assumption-based TMS](https://www.dekleer.org/Publications/An%20Assumption-Based%20TMS.pdf)
+  distinguish conclusions, justifications and assumptions, including alternative
+  contexts. These inform support and reconsideration, but PostCode's exposure links
+  are not logical entailment dependencies. Seeing corrected material does not prove
+  an account false. Preserve competing accounts without requiring a globally
+  consistent belief set or implementing an inference engine.
+- [Wikibase's data model](https://www.mediawiki.org/wiki/Wikibase/DataModel/Primer)
+  separates entities from statements with qualifiers, references and ranks.
+  Borrow the entity/qualified-statement distinction. Its ranks do not substitute
+  for PostCode's separate revision status, question applicability and working
+  selection, or its qualification guarantees.
+- [Nanopublications](https://nanopub.net/docs/guidelines/) separate assertion,
+  assertion provenance and publication information;
+  [W3C PROV](https://www.w3.org/TR/prov-overview/) provides provenance concepts.
+  These inform account boundaries and attribution. Provenance alone does not
+  establish truth, sufficiency of evidence, or permission to synthesize new claims.
+- [Shipman and Marshall's Formality Considered Harmful](https://people.engr.tamu.edu/shipman/viki/papers/tochi/tochi.html)
+  documents cognitive overhead, premature structure and situational differences.
+  Incremental formalization closely matches prose → local designation → shared
+  subject, while permitting explicit shared subjects initially where useful.
+  Promotion must retain original context; formalizing an interpretation does not
+  increase its evidential strength.
+
+Historical qualification: these approaches were not uniformly unsuccessful.
+McDermott's [R1 report](https://www.sciencedirect.com/science/article/pii/0004370282900212)
+describes regular operational use for configuring DEC computers. That does not
+establish general applicability or make knowledge acquisition/maintenance cheap.
+
+Recommendation for further design, not an adopted decision: describe PostCode as
+incrementally formalized architectural accounts with explicit provenance and
+reason-maintenance concerns. Use the admission/trial/correction example to test
+which semantics must be explicit for follow-up and diagrams. Retain informal
+material and unknowns; distinguish missing information from negative assertions;
+do not infer equivalence from labels or truth from structured form. Require a
+concrete retrieval, investigation or diagram benefit for added machinery. A shared
+subject/item mechanism need not impose a universal content ontology or uniform
+revision rule. No library/storage choice or implementation is authorized by this
+comparison.
