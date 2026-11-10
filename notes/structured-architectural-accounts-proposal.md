@@ -539,13 +539,38 @@ design:** choose a small vocabulary for the admission/trial example and express 
 state transition and one interaction through it before settling payload schemas.
 These recommendations do not yet adopt a vocabulary or schema.
 
+**Emerging proposal — architectural concept catalogue.** The human proposes that
+PostCode supply established architectural concepts with agent-facing descriptions
+of the structured information each requires, potentially including JSON Schemas.
+An investigator can use a concept because the investigation requests it or because
+the investigator judges it relevant, and returns its identifier, structured data
+and associated prose through the qualified investigram protocol.
+
+Recommend catalogue entries with a stable identifier and contract version, concept
+meaning and source/adaptation, applicability guidance, data requirements, examples,
+and explicit treatment of partial knowledge. Schema checks can validate shape;
+reference and content-specific checks still need defined rules, and none establishes
+the truth or applicability of the architectural claim. Versioned contracts preserve
+the meaning of retained content when the catalogue evolves. Exact packaging remains
+to be designed, including whether several content blocks share an investigram.
+
+Concept identifiers select information contracts, not subject identities or Lens
+identities. A state-transition account can reference Half-open S without making
+S's subject record an instance of the account schema. Several investigations can
+produce the same form; one investigation can return several forms alongside prose.
+Selecting a form does not itself establish that it applies: the investigation must
+qualify that interpretation. Open topic labels remain available within supported
+forms; an invented label does not create a new understood contract. Start by drafting
+the state-behavior entry needed by the example, not a comprehensive catalogue.
+
 **Notation-informed information probe.** The human suggests testing whether retained
 content supplies the information needed by an established diagram style, and clarifies
 that choosing a renderer or working out depiction is not the present task. Use
 statecharts and sequence diagrams from SEI's
 [Documenting Behavior](https://www.sei.cmu.edu/documents/1986/2002_004_001_13934.pdf)
-as concrete references. Generator selection and actual rendering are deferred;
-Mermaid was an illustrative candidate, not a selected dependency or current requirement.
+as concrete references. The human agrees that actual rendering is useful bounded
+validation after specifying content, without allowing rendering work to sidetrack
+the design. Mermaid was an illustrative candidate, not a selected dependency.
 
 The human proposes a statechart information shape based on hierarchically grouped,
 named directed graphs with labelled nodes and edges and an incoming entry edge.
@@ -562,8 +587,8 @@ Check whether the example supplies those information requirements, with exact
 account/support references and explicit unknowns. A concurrent-caller sequence
 account should additionally test participants, ordering, waiting and alternatives
 through the admission correction. Depiction must eventually be possible without
-inventing architectural claims, but a renderer implementation is not needed to
-work through the content model now.
+inventing architectural claims. Follow the content exercise with a small rendering
+experiment; layout, styling and interactive navigation remain outside this scope.
 
 Use a few forms justified by explanatory needs, permitting qualified prose inside
 and alongside them. Do not require a universal ontology or full UML/statechart

@@ -351,6 +351,14 @@ terminology nor a valid record establishes correctness or complete behavioral
 coverage. These are recommendations for the next content probe, not an adopted
 schema or newly verified Cockatiel claims.
 
+The emerging catalogue proposal would give the investigator an agent-facing
+state-behavior concept contract (identifier/version and semantic/data requirements,
+possibly a JSON Schema). The investigator returns that identifier with structured
+content and associated prose, using existing subject references and qualified
+support. The concept may be explicitly requested or selected by the investigator
+as relevant. This is separate from declaring Half-open itself to be a state subject.
+The first concrete contract and payload remain to be drafted.
+
 Use statechart information requirements for a concrete sufficiency test: named
 states, directed transitions, any meaningful hierarchy, state-bearing participant,
 initial entry when established, and distinct triggers, guards and effects. Keep
@@ -358,8 +366,9 @@ scope, qualifications and exact account/support references. The human's proposed
 hierarchically grouped directed-graph shape is a starting point to examine, not a
 settled schema; default entry and ordinary incoming transitions need distinguishing.
 A concurrent-caller sequence account should subsequently test the waiting correction
-and meaningful ordering. Choosing a generator and working out rendering are deferred;
-the present task is to establish that retained content supplies the needed meaning.
+and meaningful ordering. First establish that retained content supplies the needed
+meaning, then perform a bounded rendering experiment to validate sufficiency.
+Layout, styling and interactive navigation should not sidetrack this content work.
 
 | Content | Supplied meaning |
 | --- | --- |
