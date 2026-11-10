@@ -1,0 +1,199 @@
+[
+  {
+    "diagram": "recovery-state.mmd",
+    "element": "s0",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/6/states/0",
+    "subject": {
+      "subject": "S-closed"
+    }
+  },
+  {
+    "diagram": "recovery-state.mmd",
+    "element": "s1",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/6/states/1",
+    "subject": {
+      "subject": "S-open"
+    }
+  },
+  {
+    "diagram": "recovery-state.mmd",
+    "element": "s2",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/6/states/2",
+    "subject": {
+      "subject": "S"
+    }
+  },
+  {
+    "diagram": "recovery-state.mmd",
+    "element": "enter-trial",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/6/transitions/0",
+    "evidence": [
+      "E-admission",
+      "E-half-open"
+    ]
+  },
+  {
+    "diagram": "recovery-state.mmd",
+    "element": "close-after-trial",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/6/transitions/1",
+    "evidence": [
+      "E-half-open",
+      "E-outcomes",
+      "E-default"
+    ]
+  },
+  {
+    "diagram": "recovery-state.mmd",
+    "element": "reopen-after-trial",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/6/transitions/2",
+    "evidence": [
+      "E-half-open",
+      "E-outcomes",
+      "E-default"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "trial",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/participants/0",
+    "subject": {
+      "introducedSubject": "trial-execution"
+    }
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "breaker",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/participants/1",
+    "subject": {
+      "introducedSubject": "shared-breaker"
+    }
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "caller",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/participants/2",
+    "subject": {
+      "introducedSubject": "concurrent-execution"
+    }
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "trial-request",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/prefix/0",
+    "evidence": [
+      "E-admission"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "enter",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/prefix/1",
+    "evidence": [
+      "E-admission",
+      "E-half-open"
+    ],
+    "alsoUsesTransition": "enter-trial"
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "caller-request",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/prefix/2",
+    "evidence": [
+      "E-half-open"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "wait",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/prefix/3",
+    "evidence": [
+      "E-half-open"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "close",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/alternatives/0/steps/0",
+    "evidence": [
+      "E-outcomes"
+    ],
+    "alsoUsesTransition": "close-after-trial"
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "success-release",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/alternatives/0/steps/1",
+    "evidence": [
+      "E-half-open",
+      "E-outcomes"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "ordinary-work",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/alternatives/0/steps/2",
+    "evidence": [
+      "E-admission",
+      "E-half-open"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "reopen",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/alternatives/1/steps/0",
+    "evidence": [
+      "E-outcomes",
+      "E-default"
+    ],
+    "alsoUsesTransition": "reopen-after-trial"
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "failure-release",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/alternatives/1/steps/1",
+    "evidence": [
+      "E-half-open",
+      "E-outcomes"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "refusal",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/alternatives/1/steps/2",
+    "evidence": [
+      "E-admission"
+    ]
+  },
+  {
+    "diagram": "both",
+    "account": "TRIAL-1",
+    "pointers": [
+      "/result/accounts/0/qualifications",
+      "/result/accounts/0/evidence",
+      "/result/accounts/0/content/6/coverage",
+      "/result/accounts/0/content/7/conditions",
+      "/result/accounts/0/content/7/notShown"
+    ],
+    "basis": "context-and-bindings.json#/basis",
+    "evidenceRegistry": "context-and-bindings.json#/evidence"
+  }
+]

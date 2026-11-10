@@ -1,0 +1,176 @@
+{
+  "status": "Illustrative external context and acceptance ledger; these are readable aliases, not live Session records or a public API.",
+  "basis": {
+    "id": "cockatiel-pinned",
+    "revision": "f48bea55022ab15ab07eb52a79bfc1e661300fd4",
+    "method": "Static source inspection plus the prior exploratory accounts; no runtime execution."
+  },
+  "evidence": {
+    "E-state": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "CircuitState and state getter"
+    },
+    "E-admission": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "execute"
+    },
+    "E-half-open": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "executeHalfOpen"
+    },
+    "E-outcomes": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "recordHalfOpenSuccess, recordHalfOpenFailure, maybeCompleteHalfOpen, open and close"
+    },
+    "E-default": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "createHalfOpenSamplingOptions"
+    }
+  },
+  "entry": {
+    "knownSubjects": {
+      "M": "Mechanical module reference for the CircuitBreakerPolicy source at this basis.",
+      "P": "Circuit breaker policy kind introduced by a prior orientation account."
+    },
+    "orientation": {
+      "id": "ORIENTATION-0",
+      "identifies": {
+        "subject": "P"
+      },
+      "description": "A reusable execution-governing policy whose failure and recovery rules determine admission of application-supplied work.",
+      "implementationAnchor": {
+        "subject": "M"
+      },
+      "qualification": "Interpreted mapping to the captured module, not proof that the policy kind and module are the same subject. This orientation is a fixture precondition, not demonstrated discovery.",
+      "evidence": [
+        "E-admission",
+        "E-state"
+      ]
+    }
+  },
+  "firstRequest": {
+    "subject": {
+      "subject": "P"
+    },
+    "informationNeed": "Execution admission and state inspection under default recovery sampling.",
+    "analysisAnchor": {
+      "subject": "M"
+    },
+    "suppliedAccountContext": [
+      "ORIENTATION-0"
+    ],
+    "suppliedEvidence": [
+      "E-state",
+      "E-admission",
+      "E-default"
+    ],
+    "navigationOrigin": null
+  },
+  "firstAcceptance": {
+    "subjectIds": {
+      "closed": "S-closed",
+      "open": "S-open",
+      "half-open": "S"
+    },
+    "accountIds": {
+      "admission": "ADMISSION-1"
+    },
+    "relationshipIds": {}
+  },
+  "followupRequest": {
+    "subject": {
+      "subject": "S"
+    },
+    "informationNeed": "Concurrent callers and trial outcomes under default single-trial recovery.",
+    "analysisAnchor": {
+      "subject": "M"
+    },
+    "navigationOrigin": {
+      "answer": "ANSWER-1",
+      "account": "ADMISSION-1"
+    },
+    "suppliedAccountContext": [
+      {
+        "account": "ADMISSION-1",
+        "delivery": "complete own content, referents, qualifications, associations and available evidence references; all structured parts included"
+      }
+    ],
+    "suppliedEvidence": [
+      "E-state",
+      "E-admission",
+      "E-half-open",
+      "E-outcomes",
+      "E-default"
+    ]
+  },
+  "followupAcceptance": {
+    "subjectIds": {
+      "shared-breaker": "R",
+      "trial-execution": "E-trial",
+      "concurrent-execution": "E-caller",
+      "waiting": "W"
+    },
+    "accountIds": {
+      "trial": "TRIAL-1",
+      "admission-replacement": "ADMISSION-2"
+    },
+    "relationshipIds": {
+      "admission-correction": "K"
+    }
+  },
+  "expectedSelections": [
+    {
+      "id": "ANSWER-1",
+      "accounts": [
+        "ADMISSION-1"
+      ],
+      "relationships": [],
+      "identifyingSupport": [
+        "ORIENTATION-0",
+        "ADMISSION-1"
+      ],
+      "revisionContext": "Captured before K; exact retrieval preserves this snapshot."
+    },
+    {
+      "id": "FOLLOWUP-ANSWER-1",
+      "accounts": [
+        "TRIAL-1",
+        "ADMISSION-2"
+      ],
+      "relationships": [
+        "K"
+      ],
+      "identifyingSupport": [
+        "ORIENTATION-0",
+        "ADMISSION-1",
+        "TRIAL-1",
+        "ADMISSION-2"
+      ],
+      "revisionContext": "Includes K; retains original and replacement references. Multiple identifying descriptions remain attributed."
+    },
+    {
+      "id": "FRESH-ADMISSION-ANSWER",
+      "requestedOriginal": "ADMISSION-1",
+      "accounts": [
+        "ADMISSION-2"
+      ],
+      "relationships": [
+        "K"
+      ],
+      "identifyingSupport": [
+        "ORIENTATION-0",
+        "ADMISSION-2",
+        {
+          "account": "TRIAL-1",
+          "items": [
+            "shared-breaker-description",
+            "trial-description",
+            "caller-description",
+            "waiting-description"
+          ]
+        }
+      ],
+      "revisionContext": "A fresh replacement-aware selection; it does not mutate ANSWER-1. Partial identifying support does not make TRIAL-1 a completely delivered correction target."
+    }
+  ]
+}

@@ -20,6 +20,12 @@ It tests explicit context input, new role definitions during follow-up, and qual
 retained access. UI composition and an additional assembled-answer workflow are not
 requirements of this architecture proposal.
 
+The [complete illustrative results](structured-account-example/README.md) now give
+actual proposed submissions, identity bindings, a qualified correction record and
+two diagrams generated from retained structured fields. That pass deliberately uses
+one investigram per coherent explanation, making repeated replacement content visible
+as a comparison with the earlier child partition. Neither partition is adopted.
+
 The [foundation](../foundation/README.md), [application specification](../docs/app-specification.md),
 [core concepts](../docs/core-concepts.md), [architectural constraints](../docs/architectural-constraints.md)
 and applicable accepted decisions remain governing. The
@@ -46,9 +52,9 @@ The design has a stable direction, but no adopted payload schema or planning pac
   design. Human pushback is out of scope; detailed reassessment is recommended for
   deferred work, preserving the necessary references and derived-status extension.
 
-The next work is a complete illustrative submission/retrieval/correction example,
-not another general ontology discussion. Choose a provisional partition, give actual
-content, and change that partition only when the example reveals a concrete problem.
+The complete illustrative submission/retrieval/correction example is now available
+above. Review its actual content and provisional partition before generalizing the
+schema. It is an authored fixture, not an implemented or live investigation path.
 The five remaining decision groups are collected near the end of this note.
 
 ## The proposed capability

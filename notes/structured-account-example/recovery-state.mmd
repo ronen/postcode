@@ -1,0 +1,15 @@
+---
+title: "Partial recovery statechart"
+---
+stateDiagram-v2
+  direction TB
+  state "Closed" as s0
+  state "Open" as s1
+  state "Half-open" as s2
+  s1 --> s2: Execution requested [Recovery delay elapsed] / Reserve trial slot and start supplied work
+  s2 --> s0: Trial counted successful [Same recovery cycle] / Close and release waiting executions
+  s2 --> s1: Trial counted failed [Same recovery cycle] / Restart backoff and release waiting executions
+  note right of s2
+    Shared breaker role#59; default single trial. Static<br/>interpretation. Other transitions are omitted.
+    Success and failure here are breaker classifications.<br/>An error outside the handled failure policy can count<br/>as recovery success while still being delivered to its<br/>caller.
+  end note

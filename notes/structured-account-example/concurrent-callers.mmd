@@ -1,0 +1,23 @@
+---
+title: "One trial and one concurrent caller: two possible outcomes"
+---
+sequenceDiagram
+  participant trial as Trial execution
+  participant breaker as Shared breaker
+  participant caller as Concurrent<br/>execution
+  Note over trial,caller: Possible scenario ordering, not an observed execution or a complete interleaving model.
+  Note over trial,caller: One shared breaker instance#59; default single-trial sampling.<br/>The first request finds Open with elapsed backoff.<br/>The second request arrives while the first trial remains in flight.<br/>No isolation, cancellation, restored state or third caller interferes.<br/>On the failure branch, the new backoff is positive and has not elapsed when the waiting execution<br/>rechecks admission.
+  trial->>breaker: Request execution after recovery delay
+  Note right of breaker: Open to Half-open: Execution requested [Recovery delay elapsed] /<br/>Reserve trial slot and start supplied work
+  caller->>breaker: Request execution while trial is in flight
+  Note over breaker,caller: Wait for the shared recovery decision#59; supplied work has not<br/>started
+  alt Trial is counted successful by the breaker
+  Note right of breaker: Half-open to Closed: Trial counted successful [Same recovery<br/>cycle] / Close and release waiting executions
+  Note over breaker,caller: Waiting execution resumes and rechecks admission
+  Note right of breaker: With Closed still current, invoke the waiting caller’s supplied<br/>work
+  else Trial is counted failed by the breaker
+  Note right of breaker: Half-open to Open: Trial counted failed [Same recovery cycle] /<br/>Restart backoff and release waiting executions
+  Note over breaker,caller: Waiting execution resumes and rechecks admission
+  breaker-->>caller: Refuse execution while new backoff remains unelapsed#59; work is not<br/>run
+  end
+  Note over trial,caller: Not shown: Delivery order of results to the trial caller<br/>Completion or result of the concurrent caller’s work on the success branch<br/>Other scheduling interleavings

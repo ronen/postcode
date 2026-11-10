@@ -7,7 +7,15 @@ Current recommendations and remaining choices are stated inline. They are provis
 not adopted decisions, implementation authorization or an API schema. This follows the
 [Cockatiel examples](initial-journey/cockatiel-account-examples.md): one captured
 revision, default single-trial recovery, static interpretation. The admission omission
-and discovery are staged; no new source or runtime investigation has been performed.
+and discovery in this walkthrough are staged; it does not report a new source or
+runtime investigation.
+
+**Concrete payload comparison:** the newer [complete illustrative results](structured-account-example/README.md)
+include proposed JSON submissions, static source checking and rendered diagrams.
+They use a single investigram for each coherent explanation, with definitions inside
+it, to test the alternative to this walkthrough's child partition. Read the two as
+explicit design alternatives; neither is an adopted default. No live investigator
+or runtime execution has been performed in either pass.
 
 ## Choices for this pass
 
