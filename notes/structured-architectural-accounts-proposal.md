@@ -899,22 +899,25 @@ account reconciliation, full presentation/navigation and the minimal GUI.
 
 ### Assumptions to challenge after the acceptance-bias review
 
-**Terminology question — correction, revision and replacement.** The human asks
-whether correction is the right term. Recommend considering “account revision” as
-the broader concept, “replacement” for the explicit target/successor relationship,
-and “correction” for a revision asserting an error or misleading omission. Revision
-can also concern clarification or restructuring; a supplementary account is not
-automatically a revision/replacement. The reason remains qualified investigative
-content, not an app-certified verdict. This is an open terminology/semantic option,
-not an adopted rename or new schema. “Revision” must remain distinguishable from
-program/repository revision. The implementation already uses RevisionStatus for
-correction-derived state, which does not itself establish broader revision support.
+**Terminology recommendation — account revision.** The human emphasizes that
+“correction” can steer thinking toward a single corrected model even when its formal
+contract permits competing accounts. Recommend “account revision” as the organizing
+term and “replacement” for its explicit target/successor selection relationship.
+An investigator may assert that an earlier account was wrong or misleading in the
+qualified reason; this does not require a separate correction subtype. Revision may
+also concern clarification or restructuring; a supplementary account is not
+automatically a revision/replacement. Prefer “A2 revises A1; this investigation gives
+these reasons” over wording implying that PostCode certifies A2 as the truth.
+This recommendation is not an adopted governing rename or new schema. “Account
+revision” must remain distinguishable from program/repository revision. Existing
+RevisionStatus names do not themselves establish broader revision support.
 
 Broadening the current operation beyond corrections would require examining when
 replacement selection and needs-reconsideration consequences should apply. A wording
 change alone neither resolves those consequences nor warrants changing the accepted
-contract. For the present erroneous-admission example, correction remains an accurate
-description of what the investigator asserts.
+contract. For the present erroneous-admission example, the investigator can still
+describe its revision as correcting an omission; the system's organizing term need
+not make that judgment on its behalf.
 
 **Correction remains compatible with this framing.** In response to the human's
 question about revisiting the existing mechanism, inspection of the accepted
