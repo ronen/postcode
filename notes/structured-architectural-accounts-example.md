@@ -354,13 +354,13 @@ account relationships. At the conceptual level the follow-up supplies:
 | ADMISSION-2 | Complete qualified admission account, usable without reading a comparison to ADMISSION-1. |
 | Relationship claim K | States that ADMISSION-2 corrects ADMISSION-1, reported by TRIAL-1, with reason, affected subject P, scope, qualifications and evidence. |
 
-The relationship claim is retained with its own address; existing corrections
-already have such identities. That current-style representation uses TRIAL-1 as
-reporter without another account solely to hold K. A competing proposal is a separate
-investigram K containing the qualified relationship assertion, so that assertion
-has an ordinary independent investigation/revision target. Neither representation
-requires another investigation. One investigation
-supplies the accounts and qualified relationship together. Exact wire packaging and
+The proposed Relationship type is indexable independently of how account content is
+partitioned. K can be an entry reported within TRIAL-1 or content in a separate
+investigram; this is the same partition question as subject-identifying descriptions.
+Existing correction records already have retained addresses, but indexability alone
+does not select an independent investigram or relationship-revision operation.
+Neither representation requires another investigation. One investigation supplies
+the accounts and qualified relationship together. Exact wire packaging and
 composition remain open: this does not introduce a flat multi-root submission by
 implication. PostCode resolves new-account local references, verifies eligible older
 references and support, and accepts the result atomically.

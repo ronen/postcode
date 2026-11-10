@@ -155,28 +155,38 @@ meanings are not mutually exclusive classifications of account pairs. Common mac
 does not require a generic graph ontology or one identical payload for every kind.
 Mechanical composition and exposure remain distinguishable from interpreted relations.
 
-**Relationship claim as account: open representation choice.** The human asks whether
-K is an investigram and whether it can be challenged/corrected. Currently a Correction
+**Relationship as a core type; account partition is a separate question.** The human
+identifies the proposed Relationship as an indexable domain concept with explicit
+participants/roles, kind, explanation and qualified support. Its physical storage
+and allocation remain design choices. A relationship entry can be embedded among
+other content in an investigram or occupy an investigram of its own. This is the
+same partition question as an identifying subject description: structure and
+indexability do not imply an independent investigram/correction boundary. Neither
+arrangement automatically requires promoting the relationship to a shared subject.
+Start with the account-relationship kinds under discussion; sharing abstractions
+with architectural relationships or mechanical links must preserve their different
+meaning and guarantees, not collapse them into interchangeable edges.
+
+**Relationship standing remains open.** Currently a Correction
 is a distinct retained record with a reporting investigram; the correction record
 itself is not an eligible investigram correction target. Revising its reporter does
 not retract or retarget the original relationship. Our first K sketch followed that
 shape, not an adopted representation for the new common model.
 
-Recommend testing relationship assertions as structured investigram content, with a
-separate investigram K where independent investigation/revision is useful. K then
-accounts for how A and B relate, with evidence and qualifications; a mechanical index
-can expose its asserted relation without independently authoring another claim.
-This reuses the account lifecycle but introduces another account when K is separate.
-The alternative is a distinct qualified relationship-record type with explicitly
-generalized targeting/revision operations. Compare those costs before adopting a shape.
+The earlier recommendation to give K its own investigram was premature. Keep
+embedded versus separate content as the general account-partition choice, while
+defining Relationship's explicit structure and indexing independently. A mechanical
+index exposes the asserted relation without independently authoring another claim.
 
-A later account could challenge K or say its correction judgment was mistaken while
-leaving B's architectural content intact. Independent addressability does not settle
-the operational effect: define whether a disputed or superseded K still influences
-current selection and how other applicable relationships are preserved. Retain the
-original assertion/history; never infer that A becomes correct merely because K is
-challenged. This is relationship-status design, distinct from deferred reassessment
-of accounts exposed to corrected context. No automatic withdrawal exists today.
+The human cautions that whether/how K can be challenged requires considering the
+implications of challenging a correction. Distinguish recording disagreement with
+K, revising the account that asserts K, and withdrawing/changing K's operational
+effects. Do not assume these are the same action. Whether a disputed or superseded
+K influences current selection and reconsideration remains open, as does any
+independent relationship-targeting operation. Preserve assertion/history and other
+applicable relationships; a challenge does not itself establish A's correctness
+or B's error. This question is distinct from deferred reassessment of accounts
+exposed to corrected context. No automatic withdrawal exists today.
 
 **Reassessment — recommend deferring detailed design and delivery.** The human
 recognizes reassessment as within the product's remit but suggests keeping it in
