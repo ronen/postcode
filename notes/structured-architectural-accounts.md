@@ -598,3 +598,69 @@ correspondence rules. Only promoted subjects appear in the shared-subject index.
 Diagrams still require explicit relationship/participant semantics in selected
 accounts; contextual subjects alone do not supply those meanings. Probe all three
 routes with Half-open and a relationship before settling the implementation shape.
+
+## Subject classification, existing subjects and identity reconciliation
+
+The human asks about subject types, integration with implemented Lens subjects, and
+merge/split. The following are recommendations for discussion, not agreements yet.
+
+**Classification.** Expose what kind of thing a subject is understood to be, using
+recognized extensible terms plus intelligible descriptions, permitting unknown,
+multiple or disputed classifications. Keep architectural classification qualified
+and revisable: contextual “Half Open as used in A” can initially be unclassified,
+then receive a supported state classification. Classification can be a recognized
+item/facet in the retained account, with a convenient selected summary in delivery;
+it need not be an unqualified mutable field defining identity. Distinguish semantic
+classification from representation/record kind and from origin/method. Neither a
+label nor an investigator's assertion that something is a module grants compiler
+module capabilities. Lens applicability uses supported targets/content and their
+qualification; missing classification can motivate bounded prerequisite work.
+
+**Existing subjects.** Current Lens declarations accept configured-project,
+repository, module, group and investigram; precise retained-reference resolution
+supports module/group/investigram. Symbols and dependency/containment claims exist
+as retained support but are not generally public Lens subjects. Project/repository
+designations have contextual resolution semantics, not the same record shape as
+modules. `ModuleRecord` and `GroupRecord` already separate identity from qualified
+naming/classification information through their claims.
+
+Recommend a common application-level subject resolution/access contract over these
+existing representations and new architectural subjects. Preserve existing IDs,
+reference lifetimes, captures and mechanical guarantees; do not allocate duplicate
+architectural IDs for already supported modules or convert mechanical claims into
+interpretation. Investigations can refer to an existing module ID and associate
+new accounts with it. A policy kind implemented by a module is usually a distinct
+subject connected by a qualified implementation mapping, not a synonym for that
+module. Investigram-as-subject also remains distinct from the architecture it
+describes. New declaration, resolution, association and capability handling must
+explicitly accommodate these differences; conceptual unity is not a universal
+record schema or automatic applicability of every Lens. General exposure of all
+existing symbols/relationships need not be added to the first slice.
+
+**Merge.** Prefer non-destructive identity reconciliation: retain a qualified claim
+that S1 and S2 designate the same referent within a stated scope, with evidence,
+provenance and exact descriptive context. Preserve both IDs and originating
+accounts. A new selection may coordinate information via that claim and disclose
+the contributing identities and unresolved conflicts; no pointer retargeting,
+automatic endpoint rewrite, name-based union or unqualified transitive closure.
+More cautious correspondence such as possible equivalence or implementation mapping
+must remain distinguishable from same-referent claims. The correspondence account
+can itself later be challenged/corrected. A preferred display reference, if useful,
+is selection policy rather than identity erasure.
+
+**Split.** Preserve S0 and record a qualified account identifying its conflation,
+introducing or referencing S1/S2 for the distinguished referents. Retain the old
+definitions, citations and exact answers. Moving a former behavioral claim onto
+one successor requires analysis; do not copy all S0 accounts or incident edges onto
+both successors. New navigation can offer the alternatives with the distinction
+explained, while an exact request about S0 still targets that historical/conflated
+subject with current context as declared. A broader subject legitimately containing
+two parts is decomposition, not evidence of mistaken identity.
+
+For the first scope, recommend recording/exposing explicit qualified same-referent
+and conflation/successor accounts, with navigation to precise targets. Defer automatic
+identity reconciliation, automatic pooling of all related accounts and wholesale
+graph rewriting. Include deterministic cases for an initially unknown classification,
+existing module references, duplicate names, a proposed correspondence and a state/
+execution conflation. These establish reference/qualification behavior, not reliable
+automatic discovery of equivalence or conflation.
