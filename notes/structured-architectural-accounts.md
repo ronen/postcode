@@ -779,3 +779,88 @@ concrete retrieval, investigation or diagram benefit for added machinery. A shar
 subject/item mechanism need not impose a universal content ontology or uniform
 revision rule. No library/storage choice or implementation is authorized by this
 comparison.
+
+## Review assessment: unresolved contracts (2026-11-10)
+
+The human supplied Claude's review of the working proposal. Rechecked relevant
+governing definitions, investigation acceptance/execution/context, and selection
+records. The review supports the direction but identifies omissions that must be
+resolved before a planning package. The following is this agent's assessment, not
+human adoption of the review's recommendations or a revised implementation scope.
+
+**Terminology and identity.** Accept the ambiguity: governing Subject is an
+investigative role, not an entity kind. Prefer working terminology “retained subject
+reference” or “referent identity” for the common mechanism; preserve the distinctions
+between entities, relationships and investigrams. Do not broaden Entity merely to
+obtain uniform reference handling. Identity introduction for an interpreted subject
+of implemented architecture needs an explicit contract and governing-impact review.
+Existing documents allow implemented subjects and analysis identity guarantees;
+they do not supply the proposed Half-open allocation/continuity rules. This is an
+underspecified case, not evidence that interpreted implemented subjects are forbidden.
+
+**Account addresses.** The proposal conflates an explanatory account spanning units
+with an exactly addressable investigram. Recommend binding local designations and
+correction targets to exact investigrams, using (investigram ID, local key). Submission
+keys are a separate namespace resolved at acceptance. A selection Projection can
+identify a multi-investigram selected answer without inventing a mutable account
+aggregate. The wording needs this distinction before concrete output schemas.
+
+**Partition.** Independently correctable subordinate investigrams are a valid middle
+option. H1 can be a definition child rather than embedded in the admission root's
+own content. If embedded, replacement restates it even when its meaning is unchanged.
+If separate, child correction requires its own complete content rather than the full
+subtree. Root replacement does not automatically transplant an old or corrected
+child into the new composition. Work through root/child selections before preferring
+this layout; do not assume it solves all continuity issues.
+
+**Requests, origin and selection.** Recommend a request identifying S, a declared
+information need and an explicit selected-context set, distinguishing all three from
+navigation lineage. Ordinary account follow-up remains a different request option.
+The review overstates its completeness guarantee: current follow-up calls bounded
+`exposure.prepare`, which can omit parts. Both paths need verified delivery before
+correction eligibility. Prefer extending immutable investigation-selection Projections
+for retained selected answers; a mutable UI choice is separate and not required
+for this first API capability. Exact Lens/parameter and selection contracts remain open.
+
+**Confirmed implementation constraints.** `correctedSubjects` admits only module,
+symbol, group and repository-artifact and produces corrected-subject associations;
+`originatingModule` is required; request parameters are empty and nonempty parameters
+are rejected; `ContextPart` and completeness currently cover prose, referent and
+qualifications. These need explicit treatment. A distinct declared Lens/operation
+could encode a fixed concurrent-caller question, so nonempty parameters are not the
+only solution. Meaningful parameters, if used, must enter effective-input identity.
+Architectural context must come from captured inputs and attributable lineage, not
+silently turn an interpreted implementation mapping into a mechanical identity fact.
+Structured completeness is a prerequisite to corrections, not deferred validation.
+
+**Diagrams and contextual roles.** Shared relationship references or qualified
+correspondence can support cross-account alignment; endpoint/label matching cannot.
+The review's duplicate-or-merge choice is too narrow: supported correspondence,
+separate contextual depictions, and disclosed unresolved alignment are alternatives.
+For each representative combined diagram, identify the actual alignments it needs.
+Distinguish the Half-open state category from its application to a breaker role
+within a pattern. An explicit tuple/reference to state, role and pattern may suffice;
+whether independently investigated applications need their own identity remains open.
+No new universal contextual-identity primitive is established by this assessment.
+
+**Additional obligations.** Specify repeated prose-selection behavior (exact account
+plus a stable occurrence selector is a candidate, not a chosen hash formula), and
+represent the contextual designation as an attributed selection record, not fabricated
+interpretation. Local keys do not inherit identity across replacement investigrams;
+explicit mappings/reused shared IDs are needed. A conflation claim alone triggers no
+existing correction propagation; record that limit or explicitly correct the affected
+identifying account. Rich index titles/summaries can widen exposure and reconsideration;
+do not evade the rule by relabeling substantive text metadata. Interpretive Lens
+offers need declared applicability to qualified/unknown subjects as well as evidence
+requirements. The common producer contract includes retention of qualified information,
+not just IDs/indexes, while mechanical information can still be produced on demand.
+Independent discoveries can duplicate existing mechanical referents; common allocation
+does not establish semantic deduplication.
+
+**Scope recommendation for discussion.** Keep explicit introduction/reuse and one
+real subject follow-up/correction as the delivered path. Probe local/prose promotion,
+merge/split and composition at the design/fixture level initially. Preserve them in
+the model without promising all operations in the first capability. This is a proposed
+reduction from the proposal's validation breadth, not an agreed change. Resolve the
+reference/address model, request/context contract and one concrete root/child correction
+example first; then revise the proposal and select the implementation boundary.

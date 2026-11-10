@@ -8,6 +8,10 @@ or implementation authorization. Recommendations and unresolved choices remain
 open. The [discussion notes](structured-architectural-accounts.md) retain the
 alternatives, implementation inspection and research behind this synthesis.
 
+Review follow-up: the [review assessment](structured-architectural-accounts.md#review-assessment-unresolved-contracts-2026-11-10)
+identifies unresolved terminology, addressing, request/selection and completeness
+contracts in this version. Its proposed scope reduction has not been agreed.
+
 The [foundation](../foundation/README.md), [application specification](../docs/app-specification.md),
 [core concepts](../docs/core-concepts.md), [architectural constraints](../docs/architectural-constraints.md)
 and applicable accepted decisions remain governing. The
