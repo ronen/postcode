@@ -70,6 +70,20 @@ replacement rules. Neither choice narrows the evaluation-wide exposure index mer
 by creating smaller content parts. Structured graph nesting does not dictate this
 account partition.
 
+**Correction cost motivating smaller units.** The human points out that correcting
+one subject description inside a larger result would require retaining the unchanged
+parts in its replacement. Under the existing full replacement contract, that is
+true at the logical/submission level: there is no patch or implicit carry-forward
+of the old investigram's keyed items. Physical storage sharing is a separate matter.
+This is a substantive reason to choose independently correctable children for
+coherent subject or relationship accounts in a larger result, without requiring
+one child per field or every subject mention. A corrected child's unchanged siblings
+retain their identities; a replacement root does not automatically inherit its old
+children. A clarification that adds compatible information can instead be an
+additional account, but must not be called an addition merely to avoid a necessary
+correction. Content partition remains provisional; compare the actual submission
+and delivery costs of this example before settling its units.
+
 The hierarchy itself is existing machinery: one investigation can already return
 a root and recursive child investigrams, each with its own retained ID. Choosing
 definition and admission children is this example's proposed use of that machinery.
