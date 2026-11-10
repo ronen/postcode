@@ -33,10 +33,15 @@ successive investigations can reuse, extend and challenge understanding. Subject
 provide continuity; accounts provide attributable descriptions and claims. Neither
 shared identity nor a current selection requires the accounts to agree.
 
-**Design framing — organize accounts, not a canonical theory.** The human redirects
-the emphasis toward organizing and presenting architectural accounts that may be
-partial, contradictory or unsettled, rather than building a comprehensive
-knowledge-representation system. Retained subjects provide continuity of reference
+**Governing framing — organize accounts without requiring a canonical theory.** The
+human recalls an existing principle, not a newly adopted direction. The
+[foundation's retained-understanding guidance](../foundation/product-design.md#retained-architectural-understanding-and-continuity)
+explicitly permits overlapping, disagreeing and incomplete accounts without a single
+consolidated architecture model. The accepted
+[accumulation requirement](../docs/decisions/structured-investigram-content.md#require-accumulated-understanding)
+and its [reaffirmation](../docs/decisions/specialized-architectural-investigation.md#retained-understanding-and-context)
+carry this into intended application behavior. Our discussion should apply that
+framing to the proposed mechanisms. Retained subjects provide continuity of reference
 and access to accounts; they do not require one authoritative description or a
 globally reconciled graph. Architectural structure is asserted within qualified
 accounts, not silently accumulated as universally accepted program facts.
