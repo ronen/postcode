@@ -570,6 +570,14 @@ the truth or applicability of the architectural claim. Versioned contracts prese
 the meaning of retained content when the catalogue evolves. Exact packaging remains
 to be designed, including whether several content blocks share an investigram.
 
+**Agreed exploratory direction — agent source references.** Catalogue entries should
+give concise, self-contained guidance and may directly refer agents to source
+material for deeper understanding, preferably specific sections. Agents need not
+read the full sources to use a supported form. State PostCode's selected subset or
+adaptation explicitly: deeper reading does not silently expand the content contract.
+Concept references support architectural terminology and methods; claims about the
+investigated program still require their own evidence and qualifications.
+
 Concept identifiers identify architectural meanings; form identifiers/versions
 identify particular data contracts. Their encoding together or separately remains
 open. Neither is a subject identity or Lens identity. A state-transition account can reference Half-open S without making
