@@ -446,6 +446,12 @@ All investigrams from one evaluation share its conservative exposure index, incl
 definition children and replacements. Partitioning narrows correction/delivery units,
 not necessarily reconsideration warnings. Grouped definitions retain this tradeoff.
 
+Agreement in discussion: the investigating agent may judge that new findings warrant
+correcting an earlier account during an ordinary follow-up. It must explicitly
+identify the correction and provide reason/support; new detail or a shared subject
+does not automatically imply replacement. PostCode checks delivery eligibility and
+submission validity without thereby establishing the correction's truth.
+
 Initially a working selection can be explicit. Automatic relevance judgments,
 correspondence and synthesis establishing new claims require qualified analysis.
 Capture actual selected input context: a stable subject ID alone is insufficient

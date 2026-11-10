@@ -84,6 +84,12 @@ ADMISSION-1 describes P's admission behavior and refers to S. That reference doe
 not automatically make it a describes-S association. It contains the admission cases
 and inspection account, with support and qualifications attributable to those claims.
 
+Thus Circuit Breaker already has retained subject reference P, and ADMISSION-1 is
+one qualified item associated with it through a describes association. Here that
+item is an independently addressable investigram. Its composition parent INTRO-1
+is separate from the subject association; neither P nor INTRO-1 owns every future
+account about Circuit Breaker.
+
 INTRO-1 organizes the explanation without repeating the behavioral claims as a
 second account. If its own content were misleading, correcting a child would not
 correct the root's claim. Its orientation remains qualified interpretation with
