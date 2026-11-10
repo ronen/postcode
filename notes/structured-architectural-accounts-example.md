@@ -9,6 +9,10 @@ implementation authorization or an API schema. This follows the
 revision, default single-trial recovery, static interpretation. The admission omission
 and discovery are staged; no new source or runtime investigation has been performed.
 
+The [latest re-review assessment](structured-architectural-accounts.md#re-review-identifying-support-and-association-roles-2026-11-10)
+proposes refinements to identifying support, per-subject identification, W's identity
+and assembly modes. These are not yet chosen example contracts below.
+
 ## Choices for this pass
 
 - Shared reference S continues to designate Half-open. Definitions and behavior

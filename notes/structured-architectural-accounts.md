@@ -869,3 +869,51 @@ the model without promising all operations in the first capability. This is a pr
 reduction from the proposal's validation breadth, not an agreed change. Resolve the
 reference/address model, request/context contract and one concrete root/child correction
 example first; then revise the proposal and select the implementation boundary.
+
+
+## Re-review: identifying support and association roles (2026-11-10)
+
+Claude's re-review finds the revised walkthrough coherent and identifies further
+contracts. These are recommendations for discussion, not adopted decisions.
+
+- **Answer support.** Prefer supplied/navigable identifying support without making
+  every definition a selected constituent. Substantive subject references need
+  intelligible qualified identifying content or an explicit unresolved designation,
+  with exact inspectable support. Choose and fix that support at answer construction;
+  rendering cannot fetch a newer definition and silently change an exact answer.
+  Ambiguity/conflicts remain explicit. This need not recursively include every
+  definition referenced by another definition. Selection/completeness rules remain
+  open. Working assembly should organize content, not repair unintelligible answers.
+- **Identification role.** Put “identifies S” on the qualified account–subject
+  association. A whole-account identifying-description kind plus describes-P does
+  not establish that it identifies P. Keep content form separate from association
+  role; a behavioral account can identify one subject and describe another. The
+  initial role vocabulary remains proposed, and identification does not confer truth.
+- **W's identity.** Prefer the waiting relationship between the specified caller
+  role and R's recovery decision in the named usage pattern. Keep configuration,
+  occurrence and conditions in qualified claims. An identity does not assert that
+  waiting occurs. Correct behavioral conditions in the behavior account; also
+  correct identifying content if its participants or characterization were mistaken.
+  This does not imply every relationship correction must preserve identity.
+- **Assembly question/modes.** Candidate inspection Lens over an exact collection:
+  “inspect these accounts with revision context.” Recommend exact-members mode for
+  explicit assembly: keep requested DEFINITIONS-1 even if DEFINITIONS-2 exists,
+  disclosing current revision context in the new answer. An explicit prefer-replacements
+  mode follows correction chains and exposes original-to-selected mappings/conflicts.
+  Exact retrieval of either answer preserves its captured selection/support; fresh
+  assembly can capture a newer snapshot. These modes are proposed, not implemented.
+- **Origin-free discovery.** Existing association listing cannot find ADMISSION-1
+  from S merely because it refers to S. This needs an investigator-visible refers-to
+  query or an explicit context policy using that index. Bare IDs are not substantive
+  exposure; supplied titles/descriptions can be, and content retrieval is. The
+  caller-selected example does not demonstrate origin-free correction.
+- **Correction reporter.** Reason/qualification reported by TRIAL-1 is its own
+  substantive content. Correcting it preserves the original reporter and correction;
+  it does not itself withdraw or rewrite that correction edge. Any changed standing
+  requires explicit semantics. Thin roots remain qualified investigrams, not an
+  implicitly supported unqualified children-only result type.
+
+Human presentation alone does not add investigator citations. If an investigator
+later receives the identifying support, substantive delivery counts even when called
+support rather than a selected constituent. Preserve that distinction in the proposed
+answer-support contract. Settle that contract and per-subject identification first.

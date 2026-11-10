@@ -27,6 +27,10 @@ and applicable accepted decisions remain governing. The
 [structured-interpretation decision](../docs/decisions/structured-investigram-content.md)
 permits exploring this content while preserving qualification and revision contracts.
 
+The [latest re-review assessment](structured-architectural-accounts.md#re-review-identifying-support-and-association-roles-2026-11-10)
+adds proposed answer-support and per-subject identification contracts, plus explicit
+assembly revision modes. These remain recommendations for discussion.
+
 ## The proposed capability
 
 PostCode retains architectural subjects and qualified accounts about them so that
@@ -281,7 +285,7 @@ Preserve three independent dimensions:
 | --- | --- |
 | Revision status | ADMISSION-1 has a replacement, possibly competing replacements. |
 | Applicability | TRIAL-1 covers default single-trial recovery, not every configuration. |
-| Working selection | This answer selects ADMISSION-2 and TRIAL-1 for this question. |
+| Working selection | The caller selects DEFINITIONS-1, ROLE-DEFINITIONS-1, ADMISSION-2 and TRIAL-1, with support and captured revision context. |
 
 Existing replacement preference does not resolve conflicts. Exposure-based
 reconsideration remains conservative: seeing an account is not proven reliance,
