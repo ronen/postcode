@@ -539,6 +539,28 @@ design:** choose a small vocabulary for the admission/trial example and express 
 state transition and one interaction through it before settling payload schemas.
 These recommendations do not yet adopt a vocabulary or schema.
 
+**Concrete generator probe.** The human suggests choosing a diagram style and
+testing whether retained content supplies its generator input. Recommend starting
+with a partial state-transition diagram of breaker recovery, using
+[Mermaid state diagrams](https://mermaid.js.org/syntax/stateDiagram.html) as a
+replaceable output target. Retain architectural content independently of Mermaid
+syntax. Produce generator input through an explicit mechanical mapping: subject
+references supply states, transition content supplies edges and labels, and scope
+and qualifications supply accompanying notes/support. Do not add initial/final
+markers or infer completeness without retained support. Track each depicted claim
+back to its exact account and content location; a companion mapping is sufficient
+for this probe, without an interactive navigation system.
+
+Validation should include generating and actually rendering the input, checking
+that every architectural meaning is supplied by retained content, and exposing
+missing information rather than letting the converter infer it. Rendering success
+alone proves neither semantic sufficiency nor correctness. A concurrent-caller
+sequence diagram is the next complementary probe: it makes admission/waiting
+corrections visible and tests participants, ordering and alternatives that a state
+diagram may not express. Compare original and corrected selections while retaining
+reproduction of the original exact answer. This remains a recommended design probe;
+no generator implementation or rendered fixture has yet been completed.
+
 Use a few forms justified by explanatory needs, permitting qualified prose inside
 and alongside them. Do not require a universal ontology or full UML/statechart
 semantics. These are semantic obligations to explore, not settled field schemas:
