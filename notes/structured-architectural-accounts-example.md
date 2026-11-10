@@ -351,14 +351,15 @@ terminology nor a valid record establishes correctness or complete behavioral
 coverage. These are recommendations for the next content probe, not an adopted
 schema or newly verified Cockatiel claims.
 
-For a concrete sufficiency test, recommend emitting Mermaid `stateDiagram-v2`
-input for a partial recovery-state diagram from these accounts, then rendering it.
-Map states and transitions from retained content and carry scope/qualifications in
-notes or accompanying support. Keep a mapping from depicted claims to exact
-account/content references. The converter must not fill missing triggers or guards
-by reading prose and inventing a new interpretation. A concurrent-caller sequence
-diagram should subsequently test the waiting correction and meaningful ordering;
-the state diagram alone does not cover that change. Neither probe has been run yet.
+Use statechart information requirements for a concrete sufficiency test: named
+states, directed transitions, any meaningful hierarchy, state-bearing participant,
+initial entry when established, and distinct triggers, guards and effects. Keep
+scope, qualifications and exact account/support references. The human's proposed
+hierarchically grouped directed-graph shape is a starting point to examine, not a
+settled schema; default entry and ordinary incoming transitions need distinguishing.
+A concurrent-caller sequence account should subsequently test the waiting correction
+and meaningful ordering. Choosing a generator and working out rendering are deferred;
+the present task is to establish that retained content supplies the needed meaning.
 
 | Content | Supplied meaning |
 | --- | --- |

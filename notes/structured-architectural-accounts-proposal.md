@@ -539,27 +539,31 @@ design:** choose a small vocabulary for the admission/trial example and express 
 state transition and one interaction through it before settling payload schemas.
 These recommendations do not yet adopt a vocabulary or schema.
 
-**Concrete generator probe.** The human suggests choosing a diagram style and
-testing whether retained content supplies its generator input. Recommend starting
-with a partial state-transition diagram of breaker recovery, using
-[Mermaid state diagrams](https://mermaid.js.org/syntax/stateDiagram.html) as a
-replaceable output target. Retain architectural content independently of Mermaid
-syntax. Produce generator input through an explicit mechanical mapping: subject
-references supply states, transition content supplies edges and labels, and scope
-and qualifications supply accompanying notes/support. Do not add initial/final
-markers or infer completeness without retained support. Track each depicted claim
-back to its exact account and content location; a companion mapping is sufficient
-for this probe, without an interactive navigation system.
+**Notation-informed information probe.** The human suggests testing whether retained
+content supplies the information needed by an established diagram style, and clarifies
+that choosing a renderer or working out depiction is not the present task. Use
+statecharts and sequence diagrams from SEI's
+[Documenting Behavior](https://www.sei.cmu.edu/documents/1986/2002_004_001_13934.pdf)
+as concrete references. Generator selection and actual rendering are deferred;
+Mermaid was an illustrative candidate, not a selected dependency or current requirement.
 
-Validation should include generating and actually rendering the input, checking
-that every architectural meaning is supplied by retained content, and exposing
-missing information rather than letting the converter infer it. Rendering success
-alone proves neither semantic sufficiency nor correctness. A concurrent-caller
-sequence diagram is the next complementary probe: it makes admission/waiting
-corrections visible and tests participants, ordering and alternatives that a state
-diagram may not express. Compare original and corrected selections while retaining
-reproduction of the original exact answer. This remains a recommended design probe;
-no generator implementation or rendered fixture has yet been completed.
+The human proposes a statechart information shape based on hierarchically grouped,
+named directed graphs with labelled nodes and edges and an incoming entry edge.
+Explore that shape with explicit state/transition meaning: references, containment,
+state-bearing participant, transition endpoints, triggers, guards and effects.
+Labels can contain qualified prose without being the sole representation of these
+distinctions. Default initial entry is distinct from an ordinary incoming transition;
+do not impose a universal single boundary-entry rule or invent initial information
+absent from a partial account. If nested/concurrent regions are needed, record their
+meaning rather than treating them as merely visual grouping. These refinements are
+recommendations to test, not an adopted schema.
+
+Check whether the example supplies those information requirements, with exact
+account/support references and explicit unknowns. A concurrent-caller sequence
+account should additionally test participants, ordering, waiting and alternatives
+through the admission correction. Depiction must eventually be possible without
+inventing architectural claims, but a renderer implementation is not needed to
+work through the content model now.
 
 Use a few forms justified by explanatory needs, permitting qualified prose inside
 and alongside them. Do not require a universal ontology or full UML/statechart
