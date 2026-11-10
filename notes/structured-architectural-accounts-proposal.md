@@ -67,7 +67,7 @@ This vocabulary describes responsibilities, not storage tables or public API typ
 | Subject | The governing role: what a Lens investigates or a claim concerns. Entities, relationships, collections and investigrams can play this role; it is not another entity kind. |
 | Retained subject reference | Working terminology for the common identity/reference mechanism. It identifies the referent playing the subject role without turning every referent into an Entity. Names aid recognition; references preserve the established identity. |
 | Qualified item | Information about one or more subjects, with attributable scope, evidence, method/provenance and limitations. Definitions are one kind of information among others. |
-| Investigram | The existing immutable unit of retained interpretation, potentially containing structured content and prose. Mechanical claims retain their own character and guarantees. |
+| Investigram | The existing immutable unit of retained interpretation; proposed content forms include keyed prose and specialized architectural structures. Mechanical claims retain their own character and guarantees. |
 | Architectural account | A coherent explanation that may occupy one or several investigrams. The explanatory term alone does not give a collection an identity or make it a correction target. |
 | Retained answer selection | Exact qualified parts and support selected for an application answer, with selection basis and revision context. It is immutable and distinct from UI grouping, investigator context and selected Lens subjects. |
 | Identifying support | Qualified content making a referenced subject intelligible, with exact supporting references. It need not be a selected account constituent and is not evidence for every claim about the subject. |
@@ -549,26 +549,39 @@ These recommendations do not yet adopt a vocabulary or schema.
 PostCode supply established architectural concepts for two purposes: an agent-facing
 vocabulary/ontology for framing investigations and explanations, and support for
 communicating those explanations through diagrams. The vocabulary is useful even
-when no diagram is appropriate. Results may combine structured content and prose
-or consist of qualified prose alone. The catalogue is not limited to diagram types.
+when no diagram is appropriate. Use one structured content model: a supported form
+can be as simple as a keyed prose explanation, and other forms express states,
+transitions or interactions. Results may combine these forms. The catalogue is not
+limited to diagram types; prose is content within the model, not a separate channel.
 
 An investigator can use a concept because the investigation requests it or because
 the investigator judges it relevant. Recommend distinguishing concept meaning and
 applicability guidance from its supported structured content forms and diagram
 mappings. A concept may support several forms or no diagram form; several concepts
 may contribute to a diagram. Returning a concept identifier does not by itself
-require a diagram payload. If the request requires a structured form, however, prose
-alone does not silently satisfy it; missing information or unsupported output must
+require a diagram payload. If the request requires a specialized form, however, a
+keyed prose item alone does not silently satisfy it; missing information or unsupported output must
 be explicit. Exact request/result conventions remain to be designed.
 
 Recommend catalogue entries with stable identifiers, versioned meanings/contracts,
 source/adaptation, applicability guidance, examples and treatment of partial knowledge.
-Structured forms specify data requirements, potentially with JSON Schemas, while
-prose-only accounts retain the ordinary qualification requirements. Schema checks can validate shape;
+Content forms specify data requirements, potentially with JSON Schemas. Keyed prose
+items and specialized forms retain the same qualification requirements. Schema checks can validate shape;
 reference and content-specific checks still need defined rules, and none establishes
 the truth or applicability of the architectural claim. Versioned contracts preserve
 the meaning of retained content when the catalogue evolves. Exact packaging remains
 to be designed, including whether several content blocks share an investigram.
+
+**Unified structure, including prose.** The human rejects a prose-versus-structure
+split: a key with prose is itself a useful structured form. This simplifies the
+proposed return protocol and makes prose items addressable through the same local
+designation mechanism. Preserve the separate meanings of an item/local key, a
+concept identifier, a form identifier and a subject reference; exact field names
+remain open. Specialized forms add explicit architectural relationships and fields
+where useful. A keyed explanation can discuss a transition without supplying the
+explicit endpoints/conditions needed for a diagram; filling those gaps still
+requires qualified analysis. A form or local key does not by itself allocate a
+shared subject or change whole-investigram correction granularity.
 
 **Agreed exploratory direction — agent source references.** Catalogue entries should
 give concise, self-contained guidance and may directly refer agents to source
@@ -586,8 +599,8 @@ produce the same form; one investigation can return several forms alongside pros
 Selecting a form does not itself establish that it applies: the investigation must
 qualify that interpretation. Open topic labels remain available within supported
 forms; an invented label does not create a new understood contract. Start by drafting
-the state-behavior entry needed by the example, including prose guidance and a
-structured form, not a comprehensive catalogue.
+the state-behavior entry needed by the example, including a keyed prose form and
+a specialized state/transition form, not a comprehensive catalogue.
 
 **Local keys and later promotion.** The human proposes keys for structured elements
 both for internal references (nodes and transition endpoints) and for later subject

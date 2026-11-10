@@ -400,10 +400,13 @@ small structure, state and interaction depictions, not a full presentation syste
 This is a useful inventory for the bounded example and composition probe, not a
 commitment to implement every depiction or a catalogue entry for each diagram.
 Its concepts also supply vocabulary for agents to frame investigations and prose
-explanations. A diagram is one possible communication form: prose may accompany it
-or stand alone when no diagram is useful. The catalogue must distinguish concept
-guidance from optional structured forms and diagram mappings; selecting a concept
-does not automatically require every account to supply diagram data.
+explanations. All returned content uses structured forms, including the simple form
+of a key with prose. A diagram is one possible communication form: keyed prose may
+accompany diagram-supporting content or suffice when no diagram is useful. The
+catalogue distinguishes concept guidance, supported content forms and diagram
+mappings; selecting a concept does not automatically require diagram data. Local
+keys make prose addressable without allocating shared subjects or changing the
+whole-investigram correction unit.
 
 | Candidate | Reference concept | Diagram type / reference status | Question and information requirements |
 | --- | --- | --- | --- |
