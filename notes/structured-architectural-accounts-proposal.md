@@ -155,33 +155,28 @@ meanings are not mutually exclusive classifications of account pairs. Common mac
 does not require a generic graph ontology or one identical payload for every kind.
 Mechanical composition and exposure remain distinguishable from interpreted relations.
 
-**Address explicit reassessment in this design.** The human considers tracking and
-clearing concerns caused by corrected prior context part of organizing accounts.
-Include a bounded reassessment design alongside the relationship model; this is not
-yet implementation authorization or an agreed delivery expansion. Current tracking
-establishes supplied context, not proven reliance, so warnings must preserve that
-distinction. Add an immutable qualified assessment naming the exact account reviewed
-and the specific correction cause(s), with an outcome and reasoning. Candidate outcomes:
-the account remains usable unchanged with respect to those causes; a supported
-replacement is supplied; or impact remains unresolved. An assessment concerns an
-account in light of a change, so it cannot be reduced to a simple unqualified binary
-edge between two accounts.
+**Reassessment — recommend deferring detailed design and delivery.** The human
+recognizes reassessment as within the product's remit but suggests keeping it in
+the backlog unless it affects the present architecture. Current correction records
+already have stable identities, and reconsideration is derived per cause without
+mutating accounts or historical answers. That supports later extension; it does not
+implement clearance. Keep only these compatibility checks in the current design:
 
-For A corrected by B under correction K, and C previously exposed to A, reassessment
-R can address C with respect to K. A favorable assessment clears that cause for C's
-fresh derived status without changing C, its original input history or exact answers.
-It does not certify C globally or clear independent/later causes. An unresolved or
-partial assessment does not silently clear the whole concern. A replacement of C
-does not erase the historical issue on original C. Re-execution or mere receipt of
-corrected context is not explicit reassessment of C.
+- Preserve exact account and correction-cause references, reporter/support and
+  exposure history, rather than storing only an unexplained permanent warning bit.
+- Keep current reconsideration status derived and allow future qualified assessment
+  records to participate in that calculation without rewriting earlier accounts.
+- Do not constrain the common relationship model to unqualified binary edges only;
+  a future assessment must be able to identify both an account and a correction cause.
 
-**Needs design:** complete delivery/eligibility for assessment; conflicting or later
-challenged assessments; and downstream clearance. For D exposed to C, test whether
-resolution at C can stop propagation of K through that path, retaining independent
-paths/causes and recording that D was not itself reassessed. Compare this with
-direct-account-only clearance and its residual warning burden. Do not silently choose
-either rule. The existing decision already anticipates reassessment and requires
-these distinctions; new acceptance/status behavior needs an explicit governing extension.
+Defer assessment outcomes, delivery requirements, competing assessments and downstream
+clearance rules. A future probe can use A corrected by B under cause K, C exposed to A,
+and D exposed to C, with an independent second cause. Any eventual clearance must
+distinguish resolution of K from global correctness and downstream reassessment.
+The accepted decision already anticipates this work. For now concerns may remain
+uncleared; that is a disclosed limitation, not a reason to broaden the current scope.
+Current exposure still does not establish reliance. This is the present scope
+recommendation, not an adopted clearance policy or implementation authorization.
 
 **Proposed investigation — reconcile selected accounts.** The human proposes selecting
 accounts and asking to reconcile them. Recommend supporting this as an explicit
