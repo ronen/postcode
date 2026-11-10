@@ -899,6 +899,27 @@ account reconciliation, full presentation/navigation and the minimal GUI.
 
 ### Assumptions to challenge after the acceptance-bias review
 
+**Correction remains compatible with this framing.** In response to the human's
+question about revisiting the existing mechanism, inspection of the accepted
+[correction contract](../docs/decisions/investigrams-and-progressive-investigation.md#record-explicit-corrections-without-rewriting-earlier-interpretation)
+supports retaining correction as an attributed, qualified assertion that a specific
+account should be replaced. It preserves originals, supports competing replacements
+and unresolved inconsistencies, and explicitly says primary selection does not
+resolve conflict. Acceptance validates contracts/references and delivery, not truth.
+The current recency-based primary-selection rule is a display heuristic, explicitly
+not credibility. This is an organizational consequence of a correction, not a global
+truth-maintenance obligation. Do not weaken an explicit replacement assertion into
+an undifferentiated alternative, or treat its acceptance as semantic adjudication.
+
+Revisit fit and consequences rather than reverse the design wholesale: distinguish
+an omitted case in a purportedly complete admission account (potential correction)
+from an additional case outside an explicitly narrow account's scope (addition);
+check primary-selection/conflict disclosure against the example; compare correction
+units without demanding perfect impact propagation. No governing revision is
+proposed solely because the system retains contradictory accounts. Whether a new
+account is sufficiently supported to correct an old one remains investigative
+judgment, including possible unresolved disagreement about the correction itself.
+
 These are recommendations to reconsider, not reversals of human agreements or
 changes to governing requirements. Several were already formally open; conversational
 confidence has sometimes exceeded the examples supporting them.
