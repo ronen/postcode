@@ -226,6 +226,33 @@ walkthrough does not demonstrate this discovery capability.
 
 ## Introduction and change
 
+### Dialogue-based context acquisition
+
+The human emphasizes that interpretation already runs through a dialogue: initial
+context need not be the final selection of everything the investigator can use.
+PostCode can expose available retained material and let the investigator request
+what it needs. Prefer exploring a hybrid: supply useful identifying descriptions
+and known contextual origin initially, then make additional attributes/accounts,
+alternatives and supporting material discoverable and retrievable on request.
+An inventory-first approach is another option where even identifying context is large
+or ambiguous. The subject-reference/association extensions still need to make the
+new material available through the existing dialogue machinery.
+
+“Bounded selection” therefore concerns manageable deliveries and disclosed omissions,
+not a rigid initial cutoff beyond which retained information is inaccessible. General
+dialogue/resource limits still apply; retrieval is not promised to be unlimited or
+exhaustive. Record actual deliveries and qualifications throughout. Substantive listing
+content counts as exposure; bare IDs do not. A correction target may become eligible
+after complete content is acquired through later requests in that evaluation.
+
+The initial request records its selected seed context; provenance also records what
+the dialogue actually supplies afterward. Available, requested and delivered material
+are distinct. **Needs design:** discovery/query capabilities, continuation/bounds,
+and how context selection and later acquisition interact with reuse and exact support.
+Do not treat this as a requirement to choose all relevant accounts before starting.
+
+### Routes for subject introduction
+
 Allow three routes into the same subject mechanism:
 
 1. **Explicit introduction.** An investigation declares a useful subject using a

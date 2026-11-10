@@ -182,6 +182,19 @@ open, especially beyond this single-origin case.
 
 ### Actual delivery
 
+Initial context is a seed for an existing investigator dialogue, not a closed set of
+permitted information. In this path the caller names DEFINITIONS-1 and ADMISSION-1
+up front. More generally, a hybrid can supply identifying descriptions initially,
+expose other available accounts/attributes, and let the investigator request relevant
+content or missing portions. An independent selection of S could discover further
+context this way once the required subject indexes/queries exist.
+
+The initial policy need not impose a rigid relevance cutoff. Deliveries remain
+bounded and omissions explicit, with further retrieval available within dialogue
+limits. Record what actually arrives, including substantive listing content; mere
+availability is not exposure. Complete corrective context may be acquired over later
+requests, so initial omission of a target need not prevent eventual correction.
+
 The coordinator supplies and records complete own content, referent information and
 qualifications of both selected children, with resolvable support and disclosed
 revision context. Their parent need not be delivered because their qualifications
