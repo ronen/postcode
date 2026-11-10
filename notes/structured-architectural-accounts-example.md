@@ -1,263 +1,296 @@
-# Architectural accounts: first concrete walkthrough
+# Architectural accounts: concrete walkthrough
 
 Updated: 2026-11-10
 
-An exploratory example of the [working proposal](structured-architectural-accounts-proposal.md).
-The choices below are provisional recommendations to test together, not adopted
-decisions, implementation authorization or an API schema. This follows the
+An exploratory example of the [working proposal](structured-architectural-accounts-proposal.md),
+revised after the second review. Choices below are provisional, not adopted decisions,
+implementation authorization or an API schema. This follows the
 [Cockatiel examples](initial-journey/cockatiel-account-examples.md): one captured
 revision, default single-trial recovery, static interpretation. The admission omission
 and discovery are staged; no new source or runtime investigation has been performed.
 
 ## Choices for this pass
 
-- Shared reference S continues to designate Half-open. Its definition and behavioral
-  accounts have separate qualified investigram identities.
-- The initial result has a small root with independently correctable definition and
-  admission children. Composition organizes that result; it is not the permanent
-  container for everything learned about Half-open.
-- Follow-up investigates S through a declared concurrent-callers question, with
-  explicitly selected prior context rather than context implied by navigation.
-- Correct the admission child only. Select the retained definition alongside the
-  later result without reparenting it.
-- Extend immutable selection Projections to identify this working answer across
-  results, without implying synthesis. The exact selection contract remains open.
+- Shared reference S continues to designate Half-open. Definitions and behavior
+  occupy separately correctable child investigrams under a coherent result root.
+- The caller explicitly selects context for the subject follow-up, using the
+  originating answer to propose the references. Origin is not a hidden input rule.
+- The follow-up introduces new roles and relationship W, with a definition child of
+  its own. Earlier definitions are neither extended nor reparented.
+- Every child delivers its own applicable qualifications. Composition does not
+  implicitly inherit substantive limitations from its parent.
+- Retain the follow-up request's answer, then let a separate caller-requested
+  assembly produce a working answer across results without synthesis.
+- Keep evaluation-wide exposure/reconsideration. Smaller correction units do not
+  establish smaller dependency sets or fewer warnings.
 
-Only explicit introduction/reuse is exercised as an application path in this pass.
-Local/prose promotion remains a separate probe, not an agreed scope exclusion.
+Only explicit introduction/reuse is exercised as an application path here. Local/prose
+promotion remains a separate probe, not an agreed scope exclusion. The caller may
+be a direct API client; no particular GUI interaction is prescribed.
 
 ## 1. Establish referents and basis
 
-A supported mechanical module analysis yields M and its qualified information.
-An orientation investigation from M introduces Circuit breaker policy kind P, with
-an attributable definition and qualified implementation mapping. This is a proposed
-discovery path; seeding orientation in a fixture cannot demonstrate discovery.
+A mechanical module analysis yields M and its qualified information. An orientation
+investigation from M introduces Circuit breaker policy kind P, with an attributable
+definition and qualified implementation mapping. This is a proposed discovery path;
+seeding orientation in a fixture cannot demonstrate discovery.
 
-The subsequent admission investigation introduces:
+The admission investigation introduces S for Half-open and S-open/S-closed for the
+Open and Closed state categories used by the explanation. S is a state category,
+not one runtime occurrence or a trial execution. Default recovery configuration
+qualifies the behavioral claims; examining only that configuration need not make
+it part of the state category's identity.
 
-| Reference | Meaning in this example |
-| --- | --- |
-| S | Half-open state category of P at the captured program basis. |
-| S-open, S-closed | Open and Closed state categories used by the explanation. |
-| R | Shared breaker-instance role in the described concurrent-caller usage pattern, not an observed runtime object. |
+Allocation guarantees stable reference within the Session, not mechanical correctness,
+uniqueness across discoveries or correspondence across program revisions. Introducing
+provenance and basis remain attributable; later accounts may refine, dispute or
+identify conflation. Mechanical M and interpreted P/S share a reference mechanism
+without sharing guarantees. Interpreted identity's allocation/continuity contract
+still needs an explicit governing decision before implementation.
 
-Allocation guarantees stable reference to the introduced referent within the Session.
-It does not mechanically establish the interpretation, uniqueness across independent
-discoveries, or correspondence across program states. Descriptions retain introducing
-provenance and basis; later accounts can refine, dispute or identify conflation in them.
-
-S and R are distinct. Qualified claims explain that an instance occupying R has a
-state drawn from P's state categories. S is not one particular runtime occurrence of
-Half-open. Default recovery configuration qualifies the behavioral claims; examining
-only that configuration need not make it part of the state category's identity.
-
-All use the shared mechanism while preserving actual origins: mechanical M and
-interpreted P/S/R. The allocation/continuity contract for interpreted referents of
-implemented architecture needs an explicit governing decision before implementation;
-this example proposes its intended meaning, not an ID formula.
+The shared-instance role R is deliberately introduced during the follow-up. Knowing
+that a policy has instances would not logically preclude missing waiting behavior,
+but delaying R here preserves the original journey and tests genuinely new subjects.
 
 ## 2. One introduction, separate correction units
 
-The admission evaluation returns this fixed composition:
+The admission evaluation returns a fixed composition:
 
 ```text
-INTRO-1                 root: orientation to this result and its limits
-├── DEFINITIONS-1       child: identifying descriptions and distinctions
-└── ADMISSION-1         child: admission/inspection behavior; waiting is omitted
+INTRO-1                 root: orientation to this result
+├── DEFINITIONS-1       child: state-category descriptions
+└── ADMISSION-1         child: admission/inspection behavior; waiting omitted
 ```
 
-DEFINITIONS-1 describes S and the surrounding state/instance-role vocabulary. It
-keeps state category, shared instance role and execution distinct. This is a small
-coherent unit, not an investigram for each sentence. ADMISSION-1 contains the
-admission cases and inspection account. Both explicitly reference the appropriate
-subjects and carry attributable evidence and qualifications.
+DEFINITIONS-1 carries a proposed recognized content kind, `identifying-description`,
+and qualified describes associations with S, S-open and S-closed. This makes it
+findable as identifying content, not the unique authoritative definition. It is one
+small coherent unit, not an investigram for each sentence.
 
-INTRO-1 explains its parts and limits without repeating the admission rules as a
-second substantive account. If its own content included a now-misleading claim,
-correcting a child alone would not correct that root claim.
+ADMISSION-1 describes P's admission behavior and refers to S. That reference does
+not automatically make it a describes-S association. It contains the admission cases
+and inspection account, with support and qualifications attributable to those claims.
 
-Accept the result atomically, resolving submission-local subject keys to shared IDs.
-DEFINITIONS-1 describes S; ADMISSION-1 describes P's admission behavior and refers
-to S and R. Reference inventories alone do not supply descriptive associations or
-support. No new mutable multi-account object is introduced.
+INTRO-1 organizes the explanation without repeating the behavioral claims as a
+second account. If its own content were misleading, correcting a child would not
+correct the root's claim.
 
-ANSWER-1 fixes the initial selected result, including its children, qualifications
-and revision snapshot. Its identity differs from INTRO-1; exact ANSWER-1 remains
-available after corrections.
+Each child delivers every qualification applicable to its own claims, including
+static interpretation and recovery scope where relevant. INTRO-1 may summarize these
+limits but is not their sole owner. Storage may share explicit immutable support or
+provenance records; delivery must still resolve and supply applicable qualification.
+There is no implicit parent qualification that a reader must discover separately.
 
-## 3. Investigate Half-open with explicit context
+Accept the result atomically, resolving submission-local keys to shared IDs.
+ANSWER-1 fixes the selected result, children, support and revision snapshot. Its
+identity differs from INTRO-1, and exact retrieval remains available after correction.
 
-Proposed semantic request, not an API declaration:
+## 3. The caller selects follow-up context
 
-| Part | Concrete value |
+For this path, the caller constructs the request from ANSWER-1. It explicitly names
+ADMISSION-1 as the source explanation being followed and DEFINITIONS-1 as the chosen
+identifying description of S. Both are available in that exact answer. This is a
+structural context choice, not analysis establishing relevance or exhaustiveness.
+
+| Request component | Concrete value |
 | --- | --- |
-| Investigated subject | S. |
+| Subject | S. |
 | Information need | Concurrent callers and trial outcomes in default single-trial recovery. |
-| Selected earlier interpretation | DEFINITIONS-1 for meaning; ADMISSION-1 for the earlier behavioral account. |
-| Architectural basis | Captured project/revision and attributable analysis context from the actual earlier evaluations. |
-| Navigation origin | S was selected while viewing ANSWER-1. |
+| Selected prior interpretation | DEFINITIONS-1 and ADMISSION-1, by exact reference. |
+| Architectural basis | Captured project/revision and actual originating analysis context. |
+| Navigation lineage | S was selected while viewing ANSWER-1. |
 
-Give the information need declared Lens/operation meaning. A fixed question may need
-no free-form parameters. Meaningful variations and selected descriptive context must
-enter effective inputs and reuse identity: S alone is insufficient. Another navigation
-route to otherwise identical effective inputs should not alone change answer identity.
+The coordinator does not obtain ADMISSION-1 from the describes-S index: it need not
+appear there. Nor does it silently supply every mention of S. A different navigation
+route can choose the same exact context and yield the same effective inputs. Choosing
+different context changes inputs explicitly, not through an undisclosed origin rule.
+A fresh request on S without an originating answer needs its own context-selection
+policy and is not demonstrated by this path.
 
-Origin records the path, not investigator exposure to ANSWER-1, human belief, or
-reliance on every part. For this example, M is known from actual originating
-evaluations and can remain an explicit analysis-entry anchor. Do not derive it by
-treating the interpreted P-to-M relationship as mechanical fact. The anchor does
-not claim that S is implemented exclusively by M. Whether to clarify the existing
-module field or generalize architectural-context representation remains open,
-especially beyond this single-origin example.
+Give the information need declared Lens/operation meaning. Fixed questions may need
+no free-form parameters; meaningful variations and context selection must enter
+request/reuse identity. S alone cannot identify the effective request.
+
+M is known from actual originating evaluations and can remain an explicit analysis-entry
+anchor for this example. Do not derive it by treating the interpreted P-to-M mapping
+as mechanical fact. It does not claim that S is implemented exclusively by M.
+Clarifying the existing module field versus generalizing originating context remains
+open, especially beyond this single-origin case.
 
 ### Actual delivery
 
-Deliver complete own content, referent information and qualifications of both
-children, with resolvable support and disclosed revision context. The coordinator
-records actual delivery. INTRO-1 need not be supplied merely because it is their
-parent. Its ID or ANSWER-1's ID does not expose its content.
+The coordinator supplies and records complete own content, referent information and
+qualifications of both selected children, with resolvable support and disclosed
+revision context. Their parent need not be delivered because their qualifications
+are self-contained in delivery. Parent/answer IDs alone do not expose their content.
+The investigator separately acquires the necessary program evidence: earlier
+interpretation is reusable context, not independent corroboration.
 
-The investigator separately acquires program evidence needed to assess behavior.
-Earlier interpretation is reusable context, not independent corroboration.
+Structured completeness must already be defined. If bounds omit an admission branch
+or required qualification, ADMISSION-1 is not eligible for correction. Retrieve the
+missing material or finish without the correction. Navigation origin and ordinary
+account follow-up do not bypass this actual-delivery check.
 
-Structured completeness must already be defined. If bounds omit an admission branch,
-qualification or other required content, ADMISSION-1 is not eligible for replacement.
-Retrieve the missing material or finish without that correction. Navigation origin
-and ordinary account follow-up cannot bypass the actual-delivery check.
+## 4. New role definitions, behavior and correction
 
-## 4. Extension and correction together
+The follow-up introduces:
 
-The follow-up returns TRIAL-1 with an accompanying replacement:
+| Reference | Meaning |
+| --- | --- |
+| R | Shared breaker-instance role in the described usage pattern, not an observed runtime object. |
+| E-trial | An execution occupying the recovery-trial role. |
+| E-caller | A concurrent caller's execution role. |
+| W | Waiting by E-caller for R's recovery decision under this pattern/configuration. |
+
+Qualified content connects R to P and distinguishes S from a particular instance
+occupying that state. These are new descriptions, not additions to DEFINITIONS-1.
+Use a consistent partition:
 
 ```text
-TRIAL-1                new result root: concurrent callers and outcomes
-  correction:
-    target:            ADMISSION-1
-    replacement:       ADMISSION-2
-    corrected subject: P (whose admission account is corrected)
-    reason:            omitted waiting during an occupied recovery trial
+TRIAL-RESULT-1                 root: orientation to the follow-up result
+├── ROLE-DEFINITIONS-1         child: identifying descriptions of R, roles and W
+└── TRIAL-1                    child: interaction and recovery outcomes
+      accompanying correction:
+        target:               ADMISSION-1
+        replacement:          ADMISSION-2
+        corrected subject:    P
+        reason:               omitted waiting during an occupied recovery trial
 ```
 
-Retain the correction's qualifications and evidence. P is selected explicitly as
-the corrected subject, not inferred from input S or origin module M. Current
-corrected-subject validation therefore needs extension. ADMISSION-2 also refers to
-S and R; what it refers to and whose account it corrects are distinct declarations.
+ROLE-DEFINITIONS-1 uses identifying-description content with explicit described
+subjects. TRIAL-1 uses supported interaction/transition forms and qualified describes
+associations with P, S and R where its claims warrant them. Each child supplies its
+own applicable qualifications. Definitions need not always be separate children;
+we choose them here because independent follow-up/correction is useful to test.
 
-TRIAL-1's composition tree and ADMISSION-2's replacement tree are disjoint. They
-can share subject IDs and supplied evidence without sharing composition children.
-Neither contains or reparents DEFINITIONS-1. Correction is not a composition edge,
-and TRIAL-1 is not appended to INTRO-1.
+TRIAL-1 explains shared state across calls, supplied trial work, waiting while the
+single trial is occupied, and how trial outcomes affect subsequent admission,
+including possible refusal of the waiting caller. ADMISSION-2 restates the complete
+admission account with the missing case and conditions. Both retain default-configuration
+and static possible-scenario limits; neither claims an observed execution.
 
-TRIAL-1 introduces trial-execution and concurrent-caller roles and explains that:
+The correction explicitly identifies P because it corrects P's admission account.
+For this example, corrected subjects identify whose descriptive accounts are corrected,
+not every participant or condition. Include S too if explicitly correcting an account
+of S; do not automatically copy input S, origin M or all referents. General validation
+of this rule remains open. Current corrected-subject validation needs extension.
 
-- The same breaker role R carries recovery state across the described calls.
-- Application-supplied work occupies the recovery-trial role.
-- A concurrent caller can wait while the single trial is occupied.
-- Trial outcome contributes to the recovery decision; the waiting caller encounters
-  the resulting admission decision and can still be refused.
+TRIAL-RESULT-1's reporting tree and ADMISSION-2's replacement tree are disjoint.
+Shared subject IDs and evidence do not constitute shared composition children.
+Neither adopts DEFINITIONS-1 or appends to INTRO-1. The correction's reason,
+qualifications and evidence remain accessible as reporting content. S and its
+identifying description are unchanged by this behavioral correction.
 
-ADMISSION-2 restates the complete admission account with the missing waiting case
-and conditions. The selected answer connects it to TRIAL-1's explanation and support.
-Default configuration and static, possible-scenario qualifications remain visible;
-this is not an observed execution or coverage of every configuration.
+## 5. Two answers with explicit owners
 
-The omission changes admission behavior, not S's identifying definition. No correction
-of DEFINITIONS-1 or new S is needed. A definition error, if found too, would require
-separate explicit treatment.
+First, the concurrent-callers request returns FOLLOWUP-ANSWER-1. It retains the
+selected TRIAL-RESULT-1 tree and accompanying ADMISSION-2, with support and revision
+context. It does not automatically select input DEFINITIONS-1 for display. Actual
+input-context provenance remains available separately from answer constituents.
 
-## 5. A selected answer, not a newly synthesized account
+Then the caller makes a separate explicit assembly request for WORKING-ANSWER-1:
 
-ANSWER-2 selects:
-
-| Material | Purpose |
+| Exact selected material | Purpose |
 | --- | --- |
-| DEFINITIONS-1 | Retained descriptive context for S and R. |
-| TRIAL-1 | New concurrent-caller explanation. |
+| DEFINITIONS-1 | Retained state-category descriptions. |
+| ROLE-DEFINITIONS-1 | New instance/execution-role and relationship descriptions. |
+| TRIAL-1 | Concurrent-caller explanation and supported recovery transitions. |
 | ADMISSION-2 | Corrected admission account. |
-| Correction/revision support | Target, replacement, reason, qualifications, alternatives and relevant reconsideration context. |
+| Correction/revision support | Change, reason, alternatives, qualifications and reconsideration context. |
 
-Selecting DEFINITIONS-1 is deliberate, not an automatic promise to display all input
-context. It remains a child of INTRO-1 in its original composition. Selection alongside
-other units changes neither its parent nor that result.
+This is a proposed extension of inspection/selection: the caller supplies exact
+constituents and an assembly mode; no new investigation is required merely to retrieve
+them together. A future UI could coordinate the two requests as one interaction.
+Their retained answers and meanings remain distinct. The general Lens/assembly
+contract is still to be designed; it is not already implemented.
 
-This requires a selection extension: current request selections derive from one
-evaluation's root and accompanying replacements, rather than accepting this explicit
-cross-result selection. Retain exact constituents, support, selection meaning and
-revision snapshot. The assembly/inspection operation supplies qualified material;
-it does not assert agreement or synthesize new architectural claims. Its Lens and
-input contract remain to be designed.
+Assembly does not assert agreement or synthesize architectural claims. Retain its
+constituents, support, mode and revision snapshot. Identical effective inputs and
+snapshot give repeatable logical identity. A fresh current-context request can
+capture a later snapshot; exact retrieval never recomputes it. Selecting a child
+from an earlier tree does not reparent it.
 
 | Access | Result |
 | --- | --- |
 | Exact ANSWER-1 | Original selected content and captured revision context. |
-| Fresh inspection of ADMISSION-1 | The original, with applicable newly selected correction context; never redirection to ADMISSION-2. |
-| Fresh current selection originating at INTRO-1 | Can select DEFINITIONS-1 and ADMISSION-2 with displacement disclosed, while stored INTRO-1 still points to ADMISSION-1. |
+| Exact FOLLOWUP-ANSWER-1 | The follow-up result selection, without implicitly adding its input definitions. |
+| Exact WORKING-ANSWER-1 | The caller's assembled selection and captured context. |
+| Fresh inspection of ADMISSION-1 | The original with applicable current correction context, never redirection. |
+| Fresh current selection originating at INTRO-1 | Can select DEFINITIONS-1 and ADMISSION-2 with displacement disclosed, while stored children remain unchanged. |
 
-The last behavior follows existing replacement-aware selection, not mutation of
-stored children. A newly synthesized overall explanation would require another
-qualified investigation.
+The last path follows replacement-aware selection, not tree mutation. New synthesis
+would require another qualified investigation.
 
-## 6. Supply the meaning for diagrams
+Fresh identifying-description lookup uses the recognized kind plus qualified
+describes associations, exposing candidate scope, revisions and conflicts. If
+DEFINITIONS-2 replaces DEFINITIONS-1, current replacement-aware selection can prefer
+it in this single-chain case. Independent definitions remain separate candidates;
+TRIAL-1 does not become a definition merely because it also describes S. Automatic
+selection for a new origin-free investigation remains an open policy.
 
-This is a content checklist, not a full schema or independently verified model:
+## 6. Supply diagram meaning and discovery
 
-| Content | Meaning needed by a consumer |
+| Content | Supplied meaning |
 | --- | --- |
-| DEFINITIONS-1 | State categories, P and R, their distinctions and qualified application context. |
-| ADMISSION-2 | Admission cases, conditions, effects and the distinction between inspecting state and attempting execution. |
-| TRIAL-1 | Trial/caller roles referring to the same R; occupancy, waiting, release/admission ordering and alternative outcomes. |
+| DEFINITIONS-1 | State-category identities and their qualified relationship to P. |
+| ROLE-DEFINITIONS-1 | R, execution roles and W with their pattern context. |
+| ADMISSION-2 | Admission cases, conditions, effects and inspection/execution distinctions. |
+| TRIAL-1 | Participants, occupancy, waiting, meaningful ordering, alternative outcomes and supported transitions. |
 
-Explicitly introduce W for the relationship described by both later accounts: waiting
-by the concurrent-caller role for R's recovery decision in this pattern/configuration.
-ADMISSION-2 and TRIAL-1 use that shared reference, allocated atomically with the
-follow-up result. Their qualified content supplies the conditions. A consumer can
-align W, but still must disclose conflicting descriptions if present.
+ADMISSION-2 and TRIAL-1 refer to the same W allocated with the follow-up. Qualified
+content supplies its conditions. A consumer can align the referent while preserving
+any conflict between descriptions; identity alone does not reconcile claims.
 
-Put detailed recovery-outcome transitions in TRIAL-1, with explicit state endpoints,
-owner role, outcome conditions and effects. ADMISSION-2 need not independently
-describe duplicate transitions. A view can combine these with admission behavior
-through shared S/R while preserving the different claims. If another account later
-describes a transition, alignment needs a shared transition reference or qualified
-correspondence. Supply identity where required without making every relationship
-a shared subject immediately.
+Place detailed recovery-outcome transitions in TRIAL-1 for this probe, with explicit
+state endpoints, owner role, conditions and effects. Mark the transition content
+and explicitly associate its account with P and S so later state inquiries can find
+it without relying on incidental mentions. This does not promise complete state-machine
+coverage. If transitions warrant separate selection/correction, a future result can
+partition them separately; there is no universal rule binding them to interactions.
 
-Depict only the supported partial recovery diagram; do not infer unexamined triggers
-or transitions. Keep elapsed eligibility distinct from execution-triggered state
-change. Layout cannot fill missing guards or equate similar labels. This tests small
-structural, state and interaction depictions, not a full presentation system.
+ADMISSION-2 need not duplicate these transitions. Combined depictions can align
+shared S/R references. Independently described transitions later need a shared
+reference or qualified correspondence before alignment. Keep missing triggers,
+guards and cases visible; elapsed eligibility is not an execution-triggered state
+change. Layout cannot supply missing semantics. This remains a content probe for
+small structure, state and interaction depictions, not a full presentation system.
 
-## 7. Stress the partition: later definition correction
+## 7. Later definition correction: two different limits
 
-Suppose later analysis finds DEFINITIONS-1's characterization misleading while still
-understanding S to designate the same state category. It receives the child's full
-own content and returns DEFINITIONS-2 as a replacement, retaining S. This is a design
-test, not a further factual claim about Cockatiel.
+Suppose later analysis corrects DEFINITIONS-1 with DEFINITIONS-2 while retaining S.
+This is a design test, not a new claim about Cockatiel. Full delivery of the target
+child is required; unrelated parent/admission content is not required solely for
+eligibility. Earlier answers and composition remain fixed.
 
-No unrelated parent or admission content is required solely for definition-correction
-eligibility. A fresh selection can include DEFINITIONS-2 alongside behavioral accounts;
-earlier answers remain exact. The root's composition remains unchanged.
+Every investigram from the follow-up shares the evaluation's conservative exposure
+index. TRIAL-RESULT-1, ROLE-DEFINITIONS-1, TRIAL-1 and ADMISSION-2 can all be flagged
+after correction of DEFINITIONS-1, subject to established per-correction exemptions.
+Partitioning does not assign each child its own claim-level dependency set.
 
-An important limit appears: TRIAL-1 and ADMISSION-2 were generated after exposure to
-DEFINITIONS-1, so existing reconsideration rules can flag them for the later correction,
-subject to established per-correction exemptions. ADMISSION-1 was created alongside
-DEFINITIONS-1 in the initial result. Sibling composition or shared S does not establish
-prior-content exposure, so it is not automatically flagged solely for those reasons.
-Selecting the improved definition does not prove old behavior remains compatible.
+DEFINITIONS-1 also groups several descriptions. Correcting one replaces that whole
+child; exposure to another part still counts. Smaller units narrow correction targets
+and required delivery, not necessarily reconsideration flags. They can change what
+later evaluations choose to retrieve, but once content is exposed the evaluation-wide
+rule remains. This is an explicit tradeoff, not an accidental promise of precision.
 
-This is the cost of preserving exposure-based propagation instead of silently adding
-subject/definition dependencies. If insufficient, we need explicit impact semantics
-or a qualified investigation checking and correcting affected accounts. Actual
-conflation would require distinguished referents and qualified correspondence, not
+Conversely, ADMISSION-1 was created alongside DEFINITIONS-1. Sibling composition and
+shared S do not establish prior-content exposure, so they do not automatically flag
+it. Selecting the improved definition does not establish compatibility of old behavior.
+
+Thus the existing policy can be broad for one evaluation's results and silent about
+same-result semantic dependencies. If that is insufficient, add explicit impact
+semantics or qualified checking of affected accounts; do not silently invent it.
+Actual conflation requires distinguished referents and correspondence rather than
 retaining S merely for convenient continuity.
 
 ## What this pass suggests
 
-The child arrangement is a promising default here: one coherent initial result,
-separate correction units, no mutable account container. A subject request with
-explicit context tests shared reference continuity directly. Cross-result answer
-selection makes reuse visible without confusing it with composition or synthesis.
+The child partition remains useful for correction identity and coherent initial
+explanations. Its propagation costs are now explicit. Caller-selected context resolves
+how ADMISSION-1 reaches the follow-up without conflating origin with effective inputs.
+A separate assembly operation resolves who chooses the cross-result working answer.
 
-Next, test these choices, particularly the selection contract and whether the
-definition-change propagation limit is acceptable initially. Then probe composition
-roles and local/prose promotion before fixing the broader contracts. Migration and
-delivery scope remain open; this example does not authorize a planning package.
+Next discuss whether these two caller operations are the right first boundary and
+whether evaluation-wide reconsideration is acceptable. Then probe composition roles
+and local/prose promotion. Migration, delivery scope and a general context-selection
+policy remain open; no planning package is authorized by this example.

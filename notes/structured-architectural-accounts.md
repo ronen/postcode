@@ -12,6 +12,9 @@ record includes earlier alternatives later revised, particularly account-scoped
 identity, eager relationship-subject creation and a facade over legacy subjects.
 The [concrete walkthrough](structured-architectural-accounts-example.md) tests a
 provisional arrangement without adopting it.
+Its second-review revision explicitly assigns context selection and working-answer
+assembly to the caller, separates new role definitions, and clarifies qualification
+delivery and evaluation-wide exposure. These remain provisional example choices.
 
 ## Scope established by the human
 

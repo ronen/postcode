@@ -17,6 +17,9 @@ The [first concrete walkthrough](structured-architectural-accounts-example.md) t
 a provisional definition/admission child partition, a subject request with explicit
 context, and immutable selection across results. Its choices remain open; it does
 not supersede the unresolved choices in this proposal.
+Its current revision makes caller context selection explicit, introduces role
+definitions during follow-up, and separates the follow-up answer from a later
+caller-requested working-answer assembly. These are choices to test, not adopted defaults.
 
 The [foundation](../foundation/README.md), [application specification](../docs/app-specification.md),
 [core concepts](../docs/core-concepts.md), [architectural constraints](../docs/architectural-constraints.md)
@@ -107,6 +110,9 @@ particular claim is supported remain distinct.
 Qualifications must remain attributable to the portions they qualify. Shared
 enclosing support may avoid repetition where it actually applies; neither association
 with a subject nor inclusion in one account extends evidence to unrelated claims.
+The walkthrough permits shared support storage but makes each child self-contained
+in qualification delivery: no substantive limitation is inherited implicitly from
+a composition parent. The target's own delivery must include its applicable limits.
 
 ### Items, topics and associations
 
@@ -230,28 +236,33 @@ and its discovery are staged. This proposal adds no verification of library beha
    An interpretation identifies Circuit breaker policy kind P, with a qualified
    connection to M. This establishes a path from ordinary application entry to an
    architectural subject. A fixture may seed orientation for narrower tests.
-2. **Admission.** ADMISSION-1 describes admission and inspection under the stated
-   recovery configuration. It introduces Half-open S, or exposes a local designation
-   that can be promoted. Its description H1 distinguishes the state from a trial
-   execution. ANSWER-1 fixes the selected content and support.
+2. **Admission.** The result introduces Half-open S and describes admission under
+   the stated recovery configuration. In the provisional walkthrough, INTRO-1 has
+   DEFINITIONS-1 and ADMISSION-1 as children; recognized identifying-description
+   content distinguishes S from an execution. ANSWER-1 fixes the selection and support.
+   Other introduction/partition choices remain open in the broader design.
 3. **Follow-up.** The human selects S for concurrent callers and outcomes. The
-   request form remains unresolved: it could investigate S with explicitly selected
-   earlier context, or investigate ADMISSION-1 with a declared focus on S. In either
+   walkthrough chooses a request on S whose caller explicitly selects DEFINITIONS-1
+   and ADMISSION-1 from ANSWER-1. An account follow-up focused on S remains an
+   alternative; no origin-free context-selection policy is settled. In either
    case distinguish the subject, information need, selected descriptive context and
    navigation origin. To correct ADMISSION-1, the investigator must receive the target's
    complete own content, referent and qualifications, and obtain supporting program
    evidence. An ID or subject summary does not suffice. Existing account follow-up
    also uses bounded delivery, so neither route guarantees correction eligibility
    without checking what was actually supplied.
-4. **Extension and correction.** TRIAL-1 reuses S, distinguishes the shared breaker
-   instance role from execution roles, and accounts for waiting and later outcomes.
-   The result also supplies ADMISSION-2 and an explicit correction of ADMISSION-1.
+4. **Extension and correction.** The follow-up reuses S, introduces the shared breaker
+   instance and execution roles in ROLE-DEFINITIONS-1, and explains their behavior
+   in TRIAL-1. Both are children of TRIAL-RESULT-1. The result also supplies
+   ADMISSION-2 and an explicit correction of ADMISSION-1.
    Accept it atomically; preserve the original and its fixed composition. A new
    result does not append children to the old investigram; replacement composition
    remains disjoint as required by the existing contract.
-5. **Current use and historical access.** A working answer selects ADMISSION-2 and
-   TRIAL-1 with qualifications and correction context. It need not synthesize a new
-   account. Exact ANSWER-1 returns its captured selection/context; fresh inspection
+5. **Current use and historical access.** The request returns its follow-up answer.
+   In the walkthrough a separate explicit caller assembly selects both definition
+   children, ADMISSION-2 and TRIAL-1 with qualified support and revision context.
+   This working answer does not synthesize a new account. Exact ANSWER-1 returns its
+   captured selection/context; fresh inspection
    of ADMISSION-1 can disclose later corrections around the unchanged original.
    Neither operation silently redirects its exact reference.
 
@@ -261,8 +272,8 @@ omission in admission behavior may leave the definition's meaning unchanged. If 
 is embedded in the root's own content, however, replacing the root replaces that
 content too and the replacement must supply its description. A separate definition
 child is independently correctable; root replacement does not automatically carry
-that child or a corrected successor into its new composition. The example has not
-yet selected a root/child partition or its resulting answer selection.
+that child or a corrected successor into its new composition. The walkthrough tests
+the child partition and explicit answer assembly; a general partition policy is open.
 
 Preserve three independent dimensions:
 
@@ -276,6 +287,9 @@ Existing replacement preference does not resolve conflicts. Exposure-based
 reconsideration remains conservative: seeing an account is not proven reliance,
 and its correction does not prove every exposed result false. Preserve current
 propagation/exemption rules unless a later decision explicitly revises them.
+All investigrams from one evaluation share its conservative exposure index, including
+definition children and replacements. Partitioning narrows correction/delivery units,
+not necessarily reconsideration warnings. Grouped definitions retain this tradeoff.
 
 Initially a working selection can be explicit. Automatic relevance judgments,
 correspondence and synthesis establishing new claims require qualified analysis.
