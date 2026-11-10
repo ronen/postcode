@@ -144,6 +144,45 @@ For larger inventories, bounded delivery/discovery can preserve access to altern
 the two-account case needs no adjudication to make progress. Exact earlier answers
 still retain their captured context.
 
+**Proposed common account-relationship model.** The human proposes unifying qualified
+relationships such as “A is an alternative to B,” “A corrects B” and “A is inconsistent
+with B.” Recommend a shared representation of exact participating accounts/roles,
+relationship kind, reporting investigation/account, explanatory content, scope,
+evidence and qualifications, with type-specific validation and consequences. Alternative
+does not imply error or replacement; inconsistency reports tension under a specified
+scope; correction explicitly proposes a replacement for an identified error. These
+meanings are not mutually exclusive classifications of account pairs. Common machinery
+does not require a generic graph ontology or one identical payload for every kind.
+Mechanical composition and exposure remain distinguishable from interpreted relations.
+
+**Address explicit reassessment in this design.** The human considers tracking and
+clearing concerns caused by corrected prior context part of organizing accounts.
+Include a bounded reassessment design alongside the relationship model; this is not
+yet implementation authorization or an agreed delivery expansion. Current tracking
+establishes supplied context, not proven reliance, so warnings must preserve that
+distinction. Add an immutable qualified assessment naming the exact account reviewed
+and the specific correction cause(s), with an outcome and reasoning. Candidate outcomes:
+the account remains usable unchanged with respect to those causes; a supported
+replacement is supplied; or impact remains unresolved. An assessment concerns an
+account in light of a change, so it cannot be reduced to a simple unqualified binary
+edge between two accounts.
+
+For A corrected by B under correction K, and C previously exposed to A, reassessment
+R can address C with respect to K. A favorable assessment clears that cause for C's
+fresh derived status without changing C, its original input history or exact answers.
+It does not certify C globally or clear independent/later causes. An unresolved or
+partial assessment does not silently clear the whole concern. A replacement of C
+does not erase the historical issue on original C. Re-execution or mere receipt of
+corrected context is not explicit reassessment of C.
+
+**Needs design:** complete delivery/eligibility for assessment; conflicting or later
+challenged assessments; and downstream clearance. For D exposed to C, test whether
+resolution at C can stop propagation of K through that path, retaining independent
+paths/causes and recording that D was not itself reassessed. Compare this with
+direct-account-only clearance and its residual warning burden. Do not silently choose
+either rule. The existing decision already anticipates reassessment and requires
+these distinctions; new acceptance/status behavior needs an explicit governing extension.
+
 **Proposed investigation — reconcile selected accounts.** The human proposes selecting
 accounts and asking to reconcile them. Recommend supporting this as an explicit
 qualified investigation, not a display operation or an automatic consequence of
