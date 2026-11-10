@@ -26,6 +26,31 @@ and applicable accepted decisions remain governing. The
 [structured-interpretation decision](../docs/decisions/structured-investigram-content.md)
 permits exploring this content while preserving qualification and revision contracts.
 
+## Current exploratory checkpoint
+
+The design has a stable direction, but no adopted payload schema or planning package:
+
+- Retain qualified accounts and their history, allowing partiality and disagreement;
+  do not require a reconciled architectural model.
+- Shared subject references provide continuity across accounts; identifying and
+  behavioral descriptions remain qualified claims, not authoritative subject fields.
+- Use a common content protocol, including keyed prose and specialized architectural
+  forms. Established concepts guide both investigation and explanation; diagrams
+  test content sufficiency through a bounded rendering exercise.
+- Distinguish architectural relationships inside accounts from account-organizing
+  relationships. The latter currently favor explicit qualified metadata records
+  returned alongside accounts, with their own meaning, support and consequences.
+- Alternatives, inconsistencies and corrections have distinct meanings. There is
+  no longer a recommendation to rename all corrections “revision” or “alternative.”
+- Subject/context selection and dialogue-based retrieval remain separate from UI
+  design. Human pushback is out of scope; detailed reassessment is recommended for
+  deferred work, preserving the necessary references and derived-status extension.
+
+The next work is a complete illustrative submission/retrieval/correction example,
+not another general ontology discussion. Choose a provisional partition, give actual
+content, and change that partition only when the example reveals a concrete problem.
+The five remaining decision groups are collected near the end of this note.
+
 ## The proposed capability
 
 PostCode retains architectural subjects and qualified accounts about them so that
@@ -1013,25 +1038,13 @@ account reconciliation, full presentation/navigation and the minimal GUI.
 
 ### Assumptions to challenge after the acceptance-bias review
 
-**Terminology recommendation — account revision.** The human emphasizes that
-“correction” can steer thinking toward a single corrected model even when its formal
-contract permits competing accounts. Recommend “account revision” as the organizing
-term and “replacement” for its explicit target/successor selection relationship.
-An investigator may assert that an earlier account was wrong or misleading in the
-qualified reason; this does not require a separate correction subtype. Revision may
-also concern clarification or restructuring; a supplementary account is not
-automatically a revision/replacement. Prefer “A2 revises A1; this investigation gives
-these reasons” over wording implying that PostCode certifies A2 as the truth.
-This recommendation is not an adopted governing rename or new schema. “Account
-revision” must remain distinguishable from program/repository revision. Existing
-RevisionStatus names do not themselves establish broader revision support.
-
-Broadening the current operation beyond corrections would require examining when
-replacement selection and needs-reconsideration consequences should apply. A wording
-change alone neither resolves those consequences nor warrants changing the accepted
-contract. For the present erroneous-admission example, the investigator can still
-describe its revision as correcting an omission; the system's organizing term need
-not make that judgment on its behalf.
+**Terminology after comparison.** The earlier proposals to use “revision,”
+“replacement” or “alternative” as a universal substitute for correction have given
+way to distinguishing account-relationship kinds. An alternative need not correct
+anything; a correction asserts an error and proposes replacement, with attributable
+reasons rather than app-certified truth. “Revision” can remain general explanatory
+language, but no global governing rename is recommended here. Current Correction
+and RevisionStatus contracts remain binding until explicitly revised.
 
 **Correction remains compatible with this framing.** In response to the human's
 question about revisiting the existing mechanism, inspection of the accepted
@@ -1105,32 +1118,33 @@ confidence has sometimes exceeded the examples supporting them.
   and one interpretation before fixing internal factoring or broad migration scope;
   preserve mechanical guarantees and avoid unnecessary parallel identities.
 
-1. **Identity and addressing.** Specify guarantees for interpreted referents of
-   implemented architecture, including contextual roles and governing changes.
-   Keep exact investigram addresses separate from selected collections. Settle local
-   key namespaces, cross-correction mappings and prose-selection identity where needed.
-2. **Item and correction boundaries.** Work through an embedded definition, a
-   subordinate definition investigram and a separately selected definition. Show root
-   and child correction behavior and the resulting answer selection. Resolve how
-   clarification of a contextual definition differs from correction.
-3. **Request, context and selection.** Choose subject investigation versus focused
-   account follow-up; define originating context, selected input and lineage.
-   Extend existing retained-answer contracts for new references and support without
-   requiring a UI assembly workflow. Specify fixed identifying support and per-subject
-   identifies associations. Resolve interpretive
-   Lens applicability and origin-free discovery/listing exposure tradeoffs.
-4. **Content and delivery.** Choose forms that supply the diagrams, define their
-   complete/bounded delivery contracts before corrections, and establish the precise
-   identity or correspondence needed for combined views. Formal validity and semantic
-   fidelity remain separate checks.
-5. **Shared-mechanism migration and entry.** Decide which existing producers/subject
-   kinds migrate first and how ordinary entry reaches the first interpreted subject.
-   A mechanical module plus interpretation is a useful minimum demonstration, not
-   proof of complete migration. Transitional representations need explicit bounds.
-6. **Delivery boundary.** Choose between the broader first scope and the review's
-   explicit-introduction path with other mechanisms probed. Decide whether the
-   absence of subject-wide reconsideration for standalone conflation findings is
-   acceptable initially. Broader coverage tests extension sooner but increases scope.
+1. **Concrete concept and content contracts.** Organize concept guidance, supported
+   forms and diagram mappings; draft the state-behavior and interaction entries
+   needed by the example. Specify returned identifying content, local references,
+   promotion declarations and account-relationship metadata. Establish attributable
+   support and full/partial delivery, without requiring a comprehensive catalogue.
+2. **Account boundaries.** Choose a provisional investigram/child partition for the
+   concrete example. Show what is retrieved and replaced when one description or
+   admission claim changes, including unchanged content and root/child behavior.
+   Addressability and qualification do not establish independent semantic validity.
+3. **Account-relationship semantics.** Specify initial kinds, endpoint roles,
+   reporting/support, reference validation and discovery. Preserve distinctions
+   between coexistence, reported inconsistency and explicit correction. Decide
+   what challenging a correction means or disclose that changing its standing is
+   deferred; do not accidentally infer withdrawal from revising its reporter.
+4. **End-to-end subject and application access.** Specify interpreted identity and
+   reuse guarantees, exact naming/local-key resolution, qualified identifies/refers-to
+   associations, ordinary entry and applicable investigation offers. Work through
+   subject-only versus explicit-origin context, dialogue acquisition, competing
+   descriptions and exact-answer support. Demonstrate one mechanical producer and
+   interpretation through the common subject contract; deeper factoring can emerge.
+5. **First delivery and verification.** Decide which introduction/promotion paths,
+   relationship kinds and reconciliation operations are delivered versus only probed.
+   Composition and merge/split remain design probes unless explicitly included.
+   Use real investigation to test discovery/reuse, fixtures for lifecycle and API
+   guarantees, and bounded rendering for content sufficiency. Human pushback and
+   general presentation remain out of scope; detailed reassessment is deferred as
+   recommended above. Preserve exact history and disclose unsupported operations.
 
 ## Designs and theories to build on
 
