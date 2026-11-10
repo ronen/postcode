@@ -62,6 +62,14 @@ but delaying R here preserves the original journey and tests genuinely new subje
 
 ## 2. One introduction, separate correction units
 
+This partition remains provisional. The human has requested a comparison with one
+investigram containing keyed identifying and behavioral content. That alternative
+supports local addressing but corrects the whole investigram; children add independent
+retained follow-up/correction targets and associations, with extra delivery and
+replacement rules. Neither choice narrows the evaluation-wide exposure index merely
+by creating smaller content parts. Structured graph nesting does not dictate this
+account partition.
+
 The hierarchy itself is existing machinery: one investigation can already return
 a root and recursive child investigrams, each with its own retained ID. Choosing
 definition and admission children is this example's proposed use of that machinery.

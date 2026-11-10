@@ -111,6 +111,15 @@ Preserve the descriptions actually grounding selected accounts; do not reinterpr
 an old account by automatically substituting a newer definition. Newer or competing
 descriptions can be exposed distinctly as revision context or separate selected items.
 
+**Human direction — competing descriptions.** When two accounts describe S differently
+without an explicit correction relationship, show both and supply both as investigator
+context, preserving their separate attribution, scope and support. Difference alone
+does not establish contradiction: accounts may concern different conditions or
+complementary aspects. Do not silently choose a winner or synthesize agreement.
+For larger inventories, bounded delivery/discovery can preserve access to alternatives;
+the two-account case needs no adjudication to make progress. Exact earlier answers
+still retain their captured context.
+
 In the walkthrough, selected input descriptions and the new result's identifying
 associations supply that support. FOLLOWUP-ANSWER-1 supplies identifying support for
 S from DEFINITIONS-1 without making that investigram a selected constituent. A fresh
@@ -166,6 +175,10 @@ same-Session identity and capture rules. Interpretation uses supplied IDs and ne
 declarations. A compiler-derived export claim and an interpreted responsibility
 account can concern the same module M without sharing an epistemic guarantee.
 Mechanical results do not become investigrams to fit the common mechanism.
+
+The human confirms that commonality is necessary at the subject-facing level; how
+deeply producers share internal mechanisms can emerge later. A common subject
+contract does not by itself settle allocation, storage or migration implementation.
 
 The shared contract includes qualified-information retention as well as identity
 and indexing; it need not eagerly compute every mechanical item before Lens
@@ -354,6 +367,25 @@ qualified correspondence and preserve both references and their original account
 If S0 conflates two things, record that finding and introduce/reference S1 and S2.
 Do not automatically distribute old claims or edges between them. A legitimate
 whole with two parts is not necessarily a conflation.
+
+**Split candidate proposed by the human.** Preserve S0, optionally relabel its current
+designation as “conflated X and Y,” and introduce/reuse separate references for X and
+Y. Retain a qualified conflation finding connecting them. The finding, not the label,
+carries the claim; it can itself be contested. S0 continues to identify the earlier
+designation and its history, rather than silently becoming a new architectural union
+object. Do not retarget its accounts or distribute their claims automatically. Exact
+earlier answers preserve their original labels/support; fresh access can expose the
+later label and finding. This remains a candidate split policy, not an adopted rule.
+
+There is a close precedent in [Wikidata's conflation guidance](https://www.wikidata.org/wiki/Help:Conflation):
+it supports explicit conflation items and separation into distinct items. Its
+[split procedure](https://www.wikidata.org/wiki/Help:Split_an_item) preserves statement
+references while reorganizing items. Borrow the explicit diagnosis and separate
+referents, not an automatic transfer of PostCode's immutable claims. PROV's
+[alternate/specialization distinctions](https://www.w3.org/TR/prov-o/#alternateOf)
+describe aspects of the same thing or more specific descriptions; neither should
+be treated as a ready-made conflation split. These references offer useful patterns,
+not a decision procedure for whether two architectural referents are identical.
 
 A correspondence or conflation finding alone does not trigger the existing
 correction-based reconsideration machinery. An explicit correction of an identifying
@@ -692,6 +724,23 @@ a middle option: coherent fixed composition with independently correctable parts
 Complete target delivery concerns the target's own required content, not its entire
 descendant subtree. Child replacement and root replacement must be worked through
 separately; a new tree cannot simply adopt an old child by implication.
+
+**Why children exist; partition still open.** The accepted
+[investigram decision](../docs/decisions/investigrams-and-progressive-investigation.md#distinguish-fixed-composition-from-investigation-provenance)
+uses one retained unit for whole explanations and their parts, allowing separately
+addressable follow-up and correction within a fixed result. It distinguishes this
+organization from later-investigation provenance and program structure. Children
+already exist in the submission/acceptance implementation. The human asks that we
+compare their affordances and costs before choosing the example's partition.
+
+A single investigram with keyed content parts gives local addressing and coherent
+qualification delivery, but all parts share the whole-investigram correction target.
+Child investigrams add independent retained targets, associations and correction
+boundaries, at the cost of more support/context delivery and composition/replacement
+rules. They do not narrow the evaluation-wide exposure index. Compare these two
+shapes directly; a diagram's nested graph or keyed node does not require a child
+investigram. Removing the existing hierarchy is not necessary to choose no children
+for a particular result.
 
 Organizational roots still carry qualified interpretation and ordinary exposure and
 correction semantics. They must be useful and intelligible, not empty scaffolding
