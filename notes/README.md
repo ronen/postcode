@@ -12,7 +12,7 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 
 ## Current notes
 
-- [Structured architectural accounts](structured-architectural-accounts.md): active design exploration of structured content, subject continuity, qualified reuse and diagram needs.
+- Structured architectural accounts: [working proposal](structured-architectural-accounts-proposal.md) consolidates the emerging design; [discussion notes](structured-architectural-accounts.md) retain exploration, alternatives and research.
 - [Upcoming work](upcoming-work.md)
 - [Candidate capabilities](candidate-capabilities.md)
 - [Candidate UX](candidate-ux.md)

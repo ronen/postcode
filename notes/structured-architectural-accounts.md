@@ -6,6 +6,11 @@ Exploratory, non-governing notes. Recommendations below are discussion proposals
 not accepted decisions or implementation authorization. No draft planning package
 has been requested yet.
 
+For the consolidated current direction, start with the
+[working proposal](structured-architectural-accounts-proposal.md). This discussion
+record includes earlier alternatives later revised, particularly account-scoped
+identity, eager relationship-subject creation and a facade over legacy subjects.
+
 ## Scope established by the human
 
 Explore accounts that successive investigations can reuse, extend and challenge,
