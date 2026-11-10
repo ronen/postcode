@@ -395,6 +395,33 @@ guards and cases visible; elapsed eligibility is not an execution-triggered stat
 change. Layout cannot supply missing semantics. This remains a content probe for
 small structure, state and interaction depictions, not a full presentation system.
 
+### Candidate diagram inventory
+
+This is a useful inventory for the bounded example and composition probe, not a
+commitment to implement every depiction or a catalogue entry for each diagram.
+
+| Candidate | Question and information requirements |
+| --- | --- |
+| Runtime structure/roles | What is shared across calls? Instance roles, execution roles, supplied operation, state-bearing participant and explicitly typed control/use/wait relationships. A component-and-connector-style account, not a claim about observed runtime objects. |
+| Breaker recovery statechart | What changes the breaker's state? Closed/Open/Half-open, state owner, triggers, guards, effects and known coverage; default entry only if established. |
+| Admission activity/decision flow | What can happen to an execution request? Conditions and branches for execution, trial, refusal and waiting, including what happens after waiting. A flow depiction requires supported branching/order, not just an unordered cases list. |
+| Concurrent-caller sequence | How do trial and waiting caller interact? Shared instance and distinct executions, ordering, waiting/release, and outcome alternatives. Include success/refusal variants as supported. Inspection followed by execution is another scenario, not a new diagram family. |
+| Composition structure | How do the two wrapping orders differ? Two scoped patterns with outer/inner policy roles, delegation, supplied operation and separate state/resource responsibilities. Distinguish this topology from containment/ownership. |
+| Composition sequences | What runs or waits, and what remains occupied, in each order? Interactions for Bulkhead outside breaker versus breaker outside Bulkhead, with capacity/state changes and waiting intervals. Qualified composition analysis supplies these claims. |
+
+Optional extensions are an individual-execution lifecycle statechart (its waiting
+is not another breaker state) and an implementation correspondence diagram linking
+architectural roles to modules/symbols with qualified mappings. The former requires
+an explicit lifecycle account; neither should be inferred solely to draw a diagram.
+Correction/evidence graphs concern PostCode's retained accounts and are a separate
+possible diagnostic view, not an additional Cockatiel architectural concept.
+
+Recommend prioritizing runtime structure, breaker statechart and concurrent-caller
+sequence; retain admission flow as a useful contract/correction probe. Composition
+then tests reuse of structural and interaction forms across accounts. Before/after
+correction depictions reuse those forms, keeping exact prior selections available.
+No new source analysis has established complete data for this inventory.
+
 ## 7. Later definition correction: two different limits
 
 Suppose later analysis corrects DEFINITIONS-1 with DEFINITIONS-2 while retaining S.
