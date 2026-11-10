@@ -11,6 +11,12 @@ and discovery are staged; no new source or runtime investigation has been perfor
 
 ## Choices for this pass
 
+Read this as an exercise in organizing partial, qualified accounts, not constructing
+a single reconciled architecture graph. Subjects connect explanations; conflicting
+accounts and uncertain correction impact can remain visible pending further inquiry.
+The partition alternatives below should be judged by useful investigation, retrieval
+and revision, without requiring perfect claim independence or global consistency.
+
 - Shared reference S continues to designate Half-open. Definitions and behavior
   occupy separately correctable child investigrams under a coherent result root.
 - The caller explicitly selects context for the subject follow-up, using the

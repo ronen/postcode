@@ -33,6 +33,25 @@ successive investigations can reuse, extend and challenge understanding. Subject
 provide continuity; accounts provide attributable descriptions and claims. Neither
 shared identity nor a current selection requires the accounts to agree.
 
+**Design framing — organize accounts, not a canonical theory.** The human redirects
+the emphasis toward organizing and presenting architectural accounts that may be
+partial, contradictory or unsettled, rather than building a comprehensive
+knowledge-representation system. Retained subjects provide continuity of reference
+and access to accounts; they do not require one authoritative description or a
+globally reconciled graph. Architectural structure is asserted within qualified
+accounts, not silently accumulated as universally accepted program facts.
+
+Require enough machinery to retain and retrieve accounts, preserve support and
+scope, follow subjects and explicit relationships, record supported corrections or
+inconsistencies, and expose structured explanations faithfully. Do not make universal
+identity resolution, automatic conflict detection, complete dependency tracking or
+global consistency prerequisites. Reconciliation remains an explicit investigation
+with qualified outcomes. Correction partition should support useful explanation and
+revision, not promise perfect semantic independence; uncertainty about broader
+impact can be recorded rather than solved automatically. This framing does not
+relax existing qualification, exact-access or correction obligations. Accept that
+users and investigators may need to compare accounts and perform further inquiry.
+
 Start with admission → trial → correction over one captured Cockatiel revision,
 under default single-trial recovery, within one supported Session. Use composition
 order to probe whether the content can express new relationships across accounts.
