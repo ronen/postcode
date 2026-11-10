@@ -164,11 +164,18 @@ that actual granularity and make any broader context selection explicit.
 For subject-only requests, identifying-candidate selection and bounds remain open;
 this does not justify omitting all retained definitions or supplying the full history.
 
-Concretely, existing describes-style association lookup cannot find ADMISSION-1
-from S alone. Origin-free discovery needs an investigator-visible refers-to query
-or a context policy following that index. Bare IDs do not create content exposure;
-substantive titles/descriptions and later retrieved content do. This path makes no
-claim that origin-free correction already works or belongs in the first slice.
+ADMISSION-1 explicitly lists S as a referent. The required discovery capability can
+therefore offer it among accounts referring to Half-open, either initially or when
+the investigator requests them. Known navigation origin is unnecessary for finding
+it; the index implementation remains an engineering choice. Ordering candidates by
+retention time may be useful, but cannot establish which account the human came from
+or which is authoritative/applicable. Preserve any actual origin separately.
+
+Current describes-style association lookup does not supply this reverse-reference
+discovery, so implementation and an origin-free discovery fixture are still needed.
+Bare IDs do not create content exposure; substantive titles/descriptions and retrieved
+content do. Discovering ADMISSION-1 enables further inspection, not a guarantee that
+the investigator notices its omission or corrects it.
 
 Give the information need declared Lens/operation meaning. Fixed questions may need
 no free-form parameters; meaningful variations and context selection must enter

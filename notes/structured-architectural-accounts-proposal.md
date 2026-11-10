@@ -217,12 +217,19 @@ complete delivery. Rich listings can therefore broaden later reconsideration.
 **Needs design:** choose useful listing content and bounds while preserving those
 exposure rules; relabeling substantive text as metadata cannot avoid them.
 
-**Needs design — origin-free discovery.** Existing explicit-association lookup will
-not discover ADMISSION-1 from S merely because the account refers to S. An origin-free
-investigation needs an investigator-visible refers-to listing or a context policy
-using that index. Bare-reference results are not content exposure; substantive
-titles/descriptions and later retrieved content are. Caller-selected context in the
-walkthrough does not demonstrate this discovery capability.
+**Referring-account discovery.** The human's direction is that accounts explicitly
+listing S as a referent must be available to an investigation of S, either supplied
+up front or discoverable/retrievable during its dialogue. ADMISSION-1 can therefore
+be found through its Half-open reference without a describes-S association or known
+navigation origin. Index implementation is an engineering choice.
+
+Ordering by retention time is a possible discovery aid, not evidence that an account
+is authoritative, most applicable or the one the human came from. Preserve known
+origin separately; leave it unknown when absent. Bare-reference results are not
+content exposure; substantive titles/descriptions and retrieved content are.
+**Needs design:** delivery/query contracts, ordering and bounds. Current association
+lookup does not implement this referent-based capability; it needs extension and
+an origin-free discovery fixture, independently of the caller-selected example.
 
 ## Introduction and change
 
