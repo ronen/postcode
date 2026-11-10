@@ -16,9 +16,9 @@ The [first concrete walkthrough](structured-architectural-accounts-example.md) t
 a provisional definition/admission child partition, a subject request with explicit
 context, and immutable selection across results. Its choices remain open; it does
 not supersede the unresolved choices in this proposal.
-Its current revision makes caller context selection explicit, introduces role
-definitions during follow-up, and separates the follow-up answer from a later
-caller-requested working-answer assembly. These are choices to test, not adopted defaults.
+It tests explicit context input, new role definitions during follow-up, and qualified
+retained access. UI composition and an additional assembled-answer workflow are not
+requirements of this architecture proposal.
 
 The [foundation](../foundation/README.md), [application specification](../docs/app-specification.md),
 [core concepts](../docs/core-concepts.md), [architectural constraints](../docs/architectural-constraints.md)
@@ -38,6 +38,21 @@ under default single-trial recovery, within one supported Session. Use compositi
 order to probe whether the content can express new relationships across accounts.
 Broader graphical investigation and the minimal GUI follow separately.
 
+### Scope boundary: architecture, not UI workflow
+
+The human directs this work to presume that users can view and select the retained
+subjects, accounts and investigation choices they need. Do not design menus, layouts,
+selection gestures or a separate assembly workflow here. Describe only selections
+that affect application behavior: subject(s) and their roles, Lens/parameters,
+explicit prior context, actual navigation origin, and exact versus fresh access.
+
+Viewing several accounts together does not make them multiple subjects of a Lens,
+supply them to an investigator, establish agreement, or create a new retained aggregate.
+Those are distinct operations requiring explicit application meaning. The UI can
+provide context when the selection identifies it; an absent origin remains absent.
+The earlier optional collection-inspection/assembled-answer mechanism is set aside,
+not a prerequisite or an unresolved UI decision blocking this capability.
+
 The useful result is being able to follow Half-open from an admission explanation,
 obtain an account of concurrent callers, see an explicit correction, and still
 retrieve the original answer. Retained content should also supply the meaning for
@@ -54,7 +69,7 @@ This vocabulary describes responsibilities, not storage tables or public API typ
 | Qualified item | Information about one or more subjects, with attributable scope, evidence, method/provenance and limitations. Definitions are one kind of information among others. |
 | Investigram | The existing immutable unit of retained interpretation, potentially containing structured content and prose. Mechanical claims retain their own character and guarantees. |
 | Architectural account | A coherent explanation that may occupy one or several investigrams. The explanatory term alone does not give a collection an identity or make it a correction target. |
-| Working selection | Exact qualified parts selected for a question, with selection basis and revision context. A retained selection is immutable; a changed selection produces another answer rather than mutating it. Selection does not establish a synthesized explanation. |
+| Retained answer selection | Exact qualified parts and support selected for an application answer, with selection basis and revision context. It is immutable and distinct from UI grouping, investigator context and selected Lens subjects. |
 | Identifying support | Qualified content making a referenced subject intelligible, with exact supporting references. It need not be a selected account constituent and is not evidence for every claim about the subject. |
 | Exact answer | A fixed record of selected content and support, including captured revision/association context. The proposed identifying support must be fixed too. |
 
@@ -76,11 +91,10 @@ for interpreted referents such as Half-open. Specify their grounding, scope and
 guarantees, and assess the corresponding decision/document changes. Do not silently
 redefine Subject or extend Entity to cover every addressable thing.
 
-Prefer extending the immutable investigation-selection Projection for retained
-answers. The caller owns explicit assembly; its question is “inspect these accounts
-with their revision context,” applied to a collection of precise account references.
-Investigation input selection and future mutable Workspace/View choices remain
-distinct. Neither makes an answer mutable or requires a Workspace in this slice.
+Extend existing immutable answer selection as needed for new subjects/content.
+Investigation input selection and UI composition remain distinct responsibilities;
+neither mutates a retained answer. UI grouping alone requires no new collection Lens,
+assembled Projection or Workspace mechanism in this capability.
 
 ### What an answer owes for referenced subjects
 
@@ -102,8 +116,8 @@ associations supply that support. FOLLOWUP-ANSWER-1 supplies identifying support
 S from DEFINITIONS-1 without making that investigram a selected constituent. A fresh
 replacement-aware selection from INTRO-1 supplies support for ADMISSION-2's new
 roles from ROLE-DEFINITIONS-1 even though that child is outside INTRO-1's tree.
-The separate working assembly organizes accounts for comparison; it is not required
-to repair an unintelligible plain answer.
+These support obligations hold regardless of how a UI chooses to group or display
+retained information; basic intelligibility cannot depend on a separate assembly step.
 
 Avoid unlimited recursive inclusion of definitions. Supply enough qualified context
 to distinguish the intended referents and disclose ambiguity or unavailable support.
@@ -116,45 +130,28 @@ Human presentation alone does not create investigator citations. If this support
 later supplied to an investigator, its substantive content counts as exposure even
 though it is not a selected constituent. Retention alone is not delivery.
 
-### Explicit assembly and revision modes
+### Retained-access semantics at the application boundary
 
-**Clarification — viewing is separate from investigation input.** “Working selection”
-has been used too loosely. In this proposal it meant retained accounts chosen for
-viewing together, not several architectural subjects selected as Lens input. Keep
-three responsibilities distinct: a displayed collection of retained qualified answers;
-earlier accounts supplied as context to an investigation; and a Lens's selected
-subject(s), with declared cardinality/order/roles. An investigation of S can receive
-accounts about P without thereby becoming a multi-subject investigation.
+Retain these distinctions independently of UI design:
 
-The governing View model already permits several supplied Projections to be shown
-together without new analysis. UI grouping of existing answers does not inherently
-require a new assembly Lens or Projection. The collection-inspection mechanism below
-is a candidate for a separately retained combined answer over exact investigrams,
-not a requirement for all retained-information viewing. **Needs design:** establish
-whether that extra retained-answer capability earns a place in the first slice;
-do not conflate it with basic exact/current inspection or multi-subject Lens inputs.
-
-For the collection-inspection Lens, recommend these explicit modes:
-
-| Mode | Fresh assembly behavior |
+| Application operation | Required behavior |
 | --- | --- |
-| Exact members (default) | Keep the requested investigram IDs and capture their current revision context. Requesting DEFINITIONS-1 keeps it even if DEFINITIONS-2 exists. |
-| Prefer replacements | Resolve each requested constituent through the declared correction-selection policy; disclose original-to-selected mappings, conflicts and omissions. |
+| Retrieve an exact retained answer | Preserve its content, selected references, identifying support and captured qualification/revision context. |
+| Inspect an exact investigram afresh | Keep that investigram as the target while supplying explicitly selected current revision context. A replacement does not silently retarget it. |
+| Select retained information using current replacement policy | Disclose requested originals, selected replacements, conflicts and relevant qualifications. Capture the resulting selection; later history does not mutate it. |
+| Investigate selected subject(s) | Apply a declared Lens and parameters with explicit selected/acquired context; record actual deliveries and supporting basis. |
 
-Modes concern constituent selection. Identifying support remains attributable to
-the selected content; replacement preference is not permission to reinterpret an
-unchanged account with a different definition. An old behavioral account and a
-newer definition may coexist with their differing descriptive contexts visible.
+Fresh access can capture later revision context; exact answer retrieval cannot.
+Replacement-aware selection does not reinterpret an unchanged account by substituting
+a newer definition into its original descriptive context. Newer definitions may be
+available separately with that difference visible. Equivalent effective inputs,
+methods and captured support/revision context retain repeatable answer identity.
 
-Exact retrieval of either answer preserves the captured constituents, identifying
-support and revision snapshot. Fresh assembly may capture later context even in
-exact-members mode. Equivalent effective inputs, including policy/method and captured
-support/revision context, have repeatable logical identity. Assembly makes no new
-architectural claim of agreement or synthesis.
-
-**Needs design:** finalize the Lens contract, collection/order semantics, support
-resolution and integration with existing selection Projections. These recommended
-modes extend the design; they are not claims about implemented API options.
+The application supplies the selected qualified information; the UI can arrange it.
+Alignment needs supplied identity/correspondence and synthesis needs qualified
+analysis. No new assembly Lens or revision-mode UI is selected here. **Needs design:**
+extend existing retrieval/selection contracts for new references and identifying
+support, without introducing a saved collection solely to support display grouping.
 
 ### One mechanism across producers
 
@@ -424,9 +421,9 @@ and its discovery are staged. This proposal adds no verification of library beha
 5. **Current use and historical access.** The request returns its follow-up answer.
    Its referenced subjects have fixed identifying support without automatically
    selecting every supporting definition as a constituent.
-   In the walkthrough a separate explicit caller assembly selects both definition
-   children, ADMISSION-2 and TRIAL-1 with qualified support and revision context.
-   This working answer does not synthesize a new account. Exact ANSWER-1 returns its
+   The UI may show definition children, ADMISSION-2 and TRIAL-1 together using
+   application-supplied qualified information; this requires no additional synthesized
+   account or saved assembly. Exact ANSWER-1 returns its
    captured selection/context; fresh inspection of ADMISSION-1 can disclose later
    corrections around the unchanged original.
    Neither operation silently redirects its exact reference.
@@ -438,7 +435,7 @@ is embedded in the root's own content, however, replacing the root replaces that
 content too and the replacement must supply its description. A separate definition
 child is independently correctable; root replacement does not automatically carry
 that child or a corrected successor into its new composition. The walkthrough tests
-the child partition and explicit answer assembly; a general partition policy is open.
+the child partition and retained access; a general partition policy is open.
 
 The walkthrough's correction is reported by TRIAL-1, so its reason and qualifications
 are TRIAL-1's substantive content. A later correction of TRIAL-1 preserves the original
@@ -452,7 +449,7 @@ Preserve three independent dimensions:
 | --- | --- |
 | Revision status | ADMISSION-1 has a replacement, possibly competing replacements. |
 | Applicability | TRIAL-1 covers default single-trial recovery, not every configuration. |
-| Working selection | The caller selects DEFINITIONS-1, ROLE-DEFINITIONS-1, ADMISSION-2 and TRIAL-1, with support and captured revision context. |
+| Answer selection | A retained answer captures its particular qualified items and support; UI grouping of several answers does not alter those selections. |
 
 Existing replacement preference does not resolve conflicts. Exposure-based
 reconsideration remains conservative: seeing an account is not proven reliance,
@@ -476,8 +473,8 @@ An addition preserves earlier items without implying error. A correction identif
 its target, replacement, reason and support and meets the complete-delivery rules;
 the original remains retained. Both can occur in one accepted result.
 
-Initially a working selection can be explicit. Automatic relevance judgments,
-correspondence and synthesis establishing new claims require qualified analysis.
+Context and retained-content selections can be explicit. Automatic relevance
+judgments, correspondence and synthesis establishing new claims require qualified analysis.
 Capture actual selected input context: a stable subject ID alone is insufficient
 as a reuse key when its supplied descriptions change.
 
@@ -594,9 +591,8 @@ The capability needs a continuous path through:
   and explicit subject-reference/description indexing.
 - Applicable subject/Lens requests with declared question meaning and selected
   context, plus full/partial delivery accounting for structured content.
-- Working selection and exact retrieval preserving new content, qualifications,
-  corrections and fixed identifying support through the direct API, including explicit
-  collection-inspection meaning and constituent revision modes.
+- Retained selection, fresh inspection and exact retrieval preserving new content,
+  qualifications, corrections and fixed identifying support through the direct API.
 
 Keep application semantics independent of rendering. Account for affected existing
 human-output paths; deferring the GUI does not permit dropping qualifications or
@@ -649,10 +645,9 @@ account reconciliation, full presentation/navigation and the minimal GUI.
    clarification of a contextual definition differs from correction.
 3. **Request, context and selection.** Choose subject investigation versus focused
    account follow-up; define originating context, selected input and lineage.
-   Assess the proposed placement of retained selections in the Projection model,
-   using the proposed collection-inspection question and explicit revision modes.
-   Specify fixed identifying support and per-subject identifies associations; confirm
-   that plain answers remain intelligible without working assembly. Resolve interpretive
+   Extend existing retained-answer contracts for new references and support without
+   requiring a UI assembly workflow. Specify fixed identifying support and per-subject
+   identifies associations. Resolve interpretive
    Lens applicability and origin-free discovery/listing exposure tradeoffs.
 4. **Content and delivery.** Choose forms that supply the diagrams, define their
    complete/bounded delivery contracts before corrections, and establish the precise
