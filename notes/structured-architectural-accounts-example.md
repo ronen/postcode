@@ -292,6 +292,14 @@ this example.
 
 ## 5. Two answers with explicit owners
 
+The second, assembled answer below is an optional application design probe for
+viewing retained accounts together. It is not a multi-subject investigation. A UI
+can also display several existing qualified Projections without creating a new
+combined Projection; the governing View model permits that. Whether a separately
+retained assembled answer is needed in the first slice remains open. Distinguish
+this viewing choice from selecting subject(s) for a Lens and from supplying earlier
+accounts as investigation context.
+
 First, the concurrent-callers request returns FOLLOWUP-ANSWER-1. It retains the
 selected TRIAL-RESULT-1 tree and accompanying ADMISSION-2, with support and revision
 context. It supplies identifying support for S from DEFINITIONS-1 without making

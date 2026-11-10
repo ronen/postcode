@@ -118,6 +118,22 @@ though it is not a selected constituent. Retention alone is not delivery.
 
 ### Explicit assembly and revision modes
 
+**Clarification — viewing is separate from investigation input.** “Working selection”
+has been used too loosely. In this proposal it meant retained accounts chosen for
+viewing together, not several architectural subjects selected as Lens input. Keep
+three responsibilities distinct: a displayed collection of retained qualified answers;
+earlier accounts supplied as context to an investigation; and a Lens's selected
+subject(s), with declared cardinality/order/roles. An investigation of S can receive
+accounts about P without thereby becoming a multi-subject investigation.
+
+The governing View model already permits several supplied Projections to be shown
+together without new analysis. UI grouping of existing answers does not inherently
+require a new assembly Lens or Projection. The collection-inspection mechanism below
+is a candidate for a separately retained combined answer over exact investigrams,
+not a requirement for all retained-information viewing. **Needs design:** establish
+whether that extra retained-answer capability earns a place in the first slice;
+do not conflate it with basic exact/current inspection or multi-subject Lens inputs.
+
 For the collection-inspection Lens, recommend these explicit modes:
 
 | Mode | Fresh assembly behavior |
