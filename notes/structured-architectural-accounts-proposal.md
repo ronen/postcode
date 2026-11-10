@@ -140,11 +140,12 @@ Earlier accounts and exact answers remain available. A useful negative probe is 
 case where the evidence warrants leaving the accounts unreconciled rather than
 producing a compromise. UI selection mechanics remain out of scope.
 
-**Broader human pushback is separate scope.** The human observes that general input,
-feedback and pushback need a broader design. Distinguish the implemented
+**Scope agreement — human pushback to interpreting agents is deferred.** Leave
+human-supplied challenges, clarifications and additional knowledge as investigation
+material out of this capability for now. Distinguish the implemented
 [inadequacy feedback](../docs/capability-reference.md#scope-of-this-reference), which
-records experience without initiating investigation, from an architectural assertion
-or challenge supplied as investigation material. General participant-material capture
+is feedback to developers/researchers, not to interpreting agents, from an
+architectural assertion or challenge supplied as investigation material. General participant-material capture
 is not implemented, but is already permitted by the
 [foundation](../foundation/product-design.md#participant-supplied-architectural-material)
 and [accepted participant-exchange direction](../docs/decisions/specialized-architectural-investigation.md#external-participants).
@@ -153,6 +154,8 @@ revision. Selecting existing accounts for reconciliation need not introduce this
 broader input channel. Supplying “this is wrong because …” would need attributable
 participant content and explicit investigation use; neither feedback nor assertion
 automatically corrects retained accounts. Keep that broader work separate here.
+Reconciliation of explicitly selected retained accounts remains a proposed operation,
+without a human-pushback channel or a commitment to include it in first delivery.
 
 In the walkthrough, selected input descriptions and the new result's identifying
 associations supply that support. FOLLOWUP-ANSWER-1 supplies identifying support for
