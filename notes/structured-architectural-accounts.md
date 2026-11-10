@@ -637,6 +637,20 @@ explicitly accommodate these differences; conceptual unity is not a universal
 record schema or automatic applicability of every Lens. General exposure of all
 existing symbols/relationships need not be added to the first slice.
 
+Terminology clarification: architectural subject is the umbrella, including modules,
+symbols and other implementation-level referents. Do not introduce disjoint
+“architectural subject” and “implementation subject” categories. “New architectural
+subjects” above means additional referents introduced through interpretation or
+contextual selection, not exclusion of existing mechanically discovered subjects.
+What something is, how it was identified, and what evidence supports claims about
+it are separate dimensions. An interpreted policy kind can concern implemented
+architecture just as a compiler-discovered module does. Different descriptions or
+methods do not by themselves require different identities; a module's conceptual
+responsibility and source-level naming can both describe the same module. A policy
+kind and a module implementing it may instead be distinct referents connected by
+a qualified implementation relationship. Hypothetical/intended/implemented modality
+is another distinction and must not be inferred from record kind or discovery method.
+
 **Merge.** Prefer non-destructive identity reconciliation: retain a qualified claim
 that S1 and S2 designate the same referent within a stated scope, with evidence,
 provenance and exact descriptive context. Preserve both IDs and originating
