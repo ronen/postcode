@@ -787,6 +787,39 @@ account reconciliation, full presentation/navigation and the minimal GUI.
 
 ## Choices to discuss before a planning package
 
+### Assumptions to challenge after the acceptance-bias review
+
+These are recommendations to reconsider, not reversals of human agreements or
+changes to governing requirements. Several were already formally open; conversational
+confidence has sometimes exceeded the examples supporting them.
+
+- **Continuity under definition correction.** Keeping S across H1/H2 is appropriate
+  only if they still concern the same referent. Test a clarification against an actual
+  conflation of state category, instance occupancy and execution phase. Neither a
+  stable ID nor the investigator's replacement declaration proves sameness. Local or
+  contextual promotion likewise establishes a designation, not automatic equivalence
+  between the selected content occurrence and an independently known subject.
+- **Catalogue granularity.** The inventory mixes architectural concepts, view
+  families and notations; it is not already a coherent ontology. Test whether concept
+  guidance, content contracts and diagram mappings need distinct entries and
+  relationships. Do not assume a schema for each named concept or let the diagram
+  inventory define the full architectural vocabulary. Keep the initial catalogue small.
+- **Definition partition and support.** A definition child is an example partition,
+  not a default normalization rule. It can increase retrieval/support dependencies
+  without narrowing evaluation-wide reconsideration. Compare it with a coherent
+  mixed account using the same correction example. Current correction/exposure
+  constraints remain governing while judging the proposed partition.
+- **Automatic identifying support.** Exact snapshots are sound, but selecting which
+  descriptions ground a reference can require interpretation. Test two competing
+  descriptions of S. Prefer explicitly anchored support or visible unresolved
+  alternatives; an application selector must not synthesize a definition or claim
+  compatibility merely to make an answer readable. Bounded closure remains open.
+- **One mechanism across producers.** Shared subject/reference semantics remain the
+  intended direction. The first delivery's migration depth and common retention
+  machinery are not demonstrated by that principle. Test one mechanical producer
+  and one interpretation before fixing internal factoring or broad migration scope;
+  preserve mechanical guarantees and avoid unnecessary parallel identities.
+
 1. **Identity and addressing.** Specify guarantees for interpreted referents of
    implemented architecture, including contextual roles and governing changes.
    Keep exact investigram addresses separate from selected collections. Settle local
