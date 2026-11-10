@@ -123,6 +123,11 @@ and does not establish correction eligibility.
 
 ## 3. The caller selects follow-up context
 
+The human selects Half-open through a structured UI affordance and chooses an offered
+concurrent-callers investigation; the prose question below explains its meaning,
+not text the human must type. CLI handles or GUI menus/badges are possible affordances
+whose design is deferred.
+
 For this path, the caller constructs the request from ANSWER-1. It explicitly names
 ADMISSION-1 as the source explanation being followed and DEFINITIONS-1 as the chosen
 identifying description of S. Both are available in that exact answer. This is a
@@ -142,6 +147,16 @@ route can choose the same exact context and yield the same effective inputs. Cho
 different context changes inputs explicitly, not through an undisclosed origin rule.
 A fresh request on S without an originating answer needs its own context-selection
 policy and is not demonstrated by this path.
+
+The general distinction is that both contextual and subject-only requests should
+receive relevant retained identifying descriptions with scope and revision/conflict
+context. Only a selection with an explicitly known originating explanation adds that
+explanation on the strength of origin. A bare subject handle supplies no such origin;
+neither the latest answer nor the subject's introduction is a substitute. If the UI
+knows only an answer and cannot identify the originating account, it must represent
+that actual granularity and make any broader context selection explicit.
+For subject-only requests, identifying-candidate selection and bounds remain open;
+this does not justify omitting all retained definitions or supplying the full history.
 
 Concretely, existing describes-style association lookup cannot find ADMISSION-1
 from S alone. Origin-free discovery needs an investigator-visible refers-to query

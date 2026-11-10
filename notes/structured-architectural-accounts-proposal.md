@@ -314,6 +314,33 @@ can build on them without making names decide architectural identity.
 
 ## Worked thread: admission → trial → correction
 
+### Structured selection and context origin
+
+The human's direction is to avoid requiring prose interaction with PostCode. A UI
+makes a subject selectable and offers declared investigation choices; CLI handles,
+menus or badges are possible mechanisms, not chosen designs. Natural-language
+questions in these notes explain the request's meaning, not required user input.
+
+Selecting Half-open does not by itself identify an explanation it was followed from.
+When the interaction identifies an exact originating account/answer location, include
+that explanation as contextual input under an explicit bounded policy. A bare subject
+selection or a subject-list entry may have no originating explanation; record none.
+Do not infer origin from the latest answer, the account that first introduced S, or
+whatever account happens to mention it. Known navigation alone also does not establish
+human reliance or actual investigator exposure.
+
+Both routes should supply relevant retained identifying descriptions for S, their
+qualified scope and revision/conflict context. A contextual selection preserves the
+description used there, with later correction context distinguished. A subject-only
+selection resolves identifying candidates through explicit associations; it need not
+invent an origin to do so. Multiple definitions are not silently reconciled and the
+entire subject history need not be supplied. **Needs design:** candidate selection,
+bounds and additional associated context for subject-only requests. These are distinct
+from discovering every referring account; a bare selection does not guarantee that
+ADMISSION-1 is found or available for correction.
+
+### Sequence
+
 This adapts the [connected examples](initial-journey/cockatiel-account-examples.md).
 Their static Cockatiel account concerns the recorded revision; the waiting omission
 and its discovery are staged. This proposal adds no verification of library behavior.
