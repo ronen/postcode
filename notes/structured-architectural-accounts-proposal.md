@@ -817,6 +817,31 @@ substitute for complete delivery. The exact rules depend on the chosen forms.
 
 ## Existing machinery and application boundary
 
+**Account-to-account relationships: specific mechanisms, no general alternative link.**
+Inspection of [contracts](../src/lib/investigation/contracts.ts),
+[acceptance](../src/lib/investigation/acceptance.ts) and
+[revision processing](../src/lib/investigation/revisions.ts) confirms:
+
+- A reporter can return a correction naming an earlier target A and embedding a
+  newly constructed replacement B, with reason, evidence and qualifications. Acceptance
+  allocates separate correction/replacement records and processing gives that link
+  replacement-selection, conflict and reconsideration consequences.
+- A reporter can return an unresolved inconsistency with references to earlier
+  accounts, reason and support. Targets require substantive delivered content.
+  These records are retained and indexed for affected-account inspection, without
+  implying replacement. Newly submitted sibling accounts are not eligible targets.
+- Composition and investigation provenance encode parts of a result and follow-up
+  lineage, respectively. Neither establishes a semantic comparison.
+- An account can refer to earlier accounts and explain a relationship in prose, but
+  that alone does not create a recognized/indexed alternative relationship.
+
+Thus a qualified relationship “new B is an alternative to A” has useful precedents
+but needs a submission, validation, retention and access extension. Do not merely
+rename the correction field and inherit replacement effects. Specify how links name
+newly returned accounts (local references or explicit construction), who owns the
+qualified relationship explanation, and what operations discover it. This remains
+design work, not an implemented generic account-relationship facility.
+
 **Existing hierarchy, proposed subject semantics.** A single investigation already
 returns one root with recursive child investigrams. PostCode validates the result
 tree and assigns each investigram its own retained identity. The proposed
