@@ -546,28 +546,40 @@ state transition and one interaction through it before settling payload schemas.
 These recommendations do not yet adopt a vocabulary or schema.
 
 **Emerging proposal — architectural concept catalogue.** The human proposes that
-PostCode supply established architectural concepts with agent-facing descriptions
-of the structured information each requires, potentially including JSON Schemas.
-An investigator can use a concept because the investigation requests it or because
-the investigator judges it relevant, and returns its identifier, structured data
-and associated prose through the qualified investigram protocol.
+PostCode supply established architectural concepts for two purposes: an agent-facing
+vocabulary/ontology for framing investigations and explanations, and support for
+communicating those explanations through diagrams. The vocabulary is useful even
+when no diagram is appropriate. Results may combine structured content and prose
+or consist of qualified prose alone. The catalogue is not limited to diagram types.
 
-Recommend catalogue entries with a stable identifier and contract version, concept
-meaning and source/adaptation, applicability guidance, data requirements, examples,
-and explicit treatment of partial knowledge. Schema checks can validate shape;
+An investigator can use a concept because the investigation requests it or because
+the investigator judges it relevant. Recommend distinguishing concept meaning and
+applicability guidance from its supported structured content forms and diagram
+mappings. A concept may support several forms or no diagram form; several concepts
+may contribute to a diagram. Returning a concept identifier does not by itself
+require a diagram payload. If the request requires a structured form, however, prose
+alone does not silently satisfy it; missing information or unsupported output must
+be explicit. Exact request/result conventions remain to be designed.
+
+Recommend catalogue entries with stable identifiers, versioned meanings/contracts,
+source/adaptation, applicability guidance, examples and treatment of partial knowledge.
+Structured forms specify data requirements, potentially with JSON Schemas, while
+prose-only accounts retain the ordinary qualification requirements. Schema checks can validate shape;
 reference and content-specific checks still need defined rules, and none establishes
 the truth or applicability of the architectural claim. Versioned contracts preserve
 the meaning of retained content when the catalogue evolves. Exact packaging remains
 to be designed, including whether several content blocks share an investigram.
 
-Concept identifiers select information contracts, not subject identities or Lens
-identities. A state-transition account can reference Half-open S without making
+Concept identifiers identify architectural meanings; form identifiers/versions
+identify particular data contracts. Their encoding together or separately remains
+open. Neither is a subject identity or Lens identity. A state-transition account can reference Half-open S without making
 S's subject record an instance of the account schema. Several investigations can
 produce the same form; one investigation can return several forms alongside prose.
 Selecting a form does not itself establish that it applies: the investigation must
 qualify that interpretation. Open topic labels remain available within supported
 forms; an invented label does not create a new understood contract. Start by drafting
-the state-behavior entry needed by the example, not a comprehensive catalogue.
+the state-behavior entry needed by the example, including prose guidance and a
+structured form, not a comprehensive catalogue.
 
 **Local keys and later promotion.** The human proposes keys for structured elements
 both for internal references (nodes and transition endpoints) and for later subject
