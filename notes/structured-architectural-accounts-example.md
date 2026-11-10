@@ -365,6 +365,13 @@ composition remain open: this does not introduce a flat multi-root submission by
 implication. PostCode resolves new-account local references, verifies eligible older
 references and support, and accepts the result atomically.
 
+Here K is an **account relationship**: ADMISSION-2 corrects ADMISSION-1. W, by
+contrast, concerns an execution waiting for a breaker's recovery decision and is
+an **architectural relationship described within an account**. These are separate
+domain concepts; W does not participate in account replacement machinery merely
+because both are called relationships. Refer to the proposed organizing type as
+AccountRelationship for clarity, without adopting an API name.
+
 The proposed common machinery could also retain an alternative relationship with
 the same reporting/support responsibilities but no automatic correction effects.
 An inconsistency finding could instead name earlier accounts and explain the tension

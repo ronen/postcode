@@ -163,9 +163,15 @@ other content in an investigram or occupy an investigram of its own. This is the
 same partition question as an identifying subject description: structure and
 indexability do not imply an independent investigram/correction boundary. Neither
 arrangement automatically requires promoting the relationship to a shared subject.
-Start with the account-relationship kinds under discussion; sharing abstractions
-with architectural relationships or mechanical links must preserve their different
-meaning and guarantees, not collapse them into interchangeable edges.
+**Agreed distinction:** use “account relationship” for this organizing mechanism.
+Its participants are retained accounts/investigrams; kinds such as alternative,
+correction and inconsistency organize explanations and can affect their selection
+or status. Architectural relationships, such as an execution waiting on a breaker
+or a policy delegating to another, are claims within accounts about the described
+software. They belong to architectural content forms, not this account-relationship
+type, and their presence does not trigger account revision/status behavior. No shared
+domain relationship abstraction is required. Mechanical composition and exposure
+also retain their own established meanings. Working names are not adopted API names.
 
 **Relationship standing remains open.** Currently a Correction
 is a distinct retained record with a reporting investigram; the correction record
