@@ -76,6 +76,18 @@ definition and admission children is this example's proposed use of that machine
 Introducing Half-open as a shared subject and recording which investigram identifies
 it are proposed extensions, not existing hierarchy behavior.
 
+**Expanded introduction item.** The human clarifies that shorthand such as
+“half-open-description identifies S” has several parts: name “Half-open,” an
+internal identifier, identifying description and an explicit indication to promote
+it to a retained subject. For a newly introduced subject, distinguish the
+investigator's local identifier from the shared ID S allocated by PostCode at
+acceptance. Other content in the result can reference the local identifier, resolved
+to S during acceptance. Exact field names and whether the indication is a flag or
+declaration form remain open. Promotion concerns shared subject identity: an item
+without promotion can still be retained as investigram content with a local address.
+The description remains qualified account content; allocation does not turn it into
+an authoritative mutable definition. Existing subjects are referenced by retained ID.
+
 The admission evaluation returns a fixed composition:
 
 ```text
