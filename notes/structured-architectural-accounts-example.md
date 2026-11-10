@@ -354,13 +354,14 @@ account relationships. At the conceptual level the follow-up supplies:
 | ADMISSION-2 | Complete qualified admission account, usable without reading a comparison to ADMISSION-1. |
 | Relationship claim K | States that ADMISSION-2 corrects ADMISSION-1, reported by TRIAL-1, with reason, affected subject P, scope, qualifications and evidence. |
 
-The proposed Relationship type is indexable independently of how account content is
-partitioned. K can be an entry reported within TRIAL-1 or content in a separate
-investigram; this is the same partition question as subject-identifying descriptions.
-Existing correction records already have retained addresses, but indexability alone
-does not select an independent investigram or relationship-revision operation.
-Neither representation requires another investigation. One investigation supplies
-the accounts and qualified relationship together. Exact wire packaging and
+The current proposal favors retaining K as qualified account-organizing metadata,
+supplied alongside architectural accounts, rather than requiring an investigram of
+its own. K still contains the attributable interpretive assertion and its support;
+metadata does not mean mechanically established or optional to inspect. Existing
+correction records already provide a partial precedent. This refines the earlier
+embedded/separate-investigram alternatives without adopting a schema or independent
+relationship-revision operation. One investigation supplies the accounts and
+qualified relationship together. Exact wire packaging and
 composition remain open: this does not introduce a flat multi-root submission by
 implication. PostCode resolves new-account local references, verifies eligible older
 references and support, and accepts the result atomically.

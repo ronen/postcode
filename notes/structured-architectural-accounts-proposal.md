@@ -155,14 +155,30 @@ meanings are not mutually exclusive classifications of account pairs. Common mac
 does not require a generic graph ontology or one identical payload for every kind.
 Mechanical composition and exposure remain distinguishable from interpreted relations.
 
-**Relationship as a core type; account partition is a separate question.** The human
-identifies the proposed Relationship as an indexable domain concept with explicit
-participants/roles, kind, explanation and qualified support. Its physical storage
-and allocation remain design choices. A relationship entry can be embedded among
-other content in an investigram or occupy an investigram of its own. This is the
-same partition question as an identifying subject description: structure and
-indexability do not imply an independent investigram/correction boundary. Neither
-arrangement automatically requires promoting the relationship to a shared subject.
+**Relationship as qualified organizing metadata.** The human identifies an indexable
+domain type with participants/roles, kind, explanation and qualified support, and
+suggests that its role in organizing accounts favors metadata rather than ordinary
+architectural content. Recommend explicit relationship records supplied alongside
+accounts in the investigation result. They can be interpretively generated while
+serving as metadata in the retained model. This does not automatically make each
+relationship an investigram or promote it to a shared subject. Exact submission
+packaging and physical storage remain open.
+
+This refines the preceding partition analogy: if a relationship assertion lives
+as ordinary content, embedded versus separate investigram is the same question as
+for a subject description. Giving account relationships their own organizing role
+provides a reason to choose a distinct qualified record instead. The cost is that
+their challenge/revision behavior then needs its own explicit contract; it is not
+inherited merely from investigram addressability.
+
+“Metadata” specifies function, not epistemic authority. Preserve the reporting
+investigation/account, reason, evidence, scope and qualifications as inspectable
+information actually supplied in context. Do not create an unqualified link plus an
+optional explanatory paragraph. New relationship records can be indexed against
+existing accounts without mutating their original content or exact answer snapshots.
+Calling the material metadata does not exempt it from existing attributable-support
+and complete correction-context delivery requirements.
+
 **Agreed distinction:** use “account relationship” for this organizing mechanism.
 Its participants are retained accounts/investigrams; kinds such as alternative,
 correction and inconsistency organize explanations and can affect their selection
@@ -179,10 +195,10 @@ itself is not an eligible investigram correction target. Revising its reporter d
 not retract or retarget the original relationship. Our first K sketch followed that
 shape, not an adopted representation for the new common model.
 
-The earlier recommendation to give K its own investigram was premature. Keep
-embedded versus separate content as the general account-partition choice, while
-defining Relationship's explicit structure and indexing independently. A mechanical
-index exposes the asserted relation without independently authoring another claim.
+The earlier recommendation to give K its own investigram was premature. The current
+metadata proposal favors a qualified relationship record; a mechanical index exposes
+the assertion without independently authoring another claim. This is a recommendation,
+not an adopted replacement for the existing correction representation.
 
 The human cautions that whether/how K can be challenged requires considering the
 implications of challenging a correction. Distinguish recording disagreement with
