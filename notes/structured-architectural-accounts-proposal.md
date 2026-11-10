@@ -13,6 +13,11 @@ This version incorporates the clarifications from the
 Remaining choices are marked **Needs design** where they arise and collected below.
 The proposed reduction of first-delivery scope has not been agreed.
 
+The [first concrete walkthrough](structured-architectural-accounts-example.md) tests
+a provisional definition/admission child partition, a subject request with explicit
+context, and immutable selection across results. Its choices remain open; it does
+not supersede the unresolved choices in this proposal.
+
 The [foundation](../foundation/README.md), [application specification](../docs/app-specification.md),
 [core concepts](../docs/core-concepts.md), [architectural constraints](../docs/architectural-constraints.md)
 and applicable accepted decisions remain governing. The

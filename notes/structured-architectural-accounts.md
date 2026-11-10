@@ -10,6 +10,8 @@ For the consolidated current direction, start with the
 [working proposal](structured-architectural-accounts-proposal.md). This discussion
 record includes earlier alternatives later revised, particularly account-scoped
 identity, eager relationship-subject creation and a facade over legacy subjects.
+The [concrete walkthrough](structured-architectural-accounts-example.md) tests a
+provisional arrangement without adopting it.
 
 ## Scope established by the human
 
