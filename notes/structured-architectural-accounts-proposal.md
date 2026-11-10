@@ -120,6 +120,26 @@ For larger inventories, bounded delivery/discovery can preserve access to altern
 the two-account case needs no adjudication to make progress. Exact earlier answers
 still retain their captured context.
 
+**Proposed investigation — reconcile selected accounts.** The human proposes selecting
+accounts and asking to reconcile them. Recommend supporting this as an explicit
+qualified investigation, not a display operation or an automatic consequence of
+showing accounts together. Its objects of examination are the exact selected accounts;
+they need not describe the same subject. The investigator can inspect their support
+and acquire further evidence through the normal dialogue. This requires a request
+contract for multiple account inputs; it is not claimed as an existing operation or
+added to the first delivery's scope yet.
+
+Reconciliation means investigating how the accounts relate, not guaranteeing agreement.
+Possible results include explaining compatible scopes, supported correspondence or
+conflation, a new synthesis, explicit corrections where justified, or an unresolved
+disagreement with missing evidence identified. New interpretation is retained with
+its own support and provenance. Synthesis does not automatically supersede its inputs;
+correction requires the existing exact-target, complete-delivery and qualification
+rules. Subject merge/split and reference rewriting do not follow automatically.
+Earlier accounts and exact answers remain available. A useful negative probe is a
+case where the evidence warrants leaving the accounts unreconciled rather than
+producing a compromise. UI selection mechanics remain out of scope.
+
 In the walkthrough, selected input descriptions and the new result's identifying
 associations supply that support. FOLLOWUP-ANSWER-1 supplies identifying support for
 S from DEFINITIONS-1 without making that investigram a selected constituent. A fresh
