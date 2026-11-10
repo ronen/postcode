@@ -400,21 +400,35 @@ small structure, state and interaction depictions, not a full presentation syste
 This is a useful inventory for the bounded example and composition probe, not a
 commitment to implement every depiction or a catalogue entry for each diagram.
 
-| Candidate | Question and information requirements |
-| --- | --- |
-| Runtime structure/roles | What is shared across calls? Instance roles, execution roles, supplied operation, state-bearing participant and explicitly typed control/use/wait relationships. A component-and-connector-style account, not a claim about observed runtime objects. |
-| Breaker recovery statechart | What changes the breaker's state? Closed/Open/Half-open, state owner, triggers, guards, effects and known coverage; default entry only if established. |
-| Admission activity/decision flow | What can happen to an execution request? Conditions and branches for execution, trial, refusal and waiting, including what happens after waiting. A flow depiction requires supported branching/order, not just an unordered cases list. |
-| Concurrent-caller sequence | How do trial and waiting caller interact? Shared instance and distinct executions, ordering, waiting/release, and outcome alternatives. Include success/refusal variants as supported. Inspection followed by execution is another scenario, not a new diagram family. |
-| Composition structure | How do the two wrapping orders differ? Two scoped patterns with outer/inner policy roles, delegation, supplied operation and separate state/resource responsibilities. Distinguish this topology from containment/ownership. |
-| Composition sequences | What runs or waits, and what remains occupied, in each order? Interactions for Bulkhead outside breaker versus breaker outside Bulkhead, with capacity/state changes and waiting intervals. Qualified composition analysis supplies these claims. |
+| Candidate | Reference concept | Diagram type / reference status | Question and information requirements |
+| --- | --- | --- | --- |
+| Runtime structure/roles | Component-and-connector (C&C) view; elements and relations | Graphical primary presentation of a C&C view; exact notation not prescribed. [V&B §§2.2, 2.5][vb-structure] | What is shared across calls? Instance roles, execution roles, supplied operation, state-bearing participant and typed control/use/wait relationships. These are roles, not observed runtime objects. |
+| Breaker recovery statechart | State-based behavioral modeling | Statechart. [Behavior §6.1.1][statecharts] | What changes the breaker's state? Closed/Open/Half-open, state owner, triggers, guards, effects and known coverage; default entry only if established. |
+| Admission flow | Trace-oriented behavior; execution paths and responsibilities | Use-case map (UCM), a candidate mapping to assess. [Behavior §6.2.2][ucms] | What can happen to an execution request? Conditions and branches for execution, trial, refusal and waiting, including subsequent behavior. Requires supported paths/order, not just an unordered cases list. |
+| Concurrent-caller sequence | Trace-oriented behavior; interacting instances | Sequence diagram. [Behavior §6.2.3][sequences] | How do trial and waiting caller interact? Shared instance and distinct executions, ordering, waiting/release and outcome alternatives. |
+| Composition structure | Component-and-connector view; elements and relations | Graphical primary presentation of a C&C view; exact notation not prescribed. [V&B §§2.2, 2.5][vb-structure] | How do wrapping orders differ? Two scoped patterns with outer/inner roles, delegation, supplied operation and separate state/resource responsibilities. Topology is distinct from containment/ownership. |
+| Composition sequences | Trace-oriented behavior; interacting instances | Sequence diagrams, one or more per order. [Behavior §6.2.3][sequences] | What runs or waits, and what remains occupied? Interactions, capacity/state changes and waiting intervals supplied by qualified composition analysis. |
+| Individual-execution lifecycle (optional) | State-based behavioral modeling | Statechart. [Behavior §6.1.1][statecharts] | What is an execution's progress? Requires a lifecycle account; its waiting is not another breaker state. |
+| Implementation correspondence (optional) | Mapping between views, here architectural runtime and module views | Mapping representation; no specific diagram type prescribed in this reference. A correspondence graph would be our choice. [V&B §2.5, printed p.7][vb-mapping] | How do architectural roles relate to modules/symbols? Requires qualified mappings; visual proximity or labels do not establish correspondence. |
 
-Optional extensions are an individual-execution lifecycle statechart (its waiting
-is not another breaker state) and an implementation correspondence diagram linking
-architectural roles to modules/symbols with qualified mappings. The former requires
-an explicit lifecycle account; neither should be inferred solely to draw a diagram.
-Correction/evidence graphs concern PostCode's retained accounts and are a separate
-possible diagnostic view, not an additional Cockatiel architectural concept.
+[vb-structure]: https://www.sei.cmu.edu/documents/2072/2005_004_001_14498.pdf#page=14
+[statecharts]: https://www.sei.cmu.edu/documents/1986/2002_004_001_13934.pdf#page=22
+[ucms]: https://www.sei.cmu.edu/documents/1986/2002_004_001_13934.pdf#page=30
+[sequences]: https://www.sei.cmu.edu/documents/1986/2002_004_001_13934.pdf#page=33
+[vb-mapping]: https://www.sei.cmu.edu/documents/2072/2005_004_001_14498.pdf#page=18
+
+The source concepts/types above are distinct from the local exploratory mnemonics
+RESP, OWNERSHIP, INTERFACE, STATE and INTERACTION. Mapping each example to a source
+concept is our design recommendation, not a source assertion about Cockatiel.
+The earlier label “admission activity/decision flow” did not establish UML activity
+diagrams from the inspected references. UCM is a named candidate in those references;
+its suitability for this account remains to be tested, not silently adopted.
+
+Success/failure and inspection-before-execution cases are sequence variants.
+Original/corrected depictions reuse the corresponding architectural diagram type.
+Correction/evidence graphs concern PostCode's retained accounts: their concepts are
+the local ACCOUNT/BASIS/CORRECTION entries, with no claimed SEI diagram type.
+No optional account or mapping should be inferred solely to draw a diagram.
 
 Recommend prioritizing runtime structure, breaker statechart and concurrent-caller
 sequence; retain admission flow as a useful contract/correction probe. Composition
