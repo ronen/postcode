@@ -2,16 +2,12 @@
 
 Updated: 2026-11-10
 
-An exploratory example of the [working proposal](structured-architectural-accounts-proposal.md),
-revised after the second review. Choices below are provisional, not adopted decisions,
-implementation authorization or an API schema. This follows the
+An exploratory example of the [working proposal](structured-architectural-accounts-proposal.md).
+Current recommendations and remaining choices are stated inline. They are provisional,
+not adopted decisions, implementation authorization or an API schema. This follows the
 [Cockatiel examples](initial-journey/cockatiel-account-examples.md): one captured
 revision, default single-trial recovery, static interpretation. The admission omission
 and discovery are staged; no new source or runtime investigation has been performed.
-
-The [latest re-review assessment](structured-architectural-accounts.md#re-review-identifying-support-and-association-roles-2026-11-10)
-proposes refinements to identifying support, per-subject identification, W's identity
-and assembly modes. These are not yet chosen example contracts below.
 
 ## Choices for this pass
 
@@ -23,8 +19,13 @@ and assembly modes. These are not yet chosen example contracts below.
   its own. Earlier definitions are neither extended nor reparented.
 - Every child delivers its own applicable qualifications. Composition does not
   implicitly inherit substantive limitations from its parent.
+- Identifying descriptions are designated by qualified per-subject identifies
+  associations, independently of an account's content form or other describes roles.
+- Every answer supplies fixed identifying support for its substantive subject
+  references. Supporting definitions need not be selected account constituents.
 - Retain the follow-up request's answer, then let a separate caller-requested
-  assembly produce a working answer across results without synthesis.
+  collection inspection assemble a working answer without synthesis. Keep requested
+  members exactly by default; replacement preference is an explicit alternative.
 - Keep evaluation-wide exposure/reconsideration. Smaller correction units do not
   establish smaller dependency sets or fewer warnings.
 
@@ -66,10 +67,12 @@ INTRO-1                 root: orientation to this result
 └── ADMISSION-1         child: admission/inspection behavior; waiting omitted
 ```
 
-DEFINITIONS-1 carries a proposed recognized content kind, `identifying-description`,
-and qualified describes associations with S, S-open and S-closed. This makes it
-findable as identifying content, not the unique authoritative definition. It is one
-small coherent unit, not an investigram for each sentence.
+DEFINITIONS-1 has qualified **identifies** associations with S, S-open and S-closed.
+It may also **describe** P through its state relationships without identifying P.
+Identification is a role on each account–subject association, not a whole-account
+content kind. This avoids returning it as P's definition merely because it contains
+identifying content and describes P. It remains one small coherent unit, not an
+investigram for each sentence or a unique authoritative definition.
 
 ADMISSION-1 describes P's admission behavior and refers to S. That reference does
 not automatically make it a describes-S association. It contains the admission cases
@@ -77,7 +80,11 @@ and inspection account, with support and qualifications attributable to those cl
 
 INTRO-1 organizes the explanation without repeating the behavioral claims as a
 second account. If its own content were misleading, correcting a child would not
-correct the root's claim.
+correct the root's claim. Its orientation remains qualified interpretation with
+ordinary exposure/correction
+semantics. Thin roots must still contribute useful context; this example does not
+introduce an unqualified children-only result type. If a root adds nothing useful,
+reconsider the result pattern rather than retaining empty scaffolding by convention.
 
 Each child delivers every qualification applicable to its own claims, including
 static interpretation and recovery scope where relevant. INTRO-1 may summarize these
@@ -88,6 +95,31 @@ There is no implicit parent qualification that a reader must discover separately
 Accept the result atomically, resolving submission-local keys to shared IDs.
 ANSWER-1 fixes the selected result, children, support and revision snapshot. Its
 identity differs from INTRO-1, and exact retrieval remains available after correction.
+
+### What each answer owes for its references
+
+For this walkthrough, an answer supplies qualified identifying content or an explicit
+unresolved contextual designation for substantive subject references, with exact
+inspectable support. The application selects and fixes that content and its supporting
+references when constructing the answer. A renderer neither invents a description
+nor silently retrieves a newer preferred one during exact presentation.
+
+This is support for understanding a referent, not evidence for every behavioral claim
+about it. Supporting definition investigrams need not become selected constituents.
+Preserve the descriptions grounding each selected account, and expose newer or
+competing descriptions separately; do not silently reinterpret old content. Use
+already qualified descriptions from selected context or the new result's explicit
+identifying associations. Deriving a new description would require qualified analysis.
+
+Avoid unlimited recursive inclusion. Enough qualified context must distinguish the
+intended referents; ambiguity/unavailable support must remain explicit. General
+support-selection, bounding and intelligibility checks still need design, but the
+plain answers in this example must be intelligible without a later assembly request.
+
+Human display alone is not investigator exposure. If an investigator later receives
+this substantive support, record exposure even though it is not a selected constituent.
+A short identifying description is not complete delivery of its owning investigram
+and does not establish correction eligibility.
 
 ## 3. The caller selects follow-up context
 
@@ -110,6 +142,12 @@ route can choose the same exact context and yield the same effective inputs. Cho
 different context changes inputs explicitly, not through an undisclosed origin rule.
 A fresh request on S without an originating answer needs its own context-selection
 policy and is not demonstrated by this path.
+
+Concretely, existing describes-style association lookup cannot find ADMISSION-1
+from S alone. Origin-free discovery needs an investigator-visible refers-to query
+or a context policy following that index. Bare IDs do not create content exposure;
+substantive titles/descriptions and later retrieved content do. This path makes no
+claim that origin-free correction already works or belongs in the first slice.
 
 Give the information need declared Lens/operation meaning. Fixed questions may need
 no free-form parameters; meaningful variations and context selection must enter
@@ -144,7 +182,7 @@ The follow-up introduces:
 | R | Shared breaker-instance role in the described usage pattern, not an observed runtime object. |
 | E-trial | An execution occupying the recovery-trial role. |
 | E-caller | A concurrent caller's execution role. |
-| W | Waiting by E-caller for R's recovery decision under this pattern/configuration. |
+| W | The waiting relationship between E-caller and R's recovery decision in the named usage pattern; occurrence and conditions remain qualified claims. |
 
 Qualified content connects R to P and distinguishes S from a particular instance
 occupying that state. These are new descriptions, not additions to DEFINITIONS-1.
@@ -161,11 +199,20 @@ TRIAL-RESULT-1                 root: orientation to the follow-up result
         reason:               omitted waiting during an occupied recovery trial
 ```
 
-ROLE-DEFINITIONS-1 uses identifying-description content with explicit described
-subjects. TRIAL-1 uses supported interaction/transition forms and qualified describes
+ROLE-DEFINITIONS-1 identifies R, E-trial, E-caller and W through explicit qualified
+associations. It may describe their connection to P without identifying P.
+TRIAL-1 uses supported interaction/transition forms and qualified describes
 associations with P, S and R where its claims warrant them. Each child supplies its
 own applicable qualifications. Definitions need not always be separate children;
 we choose them here because independent follow-up/correction is useful to test.
+
+Default recovery configuration and the conditions under which waiting occurs belong
+to TRIAL-1/ADMISSION-2's behavioral claims, not W's identity merely because this is
+the configuration examined. Retaining W does not establish that waiting actually
+occurs. A correction to waiting conditions normally targets behavioral content;
+wrong participants or identifying characterization can also require correcting
+ROLE-DEFINITIONS-1 or distinguishing another referent. Definitions are still claims,
+and not every relationship correction necessarily preserves identity.
 
 TRIAL-1 explains shared state across calls, supplied trial work, waiting while the
 single trial is occupied, and how trial outcomes affect subsequent admission,
@@ -185,14 +232,28 @@ Neither adopts DEFINITIONS-1 or appends to INTRO-1. The correction's reason,
 qualifications and evidence remain accessible as reporting content. S and its
 identifying description are unchanged by this behavioral correction.
 
+TRIAL-1 is the correction reporter, so the reason and qualifications belong to its
+own substantive content. Correcting TRIAL-1 later preserves that original reasoning
+and correction record; it does not automatically revoke or retarget the admission
+correction. Changing a correction's standing would need explicit semantics beyond
+this example.
+
 ## 5. Two answers with explicit owners
 
 First, the concurrent-callers request returns FOLLOWUP-ANSWER-1. It retains the
 selected TRIAL-RESULT-1 tree and accompanying ADMISSION-2, with support and revision
-context. It does not automatically select input DEFINITIONS-1 for display. Actual
-input-context provenance remains available separately from answer constituents.
+context. It supplies identifying support for S from DEFINITIONS-1 without making
+that whole investigram a selected constituent. Its new roles are identified through
+ROLE-DEFINITIONS-1. Actual input-context provenance remains a separate responsibility.
 
-Then the caller makes a separate explicit assembly request for WORKING-ANSWER-1:
+A fresh replacement-aware selection from INTRO-1 similarly supplies identifying
+support for ADMISSION-2's new R/E-caller/W references from ROLE-DEFINITIONS-1, despite
+that child's absence from INTRO-1's composition. In this example its exact new-subject
+identifying associations establish the support references. The answer freezes those
+references, content and qualification/revision context; layout cannot invent the link.
+
+The caller can then make a separate explicit assembly request for WORKING-ANSWER-1
+to inspect these explanations together, not to repair missing subject meaning:
 
 | Exact selected material | Purpose |
 | --- | --- |
@@ -202,35 +263,51 @@ Then the caller makes a separate explicit assembly request for WORKING-ANSWER-1:
 | ADMISSION-2 | Corrected admission account. |
 | Correction/revision support | Change, reason, alternatives, qualifications and reconsideration context. |
 
-This is a proposed extension of inspection/selection: the caller supplies exact
-constituents and an assembly mode; no new investigation is required merely to retrieve
-them together. A future UI could coordinate the two requests as one interaction.
-Their retained answers and meanings remain distinct. The general Lens/assembly
-contract is still to be designed; it is not already implemented.
+Use a proposed inspection Lens over a collection subject. Its question is “inspect
+these accounts with their revision context.” The caller supplies precise constituents
+and a revision mode. This example chooses **exact members**. No new investigation
+is required merely to retrieve the selected accounts together. A future UI could
+coordinate the two requests as one interaction, but working assembly is optional for
+understanding FOLLOWUP-ANSWER-1. The retained answers remain distinct.
+
+| Revision mode | If DEFINITIONS-2 exists and DEFINITIONS-1 is requested |
+| --- | --- |
+| Exact members (recommended default) | Retain DEFINITIONS-1 as a constituent; capture and disclose the newer correction context. |
+| Prefer replacements | Select DEFINITIONS-2 under the declared correction-selection policy, preserving the requested-to-selected mapping and conflicts. |
+
+These modes apply to selected constituents. Neither silently substitutes a new
+definition into an unchanged account's identifying support. If old TRIAL-1 grounded
+in DEFINITIONS-1 is selected alongside DEFINITIONS-2, preserve that distinction rather
+than imply the behavioral account was revalidated. Complete Lens parameters,
+collection/order semantics and integration with existing selection need design;
+these are recommendations, not implemented options.
 
 Assembly does not assert agreement or synthesize architectural claims. Retain its
-constituents, support, mode and revision snapshot. Identical effective inputs and
-snapshot give repeatable logical identity. A fresh current-context request can
+constituents, fixed identifying support, mode and revision snapshot. Identical
+effective inputs and snapshot give repeatable logical identity. A fresh current-context request can
 capture a later snapshot; exact retrieval never recomputes it. Selecting a child
 from an earlier tree does not reparent it.
 
 | Access | Result |
 | --- | --- |
 | Exact ANSWER-1 | Original selected content and captured revision context. |
-| Exact FOLLOWUP-ANSWER-1 | The follow-up result selection, without implicitly adding its input definitions. |
+| Exact FOLLOWUP-ANSWER-1 | The follow-up result selection and its fixed identifying support; supporting definitions need not be constituents. |
 | Exact WORKING-ANSWER-1 | The caller's assembled selection and captured context. |
 | Fresh inspection of ADMISSION-1 | The original with applicable current correction context, never redirection. |
-| Fresh current selection originating at INTRO-1 | Can select DEFINITIONS-1 and ADMISSION-2 with displacement disclosed, while stored children remain unchanged. |
+| Fresh replacement-aware selection from INTRO-1 | Can select DEFINITIONS-1 and ADMISSION-2 with displacement and fixed support for the new role references; stored children remain unchanged. |
 
 The last path follows replacement-aware selection, not tree mutation. New synthesis
 would require another qualified investigation.
 
-Fresh identifying-description lookup uses the recognized kind plus qualified
-describes associations, exposing candidate scope, revisions and conflicts. If
-DEFINITIONS-2 replaces DEFINITIONS-1, current replacement-aware selection can prefer
+Fresh identifying-description lookup uses per-subject identifies associations,
+exposing candidate scope, revisions and conflicts. If DEFINITIONS-2 replaces
+DEFINITIONS-1, current replacement-aware selection can prefer
 it in this single-chain case. Independent definitions remain separate candidates;
 TRIAL-1 does not become a definition merely because it also describes S. Automatic
 selection for a new origin-free investigation remains an open policy.
+Similarly, inspection of P does not return DEFINITIONS-1 as identifying P just
+because it describes P's state categories. The precise role vocabulary and validation
+are still design work; the per-subject distinction is the recommendation here.
 
 ## 6. Supply diagram meaning and discovery
 
@@ -293,8 +370,12 @@ The child partition remains useful for correction identity and coherent initial
 explanations. Its propagation costs are now explicit. Caller-selected context resolves
 how ADMISSION-1 reaches the follow-up without conflating origin with effective inputs.
 A separate assembly operation resolves who chooses the cross-result working answer.
+Fixed identifying support makes the unassembled answers intelligible. Per-subject
+identifies associations make description lookup precise, and explicit assembly modes
+separate inspecting requested originals from preferring their replacements.
 
-Next discuss whether these two caller operations are the right first boundary and
-whether evaluation-wide reconsideration is acceptable. Then probe composition roles
-and local/prose promotion. Migration, delivery scope and a general context-selection
-policy remain open; no planning package is authorized by this example.
+Next specify the identifying-support selection/bounds contract and confirm the
+caller/assembly boundary and evaluation-wide reconsideration tradeoff. Then probe
+composition roles and local/prose promotion. Migration, delivery scope, origin-free
+context selection and correction-standing semantics remain open. No planning package
+is authorized by this example.

@@ -8,8 +8,7 @@ or implementation authorization. Recommendations and unresolved choices remain
 open. The [discussion notes](structured-architectural-accounts.md) retain the
 alternatives, implementation inspection and research behind this synthesis.
 
-This version incorporates the clarifications from the
-[review assessment](structured-architectural-accounts.md#review-assessment-unresolved-contracts-2026-11-10).
+Current recommendations, including the review refinements, are stated inline.
 Remaining choices are marked **Needs design** where they arise and collected below.
 The proposed reduction of first-delivery scope has not been agreed.
 
@@ -26,10 +25,6 @@ The [foundation](../foundation/README.md), [application specification](../docs/a
 and applicable accepted decisions remain governing. The
 [structured-interpretation decision](../docs/decisions/structured-investigram-content.md)
 permits exploring this content while preserving qualification and revision contracts.
-
-The [latest re-review assessment](structured-architectural-accounts.md#re-review-identifying-support-and-association-roles-2026-11-10)
-adds proposed answer-support and per-subject identification contracts, plus explicit
-assembly revision modes. These remain recommendations for discussion.
 
 ## The proposed capability
 
@@ -60,7 +55,8 @@ This vocabulary describes responsibilities, not storage tables or public API typ
 | Investigram | The existing immutable unit of retained interpretation, potentially containing structured content and prose. Mechanical claims retain their own character and guarantees. |
 | Architectural account | A coherent explanation that may occupy one or several investigrams. The explanatory term alone does not give a collection an identity or make it a correction target. |
 | Working selection | Exact qualified parts selected for a question, with selection basis and revision context. A retained selection is immutable; a changed selection produces another answer rather than mutating it. Selection does not establish a synthesized explanation. |
-| Exact answer | The existing fixed record of selected content and support, including the revision/association context captured for that answer. |
+| Identifying support | Qualified content making a referenced subject intelligible, with exact supporting references. It need not be a selected account constituent and is not evidence for every claim about the subject. |
+| Exact answer | A fixed record of selected content and support, including captured revision/association context. The proposed identifying support must be fixed too. |
 
 The retained architectural model comprises subjects, qualified information,
 relationships, support and revision/conflict history. It can be partial, contested
@@ -80,11 +76,69 @@ for interpreted referents such as Half-open. Specify their grounding, scope and
 guarantees, and assess the corresponding decision/document changes. Do not silently
 redefine Subject or extend Entity to cover every addressable thing.
 
-**Needs design — selection owner.** Prefer extending the existing immutable
-investigation-selection Projection for retained selected answers. Its Lens/question,
-parameters, supported constituents and selection policy need a contract. Investigation
-input selections and mutable future Workspace/View choices remain distinct uses;
-they do not make the retained answer mutable or require a Workspace in this slice.
+Prefer extending the immutable investigation-selection Projection for retained
+answers. The caller owns explicit assembly; its question is “inspect these accounts
+with their revision context,” applied to a collection of precise account references.
+Investigation input selection and future mutable Workspace/View choices remain
+distinct. Neither makes an answer mutable or requires a Workspace in this slice.
+
+### What an answer owes for referenced subjects
+
+Recommend qualified identifying support, not bare IDs and not automatic inclusion
+of every definition as a selected constituent. A substantive subject reference should
+have an intelligible identifying description or an explicitly unresolved contextual
+designation, with exact inspectable support. Identity and descriptive qualifications
+remain attributable; neither an association nor a label establishes semantic truth.
+
+The application selects this support at answer construction and fixes its exact
+references, supplied content and relevant qualification/revision context. Rendering
+cannot fetch today's preferred definition and silently change an exact answer.
+Preserve the descriptions actually grounding selected accounts; do not reinterpret
+an old account by automatically substituting a newer definition. Newer or competing
+descriptions can be exposed distinctly as revision context or separate selected items.
+
+In the walkthrough, selected input descriptions and the new result's identifying
+associations supply that support. FOLLOWUP-ANSWER-1 supplies identifying support for
+S from DEFINITIONS-1 without making that investigram a selected constituent. A fresh
+replacement-aware selection from INTRO-1 supplies support for ADMISSION-2's new
+roles from ROLE-DEFINITIONS-1 even though that child is outside INTRO-1's tree.
+The separate working assembly organizes accounts for comparison; it is not required
+to repair an unintelligible plain answer.
+
+Avoid unlimited recursive inclusion of definitions. Supply enough qualified context
+to distinguish the intended referents and disclose ambiguity or unavailable support.
+**Needs design:** specify support selection, bounds, intelligibility/completeness
+checks and behavior when adequate support is missing. These rules cannot be left to
+renderer inference. A concise identifying description is not the complete investigram
+and does not confer correction eligibility.
+
+Human presentation alone does not create investigator citations. If this support is
+later supplied to an investigator, its substantive content counts as exposure even
+though it is not a selected constituent. Retention alone is not delivery.
+
+### Explicit assembly and revision modes
+
+For the collection-inspection Lens, recommend these explicit modes:
+
+| Mode | Fresh assembly behavior |
+| --- | --- |
+| Exact members (default) | Keep the requested investigram IDs and capture their current revision context. Requesting DEFINITIONS-1 keeps it even if DEFINITIONS-2 exists. |
+| Prefer replacements | Resolve each requested constituent through the declared correction-selection policy; disclose original-to-selected mappings, conflicts and omissions. |
+
+Modes concern constituent selection. Identifying support remains attributable to
+the selected content; replacement preference is not permission to reinterpret an
+unchanged account with a different definition. An old behavioral account and a
+newer definition may coexist with their differing descriptive contexts visible.
+
+Exact retrieval of either answer preserves the captured constituents, identifying
+support and revision snapshot. Fresh assembly may capture later context even in
+exact-members mode. Equivalent effective inputs, including policy/method and captured
+support/revision context, have repeatable logical identity. Assembly makes no new
+architectural claim of agreement or synthesis.
+
+**Needs design:** finalize the Lens contract, collection/order semantics, support
+resolution and integration with existing selection Projections. These recommended
+modes extend the design; they are not claims about implemented API options.
 
 ### One mechanism across producers
 
@@ -121,9 +175,9 @@ a composition parent. The target's own delivery must include its applicable limi
 ### Items, topics and associations
 
 Use a small extensible vocabulary for information requiring special handling,
-including identifying descriptions and the structured forms needed by the selected
-diagrams. Investigations can invent meaningful topics using supported qualified
-content forms. The initial recognized vocabulary remains to be chosen.
+including structured forms needed by the selected diagrams. Investigations can
+invent meaningful topics using supported qualified forms. Content form and the
+role an account plays for a particular subject are separate dimensions.
 
 Exact investigram references identify interpretation correction targets; a finer
 item address does not authorize a sub-investigram patch. Titles or topic labels
@@ -140,8 +194,20 @@ Keep these relationships distinct:
 
 - **Refers to** supports navigation and finding mentions.
 - **Describes** is a qualified association for selecting accounts about a subject.
+- **Identifies** is a proposed qualified association role saying which subject an
+  account supplies an identifying description for. It is not a whole-investigram kind.
 - **Supports** attributes evidence or prior interpretation to particular content.
 - **Architectural relationships** describe the program, such as ownership or waiting.
+
+For example, DEFINITIONS-1 identifies S, S-open and S-closed, and may describe P
+without identifying P. ROLE-DEFINITIONS-1 identifies its new roles and W while
+describing their relationship to P. A behavioral account can also identify a subject;
+the separate definition-child pattern is useful here, not mandatory everywhere.
+Definition lookup uses the per-subject identifies association, exposing candidates,
+scope and correction/conflict context. It does not infer identification from a
+describes association plus an account-wide label. No unique authoritative definition
+is implied. **Needs design:** settle the exact role vocabulary, its relationship to
+describes indexing, and qualified validation; the role must remain explicit.
 
 The selected input subject and actual prior-content exposure are separate again.
 Extend the existing referent/association machinery rather than maintain duplicate
@@ -150,6 +216,13 @@ and revision context; substantive titles and summaries count as exposure, not
 complete delivery. Rich listings can therefore broaden later reconsideration.
 **Needs design:** choose useful listing content and bounds while preserving those
 exposure rules; relabeling substantive text as metadata cannot avoid them.
+
+**Needs design — origin-free discovery.** Existing explicit-association lookup will
+not discover ADMISSION-1 from S merely because the account refers to S. An origin-free
+investigation needs an investigator-visible refers-to listing or a context policy
+using that index. Bare-reference results are not content exposure; substantive
+titles/descriptions and later retrieved content are. Caller-selected context in the
+walkthrough does not demonstrate this discovery capability.
 
 ## Introduction and change
 
@@ -214,6 +287,15 @@ become a shared subject immediately. A relationship account supplies participant
 roles, conditions and direction/order where meaningful; its identity alone supplies
 none of those claims. Equal labels or endpoints do not establish relationship identity.
 
+For W, recommend identifying the waiting relationship between the particular caller
+role and the shared breaker role's recovery decision in the named usage pattern.
+Keep default configuration, occurrence and waiting conditions in qualified behavioral
+claims, as with S's behavioral scope. Allocating W does not establish that waiting
+occurs. A change to conditions normally corrects the behavioral account; a mistaken
+participant or identifying characterization can also require definition correction
+or a different referent. The definition/behavior boundary is not an exemption from
+qualification, and identity continuity remains an explicit judgment.
+
 If separately introduced S1 and S2 appear to designate the same thing, record a
 qualified correspondence and preserve both references and their original accounts.
 If S0 conflates two things, record that finding and introduce/reference S1 and S2.
@@ -242,8 +324,8 @@ and its discovery are staged. This proposal adds no verification of library beha
    architectural subject. A fixture may seed orientation for narrower tests.
 2. **Admission.** The result introduces Half-open S and describes admission under
    the stated recovery configuration. In the provisional walkthrough, INTRO-1 has
-   DEFINITIONS-1 and ADMISSION-1 as children; recognized identifying-description
-   content distinguishes S from an execution. ANSWER-1 fixes the selection and support.
+   DEFINITIONS-1 and ADMISSION-1 as children; explicit identifies associations locate
+   the descriptions distinguishing S from an execution. ANSWER-1 fixes content and support.
    Other introduction/partition choices remain open in the broader design.
 3. **Follow-up.** The human selects S for concurrent callers and outcomes. The
    walkthrough chooses a request on S whose caller explicitly selects DEFINITIONS-1
@@ -263,11 +345,13 @@ and its discovery are staged. This proposal adds no verification of library beha
    result does not append children to the old investigram; replacement composition
    remains disjoint as required by the existing contract.
 5. **Current use and historical access.** The request returns its follow-up answer.
+   Its referenced subjects have fixed identifying support without automatically
+   selecting every supporting definition as a constituent.
    In the walkthrough a separate explicit caller assembly selects both definition
    children, ADMISSION-2 and TRIAL-1 with qualified support and revision context.
    This working answer does not synthesize a new account. Exact ANSWER-1 returns its
-   captured selection/context; fresh inspection
-   of ADMISSION-1 can disclose later corrections around the unchanged original.
+   captured selection/context; fresh inspection of ADMISSION-1 can disclose later
+   corrections around the unchanged original.
    Neither operation silently redirects its exact reference.
 
 H1/H2 illustrate subject-definition revision where a definition changes; they need
@@ -278,6 +362,12 @@ content too and the replacement must supply its description. A separate definiti
 child is independently correctable; root replacement does not automatically carry
 that child or a corrected successor into its new composition. The walkthrough tests
 the child partition and explicit answer assembly; a general partition policy is open.
+
+The walkthrough's correction is reported by TRIAL-1, so its reason and qualifications
+are TRIAL-1's substantive content. A later correction of TRIAL-1 preserves the original
+reporter and correction record; it does not automatically withdraw or rewrite that
+correction edge. **Needs design:** any mechanism for changing a correction's standing
+must be explicit. The example does not claim that capability.
 
 Preserve three independent dimensions:
 
@@ -363,6 +453,11 @@ Complete target delivery concerns the target's own required content, not its ent
 descendant subtree. Child replacement and root replacement must be worked through
 separately; a new tree cannot simply adopt an old child by implication.
 
+Organizational roots still carry qualified interpretation and ordinary exposure and
+correction semantics. They must be useful and intelligible, not empty scaffolding
+disguised as an unqualified result container. A children-only result pattern would
+need separate justification if the examples show the roots add no explanatory value.
+
 **Prerequisite — structured delivery.** Before using corrections on structured
 content, specify how all required own content, referent information and attributable
 qualifications are delivered, how bounded excerpts/omissions are reported, and how
@@ -400,7 +495,8 @@ The capability needs a continuous path through:
 - Applicable subject/Lens requests with declared question meaning and selected
   context, plus full/partial delivery accounting for structured content.
 - Working selection and exact retrieval preserving new content, qualifications,
-  corrections and fixed support through the direct API.
+  corrections and fixed identifying support through the direct API, including explicit
+  collection-inspection meaning and constituent revision modes.
 
 Keep application semantics independent of rendering. Account for affected existing
 human-output paths; deferring the GUI does not permit dropping qualifications or
@@ -454,8 +550,10 @@ account reconciliation, full presentation/navigation and the minimal GUI.
 3. **Request, context and selection.** Choose subject investigation versus focused
    account follow-up; define originating context, selected input and lineage.
    Assess the proposed placement of retained selections in the Projection model,
-   with declared question meaning.
-   Specify interpretive Lens applicability and listing/exposure tradeoffs.
+   using the proposed collection-inspection question and explicit revision modes.
+   Specify fixed identifying support and per-subject identifies associations; confirm
+   that plain answers remain intelligible without working assembly. Resolve interpretive
+   Lens applicability and origin-free discovery/listing exposure tradeoffs.
 4. **Content and delivery.** Choose forms that supply the diagrams, define their
    complete/bounded delivery contracts before corrections, and establish the precise
    identity or correspondence needed for combined views. Formal validity and semantic
