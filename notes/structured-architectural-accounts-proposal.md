@@ -965,6 +965,26 @@ proposed solely because the system retains contradictory accounts. Whether a new
 account is sufficiently supported to correct an old one remains investigative
 judgment, including possible unresolved disagreement about the correction itself.
 
+**Follow-up distinction — adoption versus historical retention.** The human points
+out that fixing an identified factual error is not reconciling legitimate partial
+views, and questions whether retaining the uncorrected account is necessary.
+Recommend assessing three policies separately: current selection of an explicit
+correction's replacement, historical retention of the earlier account, and warnings
+on accounts exposed to that earlier content. Alternative accounts should not acquire
+correction consequences merely because they differ. Conversely, an explicitly
+supported correction need not remain a coequal current explanation to honor plural
+accounts. Acceptance still does not mechanically establish its truth.
+
+Retaining the earlier account has an independent purpose: preserve exact earlier
+answers and the content actually supplied to later investigations, allow inspection
+of the error/reason, and permit challenge to a mistaken correction. This does not
+require routinely supplying the old account as a current alternative, indefinite
+retention, or a universal dependency model. Removing it would sacrifice current
+historical-access/lineage obligations, rather than simply avoid reconciliation.
+Reconsideration currently warns from exposure, not established reliance, and cannot
+be cleared by an existing reassessment operation; those costs merit separate review.
+No deletion, policy change or governing revision is adopted by this discussion.
+
 These are recommendations to reconsider, not reversals of human agreements or
 changes to governing requirements. Several were already formally open; conversational
 confidence has sometimes exceeded the examples supporting them.
