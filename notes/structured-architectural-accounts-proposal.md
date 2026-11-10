@@ -282,18 +282,24 @@ Allow three routes into the same subject mechanism:
 2. **Local designation.** An investigram gives something a local key without creating
    a shared subject yet. Later exploration can promote the exact investigram/key pair;
    repeated promotion resolves to its established binding.
-3. **Prose selection.** A human follows wording such as “Half Open.” PostCode can
+3. **Contextual selection (including prose or diagram components).** A human follows wording such as “Half Open.” PostCode can
    establish “Half Open as used in account A,” retaining the exact account and
    selected occurrence/context where available. This records a focus, not an
    inferred precise architectural definition. The initial designation is an
    attributed selection record, not an investigram fabricated from the human action.
+   A selected diagram component can similarly resolve to its exact retained content
+   element and context. Display coordinates or a renderer's generated ID are not
+   sufficient identity. If the element already references a shared subject or has
+   an established promotion binding, reuse it. A component assembled from several
+   claims may require explicit disambiguation or qualified analysis; selection alone
+   does not establish their equivalence.
 
 Submission-local subject keys and investigram-local designation keys have different
 owners and must remain distinguishable. Equal local keys in ADMISSION-1 and its
 replacement do not establish continuity. Reuse an existing shared subject reference
 or retain an explicit mapping with appropriate support; never inherit by spelling.
 
-**Needs design — prose selection.** Define the selection record's qualification,
+**Needs design — contextual selection.** Define the selection record's qualification,
 reference shape and repeated-selection behavior. An exact investigram plus stable
 occurrence selector is a candidate for idempotence, not a selected ID formula.
 Repeated wording alone does not identify an occurrence or resolve its meaning.
@@ -562,6 +568,21 @@ Selecting a form does not itself establish that it applies: the investigation mu
 qualify that interpretation. Open topic labels remain available within supported
 forms; an invented label does not create a new understood contract. Start by drafting
 the state-behavior entry needed by the example, not a comprehensive catalogue.
+
+**Local keys and later promotion.** The human proposes keys for structured elements
+both for internal references (nodes and transition endpoints) and for later subject
+promotion, while leaving room for investigator discretion and contextual selection.
+Recommend that each contract require local addressability where its structure needs
+references, without requiring every value to have an explicit key. The investigator
+can choose keys and optionally designate additional elements. Structured element keys
+can serve as local designations when their scope and referent meaning are defined;
+they do not automatically allocate shared subjects. An unkeyed retained element can
+still be selected through an exact content locator and contextual designation.
+**Needs design:** key scope across multiple content blocks, distinction between a
+record and the architectural thing it describes, and selection/promotion binding.
+Keys or content paths in different account revisions never establish continuity
+merely by matching. Diagram selection uses the same mechanism by mapping back to
+retained content; it is not a separate source of architectural identity.
 
 **Notation-informed information probe.** The human suggests testing whether retained
 content supplies the information needed by an established diagram style, and clarifies
