@@ -494,6 +494,15 @@ substitute for complete delivery. The exact rules depend on the chosen forms.
 
 ## Existing machinery and application boundary
 
+**Existing hierarchy, proposed subject semantics.** A single investigation already
+returns one root with recursive child investigrams. PostCode validates the result
+tree and assigns each investigram its own retained identity. The proposed
+definition/admission partition uses that existing composition machinery; it does
+not introduce hierarchical investigation results. Explicit introduction of shared
+subjects such as Half-open, and qualified per-subject identifies associations, are
+proposed extensions. See the [submission contract](../src/lib/investigation/contracts.ts)
+and [acceptance code](../src/lib/investigation/acceptance.ts).
+
 The inspected implementation provides immutable investigrams, fixed composition,
 qualified associations, atomic result acceptance, corrections/conflicts,
 exposure/reconsideration, and direct selected-content/exact-answer access through

@@ -59,6 +59,12 @@ but delaying R here preserves the original journey and tests genuinely new subje
 
 ## 2. One introduction, separate correction units
 
+The hierarchy itself is existing machinery: one investigation can already return
+a root and recursive child investigrams, each with its own retained ID. Choosing
+definition and admission children is this example's proposed use of that machinery.
+Introducing Half-open as a shared subject and recording which investigram identifies
+it are proposed extensions, not existing hierarchy behavior.
+
 The admission evaluation returns a fixed composition:
 
 ```text
