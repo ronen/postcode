@@ -222,6 +222,11 @@ account follow-up do not bypass this actual-delivery check.
 
 ## 4. New role definitions, behavior and correction
 
+The investigation is selected on Half-open S, but its findings can add qualified
+items to Circuit Breaker P or explicitly correct P's earlier items. Output associations
+need not equal the input subject. Here TRIAL-1 adds understanding while ADMISSION-2
+replaces the identified ADMISSION-1; both remain associated with their declared subjects.
+
 The follow-up introduces:
 
 | Reference | Meaning |

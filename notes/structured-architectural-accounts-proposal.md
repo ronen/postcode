@@ -452,6 +452,14 @@ identify the correction and provide reason/support; new detail or a shared subje
 does not automatically imply replacement. PostCode checks delivery eligibility and
 submission validity without thereby establishing the correction's truth.
 
+Agreement in discussion: an investigation selected on Half-open S can return one
+or more qualified items associated with Circuit Breaker P, explicitly as additions
+or as replacements correcting exact earlier investigrams. The selected subject
+guides the information need; it does not restrict output associations to that subject.
+An addition preserves earlier items without implying error. A correction identifies
+its target, replacement, reason and support and meets the complete-delivery rules;
+the original remains retained. Both can occur in one accepted result.
+
 Initially a working selection can be explicit. Automatic relevance judgments,
 correspondence and synthesis establishing new claims require qualified analysis.
 Capture actual selected input context: a stable subject ID alone is insufficient
