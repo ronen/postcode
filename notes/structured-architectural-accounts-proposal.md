@@ -140,6 +140,20 @@ Earlier accounts and exact answers remain available. A useful negative probe is 
 case where the evidence warrants leaving the accounts unreconciled rather than
 producing a compromise. UI selection mechanics remain out of scope.
 
+**Broader human pushback is separate scope.** The human observes that general input,
+feedback and pushback need a broader design. Distinguish the implemented
+[inadequacy feedback](../docs/capability-reference.md#scope-of-this-reference), which
+records experience without initiating investigation, from an architectural assertion
+or challenge supplied as investigation material. General participant-material capture
+is not implemented, but is already permitted by the
+[foundation](../foundation/product-design.md#participant-supplied-architectural-material)
+and [accepted participant-exchange direction](../docs/decisions/specialized-architectural-investigation.md#external-participants).
+It therefore requires capability/contract design, not necessarily a foundation
+revision. Selecting existing accounts for reconciliation need not introduce this
+broader input channel. Supplying “this is wrong because …” would need attributable
+participant content and explicit investigation use; neither feedback nor assertion
+automatically corrects retained accounts. Keep that broader work separate here.
+
 In the walkthrough, selected input descriptions and the new result's identifying
 associations supply that support. FOLLOWUP-ANSWER-1 supplies identifying support for
 S from DEFINITIONS-1 without making that investigram a selected constituent. A fresh
