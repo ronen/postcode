@@ -355,8 +355,11 @@ account relationships. At the conceptual level the follow-up supplies:
 | Relationship claim K | States that ADMISSION-2 corrects ADMISSION-1, reported by TRIAL-1, with reason, affected subject P, scope, qualifications and evidence. |
 
 The relationship claim is retained with its own address; existing corrections
-already have such identities. The reporter attribution does not require another
-investigation or an extra explanatory account solely to hold K. One investigation
+already have such identities. That current-style representation uses TRIAL-1 as
+reporter without another account solely to hold K. A competing proposal is a separate
+investigram K containing the qualified relationship assertion, so that assertion
+has an ordinary independent investigation/revision target. Neither representation
+requires another investigation. One investigation
 supplies the accounts and qualified relationship together. Exact wire packaging and
 composition remain open: this does not introduce a flat multi-root submission by
 implication. PostCode resolves new-account local references, verifies eligible older

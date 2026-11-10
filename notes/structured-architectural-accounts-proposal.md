@@ -155,6 +155,29 @@ meanings are not mutually exclusive classifications of account pairs. Common mac
 does not require a generic graph ontology or one identical payload for every kind.
 Mechanical composition and exposure remain distinguishable from interpreted relations.
 
+**Relationship claim as account: open representation choice.** The human asks whether
+K is an investigram and whether it can be challenged/corrected. Currently a Correction
+is a distinct retained record with a reporting investigram; the correction record
+itself is not an eligible investigram correction target. Revising its reporter does
+not retract or retarget the original relationship. Our first K sketch followed that
+shape, not an adopted representation for the new common model.
+
+Recommend testing relationship assertions as structured investigram content, with a
+separate investigram K where independent investigation/revision is useful. K then
+accounts for how A and B relate, with evidence and qualifications; a mechanical index
+can expose its asserted relation without independently authoring another claim.
+This reuses the account lifecycle but introduces another account when K is separate.
+The alternative is a distinct qualified relationship-record type with explicitly
+generalized targeting/revision operations. Compare those costs before adopting a shape.
+
+A later account could challenge K or say its correction judgment was mistaken while
+leaving B's architectural content intact. Independent addressability does not settle
+the operational effect: define whether a disputed or superseded K still influences
+current selection and how other applicable relationships are preserved. Retain the
+original assertion/history; never infer that A becomes correct merely because K is
+challenged. This is relationship-status design, distinct from deferred reassessment
+of accounts exposed to corrected context. No automatic withdrawal exists today.
+
 **Reassessment — recommend deferring detailed design and delivery.** The human
 recognizes reassessment as within the product's remit but suggests keeping it in
 the backlog unless it affects the present architecture. Current correction records
