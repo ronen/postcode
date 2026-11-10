@@ -506,6 +506,39 @@ investigation belongs in the first implemented capability remains open.
 
 ## Structured content and diagrams
 
+**Discussion distinction and recommendation.** Retaining qualified accounts and
+expressing architectural meaning are separate design questions. Reuse the subject,
+association, evidence, immutable-account, correction and exact-access mechanisms
+for structured interpretive content. Add content forms that express the architectural
+claims themselves. A transition record can refer to existing state and participant
+subjects while its containing investigram supplies attributable support and limits.
+It need not become a separately retained subject unless continuity or investigation
+requires that. Correcting the record initially means replacing its whole investigram,
+not silently updating a canonical state-machine graph.
+
+This is a recommendation about the domain mechanism, not a claim that the current
+prose transport works unchanged. Each form needs defined meaning, reference checks,
+qualification attribution and complete/partial delivery rules. Prose can remain in
+conditions and explanations. Unreported transitions or conditions do not mean they
+do not exist; coverage and unknowns must remain explicit. Structured content carries
+claims with the same epistemic obligations as prose.
+
+**Terminology recommendation.** Build on established architectural concepts, as
+already directed by [the foundation](../foundation/product-design.md#illustrative-lens-families).
+The [earlier concept references](initial-journey/architectural-concept-references.md)
+provide a starting point, especially SEI Views and Beyond and its treatment of
+behavior. Use precise distinctions such as module versus runtime participant,
+state versus state occupancy, transition trigger versus guard versus effect, and
+possible interaction versus observed execution. Record the meaning and any adaptation
+of borrowed concepts. Familiar names alone do not import a formalism's execution
+semantics, completeness assumptions or conformance requirements.
+
+The two questions meet at content validation: retention can accommodate several
+forms, but validating a transition requires knowing what its fields mean. **Needs
+design:** choose a small vocabulary for the admission/trial example and express one
+state transition and one interaction through it before settling payload schemas.
+These recommendations do not yet adopt a vocabulary or schema.
+
 Use a few forms justified by explanatory needs, permitting qualified prose inside
 and alongside them. Do not require a universal ontology or full UML/statechart
 semantics. These are semantic obligations to explore, not settled field schemas:

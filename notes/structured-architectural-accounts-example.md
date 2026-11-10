@@ -336,6 +336,21 @@ of UI layout or selection gestures.
 
 ## 6. Supply diagram meaning and discovery
 
+This step moves from the retained-account mechanism to architectural content forms.
+The recommendation is to retain structured claims through the same qualified
+investigrams and subject references used above. For example, a transition's source
+and destination can reference retained state subjects, while its trigger, guard,
+effect and state-bearing participant are explicit content. The transition does not
+require its own shared subject identity merely to be structured. Its containing
+investigram remains the initial correction unit.
+
+The terminology and field meanings remain to be worked through using established
+architectural concepts. Distinguish a state category from a participant occupying
+that state, and a possible interaction from an observed execution. Neither familiar
+terminology nor a valid record establishes correctness or complete behavioral
+coverage. These are recommendations for the next content probe, not an adopted
+schema or newly verified Cockatiel claims.
+
 | Content | Supplied meaning |
 | --- | --- |
 | DEFINITIONS-1 | State-category identities and their qualified relationship to P. |
