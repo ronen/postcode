@@ -84,6 +84,22 @@ additional account, but must not be called an addition merely to avoid a necessa
 correction. Content partition remains provisional; compare the actual submission
 and delivery costs of this example before settling its units.
 
+**Counterargument — coherence of the original explanation.** The human observes that
+an incorrect Half-open definition can make the whole originating explanation
+questionable, motivating replacement of the whole result. Independent addressability
+does not establish semantic independence. Distinguish the scope to re-examine from
+the scope ultimately corrected: investigation may review the larger account and
+justify a local correction, a replacement of the whole result, or unresolved impact.
+A definition that confuses shared breaker state with per-execution progress could
+undermine admission and relationship claims; a narrow descriptive error might not.
+The correction's supported scope should reflect that judgment. Whole replacement
+can restore a coherent account but merely reproducing unchanged text does not prove
+it was checked. Conversely, a child-only correction does not certify its siblings.
+The earlier preference for a single unit and subsequent inclination toward children
+are competing hypotheses, not a settled default. Current composition/exposure rules
+do not automatically propagate a child correction to all same-result siblings or
+its parent; any additional impact behavior needs explicit design.
+
 The hierarchy itself is existing machinery: one investigation can already return
 a root and recursive child investigrams, each with its own retained ID. Choosing
 definition and admission children is this example's proposed use of that machinery.
