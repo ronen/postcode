@@ -624,18 +624,22 @@ designations have contextual resolution semantics, not the same record shape as
 modules. `ModuleRecord` and `GroupRecord` already separate identity from qualified
 naming/classification information through their claims.
 
-Recommend a common application-level subject resolution/access contract over these
-existing representations and new architectural subjects. Preserve existing IDs,
-reference lifetimes, captures and mechanical guarantees; do not allocate duplicate
-architectural IDs for already supported modules or convert mechanical claims into
-interpretation. Investigations can refer to an existing module ID and associate
-new accounts with it. A policy kind implemented by a module is usually a distinct
-subject connected by a qualified implementation mapping, not a synonym for that
-module. Investigram-as-subject also remains distinct from the architecture it
-describes. New declaration, resolution, association and capability handling must
-explicitly accommodate these differences; conceptual unity is not a universal
-record schema or automatic applicability of every Lens. General exposure of all
-existing symbols/relationships need not be added to the first slice.
+The initial suggestion was a common application-level access contract over existing
+and new representations. The human asks whether mechanical analyses and
+interpretation should instead use the same subject-creation and qualified-item
+mechanism throughout. Revised recommendation: yes, design one shared domain
+mechanism, with both kinds of producer contributing subjects and qualified items;
+do not retain a permanent legacy-subject exception behind a common lookup facade.
+Migration scope and implementation representation remain to be planned.
+
+Preserve reference meaning, lifetime, captures and mechanical guarantees; avoid a
+duplicate architectural identity for an existing module. Investigations can refer
+to that same module subject and contribute further qualified accounts. A policy kind
+implemented by a module may instead be a distinct subject connected by a qualified
+implementation mapping. Investigram-as-subject remains distinct from the architecture
+it describes. A common mechanism permits specific content contracts and does not
+make every Lens applicable to every subject. General exposure of all currently
+retained symbols/relationships need not be added to the first slice.
 
 Terminology clarification: architectural subject is the umbrella, including modules,
 symbols and other implementation-level referents. Do not introduce disjoint
@@ -678,3 +682,40 @@ graph rewriting. Include deterministic cases for an initially unknown classifica
 existing module references, duplicate names, a proposed correspondence and a state/
 execution conflation. These establish reference/qualification behavior, not reliable
 automatic discovery of equivalence or conflation.
+
+## Common subject and qualified-item mechanism across producers
+
+Following the human's question, prefer a shared domain contract for declaring or
+reusing subjects, retaining qualified items associated with them, validating
+references/support, indexing and selecting content, and preserving exact earlier
+answers. Mechanical analyses, interpretations and contextual selections use this
+mechanism with their actual provenance. They need not share an identical execution
+protocol, submission payload or identity-discovery algorithm.
+
+Mechanical producer identity keys must preserve established same-Session reuse and
+determinism under their method/capture rules. An interpretive producer can use the
+local-declaration and existing-ID mechanisms already discussed. Central allocation
+must not manufacture a new module on every evaluation or infer identity from names.
+Existing module/group records already separate identity, descriptive claims and
+qualification, making them useful migration examples rather than alien exceptions.
+
+“Qualified item” is neutral vocabulary: mechanical claims remain mechanical,
+recorded assertions remain assertions, and investigrams remain interpretation.
+Use typed content and support contracts where needed. An interpretation referencing
+a compiler-discovered subject does not inherit its mechanical guarantee. Lens
+applicability depends on attributable classification and required analysis support,
+not merely a free-form type label or which producer first created the subject.
+
+For example, a module analysis supplies subject M and naming/classification/export
+items; an investigation uses M in a responsibility account and introduces Half-open
+S plus a qualified implementation relationship. Subsequent mechanical and
+interpretive results can refer to M through the same mechanism. The model retains
+each item's actual evidence and guarantee.
+
+Shared retention does not imply one universal revision algorithm: an interpreted
+challenge to a mechanical claim is qualified contrary information, not automatic
+replacement of that analysis result. Reanalysis and new basis/method results remain
+explicit; current interpretation correction contracts still apply to investigrams.
+The eventual plan should exercise at least one mechanical producer and a subsequent
+interpretation through the shared mechanism, including exact retrieval. Broader
+migration scope is an explicit planning choice, not implementation authorization.
