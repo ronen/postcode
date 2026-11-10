@@ -899,6 +899,23 @@ account reconciliation, full presentation/navigation and the minimal GUI.
 
 ### Assumptions to challenge after the acceptance-bias review
 
+**Terminology question — correction, revision and replacement.** The human asks
+whether correction is the right term. Recommend considering “account revision” as
+the broader concept, “replacement” for the explicit target/successor relationship,
+and “correction” for a revision asserting an error or misleading omission. Revision
+can also concern clarification or restructuring; a supplementary account is not
+automatically a revision/replacement. The reason remains qualified investigative
+content, not an app-certified verdict. This is an open terminology/semantic option,
+not an adopted rename or new schema. “Revision” must remain distinguishable from
+program/repository revision. The implementation already uses RevisionStatus for
+correction-derived state, which does not itself establish broader revision support.
+
+Broadening the current operation beyond corrections would require examining when
+replacement selection and needs-reconsideration consequences should apply. A wording
+change alone neither resolves those consequences nor warrants changing the accepted
+contract. For the present erroneous-admission example, correction remains an accurate
+description of what the investigator asserts.
+
 **Correction remains compatible with this framing.** In response to the human's
 question about revisiting the existing mechanism, inspection of the accepted
 [correction contract](../docs/decisions/investigrams-and-progressive-investigation.md#record-explicit-corrections-without-rewriting-earlier-interpretation)
