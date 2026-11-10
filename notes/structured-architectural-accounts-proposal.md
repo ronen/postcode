@@ -573,7 +573,7 @@ the meaning of retained content when the catalogue evolves. Exact packaging rema
 to be designed, including whether several content blocks share an investigram.
 
 **Unified structure, including prose.** The human rejects a prose-versus-structure
-split: a key with prose is itself a useful structured form. This simplifies the
+split: a key with prose is itself a useful structured form. This can simplify the
 proposed return protocol and makes prose items addressable through the same local
 designation mechanism. Preserve the separate meanings of an item/local key, a
 concept identifier, a form identifier and a subject reference; exact field names
@@ -582,6 +582,20 @@ where useful. A keyed explanation can discuss a transition without supplying the
 explicit endpoints/conditions needed for a diagram; filling those gaps still
 requires qualified analysis. A form or local key does not by itself allocate a
 shared subject or change whole-investigram correction granularity.
+
+**Tradeoffs raised on review.** Uniform structure does not make prose's architectural
+meaning explicit: consumers still cannot mechanically extract transitions from an
+arbitrary keyed paragraph. Mandatory fine-grained keys would add authoring/validation
+overhead and pressure agents to fragment explanations. Prefer a small prose form
+that can hold a coherent explanation; require additional addressability only where
+references or the chosen form need it. Keep arbitrary local keys distinct from
+controlled concept/form vocabulary so invented labels do not imply understood
+semantics. A generic prose fallback must not conceal failure to supply a requested
+specialized form. If every new form were required to carry a diagram mapping or
+schema, extensibility would become unnecessarily expensive; those obligations
+depend on the form's intended handling. The recommendation is a common content
+protocol with varied semantic detail, not an assertion that all content is equally
+amenable to mechanical use. Exact mandatory keys and nesting remain open.
 
 **Agreed exploratory direction — agent source references.** Catalogue entries should
 give concise, self-contained guidance and may directly refer agents to source
