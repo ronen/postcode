@@ -197,11 +197,12 @@
               "E-state",
               "E-admission"
             ]
-          },
+          }
+        ],
+        "children": [],
+        "offers": [
           {
             "key": "concurrent-callers-offer",
-            "form": "investigation-offer/0",
-            "concept": "investigation-guidance",
             "label": "Concurrent callers and trial outcomes",
             "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
             "targets": [
@@ -223,7 +224,7 @@
             ]
           }
         ],
-        "children": []
+        "presentations": []
       }
     ],
     "accountRelationships": []

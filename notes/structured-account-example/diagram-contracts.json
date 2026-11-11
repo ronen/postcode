@@ -1,0 +1,29 @@
+{
+  "status": "Bounded authored diagram-input contracts, not a product registry or universal diagram schema. Rendering code supplies the mappings. Only own-investigram model bindings are exercised here.",
+  "types": {
+    "state-diagram/0": {
+      "inputs": {
+        "model": {
+          "form": "state-behavior/0",
+          "required": true
+        }
+      },
+      "referenceScope": "own-investigram",
+      "mapping": "States become nodes and transitions become edges; authored labels and qualified guards/effects are shown in the overview and legend. Scope/omissions remain visible; no inferred transitions."
+    },
+    "sequence-diagram/0": {
+      "inputs": {
+        "interaction": {
+          "form": "interaction/0",
+          "required": true
+        },
+        "stateModel": {
+          "form": "state-behavior/0",
+          "required": false
+        }
+      },
+      "referenceScope": "own-investigram",
+      "mapping": "Participants, declared order, alternatives and authored event labels map to the sequence. Every state-transition step must resolve through the explicitly bound stateModel; order alone does not imply causation."
+    }
+  }
+}

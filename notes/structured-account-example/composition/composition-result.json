@@ -76,7 +76,9 @@
           {
             "submittedAccount": "breaker-outside-case"
           }
-        ]
+        ],
+        "offers": [],
+        "presentations": []
       },
       {
         "key": "pattern-definitions",
@@ -150,7 +152,9 @@
             ]
           }
         ],
-        "children": []
+        "children": [],
+        "offers": [],
+        "presentations": []
       },
       {
         "key": "bulkhead-outside-case",
@@ -547,7 +551,9 @@
             ]
           }
         ],
-        "children": []
+        "children": [],
+        "offers": [],
+        "presentations": []
       },
       {
         "key": "breaker-outside-case",
@@ -937,7 +943,9 @@
             ]
           }
         ],
-        "children": []
+        "children": [],
+        "offers": [],
+        "presentations": []
       }
     ],
     "accountRelationships": []

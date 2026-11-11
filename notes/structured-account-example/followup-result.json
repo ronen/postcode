@@ -613,7 +613,58 @@
             "overviewScope": "Possible ordering; default single trial"
           }
         ],
-        "children": []
+        "children": [],
+        "offers": [],
+        "presentations": [
+          {
+            "key": "recovery-state",
+            "diagramType": "state-diagram/0",
+            "inputs": {
+              "model": {
+                "account": {
+                  "submittedAccount": "trial"
+                },
+                "contentKey": "recovery"
+              }
+            },
+            "qualifications": [
+              "Optional overview of the qualified scenario in these exact items; does not promise a general recovery model or replace their scope and conditions."
+            ],
+            "evidence": [
+              "E-admission",
+              "E-half-open",
+              "E-outcomes",
+              "E-default"
+            ]
+          },
+          {
+            "key": "concurrent-callers",
+            "diagramType": "sequence-diagram/0",
+            "inputs": {
+              "interaction": {
+                "account": {
+                  "submittedAccount": "trial"
+                },
+                "contentKey": "concurrent-callers"
+              },
+              "stateModel": {
+                "account": {
+                  "submittedAccount": "trial"
+                },
+                "contentKey": "recovery"
+              }
+            },
+            "qualifications": [
+              "Optional overview of the qualified scenario in these exact items; does not promise a general recovery model or replace their scope and conditions."
+            ],
+            "evidence": [
+              "E-admission",
+              "E-half-open",
+              "E-outcomes",
+              "E-default"
+            ]
+          }
+        ]
       },
       {
         "key": "admission-replacement",
@@ -897,11 +948,12 @@
               "E-state",
               "E-admission"
             ]
-          },
+          }
+        ],
+        "children": [],
+        "offers": [
           {
             "key": "concurrent-callers-offer",
-            "form": "investigation-offer/0",
-            "concept": "investigation-guidance",
             "label": "Concurrent callers and trial outcomes",
             "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
             "targets": [
@@ -923,7 +975,7 @@
             ]
           }
         ],
-        "children": []
+        "presentations": []
       }
     ],
     "accountRelationships": [

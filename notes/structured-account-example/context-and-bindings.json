@@ -106,7 +106,7 @@
     "suppliedAccountContext": [
       {
         "account": "ADMISSION-1",
-        "delivery": "complete own content, referents, qualifications, associations and available evidence references; all structured parts included"
+        "delivery": "complete own content and metadata: title, referents, associations, qualifications, evidence, children references, offers and presentations; basis/provenance supplied separately; child content is not implicit"
       }
     ],
     "suppliedEvidence": [
@@ -260,7 +260,7 @@
   "followupResolution": {
     "offer": {
       "account": "ADMISSION-1",
-      "contentKey": "concurrent-callers-offer"
+      "offerKey": "concurrent-callers-offer"
     },
     "method": "qualified-architectural-interpretation",
     "architecturalTargets": [
@@ -283,6 +283,6 @@
       ],
       "meaning": "All outputs retain this request/offer origin and the actual supplied context. Their architectural associations remain about S, P and the new roles. No child is appended to ADMISSION-1."
     },
-    "qualificationDelivery": "The supplied complete ADMISSION-1 own content includes the offer, its item qualifications and the account qualifications. This establishes complete-target delivery; offer selection alone would not."
+    "qualificationDelivery": "Complete ADMISSION-1 own delivery includes interpretation content and all declared own metadata (including offers and explicit empty presentations), applicable qualifications, evidence and provenance context. Offer selection or an offer excerpt alone does not establish completeness."
   }
 }

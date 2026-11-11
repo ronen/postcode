@@ -1276,3 +1276,28 @@ coherent because these questions no longer motivate extra owners or services; re
 work includes precise metadata addressing/qualification/delivery, fixture alignment and
 previously recorded identity/governing choices. Existing fixtures still use the older
 offer-as-content encoding; this documentation pass does not claim protocol implementation.
+
+
+## 2026-11-11 — Complete payload after structure consolidation
+
+At the human's request, the [complete-payload pass](structured-account-example/metadata-payload.md)
+now encodes offers and presentation recommendations as exact-investigram metadata in
+both partitions. Separate content/offer/presentation key namespaces prevent ambiguous
+lookup and replacement fallback. Complete own delivery includes metadata and qualified
+basis/provenance context; excerpts do not confer correction eligibility. Original offers
+remain with their original investigram; replacements supply their own. No guidance child
+or independent lifecycle was needed.
+
+The trial recommendations bind a state model and an interaction through two bounded
+diagram input contracts. The sequence also explicitly binds the recovery model whose
+transitions it references. This makes a previously implicit renderer dependency visible
+without duplicating the model or adding inferred meaning. Both trial partitions reproduce
+the previous diagrams and qualified legends. Composition remains the earlier fixed-entry
+rendering probe; its results have explicit empty metadata arrays.
+
+The shared and new authored checks cover namespaces, qualification/delivery, metadata
+retention and diagram inputs. They do not demonstrate product acceptance, live agent
+behavior, cross-investigram rendering or a general presentation retrieval strategy.
+The structure looks more coherent because each responsibility has a concrete owner;
+address and delivery semantics remain its main complexity. Previously recorded governing,
+identity, support-selection and correction-standing questions remain open.

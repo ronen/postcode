@@ -12,6 +12,11 @@ moving content. No broader behavioral/state-model applicability is established.
 The [statechart with legend](recovery-state.md) and [interaction with legend](concurrent-callers.md)
 use concise authored labels and preserve this variant's own scope and source mapping.
 
+The [metadata payload tour](../metadata-payload.md) applies here too: offers belong to
+their behavioral investigram, TRIAL-1 recommends two diagrams with explicit input
+bindings, and [guidance access](guidance-access.json) keeps excerpts distinct from
+complete own delivery. No guidance child or independent offer lifecycle is added.
+
 ## Files and reading order
 
 1. [First result](first-result.json): substantive root plus independently qualified

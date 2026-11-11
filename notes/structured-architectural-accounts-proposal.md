@@ -45,9 +45,10 @@ The [structure consolidation](structured-architectural-accounts-consolidation.md
 now maps conceptual responsibilities, submitted results, retained records and derived
 information. It records the current guidance-as-metadata direction and the three
 catalogue responsibilities, and walks the existing examples through their ownership
-boundaries. The JSON fixtures still encode offers as content items and use fixed
-diagram entry points; they do not yet validate the revised guidance placement or a
-diagram-recommendation protocol.
+boundaries. The [complete metadata payload](structured-account-example/metadata-payload.md)
+now exercises qualified metadata, exact offer/presentation addresses and explicit
+trial diagram inputs in both partitions. This is an authored fixture protocol;
+product acceptance and a general presentation system remain unimplemented.
 
 ## Current exploratory checkpoint
 
@@ -838,7 +839,7 @@ compares the two promises; the existing concurrent-callers fixture retains the g
 contract and does not require the agent to choose its diagrams in advance.
 
 The [bounded retained-offer example](structured-account-example/offered-followup.md)
-exercises the earlier offer-as-content encoding in both partitions: ADMISSION-1 returns
+exercises investigram-owned offer metadata in both partitions: ADMISSION-1 returns
 an offer, the existing follow-up invokes it, and ADMISSION-2 repeats its key without
 retargeting the original. Access probes distinguish an offer excerpt, complete own
 content, captured answers and fresh correction disclosure. No global offer-discovery
@@ -997,8 +998,8 @@ and its discovery are staged. This proposal adds no verification of library beha
    the descriptions distinguishing S from an execution. ANSWER-1 fixes content and support.
    Other introduction/partition choices remain open in the broader design.
 3. **Offered follow-up.** ADMISSION-1 returns `concurrent-callers-offer`, a qualified
-   offer targeting Half-open S. The JSON fixture encodes it as a content item; the
-   current direction places it in qualified guidance metadata. The illustrative Follow-up investigation Lens
+   offer targeting Half-open S, in qualified guidance metadata addressed by
+   `{account, offerKey}`. The illustrative Follow-up investigation Lens
    takes ADMISSION-1 as invocation subject and the exact offer key as parameter; S
    is its resolved architectural focus. The caller separately selects DEFINITIONS-1
    and complete ADMISSION-1 from ANSWER-1 as context. `informationNeed` is explanatory
@@ -1327,7 +1328,8 @@ existing Presentation/compatibility model, not a parallel rendering architecture
 recommendation is guidance metadata naming a diagram type and bindings to exact items,
 entities or selections permitted by that type. For example, a state-diagram recommendation
 can bind its `model` input to TRIAL-1's `recovery` item; the sequence diagram can bind
-TRIAL-1's `concurrent-callers` item. The diagram contract can accept an entire model
+TRIAL-1's `concurrent-callers` item and explicitly bind `recovery` as its state-model
+input, because transition steps reference it. The diagram contract can accept an entire model
 rather than demand a duplicate node/edge list. Multi-item diagrams require explicit
 input roles and qualified correspondence wherever alignment establishes meaning.
 
@@ -1337,8 +1339,11 @@ invent architectural relationships. A form may have a default presentation, but 
 diagram-capable content is distinct from recommending a diagram. The catalogue split
 is conceptual, not a choice of separate files/registries or a full presentation system.
 The [consolidation example](structured-architectural-accounts-consolidation.md#catalogue-responsibilities)
-shows this flow. Existing generators use fixed fixture entry points rather than
-implementing a general diagram catalogue or recommendation protocol.
+shows this flow. The [metadata payload](structured-account-example/metadata-payload.md)
+now exercises two diagram types, exact own-investigram bindings and qualified metadata
+excerpts; trial generation follows those bindings and preserves the existing diagrams
+and legends. Composition remains the earlier fixed-entry rendering probe. This is not
+a general catalogue, cross-investigram input resolver or product protocol.
 
 **Presentation remit.** Our responsibility is the retained architectural meaning,
 qualifications and exact references, declared intended diagram inputs, and representative
@@ -1707,8 +1712,9 @@ confidence has sometimes exceeded the examples supporting them.
    needed by the example. Specify returned identifying content, local references,
    entity declarations and investigram-relationship metadata. Include governing treatment
    of explicitly identified relationships/patterns as Entities alongside interpreted
-   identity. Encode metadata owned by the exact investigram, with explicit address and
-   qualification/delivery rules; replacements supply their own metadata. Preserve the
+   identity. Review the bounded metadata encoding now exercised by the fixtures:
+   exact ownership, address namespaces and qualification/delivery rules; replacements
+   supply their own metadata. Generalizing these contracts remains design work. Preserve the
    general qualified-investigram result contract, with optional
    specialization for explicit content/presentation promises. Establish attributable
    support and full/partial delivery, without requiring a comprehensive catalogue.

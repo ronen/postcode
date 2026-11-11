@@ -3,20 +3,18 @@
 Exploratory investigram-content example, 2026-11-11. The Follow-up investigation Lens is
 stipulated for this probe; it is not a product API or a design of global discovery,
 ranking or menus. The initial admission investigation remains a fixture precondition.
-The existing behavioral result and diagrams are unchanged.
+The behavioral content and diagrams are unchanged; metadata now carries the offers
+and the trial diagram recommendations.
 
-**Current direction versus fixture:** offers are now proposed as qualified guidance
-metadata, not interpretation-content items. This example preserves the earlier
-`investigation-offer/0` encoding so its verified behavior remains accurately described.
-The [consolidation](../structured-architectural-accounts-consolidation.md) separates
-metadata placement from its settled ownership: an offer belongs to its exact
-investigram, and a replacement supplies its own offers. A later fixture revision
-must encode metadata addresses and delivery rules while preserving that behavior.
+Offers are qualified guidance metadata owned by their exact investigram. The
+[complete-payload tour](metadata-payload.md) shows the current representation, delivery
+and diagram bindings. A replacement supplies its own offers; this does not establish
+offer continuity or migrate old invocations.
 
 ## Return and invoke the offer in the current fixture
 
 Both the [mixed](first-result.json) and [children](children/first-result.json) results
-now place an `investigation-offer/0` content item in ADMISSION-1:
+place an entry in ADMISSION-1's `offers` metadata:
 
 | Field | Value / meaning |
 | --- | --- |
@@ -29,7 +27,7 @@ now place an `investigation-offer/0` content item in ADMISSION-1:
 | Qualification | A question under the investigram's scope; it does not assert a concurrency outcome or certify the investigram's admission coverage. |
 | Support | Existing admission and default-sampling evidence available to the initial investigation. |
 
-In this fixture encoding, the offer is a qualified investigram content item. It does not allocate another entity,
+The offer is qualified metadata, addressed by `{account, offerKey}`. It does not allocate another entity,
 assert that waiting has already been discovered, or modify the existing subject
 associations. The children partition keeps this behavioral offer on ADMISSION-1,
 not the identifying child. Its basis and investigram qualifications apply as usual.
@@ -106,7 +104,7 @@ make four distinctions:
   qualifications, item qualifications and support. This cites ADMISSION-1 but does
   not deliver its complete own content or establish correction-target eligibility.
 - **The actual follow-up:** separately supplies complete ADMISSION-1 own content,
-  including the offer; the children variant also supplies DEFINITIONS-1. This preserves
+  including offers and presentations metadata; the children variant also supplies DEFINITIONS-1. This preserves
   the earlier eligibility and exposure conditions without introducing another source
   investigram merely to host the offer.
 - **Fresh access to the original offer after K:** preserve its exact address and
@@ -116,7 +114,7 @@ make four distinctions:
   Further context remains requestable before investigation. A correction of the
   containing investigram is not a separate finding that this particular offer is unsuitable.
 - **Explicit selection of the replacement offer:** ADMISSION-2 repeats the offer with
-  the same local key and wording, now referencing retained S. This is content of a
+  the same local key and wording, now referencing retained S. This is metadata of a
   different investigram. Matching keys do not silently redirect an older request or
   assert a retained correspondence between offers.
 
@@ -128,7 +126,7 @@ patched or reparented.
 
 ## What this checks
 
-The existing checker validates offer form, support, qualifications, subject reference
+The existing checker validates offer metadata, support, qualifications, subject reference
 resolution and the stipulated method. It resolves both follow-up invocations and
 checks excerpt preservation, provenance, complete-target distinctions and exact versus
 replacement access. Ten additional malformed offer submissions/requests are rejected,

@@ -2,10 +2,12 @@
 No product renderer or semantic analysis. Run with --write to update authored artifacts.
 """
 import json
+import runpy
 from pathlib import Path
 import sys
 
 BASE = Path(__file__).resolve().parent
+guidance = runpy.run_path(str(BASE / 'guidance.py'))
 
 
 def read(path):
@@ -239,33 +241,40 @@ def render_composition(document, write=False):
     emit(directory / 'diagram-traceability.json', json.dumps(trace, indent=2) + '\n', write)
 
 
-def render_all(write=False):
-    document = read(BASE / 'followup-result.json')
-    ledger = read(BASE / 'context-and-bindings.json')
-    a = document['result']['accounts'][0]
-    items = {i['key']: (i, f'/result/accounts/0/content/{n}') for n, i in enumerate(a['content'])}
-    state, state_pointer = items['recovery']
-    interaction, interaction_pointer = items['concurrent-callers']
-    trace = render_state(a, state, ledger, state_pointer, BASE, write)
-    trace += render_sequence(a, interaction, ledger, interaction_pointer, BASE, 'concurrent-callers', 'TRIAL-1', write, items)
+def render_trial_from_recommendations(directory, write=False):
+    document = read(directory / 'followup-result.json')
+    ledger = read(directory / 'context-and-bindings.json')
+    candidates = [(n, a) for n, a in enumerate(document['result']['accounts']) if a['presentations']]
+    assert len(candidates) == 1, 'bounded fixture expects one diagram-recommending investigram'
+    index, owner = candidates[0]
+    owner_id = ledger['followupAcceptance']['accountIds'][owner['key']]
+    trace = []
+    for plan in guidance['presentation_plans'](owner):
+        rec = plan['recommendation']
+        inputs = {role: (item, f'/result/accounts/{index}/content/{n}') for role, (item, n) in plan['inputs'].items()}
+        if rec['diagramType'] == 'state-diagram/0':
+            model, pointer = inputs['model']
+            trace += render_state(owner, model, ledger, pointer, directory, write)
+        elif rec['diagramType'] == 'sequence-diagram/0':
+            interaction, pointer = inputs['interaction']
+            models = {item['key']: (item, model_pointer) for role, (item, model_pointer) in inputs.items() if role == 'stateModel'}
+            trace += render_sequence(owner, interaction, ledger, pointer, directory, 'concurrent-callers', owner_id, write, models)
+        else:
+            raise AssertionError('No bounded generator for declared diagram type')
+    if directory == BASE / 'children':
+        for entry in trace:
+            entry['diagram'] = '../' + entry['diagram']
     check_pointers(document, trace)
-    emit(BASE / 'diagram-traceability.json', json.dumps(trace, indent=2) + '\n', write)
-    # Same behavioral payload, different exact source account in the children variant.
-    child_document = read(BASE / 'children/followup-result.json')
-    child_index, child = next((n, a) for n, a in enumerate(child_document['result']['accounts']) if a['key'] == 'trial')
-    assert child['qualifications'] == a['qualifications']
-    child_ledger = read(BASE / 'children/context-and-bindings.json')
-    child_items = {i['key']: (i, f'/result/accounts/{child_index}/content/{n}') for n, i in enumerate(child['content'])}
-    for key in ['recovery', 'concurrent-callers']:
-        assert items[key][0] == child_items[key][0]
-    child_trace = render_state(child, child_items['recovery'][0], child_ledger, child_items['recovery'][1], BASE / 'children', write)
-    child_trace += render_sequence(child, child_items['concurrent-callers'][0], child_ledger, child_items['concurrent-callers'][1], BASE / 'children', 'concurrent-callers', 'TRIAL-1', write, child_items)
-    for entry in child_trace:
-        entry['diagram'] = '../' + entry['diagram']
-    check_pointers(child_document, child_trace)
-    emit(BASE / 'children/diagram-traceability.json', json.dumps(child_trace, indent=2) + '\n', write)
+    emit(directory / 'diagram-traceability.json', json.dumps(trace, indent=2) + '\n', write)
+
+
+def render_all(write=False):
+    # Trial input selection follows owned metadata and the bounded catalogue.
+    render_trial_from_recommendations(BASE, write)
+    render_trial_from_recommendations(BASE / 'children', write)
+    # Composition remains the earlier fixed-entry probe; it has no recommendation metadata.
     render_composition(read(BASE / 'composition/composition-result.json'), write)
-    print('Four compact diagram inputs, qualified legends and both partition mappings match retained content.')
+    print('Trial recommendation inputs produce unchanged diagrams/legends in both partitions; fixed-entry composition diagrams also match.')
 
 
 if __name__ == '__main__':

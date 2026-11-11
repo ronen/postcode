@@ -12,21 +12,20 @@ and `accountRelationships` encode investigrams or their relationships/context. T
 provisional wire spellings are unchanged in this prose pass; they do not imply an
 Account type. Governing definitions and product APIs are unchanged.
 
-**Representation checkpoint:** this document describes the executable authored
-fixtures, which still put offers in `investigation-offer/0` content items. The latest
-[structure consolidation](../structured-architectural-accounts-consolidation.md)
-recommends offers and presentation recommendations as qualified guidance metadata,
-and a distinct diagram-type input catalogue. Metadata ownership is settled: each
-investigram owns its metadata and a replacement supplies its own. The metadata
-representation and address/delivery rules are not yet encoded or checked here. Moving information to
-metadata does not waive qualification, exposure or complete-target delivery rules;
-the required delivery envelope must be specified when changing the protocol.
+**Representation checkpoint:** the authored fixtures now encode offers and presentation
+recommendations as qualified investigram-owned metadata. The [complete-payload tour](metadata-payload.md)
+traces exact addresses, delivery and replacement through both partitions. A bounded
+[diagram-type catalogue](diagram-contracts.json) supplies input contracts for the trial
+renderings. These are exploratory executable examples, not implemented application
+protocols. Moving information to metadata does not waive qualification, exposure or
+complete-target delivery rules.
 
 ## Shared envelope and addressing
 
 Return one root investigram, its accompanying replacement investigrams if any, and qualified
 relationships between investigrams. Each investigram supplies its own referents,
-associations, qualifications, evidence and content. Each content item has a local
+associations, qualifications, evidence, content, `offers` and `presentations` (explicit
+empty arrays when absent in this fixture). Each content item has a local
 `key`, a `concept`, a `form`, and the fields required by that form. Content keys are
 unique within their exact investigram; nested state keys are local to their state model,
 and step keys are unique within their interaction. Identical keys across investigrams do
@@ -202,23 +201,22 @@ now exercises ownership, independent qualification and support selection in auth
 fixtures. The mixed-content fixture remains a comparison; neither is application input.
 
 <a id="retained-investigation-offer"></a>
-## Retained investigation offer — earlier encoding exercised by fixtures
+## Retained investigation offer metadata
 
-The [offered follow-up](offered-followup.md) adds `investigation-offer/0`: a keyed
-content item with label, purpose, architectural targets and their roles, a supported
-method reference, declared additional parameters, qualifications and evidence.
+The [offered follow-up](offered-followup.md) puts keyed entries in `offers`, outside
+Interpretation content. Each has label, purpose, architectural targets and their roles,
+a supported method reference, declared additional parameters, qualifications and evidence.
 This slice declares one focus target and no additional parameters. It is deliberately
-not a general schema or an implemented Lens catalogue. `investigation-guidance` is
-an illustrative content classification, not a claim about the program's architecture.
+not a general schema or an implemented Lens catalogue. Offers have no architectural
+content `form` or `concept` tag.
 
-The offer key uses the existing investigram-local content-key namespace. Acceptance
-resolves introduced entities as elsewhere in the submission. Invocation identifies
-the exact retained investigram and offer key, with only declared parameter values; names
-and purpose text are not lookup keys. The sample stipulates one supported method:
-an agent cannot create another capability merely by naming it. The architectural
+The retained address is `{account, offerKey}`, distinct from `{account, contentKey}`.
+Acceptance resolves introduced entities as elsewhere in the submission. Invocation
+identifies the exact retained investigram and offer key, with only declared parameter
+values; names and purpose text are not lookup keys. The sample stipulates one supported
+method: an agent cannot create another capability merely by naming it. The architectural
 focus comes from the retained offer, independently of the investigram playing the request
-subject role. Extra offers and the application discovery mechanism are outside this
-probe; its purpose is to exercise qualified returned content and exact reference use.
+subject role. Discovery remains outside this probe.
 
 The prospective result contract for this offer is the ordinary qualified investigram
 contract. It does not require `interaction/0` or `state-behavior/0`; those are useful
@@ -238,8 +236,10 @@ request acceptance is not implemented by the existing checker.
 
 An offer remains subject to its containing investigram's basis, qualifications, whole-
 investigram correction and exposure rules. Delivering the substantive offer cites that
-investigram, but is not automatically complete-target delivery. Complete own-content
-delivery includes retained offers as well as other content forms. Knowing the offer's
+investigram, but is not automatically complete-target delivery. Complete own delivery
+includes retained offers and presentation recommendations as well as content, referents,
+associations, qualifications, evidence and child links, with basis and provenance context.
+Child links do not imply delivery of descendants or other referenced items. Knowing the offer's
 source does not establish a human navigation origin or prove all source content was
 supplied. Preserve actual deliveries and exact offer provenance separately.
 
@@ -250,11 +250,42 @@ and distinguish partial from complete correction-context delivery. Exact capture
 answers preserve their original selection. Fresh inspection does not independently
 establish whether an offer is affected by its containing investigram's correction.
 
+## Presentation recommendation metadata and delivery
+
+`presentations` entries contain `key`, `diagramType`, named `inputs`, `qualifications`
+and `evidence`. Their retained address is `{account, presentationKey}`. Content,
+offer and presentation keys have distinct namespaces; identical spelling does not
+permit fallback across namespaces or replacement investigrams.
+
+The bounded [diagram contracts](diagram-contracts.json) declare input forms and known
+mappings. `state-diagram/0` takes a `model` of form `state-behavior/0`.
+`sequence-diagram/0` takes an `interaction` of form `interaction/0` and, when its steps
+name state transitions, an explicitly bound `stateModel`. The trial example binds
+both items from TRIAL-1. No renderer search for an additional model, inferred state
+alignment, or duplicate node/edge list is required. Only own-investigram model bindings
+are exercised; cross-investigram inputs and a general retrieval policy are not added.
+
+Each metadata entry carries its owner's applicable qualifications, basis and provenance
+when delivered, plus its own narrower qualifications and evidence. An excerpt preserves
+the exact entry and address. Delivering it substantively to an investigator cites the
+owner; human browsing alone does not. Delivering a recommendation does not deliver
+its referenced models. It cannot establish complete-target eligibility. Complete own
+delivery includes all own parts, even empty metadata collections, together with basis
+and provenance context. Existing correction/revision disclosure rules still apply;
+a completeness check alone does not establish every correction precondition.
+
+[Guidance access](guidance-access.json) and the [children counterpart](children/guidance-access.json)
+record these deliveries. The [checker](check-guidance.py) rejects omitted or altered
+own metadata, missing/mismatched basis or provenance, ambiguous addresses and invalid
+diagram bindings. The supported rendering mappings preserve the existing qualified
+legends. The current recommendations introduce no additional architectural limitations
+beyond those in their bound items and owning investigram. Optional promises, rendering
+failure handling and general presentation selection remain outside this fixture.
+
 ## Forms in this example
 
 | Form | Information to supply | What it does not imply |
 | --- | --- | --- |
-| `investigation-offer/0` | Exact local key, label/purpose, qualified targets, supported method and declared parameters, with evidence | A new executable capability, complete source-investigram delivery, or automatic retargeting to a replacement |
 | `entity-description/0` | Entity reference, name, identifying description, classification, relevant context (`relativeTo`), evidence; explicit introduction flag when introducing a new entity | Unique discovery, canonical definition, or independent correction unit |
 | `prose/0` | Keyed explanatory text under the appropriate concept, with support and qualifications | Missing graph or interaction structure can be invented from the text |
 | `admission-cases/0` | Explicit coverage claim; optional form-local roles and their scope; keyed cases with state, condition, outcome, optional resulting state/relationship, and evidence; separately qualified scenario illustrations | A complete state machine, universal interface model, or general claim bound to an illustrative subject |

@@ -17,6 +17,7 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 - Complete illustrative account results: [children variant](structured-account-example/children/README.md) and [mixed-account comparison](structured-account-example/README.md), with qualified correction metadata, retained selections, shared roles and diagrams generated from structured content.
 - Composition design probe: [two wrapping orders](structured-account-example/composition/README.md), with separate component accounts, local scenario roles and relationships, explicit resource/state snapshots, and generated sequence diagrams.
 - Diagram readability examples: [compact overviews and keyed legends](structured-account-example/diagrams.md), with concise authored labels and full qualified meaning kept alongside.
+- Complete metadata payload: [guided tour](structured-account-example/metadata-payload.md) exercises investigram-owned offers and presentation recommendations, exact addresses, qualified delivery and explicit trial diagram inputs.
 - Retained investigation offer: [bounded admission-to-trial invocation](structured-account-example/offered-followup.md), with exact offer references, qualified delivery and replacement-access probes in both partitions.
 - [Upcoming work](upcoming-work.md)
 - [Candidate capabilities](candidate-capabilities.md)

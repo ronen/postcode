@@ -46,7 +46,9 @@
           {
             "submittedAccount": "bulkhead-admission"
           }
-        ]
+        ],
+        "offers": [],
+        "presentations": []
       },
       {
         "key": "bulkhead-definition",
@@ -89,7 +91,9 @@
             ]
           }
         ],
-        "children": []
+        "children": [],
+        "offers": [],
+        "presentations": []
       },
       {
         "key": "bulkhead-admission",
@@ -126,7 +130,9 @@
             ]
           }
         ],
-        "children": []
+        "children": [],
+        "offers": [],
+        "presentations": []
       }
     ],
     "accountRelationships": []

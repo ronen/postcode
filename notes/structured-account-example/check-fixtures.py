@@ -3,9 +3,11 @@ Run with Python 3 from any directory. No dependencies and no fixture mutations.
 """
 import copy
 import json
+import runpy
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
+guidance = runpy.run_path(str(BASE / 'guidance.py'))
 # Stipulated capabilities for these authored fixtures, not a product registry.
 OFFER_METHODS = {'qualified-architectural-interpretation'}
 
@@ -95,6 +97,7 @@ def check_result(document, bindings, known_entities, earlier, supplied, evidence
                 references(child, roles)
     references(result)
     for a in accounts.values():
+        guidance['presentation_plans'](a)
         own_items = {i['key']: i for i in a['content']}
         for item in own_items.values():
             roles = {r['key'] for r in item.get('roles', [])}
@@ -117,12 +120,6 @@ def check_result(document, bindings, known_entities, earlier, supplied, evidence
                 if 'case' in illustration:
                     assert item['form'] == 'admission-cases/0'
                     assert illustration['case'] in {c['key'] for c in item['cases']}
-            if item['form'] == 'investigation-offer/0':
-                assert item['label'] and item['purpose'] and item['qualifications'] and item['evidence'], 'unqualified/incomplete offer'
-                assert item['method'] in OFFER_METHODS, 'unsupported offer method'
-                assert item['parameterDefinitions'] == [], 'parameterized offers outside this probe'
-                assert len(item['targets']) == 1 and item['targets'][0]['role'] == 'focus'
-                assert set(item['targets'][0]['subject']) in [{'entity'}, {'introducedEntity'}]
             if item['form'] == 'state-behavior/0':
                 states = {s['key'] for s in item['states']}
                 assert len(states) == len(item['states'])
@@ -158,8 +155,9 @@ def resolve_offer_request(request, accounts, entity_bindings):
     assert set(params) == {'offerKey', 'values'} and params['values'] == {}, 'undeclared parameter values'
     origin = request['subject']['account']
     account = accounts[origin]  # No fallback to replacements, labels or matching keys elsewhere.
-    matches = [i for i in account['content'] if i['key'] == params['offerKey']]
-    assert len(matches) == 1 and matches[0]['form'] == 'investigation-offer/0', 'not an exact offer'
+    matches = [i for i in account['offers'] if i['key'] == params['offerKey']]
+    assert len(matches) == 1, 'not an exact offer'
+    guidance['validate_offer'](matches[0])
     offer = matches[0]
     assert offer['method'] in OFFER_METHODS and offer['parameterDefinitions'] == []
     targets = copy.deepcopy(offer['targets'])
@@ -167,7 +165,7 @@ def resolve_offer_request(request, accounts, entity_bindings):
         ref = target['subject']
         if 'introducedEntity' in ref:
             target['subject'] = {'entity': entity_bindings[origin][ref['introducedEntity']]}
-    return {'offer': {'account': origin, 'contentKey': offer['key']}, 'method': offer['method'],
+    return {'offer': {'account': origin, 'offerKey': offer['key']}, 'method': offer['method'],
             'architecturalTargets': targets, 'parameterValues': params['values']}
 
 
@@ -184,7 +182,7 @@ def check_offer_chain(directory, accounts):
     expected = ledger['followupResolution']
     assert all(expected[k] == v for k, v in resolved.items())
     source = accounts[resolved['offer']['account']]
-    offer = next(i for i in source['content'] if i['key'] == resolved['offer']['contentKey'])
+    offer = next(i for i in source['offers'] if i['key'] == resolved['offer']['offerKey'])
     assert request['informationNeed'] == offer['purpose']  # Documentary wording, not resolver input.
     assert ledger['applicationAssumptions']['operation'] == request['operation']
     assert set(ledger['applicationAssumptions']['supportedMethods']) == OFFER_METHODS
@@ -197,12 +195,12 @@ def check_offer_chain(directory, accounts):
     for key in ['offerOnlyBeforeCorrection', 'freshOriginalOfferAfterCorrection', 'explicitReplacementOffer']:
         delivery = access[key]['delivery']; address = delivery['address']
         original = accounts[address['account']]
-        content = copy.deepcopy(next(i for i in original['content'] if i['key'] == address['contentKey']))
+        content = copy.deepcopy(next(i for i in original['offers'] if i['key'] == address['offerKey']))
         for target in content['targets']:
             ref = target['subject']
             if 'introducedEntity' in ref:
                 target['subject'] = {'entity': bindings[address['account']][ref['introducedEntity']]}
-        assert delivery['content'] == content, 'offer excerpt lost or changed content'
+        assert delivery['offer'] == content, 'offer excerpt lost or changed content'
         assert delivery['accountQualifications'] == original['qualifications'], 'offer lost account scope'
         assert delivery['basis'] == ledger['basis']['id']
         assert access[key]['completeTargets'] == [], 'offer alone is not complete delivery'
@@ -221,7 +219,7 @@ def check_offer_chain(directory, accounts):
         assert fresh['revisionNotice'][field] == ledger['followupAcceptance']['accountIds'][correction[field]['submittedAccount']]
     replacement = fresh['replacementOfferReference']
     assert replacement == access['explicitReplacementOffer']['delivery']['address']
-    assert replacement['contentKey'] == resolved['offer']['contentKey'] and replacement['account'] != resolved['offer']['account']
+    assert replacement['offerKey'] == resolved['offer']['offerKey'] and replacement['account'] != resolved['offer']['account']
     explicit = copy.deepcopy(request); explicit['subject'] = {'account': replacement['account']}
     assert resolve_offer_request(explicit, accounts, bindings)['offer'] == replacement
     complete = {x['account'] for x in request['suppliedAccountContext'] if isinstance(x, dict)}
@@ -332,7 +330,7 @@ offer_request_mutations = {
     'unknown operation': lambda r, a: r.update(operation='arbitrary-question'),
     'undeclared user parameters': lambda r, a: r['parameters'].update(values={'question': 'another question'}),
     'missing original with same-key replacement': lambda r, a: a.pop('ADMISSION-1'),
-    'unsupported method': lambda r, a: a['ADMISSION-1']['content'][-1].update(method='undeclared-method'),
+    'unsupported method': lambda r, a: a['ADMISSION-1']['offers'][0].update(method='undeclared-method'),
 }
 for name, mutate in offer_request_mutations.items():
     invalid, registry = copy.deepcopy(offer_request), copy.deepcopy(child_accounts)
@@ -345,7 +343,7 @@ for name, mutate in offer_request_mutations.items():
 for name, change in [('missing offer qualification', {'qualifications': []}),
                      ('undeclared offer target', {'targets': [{'role': 'focus', 'subject': {'introducedEntity': 'absent'}}]})]:
     invalid = copy.deepcopy(first)
-    next(a for a in invalid['result']['accounts'] if a['key'] == 'admission')['content'][-1].update(change)
+    next(a for a in invalid['result']['accounts'] if a['key'] == 'admission')['offers'][0].update(change)
     try:
         check_result(invalid, *args)
     except (AssertionError, KeyError):

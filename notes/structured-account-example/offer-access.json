@@ -1,10 +1,10 @@
 {
-  "status": "Authored access probes, not additional executed investigations. Entity references in delivered offers are resolved on acceptance.",
+  "status": "Authored guidance-metadata access probes, not live investigations. Entity references resolve on acceptance; offerKey and contentKey are different address namespaces.",
   "exactAnswer": {
     "answer": "ANSWER-1",
     "offer": {
       "account": "ADMISSION-1",
-      "contentKey": "concurrent-callers-offer"
+      "offerKey": "concurrent-callers-offer"
     },
     "capturedRevisionContext": "Before K; the original account and offer remain in this exact human-facing answer. Investigator retrieval of historical content still requires applicable current correction disclosure."
   },
@@ -12,7 +12,7 @@
     "delivery": {
       "address": {
         "account": "ADMISSION-1",
-        "contentKey": "concurrent-callers-offer"
+        "offerKey": "concurrent-callers-offer"
       },
       "basis": "cockatiel-pinned",
       "accountQualifications": [
@@ -22,10 +22,8 @@
         "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
         "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
       ],
-      "content": {
+      "offer": {
         "key": "concurrent-callers-offer",
-        "form": "investigation-offer/0",
-        "concept": "investigation-guidance",
         "label": "Concurrent callers and trial outcomes",
         "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
         "targets": [
@@ -59,13 +57,13 @@
     "completeTargets": [
       "ADMISSION-1"
     ],
-    "meaning": "The existing request supplies complete own content separately; eligibility does not come from the operation subject or offer key."
+    "meaning": "Complete own delivery includes all declared own metadata even though offers are no longer interpretation content. Eligibility is not granted by offer selection or an excerpt."
   },
   "freshOriginalOfferAfterCorrection": {
     "delivery": {
       "address": {
         "account": "ADMISSION-1",
-        "contentKey": "concurrent-callers-offer"
+        "offerKey": "concurrent-callers-offer"
       },
       "basis": "cockatiel-pinned",
       "accountQualifications": [
@@ -75,10 +73,8 @@
         "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
         "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
       ],
-      "content": {
+      "offer": {
         "key": "concurrent-callers-offer",
-        "form": "investigation-offer/0",
-        "concept": "investigation-guidance",
         "label": "Concurrent callers and trial outcomes",
         "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
         "targets": [
@@ -124,7 +120,7 @@
     },
     "replacementOfferReference": {
       "account": "ADMISSION-2",
-      "contentKey": "concurrent-callers-offer"
+      "offerKey": "concurrent-callers-offer"
     },
     "automaticRetarget": false,
     "citations": [
@@ -142,7 +138,7 @@
     "delivery": {
       "address": {
         "account": "ADMISSION-2",
-        "contentKey": "concurrent-callers-offer"
+        "offerKey": "concurrent-callers-offer"
       },
       "basis": "cockatiel-pinned",
       "accountQualifications": [
@@ -152,10 +148,8 @@
         "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
         "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
       ],
-      "content": {
+      "offer": {
         "key": "concurrent-callers-offer",
-        "form": "investigation-offer/0",
-        "concept": "investigation-guidance",
         "label": "Concurrent callers and trial outcomes",
         "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
         "targets": [

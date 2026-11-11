@@ -14,8 +14,9 @@ The [structure consolidation](structured-architectural-accounts-consolidation.md
 now maps this walkthrough to the full submitted result and retained investigram.
 Content items belong inside Interpretation content; children are separate investigrams.
 Offers and presentation recommendations are proposed as qualified guidance metadata.
-The linked JSON still exercises offers as content items and fixed diagram entry points,
-not that new metadata/recommendation representation.
+The [complete-payload pass](structured-account-example/metadata-payload.md) now exercises
+that representation in the linked JSON, with explicit trial diagram inputs and
+qualified metadata access. It remains an authored example, not a product protocol.
 
 **Concrete payload comparison:** the newer [complete illustrative results](structured-account-example/README.md)
 include proposed JSON submissions, static source checking and rendered diagrams.

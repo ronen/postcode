@@ -1,10 +1,10 @@
 # Admission → trial → correction: complete illustrative results
 
-The [structure consolidation](../structured-architectural-accounts-consolidation.md)
-records a newer recommendation for offers and presentation recommendations as guidance
-metadata and for explicit diagram-type input bindings. These fixtures still test the
-earlier offer-as-content encoding and fixed diagram generation; their checks do not
-claim those new mechanisms are implemented.
+The [complete-payload tour](metadata-payload.md) exercises the
+[structure consolidation](../structured-architectural-accounts-consolidation.md):
+offers and presentation recommendations are investigram-owned metadata, with distinct
+address namespaces, qualified delivery and explicit trial diagram input bindings.
+These are authored fixture checks, not an implemented product protocol.
 
 The current entity model uses `{introducedEntity: localKey}` for new architectural
 entities and `{entity: ID}` for existing ones. PostCode resolves local keys to global
@@ -82,13 +82,13 @@ mistake; the claim that they cover admission in this scope is.** Waiting during 
 occupied trial is missing. A merely partial table without that coverage claim might
 warrant an addition rather than a correction.
 
-In this earlier fixture encoding all content items, including the retained investigation offer, belong to one investigram. Their local keys make
-them addressable within content; they do not make them independently correctable
-investigrams. No child investigrams are returned.
+All content items and the offer metadata belong to one investigram. Content and offer
+keys occupy separate local namespaces; neither creates an independently correctable
+investigram. No child investigrams are returned.
 
 ## 2. Select Half-open S and investigate concurrent callers
 
-ADMISSION-1 now returns the qualified `concurrent-callers-offer` item. The illustrative
+ADMISSION-1 returns qualified `concurrent-callers-offer` metadata. The illustrative
 Follow-up investigation request selects ADMISSION-1 and that exact key; the offer
 resolves its architectural focus to S. The prose `informationNeed` documents its
 meaning, not user input. See the [bounded offer chain](offered-followup.md) and
