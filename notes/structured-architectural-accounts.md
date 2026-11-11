@@ -1097,3 +1097,17 @@ independent of specialized behavior. The human explicitly defers icons, automati
 concept-specific operations and other special treatments as future features enabled
 by this structure. No comprehensive ontology, concept hierarchy inference or adoption
 of these mechanisms into the first implementation is implied.
+
+## 2026-11-11 — Global entry and contextual Explain
+
+Retain Overview and Explain as distinct broadly available investigation purposes:
+Overview orients; Explain clarifies the subject, especially something selected within
+an existing explanation. Contextual (“impromptu”) subjects retain their selected
+occurrence and “as used here” meaning rather than acquiring unqualified identity.
+Existing structural queries such as module listings also yield subjects for either
+operation, preserving mechanical guarantees. Find available investigations and
+Follow-up investigation complete the proposed global starting set; applicability
+and parameters remain to be specified. This provides entry before any offers exist
+without turning every architectural question into a global menu entry. No fixture
+has yet been converted into a complete global-entry → returned-offer → invocation
+chain; that remains the concrete request-path work identified by the audit.

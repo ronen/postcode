@@ -592,6 +592,35 @@ to a qualified or initially unknown subject, the support it requires, and how an
 offer is explained. Classification may inform this without becoming established
 fact. Deferring compiler capabilities does not by itself settle interpretive offers.
 
+<a id="global-investigation-entry"></a>
+**Agreed exploratory direction — global entry investigations.** Retain both Overview
+and Explain in a small globally defined set. Global means the operation is known to
+PostCode before an investigator proposes an offer; it does not guarantee applicability
+to every subject or require every operation to be displayed everywhere. Supported
+subject/basis/method constraints still apply. The proposed purposes are:
+
+| Investigation | Information need |
+| --- | --- |
+| Overview | Broad architectural orientation: what the selected subject is, its responsibilities, important concepts and relationships, and ways to investigate further. |
+| Explain | Clarify the selected subject, including its meaning and role in supplied context. Particularly useful for something selected within an explanation, but not restricted to that route. |
+| Find available investigations | Investigate applicable questions for selected subject(s) and context, returning offers without requiring an existing offer or human-authored question. |
+| Follow-up investigation | Execute an exact retained offer, with its declared selections/parameters, as described below. |
+
+Overview versus Explain is a distinction of information need, not simply long versus
+short output. Exact applicability and parameter contracts still need design; these
+names do not imply the current implementation already supports all these routes.
+
+Existing structural queries/Lenses, including module listings, provide possible
+subjects for Overview or Explain. They keep their mechanical methods and guarantees;
+subject discovery need not itself be an interpretive investigation. Another entry
+route selects a term, passage or component within an existing explanation and uses
+its contextual designation for Explain. The working term for these “impromptu
+subjects” is contextual subjects/designations: preserve the exact occurrence and
+available origin, with an initial meaning such as “as used in this account.” Selection
+does not establish an independent global identity or settle the referent's semantics.
+The earlier contextual-introduction rules still govern retention and later promotion.
+Neither entry route requires the human to formulate an architectural prose query.
+
 **Agreed exploratory direction — selectable “find out more” offers.** The human
 should select an available investigation rather than formulate its question in prose.
 An investigator may return applicable offers with its result or through a generic
