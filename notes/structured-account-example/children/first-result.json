@@ -1,0 +1,290 @@
+{
+  "illustration": "Children-partition variant in an independent hypothetical Session. Authored proposed payload, not supported application input; ADMISSION-1 still contains the staged coverage error.",
+  "result": {
+    "rootAccount": {
+      "submittedAccount": "introduction"
+    },
+    "accounts": [
+      {
+        "key": "introduction",
+        "title": "Circuit breaker state categories and execution admission",
+        "referents": [
+          {
+            "subject": "P"
+          },
+          {
+            "introducedSubject": "closed"
+          },
+          {
+            "introducedSubject": "open"
+          },
+          {
+            "introducedSubject": "half-open"
+          }
+        ],
+        "associations": [
+          {
+            "role": "describes",
+            "subject": {
+              "subject": "P"
+            }
+          }
+        ],
+        "qualifications": [
+          "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+          "Default one-call recovery sampling with zero permitted counted failures.",
+          "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+          "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+          "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+        ],
+        "evidence": [
+          "E-state",
+          "E-admission",
+          "E-default"
+        ],
+        "content": [
+          {
+            "key": "orientation",
+            "form": "prose/0",
+            "concept": "interface",
+            "text": "The policy governs admission of application-supplied work. Stored state categories and the progress of an individual execution are distinct. The identifying descriptions and admission account below address these two aspects under the stated scope.",
+            "evidence": [
+              "E-state",
+              "E-admission"
+            ]
+          }
+        ],
+        "children": [
+          {
+            "submittedAccount": "state-definitions"
+          },
+          {
+            "submittedAccount": "admission"
+          }
+        ]
+      },
+      {
+        "key": "state-definitions",
+        "title": "State categories used by the admission explanation",
+        "referents": [
+          {
+            "subject": "P"
+          },
+          {
+            "introducedSubject": "closed"
+          },
+          {
+            "introducedSubject": "open"
+          },
+          {
+            "introducedSubject": "half-open"
+          }
+        ],
+        "associations": [
+          {
+            "role": "identifies",
+            "subject": {
+              "introducedSubject": "closed"
+            }
+          },
+          {
+            "role": "identifies",
+            "subject": {
+              "introducedSubject": "open"
+            }
+          },
+          {
+            "role": "identifies",
+            "subject": {
+              "introducedSubject": "half-open"
+            }
+          }
+        ],
+        "qualifications": [
+          "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+          "Default one-call recovery sampling with zero permitted counted failures.",
+          "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+          "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+          "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+        ],
+        "evidence": [
+          "E-state",
+          "E-admission",
+          "E-default"
+        ],
+        "content": [
+          {
+            "key": "closed-description",
+            "form": "subject-description/0",
+            "concept": "architectural-identification",
+            "subject": {
+              "introducedSubject": "closed"
+            },
+            "name": "Closed",
+            "description": "A state category of the Circuit breaker policy kind in which ordinary supplied work is admitted.",
+            "classification": "state-category",
+            "relativeTo": {
+              "subject": "P"
+            },
+            "evidence": [
+              "E-state",
+              "E-admission"
+            ],
+            "introduceRetainedSubject": true
+          },
+          {
+            "key": "open-description",
+            "form": "subject-description/0",
+            "concept": "architectural-identification",
+            "subject": {
+              "introducedSubject": "open"
+            },
+            "name": "Open",
+            "description": "A state category withholding execution until the configured recovery delay makes an execution eligible to initiate a trial. Elapsed time alone does not change the stored state.",
+            "classification": "state-category",
+            "relativeTo": {
+              "subject": "P"
+            },
+            "evidence": [
+              "E-state",
+              "E-admission"
+            ],
+            "introduceRetainedSubject": true
+          },
+          {
+            "key": "half-open-description",
+            "form": "subject-description/0",
+            "concept": "architectural-identification",
+            "subject": {
+              "introducedSubject": "half-open"
+            },
+            "name": "Half-open",
+            "description": "A recovery state category of the Circuit breaker policy kind. Sampled work contributes to the decision to close or reopen the breaker; the category is not an individual execution or evidence of application health.",
+            "classification": "state-category",
+            "relativeTo": {
+              "subject": "P"
+            },
+            "evidence": [
+              "E-state",
+              "E-default"
+            ],
+            "introduceRetainedSubject": true
+          }
+        ],
+        "children": []
+      },
+      {
+        "key": "admission",
+        "title": "Circuit breaker admission and state inspection",
+        "referents": [
+          {
+            "subject": "P"
+          },
+          {
+            "introducedSubject": "closed"
+          },
+          {
+            "introducedSubject": "open"
+          },
+          {
+            "introducedSubject": "half-open"
+          }
+        ],
+        "associations": [
+          {
+            "role": "describes",
+            "subject": {
+              "subject": "P"
+            }
+          }
+        ],
+        "qualifications": [
+          "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+          "Default one-call recovery sampling with zero permitted counted failures.",
+          "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+          "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+          "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+        ],
+        "evidence": [
+          "E-state",
+          "E-admission",
+          "E-default"
+        ],
+        "content": [
+          {
+            "key": "orientation",
+            "form": "prose/0",
+            "concept": "interface",
+            "text": "The application supplies work. The breaker controls admission and records outcomes according to its failure policy. State categories describe the policy, not the progress of a particular caller.",
+            "evidence": [
+              "E-admission",
+              "E-state"
+            ]
+          },
+          {
+            "key": "admission-cases",
+            "form": "admission-cases/0",
+            "concept": "interface",
+            "coverage": "The cases below cover the admission outcomes for the stated recovery scope.",
+            "cases": [
+              {
+                "key": "ordinary",
+                "when": {
+                  "state": {
+                    "introducedSubject": "closed"
+                  },
+                  "condition": "An execution is requested."
+                },
+                "outcome": "Run the application-supplied operation as ordinary work.",
+                "evidence": [
+                  "E-admission"
+                ]
+              },
+              {
+                "key": "trial",
+                "when": {
+                  "state": {
+                    "introducedSubject": "open"
+                  },
+                  "condition": "An execution is requested after the recovery delay."
+                },
+                "outcome": "Enter Half-open and start recovery-trial work.",
+                "resultingState": {
+                  "introducedSubject": "half-open"
+                },
+                "evidence": [
+                  "E-admission"
+                ]
+              },
+              {
+                "key": "refused",
+                "when": {
+                  "state": {
+                    "introducedSubject": "open"
+                  },
+                  "condition": "An execution is requested before the recovery delay has elapsed."
+                },
+                "outcome": "Refuse execution without running the supplied operation.",
+                "evidence": [
+                  "E-admission"
+                ]
+              }
+            ]
+          },
+          {
+            "key": "inspection",
+            "form": "prose/0",
+            "concept": "interface",
+            "text": "State inspection reports the stored state. It neither reserves trial capacity nor initiates work; a later execution can encounter different conditions.",
+            "evidence": [
+              "E-state",
+              "E-admission"
+            ]
+          }
+        ],
+        "children": []
+      }
+    ],
+    "accountRelationships": []
+  }
+}

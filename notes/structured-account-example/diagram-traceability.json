@@ -127,7 +127,10 @@
     "evidence": [
       "E-half-open"
     ],
-    "causedBy": []
+    "causedBy": [
+      "caller-request",
+      "enter"
+    ]
   },
   {
     "diagram": "concurrent-callers.mmd",
@@ -249,6 +252,10 @@
       "/result/accounts/0/evidence",
       "/result/accounts/0/content/6/coverage",
       "/result/accounts/0/content/6/applicability",
+      "/result/accounts/0/content/6/stateBearer",
+      "/result/accounts/0/content/6/roles",
+      "/result/accounts/0/content/6/roleScope",
+      "/result/accounts/0/content/6/illustrations",
       "/result/accounts/0/content/7/conditions",
       "/result/accounts/0/content/7/notShown"
     ],

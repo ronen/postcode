@@ -963,3 +963,34 @@ more children by default. Identification-only roots need no wrapper; local terms
 stay embedded. The human explicitly requested these repairs before the children
 variant. This pass does not introduce that variant or validate its ownership/support
 contracts; the mixed payload remains a comparison.
+
+## Shared roles and the paired children variant (2026-11-11)
+
+The human authorized the shared-role/addressing prerequisite and then the children
+variant. Both are now represented in [complete paired payloads](structured-account-example/children/README.md).
+Local roles, scope and qualified illustrations use a common structured-item envelope;
+the admission and state items exercise it without generalizing the scenario model.
+Wait initiation now cites both request and trial entry, conditioned on continuing
+occupancy. A local relationship occurrence can be designated through its exact item
+without already having a shared general subject identity.
+
+Exact account/content-key addressing fixes illustration targets. A conditional access
+probe reports a later replacement of the illustrated account, without judging that
+item, retargeting it by matching keys, mutating exact answers or adding reconsideration
+propagation. This surfaces an explicit same-result reference while preserving the
+existing distinction between content links and prior-exposure citations.
+
+The initial result owns DEFINITIONS-1 and ADMISSION-1 as separate children. The
+follow-up owns ROLE-DEFINITIONS-1 and TRIAL-1; behavioral child TRIAL-1 reports K with
+a disjoint ADMISSION-2 replacement. Each child carries its own qualifications and
+identifying associations where applicable. ADMISSION-2 copies no state descriptions:
+unchanged DEFINITIONS-1 supplies support. Stored composition remains immutable while
+fresh selected content discloses the behavioral displacement. The mixed variant
+remains available as a comparison in a separate hypothetical Session.
+
+A repeatable fixture checker covers ownership/reachability, declaration and local-role
+resolution, qualified illustration addresses, child support and causal ordering, with
+malformed-copy probes. Behavioral diagram data is equal across partitions. This is
+authored design validation, not implemented acceptance or an end-to-end investigation.
+Broader applicability, general relationship identity, composition, and reassessment
+remain open; no governing material or product behavior was changed.

@@ -17,7 +17,10 @@ it, to test the alternative to this walkthrough's child partition. Read the two 
 explicit design alternatives; neither is adopted. The current recommendation favors
 identifying children for explicit shared-subject introductions mixed with behavior,
 using introduction as the reuse signal rather than predicting future queries; the complete payload retains the mixed alternative for comparison.
-No live investigator or runtime execution has been performed in either pass.
+The [paired children payloads](structured-account-example/children/README.md) now
+exercise this walkthrough's partition concretely, with shared role semantics,
+qualified child support and exact illustration addresses. No live investigator or
+runtime execution has been performed in any of these passes.
 
 ## Choices for this pass
 

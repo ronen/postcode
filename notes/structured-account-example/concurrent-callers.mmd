@@ -10,7 +10,7 @@ sequenceDiagram
   trial->>breaker: Request execution after recovery delay
   Note right of breaker: Open to Half-open: Execution requested [Recovery delay elapsed] /<br/>Reserve trial slot and start supplied work
   caller->>breaker: Request execution while trial is in flight
-  Note over breaker,caller: Wait for the shared recovery decision#59; supplied work has not<br/>started
+  Note over breaker,caller: Because the sole trial slot remains occupied, wait for its<br/>recovery decision#59; supplied work has not started
   Note right of trial: Supplied trial work completes with a result or error
   trial-->>breaker: Work outcome becomes available for classification#59; not final<br/>delivery to the trial caller
   Note right of breaker: Classify the completed work under the configured failure policy.<br/>An error not matched by that policy is recorded as recovery<br/>success.

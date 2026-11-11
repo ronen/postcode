@@ -26,13 +26,29 @@ submission. No partial allocation or dangling result is intended.
 
 Exactly one `subject-description/0` item per introduced-subject key declares it with
 `introduceRetainedSubject: true`. References, `referents` membership and `identifies`
-associations do not themselves declare subjects. Duplicate declarations and references
-without a declaration are invalid. ADMISSION-2 may reference a subject declared in
-TRIAL-1 because both belong to this submission, for example in an explicit scenario
-illustration. Every construction-pool member in
-this childless sample must be either the root or the replacement of exactly one
-correction; those roles are disjoint and there are no orphan accounts. A future pool
-representation of children would need explicit ownership/reachability rules too.
+associations do not declare subjects. Duplicate declarations and references without
+a declaration are invalid. ADMISSION-2 may reference subjects declared in a sibling
+or another tree of the same submission; declaration scope is the whole submission.
+
+### Ownership and composition
+
+The construction pool is a serialization of a result tree and correction-replacement
+trees, not a collection of independent roots. Each account has exactly one owning
+position: the result root, one ordered `children` slot, or one correction's replacement
+root. Child slots use `{submittedAccount: key}` and cannot adopt retained old children.
+All owned accounts must be reachable from the result root by following child slots
+and reporter-to-replacement ownership links. Duplicate owners, disconnected accounts,
+cycles and shared subtrees are invalid. A correction reporter may be a child; its
+replacement belongs to a separate composition tree. Content references and illustration
+links are not ownership edges and cannot make an otherwise orphan account valid.
+
+Every account, including each child and an organizational root, carries its own
+qualifications, evidence, referents and associations. Nothing inherits from a parent
+by omission. Roots carry substantive qualified explanations, not empty containers.
+`identifies` belongs to the child containing the description when that is the chosen
+partition; parent composition does not duplicate that association. Replacing one
+child does not mutate its siblings, its parent, or the parent's fixed child list.
+Replacement-aware selection discloses displacement separately from stored composition.
 
 Account qualifications apply to all its content and associations; items can further
 limit claims and identify their own evidence. The account's evidence union is not
@@ -51,9 +67,11 @@ in one investigram. Classification is a qualified description of the subject, no
 guarantee from allocating its ID. No authoritative global definition is selected by
 silently taking the newest description.
 
-For this example, fresh replacement-aware identifying support uses ADMISSION-2's
-descriptions. ADMISSION-1 remains historical/input context, explicitly labelled as
-such in the follow-up answer. Exact ANSWER-1 retains its original support. A correction's
+In the mixed variant, fresh replacement-aware identifying support uses ADMISSION-2's
+descriptions. In the children variant, DEFINITIONS-1 remains unchanged because K
+targets its behavioral sibling; no descriptions are copied into ADMISSION-2.
+ADMISSION-1 remains historical/input context, explicitly labelled as such in the
+follow-up answer. Exact ANSWER-1 retains its original support. A correction's
 `affectedSubjects` does not exempt embedded descriptions from whole-account replacement;
 it is not an item-level validity mask. Selection does not establish a canonical definition.
 
@@ -68,9 +86,9 @@ be the root; it does not need a wrapper just to follow this rule. Descriptions o
 local/minor terms can stay embedded. Any departure should explain the coherence or
 delivery reason and acknowledge the wider correction/citation unit.
 
-This is a recommendation for the next variant, not an adopted schema rule. The current
-mixed-account fixture deliberately remains a comparison; child-pool ownership,
-reachability and child-specific support selections have not yet been exercised here.
+This remains a recommendation, not an adopted schema rule. The [children variant](children/README.md)
+now exercises ownership, independent qualification and support selection in authored
+fixtures. The mixed-account fixture remains a comparison; neither is application input.
 
 ## Forms in this example
 
@@ -99,20 +117,63 @@ and response forms; each outcome transition explicitly cites classification as i
 cause. Structural validation checks that these links resolve in order, not that the
 asserted causality is true. The trial participant denotes the execution including its
 work, so the outcome response is distinct from final delivery to its initiating caller.
-Each resume/recheck step cites the transition that releases it; ordinary work or
-refusal cites that recheck. This explicitly connects release of W to subsequent
+The wait step cites the caller request and trial entry, with an explicit condition
+that the reserved slot remains occupied on arrival. Each resume/recheck step cites
+the transition that releases it; ordinary work or refusal cites that recheck. This explicitly connects release of W to subsequent
 admission without claiming that release guarantees work will run.
 
-In `admission-cases/0`, `{localRole: key}` resolves only within that form's `roles`
-collection. Role keys are unique there, and every reference must resolve. The roles
-are variables bound per request under `roleScope`, not newly allocated subjects.
-The general waiting relationship uses those roles for its waiter and decision holder.
-An `illustrations` entry separately names a case and a supplied account/content item,
-maps local roles to scenario subjects, and carries qualification and evidence for the
-mapping. It neither identifies a general role with that subject nor changes the
-general claim's scope. Its substantive subject references still require identifying
-support in an answer that supplies the illustration. These are qualified authored
-bindings, not correspondences invented by a renderer.
+### Shared roles and illustrations
+
+`roles`, `roleScope` and `illustrations` are optional fields of the common structured
+content-item envelope, usable by admission, state, interaction and structural forms.
+They are not separate mechanisms per form and are not account-global variables.
+`{localRole: key}` resolves within the owning item's `roles` only. Keys are unique
+there, all references resolve, and `roleScope` states how the variables are bound.
+Identical role names in different items do not assert correspondence. The role's full
+context is its exact account, content key and local role key; allocating it does not
+introduce a retained subject or a general architectural fact.
+
+The admission item binds execution/instance roles separately per request. The state
+item uses the same mechanism for one scenario-scoped instance, explicitly bound to R
+in its illustration. That is a representational change, not a generalization to all
+instances/configurations of P. A broadly applicable state model requires qualified
+analysis regardless of the availability of a local-role syntax.
+
+An `illustrations` entry identifies a target account/content item, binds owner-local
+roles to scenario subjects, and supplies qualification and evidence for that mapping.
+In this probe every declared role is bound once in each illustration. A form-specific
+selector may narrow what is illustrated: `case` selects an admission-case key; without
+one, the illustration concerns the owning item. Mapping does not establish global
+identity or change the general claim's scope. Its substantive subject references need
+identifying support when supplied. Bindings remain qualified authored claims, never
+correspondences invented by a renderer.
+
+### Exact item addressing and linked revision disclosure
+
+A cross-account item address consists of an exact account reference and `contentKey`.
+Within a submission, for example, an illustration has
+`account: {submittedAccount: "trial"}, contentKey: "concurrent-callers"`.
+Acceptance fixes that account reference; subsequent retrieval uses the retained account
+identity. The `stateContent` field is a same-account content-key shorthand. The item
+must exist in its addressed account. Addressability neither makes it an independently
+correctable investigram nor gives its content key identity across replacement accounts.
+Role/case keys can further designate occurrences inside that exact item under its form's
+rules. Such designation can support a later investigation or promotion; it does not
+allocate a shared general relationship identity.
+
+Fresh inspection of an illustration may report its target account's current revision
+status, while preserving the original item address. A superseded account does not
+establish that this particular item is wrong or replaced. Even an identical content key
+in a replacement supplies no correspondence and must not trigger automatic retargeting.
+Exact answers preserve captured target/support/revision context; fresh status can be
+requested separately. See the [access probe](illustration-access.json).
+
+This is linked-account status disclosure, not a new propagation rule. A same-result
+illustration link can be surfaced even though it is not a prior-exposure citation;
+it does not by itself flag or clear the source account for reconsideration. Delivering
+the referenced item's qualified content cites its containing investigram, without
+complete-target eligibility. Bare addresses/status alone do not supply that content;
+substantive correction explanations retain their reporter-citation rule.
 
 The architectural-relation kinds used here are `state-category-of`,
 `instance-role-of`, `execution-uses-instance`, and `waits-for-decision`, with explicit
@@ -127,11 +188,11 @@ and from participating executions. State what causes a transition, what must hol
 and what it does. Declare partial coverage. A partial statechart may omit an initial
 marker; it must not manufacture one. The present form is a flat subset: richer
 statecharts would require explicit containment, entry/exit and concurrency semantics.
-In this sample the bearer remains scenario role R. The explicit applicability field
-connects the account to P without broadening it to all instances/configurations of P.
-A type-level model and qualified binding to R are a possible later extension, not a
-mechanical reinterpretation of this model. The recovery-outcome guard means the
-completing trial still belongs to the current Half-open state; stale results do not
+In this sample the bearer is a local role bound to scenario subject R. The explicit
+applicability field connects the account to P without broadening it to all instances/configurations of P.
+The shared role mechanism also permits a type-level model, but establishing that
+broader applicability remains an open extension, not a mechanical reinterpretation.
+The recovery-outcome guard means the completing trial still belongs to the current Half-open state; stale results do not
 perform these transitions.
 
 **Interaction.** Identify participants and their roles before giving ordering. Explain

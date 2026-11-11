@@ -13,7 +13,7 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 ## Current notes
 
 - Structured architectural accounts: [working proposal](structured-architectural-accounts-proposal.md) consolidates the emerging design; [discussion notes](structured-architectural-accounts.md) retain exploration, alternatives and research.
-- [Complete illustrative account results](structured-account-example/README.md): admission, Half-open follow-up, qualified correction metadata, and diagrams generated from structured content.
+- Complete illustrative account results: [children variant](structured-account-example/children/README.md) and [mixed-account comparison](structured-account-example/README.md), with qualified correction metadata, retained selections, shared roles and diagrams generated from structured content.
 - [Upcoming work](upcoming-work.md)
 - [Candidate capabilities](candidate-capabilities.md)
 - [Candidate UX](candidate-ux.md)

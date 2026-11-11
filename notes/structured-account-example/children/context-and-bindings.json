@@ -1,0 +1,309 @@
+{
+  "status": "Children-partition context and acceptance ledger. This variant has its own hypothetical Session: aliases name roles in this example, not records shared with the mixed variant. No actual application execution.",
+  "basis": {
+    "id": "cockatiel-pinned",
+    "revision": "f48bea55022ab15ab07eb52a79bfc1e661300fd4",
+    "method": "Static source inspection plus the prior exploratory accounts; no runtime execution."
+  },
+  "evidence": {
+    "E-state": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "CircuitState and state getter"
+    },
+    "E-admission": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "execute"
+    },
+    "E-half-open": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "executeHalfOpen"
+    },
+    "E-outcomes": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "recordHalfOpenSuccess, recordHalfOpenFailure, maybeCompleteHalfOpen, open and close"
+    },
+    "E-default": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "createHalfOpenSamplingOptions"
+    }
+  },
+  "entry": {
+    "knownSubjects": {
+      "M": "Mechanical module reference for the CircuitBreakerPolicy source at this basis.",
+      "P": "Circuit breaker policy kind introduced by a prior orientation account."
+    },
+    "orientation": {
+      "id": "ORIENTATION-0",
+      "identifies": {
+        "subject": "P"
+      },
+      "description": "A reusable execution-governing policy whose failure and recovery rules determine admission of application-supplied work.",
+      "implementationAnchor": {
+        "subject": "M"
+      },
+      "qualification": "Interpreted mapping to the captured module, not proof that the policy kind and module are the same subject. This orientation is a fixture precondition, not demonstrated discovery.",
+      "evidence": [
+        "E-admission",
+        "E-state"
+      ]
+    }
+  },
+  "firstRequest": {
+    "subject": {
+      "subject": "P"
+    },
+    "informationNeed": "Execution admission and state inspection under default recovery sampling.",
+    "analysisAnchor": {
+      "subject": "M"
+    },
+    "suppliedAccountContext": [
+      "ORIENTATION-0"
+    ],
+    "suppliedEvidence": [
+      "E-state",
+      "E-admission",
+      "E-default"
+    ],
+    "navigationOrigin": null
+  },
+  "firstAcceptance": {
+    "subjectIds": {
+      "closed": "S-closed",
+      "open": "S-open",
+      "half-open": "S"
+    },
+    "accountIds": {
+      "introduction": "INTRO-1",
+      "state-definitions": "DEFINITIONS-1",
+      "admission": "ADMISSION-1"
+    },
+    "relationshipIds": {}
+  },
+  "followupRequest": {
+    "subject": {
+      "subject": "S"
+    },
+    "informationNeed": "Concurrent callers and trial outcomes under default single-trial recovery.",
+    "analysisAnchor": {
+      "subject": "M"
+    },
+    "navigationOrigin": {
+      "answer": "ANSWER-1",
+      "account": "ADMISSION-1"
+    },
+    "suppliedAccountContext": [
+      {
+        "account": "DEFINITIONS-1",
+        "delivery": "complete own content, referents, associations, qualifications and available evidence references; all structured parts included"
+      },
+      {
+        "account": "ADMISSION-1",
+        "delivery": "complete own content, referents, associations, qualifications and available evidence references; all structured parts included"
+      }
+    ],
+    "suppliedEvidence": [
+      "E-state",
+      "E-admission",
+      "E-half-open",
+      "E-outcomes",
+      "E-default"
+    ],
+    "notSupplied": [
+      "INTRO-1 own content; parent composition is not required to deliver its children independently."
+    ]
+  },
+  "followupAcceptance": {
+    "subjectIds": {
+      "shared-breaker": "R",
+      "trial-execution": "E-trial",
+      "concurrent-execution": "E-caller",
+      "waiting": "W"
+    },
+    "accountIds": {
+      "trial-result": "TRIAL-RESULT-1",
+      "role-definitions": "ROLE-DEFINITIONS-1",
+      "trial": "TRIAL-1",
+      "admission-replacement": "ADMISSION-2"
+    },
+    "relationshipIds": {
+      "admission-correction": "K"
+    }
+  },
+  "expectedSelections": [
+    {
+      "id": "ANSWER-1",
+      "requestedRoots": [
+        "INTRO-1"
+      ],
+      "accounts": [
+        "INTRO-1",
+        "DEFINITIONS-1",
+        "ADMISSION-1"
+      ],
+      "relationships": [],
+      "identifyingSupport": [
+        "ORIENTATION-0",
+        "DEFINITIONS-1"
+      ],
+      "storedComposition": [
+        {
+          "parent": "INTRO-1",
+          "children": [
+            "DEFINITIONS-1",
+            "ADMISSION-1"
+          ]
+        }
+      ],
+      "revisionContext": "Captured before K; exact retrieval preserves the original tree, content and identifying support."
+    },
+    {
+      "id": "FOLLOWUP-ANSWER-1",
+      "requestedRoots": [
+        "TRIAL-RESULT-1"
+      ],
+      "accounts": [
+        "TRIAL-RESULT-1",
+        "ROLE-DEFINITIONS-1",
+        "TRIAL-1",
+        "ADMISSION-2"
+      ],
+      "relationships": [
+        "K"
+      ],
+      "identifyingSupport": [
+        "ORIENTATION-0",
+        "DEFINITIONS-1",
+        "ROLE-DEFINITIONS-1"
+      ],
+      "storedComposition": [
+        {
+          "parent": "TRIAL-RESULT-1",
+          "children": [
+            "ROLE-DEFINITIONS-1",
+            "TRIAL-1"
+          ]
+        }
+      ],
+      "historicalContext": [
+        {
+          "account": "ADMISSION-1",
+          "role": "Correction target and input actually received."
+        }
+      ],
+      "revisionContext": "DEFINITIONS-1 remains current identifying support: K replaces its behavioral sibling only. ADMISSION-2 repeats no state definitions and adopts no old children."
+    },
+    {
+      "id": "FRESH-ADMISSION-ANSWER",
+      "requestedOriginal": "ADMISSION-1",
+      "accounts": [
+        "ADMISSION-2"
+      ],
+      "relationships": [
+        "K"
+      ],
+      "identifyingSupport": [
+        "ORIENTATION-0",
+        "DEFINITIONS-1",
+        "ROLE-DEFINITIONS-1"
+      ],
+      "revisionContext": "The general admission rule uses local roles. Its explicit scenario illustration is supported by ROLE-DEFINITIONS-1, delivered with its own qualifications; the parent TRIAL-RESULT-1 is unnecessary for identifying support."
+    },
+    {
+      "id": "FRESH-INITIAL-ANSWER",
+      "requestedRoots": [
+        "INTRO-1"
+      ],
+      "accounts": [
+        "INTRO-1",
+        "DEFINITIONS-1",
+        "ADMISSION-2"
+      ],
+      "relationships": [
+        "K"
+      ],
+      "identifyingSupport": [
+        "ORIENTATION-0",
+        "DEFINITIONS-1",
+        "ROLE-DEFINITIONS-1"
+      ],
+      "storedComposition": [
+        {
+          "parent": "INTRO-1",
+          "children": [
+            "DEFINITIONS-1",
+            "ADMISSION-1"
+          ]
+        }
+      ],
+      "displacements": [
+        {
+          "original": "ADMISSION-1",
+          "selected": "ADMISSION-2",
+          "via": "K"
+        }
+      ],
+      "revisionContext": "Replacement-aware selection discloses displacement; it does not rewrite INTRO-1 children or its own text. Exact ANSWER-1 still selects ADMISSION-1."
+    }
+  ],
+  "selectionPolicy": {
+    "currentSupport": "Select qualified identifying accounts independently of behavioral replacement. DEFINITIONS-1 is not a target of K and remains available unchanged. No state definitions need copying into ADMISSION-2; there is no implicit reuse of old composition children.",
+    "historicalSupport": "Exact answers preserve captured descriptions and revision context. Old descriptions can be supplied as labelled historical or explicitly selected context.",
+    "affectedSubjects": "Describes the asserted correction scope; does not grant item-level survival or exempt unlisted subjects from whole-account replacement.",
+    "requestIdentity": "Request-time identity includes the declared operation, subject, parameters and selected seed context. Later acquired deliveries belong to evaluation provenance, not inputs retroactively known at dispatch. Reuse policy must separately address later retained-context changes."
+  },
+  "exposureExamples": [
+    {
+      "delivery": "Bare K/endpoint IDs only",
+      "citations": [],
+      "completeTargets": []
+    },
+    {
+      "delivery": "K substantive explanation only",
+      "citations": [
+        "TRIAL-1"
+      ],
+      "completeTargets": [],
+      "note": "Does not cite TRIAL-RESULT-1 or make TRIAL-1 a complete target."
+    },
+    {
+      "delivery": "Complete own content of DEFINITIONS-1 alone",
+      "citations": [
+        "DEFINITIONS-1"
+      ],
+      "completeTargets": [
+        "DEFINITIONS-1"
+      ],
+      "note": "No parent or behavioral sibling is implicitly delivered. A subsequent correction of ADMISSION-1 creates no reconsideration path solely through this citation."
+    },
+    {
+      "delivery": "Complete own content of ROLE-DEFINITIONS-1 alone",
+      "citations": [
+        "ROLE-DEFINITIONS-1"
+      ],
+      "completeTargets": [
+        "ROLE-DEFINITIONS-1"
+      ],
+      "note": "Each identifying child carries its own qualifications; no inheritance from TRIAL-RESULT-1."
+    },
+    {
+      "delivery": "Both context accounts in the follow-up",
+      "citations": [
+        "DEFINITIONS-1",
+        "ADMISSION-1"
+      ],
+      "completeTargets": [
+        "DEFINITIONS-1",
+        "ADMISSION-1"
+      ],
+      "note": "Every output of this evaluation shares these citations, including the role-definition child and replacement; K has its existing same-evaluation exemption."
+    }
+  ],
+  "partitionProbe": {
+    "definitionOnlyConsumerCites": [
+      "DEFINITIONS-1"
+    ],
+    "laterCorrectionTarget": "ADMISSION-1",
+    "expectedReconsiderationFromThisPath": false,
+    "limit": "No other citation path is assumed. Grouped descriptions still share one correction target. Correcting DEFINITIONS-1 itself can affect every consumer of any of its descriptions."
+  }
+}

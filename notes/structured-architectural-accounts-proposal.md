@@ -28,7 +28,10 @@ as a comparison with the earlier child partition. Neither partition is adopted.
 After review, use explicit shared-subject introduction as the actionable default:
 when identifying descriptions are mixed with behavior, place them in one or more
 identifying children. Their citation targets can avoid exposure to behavioral-sibling
-corrections. Identification-only roots need no extra wrapper; local terms may stay embedded. The payload retains the single-account alternative to expose its costs.
+corrections. Identification-only roots need no extra wrapper; local terms may stay embedded.
+The [children variant](structured-account-example/children/README.md) now exercises
+that recommendation with complete first/follow-up payloads and independent child
+support. The original payload retains the single-account alternative for comparison.
 
 The [foundation](../foundation/README.md), [application specification](../docs/app-specification.md),
 [core concepts](../docs/core-concepts.md), [architectural constraints](../docs/architectural-constraints.md)
@@ -65,11 +68,11 @@ Current recommendations sharpened by the complete-example review:
 
 | Topic | Position for the next design pass |
 | --- | --- |
-| Account partition | When mixed with behavior, put descriptions of explicitly introduced shared subjects in identifying children by default. Grouping is allowed; identification-only roots need no wrapper. The children variant remains to be exercised. |
-| Identifying support | Fresh replacement-aware support uses replacement descriptions. Original input/history is separately labelled; exact older answers remain fixed. `affectedSubjects` is not an item-survival mask. |
+| Account partition | When mixed with behavior, put descriptions of explicitly introduced shared subjects in identifying children by default. Grouping is allowed; identification-only roots need no wrapper. Both partitions now have complete authored fixtures and ownership/support checks. |
+| Identifying support | Use replacement descriptions when their containing account is replaced; unchanged identifying siblings remain available. Original input/history is separately labelled; exact older answers remain fixed. `affectedSubjects` is not an item-survival mask. |
 | Relationship K | Retain/index separately; cite its reporter for substantive explanation. This does not deliver the reporter's complete own content or enable independent revision of K. |
-| Behavioral content | Supply the causal chain through classification, transition, resume/recheck and admission outcome. General admission uses form-local roles; R/W belong to a separately qualified illustration. R’s state model stays scenario-scoped. |
-| Validation | Check references, ownership, delivery and diagram mappings mechanically; assess cross-form semantics separately. |
+| Behavioral content | Supply the causal chain through classification, transition, resume/recheck and admission outcome. Shared item-local roles serve admission and state content; qualified illustrations bind scenario subjects. R’s state model stays scenario-scoped. |
+| Validation | Both partitions have a repeatable fixture checker and diagram traceability. Exact illustration access reports linked-account revision status without automatic retargeting or reconsideration. Cross-form semantics remain a separate assessment. |
 | Request/reuse | Distinguish request plus selected seed context from subsequent acquired context in provenance. Reuse freshness policy remains to be settled. |
 
 ## The proposed capability
@@ -753,6 +756,33 @@ context acquisition/selection policy, request-time identity and reuse freshness.
 Origin records lineage; it affects answer/reuse identity when it changes substantive selected input
 or qualification, not merely because the human reached the same request differently.
 
+### Shared local roles and exact illustration addresses
+
+Use one optional role mechanism in the structured content-item envelope across forms:
+`roles` declares item-local variables, `roleScope` qualifies their binding, and
+`illustrations` supplies qualified mappings to scenario subjects and exact target items.
+The admission and state items now exercise this common mechanism. Keys are scoped to
+an exact owning item, not account-global or automatically shared by name. A local role
+is not a retained subject. Broader applicability requires qualified interpretation;
+changing the state bearer to a local role does not generalize its scenario claim.
+
+Cross-account item addresses fix an account reference plus a content key. Local keys
+inside the item can further designate a role, case or relationship occurrence under
+the form's rules; that is not independent correction identity. Supplied qualified
+item content cites its containing account. Exact answer support/revision context stays
+fixed. Fresh illustration access may report the target account's current revision
+status while preserving the original item target. A superseded account does not prove
+its particular illustrated item wrong, and matching replacement keys do not justify
+retargeting. The explicit same-result link makes disclosure possible without becoming
+an exposure citation or a new reconsideration/clearance rule.
+
+The children fixture uses one owning position per account: result root, ordered child
+slot or correction-replacement root. All positions are reachable through child and
+reporter-to-replacement ownership links, without cycles or shared subtrees. Content
+references do not supply ownership. Children have their own qualified support and
+identifying associations; replacing the behavioral child leaves the identifying child
+unchanged. Fresh selection discloses displacement rather than mutating the old tree.
+
 ### Composition as a design probe
 
 Test both wrapping orders using separately qualified breaker and bulkhead accounts.
@@ -978,7 +1008,8 @@ An identification-only investigram may be the root without an extra wrapper; loc
 terms can stay embedded. Group related descriptions rather than normalizing every
 assertion into a child. A departure should state its coherence/delivery rationale and
 acknowledge the broader correction/citation unit. This remains a recommendation;
-the forthcoming children variant must exercise its ownership and support rules.
+the children variant now exercises ownership, independent qualification and support
+selection in authored fixtures, not through the implemented application.
 Compare actual delivery paths; a diagram's nested graph or keyed node does not
 require a child investigram. Removing the existing hierarchy is not necessary to choose no children
 for a particular result.

@@ -12,6 +12,9 @@ shared subjects in identifying children by default when mixed with behavior. Gro
 descriptions and identification-only roots remain possible; local terms may stay embedded. The payloads retain the single-investigram
 alternative so its costs remain inspectable; they are not the recommended default.
 The revised support and exposure rules below apply to this alternative consistently.
+The [children variant](children/README.md) now supplies complete paired submissions,
+self-contained children, exact/fresh selections and ownership checks. Start there
+for the recommended partition; this page remains the mixed-account comparison.
 
 ## Read the example
 
@@ -121,8 +124,8 @@ The investigator can use explicit shared-subject introduction as the signal of
 expected reuse: when mixed with behavior, put those identifying descriptions in one
 or more children by default. An identification-only root needs no extra wrapper;
 local terms may stay embedded. This does not require forecasting later queries,
-one child per subject, or semantic independence. The children variant remains next
-work; this pass repairs the mixed comparison before adding that variant.
+one child per subject, or semantic independence. The paired children variant now
+exercises that recommendation, retaining this payload as the comparison.
 
 K is a **qualified account-relationship record** with these concrete fields:
 
@@ -158,7 +161,11 @@ roles, not R or W. A separate qualified illustration binds the roles to R/E-call
 names W in TRIAL-1's scenario. This distinguishes a general claim from a particular
 illustration while keeping their asserted correspondence inspectable. The example
 binding remains qualified analysis; neither selection nor rendering establishes it.
-No additional retained subject is needed for these form-local roles.
+No additional retained subject is needed for these item-local roles. `roles`,
+`roleScope` and `illustrations` belong to the shared structured-content envelope,
+not just the admission form. The state item now uses them too, preserving its
+scenario scope and binding its local breaker role to R. Identical role keys across
+items do not imply identity or correspondence.
 
 ## 4. Retain history and choose what to supply
 
@@ -207,7 +214,9 @@ The sequence takes participants, ordering, waiting, branches and resumption from
 `trial.content.concurrent-callers`; transition events refer to the state model by
 local keys. A renderer does not infer a state edge from prose or invent an outcome.
 
-The sequence now includes trial-work completion, outcome availability and classification
+The wait step explicitly cites the caller request and trial entry as causes, subject
+to the slot still being occupied when that caller arrives. The sequence also includes
+trial-work completion, outcome availability and classification
 before the alternatives. Explicit `causedBy` references connect the outcome transitions
 to that classification. Each resume/recheck cites its releasing transition, and
 ordinary work/refusal cites that recheck. Ordinary sequence position alone is not a
@@ -217,10 +226,10 @@ The existing action/response forms carry these events without a new universal ev
 type. Trial-work completion is distinct from final result delivery to its caller,
 whose order remains omitted.
 
-The state bearer deliberately remains scenario role R. The account describes P, so
+The state bearer is now an item-local role explicitly bound to scenario subject R. The account describes P, so
 a question about P can find this qualified scenario account; it cannot silently treat
-it as a model of every instance/configuration. A general instance-role model plus a
-qualified binding to R is an open extension. The outcome guard now says the completing
+it as a model of every instance/configuration. Shared role syntax permits a more
+general model, but establishing its broader applicability remains an open extension. The outcome guard now says the completing
 trial belongs to the current Half-open state: it expresses rejection of stale trial
 updates, not an unexplained “same cycle” phrase.
 
@@ -248,6 +257,21 @@ JSON pointers and evidence references. Layout aliases such as `s0` are not subje
 Qualifications and source references remain available alongside each diagram; a
 standalone image is not the complete qualified account.
 
+## Exact illustration access
+
+The shared contract addresses an item by its exact account reference and content key.
+The [access probe](illustration-access.json) postulates a later correction of TRIAL-1.
+Fresh access can disclose that the illustrated account has a replacement, preserving
+ADMISSION-2's original illustration target and leaving the particular item's revision
+status unestablished. Matching content keys in replacement accounts do not establish
+correspondence. Exact answers retain their captured status/context.
+
+This gives useful disclosure for an explicit same-result content link without adding
+exposure-based reconsideration, automatic reassessment or retargeting. Delivering the
+target item's substantive content still cites its containing account. The same rules
+apply to the state item's illustration. A local occurrence can be designated for later
+investigation without already having a shared general relationship identity.
+
 ## Checks and unresolved design choices
 
 Structural checks cover local and retained references, unique content keys, subject
@@ -261,15 +285,18 @@ example deliberately retains ADMISSION-1's staged error, so validation must not 
 described as certifying every claim. The two diagrams were rendered with Mermaid CLI 12.0.0 and
 visually checked. These checks establish internally resolvable examples and usable
 diagram inputs, **not** semantic correctness, real agent reliability, or acceptance
-by the implemented application. No application code or API was changed.
+by the implemented application. No application code or API was changed. The
+[standalone fixture checker](check-fixtures.py) checks both partitions with Python 3,
+including shared roles in admission and state forms, child ownership and exact item
+addresses. The children variant has its own traceability pointers into its payload,
+while reusing the identical behavioral diagrams.
 
 The next discussion should use this payload to decide:
 
-1. Exercise the actionable default in the forthcoming children variant: explicit
-   shared-subject introductions mixed with behavior go in identifying children by
-   default. Check grouping, self-contained qualifications, ownership and support when
-   only a behavioral sibling is corrected. The mixed payload remains the comparison;
-   this repair does not yet supply or validate the children variant.
+1. Review the completed children variant's grouping, self-contained qualifications,
+   ownership and unchanged identifying support when only a behavioral sibling is
+   corrected. Its authored fixtures and malformed-input probes exercise the
+   recommendation; they do not establish product acceptance or agent reliability.
 2. Is retaining K separately while citing its reporter sufficient for the first
    capability? It preserves the current exposure rule; independent relationship
    citation, challenge and revocation remain deferred.
