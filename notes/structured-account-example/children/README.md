@@ -67,7 +67,8 @@ ADMISSION-1 returns a qualified `concurrent-callers-offer`. The follow-up reques
 selects that exact investigram and offer key, whose architectural focus resolves to S.
 The [offer chain](../offered-followup.md) explains the stipulated invocation; this
 variant's [access probe](offer-access.json) preserves its exact context independently
-of the mixed variant. ADMISSION-2 repeats the offer without migrating old references.
+of the mixed variant. ADMISSION-2 has no repeated offer because TRIAL-1 already
+addresses the question; historical ADMISSION-1 offers remain available.
 
 The follow-up receives the complete own content of DEFINITIONS-1 and
 ADMISSION-1. The first identifies the subject; the second is eligible for correction.

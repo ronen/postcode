@@ -243,7 +243,10 @@ Child links do not imply delivery of descendants or other referenced items. Know
 source does not establish a human navigation origin or prove all source content was
 supplied. Preserve actual deliveries and exact offer provenance separately.
 
-A replacement may repeat an offer key. That creates an address in the replacement,
+ADMISSION-2 has no offer here: its submission already supplies TRIAL-1's answer.
+This is an authoring choice, not a rule that offers must be unanswered or temporally
+"next". Offers remain atemporal "find out more" guidance; reinvestigation can be useful.
+No `addressedBy` field is introduced. In general, a replacement may repeat an offer key. That creates an address in the replacement,
 not automatic migration or asserted continuity of the older offer. Retain access to
 the original, disclose applicable correction context when supplying its content,
 and distinguish partial from complete correction-context delivery. Exact captured
@@ -259,11 +262,21 @@ permit fallback across namespaces or replacement investigrams.
 
 The bounded [diagram contracts](diagram-contracts.json) declare input forms and known
 mappings. `state-diagram/0` takes a `model` of form `state-behavior/0`.
-`sequence-diagram/0` takes an `interaction` of form `interaction/0` and, when its steps
-name state transitions, an explicitly bound `stateModel`. The trial example binds
-both items from TRIAL-1. No renderer search for an additional model, inferred state
-alignment, or duplicate node/edge list is required. Only own-investigram model bindings
-are exercised; cross-investigram inputs and a general retrieval policy are not added.
+`sequence-diagram/0` takes an `interaction` of form `interaction/0`. Its state-transition
+steps already declare their same-investigram `stateContent` and `transition` references.
+Resolve those content dependencies to state-behavior items and exact transitions;
+reject missing/incompatible models or unknown transitions. Do not repeat those bindings
+in presentation metadata, search for a plausible model, or infer state alignment.
+These references remain meaningful without recommendations. Only own-investigram
+inputs/dependencies are exercised; cross-investigram retrieval policy is not added.
+
+Recommendations are optional judgments of usefulness, not permission to render.
+A selected supported diagram type and compatible content can use the same input and
+content contracts directly. Both routes preserve qualifications and reject missing
+dependencies. Adding a renderer or selecting another compatible diagram does not change
+the investigram or require correction. Historical recommendations remain immutable;
+an erroneous recommendation could warrant correction, but absence of a newly available
+diagram is not an error. No independently mutable guidance lifecycle is introduced.
 
 Each metadata entry carries its owner's applicable qualifications, basis and provenance
 when delivered, plus its own narrower qualifications and evidence. An excerpt preserves

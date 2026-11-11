@@ -840,8 +840,8 @@ contract and does not require the agent to choose its diagrams in advance.
 
 The [bounded retained-offer example](structured-account-example/offered-followup.md)
 exercises investigram-owned offer metadata in both partitions: ADMISSION-1 returns
-an offer, the existing follow-up invokes it, and ADMISSION-2 repeats its key without
-retargeting the original. Access probes distinguish an offer excerpt, complete own
+an offer, the existing follow-up invokes it, and ADMISSION-2 has no repeated offer
+because TRIAL-1 in that submission already addresses the question. Access probes distinguish an offer excerpt, complete own
 content, captured answers and fresh correction disclosure. No global offer-discovery
 system or initial admission-entry design is added to the remit. Other illustrative
 request paths retain their documented assumptions.
@@ -856,9 +856,11 @@ may independently remain interesting without being A2's follow-up offer.
 
 This version-specific behavior is appropriate, not a continuity defect. Withdraw the
 recommendation to move offers to a parent or guidance child merely to preserve their
-addresses; no separate guidance lifecycle is needed. ADMISSION-2 repeating an offer
-means a new explicitly supplied offer at a new address. Matching wording establishes
-neither continuity nor automatic invocation/reuse. Earlier invocations retain their
+addresses; no separate guidance lifecycle is needed. A repeated offer in another
+investigram would be a new explicitly supplied offer at a new address. Matching wording
+establishes neither continuity nor automatic invocation/reuse. In this example ADMISSION-2
+omits the offer already addressed by TRIAL-1. This does not redefine atemporal "find out
+more" offers as only unanswered next steps or prohibit useful reinvestigation. Earlier invocations retain their
 exact offer provenance. Historical access and fresh correction disclosure remain intact;
 human browsing alone does not create investigator exposure.
 
@@ -1328,8 +1330,9 @@ existing Presentation/compatibility model, not a parallel rendering architecture
 recommendation is guidance metadata naming a diagram type and bindings to exact items,
 entities or selections permitted by that type. For example, a state-diagram recommendation
 can bind its `model` input to TRIAL-1's `recovery` item; the sequence diagram can bind
-TRIAL-1's `concurrent-callers` item and explicitly bind `recovery` as its state-model
-input, because transition steps reference it. The diagram contract can accept an entire model
+TRIAL-1's `concurrent-callers` item. Its `stateContent`/`transition` references already
+identify the recovery-model dependency; resolve it through the content contract without
+repeating it in the recommendation. The diagram contract can accept an entire model
 rather than demand a duplicate node/edge list. Multi-item diagrams require explicit
 input roles and qualified correspondence wherever alignment establishes meaning.
 
@@ -1342,7 +1345,12 @@ The [consolidation example](structured-architectural-accounts-consolidation.md#c
 shows this flow. The [metadata payload](structured-account-example/metadata-payload.md)
 now exercises two diagram types, exact own-investigram bindings and qualified metadata
 excerpts; trial generation follows those bindings and preserves the existing diagrams
-and legends. Composition remains the earlier fixed-entry rendering probe. This is not
+and legends both with recommendations and with those recommendations removed and
+diagram/content selected directly. Recommendations express usefulness, not rendering
+permission. Adding a renderer or selecting a compatible diagram requires no investigram
+change or correction; original recommendations remain historical metadata. An erroneous
+recommendation could warrant correction, but not merely the absence of a newly available
+diagram suggestion. Composition remains the earlier fixed-entry rendering probe. This is not
 a general catalogue, cross-investigram input resolver or product protocol.
 
 **Presentation remit.** Our responsibility is the retained architectural meaning,

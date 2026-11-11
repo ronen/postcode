@@ -1,6 +1,7 @@
 """Generate/check compact illustrative diagrams with separate qualified legends.
 No product renderer or semantic analysis. Run with --write to update authored artifacts.
 """
+import copy
 import json
 import runpy
 from pathlib import Path
@@ -241,23 +242,28 @@ def render_composition(document, write=False):
     emit(directory / 'diagram-traceability.json', json.dumps(trace, indent=2) + '\n', write)
 
 
-def render_trial_from_recommendations(directory, write=False):
+def render_trial(directory, write=False, without_recommendations=False):
     document = read(directory / 'followup-result.json')
     ledger = read(directory / 'context-and-bindings.json')
-    candidates = [(n, a) for n, a in enumerate(document['result']['accounts']) if a['presentations']]
-    assert len(candidates) == 1, 'bounded fixture expects one diagram-recommending investigram'
+    candidates = [(n, a) for n, a in enumerate(document['result']['accounts']) if a['key'] == 'trial']
+    assert len(candidates) == 1, 'bounded fixture expects one trial investigram'
     index, owner = candidates[0]
     owner_id = ledger['followupAcceptance']['accountIds'][owner['key']]
+    if without_recommendations:
+        owner = copy.deepcopy(owner); owner['presentations'] = []
+        selections = read(directory / 'guidance-access.json')['directDiagramSelections']
+        plans = [guidance['diagram_plan'](owner, x['diagramType'], x['inputs'], owner_id) for x in selections]
+    else:
+        plans = guidance['presentation_plans'](owner)
     trace = []
-    for plan in guidance['presentation_plans'](owner):
-        rec = plan['recommendation']
+    for plan in plans:
         inputs = {role: (item, f'/result/accounts/{index}/content/{n}') for role, (item, n) in plan['inputs'].items()}
-        if rec['diagramType'] == 'state-diagram/0':
+        if plan['diagramType'] == 'state-diagram/0':
             model, pointer = inputs['model']
             trace += render_state(owner, model, ledger, pointer, directory, write)
-        elif rec['diagramType'] == 'sequence-diagram/0':
+        elif plan['diagramType'] == 'sequence-diagram/0':
             interaction, pointer = inputs['interaction']
-            models = {item['key']: (item, model_pointer) for role, (item, model_pointer) in inputs.items() if role == 'stateModel'}
+            models = {key: (item, f'/result/accounts/{index}/content/{n}') for key, (item, n) in plan['dependencies'].items()}
             trace += render_sequence(owner, interaction, ledger, pointer, directory, 'concurrent-callers', owner_id, write, models)
         else:
             raise AssertionError('No bounded generator for declared diagram type')
@@ -269,12 +275,13 @@ def render_trial_from_recommendations(directory, write=False):
 
 
 def render_all(write=False):
-    # Trial input selection follows owned metadata and the bounded catalogue.
-    render_trial_from_recommendations(BASE, write)
-    render_trial_from_recommendations(BASE / 'children', write)
+    # Both entry routes use the same diagram/content contracts. Direct rendering does not need metadata.
+    for directory in [BASE, BASE / 'children']:
+        render_trial(directory, write)
+        render_trial(directory, without_recommendations=True)
     # Composition remains the earlier fixed-entry probe; it has no recommendation metadata.
     render_composition(read(BASE / 'composition/composition-result.json'), write)
-    print('Trial recommendation inputs produce unchanged diagrams/legends in both partitions; fixed-entry composition diagrams also match.')
+    print('Trial diagrams/legends match with recommendations and without them in both partitions; fixed-entry composition diagrams also match.')
 
 
 if __name__ == '__main__':

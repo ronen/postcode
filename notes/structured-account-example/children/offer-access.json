@@ -37,7 +37,7 @@
         "method": "qualified-architectural-interpretation",
         "parameterDefinitions": [],
         "qualifications": [
-          "A question under this account’s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
+          "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
         ],
         "evidence": [
           "E-admission",
@@ -89,7 +89,7 @@
         "method": "qualified-architectural-interpretation",
         "parameterDefinitions": [],
         "qualifications": [
-          "A question under this account’s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
+          "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
         ],
         "evidence": [
           "E-admission",
@@ -119,10 +119,6 @@
         }
       ]
     },
-    "replacementOfferReference": {
-      "account": "ADMISSION-2",
-      "offerKey": "concurrent-callers-offer"
-    },
     "automaticRetarget": false,
     "citations": [
       "ADMISSION-1",
@@ -135,47 +131,10 @@
     ],
     "meaning": "Deliver original qualified offer and K explanation, with replacement reference. K substance cites its reporter. Partial delivery claims no exemption; additional context can be acquired before investigation. The correction does not independently establish whether this offer is unsuitable."
   },
-  "explicitReplacementOffer": {
-    "delivery": {
-      "address": {
-        "account": "ADMISSION-2",
-        "offerKey": "concurrent-callers-offer"
-      },
-      "basis": "cockatiel-pinned",
-      "accountQualifications": [
-        "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
-        "Default one-call recovery sampling with zero permitted counted failures.",
-        "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
-        "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
-        "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
-      ],
-      "offer": {
-        "key": "concurrent-callers-offer",
-        "label": "Concurrent callers and trial outcomes",
-        "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
-        "targets": [
-          {
-            "role": "focus",
-            "subject": {
-              "entity": "S"
-            }
-          }
-        ],
-        "method": "qualified-architectural-interpretation",
-        "parameterDefinitions": [],
-        "qualifications": [
-          "A question under this account’s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
-        ],
-        "evidence": [
-          "E-admission",
-          "E-default"
-        ]
-      }
-    },
-    "citations": [
-      "ADMISSION-2"
-    ],
-    "completeTargets": [],
-    "meaning": "Available through explicit selection of ADMISSION-2. Same local key and wording do not retarget the older request or assert offer correspondence."
+  "replacementHasNoOffer": {
+    "account": "ADMISSION-2",
+    "offers": [],
+    "absentOfferKey": "concurrent-callers-offer",
+    "meaning": "This submission already answers the question in TRIAL-1. No repeated offer, addressed-by field, or automatic migration is introduced; the historical ADMISSION-1 offer remains available."
   }
 }

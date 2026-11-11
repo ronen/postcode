@@ -16,14 +16,10 @@
         "interaction": {
           "form": "interaction/0",
           "required": true
-        },
-        "stateModel": {
-          "form": "state-behavior/0",
-          "required": false
         }
       },
       "referenceScope": "own-investigram",
-      "mapping": "Participants, declared order, alternatives and authored event labels map to the sequence. Every state-transition step must resolve through the explicitly bound stateModel; order alone does not imply causation."
+      "mapping": "Participants, declared order, alternatives and authored event labels map to the sequence. Resolve each state-transition step through its interaction/0 stateContent and transition references; these content dependencies require no duplicate presentation binding. Order alone does not imply causation."
     }
   }
 }

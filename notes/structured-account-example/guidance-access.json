@@ -116,10 +116,6 @@
         "interaction": {
           "account": "TRIAL-1",
           "contentKey": "concurrent-callers"
-        },
-        "stateModel": {
-          "account": "TRIAL-1",
-          "contentKey": "recovery"
         }
       },
       "availableForBoundedRender": [
@@ -128,5 +124,29 @@
       ]
     }
   ],
-  "replacementPolicy": "Metadata belongs to its exact owner. ADMISSION-1 offer references remain historical with K disclosure; ADMISSION-2 supplies its own offer. Presentation recommendations follow the same exact-owner rule, with no substitution by key. No new correction of TRIAL-1 is asserted by this probe."
+  "replacementPolicy": "Metadata belongs to its exact owner. ADMISSION-1 offer references remain historical with K disclosure; ADMISSION-2 has no repeated offer because TRIAL-1 already addresses it. Presentation recommendations follow the same exact-owner rule, with no substitution by key. No new correction of TRIAL-1 is asserted by this probe.",
+  "directDiagramSelections": [
+    {
+      "diagramType": "state-diagram/0",
+      "inputs": {
+        "model": {
+          "account": {
+            "account": "TRIAL-1"
+          },
+          "contentKey": "recovery"
+        }
+      }
+    },
+    {
+      "diagramType": "sequence-diagram/0",
+      "inputs": {
+        "interaction": {
+          "account": {
+            "account": "TRIAL-1"
+          },
+          "contentKey": "concurrent-callers"
+        }
+      }
+    }
+  ]
 }

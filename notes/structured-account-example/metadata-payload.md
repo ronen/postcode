@@ -34,7 +34,7 @@ Content, offers and presentations have separate address namespaces:
 
 Substantive investigator delivery cites the owning investigram. Human browsing alone does not. Metadata excerpts preserve own qualifications and the entry's support/qualifications, alongside basis and provenance. Correction-aware delivery still follows the existing disclosure rules; checking completeness alone does not authorize a correction.
 
-ADMISSION-1's offer remains with ADMISSION-1 after K. ADMISSION-2 supplies its own same-key offer; earlier invocations retain their original address. No guidance child, transfer, separate offer lifecycle or automatic rerun is introduced. Captured answers remain unchanged. The same exact-owner rule applies to presentation recommendations; the checker tests missing-original rejection with a same-key candidate, without asserting an additional architectural correction.
+ADMISSION-1's offer remains with ADMISSION-1 after K. ADMISSION-2 has no repeated offer because TRIAL-1 already addresses the question; earlier invocations retain their original address. Offers remain atemporal ‘find out more’ guidance, not necessarily unanswered next steps. No guidance child, transfer, separate offer lifecycle or automatic rerun is introduced. Captured answers remain unchanged. The same exact-owner rule applies to presentation recommendations; the checker tests missing-original rejection with a same-key candidate, without asserting an additional architectural correction.
 
 ## Diagrams use explicit inputs
 
@@ -43,13 +43,13 @@ The [bounded diagram catalogue](diagram-contracts.json) defines two input contra
 | Recommendation on TRIAL-1 | Diagram type | Exact content inputs |
 | --- | --- | --- |
 | `recovery-state` | `state-diagram/0` | `model` → TRIAL-1 / `recovery` |
-| `concurrent-callers` | `sequence-diagram/0` | `interaction` → TRIAL-1 / `concurrent-callers`; `stateModel` → TRIAL-1 / `recovery` |
+| `concurrent-callers` | `sequence-diagram/0` | `interaction` → TRIAL-1 / `concurrent-callers` |
 
-The second binding matters: the sequence contains state-transition steps, so its legend needs the recovery model's asserted transitions. It must not find that model by an unstated convention or infer transitions from the sequence. A state model is optional for interactions with no such steps; it is required when referenced. The graph is not duplicated in recommendation metadata.
+The interaction's state-transition steps already name `stateContent: "recovery"` and exact transition keys. Its content contract owns that dependency. The sequence generator follows these references, rather than duplicating them in recommendation metadata or inferring transitions. Missing or incompatible referenced content prevents rendering; no recommendation is needed to establish the dependency.
 
-The generator dispatches by the declared diagram type and resolves only the declared own-investigram model inputs. It still uses the fixture's qualified scope, evidence and entity labels. Current recommendations add no architectural limits beyond those already in the bound content and owner. They are suggestions, not a stronger contract imposed on the original offer.
+The generator dispatches by the selected diagram type and resolves primary inputs plus dependencies declared by their content contracts. It still uses the fixture's qualified scope, evidence and entity labels. Current recommendations add no architectural limits beyond those already in the bound content and owner. They are suggestions, not a stronger contract imposed on the original offer.
 
-Trial diagrams and legends regenerate unchanged. Composition remains the earlier fixed-entry rendering probe, with empty presentation metadata; this pass does not claim to convert it or implement cross-investigram diagram retrieval.
+Trial diagrams and legends regenerate unchanged both from recommendations and from explicit diagram/content selections with the owner's recommendations removed. The [access fixture](guidance-access.json) records these direct selections. Optional recommendations express usefulness; they do not authorize rendering. Adding a renderer or choosing a compatible diagram does not revise the investigram or require correction. An erroneous recommendation could warrant correction; a missing suggestion for a newly available diagram is not an error. Composition remains the earlier fixed-entry rendering probe, with empty presentation metadata; this pass does not claim to convert it or implement cross-investigram diagram retrieval.
 
 ## Checks and assessment
 
@@ -61,6 +61,6 @@ python3 notes/structured-account-example/composition/check-and-render.py
 python3 notes/structured-account-example/render-overviews.py
 ```
 
-The guidance check includes the existing partition, offer and association checks. It also rejects 26 malformed guidance/address copies across both partitions, checks omitted or altered own metadata and missing/mismatched basis/provenance, and confirms access does not mutate retained fixtures. The composition/selector checks remain separate. Rendering checks reproduce the committed diagram sources, legends and traceability; the existing SVGs are unchanged.
+The guidance check includes the existing partition, offer and association checks. It also rejects 32 malformed guidance/address copies across both partitions, checks omitted or altered own metadata and missing/mismatched basis/provenance, and confirms access does not mutate retained fixtures. The composition/selector checks remain separate. Rendering checks reproduce the committed diagram sources, legends and traceability; the existing SVGs are unchanged.
 
 The split now has a concrete use: architectural claims remain in content, while offers and rendering intentions concern their exact owner. It needs no special guidance lifecycle. The cost is explicit address and delivery rules, which would be necessary even if metadata stayed embedded in content. This supports the proposed organization without establishing that it is a general schema. Cross-investigram diagram inputs, broader catalogue design, live investigator acceptance and product retention/API validation remain untested. Existing governing/identity and support-selection questions are not resolved by these fixtures.

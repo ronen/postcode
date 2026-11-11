@@ -140,8 +140,8 @@ delivered to its caller.
 ## 3. Return a complete replacement and a separate organizing claim
 
 The follow-up returns ADMISSION-2 with the missing Half-open waiting case. It
-also repeats the unchanged state descriptions, orientation, inspection content and
-qualified follow-up offer. Repeating the offer key does not retarget an old invocation.
+also repeats the unchanged state descriptions, orientation and inspection content.
+It has no repeated follow-up offer: this submission already supplies TRIAL-1's answer.
 Those descriptions now reference existing S/S-open/S-closed; they do not allocate
 new subjects. This deliberately exposes the duplication cost of correcting a large
 investigram. More importantly, an investigation receiving just its identifying

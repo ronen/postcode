@@ -113,10 +113,11 @@ make four distinctions:
   omits full target/replacement content and claims no complete-context exemption.
   Further context remains requestable before investigation. A correction of the
   containing investigram is not a separate finding that this particular offer is unsuitable.
-- **Explicit selection of the replacement offer:** ADMISSION-2 repeats the offer with
-  the same local key and wording, now referencing retained S. This is metadata of a
-  different investigram. Matching keys do not silently redirect an older request or
-  assert a retained correspondence between offers.
+- **Replacement without a repeated offer:** ADMISSION-2 has an empty `offers` list
+  because TRIAL-1 from this submission already addresses the question. Attempting to
+  select that offer on ADMISSION-2 fails; it does not fall back to ADMISSION-1.
+  This is an authoring choice, not a prohibition on useful reinvestigation or a rule
+  that offers must be temporally "next". No `addressedBy` field is needed here.
 
 Exact ANSWER-1 preserves its original investigram and offer under its captured revision
 context. That is distinct from correction-aware investigator delivery of historical
@@ -127,11 +128,11 @@ patched or reparented.
 ## What this checks
 
 The existing checker validates offer metadata, support, qualifications, subject reference
-resolution and the stipulated method. It resolves both follow-up invocations and
+resolution and the stipulated method. It resolves the follow-up invocation in both partitions and
 checks excerpt preservation, provenance, complete-target distinctions and exact versus
 replacement access. Ten additional malformed offer submissions/requests are rejected,
 including label-as-key selection, a non-offer content key, missing original despite a
-same-key successor, unsupported method, undeclared parameters and architectural focus
+hypothetical same-key successor, unsupported method, undeclared parameters and architectural focus
 mistaken for the invocation subject.
 
 This makes one prose-like request concrete through retained content. It does not

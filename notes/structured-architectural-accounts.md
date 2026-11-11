@@ -1301,3 +1301,24 @@ behavior, cross-investigram rendering or a general presentation retrieval strate
 The structure looks more coherent because each responsibility has a concrete owner;
 address and delivery semantics remain its main complexity. Previously recorded governing,
 identity, support-selection and correction-standing questions remain open.
+
+
+## 2026-11-11 — Review: offers already addressed and optional recommendations
+
+The human authorized removing ADMISSION-2's redundant concurrent-callers offer: this
+submission already supplies TRIAL-1. Historical ADMISSION-1 guidance remains accessible.
+This is not a universal ban on reinvestigation or a change from atemporal "find out more"
+to "next steps". No addressed-by field or extra guidance lifecycle is introduced.
+
+The earlier metadata pass duplicated the interaction's `stateContent` dependency in a
+presentation `stateModel` binding. That binding is removed. The content contract owns
+exact model/transition references; the diagram resolver follows them with form/reference
+validation, without inference. Direct diagram/content selections now render both trial
+diagrams unchanged with recommendations removed, in both partitions. Recommendations
+express investigator judgment of usefulness rather than permission to render.
+
+Adding a renderer or choosing a compatible diagram does not revise the investigram or
+require correction. Historical metadata remains immutable. An erroneous recommendation
+could warrant correction, but a missing suggestion for a new renderer is not an error.
+The authored checkers exercise these boundaries; product behavior and general cross-
+investigram presentation retrieval remain outside this pass.

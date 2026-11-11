@@ -530,7 +530,7 @@
                     "key": "ordinary-work",
                     "kind": "action",
                     "actor": "breaker",
-                    "text": "With Closed still current, invoke the waiting caller’s supplied work",
+                    "text": "With Closed still current, invoke the waiting caller\u2019s supplied work",
                     "evidence": [
                       "E-admission",
                       "E-half-open"
@@ -600,7 +600,7 @@
             ],
             "notShown": [
               "Delivery order of results to the trial caller",
-              "Completion or result of the concurrent caller’s work on the success branch",
+              "Completion or result of the concurrent caller\u2019s work on the success branch",
               "Other scheduling interleavings"
             ],
             "evidence": [
@@ -646,12 +646,6 @@
                   "submittedAccount": "trial"
                 },
                 "contentKey": "concurrent-callers"
-              },
-              "stateModel": {
-                "account": {
-                  "submittedAccount": "trial"
-                },
-                "contentKey": "recovery"
               }
             },
             "qualifications": [
@@ -951,30 +945,7 @@
           }
         ],
         "children": [],
-        "offers": [
-          {
-            "key": "concurrent-callers-offer",
-            "label": "Concurrent callers and trial outcomes",
-            "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
-            "targets": [
-              {
-                "role": "focus",
-                "subject": {
-                  "entity": "S"
-                }
-              }
-            ],
-            "method": "qualified-architectural-interpretation",
-            "parameterDefinitions": [],
-            "qualifications": [
-              "A question under this account’s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
-            ],
-            "evidence": [
-              "E-admission",
-              "E-default"
-            ]
-          }
-        ],
+        "offers": [],
         "presentations": []
       }
     ],

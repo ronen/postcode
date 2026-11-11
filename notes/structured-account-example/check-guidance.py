@@ -66,12 +66,31 @@ for directory in [BASE, BASE / 'children']:
         rec = plan['recommendation']; expected = expected_plans[rec['key']]
         assert rec['diagramType'] == expected['diagramType']
         assert {role: {'account': addr['account']['account'], 'contentKey': addr['contentKey']} for role, addr in rec['inputs'].items()} == expected['bindings']
-        assert {item['key'] for item, _ in plan['inputs'].values()} == set(expected['availableForBoundedRender'])
-    # The consumer receives only declared models; no content lookup by label or recovery convention.
+        assert {item['key'] for item, _ in list(plan['inputs'].values()) + list(plan['dependencies'].values())} == set(expected['availableForBoundedRender'])
+    # The same inputs work without retained recommendations; resolve only content-declared dependencies.
+    bare = copy.deepcopy(registry['TRIAL-1']); bare['presentations'] = []
+    direct = [g['diagram_plan'](bare, x['diagramType'], x['inputs'], 'TRIAL-1') for x in access['directDiagramSelections']]
+    assert direct == [{k: v for k, v in plan.items() if k != 'recommendation'} for plan in plans]
+    sequence_selection = access['directDiagramSelections'][1]
+    # A changed local key works when the content references change with it: no recovery-name convention.
+    renamed = copy.deepcopy(bare)
+    next(i for i in renamed['content'] if i['key'] == 'recovery')['key'] = 'renamed-model'
+    interaction = next(i for i in renamed['content'] if i['key'] == 'concurrent-callers')
+    for step in interaction['prefix'] + [s for b in interaction['alternatives'] for s in b['steps']]:
+        if step['kind'] == 'state-transition':
+            step['stateContent'] = 'renamed-model'
+    resolved = g['diagram_plan'](renamed, sequence_selection['diagramType'], sequence_selection['inputs'], 'TRIAL-1')
+    assert set(resolved['dependencies']) == {'renamed-model'}
+    for label, mutate in {
+        'missing state content': lambda a: a['content'].__setitem__(slice(None), [i for i in a['content'] if i['key'] != 'recovery']),
+        'wrong dependency form': lambda a: next(i for i in a['content'] if i['key'] == 'recovery').update(form='prose/0'),
+        'unknown transition': lambda a: next(i for i in a['content'] if i['key'] == 'recovery').update(transitions=[]),
+    }.items():
+        invalid = copy.deepcopy(bare); mutate(invalid)
+        rejected(label, lambda: g['diagram_plan'](invalid, sequence_selection['diagramType'], sequence_selection['inputs'], 'TRIAL-1'))
     changed = copy.deepcopy(registry['TRIAL-1'])
-    sequence = changed['presentations'][1]
-    sequence['inputs'].pop('stateModel')
-    rejected('undeclared sequence state dependency', lambda: g['presentation_plans'](changed, 'TRIAL-1'))
+    changed['presentations'][1]['inputs']['stateModel'] = {'account': {'account': 'TRIAL-1'}, 'contentKey': 'recovery'}
+    rejected('duplicate presentation dependency binding', lambda: g['presentation_plans'](changed, 'TRIAL-1'))
     for name, mutate in {
         'unknown diagram': lambda a: a['presentations'][0].update(diagramType='invented/0'),
         'missing input': lambda a: a['presentations'][0]['inputs'].clear(),
@@ -89,6 +108,7 @@ for directory in [BASE, BASE / 'children']:
     shadow = copy.deepcopy(registry)
     shadow['ADMISSION-1']['content'].append({'key':'concurrent-callers-offer','form':'prose/0','text':'not an offer'})
     assert g['metadata_excerpt'](shadow, old_offer['address'], old_offer['basis'], old_offer['provenance']) == old_offer
+    shadow['ADMISSION-2']['offers'] = copy.deepcopy(shadow['ADMISSION-1']['offers'])
     shadow['ADMISSION-1']['offers'] = []
     rejected('content/replacement fallback', lambda: g['metadata_excerpt'](shadow, old_offer['address'], old_offer['basis'], old_offer['provenance']))
     rejected('content address used for metadata', lambda: g['metadata_excerpt'](registry, {'account':'TRIAL-1','contentKey':'recovery-state'}, actual['basis'], actual['provenance']))

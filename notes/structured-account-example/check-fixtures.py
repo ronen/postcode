@@ -139,6 +139,7 @@ def check_result(document, bindings, known_entities, earlier, supplied, evidence
                                 assert step[field] in participants
                         if step['kind'] == 'state-transition':
                             model = own_items[step['stateContent']]
+                            assert model['form'] == 'state-behavior/0', 'incompatible content dependency'
                             assert step['transition'] in {t['key'] for t in model['transitions']}
                         prior.add(step['key'])
                     return prior
@@ -192,7 +193,7 @@ def check_offer_chain(directory, accounts):
     assert set(provenance['outputs']) == set(ledger['followupAcceptance']['accountIds'].values())
     access = read(directory / 'offer-access.json')
     assert access['exactAnswer']['offer'] == resolved['offer']
-    for key in ['offerOnlyBeforeCorrection', 'freshOriginalOfferAfterCorrection', 'explicitReplacementOffer']:
+    for key in ['offerOnlyBeforeCorrection', 'freshOriginalOfferAfterCorrection']:
         delivery = access[key]['delivery']; address = delivery['address']
         original = accounts[address['account']]
         content = copy.deepcopy(next(i for i in original['offers'] if i['key'] == address['offerKey']))
@@ -205,7 +206,6 @@ def check_offer_chain(directory, accounts):
         assert delivery['basis'] == ledger['basis']['id']
         assert access[key]['completeTargets'] == [], 'offer alone is not complete delivery'
     assert access['offerOnlyBeforeCorrection']['citations'] == ['ADMISSION-1']
-    assert access['explicitReplacementOffer']['citations'] == ['ADMISSION-2']
     fresh = access['freshOriginalOfferAfterCorrection']
     assert fresh['delivery']['address'] == resolved['offer'] and fresh['automaticRetarget'] is False
     assert fresh['completeCorrectionContext'] is False and fresh['omissions']
@@ -217,11 +217,15 @@ def check_offer_chain(directory, accounts):
     assert fresh['revisionNotice']['relationship'] == ledger['followupAcceptance']['relationshipIds'][correction['key']]
     for field in ['replacement', 'reporter']:
         assert fresh['revisionNotice'][field] == ledger['followupAcceptance']['accountIds'][correction[field]['submittedAccount']]
-    replacement = fresh['replacementOfferReference']
-    assert replacement == access['explicitReplacementOffer']['delivery']['address']
-    assert replacement['offerKey'] == resolved['offer']['offerKey'] and replacement['account'] != resolved['offer']['account']
-    explicit = copy.deepcopy(request); explicit['subject'] = {'account': replacement['account']}
-    assert resolve_offer_request(explicit, accounts, bindings)['offer'] == replacement
+    absent = access['replacementHasNoOffer']
+    assert accounts[absent['account']]['offers'] == absent['offers'] == []
+    explicit = copy.deepcopy(request); explicit['subject'] = {'account': absent['account']}
+    try:
+        resolve_offer_request(explicit, accounts, bindings)
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError('Absent replacement offer resolved through historical content')
     complete = {x['account'] for x in request['suppliedAccountContext'] if isinstance(x, dict)}
     assert complete == set(access['actualFollowup']['completeTargets'])
     assert 'ADMISSION-1' in complete
@@ -329,7 +333,7 @@ offer_request_mutations = {
     'architectural target as invocation subject': lambda r, a: r.update(subject={'entity': 'S'}),
     'unknown operation': lambda r, a: r.update(operation='arbitrary-question'),
     'undeclared user parameters': lambda r, a: r['parameters'].update(values={'question': 'another question'}),
-    'missing original with same-key replacement': lambda r, a: a.pop('ADMISSION-1'),
+    'missing original with same-key replacement': lambda r, a: (a['ADMISSION-2'].update(offers=copy.deepcopy(a['ADMISSION-1']['offers'])), a.pop('ADMISSION-1')),
     'unsupported method': lambda r, a: a['ADMISSION-1']['offers'][0].update(method='undeclared-method'),
 }
 for name, mutate in offer_request_mutations.items():

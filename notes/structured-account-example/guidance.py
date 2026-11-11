@@ -19,45 +19,53 @@ def validate_offer(offer):
     assert set(offer['targets'][0]['subject']) in [{'entity'}, {'introducedEntity'}]
 
 
+def diagram_plan(account, diagram_type, bindings, owner_id=None):
+    """Resolve primary inputs and their declared content dependencies, without guidance."""
+    assert diagram_type in DIAGRAMS, 'unsupported diagram type'
+    rules = DIAGRAMS[diagram_type]['inputs']
+    assert set(bindings) <= set(rules), 'unknown diagram input role'
+    assert {k for k, v in rules.items() if v['required']} <= set(bindings), 'missing required diagram input'
+    items = {i['key']: (i, n) for n, i in enumerate(account['content'])}
+    inputs = {}
+    for role, address in bindings.items():
+        assert set(address) == {'account', 'contentKey'}, 'diagram input must address content, not metadata/entity alone'
+        owner = address['account']
+        local_match = owner == {'submittedAccount': account.get('key')} and 'key' in account
+        retained_match = owner_id is not None and owner == {'account': owner_id}
+        assert local_match or retained_match, 'input outside supported own-investigram scope'
+        assert address['contentKey'] in items, 'missing exact diagram content'
+        item, index = items[address['contentKey']]
+        assert item['form'] == rules[role]['form'], 'incompatible diagram input form'
+        inputs[role] = (item, index)
+    dependencies = {}
+    if diagram_type == 'sequence-diagram/0':
+        interaction = inputs['interaction'][0]
+        steps = interaction['prefix'] + [s for b in interaction['alternatives'] for s in b['steps']]
+        for step in steps:
+            if step['kind'] != 'state-transition':
+                continue
+            model, index = items[step['stateContent']]
+            assert model['form'] == 'state-behavior/0', 'incompatible content dependency'
+            assert step['transition'] in {t['key'] for t in model['transitions']}, 'unknown referenced transition'
+            dependencies[step['stateContent']] = (model, index)
+    return {'diagramType': diagram_type, 'inputs': inputs, 'dependencies': dependencies}
+
+
 def presentation_plans(account, owner_id=None):
-    """Validate declared bindings, returning only those inputs; never find extra models."""
+    """Recommendations select primary inputs; content contracts own dependencies."""
     assert 'offers' in account and 'presentations' in account, 'metadata arrays must be explicit'
     for name in ['offers', 'presentations']:
         assert len({x['key'] for x in account[name]}) == len(account[name]), 'duplicate metadata key'
     for offer in account['offers']:
         validate_offer(offer)
-    items = {i['key']: (i, n) for n, i in enumerate(account['content'])}
-    assert all(i['form'] != 'investigation-offer/0' for i, _ in items.values()), 'offer in interpretation content'
+    assert all(i['form'] != 'investigation-offer/0' for i in account['content']), 'offer in interpretation content'
     plans = []
     for rec in account['presentations']:
         assert set(rec) == {'key', 'diagramType', 'inputs', 'qualifications', 'evidence'}, 'invalid presentation metadata fields'
         assert rec['key'] and rec['qualifications'] and rec['evidence'], 'unqualified recommendation'
-        assert rec['diagramType'] in DIAGRAMS, 'unsupported diagram type'
-        rules = DIAGRAMS[rec['diagramType']]['inputs']
-        assert set(rec['inputs']) <= set(rules), 'unknown diagram input role'
-        assert {k for k, v in rules.items() if v['required']} <= set(rec['inputs']), 'missing required diagram input'
-        inputs = {}
-        for role, address in rec['inputs'].items():
-            assert set(address) == {'account', 'contentKey'}, 'diagram input must address content, not metadata/entity alone'
-            owner = address['account']
-            local_match = owner == {'submittedAccount': account.get('key')} and 'key' in account
-            retained_match = owner_id is not None and owner == {'account': owner_id}
-            assert local_match or retained_match, 'input outside supported own-investigram scope'
-            assert address['contentKey'] in items, 'missing exact diagram content'
-            item, index = items[address['contentKey']]
-            assert item['form'] == rules[role]['form'], 'incompatible diagram input form'
-            inputs[role] = (item, index)
-        if rec['diagramType'] == 'sequence-diagram/0':
-            interaction = inputs['interaction'][0]
-            steps = interaction['prefix'] + [s for b in interaction['alternatives'] for s in b['steps']]
-            for step in steps:
-                if step['kind'] != 'state-transition':
-                    continue
-                assert 'stateModel' in inputs, 'undeclared state-model dependency'
-                model = inputs['stateModel'][0]
-                assert step['stateContent'] == model['key'], 'transition names an unbound model'
-                assert step['transition'] in {t['key'] for t in model['transitions']}, 'unknown bound transition'
-        plans.append({'recommendation': rec, 'inputs': inputs})
+        plan = diagram_plan(account, rec['diagramType'], rec['inputs'], owner_id)
+        plan['recommendation'] = rec
+        plans.append(plan)
     return plans
 
 
