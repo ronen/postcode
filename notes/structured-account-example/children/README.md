@@ -37,6 +37,10 @@ delivered without INTRO-1 or ADMISSION-1; its meaning does not depend on inherit
 the root's qualifications. The root has substantive orientation content and describes
 P, rather than merely serving as a list of children.
 
+INTRO-1 likewise qualifies only its orientation: the state/progress distinction is
+not restricted to default sampling. Admission-specific sampling and interference
+limits remain on ADMISSION-1; the root does not assert its admission rules.
+
 The definition child's qualifications are selected for its own claims, not copied
 from the behavioral sibling. Its state-category designations are not restricted to
 default sampling; it does not specify admission outcomes or transition rules for

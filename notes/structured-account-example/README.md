@@ -127,6 +127,15 @@ local terms may stay embedded. This does not require forecasting later queries,
 one child per subject, or semantic independence. The paired children variant now
 exercises that recommendation, retaining this payload as the comparison.
 
+The mixed partition also couples qualification scope: the state descriptions in both
+ADMISSION-1 and ADMISSION-2 inherit the account-level default-sampling restriction,
+even though that restriction is needed for their behavioral claims rather than for
+state-category identification. Excerpting a description cannot remove that limit.
+Separate identifying children allow independently supported descriptions to carry
+their own applicable qualifications while admission behavior remains bounded. This
+is a second benefit alongside the cited-unit benefit, not permission to broaden a
+claim merely by moving it to a child.
+
 K is a **qualified account-relationship record** with these concrete fields:
 
 | Field | Value |

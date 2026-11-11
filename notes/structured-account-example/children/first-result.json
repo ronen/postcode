@@ -32,22 +32,19 @@
         ],
         "qualifications": [
           "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
-          "Default one-call recovery sampling with zero permitted counted failures.",
-          "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
-          "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
-          "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+          "Orientation distinguishing policy state categories from individual execution progress at the pinned revision; this distinction is not restricted to default sampling and does not establish observed runtime state or application success.",
+          "The identifying and behavioral children state their own applicable qualifications. This root locates those accounts without specifying admission outcomes, sampling limits or transition rules."
         ],
         "evidence": [
           "E-state",
-          "E-admission",
-          "E-default"
+          "E-admission"
         ],
         "content": [
           {
             "key": "orientation",
             "form": "prose/0",
             "concept": "interface",
-            "text": "The policy governs admission of application-supplied work. Stored state categories and the progress of an individual execution are distinct. The identifying descriptions and admission account below address these two aspects under the stated scope.",
+            "text": "The policy governs admission of application-supplied work. Stored state categories and the progress of an individual execution are distinct. The identifying descriptions and admission account below address these two aspects, each under its own stated scope.",
             "evidence": [
               "E-state",
               "E-admission"
