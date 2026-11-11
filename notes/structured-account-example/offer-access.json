@@ -1,0 +1,186 @@
+{
+  "status": "Authored access probes, not additional executed investigations. Retained subject references in delivered offers are resolved on acceptance.",
+  "exactAnswer": {
+    "answer": "ANSWER-1",
+    "offer": {
+      "account": "ADMISSION-1",
+      "contentKey": "concurrent-callers-offer"
+    },
+    "capturedRevisionContext": "Before K; the original account and offer remain in this exact human-facing answer. Investigator retrieval of historical content still requires applicable current correction disclosure."
+  },
+  "offerOnlyBeforeCorrection": {
+    "delivery": {
+      "address": {
+        "account": "ADMISSION-1",
+        "contentKey": "concurrent-callers-offer"
+      },
+      "basis": "cockatiel-pinned",
+      "accountQualifications": [
+        "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+        "Default one-call recovery sampling with zero permitted counted failures.",
+        "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+        "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+        "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+      ],
+      "content": {
+        "key": "concurrent-callers-offer",
+        "form": "investigation-offer/0",
+        "concept": "investigation-guidance",
+        "label": "Concurrent callers and trial outcomes",
+        "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
+        "targets": [
+          {
+            "role": "focus",
+            "subject": {
+              "subject": "S"
+            }
+          }
+        ],
+        "method": "qualified-architectural-interpretation",
+        "parameterDefinitions": [],
+        "qualifications": [
+          "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
+        ],
+        "evidence": [
+          "E-admission",
+          "E-default"
+        ]
+      }
+    },
+    "citations": [
+      "ADMISSION-1"
+    ],
+    "completeTargets": [],
+    "meaning": "An offer excerpt is substantive originating-account exposure, but not complete-own-content delivery."
+  },
+  "actualFollowup": {
+    "request": "context-and-bindings.json#/followupRequest",
+    "resolution": "context-and-bindings.json#/followupResolution",
+    "completeTargets": [
+      "ADMISSION-1"
+    ],
+    "meaning": "The existing request supplies complete own content separately; eligibility does not come from the operation subject or offer key."
+  },
+  "freshOriginalOfferAfterCorrection": {
+    "delivery": {
+      "address": {
+        "account": "ADMISSION-1",
+        "contentKey": "concurrent-callers-offer"
+      },
+      "basis": "cockatiel-pinned",
+      "accountQualifications": [
+        "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+        "Default one-call recovery sampling with zero permitted counted failures.",
+        "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+        "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+        "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+      ],
+      "content": {
+        "key": "concurrent-callers-offer",
+        "form": "investigation-offer/0",
+        "concept": "investigation-guidance",
+        "label": "Concurrent callers and trial outcomes",
+        "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
+        "targets": [
+          {
+            "role": "focus",
+            "subject": {
+              "subject": "S"
+            }
+          }
+        ],
+        "method": "qualified-architectural-interpretation",
+        "parameterDefinitions": [],
+        "qualifications": [
+          "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
+        ],
+        "evidence": [
+          "E-admission",
+          "E-default"
+        ]
+      }
+    },
+    "revisionNotice": {
+      "relationship": "K",
+      "target": "ADMISSION-1",
+      "replacement": "ADMISSION-2",
+      "reporter": "TRIAL-1",
+      "reason": "ADMISSION-1 presents its cases as covering admission in this scope, but omits waiting while the single trial is occupied. ADMISSION-2 includes that outcome and the subsequent admission recheck. This does not claim that every statement of ADMISSION-1 was wrong.",
+      "qualifications": [
+        "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+        "Default one-call recovery sampling with zero permitted counted failures.",
+        "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+        "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+        "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+      ],
+      "evidence": [
+        "E-half-open",
+        "E-admission",
+        "E-outcomes",
+        {
+          "account": "ADMISSION-1"
+        }
+      ]
+    },
+    "replacementOfferReference": {
+      "account": "ADMISSION-2",
+      "contentKey": "concurrent-callers-offer"
+    },
+    "automaticRetarget": false,
+    "citations": [
+      "ADMISSION-1",
+      "TRIAL-1"
+    ],
+    "completeTargets": [],
+    "completeCorrectionContext": false,
+    "omissions": [
+      "Full target and replacement own content; full reporter content."
+    ],
+    "meaning": "Deliver original qualified offer and K explanation, with replacement reference. K substance cites its reporter. Partial delivery claims no exemption; additional context can be acquired before investigation. The correction does not independently establish whether this offer is unsuitable."
+  },
+  "explicitReplacementOffer": {
+    "delivery": {
+      "address": {
+        "account": "ADMISSION-2",
+        "contentKey": "concurrent-callers-offer"
+      },
+      "basis": "cockatiel-pinned",
+      "accountQualifications": [
+        "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+        "Default one-call recovery sampling with zero permitted counted failures.",
+        "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+        "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+        "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+      ],
+      "content": {
+        "key": "concurrent-callers-offer",
+        "form": "investigation-offer/0",
+        "concept": "investigation-guidance",
+        "label": "Concurrent callers and trial outcomes",
+        "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
+        "targets": [
+          {
+            "role": "focus",
+            "subject": {
+              "subject": "S"
+            }
+          }
+        ],
+        "method": "qualified-architectural-interpretation",
+        "parameterDefinitions": [],
+        "qualifications": [
+          "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
+        ],
+        "evidence": [
+          "E-admission",
+          "E-default"
+        ]
+      }
+    },
+    "citations": [
+      "ADMISSION-2"
+    ],
+    "completeTargets": [],
+    "meaning": "Available through explicit selection of ADMISSION-2. Same local key and wording do not retarget the older request or assert offer correspondence."
+  }
+}

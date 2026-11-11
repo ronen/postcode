@@ -214,9 +214,10 @@ and does not establish correction eligibility.
 
 ## 3. The caller selects follow-up context
 
-The human selects Half-open through a structured UI affordance and chooses an offered
-concurrent-callers investigation; the prose question below explains its meaning,
-not text the human must type. CLI handles or GUI menus/badges are possible affordances
+The human chooses ADMISSION-1's retained `concurrent-callers-offer`, which targets
+Half-open S. The illustrative Follow-up investigation request names that exact
+account and offer key; the prose question below explains its meaning, not text the
+human must type. CLI handles or GUI menus/badges are possible affordances
 whose design is deferred.
 
 For this path, the caller constructs the request from ANSWER-1. It explicitly names
@@ -226,7 +227,9 @@ structural context choice, not analysis establishing relevance or exhaustiveness
 
 | Request component | Concrete value |
 | --- | --- |
-| Subject | S. |
+| Invocation subject | ADMISSION-1. |
+| Lens and parameter | Follow-up investigation; `offerKey: concurrent-callers-offer`; no additional values. |
+| Architectural focus | S, resolved from the retained offer. |
 | Information need | Concurrent callers and trial outcomes in default single-trial recovery. |
 | Selected prior interpretation | DEFINITIONS-1 and ADMISSION-1, by exact reference. |
 | Architectural basis | Captured project/revision and actual originating analysis context. |
@@ -262,8 +265,9 @@ Bare IDs do not create content exposure; substantive titles/descriptions and ret
 content do. Discovering ADMISSION-1 enables further inspection, not a guarantee that
 the investigator notices its omission or corrects it.
 
-Give the information need declared Lens/operation meaning. Fixed questions may need
-no free-form parameters; meaningful variations and context selection must enter
+The [concrete offer chain](structured-account-example/offered-followup.md) now gives
+this information need declared Lens/operation meaning through exact retained content.
+Fixed questions may need no free-form parameters; meaningful variations and context selection must enter
 request/reuse identity. S alone cannot identify the effective request.
 
 M is known from actual originating evaluations and can remain an explicit analysis-entry
@@ -301,7 +305,8 @@ account follow-up do not bypass this actual-delivery check.
 
 ## 4. New role definitions, behavior and correction
 
-The investigation is selected on Half-open S, but its findings can add qualified
+The offered investigation concerns Half-open S, while its invocation selects
+ADMISSION-1 and the offer key. Its findings can add qualified
 items to Circuit Breaker P or explicitly correct P's earlier items. Output associations
 need not equal the input subject. Here TRIAL-1 adds understanding while ADMISSION-2
 replaces the identified ADMISSION-1; both remain associated with their declared subjects.

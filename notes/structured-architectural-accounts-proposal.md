@@ -687,6 +687,14 @@ revision/reconsideration status; do not silently substitute an identically named
 offer from a replacement account. Offers remain within supported investigative
 capabilities rather than creating executable operations by declaration.
 
+The [bounded retained-offer example](structured-account-example/offered-followup.md)
+now exercises this account-content implication in both partitions: ADMISSION-1 returns
+an offer, the existing follow-up invokes it, and ADMISSION-2 repeats its key without
+retargeting the original. Access probes distinguish an offer excerpt, complete own
+content, captured answers and fresh correction disclosure. No global offer-discovery
+system or initial admission-entry design is added to the remit. Other illustrative
+request paths retain their documented assumptions.
+
 The composition probe supplies concrete scoping evidence: P/B is an unordered set of
 component kinds for a question covering both orders, with no outer/inner meaning in
 input position. Its output introduces C-BB and C-BH as qualified ordered-pattern
@@ -775,9 +783,10 @@ ADMISSION-1 is found or available for correction.
 ### Sequence — the definition-child alternative
 
 This sequence uses INTRO-1/DEFINITIONS-1 and TRIAL-RESULT-1/ROLE-DEFINITIONS-1
-from the earlier child walkthrough. The complete JSON payload deliberately uses the
-single-account alternative; their account IDs/composition must not be mixed. Both
-exercise the same introduction, follow-up, correction and retained-access obligations.
+from the child walkthrough. Complete JSON fixtures now exercise both this partition
+and the mixed-account alternative in separate hypothetical Sessions; their account
+IDs/composition must not be mixed. Both exercise the same introduction, offered
+follow-up, correction and retained-access obligations.
 
 This adapts the [connected examples](initial-journey/cockatiel-account-examples.md).
 Their static Cockatiel account concerns the recorded revision; the waiting omission
@@ -792,16 +801,18 @@ and its discovery are staged. This proposal adds no verification of library beha
    DEFINITIONS-1 and ADMISSION-1 as children; explicit identifies associations locate
    the descriptions distinguishing S from an execution. ANSWER-1 fixes content and support.
    Other introduction/partition choices remain open in the broader design.
-3. **Follow-up.** The human selects S for concurrent callers and outcomes. The
-   walkthrough chooses a request on S whose caller explicitly selects DEFINITIONS-1
-   and ADMISSION-1 from ANSWER-1. An account follow-up focused on S remains an
-   alternative; no origin-free context-selection policy is settled. In either
-   case distinguish the subject, information need, selected descriptive context and
-   navigation origin. To correct ADMISSION-1, the investigator must receive the target's
+3. **Offered follow-up.** ADMISSION-1 returns `concurrent-callers-offer`, a qualified
+   content item targeting Half-open S. The illustrative Follow-up investigation Lens
+   takes ADMISSION-1 as invocation subject and the exact offer key as parameter; S
+   is its resolved architectural focus. The caller separately selects DEFINITIONS-1
+   and complete ADMISSION-1 from ANSWER-1 as context. `informationNeed` is explanatory
+   wording, not a prose request. Preserve the offer origin, architectural focus,
+   actual selected context and human navigation origin as distinct information.
+   To correct ADMISSION-1, the investigator must receive the target's
    complete own content, referent and qualifications, and obtain supporting program
    evidence. An ID or subject summary does not suffice. Existing account follow-up
-   also uses bounded delivery, so neither route guarantees correction eligibility
-   without checking what was actually supplied.
+   also uses bounded delivery. Offer invocation therefore does not guarantee correction
+   eligibility without checking what was actually supplied.
 4. **Extension and correction.** The follow-up reuses S, introduces the shared breaker
    instance and execution roles in ROLE-DEFINITIONS-1, and explains their behavior
    in TRIAL-1. Both are children of TRIAL-RESULT-1. The result also supplies
@@ -866,9 +877,9 @@ identify the correction and provide reason/support; new detail or a shared subje
 does not automatically imply replacement. PostCode checks delivery eligibility and
 submission validity without thereby establishing the correction's truth.
 
-Agreement in discussion: an investigation selected on Half-open S can return one
+Agreement in discussion: an investigation concerning Half-open S can return one
 or more qualified items associated with Circuit Breaker P, explicitly as additions
-or as replacements correcting exact earlier investigrams. The selected subject
+or as replacements correcting exact earlier investigrams. The architectural focus
 guides the information need; it does not restrict output associations to that subject.
 An addition preserves earlier items without implying error. A correction identifies
 its target, replacement, reason and support and meets the complete-delivery rules;

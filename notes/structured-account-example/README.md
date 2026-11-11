@@ -64,11 +64,18 @@ mistake; the claim that they cover admission in this scope is.** Waiting during 
 occupied trial is missing. A merely partial table without that coverage claim might
 warrant an addition rather than a correction.
 
-For this pass all six content items belong to one investigram. Their local keys make
+For this pass all content items, including the retained investigation offer, belong to one investigram. Their local keys make
 them addressable within content; they do not make them independently correctable
 investigrams. No child investigrams are returned.
 
 ## 2. Select Half-open S and investigate concurrent callers
+
+ADMISSION-1 now returns the qualified `concurrent-callers-offer` item. The illustrative
+Follow-up investigation request selects ADMISSION-1 and that exact key; the offer
+resolves its architectural focus to S. The prose `informationNeed` documents its
+meaning, not user input. See the [bounded offer chain](offered-followup.md) and
+[access probe](offer-access.json) for qualification, provenance and replacement handling.
+
 
 The follow-up receives S, its identifying account, and the **complete own content of
 ADMISSION-1**, including qualifications and structured parts. This establishes the
@@ -114,7 +121,8 @@ delivered to its caller.
 ## 3. Return a complete replacement and a separate organizing claim
 
 The follow-up returns ADMISSION-2 with the missing Half-open waiting case. It
-also repeats the unchanged state descriptions, orientation and inspection content.
+also repeats the unchanged state descriptions, orientation, inspection content and
+qualified follow-up offer. Repeating the offer key does not retarget an old invocation.
 Those descriptions now reference existing S/S-open/S-closed; they do not allocate
 new subjects. This deliberately exposes the duplication cost of correcting a large
 investigram. More importantly, an investigation receiving just its identifying

@@ -136,10 +136,44 @@ This remains a recommendation, not an adopted schema rule. The [children variant
 now exercises ownership, independent qualification and support selection in authored
 fixtures. The mixed-account fixture remains a comparison; neither is application input.
 
+<a id="retained-investigation-offer"></a>
+## Retained investigation offer — bounded example
+
+The [offered follow-up](offered-followup.md) adds `investigation-offer/0`: a keyed
+content item with label, purpose, architectural targets and their roles, a supported
+method reference, declared additional parameters, qualifications and evidence.
+This slice declares one focus target and no additional parameters. It is deliberately
+not a general schema or an implemented Lens catalogue. `investigation-guidance` is
+an illustrative content classification, not a claim about the program's architecture.
+
+The offer key uses the existing account-local content-key namespace. Acceptance
+resolves introduced subjects as elsewhere in the submission. Invocation identifies
+the exact retained account and offer key, with only declared parameter values; names
+and purpose text are not lookup keys. The sample stipulates one supported method:
+an agent cannot create another capability merely by naming it. The architectural
+focus comes from the retained offer, independently of the account playing the request
+subject role. Extra offers and the application discovery mechanism are outside this
+probe; its purpose is to exercise qualified returned content and exact reference use.
+
+An offer remains subject to its containing account's basis, qualifications, whole-
+account correction and exposure rules. Delivering the substantive offer cites that
+account, but is not automatically complete-target delivery. Complete own-content
+delivery includes retained offers as well as other content forms. Knowing the offer's
+source does not establish a human navigation origin or prove all source content was
+supplied. Preserve actual deliveries and exact offer provenance separately.
+
+A replacement may repeat an offer key. That creates an address in the replacement,
+not automatic migration or asserted continuity of the older offer. Retain access to
+the original, disclose applicable correction context when supplying its content,
+and distinguish partial from complete correction-context delivery. Exact captured
+answers preserve their original selection. Fresh inspection does not independently
+establish whether an offer is affected by its containing account's correction.
+
 ## Forms in this example
 
 | Form | Information to supply | What it does not imply |
 | --- | --- | --- |
+| `investigation-offer/0` | Exact local key, label/purpose, qualified targets, supported method and declared parameters, with evidence | A new executable capability, complete source-account delivery, or automatic retargeting to a replacement |
 | `subject-description/0` | Subject reference, name, identifying description, classification, relevant context (`relativeTo`), evidence; explicit introduction flag when allocating a new subject | Unique discovery, canonical definition, or independent correction unit |
 | `prose/0` | Keyed explanatory text under the appropriate concept, with support and qualifications | Missing graph or interaction structure can be invented from the text |
 | `admission-cases/0` | Explicit coverage claim; optional form-local roles and their scope; keyed cases with state, condition, outcome, optional resulting state/relationship, and evidence; separately qualified scenario illustrations | A complete state machine, universal interface model, or general claim bound to an illustrative subject |

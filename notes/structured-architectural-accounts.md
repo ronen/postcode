@@ -1116,3 +1116,15 @@ audit identifies assumptions to make explicit in examples; it does not require
 settling the global investigation set or implementing a complete offer-discovery
 journey. Keep the implications for account content, references, qualification,
 contextual designation and provenance within the current remit.
+
+## 2026-11-11 — Bounded returned-offer invocation example
+
+Both admission fixtures now return a qualified offer on ADMISSION-1. The existing
+follow-up invokes that exact account/key through a stipulated Follow-up investigation
+Lens; Half-open S is the offer's architectural focus, not its invocation subject.
+The prose information need is documentary. Existing complete context delivery keeps
+correction eligibility and citation exposure unchanged. ADMISSION-2 repeats the offer,
+but old references remain on ADMISSION-1; access probes distinguish captured answers,
+partial offer disclosure and full correction context. This exercises account content,
+resolution and provenance without designing global discovery or changing the broader
+application remit. No live protocol acceptance is claimed.

@@ -58,7 +58,13 @@ including the reentrancy exclusion. The identifying descriptions do not repeat t
 coverage claim. Grouping the three state descriptions into one child deliberately
 keeps a coherent correction/delivery unit; it is not a one-subject-per-child rule.
 
-The follow-up selects S and receives the complete own content of DEFINITIONS-1 and
+ADMISSION-1 returns a qualified `concurrent-callers-offer`. The follow-up request
+selects that exact account and offer key, whose architectural focus resolves to S.
+The [offer chain](../offered-followup.md) explains the stipulated invocation; this
+variant's [access probe](offer-access.json) preserves its exact context independently
+of the mixed variant. ADMISSION-2 repeats the offer without migrating old references.
+
+The follow-up receives the complete own content of DEFINITIONS-1 and
 ADMISSION-1. The first identifies the subject; the second is eligible for correction.
 INTRO-1's own content is not supplied merely because it owns these children.
 

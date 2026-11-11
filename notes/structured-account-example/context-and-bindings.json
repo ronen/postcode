@@ -79,7 +79,7 @@
   },
   "followupRequest": {
     "subject": {
-      "subject": "S"
+      "account": "ADMISSION-1"
     },
     "informationNeed": "Concurrent callers and trial outcomes under default single-trial recovery.",
     "analysisAnchor": {
@@ -101,7 +101,13 @@
       "E-half-open",
       "E-outcomes",
       "E-default"
-    ]
+    ],
+    "operation": "follow-up-investigation",
+    "parameters": {
+      "offerKey": "concurrent-callers-offer",
+      "values": {}
+    },
+    "informationNeedRole": "Explanatory wording matching the retained offer purpose; not an executable question field or human-authored request text."
   },
   "followupAcceptance": {
     "subjectIds": {
@@ -229,5 +235,40 @@
         "ADMISSION-1"
       ]
     }
-  ]
+  ],
+  "applicationAssumptions": {
+    "scope": "A stipulated Follow-up investigation Lens for this bounded account-content example; not an implemented API or global investigation/discovery design. Initial admission entry remains a fixture precondition.",
+    "operation": "follow-up-investigation",
+    "supportedMethods": [
+      "qualified-architectural-interpretation"
+    ]
+  },
+  "followupResolution": {
+    "offer": {
+      "account": "ADMISSION-1",
+      "contentKey": "concurrent-callers-offer"
+    },
+    "method": "qualified-architectural-interpretation",
+    "architecturalTargets": [
+      {
+        "role": "focus",
+        "subject": {
+          "subject": "S"
+        }
+      }
+    ],
+    "parameterValues": {},
+    "provenance": {
+      "invocationSubject": {
+        "account": "ADMISSION-1"
+      },
+      "offerKey": "concurrent-callers-offer",
+      "outputs": [
+        "TRIAL-1",
+        "ADMISSION-2"
+      ],
+      "meaning": "All outputs retain this request/offer origin and the actual supplied context. Their architectural associations remain about S, P and the new roles. No child is appended to ADMISSION-1."
+    },
+    "qualificationDelivery": "The supplied complete ADMISSION-1 own content includes the offer, its item qualifications and the account qualifications. This establishes complete-target delivery; offer selection alone would not."
+  }
 }

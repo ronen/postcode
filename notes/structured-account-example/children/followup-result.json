@@ -921,6 +921,30 @@
               "E-state",
               "E-admission"
             ]
+          },
+          {
+            "key": "concurrent-callers-offer",
+            "form": "investigation-offer/0",
+            "concept": "investigation-guidance",
+            "label": "Concurrent callers and trial outcomes",
+            "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
+            "targets": [
+              {
+                "role": "focus",
+                "subject": {
+                  "subject": "S"
+                }
+              }
+            ],
+            "method": "qualified-architectural-interpretation",
+            "parameterDefinitions": [],
+            "qualifications": [
+              "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
+            ],
+            "evidence": [
+              "E-admission",
+              "E-default"
+            ]
           }
         ],
         "children": []

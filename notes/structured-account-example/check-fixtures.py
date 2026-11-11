@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
+# Stipulated capabilities for these authored fixtures, not a product registry.
+OFFER_METHODS = {'qualified-architectural-interpretation'}
 
 
 def read(path):
@@ -111,6 +113,12 @@ def check_result(document, bindings, known_subjects, earlier, supplied, evidence
                 if 'case' in illustration:
                     assert item['form'] == 'admission-cases/0'
                     assert illustration['case'] in {c['key'] for c in item['cases']}
+            if item['form'] == 'investigation-offer/0':
+                assert item['label'] and item['purpose'] and item['qualifications'] and item['evidence'], 'unqualified/incomplete offer'
+                assert item['method'] in OFFER_METHODS, 'unsupported offer method'
+                assert item['parameterDefinitions'] == [], 'parameterized offers outside this probe'
+                assert len(item['targets']) == 1 and item['targets'][0]['role'] == 'focus'
+                assert set(item['targets'][0]['subject']) in [{'subject'}, {'introducedSubject'}]
             if item['form'] == 'state-behavior/0':
                 states = {s['key'] for s in item['states']}
                 assert len(states) == len(item['states'])
@@ -137,6 +145,85 @@ def check_result(document, bindings, known_subjects, earlier, supplied, evidence
                 for branch in item['alternatives']:
                     path(branch['steps'], prefix)
     return accounts
+
+
+def resolve_offer_request(request, accounts, subject_bindings):
+    assert request['operation'] == 'follow-up-investigation', 'unsupported invocation'
+    assert set(request['subject']) == {'account'}, 'offer invocation needs an exact account'
+    params = request['parameters']
+    assert set(params) == {'offerKey', 'values'} and params['values'] == {}, 'undeclared parameter values'
+    origin = request['subject']['account']
+    account = accounts[origin]  # No fallback to replacements, labels or matching keys elsewhere.
+    matches = [i for i in account['content'] if i['key'] == params['offerKey']]
+    assert len(matches) == 1 and matches[0]['form'] == 'investigation-offer/0', 'not an exact offer'
+    offer = matches[0]
+    assert offer['method'] in OFFER_METHODS and offer['parameterDefinitions'] == []
+    targets = copy.deepcopy(offer['targets'])
+    for target in targets:
+        ref = target['subject']
+        if 'introducedSubject' in ref:
+            target['subject'] = {'subject': subject_bindings[origin][ref['introducedSubject']]}
+    return {'offer': {'account': origin, 'contentKey': offer['key']}, 'method': offer['method'],
+            'architecturalTargets': targets, 'parameterValues': params['values']}
+
+
+def check_offer_chain(directory, accounts):
+    ledger = read(directory / 'context-and-bindings.json')
+    bindings = {}
+    for stage in ['firstAcceptance', 'followupAcceptance']:
+        bindings.update({a: ledger[stage]['subjectIds'] for a in ledger[stage]['accountIds'].values()})
+    request = ledger['followupRequest']
+    resolved = resolve_offer_request(request, accounts, bindings)
+    documentary_change = copy.deepcopy(request)
+    documentary_change['informationNeed'] = 'Different explanatory wording, not another operation.'
+    assert resolve_offer_request(documentary_change, accounts, bindings) == resolved
+    expected = ledger['followupResolution']
+    assert all(expected[k] == v for k, v in resolved.items())
+    source = accounts[resolved['offer']['account']]
+    offer = next(i for i in source['content'] if i['key'] == resolved['offer']['contentKey'])
+    assert request['informationNeed'] == offer['purpose']  # Documentary wording, not resolver input.
+    assert ledger['applicationAssumptions']['operation'] == request['operation']
+    assert set(ledger['applicationAssumptions']['supportedMethods']) == OFFER_METHODS
+    provenance = expected['provenance']
+    assert provenance['invocationSubject'] == request['subject']
+    assert provenance['offerKey'] == request['parameters']['offerKey']
+    assert set(provenance['outputs']) == set(ledger['followupAcceptance']['accountIds'].values())
+    access = read(directory / 'offer-access.json')
+    assert access['exactAnswer']['offer'] == resolved['offer']
+    for key in ['offerOnlyBeforeCorrection', 'freshOriginalOfferAfterCorrection', 'explicitReplacementOffer']:
+        delivery = access[key]['delivery']; address = delivery['address']
+        original = accounts[address['account']]
+        content = copy.deepcopy(next(i for i in original['content'] if i['key'] == address['contentKey']))
+        for target in content['targets']:
+            ref = target['subject']
+            if 'introducedSubject' in ref:
+                target['subject'] = {'subject': bindings[address['account']][ref['introducedSubject']]}
+        assert delivery['content'] == content, 'offer excerpt lost or changed content'
+        assert delivery['accountQualifications'] == original['qualifications'], 'offer lost account scope'
+        assert delivery['basis'] == ledger['basis']['id']
+        assert access[key]['completeTargets'] == [], 'offer alone is not complete delivery'
+    assert access['offerOnlyBeforeCorrection']['citations'] == ['ADMISSION-1']
+    assert access['explicitReplacementOffer']['citations'] == ['ADMISSION-2']
+    fresh = access['freshOriginalOfferAfterCorrection']
+    assert fresh['delivery']['address'] == resolved['offer'] and fresh['automaticRetarget'] is False
+    assert fresh['completeCorrectionContext'] is False and fresh['omissions']
+    assert fresh['citations'] == ['ADMISSION-1', 'TRIAL-1']
+    correction = read(directory / 'followup-result.json')['result']['accountRelationships'][0]
+    for key in ['reason', 'qualifications', 'evidence']:
+        assert fresh['revisionNotice'][key] == correction[key]
+    assert fresh['revisionNotice']['target'] == correction['target']['account']
+    assert fresh['revisionNotice']['relationship'] == ledger['followupAcceptance']['relationshipIds'][correction['key']]
+    for field in ['replacement', 'reporter']:
+        assert fresh['revisionNotice'][field] == ledger['followupAcceptance']['accountIds'][correction[field]['submittedAccount']]
+    replacement = fresh['replacementOfferReference']
+    assert replacement == access['explicitReplacementOffer']['delivery']['address']
+    assert replacement['contentKey'] == resolved['offer']['contentKey'] and replacement['account'] != resolved['offer']['account']
+    explicit = copy.deepcopy(request); explicit['subject'] = {'account': replacement['account']}
+    assert resolve_offer_request(explicit, accounts, bindings)['offer'] == replacement
+    complete = {x['account'] for x in request['suppliedAccountContext'] if isinstance(x, dict)}
+    assert complete == set(access['actualFollowup']['completeTargets'])
+    assert 'ADMISSION-1' in complete
+    return request, bindings
 
 
 def check_variant(directory):
@@ -185,6 +272,8 @@ def check_variant(directory):
 
 mixed, mixed_accounts = check_variant(BASE)
 children, child_accounts = check_variant(BASE / 'children')
+check_offer_chain(BASE, mixed_accounts)
+offer_request, offer_bindings = check_offer_chain(BASE / 'children', child_accounts)
 # The behavioral diagram data is unchanged by its partition into child accounts.
 for key in ['recovery', 'concurrent-callers']:
     get = lambda a: next(i for i in a['TRIAL-1']['content'] if i['key'] == key)
@@ -230,5 +319,34 @@ for name, mutate in extra_mutations.items():
     except (AssertionError, KeyError):
         continue
     raise AssertionError('Invalid fixture accepted: ' + name)
+# Offer identity is account-local, not selected by prose or retargeted by replacement.
+offer_request_mutations = {
+    'unknown key': lambda r, a: r['parameters'].update(offerKey='absent'),
+    'label instead of key': lambda r, a: r['parameters'].update(offerKey='Concurrent callers and trial outcomes'),
+    'non-offer item': lambda r, a: r['parameters'].update(offerKey='admission-cases'),
+    'architectural target as invocation subject': lambda r, a: r.update(subject={'subject': 'S'}),
+    'unknown operation': lambda r, a: r.update(operation='arbitrary-question'),
+    'undeclared user parameters': lambda r, a: r['parameters'].update(values={'question': 'another question'}),
+    'missing original with same-key replacement': lambda r, a: a.pop('ADMISSION-1'),
+    'unsupported method': lambda r, a: a['ADMISSION-1']['content'][-1].update(method='undeclared-method'),
+}
+for name, mutate in offer_request_mutations.items():
+    invalid, registry = copy.deepcopy(offer_request), copy.deepcopy(child_accounts)
+    mutate(invalid, registry)
+    try:
+        resolve_offer_request(invalid, registry, offer_bindings)
+    except (AssertionError, KeyError):
+        continue
+    raise AssertionError('Invalid offer invocation accepted: ' + name)
+for name, change in [('missing offer qualification', {'qualifications': []}),
+                     ('undeclared offer target', {'targets': [{'role': 'focus', 'subject': {'introducedSubject': 'absent'}}]})]:
+    invalid = copy.deepcopy(first)
+    next(a for a in invalid['result']['accounts'] if a['key'] == 'admission')['content'][-1].update(change)
+    try:
+        check_result(invalid, *args)
+    except (AssertionError, KeyError):
+        continue
+    raise AssertionError('Invalid returned offer accepted: ' + name)
+print('Offer chain and exact/replacement access pass in both variants; ten additional malformed offer submissions/requests rejected.')
 print('Both variants pass structural checks and traceability; ten malformed copies rejected.')
 print('State and interaction content match across partitions. This is not product acceptance or semantic verification.')
