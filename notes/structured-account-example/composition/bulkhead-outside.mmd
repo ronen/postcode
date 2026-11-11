@@ -1,0 +1,25 @@
+sequenceDiagram
+    title Bulkhead outside breaker
+    participant p0 as Outer bulkhead
+    participant p1 as Inner breaker
+    participant p2 as First trial execution
+    participant p3 as Later execution
+    Note over p0,p3: Possible finite execution prefix, not an observed trace, stops while the stated<br/>waiting condition still holds.
+    Note over p0,p3: Policy order: Outer bulkhead then Inner breaker
+    Note over p0,p3: Bulkhead execution capacity is two, it is initially empty. Queue capacity is<br/>irrelevant to this prefix.
+    Note over p0,p3: Breaker initially Open with recovery delay elapsed.
+    Note over p0,p3: First application work stays pending until after the later caller reaches the<br/>breaker.
+    p2->>p0: Request through the outer bulkhead
+    Note over p0: Reserve one of two execution slots
+    p0->>p1: Invoke the inner breaker
+    Note over p1: Enter Half-open, reserve its sole trial slot and start first application work
+    p3->>p0: A later execution requests the same outer bulkhead
+    Note over p0: Reserve the remaining execution slot
+    p0->>p1: Invoke the same inner breaker for the later execution
+    Note over p3,p1: Later execution awaits recovery, its application work has not started
+    Note over p0,p3: Asserted situation after wait - partial snapshot
+    Note over p1: State: Half-open
+    Note over p2,p0: First trial execution occupies 1 execution slot at Outer bulkhead
+    Note over p3,p0: Later execution occupies 1 execution slot at Outer bulkhead
+    Note over p2,p1: First trial execution occupies 1 recovery trial slot at Inner breaker
+    Note over p3: Application work: not-started

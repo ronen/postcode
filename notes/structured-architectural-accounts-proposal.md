@@ -809,8 +809,30 @@ Retain the state, role and pattern context explicitly. Determine whether a compo
 reference suffices or independently investigated applications need their own identity;
 neither flat labels nor a universal contextual-identity primitive is assumed.
 
-Recommend probing this representation now; whether a full generated composition
-investigation belongs in the first implemented capability remains open.
+The [first composition probe](structured-account-example/composition/README.md) now
+supplies a separate bulkhead account and two authored ordering accounts continuing
+the children variant. It reuses P/B/S, introduces the two ordered patterns, and keeps
+scenario roles and waiting relations local to their interaction items. An explicit
+situation records the bearer of S, occupied execution/queue/trial resources, and
+application-work progress. Exact account/item/role/relation/situation designations
+support follow-up without allocating a new contextual subject automatically.
+
+This is an initial recommendation to test, not a settled identity design. The cases
+are possible finite prefixes under different explicit setups: the outer-bulkhead
+case needs capacity for the later caller to reach the breaker; the outer-breaker
+case uses a shared bulkhead occupied by independent work. Wrapping order alone does
+not establish either wait. Qualified synthesis uses the component accounts plus
+wrapper evidence; it neither reuses earlier scenario R/W as identical objects nor
+transplants their trace as a general template.
+
+Probe-local interaction fields expose policy order, local relations and asserted
+situations. Whether situations should become a separate catalogue form remains open;
+that would require explicit role correspondence across forms. The current one-item
+role scope avoids that mapping and therefore does not validate it. No universal
+resource ontology or general waiting-subject identity is established. Authored
+fixtures and rendered sequence diagrams test representability, not live investigator
+reliability or supported API acceptance. Whether generated composition investigation
+belongs in the first implemented capability remains open.
 
 ## Structured content and diagrams
 

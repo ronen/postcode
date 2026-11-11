@@ -1,0 +1,25 @@
+sequenceDiagram
+    title Breaker outside bulkhead
+    participant p0 as Outer breaker
+    participant p1 as Inner shared bulkhead
+    participant p2 as Bulkhead-only execution
+    participant p3 as Recovery trial execution
+    Note over p0,p3: Possible finite execution prefix, not an observed trace, stops while the stated<br/>waiting condition still holds.
+    Note over p0,p3: Policy order: Outer breaker then Inner shared bulkhead
+    Note over p0,p3: Bulkhead execution capacity is one and queue capacity is one. Both start empty, the<br/>independent execution takes the sole execution slot before the trial arrives.
+    Note over p0,p3: The application shares this bulkhead with a bulkhead-only execution, that work does<br/>not pass through this breaker. This is an explicit possible setup, not inferred from<br/>wrapping order.
+    Note over p0,p3: Breaker initially Open with recovery delay elapsed, independently of the bulkhead<br/>occupant.
+    Note over p0,p3: The occupant remains pending through the final waiting point.
+    p2->>p1: Independent work uses the shared bulkhead directly
+    Note over p1: Occupy the sole execution slot with still-pending independent work
+    p3->>p0: Request the outer breaker after its recovery delay
+    Note over p0: Enter Half-open and reserve the sole trial slot
+    p0->>p1: Invoke the inner bulkhead as the trial operation
+    Note over p1: No execution slot is free, retain the trial request in the available queue slot
+    Note over p3,p1: Trial awaits bulkhead execution capacity, its application work has not started
+    Note over p0,p3: Asserted situation after wait - partial snapshot
+    Note over p0: State: Half-open
+    Note over p2,p1: Bulkhead-only execution occupies 1 execution slot at Inner shared bulkhead
+    Note over p3,p1: Recovery trial execution occupies 1 queue place at Inner shared bulkhead
+    Note over p3,p0: Recovery trial execution occupies 1 recovery trial slot at Outer breaker
+    Note over p3: Application work: not-started

@@ -1,0 +1,133 @@
+{
+  "illustration": "Authored composition design probe continuing only the children variant hypothetical Session; not supported application input.",
+  "result": {
+    "rootAccount": {
+      "submittedAccount": "bulkhead-result"
+    },
+    "accounts": [
+      {
+        "key": "bulkhead-result",
+        "title": "Bulkhead vocabulary and admission",
+        "referents": [
+          {
+            "introducedSubject": "bulkhead"
+          }
+        ],
+        "associations": [
+          {
+            "role": "describes",
+            "subject": {
+              "introducedSubject": "bulkhead"
+            }
+          }
+        ],
+        "qualifications": [
+          "Authored static interpretation at revision f48bea55022ab15ab07eb52a79bfc1e661300fd4; possible usage patterns, not observed application objects or an executed PostCode investigation.",
+          "Orientation only; identification and behavior have their own scope."
+        ],
+        "evidence": [
+          "E-bulkhead"
+        ],
+        "content": [
+          {
+            "key": "orientation",
+            "form": "prose/0",
+            "concept": "interaction",
+            "text": "Distinguish the reusable policy kind from its execution and queue resources. The children identify the kind and describe a bounded admission contract.",
+            "evidence": [
+              "E-bulkhead"
+            ]
+          }
+        ],
+        "children": [
+          {
+            "submittedAccount": "bulkhead-definition"
+          },
+          {
+            "submittedAccount": "bulkhead-admission"
+          }
+        ]
+      },
+      {
+        "key": "bulkhead-definition",
+        "title": "Bulkhead policy kind",
+        "referents": [
+          {
+            "introducedSubject": "bulkhead"
+          }
+        ],
+        "associations": [
+          {
+            "role": "identifies",
+            "subject": {
+              "introducedSubject": "bulkhead"
+            }
+          }
+        ],
+        "qualifications": [
+          "Authored static interpretation at revision f48bea55022ab15ab07eb52a79bfc1e661300fd4; possible usage patterns, not observed application objects or an executed PostCode investigation.",
+          "Kind identification only; no application instance, occupancy or scheduling guarantee is established."
+        ],
+        "evidence": [
+          "E-bulkhead"
+        ],
+        "content": [
+          {
+            "key": "bulkhead-description",
+            "form": "subject-description/0",
+            "concept": "architectural-identification",
+            "subject": {
+              "introducedSubject": "bulkhead"
+            },
+            "name": "Bulkhead",
+            "description": "The reusable policy kind that bounds concurrent execution and pending queue capacity for supplied operations.",
+            "classification": "policy-kind",
+            "introduceRetainedSubject": true,
+            "evidence": [
+              "E-bulkhead"
+            ]
+          }
+        ],
+        "children": []
+      },
+      {
+        "key": "bulkhead-admission",
+        "title": "Bulkhead capacity and queue",
+        "referents": [
+          {
+            "introducedSubject": "bulkhead"
+          }
+        ],
+        "associations": [
+          {
+            "role": "describes",
+            "subject": {
+              "introducedSubject": "bulkhead"
+            }
+          }
+        ],
+        "qualifications": [
+          "Authored static interpretation at revision f48bea55022ab15ab07eb52a79bfc1e661300fd4; possible usage patterns, not observed application objects or an executed PostCode investigation.",
+          "Positive execution capacity and nonnegative queue capacity. Cancellation, reentrant event listeners and competing arrivals during dequeue are outside this account.",
+          "Partial admission/lifetime account; no fairness, latency bound or application success claim."
+        ],
+        "evidence": [
+          "E-bulkhead"
+        ],
+        "content": [
+          {
+            "key": "capacity-and-queue",
+            "form": "prose/0",
+            "concept": "interaction",
+            "text": "When execution capacity is available, the bulkhead occupies one execution slot while awaiting the supplied operation and releases it when that operation settles. When full but queue space exists, it retains pending work without invoking it yet; when both are full it refuses. A freed execution slot prompts processing of queued work. Queuing is distinct from occupying execution capacity.",
+            "evidence": [
+              "E-bulkhead"
+            ]
+          }
+        ],
+        "children": []
+      }
+    ],
+    "accountRelationships": []
+  }
+}

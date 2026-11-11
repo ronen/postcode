@@ -1,0 +1,167 @@
+[
+  {
+    "diagram": "bulkhead-outside.mmd",
+    "meaning": "Title, roles, call order and declared scope",
+    "pointers": [
+      "/result/accounts/2/content/0/title",
+      "/result/accounts/2/content/0/roles",
+      "/result/accounts/2/content/0/participants",
+      "/result/accounts/2/content/0/roleScope",
+      "/result/accounts/2/content/0/policyOrder",
+      "/result/accounts/2/content/0/conditions",
+      "/result/accounts/2/content/0/semantics"
+    ],
+    "qualificationPointer": "/result/accounts/2/qualifications"
+  },
+  {
+    "diagram": "bulkhead-outside.mmd",
+    "meaning": "trial-request",
+    "pointers": [
+      "/result/accounts/2/content/0/prefix/0"
+    ]
+  },
+  {
+    "diagram": "bulkhead-outside.mmd",
+    "meaning": "reserve-trial-capacity",
+    "pointers": [
+      "/result/accounts/2/content/0/prefix/1"
+    ]
+  },
+  {
+    "diagram": "bulkhead-outside.mmd",
+    "meaning": "trial-to-breaker",
+    "pointers": [
+      "/result/accounts/2/content/0/prefix/2"
+    ]
+  },
+  {
+    "diagram": "bulkhead-outside.mmd",
+    "meaning": "trial-start",
+    "pointers": [
+      "/result/accounts/2/content/0/prefix/3"
+    ]
+  },
+  {
+    "diagram": "bulkhead-outside.mmd",
+    "meaning": "caller-request",
+    "pointers": [
+      "/result/accounts/2/content/0/prefix/4"
+    ]
+  },
+  {
+    "diagram": "bulkhead-outside.mmd",
+    "meaning": "reserve-caller-capacity",
+    "pointers": [
+      "/result/accounts/2/content/0/prefix/5"
+    ]
+  },
+  {
+    "diagram": "bulkhead-outside.mmd",
+    "meaning": "caller-to-breaker",
+    "pointers": [
+      "/result/accounts/2/content/0/prefix/6"
+    ]
+  },
+  {
+    "diagram": "bulkhead-outside.mmd",
+    "meaning": "wait",
+    "pointers": [
+      "/result/accounts/2/content/0/prefix/7"
+    ]
+  },
+  {
+    "diagram": "bulkhead-outside.mmd",
+    "meaning": "Asserted state, resource occupancy and work progress",
+    "pointers": [
+      "/result/accounts/2/content/0/situations/0",
+      "/result/accounts/2/content/0/relations"
+    ]
+  },
+  {
+    "diagram": "bulkhead-outside.mmd",
+    "meaning": "Support and omissions accompany this preview, not drawn as architecture",
+    "pointers": [
+      "/result/accounts/2/content/0/evidence",
+      "/result/accounts/2/content/0/notShown"
+    ]
+  },
+  {
+    "diagram": "breaker-outside.mmd",
+    "meaning": "Title, roles, call order and declared scope",
+    "pointers": [
+      "/result/accounts/3/content/0/title",
+      "/result/accounts/3/content/0/roles",
+      "/result/accounts/3/content/0/participants",
+      "/result/accounts/3/content/0/roleScope",
+      "/result/accounts/3/content/0/policyOrder",
+      "/result/accounts/3/content/0/conditions",
+      "/result/accounts/3/content/0/semantics"
+    ],
+    "qualificationPointer": "/result/accounts/3/qualifications"
+  },
+  {
+    "diagram": "breaker-outside.mmd",
+    "meaning": "occupant-request",
+    "pointers": [
+      "/result/accounts/3/content/0/prefix/0"
+    ]
+  },
+  {
+    "diagram": "breaker-outside.mmd",
+    "meaning": "occupy-capacity",
+    "pointers": [
+      "/result/accounts/3/content/0/prefix/1"
+    ]
+  },
+  {
+    "diagram": "breaker-outside.mmd",
+    "meaning": "trial-request",
+    "pointers": [
+      "/result/accounts/3/content/0/prefix/2"
+    ]
+  },
+  {
+    "diagram": "breaker-outside.mmd",
+    "meaning": "trial-admitted",
+    "pointers": [
+      "/result/accounts/3/content/0/prefix/3"
+    ]
+  },
+  {
+    "diagram": "breaker-outside.mmd",
+    "meaning": "inner-request",
+    "pointers": [
+      "/result/accounts/3/content/0/prefix/4"
+    ]
+  },
+  {
+    "diagram": "breaker-outside.mmd",
+    "meaning": "enqueue",
+    "pointers": [
+      "/result/accounts/3/content/0/prefix/5"
+    ]
+  },
+  {
+    "diagram": "breaker-outside.mmd",
+    "meaning": "wait",
+    "pointers": [
+      "/result/accounts/3/content/0/prefix/6"
+    ]
+  },
+  {
+    "diagram": "breaker-outside.mmd",
+    "meaning": "Asserted state, resource occupancy and work progress",
+    "pointers": [
+      "/result/accounts/3/content/0/situations/0",
+      "/result/accounts/3/content/0/relations"
+    ]
+  },
+  {
+    "diagram": "breaker-outside.mmd",
+    "meaning": "Support and omissions accompany this preview, not drawn as architecture",
+    "pointers": [
+      "/result/accounts/3/content/0/evidence",
+      "/result/accounts/3/content/0/notShown"
+    ]
+  }
+]

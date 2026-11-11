@@ -1019,3 +1019,27 @@ states that it does not specify occurrence/release conditions, and provides an e
 related-content link. That link locates further explanation without delivering or
 citing the behavioral account. Independent identification need not be behaviorally
 complete. Structural checks cannot certify that the selected qualifications suffice.
+
+## 2026-11-11 — First composition probe
+
+The [authored composition continuation](structured-account-example/composition/README.md)
+compares two bounded waiting points using the children variant and a separately
+qualified bulkhead account. Reuse policy kinds and Half-open; introduce the two
+ordered patterns; leave scenario participants and waiting relations locally
+designated for now. This recommendation is exploratory, not an adopted decision.
+
+Order alone is insufficient: the bulkhead-outside case needs a second execution slot;
+the breaker-outside case explicitly shares an occupied bulkhead with independent work.
+The payload captures resource occupancy and state at a stated trace point rather
+than asking rendering to infer them. It is a finite prefix, not a full trace or a
+comparison under identical workloads. Contributions from earlier accounts remain
+qualified interpretations, while wrapper source supplies new composition evidence.
+
+Open: whether situation snapshots belong inside interactions or in a separate form;
+how a later investigator selects/promotes one exact local role or relation; and when
+a general relationship warrants shared identity. Keeping one role scope here avoids
+cross-form correspondence, so that case remains untested. All composition children
+still share dialogue exposure; partition does not narrow reconsideration from prior
+component corrections. No new correction, reassessment mechanism or product API is
+introduced. The first implementation scope remains undecided with respect to live
+composition generation.

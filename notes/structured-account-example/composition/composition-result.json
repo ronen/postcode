@@ -1,0 +1,914 @@
+{
+  "illustration": "Authored composition design probe continuing only the children variant hypothetical Session; not supported application input.",
+  "result": {
+    "rootAccount": {
+      "submittedAccount": "composition-result"
+    },
+    "accounts": [
+      {
+        "key": "composition-result",
+        "title": "Two policy orders and their waiting points",
+        "referents": [
+          {
+            "subject": "P"
+          },
+          {
+            "subject": "B"
+          },
+          {
+            "introducedSubject": "bulkhead-outside"
+          },
+          {
+            "introducedSubject": "breaker-outside"
+          }
+        ],
+        "associations": [
+          {
+            "role": "describes",
+            "subject": {
+              "subject": "P"
+            }
+          },
+          {
+            "role": "describes",
+            "subject": {
+              "subject": "B"
+            }
+          },
+          {
+            "role": "describes",
+            "subject": {
+              "introducedSubject": "bulkhead-outside"
+            }
+          },
+          {
+            "role": "describes",
+            "subject": {
+              "introducedSubject": "breaker-outside"
+            }
+          }
+        ],
+        "qualifications": [
+          "Authored static interpretation at revision f48bea55022ab15ab07eb52a79bfc1e661300fd4; possible usage patterns, not observed application objects or an executed PostCode investigation.",
+          "Orientation to two possible patterns, not a combined runtime model or a ranking of their desirability. Children supply their own identification and behavior scope."
+        ],
+        "evidence": [
+          "E-policy"
+        ],
+        "content": [
+          {
+            "key": "orientation",
+            "form": "prose/0",
+            "concept": "interaction",
+            "text": "Policy kinds, policy-instance roles and execution roles remain distinct. The children identify two ordered patterns and examine a bounded execution prefix for each.",
+            "evidence": [
+              "E-policy"
+            ]
+          }
+        ],
+        "children": [
+          {
+            "submittedAccount": "pattern-definitions"
+          },
+          {
+            "submittedAccount": "bulkhead-outside-case"
+          },
+          {
+            "submittedAccount": "breaker-outside-case"
+          }
+        ]
+      },
+      {
+        "key": "pattern-definitions",
+        "title": "The two ordered patterns",
+        "referents": [
+          {
+            "subject": "P"
+          },
+          {
+            "subject": "B"
+          },
+          {
+            "introducedSubject": "bulkhead-outside"
+          },
+          {
+            "introducedSubject": "breaker-outside"
+          }
+        ],
+        "associations": [
+          {
+            "role": "identifies",
+            "subject": {
+              "introducedSubject": "bulkhead-outside"
+            }
+          },
+          {
+            "role": "identifies",
+            "subject": {
+              "introducedSubject": "breaker-outside"
+            }
+          }
+        ],
+        "qualifications": [
+          "Authored static interpretation at revision f48bea55022ab15ab07eb52a79bfc1e661300fd4; possible usage patterns, not observed application objects or an executed PostCode investigation.",
+          "Identifies ordering patterns only, not a runtime wrapper, instance identity, capacity configuration or guarantee that any call waits."
+        ],
+        "evidence": [
+          "E-policy"
+        ],
+        "content": [
+          {
+            "key": "bulkhead-outside-description",
+            "form": "subject-description/0",
+            "concept": "architectural-identification",
+            "subject": {
+              "introducedSubject": "bulkhead-outside"
+            },
+            "name": "Bulkhead outside breaker",
+            "description": "Ordered policy-use pattern: an execution reaches the bulkhead before the circuit breaker and application work.",
+            "classification": "ordered-composition-pattern",
+            "introduceRetainedSubject": true,
+            "evidence": [
+              "E-policy"
+            ]
+          },
+          {
+            "key": "breaker-outside-description",
+            "form": "subject-description/0",
+            "concept": "architectural-identification",
+            "subject": {
+              "introducedSubject": "breaker-outside"
+            },
+            "name": "Breaker outside bulkhead",
+            "description": "Ordered policy-use pattern: an execution reaches the circuit breaker before the bulkhead and application work.",
+            "classification": "ordered-composition-pattern",
+            "introduceRetainedSubject": true,
+            "evidence": [
+              "E-policy"
+            ]
+          }
+        ],
+        "children": []
+      },
+      {
+        "key": "bulkhead-outside-case",
+        "title": "Execution capacity held while awaiting recovery",
+        "referents": [
+          {
+            "subject": "P"
+          },
+          {
+            "subject": "B"
+          },
+          {
+            "subject": "S"
+          },
+          {
+            "introducedSubject": "bulkhead-outside"
+          }
+        ],
+        "associations": [
+          {
+            "role": "describes",
+            "subject": {
+              "subject": "P"
+            }
+          },
+          {
+            "role": "describes",
+            "subject": {
+              "subject": "B"
+            }
+          },
+          {
+            "role": "describes",
+            "subject": {
+              "subject": "S"
+            }
+          },
+          {
+            "role": "describes",
+            "subject": {
+              "introducedSubject": "bulkhead-outside"
+            }
+          }
+        ],
+        "qualifications": [
+          "Authored static interpretation at revision f48bea55022ab15ab07eb52a79bfc1e661300fd4; possible usage patterns, not observed application objects or an executed PostCode investigation.",
+          "Default single-call breaker recovery with zero permitted counted failures. No cancellation, isolation, restoration, reentrant execution from event listeners, other interfering state change or additional arrivals beyond the stated setup.",
+          "A finite possible execution prefix ending at a waiting point. No completion, fairness, delay bound, deadlock claim or eventual admission is established. Application work and the inner policy operation are distinguished.",
+          "Bulkhead execution capacity is two; it is initially empty. Queue capacity is irrelevant to this prefix.",
+          "Breaker initially Open with recovery delay elapsed.",
+          "First application work stays pending until after the later caller reaches the breaker."
+        ],
+        "evidence": [
+          "A-admission",
+          "A-bulkhead",
+          "A-trial",
+          "E-admission",
+          "E-bulkhead",
+          "E-default",
+          "E-half-open",
+          "E-policy"
+        ],
+        "content": [
+          {
+            "key": "capacity-held-during-recovery",
+            "form": "interaction/0",
+            "concept": "interaction",
+            "title": "Bulkhead outside breaker",
+            "pattern": {
+              "introducedSubject": "bulkhead-outside"
+            },
+            "semantics": "Possible finite execution prefix, not an observed trace; stops while the stated waiting condition still holds.",
+            "roles": [
+              {
+                "key": "bulkhead",
+                "name": "Outer bulkhead",
+                "classification": "policy-instance-role",
+                "policyKind": {
+                  "subject": "B"
+                }
+              },
+              {
+                "key": "breaker",
+                "name": "Inner breaker",
+                "classification": "policy-instance-role",
+                "policyKind": {
+                  "subject": "P"
+                }
+              },
+              {
+                "key": "trial",
+                "name": "First trial execution",
+                "classification": "execution-role"
+              },
+              {
+                "key": "caller",
+                "name": "Later execution",
+                "classification": "execution-role"
+              }
+            ],
+            "roleScope": "Bind each role once within this particular scenario. These local roles neither designate prior R/E-trial/E-caller nor identify roles in the other ordering case. Policy kind and state-category references are reused explicitly.",
+            "participants": [
+              {
+                "key": "bulkhead",
+                "role": {
+                  "localRole": "bulkhead"
+                },
+                "label": "Outer bulkhead"
+              },
+              {
+                "key": "breaker",
+                "role": {
+                  "localRole": "breaker"
+                },
+                "label": "Inner breaker"
+              },
+              {
+                "key": "trial",
+                "role": {
+                  "localRole": "trial"
+                },
+                "label": "First trial execution"
+              },
+              {
+                "key": "caller",
+                "role": {
+                  "localRole": "caller"
+                },
+                "label": "Later execution"
+              }
+            ],
+            "policyOrder": [
+              {
+                "localRole": "bulkhead"
+              },
+              {
+                "localRole": "breaker"
+              }
+            ],
+            "conditions": [
+              "Bulkhead execution capacity is two; it is initially empty. Queue capacity is irrelevant to this prefix.",
+              "Breaker initially Open with recovery delay elapsed.",
+              "First application work stays pending until after the later caller reaches the breaker."
+            ],
+            "relations": [
+              {
+                "key": "recovery-wait",
+                "kind": "waits-for-decision",
+                "waiter": {
+                  "localRole": "caller"
+                },
+                "decisionHolder": {
+                  "localRole": "breaker"
+                },
+                "when": "First trial still pending in Half-open",
+                "evidence": [
+                  "E-half-open"
+                ]
+              }
+            ],
+            "prefix": [
+              {
+                "key": "trial-request",
+                "kind": "request",
+                "text": "Request through the outer bulkhead",
+                "evidence": [
+                  "E-policy"
+                ],
+                "from": "trial",
+                "to": "bulkhead"
+              },
+              {
+                "key": "reserve-trial-capacity",
+                "kind": "action",
+                "text": "Reserve one of two execution slots",
+                "evidence": [
+                  "E-bulkhead"
+                ],
+                "causedBy": [
+                  "trial-request"
+                ],
+                "actor": "bulkhead"
+              },
+              {
+                "key": "trial-to-breaker",
+                "kind": "request",
+                "text": "Invoke the inner breaker",
+                "evidence": [
+                  "E-policy"
+                ],
+                "causedBy": [
+                  "reserve-trial-capacity"
+                ],
+                "from": "bulkhead",
+                "to": "breaker"
+              },
+              {
+                "key": "trial-start",
+                "kind": "action",
+                "text": "Enter Half-open, reserve its sole trial slot and start first application work",
+                "evidence": [
+                  "E-admission",
+                  "E-half-open",
+                  "E-default"
+                ],
+                "causedBy": [
+                  "trial-to-breaker"
+                ],
+                "actor": "breaker"
+              },
+              {
+                "key": "caller-request",
+                "kind": "request",
+                "text": "A later execution requests the same outer bulkhead",
+                "evidence": [
+                  "E-policy"
+                ],
+                "from": "caller",
+                "to": "bulkhead"
+              },
+              {
+                "key": "reserve-caller-capacity",
+                "kind": "action",
+                "text": "Reserve the remaining execution slot",
+                "evidence": [
+                  "E-bulkhead"
+                ],
+                "causedBy": [
+                  "caller-request"
+                ],
+                "actor": "bulkhead"
+              },
+              {
+                "key": "caller-to-breaker",
+                "kind": "request",
+                "text": "Invoke the same inner breaker for the later execution",
+                "evidence": [
+                  "E-policy"
+                ],
+                "causedBy": [
+                  "reserve-caller-capacity"
+                ],
+                "from": "bulkhead",
+                "to": "breaker"
+              },
+              {
+                "key": "wait",
+                "kind": "wait",
+                "text": "Later execution awaits recovery; its application work has not started",
+                "evidence": [
+                  "E-half-open"
+                ],
+                "causedBy": [
+                  "caller-to-breaker",
+                  "trial-start"
+                ],
+                "participant": "caller",
+                "on": "breaker",
+                "relationship": {
+                  "localRelation": "recovery-wait"
+                },
+                "condition": "First trial still occupies the sole trial slot on arrival."
+              }
+            ],
+            "alternatives": [],
+            "situations": [
+              {
+                "key": "waiting-cut",
+                "afterStep": "wait",
+                "stateAssignments": [
+                  {
+                    "bearer": {
+                      "localRole": "breaker"
+                    },
+                    "category": {
+                      "subject": "S"
+                    }
+                  }
+                ],
+                "resourceOccupancy": [
+                  {
+                    "holder": {
+                      "localRole": "trial"
+                    },
+                    "owner": {
+                      "localRole": "bulkhead"
+                    },
+                    "resource": "execution-capacity",
+                    "amount": 1
+                  },
+                  {
+                    "holder": {
+                      "localRole": "caller"
+                    },
+                    "owner": {
+                      "localRole": "bulkhead"
+                    },
+                    "resource": "execution-capacity",
+                    "amount": 1
+                  },
+                  {
+                    "holder": {
+                      "localRole": "trial"
+                    },
+                    "owner": {
+                      "localRole": "breaker"
+                    },
+                    "resource": "recovery-trial-slot",
+                    "amount": 1
+                  }
+                ],
+                "executionProgress": [
+                  {
+                    "execution": {
+                      "localRole": "caller"
+                    },
+                    "applicationWork": "not-started"
+                  }
+                ],
+                "activeRelations": [
+                  {
+                    "localRelation": "recovery-wait"
+                  }
+                ],
+                "evidence": [
+                  "E-policy",
+                  "E-bulkhead",
+                  "E-half-open"
+                ]
+              }
+            ],
+            "notShown": [
+              "Completion and release after the final waiting point.",
+              "All other schedules and admission branches."
+            ],
+            "evidence": [
+              "E-policy",
+              "E-bulkhead",
+              "E-admission",
+              "E-half-open",
+              "E-default"
+            ]
+          },
+          {
+            "key": "application-of-components",
+            "form": "prose/0",
+            "concept": "interaction",
+            "text": "This case applies the admission account to the inner breaker and combines its waiting rule with the bulkhead slot lifetime and ordered wrapper invocation. The earlier scenario does not describe outer bulkhead occupancy; this case establishes that the later caller has already reserved that capacity. This is a new qualified synthesis: neither the source account labels nor visual adjacency establish the resulting resource overlap.",
+            "evidence": [
+              "A-admission",
+              "A-trial",
+              "A-bulkhead",
+              "E-policy",
+              "E-bulkhead",
+              "E-half-open"
+            ],
+            "relatedContent": [
+              {
+                "account": {
+                  "account": "ADMISSION-2"
+                },
+                "contentKey": "admission-cases",
+                "purpose": "General admission behavior applied after checking its default-sampling and interference limits; no binding to its illustration R."
+              },
+              {
+                "account": {
+                  "account": "TRIAL-1"
+                },
+                "contentKey": "concurrent-callers",
+                "purpose": "Prior scenario used as an interpretive comparison, not transplanted unchanged and not evidence of identity with its participants."
+              },
+              {
+                "account": {
+                  "account": "BULKHEAD-1"
+                },
+                "contentKey": "capacity-and-queue",
+                "purpose": "Separate capacity/lifetime interpretation used with wrapper source to establish occupancy in this new account."
+              }
+            ]
+          }
+        ],
+        "children": []
+      },
+      {
+        "key": "breaker-outside-case",
+        "title": "A trial waiting in the bulkhead queue",
+        "referents": [
+          {
+            "subject": "P"
+          },
+          {
+            "subject": "B"
+          },
+          {
+            "subject": "S"
+          },
+          {
+            "introducedSubject": "breaker-outside"
+          }
+        ],
+        "associations": [
+          {
+            "role": "describes",
+            "subject": {
+              "subject": "P"
+            }
+          },
+          {
+            "role": "describes",
+            "subject": {
+              "subject": "B"
+            }
+          },
+          {
+            "role": "describes",
+            "subject": {
+              "subject": "S"
+            }
+          },
+          {
+            "role": "describes",
+            "subject": {
+              "introducedSubject": "breaker-outside"
+            }
+          }
+        ],
+        "qualifications": [
+          "Authored static interpretation at revision f48bea55022ab15ab07eb52a79bfc1e661300fd4; possible usage patterns, not observed application objects or an executed PostCode investigation.",
+          "Default single-call breaker recovery with zero permitted counted failures. No cancellation, isolation, restoration, reentrant execution from event listeners, other interfering state change or additional arrivals beyond the stated setup.",
+          "A finite possible execution prefix ending at a waiting point. No completion, fairness, delay bound, deadlock claim or eventual admission is established. Application work and the inner policy operation are distinguished.",
+          "Bulkhead execution capacity is one and queue capacity is one. Both start empty; the independent execution takes the sole execution slot before the trial arrives.",
+          "The application shares this bulkhead with a bulkhead-only execution; that work does not pass through this breaker. This is an explicit possible setup, not inferred from wrapping order.",
+          "Breaker initially Open with recovery delay elapsed, independently of the bulkhead occupant.",
+          "The occupant remains pending through the final waiting point."
+        ],
+        "evidence": [
+          "A-admission",
+          "A-bulkhead",
+          "A-trial",
+          "E-admission",
+          "E-bulkhead",
+          "E-default",
+          "E-half-open",
+          "E-policy"
+        ],
+        "content": [
+          {
+            "key": "trial-queued-for-capacity",
+            "form": "interaction/0",
+            "concept": "interaction",
+            "title": "Breaker outside bulkhead",
+            "pattern": {
+              "introducedSubject": "breaker-outside"
+            },
+            "semantics": "Possible finite execution prefix, not an observed trace; stops while the stated waiting condition still holds.",
+            "roles": [
+              {
+                "key": "breaker",
+                "name": "Outer breaker",
+                "classification": "policy-instance-role",
+                "policyKind": {
+                  "subject": "P"
+                }
+              },
+              {
+                "key": "bulkhead",
+                "name": "Inner shared bulkhead",
+                "classification": "policy-instance-role",
+                "policyKind": {
+                  "subject": "B"
+                }
+              },
+              {
+                "key": "occupant",
+                "name": "Bulkhead-only execution",
+                "classification": "execution-role"
+              },
+              {
+                "key": "trial",
+                "name": "Recovery trial execution",
+                "classification": "execution-role"
+              }
+            ],
+            "roleScope": "Bind each role once within this particular scenario. These local roles neither designate prior R/E-trial/E-caller nor identify roles in the other ordering case. Policy kind and state-category references are reused explicitly.",
+            "participants": [
+              {
+                "key": "breaker",
+                "role": {
+                  "localRole": "breaker"
+                },
+                "label": "Outer breaker"
+              },
+              {
+                "key": "bulkhead",
+                "role": {
+                  "localRole": "bulkhead"
+                },
+                "label": "Inner shared bulkhead"
+              },
+              {
+                "key": "occupant",
+                "role": {
+                  "localRole": "occupant"
+                },
+                "label": "Bulkhead-only execution"
+              },
+              {
+                "key": "trial",
+                "role": {
+                  "localRole": "trial"
+                },
+                "label": "Recovery trial execution"
+              }
+            ],
+            "policyOrder": [
+              {
+                "localRole": "breaker"
+              },
+              {
+                "localRole": "bulkhead"
+              }
+            ],
+            "conditions": [
+              "Bulkhead execution capacity is one and queue capacity is one. Both start empty; the independent execution takes the sole execution slot before the trial arrives.",
+              "The application shares this bulkhead with a bulkhead-only execution; that work does not pass through this breaker. This is an explicit possible setup, not inferred from wrapping order.",
+              "Breaker initially Open with recovery delay elapsed, independently of the bulkhead occupant.",
+              "The occupant remains pending through the final waiting point."
+            ],
+            "relations": [
+              {
+                "key": "capacity-wait",
+                "kind": "waits-for-capacity",
+                "waiter": {
+                  "localRole": "trial"
+                },
+                "capacityOwner": {
+                  "localRole": "bulkhead"
+                },
+                "when": "Bulkhead full with queue room for this execution",
+                "evidence": [
+                  "E-bulkhead"
+                ]
+              }
+            ],
+            "prefix": [
+              {
+                "key": "occupant-request",
+                "kind": "request",
+                "text": "Independent work uses the shared bulkhead directly",
+                "evidence": [
+                  "E-bulkhead"
+                ],
+                "from": "occupant",
+                "to": "bulkhead"
+              },
+              {
+                "key": "occupy-capacity",
+                "kind": "action",
+                "text": "Occupy the sole execution slot with still-pending independent work",
+                "evidence": [
+                  "E-bulkhead"
+                ],
+                "causedBy": [
+                  "occupant-request"
+                ],
+                "actor": "bulkhead"
+              },
+              {
+                "key": "trial-request",
+                "kind": "request",
+                "text": "Request the outer breaker after its recovery delay",
+                "evidence": [
+                  "E-policy",
+                  "E-admission"
+                ],
+                "from": "trial",
+                "to": "breaker"
+              },
+              {
+                "key": "trial-admitted",
+                "kind": "action",
+                "text": "Enter Half-open and reserve the sole trial slot",
+                "evidence": [
+                  "E-admission",
+                  "E-half-open",
+                  "E-default"
+                ],
+                "causedBy": [
+                  "trial-request"
+                ],
+                "actor": "breaker"
+              },
+              {
+                "key": "inner-request",
+                "kind": "request",
+                "text": "Invoke the inner bulkhead as the trial operation",
+                "evidence": [
+                  "E-policy",
+                  "E-half-open"
+                ],
+                "causedBy": [
+                  "trial-admitted"
+                ],
+                "from": "breaker",
+                "to": "bulkhead"
+              },
+              {
+                "key": "enqueue",
+                "kind": "action",
+                "text": "No execution slot is free; retain the trial request in the available queue slot",
+                "evidence": [
+                  "E-bulkhead"
+                ],
+                "causedBy": [
+                  "inner-request",
+                  "occupy-capacity"
+                ],
+                "actor": "bulkhead"
+              },
+              {
+                "key": "wait",
+                "kind": "wait",
+                "text": "Trial awaits bulkhead execution capacity; its application work has not started",
+                "evidence": [
+                  "E-policy",
+                  "E-bulkhead",
+                  "E-half-open"
+                ],
+                "causedBy": [
+                  "enqueue",
+                  "trial-admitted"
+                ],
+                "participant": "trial",
+                "on": "bulkhead",
+                "relationship": {
+                  "localRelation": "capacity-wait"
+                },
+                "condition": "Independent work is still pending and no capacity has been released."
+              }
+            ],
+            "alternatives": [],
+            "situations": [
+              {
+                "key": "waiting-cut",
+                "afterStep": "wait",
+                "stateAssignments": [
+                  {
+                    "bearer": {
+                      "localRole": "breaker"
+                    },
+                    "category": {
+                      "subject": "S"
+                    }
+                  }
+                ],
+                "resourceOccupancy": [
+                  {
+                    "holder": {
+                      "localRole": "occupant"
+                    },
+                    "owner": {
+                      "localRole": "bulkhead"
+                    },
+                    "resource": "execution-capacity",
+                    "amount": 1
+                  },
+                  {
+                    "holder": {
+                      "localRole": "trial"
+                    },
+                    "owner": {
+                      "localRole": "bulkhead"
+                    },
+                    "resource": "queue-capacity",
+                    "amount": 1
+                  },
+                  {
+                    "holder": {
+                      "localRole": "trial"
+                    },
+                    "owner": {
+                      "localRole": "breaker"
+                    },
+                    "resource": "recovery-trial-slot",
+                    "amount": 1
+                  }
+                ],
+                "executionProgress": [
+                  {
+                    "execution": {
+                      "localRole": "trial"
+                    },
+                    "applicationWork": "not-started"
+                  }
+                ],
+                "activeRelations": [
+                  {
+                    "localRelation": "capacity-wait"
+                  }
+                ],
+                "evidence": [
+                  "E-policy",
+                  "E-bulkhead",
+                  "E-half-open"
+                ]
+              }
+            ],
+            "notShown": [
+              "Completion and release after the final waiting point.",
+              "All other schedules and admission branches."
+            ],
+            "evidence": [
+              "E-policy",
+              "E-bulkhead",
+              "E-admission",
+              "E-half-open",
+              "E-default"
+            ]
+          },
+          {
+            "key": "application-of-components",
+            "form": "prose/0",
+            "concept": "interaction",
+            "text": "Here the breaker trial operation includes the inner bulkhead wait. Reserving a breaker trial slot therefore need not mean that application work has begun. The comparison to TRIAL-1 reuses its distinction between shared state and execution progress, not its scenario identities or complete trace. Direct inspection of wrapper and policy behavior supports this case; it is not inferred by reversing the earlier arrows.",
+            "evidence": [
+              "A-admission",
+              "A-trial",
+              "A-bulkhead",
+              "E-policy",
+              "E-bulkhead",
+              "E-half-open"
+            ],
+            "relatedContent": [
+              {
+                "account": {
+                  "account": "ADMISSION-2"
+                },
+                "contentKey": "admission-cases",
+                "purpose": "General admission behavior applied after checking its default-sampling and interference limits; no binding to its illustration R."
+              },
+              {
+                "account": {
+                  "account": "TRIAL-1"
+                },
+                "contentKey": "concurrent-callers",
+                "purpose": "Prior scenario used as an interpretive comparison, not transplanted unchanged and not evidence of identity with its participants."
+              },
+              {
+                "account": {
+                  "account": "BULKHEAD-1"
+                },
+                "contentKey": "capacity-and-queue",
+                "purpose": "Separate capacity/lifetime interpretation used with wrapper source to establish occupancy in this new account."
+              }
+            ]
+          }
+        ],
+        "children": []
+      }
+    ],
+    "accountRelationships": []
+  }
+}

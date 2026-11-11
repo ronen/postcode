@@ -1,0 +1,203 @@
+{
+  "status": "Authored continuation of the children variant only; all stages within one hypothetical unchanged-input Session. No live API run.",
+  "basis": {
+    "id": "cockatiel-pinned",
+    "revision": "f48bea55022ab15ab07eb52a79bfc1e661300fd4",
+    "method": "Static source inspection plus the prior exploratory accounts; no runtime execution."
+  },
+  "evidence": {
+    "E-state": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "CircuitState and state getter"
+    },
+    "E-admission": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "execute"
+    },
+    "E-half-open": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "executeHalfOpen"
+    },
+    "E-outcomes": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "recordHalfOpenSuccess, recordHalfOpenFailure, maybeCompleteHalfOpen, open and close"
+    },
+    "E-default": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts",
+      "selector": "createHalfOpenSamplingOptions"
+    },
+    "E-policy": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/Policy.ts",
+      "selector": "wrap: ordered invocation of existing policy instances"
+    },
+    "E-bulkhead": {
+      "url": "https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/BulkheadPolicy.ts",
+      "selector": "execute and dequeue: reservation, pending work, queue and release"
+    },
+    "A-admission": {
+      "account": "ADMISSION-2",
+      "status": "Prior interpretation, not independent repository corroboration."
+    },
+    "A-trial": {
+      "account": "TRIAL-1",
+      "status": "Prior interpretation, not independent repository corroboration."
+    },
+    "A-bulkhead": {
+      "account": "BULKHEAD-1",
+      "status": "Prior interpretation, not independent repository corroboration."
+    }
+  },
+  "bulkheadRequest": {
+    "informationNeed": "Identify the bulkhead policy kind and its capacity/queue lifetime.",
+    "suppliedAccountContext": [],
+    "suppliedEvidence": [
+      "E-bulkhead"
+    ],
+    "analysisAnchor": "Mechanical BulkheadPolicy module made available as a fixture precondition; discovery not exercised."
+  },
+  "bulkheadAcceptance": {
+    "subjectIds": {
+      "bulkhead": "B"
+    },
+    "accountIds": {
+      "bulkhead-result": "BULKHEAD-RESULT-1",
+      "bulkhead-definition": "BULKHEAD-DEFINITION-1",
+      "bulkhead-admission": "BULKHEAD-1"
+    },
+    "relationshipIds": {}
+  },
+  "compositionRequest": {
+    "selectedSubjects": [
+      "P",
+      "B"
+    ],
+    "informationNeed": "Compare the two wrapping orders at a possible waiting point: which instance holds which state or resource, and whose application work has begun?",
+    "navigationOrigin": null,
+    "suppliedAccountContext": [
+      {
+        "account": "ORIENTATION-0",
+        "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
+      },
+      {
+        "account": "DEFINITIONS-1",
+        "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
+      },
+      {
+        "account": "ROLE-DEFINITIONS-1",
+        "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
+      },
+      {
+        "account": "ADMISSION-1",
+        "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
+      },
+      {
+        "account": "ADMISSION-2",
+        "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
+      },
+      {
+        "account": "TRIAL-1",
+        "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
+      },
+      {
+        "account": "BULKHEAD-DEFINITION-1",
+        "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
+      },
+      {
+        "account": "BULKHEAD-1",
+        "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
+      }
+    ],
+    "suppliedEvidence": [
+      "E-state",
+      "E-admission",
+      "E-half-open",
+      "E-outcomes",
+      "E-default",
+      "E-policy",
+      "E-bulkhead",
+      "A-admission",
+      "A-trial",
+      "A-bulkhead"
+    ],
+    "correctionContext": {
+      "relationship": "K",
+      "delivery": "Full reason and qualifications from children/followup-result.json; exact target ADMISSION-1, replacement ADMISSION-2 and reporter TRIAL-1 are also supplied.",
+      "completeness": "Complete K context under the existing exemption; receiving older admission content is not silently treated as uncorrected."
+    },
+    "notSupplied": [
+      "INTRO-1",
+      "TRIAL-RESULT-1",
+      "BULKHEAD-RESULT-1"
+    ]
+  },
+  "compositionAcceptance": {
+    "subjectIds": {
+      "bulkhead-outside": "C-BB",
+      "breaker-outside": "C-BH"
+    },
+    "accountIds": {
+      "composition-result": "COMPOSITION-RESULT-1",
+      "pattern-definitions": "COMPOSITION-DEFINITIONS-1",
+      "bulkhead-outside-case": "COMPOSITION-BB-1",
+      "breaker-outside-case": "COMPOSITION-BH-1"
+    },
+    "relationshipIds": {}
+  },
+  "exposure": {
+    "citations": [
+      "ORIENTATION-0",
+      "DEFINITIONS-1",
+      "ROLE-DEFINITIONS-1",
+      "ADMISSION-1",
+      "ADMISSION-2",
+      "TRIAL-1",
+      "BULKHEAD-DEFINITION-1",
+      "BULKHEAD-1"
+    ],
+    "rule": "All four composition outputs share actual dialogue exposure, including the definition child. Item evidence/contribution lists do not narrow it. K has complete correction context; no new correction is asserted.",
+    "directEvidence": "Source acquisition remains distinct from retained-account delivery."
+  },
+  "retainedAnswer": {
+    "id": "COMPOSITION-ANSWER-1",
+    "selectedAccounts": [
+      "COMPOSITION-RESULT-1",
+      "COMPOSITION-DEFINITIONS-1",
+      "COMPOSITION-BB-1",
+      "COMPOSITION-BH-1"
+    ],
+    "identifyingSupport": [
+      "ORIENTATION-0",
+      "DEFINITIONS-1",
+      "BULKHEAD-DEFINITION-1",
+      "COMPOSITION-DEFINITIONS-1"
+    ],
+    "basis": "cockatiel-pinned",
+    "revisionContext": "Capture the selected accounts, support, K context and then-current status. Exact retrieval does not recompute bindings or replace prior contributions. Earlier answers remain accessible.",
+    "priorAccountsAreChildren": false
+  },
+  "followupProbes": [
+    {
+      "selection": {
+        "account": "COMPOSITION-BB-1",
+        "contentKey": "capacity-held-during-recovery",
+        "localRelation": "recovery-wait"
+      },
+      "meaning": "Investigate this locally designated waiting relation without assuming it is W or allocating a universal waiting subject. A later qualified introduction may promote this occurrence."
+    },
+    {
+      "selection": {
+        "account": "COMPOSITION-BH-1",
+        "contentKey": "trial-queued-for-capacity",
+        "localRole": "breaker",
+        "stateCategory": "S",
+        "situation": "waiting-cut"
+      },
+      "meaning": "Half-open as held by this scenario role at this point; S remains the existing category. This designation does not create a contextual subject automatically."
+    }
+  ],
+  "laterCorrectionProbe": {
+    "assume": "BULKHEAD-1 later receives a valid correction after this answer.",
+    "expected": "A fresh status check can flag all outputs of the composition evaluation through that citation, including definitions. It does not establish which cases are wrong or rebind their roles. Exact answer content stays fixed.",
+    "limit": "No correction payload, challenge, reassessment or clearing operation is exercised here."
+  }
+}

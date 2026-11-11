@@ -275,3 +275,14 @@ this sample neither serializes them nor grants them correction effects. A relati
 record is separately indexable metadata with qualified substance, not necessarily an
 investigram. Retention and challenge/revocation semantics beyond this correction path
 still require design. This contract must not be mistaken for the existing protocol.
+
+## Composition probe extensions — not yet generalized
+
+The [composition probe](composition/README.md#small-experimental-additions-to-the-content-contract)
+uses the shared roles on interaction items and explores item-local relations plus
+explicit situation snapshots. Its README defines the additional addressing and
+fields; these are local experiments, not requirements retroactively imposed on the
+admission/trial fixtures. It deliberately keeps situation and trace roles within one
+item. Extracting situations into another form would require qualified correspondence,
+not matching role names. Two rendered sequence diagrams exercise the retained meaning;
+no full structural view, universal resource schema or application API is introduced.
