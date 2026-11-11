@@ -2,7 +2,7 @@
 
 The [complete-payload tour](metadata-payload.md) exercises the
 [structure consolidation](../structured-architectural-accounts-consolidation.md):
-offers and presentation recommendations are investigram-owned metadata, with distinct
+options and presentation recommendations are investigram-owned metadata, with distinct
 address namespaces, qualified delivery and explicit trial diagram input bindings.
 These are authored fixture checks, not an implemented product protocol.
 
@@ -82,17 +82,17 @@ mistake; the claim that they cover admission in this scope is.** Waiting during 
 occupied trial is missing. A merely partial table without that coverage claim might
 warrant an addition rather than a correction.
 
-All content items and the offer metadata belong to one investigram. Content and offer
+All content items and the option metadata belong to one investigram. Content and option
 keys occupy separate local namespaces; neither creates an independently correctable
 investigram. No child investigrams are returned.
 
 ## 2. Select Half-open S and investigate concurrent callers
 
-ADMISSION-1 returns qualified `concurrent-callers-offer` metadata. The illustrative
-Follow-up investigation request selects ADMISSION-1 and that exact key; the offer
+ADMISSION-1 returns qualified `concurrent-callers-option` metadata. The illustrative
+Follow-up investigation request selects ADMISSION-1 and that exact key; the option
 resolves its architectural focus to S. The prose `informationNeed` documents its
-meaning, not user input. See the [bounded offer chain](offered-followup.md) and
-[access probe](offer-access.json) for qualification, provenance and replacement handling.
+meaning, not user input. See the [bounded option chain](followup-options.md) and
+[access probe](followup-option-access.json) for qualification, provenance and replacement handling.
 
 
 The follow-up receives S, its identifying investigram, and the **complete own content of
@@ -112,7 +112,7 @@ TRIAL-1 reuses S, P and the other state identities. It introduces:
 
 The investigram contains their identifying descriptions, architectural relationships,
 explanatory prose, a partial state model, and an interaction with two outcomes.
-This is one qualified explanation with multiple forms, not a requirement that every
+This is one qualified explanation with multiple types, not a requirement that every
 item have its own investigram or every architectural relationship have a subject ID.
 W is explicitly introduced as an entity here; other relationships can remain
 structured content without an independent entity designation.
@@ -141,14 +141,14 @@ delivered to its caller.
 
 The follow-up returns ADMISSION-2 with the missing Half-open waiting case. It
 also repeats the unchanged state descriptions, orientation and inspection content.
-It has no repeated follow-up offer: this submission already supplies TRIAL-1's answer.
+It has no repeated follow-up option: this submission already supplies TRIAL-1's answer.
 Those descriptions now reference existing S/S-open/S-closed; they do not allocate
 new subjects. This deliberately exposes the duplication cost of correcting a large
 investigram. More importantly, an investigation receiving just its identifying
-description still cites ADMISSION-1 and is exposed to its behavioral corrections.
-A separate identifying child can be delivered and cited without its behavioral
-sibling, avoiding that particular reconsideration path. This is about the cited
-unit: splitting the receiving evaluation's outputs does not narrow their shared
+description still records exposure to ADMISSION-1 and is exposed to its behavioral corrections.
+A separate identifying child can be delivered and recorded as exposure without its behavioral
+sibling, avoiding that particular reconsideration path. This is about the unit of
+exposure: splitting the receiving evaluation's outputs does not narrow their shared
 exposure index. Children still add qualification, support and composition obligations.
 The investigator can use explicit entity introduction as the signal of
 expected reuse: when mixed with behavior, put those identifying descriptions in one
@@ -163,7 +163,7 @@ even though that restriction is needed for their behavioral claims rather than f
 state-category identification. Excerpting a description cannot remove that limit.
 Separate identifying children allow independently supported descriptions to carry
 their own applicable qualifications while admission behavior remains bounded. This
-is a second benefit alongside the cited-unit benefit, not permission to broaden a
+is a second benefit alongside the benefit of narrower exposure, not permission to broaden a
 claim merely by moving it to a child.
 
 K is a **qualified investigram-relationship record** with these concrete fields:
@@ -180,15 +180,15 @@ K is a **qualified investigram-relationship record** with these concrete fields:
 | Qualifications | The static basis and bounded recovery scope stated on K itself |
 
 K is a separate organizing record; W is architectural content inside TRIAL-1. Storage
-and citation attribution are distinct: K's substantive reason and qualifications
-are attributed to TRIAL-1 for exposure and evidence citation, preserving the current
-correction rule. Receiving that explanation cites TRIAL-1, not K, but does not count
+and exposure attribution are distinct: K's substantive reason and qualifications
+are attributed to TRIAL-1 for exposure and evidence attribution, preserving the current
+correction rule. Receiving that explanation records exposure to TRIAL-1, not K, but does not count
 as receiving TRIAL-1's complete own content. Receiving bare K/endpoint IDs creates no
-such exposure. The ledger gives concrete delivery/citation examples. Neither claim
+such exposure. The ledger gives concrete delivery/exposure examples. Neither claim
 becomes unqualified by its representation. A revised reporter would not silently revoke K.
 Challenging a correction relationship and undoing its effects remain open design work.
 
-The submission's `accounts` array is a construction pool: one result root and an
+The submission's `investigrams` array is a construction pool: one result root and an
 accompanying correction replacement. It is not a proposal for multiple independent
 result roots. The reporter and replacement are disjoint, childless trees. Allocation
 and local-reference resolution must be atomic; spelling out the actual application
@@ -202,7 +202,7 @@ illustration while keeping their asserted correspondence inspectable. The exampl
 binding remains qualified analysis; neither selection nor rendering establishes it.
 No additional entity is needed for these item-local roles. `roles`,
 `roleScope` and `illustrations` belong to the shared structured-content envelope,
-not just the admission form. Use them when variables add meaning: the scenario state
+not just the admission type. Use them when variables add meaning: the scenario state
 item now references R directly instead of adding a redundant local name and treating
 identity as an illustration. Identical role keys across items do not imply identity
 or correspondence. The children variant separately reviews which qualifications apply
@@ -223,7 +223,7 @@ The context ledger gives three expected selections:
   including R, its executions and W. These support the illustration, not the general
   admission rule’s local-role identities.
   Those excerpts carry TRIAL-1's investigram qualifications and basis as well as item
-  evidence/qualifications. Their delivery cites TRIAL-1 but does not make its whole
+  evidence/qualifications. Their delivery records exposure to TRIAL-1 but does not make its whole
   investigram an eligible correction target in a later dialogue.
 
 K's `affectedSubjects: [P]` states its claimed scope; it is not permission to preserve
@@ -256,15 +256,15 @@ The sequence takes participants, ordering, waiting, branches and resumption from
 `trial.content.concurrent-callers`; transition events refer to the state model by
 local keys. A renderer does not infer a state edge from prose or invent an outcome.
 
-The wait step explicitly cites the caller request and trial entry as causes, subject
+The wait step explicitly names the caller request and trial entry as causes, subject
 to the slot still being occupied when that caller arrives. The sequence also includes
 trial-work completion, outcome availability and classification
 before the alternatives. Explicit `causedBy` references connect the outcome transitions
-to that classification. Each resume/recheck cites its releasing transition, and
-ordinary work/refusal cites that recheck. Ordinary sequence position alone is not a
+to that classification. Each resume/recheck names its releasing transition, and
+ordinary work/refusal names that recheck. Ordinary sequence position alone is not a
 causality claim, nor is a stated cause necessarily sufficient without the guard and
 scenario conditions. In particular, release does not guarantee admission.
-The existing action/response forms carry these events without a new universal event
+The existing action/response types carry these events without a new universal event
 type. Trial-work completion is distinct from final result delivery to its caller,
 whose order remains omitted.
 
@@ -275,7 +275,7 @@ general model, but establishing its broader applicability remains an open extens
 trial belongs to the current Half-open state: it expresses rejection of stale trial
 updates, not an unexplained “same cycle” phrase.
 
-Static cross-form review removed the separate “available Half-open slot” admission
+Static cross-type review removed the separate “available Half-open slot” admission
 case. Entry briefly creates Half-open before reservation, but the bounded investigram
 abstracts the initiating request and reservation as one admission step. Reentrant
 event-listener execution during entry is explicitly excluded throughout; it would
@@ -283,11 +283,11 @@ need separate analysis. This avoids claiming an additional ordinary admission ca
 without supplying its circumstances. This reading is grounded in `execute`,
 `executeHalfOpen`, and the outcome-recording methods at the pinned source linked above.
 
-The diagram styles follow the statechart and sequence forms discussed in the SEI's
+The diagram styles follow the statechart and sequence types discussed in the SEI's
 [Documenting Software Architectures: Documenting Behavior](https://www.sei.cmu.edu/documents/1986/2002_004_001_13934.pdf)
 (§6.1.1 and §6.2.3), also indexed in the
 [local architecture references](../initial-journey/architectural-concept-references.md).
-They are limited probes of those forms, not full UML contracts. There is no composite
+They are limited probes of those types, not full UML contracts. There is no composite
 state, orthogonal region or general interaction algebra in this sample.
 
 The committed [statechart source](recovery-state.mmd) and
@@ -310,7 +310,7 @@ correspondence. Exact answers retain their captured status/context.
 
 This gives useful disclosure for an explicit same-result content link without adding
 exposure-based reconsideration, automatic reassessment or retargeting. Delivering the
-target item's substantive content still cites its containing investigram. The same rules
+target item's substantive content still records exposure to its containing investigram. The same rules
 apply to W’s descriptive link to its behavioral explanation; that link is not an
 illustrative binding. A local occurrence can be designated for later
 investigation without already having a shared general relationship identity.
@@ -319,11 +319,11 @@ investigation without already having a shared general relationship identity.
 
 Structural checks cover local and retained references, unique content keys, subject
 allocations, evidence references available to each request, correction linkage,
-state endpoints, interaction participants, cross-form transition references, earlier
-causal-step references, form-local role/illustration references, excerpt qualification
+state endpoints, interaction participants, cross-type transition references, earlier
+causal-step references, item-local role/illustration references, excerpt qualification
 preservation, construction-pool ownership
 and traceability pointers. These are not automatic checks of semantic consistency
-between forms. The slot/entry issue was examined manually against the source; the
+between types. The slot/entry issue was examined manually against the source; the
 example deliberately retains ADMISSION-1's staged error, so validation must not be
 described as certifying every claim. The two diagrams were rendered with Mermaid CLI 12.0.0 and
 visually checked. These checks establish internally resolvable examples and usable
@@ -340,10 +340,10 @@ The next discussion should use this payload to decide:
    ownership and unchanged identifying support when only a behavioral sibling is
    corrected. Its authored fixtures and malformed-input probes exercise the
    recommendation; they do not establish product acceptance or agent reliability.
-2. Is retaining K separately while citing its reporter sufficient for the first
+2. Is retaining K separately while recording exposure to its reporter sufficient for the first
    capability? It preserves the current exposure rule; independent relationship
-   citation, challenge and revocation remain deferred.
-3. Do these two specialized forms contain enough architectural meaning, with prose
+   exposure entry, challenge and revocation remain deferred.
+3. Do these two specialized types contain enough architectural meaning, with prose
    carrying interpretation and limitations, without prematurely designing a universal
    behavior schema?
 

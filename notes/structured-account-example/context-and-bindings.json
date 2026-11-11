@@ -70,7 +70,7 @@
     "analysisAnchor": {
       "entity": "M"
     },
-    "suppliedAccountContext": [
+    "suppliedInvestigramContext": [
       "ORIENTATION-0"
     ],
     "suppliedEvidence": [
@@ -86,14 +86,14 @@
       "open": "S-open",
       "half-open": "S"
     },
-    "accountIds": {
+    "investigramIds": {
       "admission": "ADMISSION-1"
     },
     "relationshipIds": {}
   },
   "followupRequest": {
     "subject": {
-      "account": "ADMISSION-1"
+      "investigram": "ADMISSION-1"
     },
     "informationNeed": "Concurrent callers and trial outcomes under default single-trial recovery.",
     "analysisAnchor": {
@@ -101,12 +101,12 @@
     },
     "navigationOrigin": {
       "answer": "ANSWER-1",
-      "account": "ADMISSION-1"
+      "investigram": "ADMISSION-1"
     },
-    "suppliedAccountContext": [
+    "suppliedInvestigramContext": [
       {
-        "account": "ADMISSION-1",
-        "delivery": "complete own content and metadata: title, referents, associations, qualifications, evidence, children references, offers and presentations; basis/provenance supplied separately; child content is not implicit"
+        "investigram": "ADMISSION-1",
+        "delivery": "complete own content and metadata: title, referents, associations, qualifications, evidence, children references, options and presentations; basis/provenance supplied separately; child content is not implicit"
       }
     ],
     "suppliedEvidence": [
@@ -118,10 +118,10 @@
     ],
     "operation": "follow-up-investigation",
     "parameters": {
-      "offerKey": "concurrent-callers-offer",
+      "optionKey": "concurrent-callers-option",
       "values": {}
     },
-    "informationNeedRole": "Explanatory wording matching the retained offer purpose; not an executable question field or human-authored request text."
+    "informationNeedRole": "Explanatory wording matching the retained follow-up option purpose; not an executable question field or human-authored request text."
   },
   "followupAcceptance": {
     "entityIds": {
@@ -130,7 +130,7 @@
       "concurrent-execution": "E-caller",
       "waiting": "W"
     },
-    "accountIds": {
+    "investigramIds": {
       "trial": "TRIAL-1",
       "admission-replacement": "ADMISSION-2"
     },
@@ -141,7 +141,7 @@
   "expectedSelections": [
     {
       "id": "ANSWER-1",
-      "accounts": [
+      "investigrams": [
         "ADMISSION-1"
       ],
       "relationships": [],
@@ -153,7 +153,7 @@
     },
     {
       "id": "FOLLOWUP-ANSWER-1",
-      "accounts": [
+      "investigrams": [
         "TRIAL-1",
         "ADMISSION-2"
       ],
@@ -168,7 +168,7 @@
       "revisionContext": "Includes K; current identifying support uses ADMISSION-2. ADMISSION-1 remains explicit historical/input context. affectedSubjects does not exempt embedded definitions from whole-account replacement.",
       "historicalContext": [
         {
-          "account": "ADMISSION-1",
+          "investigram": "ADMISSION-1",
           "role": "Original correction target and input actually received; not selected as current identifying support."
         }
       ]
@@ -176,7 +176,7 @@
     {
       "id": "FRESH-ADMISSION-ANSWER",
       "requestedOriginal": "ADMISSION-1",
-      "accounts": [
+      "investigrams": [
         "ADMISSION-2"
       ],
       "relationships": [
@@ -186,14 +186,14 @@
         "ORIENTATION-0",
         "ADMISSION-2",
         {
-          "account": "TRIAL-1",
+          "investigram": "TRIAL-1",
           "items": [
             "shared-breaker-description",
             "trial-description",
             "caller-description",
             "waiting-description"
           ],
-          "accountQualifications": [
+          "investigramQualifications": [
             "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
             "Default one-call recovery sampling with zero permitted counted failures.",
             "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
@@ -222,27 +222,27 @@
   "exposureExamples": [
     {
       "delivery": "Bare relationship K and endpoint IDs, without substantive titles or explanation",
-      "citations": [],
+      "exposureIndex": [],
       "completeTargets": []
     },
     {
       "delivery": "K reason, qualifications and supporting references only",
-      "citations": [
+      "exposureIndex": [
         "TRIAL-1"
       ],
       "completeTargets": [],
-      "note": "K is not an independent evidence citation target. Its explanation is attributed to its reporter; this delivery alone is not complete correction context."
+      "note": "K is not an independent evidence exposure entry target. Its explanation is attributed to its reporter; this delivery alone is not complete correction context."
     },
     {
       "delivery": "TRIAL-1 identifying excerpts with their applicable qualifications and evidence",
-      "citations": [
+      "exposureIndex": [
         "TRIAL-1"
       ],
       "completeTargets": []
     },
     {
       "delivery": "Complete own content of ADMISSION-1 in the follow-up",
-      "citations": [
+      "exposureIndex": [
         "ADMISSION-1"
       ],
       "completeTargets": [
@@ -258,9 +258,9 @@
     ]
   },
   "followupResolution": {
-    "offer": {
-      "account": "ADMISSION-1",
-      "offerKey": "concurrent-callers-offer"
+    "followupOption": {
+      "investigram": "ADMISSION-1",
+      "optionKey": "concurrent-callers-option"
     },
     "method": "qualified-architectural-interpretation",
     "architecturalTargets": [
@@ -274,15 +274,15 @@
     "parameterValues": {},
     "provenance": {
       "invocationSubject": {
-        "account": "ADMISSION-1"
+        "investigram": "ADMISSION-1"
       },
-      "offerKey": "concurrent-callers-offer",
+      "optionKey": "concurrent-callers-option",
       "outputs": [
         "TRIAL-1",
         "ADMISSION-2"
       ],
-      "meaning": "All outputs retain this request/offer origin and the actual supplied context. Their architectural associations remain about S, P and the new roles. No child is appended to ADMISSION-1."
+      "meaning": "All outputs retain this request/option origin and the actual supplied context. Their architectural associations remain about S, P and the new roles. No child is appended to ADMISSION-1."
     },
-    "qualificationDelivery": "Complete ADMISSION-1 own delivery includes interpretation content and all declared own metadata (including offers and explicit empty presentations), applicable qualifications, evidence and provenance context. Offer selection or an offer excerpt alone does not establish completeness."
+    "qualificationDelivery": "Complete ADMISSION-1 own delivery includes interpretation content and all declared own metadata (including options and explicit empty presentations), applicable qualifications, evidence and provenance context. Option selection or an option excerpt alone does not establish completeness."
   }
 }

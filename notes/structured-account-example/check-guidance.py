@@ -28,9 +28,9 @@ for directory in [BASE, BASE / 'children']:
     for file, stage in [('first-result.json', 'firstAcceptance'), ('followup-result.json', 'followupAcceptance')]:
         registry.update(g['retained'](read(directory / file), ledger[stage]))
     saved = copy.deepcopy(registry)
-    for name in ['completeOriginalDelivery', 'withoutOfferMetadata']:
+    for name in ['completeOriginalDelivery', 'withoutOptionMetadata']:
         case = access[name]
-        owner = registry[case['account']]
+        owner = registry[case['investigram']]
         delivery = g['own_delivery'](owner, case['includedParts'])
         assert g['complete_own_delivery'](owner, delivery) is case['expectedComplete']
     full = access['completeOriginalDelivery']
@@ -44,19 +44,19 @@ for directory in [BASE, BASE / 'children']:
         assert not g['complete_delivery'](owner, missing, ledger['basis']['id'], full['provenance'])
         wrong = copy.deepcopy(envelope); wrong[field] = 'wrong-context'
         assert not g['complete_delivery'](owner, wrong, ledger['basis']['id'], full['provenance'])
-    for field in ['offers', 'presentations', 'qualifications', 'referents', 'associations', 'children']:
+    for field in ['followupOptions', 'presentations', 'qualifications', 'referents', 'contentAssociations', 'children']:
         missing = copy.deepcopy(complete); missing.pop(field)
         assert not g['complete_own_delivery'](owner, missing), 'omitted metadata claimed complete'
-    stripped = copy.deepcopy(complete); stripped['offers'] = []
-    assert not g['complete_own_delivery'](owner, stripped), 'empty list concealed existing offer'
-    old_offer = g['metadata_excerpt'](registry, {'account': 'ADMISSION-1', 'offerKey': 'concurrent-callers-offer'}, ledger['basis']['id'], full['provenance'])
-    assert not g['complete_own_delivery'](owner, old_offer), 'offer excerpt became complete target'
+    stripped = copy.deepcopy(complete); stripped['followupOptions'] = []
+    assert not g['complete_own_delivery'](owner, stripped), 'empty list concealed existing option'
+    old_option = g['metadata_excerpt'](registry, {'investigram': 'ADMISSION-1', 'optionKey': 'concurrent-callers-option'}, ledger['basis']['id'], full['provenance'])
+    assert not g['complete_own_delivery'](owner, old_option), 'option excerpt became complete target'
     recommendation = access['presentationOnly']['delivery']
     actual = g['metadata_excerpt'](registry, recommendation['address'], recommendation['basis'], recommendation['provenance'])
     assert actual == recommendation, 'recommendation excerpt lost support or changed inputs'
     assert recommendation['basis'] == ledger['basis']['id']
     assert recommendation['provenance']['request'] == 'followupRequest'
-    assert access['presentationOnly']['citationsIfSuppliedToInvestigator'] == ['TRIAL-1']
+    assert access['presentationOnly']['exposureIndexIfSuppliedToInvestigator'] == ['TRIAL-1']
     assert access['presentationOnly']['completeTargets'] == []
     assert not g['complete_own_delivery'](registry['TRIAL-1'], actual)
     plans = g['presentation_plans'](registry['TRIAL-1'], 'TRIAL-1')
@@ -65,7 +65,7 @@ for directory in [BASE, BASE / 'children']:
     for plan in plans:
         rec = plan['recommendation']; expected = expected_plans[rec['key']]
         assert rec['diagramType'] == expected['diagramType']
-        assert {role: {'account': addr['account']['account'], 'contentKey': addr['contentKey']} for role, addr in rec['inputs'].items()} == expected['bindings']
+        assert {role: {'investigram': addr['investigram']['investigram'], 'contentKey': addr['contentKey']} for role, addr in rec['inputs'].items()} == expected['bindings']
         assert {item['key'] for item, _ in list(plan['inputs'].values()) + list(plan['dependencies'].values())} == set(expected['availableForBoundedRender'])
     # The same inputs work without retained recommendations; resolve only content-declared dependencies.
     bare = copy.deepcopy(registry['TRIAL-1']); bare['presentations'] = []
@@ -83,22 +83,22 @@ for directory in [BASE, BASE / 'children']:
     assert set(resolved['dependencies']) == {'renamed-model'}
     for label, mutate in {
         'missing state content': lambda a: a['content'].__setitem__(slice(None), [i for i in a['content'] if i['key'] != 'recovery']),
-        'wrong dependency form': lambda a: next(i for i in a['content'] if i['key'] == 'recovery').update(form='prose/0'),
+        'wrong dependency content type': lambda a: next(i for i in a['content'] if i['key'] == 'recovery').update(contentType='prose/0'),
         'unknown transition': lambda a: next(i for i in a['content'] if i['key'] == 'recovery').update(transitions=[]),
     }.items():
         invalid = copy.deepcopy(bare); mutate(invalid)
         rejected(label, lambda: g['diagram_plan'](invalid, sequence_selection['diagramType'], sequence_selection['inputs'], 'TRIAL-1'))
     changed = copy.deepcopy(registry['TRIAL-1'])
-    changed['presentations'][1]['inputs']['stateModel'] = {'account': {'account': 'TRIAL-1'}, 'contentKey': 'recovery'}
+    changed['presentations'][1]['inputs']['stateModel'] = {'investigram': {'investigram': 'TRIAL-1'}, 'contentKey': 'recovery'}
     rejected('duplicate presentation dependency binding', lambda: g['presentation_plans'](changed, 'TRIAL-1'))
     for name, mutate in {
         'unknown diagram': lambda a: a['presentations'][0].update(diagramType='invented/0'),
         'missing input': lambda a: a['presentations'][0]['inputs'].clear(),
-        'wrong form': lambda a: a['presentations'][0]['inputs']['model'].update(contentKey='explanation'),
+        'wrong content type': lambda a: a['presentations'][0]['inputs']['model'].update(contentKey='explanation'),
         'missing content': lambda a: a['presentations'][0]['inputs']['model'].update(contentKey='absent'),
         'entity as model': lambda a: a['presentations'][0]['inputs'].update(model={'entity':'R'}),
-        'different owner': lambda a: a['presentations'][0]['inputs']['model'].update(account={'account':'ADMISSION-2'}),
-        'offer as model': lambda a: a['presentations'][0]['inputs'].update(model={'account':{'account':'TRIAL-1'},'offerKey':'recovery'}),
+        'different owner': lambda a: a['presentations'][0]['inputs']['model'].update(investigram={'investigram':'ADMISSION-2'}),
+        'option as model': lambda a: a['presentations'][0]['inputs'].update(model={'investigram':{'investigram':'TRIAL-1'},'optionKey':'recovery'}),
         'duplicate metadata key': lambda a: a['presentations'].append(copy.deepcopy(a['presentations'][0])),
         'unqualified recommendation': lambda a: a['presentations'][0].update(qualifications=[]),
     }.items():
@@ -106,12 +106,12 @@ for directory in [BASE, BASE / 'children']:
         rejected(name, lambda: g['presentation_plans'](invalid, 'TRIAL-1'))
     # Identical key spelling in another namespace or replacement is never a fallback.
     shadow = copy.deepcopy(registry)
-    shadow['ADMISSION-1']['content'].append({'key':'concurrent-callers-offer','form':'prose/0','text':'not an offer'})
-    assert g['metadata_excerpt'](shadow, old_offer['address'], old_offer['basis'], old_offer['provenance']) == old_offer
-    shadow['ADMISSION-2']['offers'] = copy.deepcopy(shadow['ADMISSION-1']['offers'])
-    shadow['ADMISSION-1']['offers'] = []
-    rejected('content/replacement fallback', lambda: g['metadata_excerpt'](shadow, old_offer['address'], old_offer['basis'], old_offer['provenance']))
-    rejected('content address used for metadata', lambda: g['metadata_excerpt'](registry, {'account':'TRIAL-1','contentKey':'recovery-state'}, actual['basis'], actual['provenance']))
+    shadow['ADMISSION-1']['content'].append({'key':'concurrent-callers-option','contentType':'prose/0','text':'not an option'})
+    assert g['metadata_excerpt'](shadow, old_option['address'], old_option['basis'], old_option['provenance']) == old_option
+    shadow['ADMISSION-2']['followupOptions'] = copy.deepcopy(shadow['ADMISSION-1']['followupOptions'])
+    shadow['ADMISSION-1']['followupOptions'] = []
+    rejected('content/replacement fallback', lambda: g['metadata_excerpt'](shadow, old_option['address'], old_option['basis'], old_option['provenance']))
+    rejected('content address used for metadata', lambda: g['metadata_excerpt'](registry, {'investigram':'TRIAL-1','contentKey':'recovery-state'}, actual['basis'], actual['provenance']))
     # Simulated candidate record, not a new architectural result: identical keys must not retarget.
     hypothetical = copy.deepcopy(registry)
     hypothetical['TRIAL-2'] = copy.deepcopy(hypothetical.pop('TRIAL-1'))
@@ -119,4 +119,4 @@ for directory in [BASE, BASE / 'children']:
     assert registry == saved, 'access mutated retained fixture records'
 
 print(f'Guidance metadata, complete-own delivery and explicit diagram bindings pass in both partitions; {negative_count} invalid guidance/address copies rejected.')
-print('Missing own metadata and offer/presentation excerpts do not confer completeness. No product, live investigation or general presentation-policy validation is claimed.')
+print('Missing own metadata and option/presentation excerpts do not confer completeness. No product, live investigation or general presentation-policy validation is claimed.')

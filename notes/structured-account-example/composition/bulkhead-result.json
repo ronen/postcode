@@ -1,10 +1,10 @@
 {
   "illustration": "Authored composition design probe continuing only the children variant hypothetical Session; not supported application input.",
   "result": {
-    "rootAccount": {
-      "submittedAccount": "bulkhead-result"
+    "rootInvestigram": {
+      "submittedInvestigram": "bulkhead-result"
     },
-    "accounts": [
+    "investigrams": [
       {
         "key": "bulkhead-result",
         "title": "Bulkhead vocabulary and admission",
@@ -13,7 +13,7 @@
             "introducedEntity": "bulkhead"
           }
         ],
-        "associations": [
+        "contentAssociations": [
           {
             "role": "describes",
             "subject": {
@@ -31,7 +31,7 @@
         "content": [
           {
             "key": "orientation",
-            "form": "prose/0",
+            "contentType": "prose/0",
             "concept": "interaction",
             "text": "Distinguish the reusable policy kind from its execution and queue resources. The children identify the kind and describe a bounded admission contract.",
             "evidence": [
@@ -41,13 +41,13 @@
         ],
         "children": [
           {
-            "submittedAccount": "bulkhead-definition"
+            "submittedInvestigram": "bulkhead-definition"
           },
           {
-            "submittedAccount": "bulkhead-admission"
+            "submittedInvestigram": "bulkhead-admission"
           }
         ],
-        "offers": [],
+        "followupOptions": [],
         "presentations": []
       },
       {
@@ -58,7 +58,7 @@
             "introducedEntity": "bulkhead"
           }
         ],
-        "associations": [
+        "contentAssociations": [
           {
             "role": "identifies",
             "subject": {
@@ -77,7 +77,7 @@
         "content": [
           {
             "key": "bulkhead-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "introducedEntity": "bulkhead"
@@ -92,7 +92,7 @@
           }
         ],
         "children": [],
-        "offers": [],
+        "followupOptions": [],
         "presentations": []
       },
       {
@@ -103,7 +103,7 @@
             "introducedEntity": "bulkhead"
           }
         ],
-        "associations": [
+        "contentAssociations": [
           {
             "role": "describes",
             "subject": {
@@ -122,7 +122,7 @@
         "content": [
           {
             "key": "capacity-and-queue",
-            "form": "prose/0",
+            "contentType": "prose/0",
             "concept": "interaction",
             "text": "When execution capacity is available, the bulkhead occupies one execution slot while awaiting the supplied operation and releases it when that operation settles. When full but queue space exists, it retains pending work without invoking it yet; when both are full it refuses. A freed execution slot prompts processing of queued work. Queuing is distinct from occupying execution capacity.",
             "evidence": [
@@ -131,10 +131,10 @@
           }
         ],
         "children": [],
-        "offers": [],
+        "followupOptions": [],
         "presentations": []
       }
     ],
-    "accountRelationships": []
+    "investigramRelationships": []
   }
 }

@@ -1,10 +1,10 @@
 {
   "illustration": "Proposed submission only; no supported PostCode API accepts this format today. The coverage claim intentionally omits waiting to exercise correction. This annotation is outside the simulated investigator result.",
   "result": {
-    "rootAccount": {
-      "submittedAccount": "admission"
+    "rootInvestigram": {
+      "submittedInvestigram": "admission"
     },
-    "accounts": [
+    "investigrams": [
       {
         "key": "admission",
         "title": "Circuit breaker admission and state inspection",
@@ -22,7 +22,7 @@
             "introducedEntity": "half-open"
           }
         ],
-        "associations": [
+        "contentAssociations": [
           {
             "role": "describes",
             "subject": {
@@ -73,7 +73,7 @@
         "content": [
           {
             "key": "closed-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "introducedEntity": "closed"
@@ -92,7 +92,7 @@
           },
           {
             "key": "open-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "introducedEntity": "open"
@@ -111,7 +111,7 @@
           },
           {
             "key": "half-open-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "introducedEntity": "half-open"
@@ -130,7 +130,7 @@
           },
           {
             "key": "orientation",
-            "form": "prose/0",
+            "contentType": "prose/0",
             "concept": "interface",
             "text": "The application supplies work. The breaker controls admission and records outcomes according to its failure policy. State categories describe the policy, not the progress of a particular caller.",
             "evidence": [
@@ -140,7 +140,7 @@
           },
           {
             "key": "admission-cases",
-            "form": "admission-cases/0",
+            "contentType": "admission-cases/0",
             "concept": "interface",
             "coverage": "The cases below cover the admission outcomes for the stated recovery scope.",
             "cases": [
@@ -190,7 +190,7 @@
           },
           {
             "key": "inspection",
-            "form": "prose/0",
+            "contentType": "prose/0",
             "concept": "interface",
             "text": "State inspection reports the stored state. It neither reserves trial capacity nor initiates work; a later execution can encounter different conditions.",
             "evidence": [
@@ -200,9 +200,9 @@
           }
         ],
         "children": [],
-        "offers": [
+        "followupOptions": [
           {
-            "key": "concurrent-callers-offer",
+            "key": "concurrent-callers-option",
             "label": "Concurrent callers and trial outcomes",
             "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
             "targets": [
@@ -216,7 +216,7 @@
             "method": "qualified-architectural-interpretation",
             "parameterDefinitions": [],
             "qualifications": [
-              "A question under this account’s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
+              "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
             ],
             "evidence": [
               "E-admission",
@@ -227,6 +227,6 @@
         "presentations": []
       }
     ],
-    "accountRelationships": []
+    "investigramRelationships": []
   }
 }

@@ -1,10 +1,10 @@
 {
   "illustration": "Authored composition design probe continuing only the children variant hypothetical Session; not supported application input.",
   "result": {
-    "rootAccount": {
-      "submittedAccount": "composition-result"
+    "rootInvestigram": {
+      "submittedInvestigram": "composition-result"
     },
-    "accounts": [
+    "investigrams": [
       {
         "key": "composition-result",
         "title": "Two policy orders and their waiting points",
@@ -22,7 +22,7 @@
             "introducedEntity": "breaker-outside"
           }
         ],
-        "associations": [
+        "contentAssociations": [
           {
             "role": "describes",
             "subject": {
@@ -58,7 +58,7 @@
         "content": [
           {
             "key": "orientation",
-            "form": "prose/0",
+            "contentType": "prose/0",
             "concept": "interaction",
             "text": "Policy kinds, policy-instance roles and execution roles remain distinct. The children identify two ordered patterns and examine a bounded execution prefix for each.",
             "evidence": [
@@ -68,16 +68,16 @@
         ],
         "children": [
           {
-            "submittedAccount": "pattern-definitions"
+            "submittedInvestigram": "pattern-definitions"
           },
           {
-            "submittedAccount": "bulkhead-outside-case"
+            "submittedInvestigram": "bulkhead-outside-case"
           },
           {
-            "submittedAccount": "breaker-outside-case"
+            "submittedInvestigram": "breaker-outside-case"
           }
         ],
-        "offers": [],
+        "followupOptions": [],
         "presentations": []
       },
       {
@@ -97,7 +97,7 @@
             "introducedEntity": "breaker-outside"
           }
         ],
-        "associations": [
+        "contentAssociations": [
           {
             "role": "identifies",
             "subject": {
@@ -123,7 +123,7 @@
         "content": [
           {
             "key": "bulkhead-outside-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "introducedEntity": "bulkhead-outside"
@@ -138,7 +138,7 @@
           },
           {
             "key": "breaker-outside-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "introducedEntity": "breaker-outside"
@@ -153,7 +153,7 @@
           }
         ],
         "children": [],
-        "offers": [],
+        "followupOptions": [],
         "presentations": []
       },
       {
@@ -173,7 +173,7 @@
             "introducedEntity": "bulkhead-outside"
           }
         ],
-        "associations": [
+        "contentAssociations": [
           {
             "role": "describes",
             "subject": {
@@ -220,7 +220,7 @@
         "content": [
           {
             "key": "capacity-held-during-recovery",
-            "form": "interaction/0",
+            "contentType": "interaction/0",
             "concept": "interaction",
             "title": "Bulkhead outside breaker",
             "pattern": {
@@ -515,7 +515,7 @@
           },
           {
             "key": "application-of-components",
-            "form": "prose/0",
+            "contentType": "prose/0",
             "concept": "interaction",
             "text": "This case applies the admission account to the inner breaker and combines its waiting rule with the bulkhead slot lifetime and ordered wrapper invocation. The earlier scenario does not describe outer bulkhead occupancy; this case establishes that the later caller has already reserved that capacity. This is a new qualified synthesis: neither the source account labels nor visual adjacency establish the resulting resource overlap.",
             "evidence": [
@@ -528,22 +528,22 @@
             ],
             "relatedContent": [
               {
-                "account": {
-                  "account": "ADMISSION-2"
+                "investigram": {
+                  "investigram": "ADMISSION-2"
                 },
                 "contentKey": "admission-cases",
                 "purpose": "General admission behavior applied after checking its default-sampling and interference limits; no binding to its illustration R."
               },
               {
-                "account": {
-                  "account": "TRIAL-1"
+                "investigram": {
+                  "investigram": "TRIAL-1"
                 },
                 "contentKey": "concurrent-callers",
                 "purpose": "Prior scenario used as an interpretive comparison, not transplanted unchanged and not evidence of identity with its participants."
               },
               {
-                "account": {
-                  "account": "BULKHEAD-1"
+                "investigram": {
+                  "investigram": "BULKHEAD-1"
                 },
                 "contentKey": "capacity-and-queue",
                 "purpose": "Separate capacity/lifetime interpretation used with wrapper source to establish occupancy in this new account."
@@ -552,7 +552,7 @@
           }
         ],
         "children": [],
-        "offers": [],
+        "followupOptions": [],
         "presentations": []
       },
       {
@@ -572,7 +572,7 @@
             "introducedEntity": "breaker-outside"
           }
         ],
-        "associations": [
+        "contentAssociations": [
           {
             "role": "describes",
             "subject": {
@@ -620,7 +620,7 @@
         "content": [
           {
             "key": "trial-queued-for-capacity",
-            "form": "interaction/0",
+            "contentType": "interaction/0",
             "concept": "interaction",
             "title": "Breaker outside bulkhead",
             "pattern": {
@@ -907,7 +907,7 @@
           },
           {
             "key": "application-of-components",
-            "form": "prose/0",
+            "contentType": "prose/0",
             "concept": "interaction",
             "text": "Here the breaker trial operation includes the inner bulkhead wait. Reserving a breaker trial slot therefore need not mean that application work has begun. The comparison to TRIAL-1 reuses its distinction between shared state and execution progress, not its scenario identities or complete trace. Direct inspection of wrapper and policy behavior supports this case; it is not inferred by reversing the earlier arrows.",
             "evidence": [
@@ -920,22 +920,22 @@
             ],
             "relatedContent": [
               {
-                "account": {
-                  "account": "ADMISSION-2"
+                "investigram": {
+                  "investigram": "ADMISSION-2"
                 },
                 "contentKey": "admission-cases",
                 "purpose": "General admission behavior applied after checking its default-sampling and interference limits; no binding to its illustration R."
               },
               {
-                "account": {
-                  "account": "TRIAL-1"
+                "investigram": {
+                  "investigram": "TRIAL-1"
                 },
                 "contentKey": "concurrent-callers",
                 "purpose": "Prior scenario used as an interpretive comparison, not transplanted unchanged and not evidence of identity with its participants."
               },
               {
-                "account": {
-                  "account": "BULKHEAD-1"
+                "investigram": {
+                  "investigram": "BULKHEAD-1"
                 },
                 "contentKey": "capacity-and-queue",
                 "purpose": "Separate capacity/lifetime interpretation used with wrapper source to establish occupancy in this new account."
@@ -944,10 +944,10 @@
           }
         ],
         "children": [],
-        "offers": [],
+        "followupOptions": [],
         "presentations": []
       }
     ],
-    "accountRelationships": []
+    "investigramRelationships": []
   }
 }

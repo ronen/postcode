@@ -1,10 +1,10 @@
 {
-  "illustration": "Authored proposed submission. The staged omission is identified deliberately, not discovered by an executed investigator. Account relationships are organizing metadata; they are not the architectural relations inside trial.content.",
+  "illustration": "Authored proposed submission. The staged omission is identified deliberately, not discovered by an executed investigator. Investigram relationships are organizing metadata; they are not the architectural relations inside trial.content.",
   "result": {
-    "rootAccount": {
-      "submittedAccount": "trial"
+    "rootInvestigram": {
+      "submittedInvestigram": "trial"
     },
-    "accounts": [
+    "investigrams": [
       {
         "key": "trial",
         "title": "Half-open recovery with a concurrent caller",
@@ -34,7 +34,7 @@
             "introducedEntity": "waiting"
           }
         ],
-        "associations": [
+        "contentAssociations": [
           {
             "role": "describes",
             "subject": {
@@ -93,7 +93,7 @@
         "content": [
           {
             "key": "shared-breaker-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "introducedEntity": "shared-breaker"
@@ -112,7 +112,7 @@
           },
           {
             "key": "trial-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "introducedEntity": "trial-execution"
@@ -131,7 +131,7 @@
           },
           {
             "key": "caller-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "introducedEntity": "concurrent-execution"
@@ -149,7 +149,7 @@
           },
           {
             "key": "waiting-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "introducedEntity": "waiting"
@@ -166,8 +166,8 @@
             "introducesEntity": true,
             "relatedContent": [
               {
-                "account": {
-                  "submittedAccount": "trial"
+                "investigram": {
+                  "submittedInvestigram": "trial"
                 },
                 "contentKey": "concurrent-callers",
                 "purpose": "Behavioral conditions and ordering for this scenario; further explanation, not part of the identifying description."
@@ -176,7 +176,7 @@
           },
           {
             "key": "state-of",
-            "form": "architectural-relations/0",
+            "contentType": "architectural-relations/0",
             "concept": "structure",
             "relations": [
               {
@@ -243,7 +243,7 @@
           },
           {
             "key": "explanation",
-            "form": "prose/0",
+            "contentType": "prose/0",
             "concept": "interaction",
             "text": "The breaker state is shared, while each execution has its own progress. Waiting consumes no additional trial slot. Completion of the recovery decision releases the waiting execution to recheck admission; it does not guarantee that execution will run.",
             "evidence": [
@@ -253,7 +253,7 @@
           },
           {
             "key": "recovery",
-            "form": "state-behavior/0",
+            "contentType": "state-behavior/0",
             "concept": "state-behavior",
             "title": "Partial recovery statechart",
             "stateBearer": {
@@ -356,7 +356,7 @@
           },
           {
             "key": "concurrent-callers",
-            "form": "interaction/0",
+            "contentType": "interaction/0",
             "concept": "interaction",
             "title": "One trial and one concurrent caller: two possible outcomes",
             "semantics": "Possible scenario ordering, not an observed execution or a complete interleaving model.",
@@ -614,15 +614,15 @@
           }
         ],
         "children": [],
-        "offers": [],
+        "followupOptions": [],
         "presentations": [
           {
             "key": "recovery-state",
             "diagramType": "state-diagram/0",
             "inputs": {
               "model": {
-                "account": {
-                  "submittedAccount": "trial"
+                "investigram": {
+                  "submittedInvestigram": "trial"
                 },
                 "contentKey": "recovery"
               }
@@ -642,8 +642,8 @@
             "diagramType": "sequence-diagram/0",
             "inputs": {
               "interaction": {
-                "account": {
-                  "submittedAccount": "trial"
+                "investigram": {
+                  "submittedInvestigram": "trial"
                 },
                 "contentKey": "concurrent-callers"
               }
@@ -686,7 +686,7 @@
             "introducedEntity": "concurrent-execution"
           }
         ],
-        "associations": [
+        "contentAssociations": [
           {
             "role": "describes",
             "subject": {
@@ -739,7 +739,7 @@
         "content": [
           {
             "key": "closed-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "entity": "S-closed"
@@ -757,7 +757,7 @@
           },
           {
             "key": "open-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "entity": "S-open"
@@ -775,7 +775,7 @@
           },
           {
             "key": "half-open-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "entity": "S"
@@ -793,7 +793,7 @@
           },
           {
             "key": "orientation",
-            "form": "prose/0",
+            "contentType": "prose/0",
             "concept": "interface",
             "text": "The application supplies work. The breaker controls admission and records outcomes according to its failure policy. State categories describe the policy, not the progress of a particular caller.",
             "evidence": [
@@ -803,7 +803,7 @@
           },
           {
             "key": "admission-cases",
-            "form": "admission-cases/0",
+            "contentType": "admission-cases/0",
             "concept": "interface",
             "coverage": "Admission cases in the stated scope, excluding reentrant entry calls: the request finding Open after its delay enters Half-open and reserves the sole trial slot; subsequent callers during the occupied trial wait. An admitted operation can later succeed or fail.",
             "cases": [
@@ -903,8 +903,8 @@
             "illustrations": [
               {
                 "case": "waiting",
-                "account": {
-                  "submittedAccount": "trial"
+                "investigram": {
+                  "submittedInvestigram": "trial"
                 },
                 "contentKey": "concurrent-callers",
                 "roleBindings": [
@@ -935,7 +935,7 @@
           },
           {
             "key": "inspection",
-            "form": "prose/0",
+            "contentType": "prose/0",
             "concept": "interface",
             "text": "State inspection reports the stored state. It neither reserves trial capacity nor initiates work; a later execution can encounter different conditions.",
             "evidence": [
@@ -945,22 +945,22 @@
           }
         ],
         "children": [],
-        "offers": [],
+        "followupOptions": [],
         "presentations": []
       }
     ],
-    "accountRelationships": [
+    "investigramRelationships": [
       {
         "key": "admission-correction",
         "kind": "correction",
         "reporter": {
-          "submittedAccount": "trial"
+          "submittedInvestigram": "trial"
         },
         "target": {
-          "account": "ADMISSION-1"
+          "investigram": "ADMISSION-1"
         },
         "replacement": {
-          "submittedAccount": "admission-replacement"
+          "submittedInvestigram": "admission-replacement"
         },
         "affectedSubjects": [
           {
@@ -980,7 +980,7 @@
           "E-admission",
           "E-outcomes",
           {
-            "account": "ADMISSION-1"
+            "investigram": "ADMISSION-1"
           }
         ]
       }

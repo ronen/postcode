@@ -16,20 +16,20 @@ old_ledger = read(BASE.parent / 'children/context-and-bindings.json')
 known = set(old_ledger['entry']['knownEntities'])
 for stage in ['firstAcceptance', 'followupAcceptance']:
     known.update(old_ledger[stage]['entityIds'].values())
-earlier = dict(shared['child_accounts'])
+earlier = dict(shared['child_investigrams'])
 bulk = read(BASE / 'bulkhead-result.json')
-bulk_accounts = check_result(bulk, ledger['bulkheadAcceptance'], known, earlier,
+bulk_investigrams = check_result(bulk, ledger['bulkheadAcceptance'], known, earlier,
                              set(), set(ledger['bulkheadRequest']['suppliedEvidence']))
 known.update(ledger['bulkheadAcceptance']['entityIds'].values())
-earlier.update({ledger['bulkheadAcceptance']['accountIds'][k]: a for k, a in bulk_accounts.items()})
+earlier.update({ledger['bulkheadAcceptance']['investigramIds'][k]: a for k, a in bulk_investigrams.items()})
 request = ledger['compositionRequest']
-complete = {x['account'] for x in request['suppliedAccountContext']}
+complete = {x['investigram'] for x in request['suppliedInvestigramContext']}
 assert complete <= set(earlier)
 history = request['revisionHistory']
-expected_citations = complete | ({history['reporter']} if history['substantiveExplanationDelivered'] else set())
-assert expected_citations == set(ledger['exposure']['citations'])
+expected_exposure_index = complete | ({history['reporter']} if history['substantiveExplanationDelivered'] else set())
+assert expected_exposure_index == set(ledger['exposure']['exposureIndex'])
 assert {'ADMISSION-2', 'TRIAL-1'} <= complete
-assert 'ADMISSION-1' not in complete | expected_citations
+assert 'ADMISSION-1' not in complete | expected_exposure_index
 assert 'ADMISSION-1' in request['notSupplied']
 assert not any(history[k] for k in ['targetContentDelivered', 'completeCorrectionContext', 'claimsExemption'])
 assert (history['relationship'], history['target'], history['replacement'], history['reporter']) == ('K', 'ADMISSION-1', 'ADMISSION-2', 'TRIAL-1')
@@ -38,16 +38,16 @@ assert selection['kind'] == 'unordered-set'
 assert len(selection['members']) == len(set(selection['members'])) == 2
 assert set(selection['members']) == {'P', 'B'}
 for ev in ledger['evidence'].values():
-    if 'account' in ev:
-        assert ev['account'] in complete, 'undelivered interpretation contribution'
+    if 'investigram' in ev:
+        assert ev['investigram'] in complete, 'undelivered interpretation contribution'
 args = (ledger['compositionAcceptance'], known, earlier, complete, set(request['suppliedEvidence']))
 
 
 def check(document):
-    accounts = check_result(document, *args)
-    for a in accounts.values():
+    investigrams = check_result(document, *args)
+    for a in investigrams.values():
         for item in a['content']:
-            if item['form'] != 'interaction/0':
+            if item['contentType'] != 'interaction/0':
                 continue
             assert item['conditions'] and item['notShown'] and not item['alternatives']
             roles = {r['key']: r for r in item['roles']}
@@ -87,28 +87,28 @@ def check(document):
                 for progress in snap['executionProgress']:
                     assert progress['execution']['localRole'] in roles
                     assert progress['applicationWork'] in ['not-started', 'started']
-    return accounts
+    return investigrams
 
 
 RESOURCE_LABELS = {'execution-capacity': 'execution slot', 'queue-capacity': 'queue place',
                    'recovery-trial-slot': 'recovery trial slot'}
 document = read(BASE / 'composition-result.json')
-accounts = check(document)
-accepted = set(ledger['compositionAcceptance']['accountIds'].values())
-assert set(ledger['retainedAnswer']['selectedAccounts']) == accepted
+investigrams = check(document)
+accepted = set(ledger['compositionAcceptance']['investigramIds'].values())
+assert set(ledger['retainedAnswer']['selectedInvestigrams']) == accepted
 assert set(ledger['retainedAnswer']['identifyingSupport']) <= set(earlier) | accepted
 
 
-retained_accounts = dict(earlier)
-retained_accounts.update({ledger['compositionAcceptance']['accountIds'][k]: a for k, a in accounts.items()})
+retained_investigrams = dict(earlier)
+retained_investigrams.update({ledger['compositionAcceptance']['investigramIds'][k]: a for k, a in investigrams.items()})
 
 
 def check_selection(selection, registry):
-    assert isinstance(selection, dict) and set(selection) == {'account', 'contentKey', 'selector'}, 'invalid selection envelope'
-    assert isinstance(selection['account'], str) and isinstance(selection['contentKey'], str)
-    account = registry[selection['account']]
-    items = [i for i in account['content'] if i['key'] == selection['contentKey']]
-    assert len(items) == 1 and items[0]['form'] == 'interaction/0', 'not one interaction item'
+    assert isinstance(selection, dict) and set(selection) == {'investigram', 'contentKey', 'selector'}, 'invalid selection envelope'
+    assert isinstance(selection['investigram'], str) and isinstance(selection['contentKey'], str)
+    investigram = registry[selection['investigram']]
+    items = [i for i in investigram['content'] if i['key'] == selection['contentKey']]
+    assert len(items) == 1 and items[0]['contentType'] == 'interaction/0', 'not one interaction item'
     item, selector = items[0], selection['selector']
     assert isinstance(selector, dict)
     if selector.get('kind') == 'relation':
@@ -133,7 +133,7 @@ def check_selection(selection, registry):
 
 
 for probe in ledger['followupProbes']:
-    check_selection(probe['selection'], retained_accounts)
+    check_selection(probe['selection'], retained_investigrams)
 assert ledger['patternFollowupRequest']['subject']['entity'] in ledger['compositionAcceptance']['entityIds'].values()
 relation_selection = ledger['followupProbes'][0]['selection']
 state_selection = ledger['followupProbes'][1]['selection']
@@ -141,16 +141,16 @@ selector_mutations = [
     ('mixed envelope fields', relation_selection, lambda s, r: s.update(localRelation='recovery-wait')),
     ('unsupported kind', relation_selection, lambda s, r: s['selector'].update(kind='role')),
     ('missing selector key', relation_selection, lambda s, r: s['selector'].pop('key')),
-    ('unknown account', relation_selection, lambda s, r: s.update(account='absent')),
+    ('unknown account', relation_selection, lambda s, r: s.update(investigram='absent')),
     ('unknown content', relation_selection, lambda s, r: s.update(contentKey='absent')),
     ('relation from another item', relation_selection, lambda s, r: s['selector'].update(key='capacity-wait')),
     ('nonexistent bearer/category pair', state_selection, lambda s, r: s['selector'].update(bearer={'localRole': 'bulkhead'})),
     ('unknown situation', state_selection, lambda s, r: s['selector'].update(situation='absent')),
-    ('ambiguous assignment', state_selection, lambda s, r: r[s['account']]['content'][0]['situations'][0]['stateAssignments'].append(
-        copy.deepcopy(r[s['account']]['content'][0]['situations'][0]['stateAssignments'][0]))),
+    ('ambiguous assignment', state_selection, lambda s, r: r[s['investigram']]['content'][0]['situations'][0]['stateAssignments'].append(
+        copy.deepcopy(r[s['investigram']]['content'][0]['situations'][0]['stateAssignments'][0]))),
 ]
 for name, original, mutate in selector_mutations:
-    invalid, registry = copy.deepcopy(original), copy.deepcopy(retained_accounts)
+    invalid, registry = copy.deepcopy(original), copy.deepcopy(retained_investigrams)
     mutate(invalid, registry)
     try:
         check_selection(invalid, registry)
@@ -160,7 +160,7 @@ for name, original, mutate in selector_mutations:
 
 
 def first_item(d):
-    return d['result']['accounts'][2]['content'][0]
+    return d['result']['investigrams'][2]['content'][0]
 
 
 mutations = {

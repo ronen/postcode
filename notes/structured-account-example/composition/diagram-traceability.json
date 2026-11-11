@@ -3,265 +3,265 @@
     "diagram": "bulkhead-outside.mmd",
     "legend": "bulkhead-outside.md",
     "legendKey": "Bulkhead",
-    "account": "COMPOSITION-BB-1",
+    "investigram": "COMPOSITION-BB-1",
     "pointers": [
-      "/result/accounts/2/content/0/participants/0"
+      "/result/investigrams/2/content/0/participants/0"
     ]
   },
   {
     "diagram": "bulkhead-outside.mmd",
     "legend": "bulkhead-outside.md",
     "legendKey": "Breaker",
-    "account": "COMPOSITION-BB-1",
+    "investigram": "COMPOSITION-BB-1",
     "pointers": [
-      "/result/accounts/2/content/0/participants/1"
+      "/result/investigrams/2/content/0/participants/1"
     ]
   },
   {
     "diagram": "bulkhead-outside.mmd",
     "legend": "bulkhead-outside.md",
     "legendKey": "Trial",
-    "account": "COMPOSITION-BB-1",
+    "investigram": "COMPOSITION-BB-1",
     "pointers": [
-      "/result/accounts/2/content/0/participants/2"
+      "/result/investigrams/2/content/0/participants/2"
     ]
   },
   {
     "diagram": "bulkhead-outside.mmd",
     "legend": "bulkhead-outside.md",
     "legendKey": "Caller",
-    "account": "COMPOSITION-BB-1",
+    "investigram": "COMPOSITION-BB-1",
     "pointers": [
-      "/result/accounts/2/content/0/participants/3"
+      "/result/investigrams/2/content/0/participants/3"
     ]
   },
   {
     "diagram": "bulkhead-outside.mmd",
     "legend": "bulkhead-outside.md",
     "legendKey": "I1",
-    "account": "COMPOSITION-BB-1",
+    "investigram": "COMPOSITION-BB-1",
     "pointers": [
-      "/result/accounts/2/content/0/prefix/0"
+      "/result/investigrams/2/content/0/prefix/0"
     ]
   },
   {
     "diagram": "bulkhead-outside.mmd",
     "legend": "bulkhead-outside.md",
     "legendKey": "I2",
-    "account": "COMPOSITION-BB-1",
+    "investigram": "COMPOSITION-BB-1",
     "pointers": [
-      "/result/accounts/2/content/0/prefix/1"
+      "/result/investigrams/2/content/0/prefix/1"
     ]
   },
   {
     "diagram": "bulkhead-outside.mmd",
     "legend": "bulkhead-outside.md",
     "legendKey": "I3",
-    "account": "COMPOSITION-BB-1",
+    "investigram": "COMPOSITION-BB-1",
     "pointers": [
-      "/result/accounts/2/content/0/prefix/2"
+      "/result/investigrams/2/content/0/prefix/2"
     ]
   },
   {
     "diagram": "bulkhead-outside.mmd",
     "legend": "bulkhead-outside.md",
     "legendKey": "I4",
-    "account": "COMPOSITION-BB-1",
+    "investigram": "COMPOSITION-BB-1",
     "pointers": [
-      "/result/accounts/2/content/0/prefix/3"
+      "/result/investigrams/2/content/0/prefix/3"
     ]
   },
   {
     "diagram": "bulkhead-outside.mmd",
     "legend": "bulkhead-outside.md",
     "legendKey": "I5",
-    "account": "COMPOSITION-BB-1",
+    "investigram": "COMPOSITION-BB-1",
     "pointers": [
-      "/result/accounts/2/content/0/prefix/4"
+      "/result/investigrams/2/content/0/prefix/4"
     ]
   },
   {
     "diagram": "bulkhead-outside.mmd",
     "legend": "bulkhead-outside.md",
     "legendKey": "I6",
-    "account": "COMPOSITION-BB-1",
+    "investigram": "COMPOSITION-BB-1",
     "pointers": [
-      "/result/accounts/2/content/0/prefix/5"
+      "/result/investigrams/2/content/0/prefix/5"
     ]
   },
   {
     "diagram": "bulkhead-outside.mmd",
     "legend": "bulkhead-outside.md",
     "legendKey": "I7",
-    "account": "COMPOSITION-BB-1",
+    "investigram": "COMPOSITION-BB-1",
     "pointers": [
-      "/result/accounts/2/content/0/prefix/6"
+      "/result/investigrams/2/content/0/prefix/6"
     ]
   },
   {
     "diagram": "bulkhead-outside.mmd",
     "legend": "bulkhead-outside.md",
     "legendKey": "I8",
-    "account": "COMPOSITION-BB-1",
+    "investigram": "COMPOSITION-BB-1",
     "pointers": [
-      "/result/accounts/2/content/0/prefix/7"
+      "/result/investigrams/2/content/0/prefix/7"
     ]
   },
   {
     "diagram": "bulkhead-outside.mmd",
     "legend": "bulkhead-outside.md",
     "legendKey": "S1",
-    "account": "COMPOSITION-BB-1",
+    "investigram": "COMPOSITION-BB-1",
     "pointers": [
-      "/result/accounts/2/content/0/situations/0",
-      "/result/accounts/2/content/0/relations"
+      "/result/investigrams/2/content/0/situations/0",
+      "/result/investigrams/2/content/0/relations"
     ]
   },
   {
     "diagram": "bulkhead-outside.mmd",
     "legend": "bulkhead-outside.md",
     "legendKey": "Q",
-    "account": "COMPOSITION-BB-1",
+    "investigram": "COMPOSITION-BB-1",
     "pointers": [
-      "/result/accounts/2/qualifications",
-      "/result/accounts/2/evidence",
-      "/result/accounts/2/content/0/displayLabel",
-      "/result/accounts/2/content/0/overviewScope",
-      "/result/accounts/2/content/0/semantics",
-      "/result/accounts/2/content/0/conditions",
-      "/result/accounts/2/content/0/notShown",
-      "/result/accounts/2/content/0/evidence",
-      "/result/accounts/2/content/0/roles",
-      "/result/accounts/2/content/0/roleScope",
-      "/result/accounts/2/content/0/policyOrder"
+      "/result/investigrams/2/qualifications",
+      "/result/investigrams/2/evidence",
+      "/result/investigrams/2/content/0/displayLabel",
+      "/result/investigrams/2/content/0/overviewScope",
+      "/result/investigrams/2/content/0/semantics",
+      "/result/investigrams/2/content/0/conditions",
+      "/result/investigrams/2/content/0/notShown",
+      "/result/investigrams/2/content/0/evidence",
+      "/result/investigrams/2/content/0/roles",
+      "/result/investigrams/2/content/0/roleScope",
+      "/result/investigrams/2/content/0/policyOrder"
     ]
   },
   {
     "diagram": "breaker-outside.mmd",
     "legend": "breaker-outside.md",
     "legendKey": "Breaker",
-    "account": "COMPOSITION-BH-1",
+    "investigram": "COMPOSITION-BH-1",
     "pointers": [
-      "/result/accounts/3/content/0/participants/0"
+      "/result/investigrams/3/content/0/participants/0"
     ]
   },
   {
     "diagram": "breaker-outside.mmd",
     "legend": "breaker-outside.md",
     "legendKey": "Bulkhead",
-    "account": "COMPOSITION-BH-1",
+    "investigram": "COMPOSITION-BH-1",
     "pointers": [
-      "/result/accounts/3/content/0/participants/1"
+      "/result/investigrams/3/content/0/participants/1"
     ]
   },
   {
     "diagram": "breaker-outside.mmd",
     "legend": "breaker-outside.md",
     "legendKey": "Other work",
-    "account": "COMPOSITION-BH-1",
+    "investigram": "COMPOSITION-BH-1",
     "pointers": [
-      "/result/accounts/3/content/0/participants/2"
+      "/result/investigrams/3/content/0/participants/2"
     ]
   },
   {
     "diagram": "breaker-outside.mmd",
     "legend": "breaker-outside.md",
     "legendKey": "Trial",
-    "account": "COMPOSITION-BH-1",
+    "investigram": "COMPOSITION-BH-1",
     "pointers": [
-      "/result/accounts/3/content/0/participants/3"
+      "/result/investigrams/3/content/0/participants/3"
     ]
   },
   {
     "diagram": "breaker-outside.mmd",
     "legend": "breaker-outside.md",
     "legendKey": "I1",
-    "account": "COMPOSITION-BH-1",
+    "investigram": "COMPOSITION-BH-1",
     "pointers": [
-      "/result/accounts/3/content/0/prefix/0"
+      "/result/investigrams/3/content/0/prefix/0"
     ]
   },
   {
     "diagram": "breaker-outside.mmd",
     "legend": "breaker-outside.md",
     "legendKey": "I2",
-    "account": "COMPOSITION-BH-1",
+    "investigram": "COMPOSITION-BH-1",
     "pointers": [
-      "/result/accounts/3/content/0/prefix/1"
+      "/result/investigrams/3/content/0/prefix/1"
     ]
   },
   {
     "diagram": "breaker-outside.mmd",
     "legend": "breaker-outside.md",
     "legendKey": "I3",
-    "account": "COMPOSITION-BH-1",
+    "investigram": "COMPOSITION-BH-1",
     "pointers": [
-      "/result/accounts/3/content/0/prefix/2"
+      "/result/investigrams/3/content/0/prefix/2"
     ]
   },
   {
     "diagram": "breaker-outside.mmd",
     "legend": "breaker-outside.md",
     "legendKey": "I4",
-    "account": "COMPOSITION-BH-1",
+    "investigram": "COMPOSITION-BH-1",
     "pointers": [
-      "/result/accounts/3/content/0/prefix/3"
+      "/result/investigrams/3/content/0/prefix/3"
     ]
   },
   {
     "diagram": "breaker-outside.mmd",
     "legend": "breaker-outside.md",
     "legendKey": "I5",
-    "account": "COMPOSITION-BH-1",
+    "investigram": "COMPOSITION-BH-1",
     "pointers": [
-      "/result/accounts/3/content/0/prefix/4"
+      "/result/investigrams/3/content/0/prefix/4"
     ]
   },
   {
     "diagram": "breaker-outside.mmd",
     "legend": "breaker-outside.md",
     "legendKey": "I6",
-    "account": "COMPOSITION-BH-1",
+    "investigram": "COMPOSITION-BH-1",
     "pointers": [
-      "/result/accounts/3/content/0/prefix/5"
+      "/result/investigrams/3/content/0/prefix/5"
     ]
   },
   {
     "diagram": "breaker-outside.mmd",
     "legend": "breaker-outside.md",
     "legendKey": "I7",
-    "account": "COMPOSITION-BH-1",
+    "investigram": "COMPOSITION-BH-1",
     "pointers": [
-      "/result/accounts/3/content/0/prefix/6"
+      "/result/investigrams/3/content/0/prefix/6"
     ]
   },
   {
     "diagram": "breaker-outside.mmd",
     "legend": "breaker-outside.md",
     "legendKey": "S1",
-    "account": "COMPOSITION-BH-1",
+    "investigram": "COMPOSITION-BH-1",
     "pointers": [
-      "/result/accounts/3/content/0/situations/0",
-      "/result/accounts/3/content/0/relations"
+      "/result/investigrams/3/content/0/situations/0",
+      "/result/investigrams/3/content/0/relations"
     ]
   },
   {
     "diagram": "breaker-outside.mmd",
     "legend": "breaker-outside.md",
     "legendKey": "Q",
-    "account": "COMPOSITION-BH-1",
+    "investigram": "COMPOSITION-BH-1",
     "pointers": [
-      "/result/accounts/3/qualifications",
-      "/result/accounts/3/evidence",
-      "/result/accounts/3/content/0/displayLabel",
-      "/result/accounts/3/content/0/overviewScope",
-      "/result/accounts/3/content/0/semantics",
-      "/result/accounts/3/content/0/conditions",
-      "/result/accounts/3/content/0/notShown",
-      "/result/accounts/3/content/0/evidence",
-      "/result/accounts/3/content/0/roles",
-      "/result/accounts/3/content/0/roleScope",
-      "/result/accounts/3/content/0/policyOrder"
+      "/result/investigrams/3/qualifications",
+      "/result/investigrams/3/evidence",
+      "/result/investigrams/3/content/0/displayLabel",
+      "/result/investigrams/3/content/0/overviewScope",
+      "/result/investigrams/3/content/0/semantics",
+      "/result/investigrams/3/content/0/conditions",
+      "/result/investigrams/3/content/0/notShown",
+      "/result/investigrams/3/content/0/evidence",
+      "/result/investigrams/3/content/0/roles",
+      "/result/investigrams/3/content/0/roleScope",
+      "/result/investigrams/3/content/0/policyOrder"
     ]
   }
 ]

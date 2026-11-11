@@ -4,7 +4,7 @@
     "state-diagram/0": {
       "inputs": {
         "model": {
-          "form": "state-behavior/0",
+          "contentType": "state-behavior/0",
           "required": true
         }
       },
@@ -14,7 +14,7 @@
     "sequence-diagram/0": {
       "inputs": {
         "interaction": {
-          "form": "interaction/0",
+          "contentType": "interaction/0",
           "required": true
         }
       },

@@ -35,21 +35,21 @@
       "selector": "execute and dequeue: reservation, pending work, queue and release"
     },
     "A-admission": {
-      "account": "ADMISSION-2",
+      "investigram": "ADMISSION-2",
       "status": "Prior interpretation, not independent repository corroboration."
     },
     "A-trial": {
-      "account": "TRIAL-1",
+      "investigram": "TRIAL-1",
       "status": "Prior interpretation, not independent repository corroboration."
     },
     "A-bulkhead": {
-      "account": "BULKHEAD-1",
+      "investigram": "BULKHEAD-1",
       "status": "Prior interpretation, not independent repository corroboration."
     }
   },
   "bulkheadRequest": {
     "informationNeed": "Identify the bulkhead policy kind and its capacity/queue lifetime.",
-    "suppliedAccountContext": [],
+    "suppliedInvestigramContext": [],
     "suppliedEvidence": [
       "E-bulkhead"
     ],
@@ -59,7 +59,7 @@
     "entityIds": {
       "bulkhead": "B"
     },
-    "accountIds": {
+    "investigramIds": {
       "bulkhead-result": "BULKHEAD-RESULT-1",
       "bulkhead-definition": "BULKHEAD-DEFINITION-1",
       "bulkhead-admission": "BULKHEAD-1"
@@ -69,33 +69,33 @@
   "compositionRequest": {
     "informationNeed": "Compare the two wrapping orders at a possible waiting point: which instance holds which state or resource, and whose application work has begun?",
     "navigationOrigin": null,
-    "suppliedAccountContext": [
+    "suppliedInvestigramContext": [
       {
-        "account": "ORIENTATION-0",
+        "investigram": "ORIENTATION-0",
         "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
       },
       {
-        "account": "DEFINITIONS-1",
+        "investigram": "DEFINITIONS-1",
         "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
       },
       {
-        "account": "ROLE-DEFINITIONS-1",
+        "investigram": "ROLE-DEFINITIONS-1",
         "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
       },
       {
-        "account": "ADMISSION-2",
+        "investigram": "ADMISSION-2",
         "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
       },
       {
-        "account": "TRIAL-1",
+        "investigram": "TRIAL-1",
         "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
       },
       {
-        "account": "BULKHEAD-DEFINITION-1",
+        "investigram": "BULKHEAD-DEFINITION-1",
         "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
       },
       {
-        "account": "BULKHEAD-1",
+        "investigram": "BULKHEAD-1",
         "delivery": "Complete own content and qualifications, with available evidence references; no implicit parent/child delivery."
       }
     ],
@@ -131,12 +131,12 @@
       "reporter": "TRIAL-1",
       "target": "ADMISSION-1",
       "replacement": "ADMISSION-2",
-      "delivery": "Qualified reason and endpoint references from children/followup-result.json /result/accountRelationships/0; no target interpretation content.",
+      "delivery": "Qualified reason and endpoint references from children/followup-result.json /result/investigramRelationships/0; no target interpretation content.",
       "substantiveExplanationDelivered": true,
       "targetContentDelivered": false,
       "completeCorrectionContext": false,
       "claimsExemption": false,
-      "citationRule": "The substantive reason cites reporter TRIAL-1, already supplied in full. Bare endpoint references do not cite ADMISSION-1. This is historical disclosure, not complete correction-context delivery."
+      "exposureRule": "The substantive reason records exposure to reporter TRIAL-1, already supplied in full. Bare endpoint references do not record exposure to ADMISSION-1. This is historical disclosure, not complete correction-context delivery."
     },
     "contextSelectionPolicy": "For this origin-free question, select the relevant current admission account ADMISSION-2 and disclose its qualified correction history. Do not deliver superseded originals by default. They remain requestable with applicable correction-context delivery; relevance, conflicts and explicit historical requests can change this selection."
   },
@@ -145,7 +145,7 @@
       "bulkhead-outside": "C-BB",
       "breaker-outside": "C-BH"
     },
-    "accountIds": {
+    "investigramIds": {
       "composition-result": "COMPOSITION-RESULT-1",
       "pattern-definitions": "COMPOSITION-DEFINITIONS-1",
       "bulkhead-outside-case": "COMPOSITION-BB-1",
@@ -154,7 +154,7 @@
     "relationshipIds": {}
   },
   "exposure": {
-    "citations": [
+    "exposureIndex": [
       "ORIENTATION-0",
       "DEFINITIONS-1",
       "ROLE-DEFINITIONS-1",
@@ -163,12 +163,12 @@
       "BULKHEAD-DEFINITION-1",
       "BULKHEAD-1"
     ],
-    "rule": "All four composition outputs share the seven actual dialogue citations, including the definition child. K explanation cites its reporter TRIAL-1; endpoint references do not cite ADMISSION-1. No complete-K-context exemption is claimed. Earlier outputs that produced K retain their own cause-specific exemption; no new correction is asserted.",
+    "rule": "All four composition outputs share the seven actual dialogue exposure entries, including the definition child. K explanation records exposure to its reporter TRIAL-1; endpoint references do not record exposure to ADMISSION-1. No complete-K-context exemption is claimed. Earlier outputs that produced K retain their own cause-specific exemption; no new correction is asserted.",
     "directEvidence": "Source acquisition remains distinct from retained-account delivery."
   },
   "retainedAnswer": {
     "id": "COMPOSITION-ANSWER-1",
-    "selectedAccounts": [
+    "selectedInvestigrams": [
       "COMPOSITION-RESULT-1",
       "COMPOSITION-DEFINITIONS-1",
       "COMPOSITION-BB-1",
@@ -182,12 +182,12 @@
     ],
     "basis": "cockatiel-pinned",
     "revisionContext": "Capture selected accounts, support, qualified K history disclosure and then-current status. ADMISSION-1 content is not delivered by this request. Exact retrieval does not recompute bindings or replace prior contributions. Earlier answers and the superseded target remain accessible separately.",
-    "priorAccountsAreChildren": false
+    "priorInvestigramsAreChildren": false
   },
   "followupProbes": [
     {
       "selection": {
-        "account": "COMPOSITION-BB-1",
+        "investigram": "COMPOSITION-BB-1",
         "contentKey": "capacity-held-during-recovery",
         "selector": {
           "kind": "relation",
@@ -198,7 +198,7 @@
     },
     {
       "selection": {
-        "account": "COMPOSITION-BH-1",
+        "investigram": "COMPOSITION-BH-1",
         "contentKey": "trial-queued-for-capacity",
         "selector": {
           "kind": "state-assignment",
@@ -216,7 +216,7 @@
   ],
   "laterCorrectionProbe": {
     "assume": "BULKHEAD-1 later receives a valid correction after this answer.",
-    "expected": "A fresh status check can flag all outputs of the composition evaluation through that citation, including definitions. It does not establish which cases are wrong or rebind their roles. Exact answer content stays fixed.",
+    "expected": "A fresh status check can flag all outputs of the composition evaluation through that exposure entry, including definitions. It does not establish which cases are wrong or rebind their roles. Exact answer content stays fixed.",
     "limit": "No correction payload, challenge, reassessment or clearing operation is exercised here."
   },
   "patternFollowupRequest": {

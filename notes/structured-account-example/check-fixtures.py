@@ -9,7 +9,7 @@ from pathlib import Path
 BASE = Path(__file__).resolve().parent
 guidance = runpy.run_path(str(BASE / 'guidance.py'))
 # Stipulated capabilities for these authored fixtures, not a product registry.
-OFFER_METHODS = {'qualified-architectural-interpretation'}
+OPTION_METHODS = {'qualified-architectural-interpretation'}
 
 
 def read(path):
@@ -18,31 +18,31 @@ def read(path):
 
 def check_result(document, bindings, known_entities, earlier, supplied, evidence):
     result = document['result']
-    accounts = {a['key']: a for a in result['accounts']}
-    assert len(accounts) == len(result['accounts']), 'duplicate account key'
-    assert set(accounts) == set(bindings['accountIds']), 'account bindings differ'
-    root = result['rootAccount']['submittedAccount']
-    assert root in accounts, 'unknown result root'
-    owned = {k: [] for k in accounts}
+    investigrams = {a['key']: a for a in result['investigrams']}
+    assert len(investigrams) == len(result['investigrams']), 'duplicate account key'
+    assert set(investigrams) == set(bindings['investigramIds']), 'account bindings differ'
+    root = result['rootInvestigram']['submittedInvestigram']
+    assert root in investigrams, 'unknown result root'
+    owned = {k: [] for k in investigrams}
     owned[root].append('root')
-    edges = {k: [] for k in accounts}
-    for key, a in accounts.items():
+    edges = {k: [] for k in investigrams}
+    for key, a in investigrams.items():
         for child in a['children']:
-            assert set(child) == {'submittedAccount'}, 'old/external child adoption'
-            target = child['submittedAccount']
-            assert target in accounts, 'missing child'
+            assert set(child) == {'submittedInvestigram'}, 'old/external child adoption'
+            target = child['submittedInvestigram']
+            assert target in investigrams, 'missing child'
             owned[target].append(key)
             edges[key].append(target)
-    relationships = result['accountRelationships']
+    relationships = result['investigramRelationships']
     assert len({r['key'] for r in relationships}) == len(relationships)
     assert {r['key'] for r in relationships} == set(bindings['relationshipIds'])
     for rel in relationships:
         assert rel['kind'] == 'correction' and rel['reason'] and rel['qualifications']
-        reporter = rel['reporter']['submittedAccount']
-        replacement = rel['replacement']['submittedAccount']
-        assert reporter in accounts and replacement in accounts
-        assert rel['target']['account'] in supplied, 'incomplete correction target'
-        assert rel['target']['account'] in earlier, 'target must predate result'
+        reporter = rel['reporter']['submittedInvestigram']
+        replacement = rel['replacement']['submittedInvestigram']
+        assert reporter in investigrams and replacement in investigrams
+        assert rel['target']['investigram'] in supplied, 'incomplete correction target'
+        assert rel['target']['investigram'] in earlier, 'target must predate result'
         owned[replacement].append(rel['key'])
         edges[reporter].append(replacement)
     assert all(len(v) == 1 for v in owned.values()), 'missing/duplicate owning position'
@@ -53,22 +53,22 @@ def check_result(document, bindings, known_entities, earlier, supplied, evidence
         for target in edges[key]:
             visit(target)
     visit(root)
-    assert reached == set(accounts), 'unreachable owned account'
+    assert reached == set(investigrams), 'unreachable owned account'
 
     declarations = {}
     def canon(value):
         return json.dumps(value, sort_keys=True)
-    for a in accounts.values():
+    for a in investigrams.values():
         assert a['qualifications'] and a['evidence'] and a['referents'], 'missing own qualification/support'
         assert len({i['key'] for i in a['content']}) == len(a['content'])
-        for association in a['associations']:
+        for association in a['contentAssociations']:
             if 'contentKey' in association:
                 assert association['contentKey'] in {i['key'] for i in a['content']}, 'unknown associated item'
-        identifies = {canon(x['subject']) for x in a['associations'] if x['role'] == 'identifies'}
+        identifies = {canon(x['subject']) for x in a['contentAssociations'] if x['role'] == 'identifies'}
         for item in a['content']:
-            if item['form'] == 'entity-description/0':
+            if item['contentType'] == 'entity-description/0':
                 assert canon(item['subject']) in identifies, 'missing identifying association on owner'
-                assert any(x['role'] == 'identifies' and x['subject'] == item['subject'] and x.get('contentKey') == item['key'] for x in a['associations']), 'identifying item not addressed'
+                assert any(x['role'] == 'identifies' and x['subject'] == item['subject'] and x.get('contentKey') == item['key'] for x in a['contentAssociations']), 'identifying item not addressed'
             if item.get('introducesEntity'):
                 key = item['subject']['introducedEntity']
                 assert key not in declarations, 'duplicate entity declaration'
@@ -84,10 +84,10 @@ def check_result(document, bindings, known_entities, earlier, supplied, evidence
                 assert value['entity'] in known_entities, 'unknown entity'
             if set(value) == {'introducedEntity'}:
                 assert value['introducedEntity'] in declarations, 'undeclared entity'
-            if set(value) == {'submittedAccount'}:
-                assert value['submittedAccount'] in accounts, 'unknown submitted account'
-            if set(value) == {'account'} and isinstance(value['account'], str):
-                assert value['account'] in earlier, 'unknown prior account'
+            if set(value) == {'submittedInvestigram'}:
+                assert value['submittedInvestigram'] in investigrams, 'unknown submitted account'
+            if set(value) == {'investigram'} and isinstance(value['investigram'], str):
+                assert value['investigram'] in earlier, 'unknown prior account'
             if set(value) == {'localRole'} and roles is not None:
                 assert value['localRole'] in roles, 'unknown item-local role'
             for ev in value.get('evidence', []):
@@ -96,7 +96,7 @@ def check_result(document, bindings, known_entities, earlier, supplied, evidence
             for child in value.values():
                 references(child, roles)
     references(result)
-    for a in accounts.values():
+    for a in investigrams.values():
         guidance['presentation_plans'](a)
         own_items = {i['key']: i for i in a['content']}
         for item in own_items.values():
@@ -106,26 +106,26 @@ def check_result(document, bindings, known_entities, earlier, supplied, evidence
                 assert item['roleScope']
             references(item, roles)
             for link in item.get('relatedContent', []):
-                ref = link['account']
-                target = accounts[ref['submittedAccount']] if 'submittedAccount' in ref else earlier[ref['account']]
+                ref = link['investigram']
+                target = investigrams[ref['submittedInvestigram']] if 'submittedInvestigram' in ref else earlier[ref['investigram']]
                 assert link['contentKey'] in {i['key'] for i in target['content']}, 'unknown related content item'
                 assert link['purpose'], 'missing related-content purpose'
             for illustration in item.get('illustrations', []):
-                ref = illustration['account']
-                target = accounts[ref['submittedAccount']] if 'submittedAccount' in ref else earlier[ref['account']]
+                ref = illustration['investigram']
+                target = investigrams[ref['submittedInvestigram']] if 'submittedInvestigram' in ref else earlier[ref['investigram']]
                 assert illustration['contentKey'] in {i['key'] for i in target['content']}, 'unknown exact content key'
                 assert illustration['qualification'] and illustration['evidence']
                 mapped = [b['role'] for b in illustration['roleBindings']]
                 assert len(mapped) == len(set(mapped)) and set(mapped) == roles
                 if 'case' in illustration:
-                    assert item['form'] == 'admission-cases/0'
+                    assert item['contentType'] == 'admission-cases/0'
                     assert illustration['case'] in {c['key'] for c in item['cases']}
-            if item['form'] == 'state-behavior/0':
+            if item['contentType'] == 'state-behavior/0':
                 states = {s['key'] for s in item['states']}
                 assert len(states) == len(item['states'])
                 assert len({t['key'] for t in item['transitions']}) == len(item['transitions'])
                 assert all(t['source'] in states and t['target'] in states for t in item['transitions'])
-            if item['form'] == 'interaction/0':
+            if item['contentType'] == 'interaction/0':
                 participants = {p['key'] for p in item['participants']}
                 assert len(participants) == len(item['participants'])
                 all_steps = item['prefix'] + [s for b in item['alternatives'] for s in b['steps']]
@@ -139,94 +139,94 @@ def check_result(document, bindings, known_entities, earlier, supplied, evidence
                                 assert step[field] in participants
                         if step['kind'] == 'state-transition':
                             model = own_items[step['stateContent']]
-                            assert model['form'] == 'state-behavior/0', 'incompatible content dependency'
+                            assert model['contentType'] == 'state-behavior/0', 'incompatible content dependency'
                             assert step['transition'] in {t['key'] for t in model['transitions']}
                         prior.add(step['key'])
                     return prior
                 prefix = path(item['prefix'])
                 for branch in item['alternatives']:
                     path(branch['steps'], prefix)
-    return accounts
+    return investigrams
 
 
-def resolve_offer_request(request, accounts, entity_bindings):
+def resolve_option_request(request, investigrams, entity_bindings):
     assert request['operation'] == 'follow-up-investigation', 'unsupported invocation'
-    assert set(request['subject']) == {'account'}, 'offer invocation needs an exact account'
+    assert set(request['subject']) == {'investigram'}, 'option invocation needs an exact account'
     params = request['parameters']
-    assert set(params) == {'offerKey', 'values'} and params['values'] == {}, 'undeclared parameter values'
-    origin = request['subject']['account']
-    account = accounts[origin]  # No fallback to replacements, labels or matching keys elsewhere.
-    matches = [i for i in account['offers'] if i['key'] == params['offerKey']]
-    assert len(matches) == 1, 'not an exact offer'
-    guidance['validate_offer'](matches[0])
-    offer = matches[0]
-    assert offer['method'] in OFFER_METHODS and offer['parameterDefinitions'] == []
-    targets = copy.deepcopy(offer['targets'])
+    assert set(params) == {'optionKey', 'values'} and params['values'] == {}, 'undeclared parameter values'
+    origin = request['subject']['investigram']
+    investigram = investigrams[origin]  # No fallback to replacements, labels or matching keys elsewhere.
+    matches = [i for i in investigram['followupOptions'] if i['key'] == params['optionKey']]
+    assert len(matches) == 1, 'not an exact option'
+    guidance['validate_option'](matches[0])
+    followupOption = matches[0]
+    assert followupOption['method'] in OPTION_METHODS and followupOption['parameterDefinitions'] == []
+    targets = copy.deepcopy(followupOption['targets'])
     for target in targets:
         ref = target['subject']
         if 'introducedEntity' in ref:
             target['subject'] = {'entity': entity_bindings[origin][ref['introducedEntity']]}
-    return {'offer': {'account': origin, 'offerKey': offer['key']}, 'method': offer['method'],
+    return {'followupOption': {'investigram': origin, 'optionKey': followupOption['key']}, 'method': followupOption['method'],
             'architecturalTargets': targets, 'parameterValues': params['values']}
 
 
-def check_offer_chain(directory, accounts):
+def check_option_chain(directory, investigrams):
     ledger = read(directory / 'context-and-bindings.json')
     bindings = {}
     for stage in ['firstAcceptance', 'followupAcceptance']:
-        bindings.update({a: ledger[stage]['entityIds'] for a in ledger[stage]['accountIds'].values()})
+        bindings.update({a: ledger[stage]['entityIds'] for a in ledger[stage]['investigramIds'].values()})
     request = ledger['followupRequest']
-    resolved = resolve_offer_request(request, accounts, bindings)
+    resolved = resolve_option_request(request, investigrams, bindings)
     documentary_change = copy.deepcopy(request)
     documentary_change['informationNeed'] = 'Different explanatory wording, not another operation.'
-    assert resolve_offer_request(documentary_change, accounts, bindings) == resolved
+    assert resolve_option_request(documentary_change, investigrams, bindings) == resolved
     expected = ledger['followupResolution']
     assert all(expected[k] == v for k, v in resolved.items())
-    source = accounts[resolved['offer']['account']]
-    offer = next(i for i in source['offers'] if i['key'] == resolved['offer']['offerKey'])
-    assert request['informationNeed'] == offer['purpose']  # Documentary wording, not resolver input.
+    source = investigrams[resolved['followupOption']['investigram']]
+    followupOption = next(i for i in source['followupOptions'] if i['key'] == resolved['followupOption']['optionKey'])
+    assert request['informationNeed'] == followupOption['purpose']  # Documentary wording, not resolver input.
     assert ledger['applicationAssumptions']['operation'] == request['operation']
-    assert set(ledger['applicationAssumptions']['supportedMethods']) == OFFER_METHODS
+    assert set(ledger['applicationAssumptions']['supportedMethods']) == OPTION_METHODS
     provenance = expected['provenance']
     assert provenance['invocationSubject'] == request['subject']
-    assert provenance['offerKey'] == request['parameters']['offerKey']
-    assert set(provenance['outputs']) == set(ledger['followupAcceptance']['accountIds'].values())
-    access = read(directory / 'offer-access.json')
-    assert access['exactAnswer']['offer'] == resolved['offer']
-    for key in ['offerOnlyBeforeCorrection', 'freshOriginalOfferAfterCorrection']:
+    assert provenance['optionKey'] == request['parameters']['optionKey']
+    assert set(provenance['outputs']) == set(ledger['followupAcceptance']['investigramIds'].values())
+    access = read(directory / 'followup-option-access.json')
+    assert access['exactAnswer']['followupOption'] == resolved['followupOption']
+    for key in ['optionOnlyBeforeCorrection', 'freshOriginalOptionAfterCorrection']:
         delivery = access[key]['delivery']; address = delivery['address']
-        original = accounts[address['account']]
-        content = copy.deepcopy(next(i for i in original['offers'] if i['key'] == address['offerKey']))
+        original = investigrams[address['investigram']]
+        content = copy.deepcopy(next(i for i in original['followupOptions'] if i['key'] == address['optionKey']))
         for target in content['targets']:
             ref = target['subject']
             if 'introducedEntity' in ref:
-                target['subject'] = {'entity': bindings[address['account']][ref['introducedEntity']]}
-        assert delivery['offer'] == content, 'offer excerpt lost or changed content'
-        assert delivery['accountQualifications'] == original['qualifications'], 'offer lost account scope'
+                target['subject'] = {'entity': bindings[address['investigram']][ref['introducedEntity']]}
+        assert delivery['followupOption'] == content, 'option excerpt lost or changed content'
+        assert delivery['investigramQualifications'] == original['qualifications'], 'option lost investigram scope'
         assert delivery['basis'] == ledger['basis']['id']
-        assert access[key]['completeTargets'] == [], 'offer alone is not complete delivery'
-    assert access['offerOnlyBeforeCorrection']['citations'] == ['ADMISSION-1']
-    fresh = access['freshOriginalOfferAfterCorrection']
-    assert fresh['delivery']['address'] == resolved['offer'] and fresh['automaticRetarget'] is False
+        assert access[key]['completeTargets'] == [], 'option alone is not complete delivery'
+    assert access['optionOnlyBeforeCorrection']['exposureIndex'] == ['ADMISSION-1']
+    fresh = access['freshOriginalOptionAfterCorrection']
+    assert fresh['delivery']['address'] == resolved['followupOption'] and fresh['automaticRetarget'] is False
     assert fresh['completeCorrectionContext'] is False and fresh['omissions']
-    assert fresh['citations'] == ['ADMISSION-1', 'TRIAL-1']
-    correction = read(directory / 'followup-result.json')['result']['accountRelationships'][0]
+    assert fresh['exposureIndex'] == ['ADMISSION-1', 'TRIAL-1']
+    correction = read(directory / 'followup-result.json')['result']['investigramRelationships'][0]
     for key in ['reason', 'qualifications', 'evidence']:
         assert fresh['revisionNotice'][key] == correction[key]
-    assert fresh['revisionNotice']['target'] == correction['target']['account']
+    assert fresh['revisionNotice']['target'] == correction['target']['investigram']
     assert fresh['revisionNotice']['relationship'] == ledger['followupAcceptance']['relationshipIds'][correction['key']]
     for field in ['replacement', 'reporter']:
-        assert fresh['revisionNotice'][field] == ledger['followupAcceptance']['accountIds'][correction[field]['submittedAccount']]
-    absent = access['replacementHasNoOffer']
-    assert accounts[absent['account']]['offers'] == absent['offers'] == []
-    explicit = copy.deepcopy(request); explicit['subject'] = {'account': absent['account']}
+        assert fresh['revisionNotice'][field] == ledger['followupAcceptance']['investigramIds'][correction[field]['submittedInvestigram']]
+    absent = access['replacementHasNoOption']
+    assert investigrams[absent['investigram']]['followupOptions'] == absent['followupOptions'] == []
+    explicit = copy.deepcopy(request); explicit['subject'] = {'investigram': absent['investigram']}
     try:
-        resolve_offer_request(explicit, accounts, bindings)
+        resolve_option_request(explicit, investigrams, bindings)
     except AssertionError:
         pass
     else:
-        raise AssertionError('Absent replacement offer resolved through historical content')
-    complete = {x['account'] for x in request['suppliedAccountContext'] if isinstance(x, dict)}
+        raise AssertionError('Absent replacement option resolved through historical content')
+    complete = {x['investigram'] for x in request['suppliedInvestigramContext'] if isinstance(x, dict)}
     assert complete == set(access['actualFollowup']['completeTargets'])
     assert 'ADMISSION-1' in complete
     return request, bindings
@@ -240,28 +240,28 @@ def check_variant(directory):
     for filename, stage, request in [('first-result.json', 'firstAcceptance', 'firstRequest'),
                                       ('followup-result.json', 'followupAcceptance', 'followupRequest')]:
         doc = read(directory / filename)
-        complete = {x['account'] for x in ledger[request]['suppliedAccountContext'] if isinstance(x, dict)}
+        complete = {x['investigram'] for x in ledger[request]['suppliedInvestigramContext'] if isinstance(x, dict)}
         args = (ledger[stage], set(known), dict(earlier), complete, set(ledger[request]['suppliedEvidence']))
-        accounts = check_result(doc, *args)
+        investigrams = check_result(doc, *args)
         saved.append((doc, args))
         known.update(ledger[stage]['entityIds'].values())
-        earlier.update({ledger[stage]['accountIds'][k]: a for k, a in accounts.items()})
-    all_account_ids = {**ledger['firstAcceptance']['accountIds'], **ledger['followupAcceptance']['accountIds']}
+        earlier.update({ledger[stage]['investigramIds'][k]: a for k, a in investigrams.items()})
+    all_investigram_ids = {**ledger['firstAcceptance']['investigramIds'], **ledger['followupAcceptance']['investigramIds']}
     for selection in ledger['expectedSelections']:
-        assert all(k in earlier for k in selection['accounts'])
+        assert all(k in earlier for k in selection['investigrams'])
         for composition in selection.get('storedComposition', []):
-            expected = [all_account_ids[c['submittedAccount']] for c in earlier[composition['parent']]['children']]
+            expected = [all_investigram_ids[c['submittedInvestigram']] for c in earlier[composition['parent']]['children']]
             assert composition['children'] == expected, 'captured composition differs from stored tree'
         for support in selection['identifyingSupport']:
             if isinstance(support, str):
                 assert support in earlier
             else:
-                account = earlier[support['account']]
-                assert support['accountQualifications'] == account['qualifications']
+                investigram = earlier[support['investigram']]
+                assert support['investigramQualifications'] == investigram['qualifications']
                 assert support['basis'] == ledger['basis']['id']
-                assert set(support['items']) <= {i['key'] for i in account['content']}
+                assert set(support['items']) <= {i['key'] for i in investigram['content']}
     probe = read(directory / 'illustration-access.json')
-    assert probe['fixedTarget']['contentKey'] in {i['key'] for i in earlier[probe['fixedTarget']['account']]['content']}
+    assert probe['fixedTarget']['contentKey'] in {i['key'] for i in earlier[probe['fixedTarget']['investigram']]['content']}
     assert probe['freshAccess']['preservedTarget'] == probe['fixedTarget']
     assert probe['freshAccess']['automaticRetarget'] is False
     source = read(directory / 'followup-result.json')
@@ -276,25 +276,25 @@ def check_variant(directory):
     return saved, earlier
 
 
-mixed, mixed_accounts = check_variant(BASE)
-children, child_accounts = check_variant(BASE / 'children')
-check_offer_chain(BASE, mixed_accounts)
-offer_request, offer_bindings = check_offer_chain(BASE / 'children', child_accounts)
+mixed, mixed_investigrams = check_variant(BASE)
+children, child_investigrams = check_variant(BASE / 'children')
+check_option_chain(BASE, mixed_investigrams)
+option_request, option_bindings = check_option_chain(BASE / 'children', child_investigrams)
 # The behavioral diagram data is unchanged by its partition into child accounts.
 for key in ['recovery', 'concurrent-callers']:
     get = lambda a: next(i for i in a['TRIAL-1']['content'] if i['key'] == key)
-    assert get(mixed_accounts) == get(child_accounts)
-assert not any(i['form'] == 'entity-description/0' for i in child_accounts['ADMISSION-2']['content'])
-assert child_accounts['INTRO-1']['children'] == [{'submittedAccount': 'state-definitions'}, {'submittedAccount': 'admission'}]
+    assert get(mixed_investigrams) == get(child_investigrams)
+assert not any(i['contentType'] == 'entity-description/0' for i in child_investigrams['ADMISSION-2']['content'])
+assert child_investigrams['INTRO-1']['children'] == [{'submittedInvestigram': 'state-definitions'}, {'submittedInvestigram': 'admission'}]
 # Negative probes: invariants reject malformed copies, never edit the fixture files.
 first, args = children[0]
 mutations = {
-    'duplicate ownership': lambda d: d['result']['accounts'][0]['children'].append({'submittedAccount': 'admission'}),
-    'cycle': lambda d: d['result']['accounts'][1]['children'].append({'submittedAccount': 'introduction'}),
-    'orphan child': lambda d: d['result']['accounts'][0]['children'].pop(),
-    'missing child qualifications': lambda d: d['result']['accounts'][1].update(qualifications=[]),
-    'missing child identifies': lambda d: d['result']['accounts'][1].update(associations=[]),
-    'undeclared entity': lambda d: d['result']['accounts'][1]['content'][0].update(subject={'introducedEntity': 'absent'}),
+    'duplicate ownership': lambda d: d['result']['investigrams'][0]['children'].append({'submittedInvestigram': 'admission'}),
+    'cycle': lambda d: d['result']['investigrams'][1]['children'].append({'submittedInvestigram': 'introduction'}),
+    'orphan child': lambda d: d['result']['investigrams'][0]['children'].pop(),
+    'missing child qualifications': lambda d: d['result']['investigrams'][1].update(qualifications=[]),
+    'missing child identifies': lambda d: d['result']['investigrams'][1].update(contentAssociations=[]),
+    'undeclared entity': lambda d: d['result']['investigrams'][1]['content'][0].update(subject={'introducedEntity': 'absent'}),
 }
 for name, mutate in mutations.items():
     invalid = copy.deepcopy(first)
@@ -306,11 +306,11 @@ for name, mutate in mutations.items():
     raise AssertionError('Invalid fixture accepted: ' + name)
 follow, follow_args = children[1]
 def trial_item(document, key):
-    account = next(a for a in document['result']['accounts'] if a['key'] == 'trial')
-    return next(i for i in account['content'] if i['key'] == key)
+    investigram = next(a for a in document['result']['investigrams'] if a['key'] == 'trial')
+    return next(i for i in investigram['content'] if i['key'] == key)
 def admission_item(document):
-    account = next(a for a in document['result']['accounts'] if a['key'] == 'admission-replacement')
-    return next(i for i in account['content'] if i['key'] == 'admission-cases')
+    investigram = next(a for a in document['result']['investigrams'] if a['key'] == 'admission-replacement')
+    return next(i for i in investigram['content'] if i['key'] == 'admission-cases')
 extra_mutations = {
     'unknown item-local role': lambda d: admission_item(d).update(stateBearer={'localRole': 'absent'}),
     'unknown target item': lambda d: admission_item(d)['illustrations'][0].update(contentKey='absent'),
@@ -325,51 +325,51 @@ for name, mutate in extra_mutations.items():
     except (AssertionError, KeyError):
         continue
     raise AssertionError('Invalid fixture accepted: ' + name)
-# Offer identity is account-local, not selected by prose or retargeted by replacement.
-offer_request_mutations = {
-    'unknown key': lambda r, a: r['parameters'].update(offerKey='absent'),
-    'label instead of key': lambda r, a: r['parameters'].update(offerKey='Concurrent callers and trial outcomes'),
-    'non-offer item': lambda r, a: r['parameters'].update(offerKey='admission-cases'),
+# Option identity is investigram-local, not selected by prose or retargeted by replacement.
+option_request_mutations = {
+    'unknown key': lambda r, a: r['parameters'].update(optionKey='absent'),
+    'label instead of key': lambda r, a: r['parameters'].update(optionKey='Concurrent callers and trial outcomes'),
+    'non-option item': lambda r, a: r['parameters'].update(optionKey='admission-cases'),
     'architectural target as invocation subject': lambda r, a: r.update(subject={'entity': 'S'}),
     'unknown operation': lambda r, a: r.update(operation='arbitrary-question'),
     'undeclared user parameters': lambda r, a: r['parameters'].update(values={'question': 'another question'}),
-    'missing original with same-key replacement': lambda r, a: (a['ADMISSION-2'].update(offers=copy.deepcopy(a['ADMISSION-1']['offers'])), a.pop('ADMISSION-1')),
-    'unsupported method': lambda r, a: a['ADMISSION-1']['offers'][0].update(method='undeclared-method'),
+    'missing original with same-key replacement': lambda r, a: (a['ADMISSION-2'].update(followupOptions=copy.deepcopy(a['ADMISSION-1']['followupOptions'])), a.pop('ADMISSION-1')),
+    'unsupported method': lambda r, a: a['ADMISSION-1']['followupOptions'][0].update(method='undeclared-method'),
 }
-for name, mutate in offer_request_mutations.items():
-    invalid, registry = copy.deepcopy(offer_request), copy.deepcopy(child_accounts)
+for name, mutate in option_request_mutations.items():
+    invalid, registry = copy.deepcopy(option_request), copy.deepcopy(child_investigrams)
     mutate(invalid, registry)
     try:
-        resolve_offer_request(invalid, registry, offer_bindings)
+        resolve_option_request(invalid, registry, option_bindings)
     except (AssertionError, KeyError):
         continue
-    raise AssertionError('Invalid offer invocation accepted: ' + name)
-for name, change in [('missing offer qualification', {'qualifications': []}),
-                     ('undeclared offer target', {'targets': [{'role': 'focus', 'subject': {'introducedEntity': 'absent'}}]})]:
+    raise AssertionError('Invalid option invocation accepted: ' + name)
+for name, change in [('missing option qualification', {'qualifications': []}),
+                     ('undeclared option target', {'targets': [{'role': 'focus', 'subject': {'introducedEntity': 'absent'}}]})]:
     invalid = copy.deepcopy(first)
-    next(a for a in invalid['result']['accounts'] if a['key'] == 'admission')['offers'][0].update(change)
+    next(a for a in invalid['result']['investigrams'] if a['key'] == 'admission')['followupOptions'][0].update(change)
     try:
         check_result(invalid, *args)
     except (AssertionError, KeyError):
         continue
-    raise AssertionError('Invalid returned offer accepted: ' + name)
-print('Offer chain and exact/replacement access pass in both variants; ten additional malformed offer submissions/requests rejected.')
+    raise AssertionError('Invalid returned option accepted: ' + name)
+print('Follow-up option chain and exact/replacement access pass in both variants; ten additional malformed option submissions/requests rejected.')
 print('Both variants pass structural checks and traceability; ten malformed copies rejected.')
 print('State and interaction content match across partitions. This is not product acceptance or semantic verification.')
 
-# Item associations are exact own-content references, not title-based matching.
+# Content associations are exact own-content references, not title-based matching.
 for path in [BASE / 'first-result.json', BASE / 'children/first-result.json']:
     ledger = read(path.parent / 'context-and-bindings.json')
     fixture = read(path)
     check_result(fixture, ledger['firstAcceptance'], set(ledger['entry']['knownEntities']), {'ORIENTATION-0'}, {'ORIENTATION-0'}, set(ledger['evidence']))
     for bad_key in ['absent-item', 'admission-cases']:
         bad = copy.deepcopy(fixture)
-        owner = next(a for a in bad['result']['accounts'] if any(x['role'] == 'identifies' for x in a['associations']))
-        next(x for x in owner['associations'] if x['role'] == 'identifies')['contentKey'] = bad_key
+        owner = next(a for a in bad['result']['investigrams'] if any(x['role'] == 'identifies' for x in a['contentAssociations']))
+        next(x for x in owner['contentAssociations'] if x['role'] == 'identifies')['contentKey'] = bad_key
         try:
             check_result(bad, ledger['firstAcceptance'], set(ledger['entry']['knownEntities']), {'ORIENTATION-0'}, {'ORIENTATION-0'}, set(ledger['evidence']))
         except AssertionError:
             pass
         else:
-            raise AssertionError('invalid identifying-item association accepted')
-print('Exact item associations pass; four dangling or mismatched association copies rejected.')
+            raise AssertionError('invalid identifying-content association accepted')
+print('Exact content associations pass; four dangling or mismatched association copies rejected.')

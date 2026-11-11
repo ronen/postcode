@@ -12,7 +12,7 @@ can be waiting, whose state is Half-open, and which capacity is occupied?** No
 originating explanation is presumed. The fixture explicitly treats P/B as an
 unordered set of component policy kinds;
 input position assigns neither outer nor inner. Both orderings are requested. The
-input operation/multi-subject Lens offer remains a design question, not an API.
+input operation/multi-subject Lens option remains a design question, not an API.
 A later request can select C-BB or C-BH as one retained pattern subject, with its
 identifying support. This suggests multi-subject input is useful for comparisons
 and joint investigations, while subsequent pattern investigations need only one
@@ -101,7 +101,7 @@ general” would be a new abstraction with its own qualified investigram, not a 
 ## Small experimental additions to the content contract
 
 The existing [shared envelope](../contracts.md#shared-roles-and-illustrations) is used
-for `roles` and `roleScope` on interaction items. This is a second form using the same
+for `roles` and `roleScope` on interaction items. This is a second type using the same
 role mechanism, without introducing an identity-binding illustration. Participants
 may designate a local role instead of an entity. No illustration is needed:
 the traces are new scenario investigrams, not an assertion that an old trace generalizes.
@@ -128,15 +128,15 @@ arrival/occupancy chain, conditional on the stated setup. Preconditions such as 
 elapsed recovery delay are not invented trace events.
 
 The shape exposes a real choice: keep situations next to interaction steps, as here,
-or extract a reusable situation/resource-lifetime form later. Extraction would need
-explicit correspondence between that form's roles and the interaction's roles. Keeping
+or extract a reusable situation/resource-lifetime type later. Extraction would need
+explicit correspondence between that type's roles and the interaction's roles. Keeping
 one item namespace avoids inventing that mapping now, but this sample consequently
-does not validate cross-form or cross-investigram role binding. `policyOrder` is likewise
+does not validate cross-type or cross-investigram role binding. `policyOrder` is likewise
 only the call order; it is not a full component-and-connector structural view.
 
 ### Nested selector grammar for this probe
 
-Every nested selection has exactly `account`, `contentKey` and `selector`. The first
+Every nested selection has exactly `investigram`, `contentKey` and `selector`. The first
 two resolve to an exact retained investigram and one of its `interaction/0` items.
 `selector` is one of these two disjoint shapes; other fields and kinds are rejected:
 
@@ -172,25 +172,24 @@ explicit request for ADMISSION-1 must follow the existing corrected-content rule
 This is a proposed relevance policy for this question, not a rule to hide competing
 investigrams or omit requested historical context.
 
-K's substantive explanation cites its reporter TRIAL-1, which is already supplied
-in full. Bare references to the target do not cite ADMISSION-1. The resulting citation
-set contains seven investigrams. No new complete-K-context exemption is claimed; earlier
+K's substantive explanation records exposure to its reporter TRIAL-1, which is already supplied
+in full. Bare references to the target do not record exposure to ADMISSION-1. The resulting exposure index contains seven investigrams. No new complete-K-context exemption is claimed; earlier
 outputs produced with K retain their own cause-specific exemption. This example
 proposes no new investigram relationship: architectural waiting/composition relations
 are content, not correction metadata.
 
 All four composition outputs share the investigation's actual exposure, including
 the identifying child. Item evidence lists explain support; they do not narrow the
-citation set. If BULKHEAD-1 is later corrected, the applicable reconsideration path
+exposure index. If BULKHEAD-1 is later corrected, the applicable reconsideration path
 can flag both cases and the definition child. It establishes neither invalidity nor
 which claim needs changing. Separate evaluations could narrow exposure, at a cost;
 splitting the result tree alone cannot do so.
 
-A later consumer receiving just COMPOSITION-DEFINITIONS-1 cites that investigram, not
+A later consumer receiving just COMPOSITION-DEFINITIONS-1 records exposure to that investigram, not
 its behavioral siblings. That still does not sever the definition investigram's own
 prior-exposure history: if a cause reaches the definition, it can propagate to that
-later consumer too. Narrower direct citation targets do not prevent this transitive
-path. Here an ordering-only definition shares seven citations with the synthesis;
+later consumer too. Narrower direct exposure targets do not prevent this transitive
+path. Here an ordering-only definition shares seven exposure entries with the synthesis;
 a later BULKHEAD-1 or TRIAL-1 correction can leave it flagged despite unchanged
 ordering claims. The current slice has no clearance operation.
 
@@ -223,7 +222,7 @@ later situation. Neither action references a structured transition record. The t
 is an attributable claim, but the snapshot is only an after-state assertion; a
 renderer must not reconstruct a statechart from these fields. TRIAL-1's state model
 is scoped to its earlier scenario and cannot be rebound automatically. If transition
-identity, guards, effects or cross-form traceability become needed, investigate either
+identity, guards, effects or cross-type traceability become needed, investigate either
 a general P-level recovery model or a state-behavior item for this scenario. This
 probe supplies neither. The sequence-diagram proof consequently does not establish
 adequacy for a statechart.
@@ -265,10 +264,10 @@ arrows; they remain explicit, inspectable content in each step.
    content, reuse an existing entity or explicitly introduce one. There is no promotion
    threshold. Test that follow-up before concluding local addressing is sufficient at
    the application boundary.
-2. **Retain explicit situations, but leave their final form open.** Resource ownership,
+2. **Retain explicit situations, but leave their final type open.** Resource ownership,
    occupancy and whether application work has started are necessary meaning here;
    an ordinary arrow sequence cannot supply them by itself. Whether situations belong
-   inside interactions or in a separate catalogue form is now a concrete question.
+   inside interactions or in a separate catalogue type is now a concrete question.
 3. **Do not import the old trial model as a general template.** Its roles and trace
    remain scenario-specific. This composition uses the general admission investigram,
    qualified comparison and fresh source-backed synthesis. A general trial model
@@ -277,5 +276,5 @@ arrows; they remain explicit, inspectable content in each step.
 The first bounded capability can still be admission → trial → correction. Composition
 has exposed additional content/addressing needs without demonstrating a new core
 identity type is necessary. Interpreted identity guarantees, support-selection bounds,
-interpretive Lens offers and correction standing remain open. This fixture exercises
+interpretive Lens options and correction standing remain open. This fixture exercises
 neither end-to-end investigation nor the current API's acceptance of these payloads.

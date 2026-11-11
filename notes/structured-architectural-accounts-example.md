@@ -13,7 +13,7 @@ runtime investigation.
 The [structure consolidation](structured-architectural-accounts-consolidation.md)
 now maps this walkthrough to the full submitted result and retained investigram.
 Content items belong inside Interpretation content; children are separate investigrams.
-Offers and presentation recommendations are proposed as qualified guidance metadata.
+Options and presentation recommendations are proposed as qualified guidance metadata.
 The [complete-payload pass](structured-account-example/metadata-payload.md) now exercises
 that representation in the linked JSON, with explicit trial diagram inputs and
 qualified metadata access. It remains an authored example, not a product protocol.
@@ -47,14 +47,14 @@ and revision, without requiring perfect claim independence or global consistency
 - Every child delivers its own applicable qualifications. Composition does not
   implicitly inherit substantive limitations from its parent.
 - Identifying descriptions are designated by qualified per-subject identifies
-  associations, independently of an investigram's content form or other describes roles.
+  associations, independently of an investigram's content type or other describes roles.
 - Every answer supplies fixed identifying support for its substantive subject
   references. Supporting definitions need not be selected investigram constituents.
 - Retain the follow-up request's answer and provide qualified exact/current access.
   Presume the UI can show and select retained information; no separate assembled
   answer or UI workflow is required by this example.
-- Keep evaluation-wide exposure/reconsideration on the citing side. On the cited
-  side, delivering only an identifying child can avoid citing its behavioral sibling
+- Keep evaluation-wide exposure/reconsideration for receiving investigations. On the supplied-content
+  side, delivering only an identifying child can avoid exposure to its behavioral sibling
   and therefore avoid warnings from that sibling's correction. It does not establish
   independent semantic validity or eliminate other exposure paths.
 
@@ -104,8 +104,8 @@ supports local addressing but corrects the whole investigram; children add indep
 retained follow-up/correction targets and associations, with extra delivery and
 replacement rules. Neither choice narrows the evaluation-wide exposure index merely
 by creating smaller output parts. However, a later investigation receiving only a
-separate identifying child cites that child, not an undelivered behavioral sibling.
-A definition excerpt from a mixed investigram cites the whole containing investigram. This
+separate identifying child records exposure to that child, not an undelivered behavioral sibling.
+A definition excerpt from a mixed investigram records exposure to the whole containing investigram. This
 is now the strongest reason for the actionable default: put descriptions of explicitly
 introduced entities in identifying children when mixed with behavior. Grouping
 is allowed; an identification-only root needs no wrapper and local terms may stay
@@ -233,9 +233,9 @@ and does not establish correction eligibility.
 
 ## 3. The caller selects follow-up context
 
-The human chooses ADMISSION-1's retained `concurrent-callers-offer`, which targets
+The human chooses ADMISSION-1's retained `concurrent-callers-option`, which targets
 Half-open S. The illustrative Follow-up investigation request names that exact
-investigram and offer key; the prose question below explains its meaning, not text the
+investigram and option key; the prose question below explains its meaning, not text the
 human must type. CLI handles or GUI menus/badges are possible affordances
 whose design is deferred.
 
@@ -247,8 +247,8 @@ structural context choice, not analysis establishing relevance or exhaustiveness
 | Request component | Concrete value |
 | --- | --- |
 | Invocation subject | ADMISSION-1. |
-| Lens and parameter | Follow-up investigation; `offerKey: concurrent-callers-offer`; no additional values. |
-| Architectural focus | S, resolved from the retained offer. |
+| Lens and parameter | Follow-up investigation; `optionKey: concurrent-callers-option`; no additional values. |
+| Architectural focus | S, resolved from the retained follow-up option. |
 | Information need | Concurrent callers and trial outcomes in default single-trial recovery. |
 | Selected prior interpretation | DEFINITIONS-1 and ADMISSION-1, by exact reference. |
 | Architectural basis | Captured project/revision and actual originating analysis context. |
@@ -272,7 +272,7 @@ For subject-only requests, identifying-candidate selection and bounds remain ope
 this does not justify omitting all retained definitions or supplying the full history.
 
 ADMISSION-1 explicitly lists S as a referent. The required discovery capability can
-therefore offer it among investigrams referring to Half-open, either initially or when
+therefore option it among investigrams referring to Half-open, either initially or when
 the investigator requests them. Known navigation origin is unnecessary for finding
 it; the index implementation remains an engineering choice. Ordering candidates by
 retention time may be useful, but cannot establish which investigram the human came from
@@ -284,7 +284,7 @@ Bare IDs do not create content exposure; substantive titles/descriptions and ret
 content do. Discovering ADMISSION-1 enables further inspection, not a guarantee that
 the investigator notices its omission or corrects it.
 
-The [concrete offer chain](structured-account-example/offered-followup.md) now gives
+The [concrete option chain](structured-account-example/followup-options.md) now gives
 this information need declared Lens/operation meaning through exact retained content.
 Fixed questions may need no free-form parameters; meaningful variations and context selection must enter
 request/reuse identity. S alone cannot identify the effective request.
@@ -324,8 +324,8 @@ investigram follow-up do not bypass this actual-delivery check.
 
 ## 4. New role definitions, behavior and correction
 
-The offered investigation concerns Half-open S, while its invocation selects
-ADMISSION-1 and the offer key. Its findings can add qualified
+The follow-up option’s investigation concerns Half-open S, while its invocation selects
+ADMISSION-1 and the option key. Its findings can add qualified
 items to Circuit Breaker P or explicitly correct P's earlier items. Output associations
 need not equal the input subject. Here TRIAL-1 adds understanding while ADMISSION-2
 replaces the identified ADMISSION-1; both remain associated with their declared subjects.
@@ -356,7 +356,7 @@ TRIAL-RESULT-1                 root: orientation to the follow-up result
 
 ROLE-DEFINITIONS-1 identifies R, E-trial, E-caller and W through explicit qualified
 associations. It may describe their connection to P without identifying P.
-TRIAL-1 uses supported interaction/transition forms and qualified describes
+TRIAL-1 uses supported interaction/transition types and qualified describes
 associations with P, S and R where its claims warrant them. Each child supplies its
 own applicable qualifications. Definitions need not always be separate children;
 we choose them here because independent follow-up/correction is useful to test.
@@ -428,8 +428,8 @@ treat a new discriminator as sufficient to implement all cases. For this staged
 misleading admission investigram, correction remains the intended relationship.
 
 TRIAL-1 is the correction reporter. K can store its reason and qualifications in a
-separate organizing record while attributing them to TRIAL-1 for citation/exposure.
-Delivering that explanation cites TRIAL-1, not K, without supplying TRIAL-1's complete
+separate organizing record while attributing them to TRIAL-1 for exposure.
+Delivering that explanation records exposure to TRIAL-1, not K, without supplying TRIAL-1's complete
 own content; bare relationship/endpoint IDs do not. Correcting TRIAL-1 later preserves
 that original reasoning and correction record; it does not automatically revoke or retarget the admission
 correction. Changing a correction's standing would need explicit semantics beyond
@@ -479,15 +479,15 @@ of UI layout or selection gestures.
 ## 6. Supply diagram meaning and discovery
 
 The follow-up's general result contract is a qualified investigram, not a mandatory
-statechart/interaction pair. The authored answer chooses those forms to explain the
-behavior; each form has a content contract. A different offer explicitly promising
+statechart/interaction pair. The authored answer chooses those types to explain the
+behavior; each type has a content contract. A different option explicitly promising
 “generate a state diagram” would additionally require suitable state-behavior content
 and compatible diagram presentation, with partial or unmet outcomes disclosed. The
-[offer-contract comparison](structured-account-example/offered-followup.md#optional-diagram-contract)
+[option-contract comparison](structured-account-example/followup-options.md#optional-diagram-contract)
 works through that distinction without adding a live invocation to these fixtures.
 
 
-This step moves from the retained-investigram mechanism to architectural content forms.
+This step moves from the retained-investigram mechanism to architectural content types.
 The recommendation is to retain structured claims through the same qualified
 investigrams and subject references used above. For example, a transition's source
 and destination can reference retained state subjects, while its trigger, guard,
@@ -529,7 +529,7 @@ Layout, styling and interactive navigation should not sidetrack this content wor
 | TRIAL-1 | Participants, occupancy, waiting, meaningful ordering, alternative outcomes and supported transitions. |
 
 ADMISSION-2's separately qualified illustration and TRIAL-1 refer to the same W
-allocated with the follow-up. The general waiting case uses form-local roles instead.
+allocated with the follow-up. The general waiting case uses item-local roles instead.
 Qualified content supplies the illustrative binding and conditions. A consumer can
 align that illustration while preserving conflicts; identity alone neither reconciles
 claims nor binds every general admission request to the scenario.
@@ -553,10 +553,10 @@ small structure, state and interaction depictions, not a full presentation syste
 This is a useful inventory for the bounded example and composition probe, not a
 commitment to implement every depiction or a catalogue entry for each diagram.
 Its concepts also supply vocabulary for agents to frame investigations and prose
-explanations. All returned content uses structured forms, including the simple form
-of a key with prose. A diagram is one possible communication form: keyed prose may
+explanations. All returned content uses structured types, including the simple type
+of a key with prose. A diagram is one possible communication type: keyed prose may
 accompany diagram-supporting content or suffice when no diagram is useful. The
-catalogue distinguishes concept guidance, supported content forms and diagram
+catalogue distinguishes concept guidance, supported content types and diagram
 mappings; selecting a concept does not automatically require diagram data. Local
 keys make prose addressable without allocating entities or changing the
 whole-investigram correction unit.
@@ -593,8 +593,8 @@ No optional investigram or mapping should be inferred solely to draw a diagram.
 
 Recommend prioritizing runtime structure, breaker statechart and concurrent-caller
 sequence; retain admission flow as a useful contract/correction probe. Composition
-then tests reuse of structural and interaction forms across investigrams. Before/after
-correction depictions reuse those forms, keeping exact prior selections available.
+then tests reuse of structural and interaction types across investigrams. Before/after
+correction depictions reuse those types, keeping exact prior selections available.
 No new source analysis has established complete data for this inventory.
 
 ## 7. Later definition correction: two different limits
@@ -611,9 +611,9 @@ Partitioning does not assign each child its own claim-level dependency set.
 
 DEFINITIONS-1 also groups several descriptions. Correcting one replaces that whole
 child; exposure to another part still counts. Smaller units narrow correction targets
-and required delivery. On the cited side, a later evaluation receiving just one such
-unit need not cite an undelivered sibling, avoiding warnings caused solely by that
-sibling's correction. On the citing side, all outputs of the receiving evaluation
+and required delivery. On the supplied-content side, a later evaluation receiving just one such
+unit need not record exposure to an undelivered sibling, avoiding warnings caused solely by that
+sibling's correction. On the receiving side, all outputs of the receiving evaluation
 still share its exposure index; splitting those outputs does not narrow their flags. This is an explicit tradeoff, not an accidental promise of precision.
 
 Conversely, ADMISSION-1 was created alongside DEFINITIONS-1. Sibling composition and
@@ -631,7 +631,7 @@ retaining S merely for convenient continuity.
 
 This conceptual continuation tests the design without claiming implemented acceptance,
 entity-status derivation or a reconciliation Lens. It does not change the admission
-fixtures or their existing citation-based reconsideration results.
+fixtures or their existing exposure-based reconsideration results.
 
 | Case | Qualified investigation result | Proposed organizational effect |
 | --- | --- | --- |
@@ -659,14 +659,14 @@ not generalize unexamined behavior or make identities authoritative.
 TRIAL-RESULT-1 now orients the reader instead of repeating waiting/release claims.
 A root summary would be another correction surface, not a view automatically kept
 current by child replacement. The state bearer references R directly; local variables
-remain available across forms, but identity binding is not called an illustration.
+remain available across types, but identity binding is not called an illustration.
 W's identifying content can be intelligible without including its full behavior;
 an exact related-content link locates that behavior without delivering it implicitly.
 
 ## What this pass suggests
 
 The child partition supports correction identity and coherent initial explanations,
-with evaluation-wide output exposure and the benefit of narrower cited units explicit.
+with evaluation-wide output exposure and the benefit of narrower unit of exposures explicit.
 Caller-provided context can identify ADMISSION-1 as the explanation being followed; referent-based discovery also makes
 it available when origin is unknown. Per-subject identifies associations and fixed
 identifying support let application results preserve meaning under exact/fresh access.

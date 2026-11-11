@@ -70,7 +70,7 @@
     "analysisAnchor": {
       "entity": "M"
     },
-    "suppliedAccountContext": [
+    "suppliedInvestigramContext": [
       "ORIENTATION-0"
     ],
     "suppliedEvidence": [
@@ -86,7 +86,7 @@
       "open": "S-open",
       "half-open": "S"
     },
-    "accountIds": {
+    "investigramIds": {
       "introduction": "INTRO-1",
       "state-definitions": "DEFINITIONS-1",
       "admission": "ADMISSION-1"
@@ -95,7 +95,7 @@
   },
   "followupRequest": {
     "subject": {
-      "account": "ADMISSION-1"
+      "investigram": "ADMISSION-1"
     },
     "informationNeed": "Concurrent callers and trial outcomes under default single-trial recovery.",
     "analysisAnchor": {
@@ -103,16 +103,16 @@
     },
     "navigationOrigin": {
       "answer": "ANSWER-1",
-      "account": "ADMISSION-1"
+      "investigram": "ADMISSION-1"
     },
-    "suppliedAccountContext": [
+    "suppliedInvestigramContext": [
       {
-        "account": "DEFINITIONS-1",
-        "delivery": "complete own content and metadata: title, referents, associations, qualifications, evidence, children references, offers and presentations; basis/provenance supplied separately; child content is not implicit"
+        "investigram": "DEFINITIONS-1",
+        "delivery": "complete own content and metadata: title, referents, associations, qualifications, evidence, children references, options and presentations; basis/provenance supplied separately; child content is not implicit"
       },
       {
-        "account": "ADMISSION-1",
-        "delivery": "complete own content and metadata: title, referents, associations, qualifications, evidence, children references, offers and presentations; basis/provenance supplied separately; child content is not implicit"
+        "investigram": "ADMISSION-1",
+        "delivery": "complete own content and metadata: title, referents, associations, qualifications, evidence, children references, options and presentations; basis/provenance supplied separately; child content is not implicit"
       }
     ],
     "suppliedEvidence": [
@@ -127,10 +127,10 @@
     ],
     "operation": "follow-up-investigation",
     "parameters": {
-      "offerKey": "concurrent-callers-offer",
+      "optionKey": "concurrent-callers-option",
       "values": {}
     },
-    "informationNeedRole": "Explanatory wording matching the retained offer purpose; not an executable question field or human-authored request text."
+    "informationNeedRole": "Explanatory wording matching the retained follow-up option purpose; not an executable question field or human-authored request text."
   },
   "followupAcceptance": {
     "entityIds": {
@@ -139,7 +139,7 @@
       "concurrent-execution": "E-caller",
       "waiting": "W"
     },
-    "accountIds": {
+    "investigramIds": {
       "trial-result": "TRIAL-RESULT-1",
       "role-definitions": "ROLE-DEFINITIONS-1",
       "trial": "TRIAL-1",
@@ -155,7 +155,7 @@
       "requestedRoots": [
         "INTRO-1"
       ],
-      "accounts": [
+      "investigrams": [
         "INTRO-1",
         "DEFINITIONS-1",
         "ADMISSION-1"
@@ -181,7 +181,7 @@
       "requestedRoots": [
         "TRIAL-RESULT-1"
       ],
-      "accounts": [
+      "investigrams": [
         "TRIAL-RESULT-1",
         "ROLE-DEFINITIONS-1",
         "TRIAL-1",
@@ -206,7 +206,7 @@
       ],
       "historicalContext": [
         {
-          "account": "ADMISSION-1",
+          "investigram": "ADMISSION-1",
           "role": "Correction target and input actually received."
         }
       ],
@@ -215,7 +215,7 @@
     {
       "id": "FRESH-ADMISSION-ANSWER",
       "requestedOriginal": "ADMISSION-1",
-      "accounts": [
+      "investigrams": [
         "ADMISSION-2"
       ],
       "relationships": [
@@ -233,7 +233,7 @@
       "requestedRoots": [
         "INTRO-1"
       ],
-      "accounts": [
+      "investigrams": [
         "INTRO-1",
         "DEFINITIONS-1",
         "ADMISSION-2"
@@ -274,30 +274,30 @@
   "exposureExamples": [
     {
       "delivery": "Bare K/endpoint IDs only",
-      "citations": [],
+      "exposureIndex": [],
       "completeTargets": []
     },
     {
       "delivery": "K substantive explanation only",
-      "citations": [
+      "exposureIndex": [
         "TRIAL-1"
       ],
       "completeTargets": [],
-      "note": "Does not cite TRIAL-RESULT-1 or make TRIAL-1 a complete target."
+      "note": "Does not record exposure to TRIAL-RESULT-1 or make TRIAL-1 a complete target."
     },
     {
       "delivery": "Complete own content of DEFINITIONS-1 alone",
-      "citations": [
+      "exposureIndex": [
         "DEFINITIONS-1"
       ],
       "completeTargets": [
         "DEFINITIONS-1"
       ],
-      "note": "No parent or behavioral sibling is implicitly delivered. A subsequent correction of ADMISSION-1 creates no reconsideration path solely through this citation."
+      "note": "No parent or behavioral sibling is implicitly delivered. A subsequent correction of ADMISSION-1 creates no reconsideration path solely through this exposure entry."
     },
     {
       "delivery": "Complete own content of ROLE-DEFINITIONS-1 alone",
-      "citations": [
+      "exposureIndex": [
         "ROLE-DEFINITIONS-1"
       ],
       "completeTargets": [
@@ -307,7 +307,7 @@
     },
     {
       "delivery": "Both context accounts in the follow-up",
-      "citations": [
+      "exposureIndex": [
         "DEFINITIONS-1",
         "ADMISSION-1"
       ],
@@ -315,26 +315,26 @@
         "DEFINITIONS-1",
         "ADMISSION-1"
       ],
-      "note": "Every output of this evaluation shares these citations, including the role-definition child and replacement; K has its existing same-evaluation exemption."
+      "note": "Every output of this evaluation shares these exposure entries, including the role-definition child and replacement; K has its existing same-evaluation exemption."
     },
     {
       "delivery": "Complete ROLE-DEFINITIONS-1 including W identification and a related-content address, without fetching that content",
-      "citations": [
+      "exposureIndex": [
         "ROLE-DEFINITIONS-1"
       ],
       "completeTargets": [
         "ROLE-DEFINITIONS-1"
       ],
-      "note": "Identification supplies the participants and what is awaited, plus explicit limits. The address alone does not deliver or cite TRIAL-1; requesting its qualified behavior later would cite it."
+      "note": "Identification supplies the participants and what is awaited, plus explicit limits. The address alone does not deliver TRIAL-1 or record exposure to it; requesting its qualified behavior later would record exposure to it."
     }
   ],
   "partitionProbe": {
-    "definitionOnlyConsumerCites": [
+    "definitionOnlyConsumerExposureIndex": [
       "DEFINITIONS-1"
     ],
     "laterCorrectionTarget": "ADMISSION-1",
     "expectedReconsiderationFromThisPath": false,
-    "limit": "No other citation path is assumed. Grouped descriptions still share one correction target. Correcting DEFINITIONS-1 itself can affect every consumer of any of its descriptions."
+    "limit": "No other exposure entry path is assumed. Grouped descriptions still share one correction target. Correcting DEFINITIONS-1 itself can affect every consumer of any of its descriptions."
   },
   "qualificationProbe": {
     "question": "Can a later investigation of non-default sampling select S?",
@@ -351,9 +351,9 @@
     ]
   },
   "followupResolution": {
-    "offer": {
-      "account": "ADMISSION-1",
-      "offerKey": "concurrent-callers-offer"
+    "followupOption": {
+      "investigram": "ADMISSION-1",
+      "optionKey": "concurrent-callers-option"
     },
     "method": "qualified-architectural-interpretation",
     "architecturalTargets": [
@@ -367,17 +367,17 @@
     "parameterValues": {},
     "provenance": {
       "invocationSubject": {
-        "account": "ADMISSION-1"
+        "investigram": "ADMISSION-1"
       },
-      "offerKey": "concurrent-callers-offer",
+      "optionKey": "concurrent-callers-option",
       "outputs": [
         "TRIAL-RESULT-1",
         "ROLE-DEFINITIONS-1",
         "TRIAL-1",
         "ADMISSION-2"
       ],
-      "meaning": "All outputs retain this request/offer origin and the actual supplied context. Their architectural associations remain about S, P and the new roles. No child is appended to ADMISSION-1."
+      "meaning": "All outputs retain this request/option origin and the actual supplied context. Their architectural associations remain about S, P and the new roles. No child is appended to ADMISSION-1."
     },
-    "qualificationDelivery": "Complete ADMISSION-1 own delivery includes interpretation content and all declared own metadata (including offers and explicit empty presentations), applicable qualifications, evidence and provenance context. Offer selection or an offer excerpt alone does not establish completeness."
+    "qualificationDelivery": "Complete ADMISSION-1 own delivery includes interpretation content and all declared own metadata (including options and explicit empty presentations), applicable qualifications, evidence and provenance context. Option selection or an option excerpt alone does not establish completeness."
   }
 }

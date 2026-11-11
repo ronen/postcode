@@ -1322,3 +1322,28 @@ require correction. Historical metadata remains immutable. An erroneous recommen
 could warrant correction, but a missing suggestion for a new renderer is not an error.
 The authored checkers exercise these boundaries; product behavior and general cross-
 investigram presentation retrieval remain outside this pass.
+
+
+## 2026-11-11 — Accumulated naming choices applied
+
+The human agrees: content item within Interpretation content; content type for the
+supported kind; content-type contract for required data and semantics, with a schema
+for mechanically checkable shape. The catalogue is defined and extensible. An investigator
+may identify new concepts/topics using supported types, not invent an unknown type and
+expect processing. Architectural concept remains distinct from the representation.
+
+Use follow-up option (option when clear), rather than investigation offer or suggestion:
+atemporal availability without implied recommendation. Keep presentation recommendation.
+Use architectural relationship for relationships in the architecture, investigram
+relationship for qualified relations between investigrams, and content association for
+identifies/describes associations between information and entities/subjects.
+
+Use exposure index for the existing citation index: substantive supplied content, not
+reliance or endorsement. Context delivery records the actual portions/qualification;
+support is attributed grounds for a claim. The human prefers including cleanup rather
+than leaving debt, but the scope of the governing/API/implementation rename will be
+decided when drafting. It is not adopted now or automatically put on a separate backlog.
+
+Current notes, fixture keys/checkers and generated source pointers now use the agreed
+names; governing/product files remain unchanged. Historical entries above retain the
+language of their discussion. The consolidation's vocabulary is the current reference.

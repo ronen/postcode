@@ -1,10 +1,10 @@
 {
   "illustration": "Children-partition variant in an independent hypothetical Session. Authored proposed payload, not supported application input; ADMISSION-1 still contains the staged coverage error.",
   "result": {
-    "rootAccount": {
-      "submittedAccount": "introduction"
+    "rootInvestigram": {
+      "submittedInvestigram": "introduction"
     },
-    "accounts": [
+    "investigrams": [
       {
         "key": "introduction",
         "title": "Circuit breaker state categories and execution admission",
@@ -22,7 +22,7 @@
             "introducedEntity": "half-open"
           }
         ],
-        "associations": [
+        "contentAssociations": [
           {
             "role": "describes",
             "subject": {
@@ -42,7 +42,7 @@
         "content": [
           {
             "key": "orientation",
-            "form": "prose/0",
+            "contentType": "prose/0",
             "concept": "interface",
             "text": "The policy governs admission of application-supplied work. Stored state categories and the progress of an individual execution are distinct. The identifying descriptions and admission account below address these two aspects, each under its own stated scope.",
             "evidence": [
@@ -53,13 +53,13 @@
         ],
         "children": [
           {
-            "submittedAccount": "state-definitions"
+            "submittedInvestigram": "state-definitions"
           },
           {
-            "submittedAccount": "admission"
+            "submittedInvestigram": "admission"
           }
         ],
-        "offers": [],
+        "followupOptions": [],
         "presentations": []
       },
       {
@@ -79,7 +79,7 @@
             "introducedEntity": "half-open"
           }
         ],
-        "associations": [
+        "contentAssociations": [
           {
             "role": "identifies",
             "subject": {
@@ -114,7 +114,7 @@
         "content": [
           {
             "key": "closed-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "introducedEntity": "closed"
@@ -132,7 +132,7 @@
           },
           {
             "key": "open-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "introducedEntity": "open"
@@ -150,7 +150,7 @@
           },
           {
             "key": "half-open-description",
-            "form": "entity-description/0",
+            "contentType": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
               "introducedEntity": "half-open"
@@ -168,7 +168,7 @@
           }
         ],
         "children": [],
-        "offers": [],
+        "followupOptions": [],
         "presentations": []
       },
       {
@@ -188,7 +188,7 @@
             "introducedEntity": "half-open"
           }
         ],
-        "associations": [
+        "contentAssociations": [
           {
             "role": "describes",
             "subject": {
@@ -218,7 +218,7 @@
         "content": [
           {
             "key": "orientation",
-            "form": "prose/0",
+            "contentType": "prose/0",
             "concept": "interface",
             "text": "The application supplies work. The breaker controls admission and records outcomes according to its failure policy. State categories describe the policy, not the progress of a particular caller.",
             "evidence": [
@@ -228,7 +228,7 @@
           },
           {
             "key": "admission-cases",
-            "form": "admission-cases/0",
+            "contentType": "admission-cases/0",
             "concept": "interface",
             "coverage": "The cases below cover the admission outcomes for the stated recovery scope.",
             "cases": [
@@ -278,7 +278,7 @@
           },
           {
             "key": "inspection",
-            "form": "prose/0",
+            "contentType": "prose/0",
             "concept": "interface",
             "text": "State inspection reports the stored state. It neither reserves trial capacity nor initiates work; a later execution can encounter different conditions.",
             "evidence": [
@@ -288,9 +288,9 @@
           }
         ],
         "children": [],
-        "offers": [
+        "followupOptions": [
           {
-            "key": "concurrent-callers-offer",
+            "key": "concurrent-callers-option",
             "label": "Concurrent callers and trial outcomes",
             "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
             "targets": [
@@ -304,7 +304,7 @@
             "method": "qualified-architectural-interpretation",
             "parameterDefinitions": [],
             "qualifications": [
-              "A question under this account’s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
+              "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
             ],
             "evidence": [
               "E-admission",
@@ -315,6 +315,6 @@
         "presentations": []
       }
     ],
-    "accountRelationships": []
+    "investigramRelationships": []
   }
 }

@@ -12,10 +12,10 @@ moving content. No broader behavioral/state-model applicability is established.
 The [statechart with legend](recovery-state.md) and [interaction with legend](concurrent-callers.md)
 use concise authored labels and preserve this variant's own scope and source mapping.
 
-The [metadata payload tour](../metadata-payload.md) applies here too: offers belong to
+The [metadata payload tour](../metadata-payload.md) applies here too: options belong to
 their behavioral investigram, TRIAL-1 recommends two diagrams with explicit input
 bindings, and [guidance access](guidance-access.json) keeps excerpts distinct from
-complete own delivery. No guidance child or independent offer lifecycle is added.
+complete own delivery. No guidance child or independent option lifecycle is added.
 
 ## Files and reading order
 
@@ -63,12 +63,12 @@ including the reentrancy exclusion. The identifying descriptions do not repeat t
 coverage claim. Grouping the three state descriptions into one child deliberately
 keeps a coherent correction/delivery unit; it is not a one-entity-per-child rule.
 
-ADMISSION-1 returns a qualified `concurrent-callers-offer`. The follow-up request
-selects that exact investigram and offer key, whose architectural focus resolves to S.
-The [offer chain](../offered-followup.md) explains the stipulated invocation; this
-variant's [access probe](offer-access.json) preserves its exact context independently
-of the mixed variant. ADMISSION-2 has no repeated offer because TRIAL-1 already
-addresses the question; historical ADMISSION-1 offers remain available.
+ADMISSION-1 returns a qualified `concurrent-callers-option`. The follow-up request
+selects that exact investigram and option key, whose architectural focus resolves to S.
+The [option chain](../followup-options.md) explains the stipulated invocation; this
+variant's [access probe](followup-option-access.json) preserves its exact context independently
+of the mixed variant. ADMISSION-2 has no repeated option because TRIAL-1 already
+addresses the question; historical ADMISSION-1 options remain available.
 
 The follow-up receives the complete own content of DEFINITIONS-1 and
 ADMISSION-1. The first identifies the subject; the second is eligible for correction.
@@ -103,10 +103,10 @@ conditions on identification. Those qualify the behavioral investigram's claims.
 W's minimal description identifies the participants and what is awaited. It expressly
 does not supply occurrence/release conditions. Its exact `relatedContent` address
 locates TRIAL-1's interaction for a consumer needing those conditions; the address
-alone neither supplies the behavior nor cites TRIAL-1. The identification can be
+alone neither supplies the behavior nor records exposure to TRIAL-1. The identification can be
 intelligible without being a complete behavioral explanation.
 
-K is reported by TRIAL-1, the behavioral child. Its explanation cites that reporter,
+K is reported by TRIAL-1, the behavioral child. Its explanation records exposure to that reporter,
 not the root or the relationship ID. The reporter and replacement are in different
 composition trees. The pool representation permits cross-tree content references,
 but those references are not owning edges. Every investigram has exactly one owning
@@ -131,7 +131,7 @@ The state bearer is a direct reference to R. An item-local alias for that same
 scenario participant added no useful variable, and calling its binding an illustration
 confused identity with a general-to-example relationship. The redundant alias/binding
 has been removed from both variants. The common role contract remains available
-across forms, but this sample only uses variables where they add meaning. General
+across types, but this sample only uses variables where they add meaning. General
 relationship identity and broader state applicability remain for the composition probe.
 
 The interaction explicitly links wait initiation to the caller request and trial
@@ -154,9 +154,9 @@ can be supplied without selecting their parent roots. Delivering the complete
 ROLE-DEFINITIONS-1 child gives complete context for that child, not for TRIAL-1 or
 TRIAL-RESULT-1. Each answer fixes the identifying support it actually supplies.
 
-The cited-unit benefit is concrete: a later investigation receiving DEFINITIONS-1
-alone cites that child, so a correction of ADMISSION-1 provides no reconsideration
-path through that citation alone. By contrast, every output of the actual follow-up
+The benefit of narrower exposure is concrete: a later investigation receiving DEFINITIONS-1
+alone records exposure to that child, so a correction of ADMISSION-1 provides no reconsideration
+path through that exposure entry alone. By contrast, every output of the actual follow-up
 shares its exposure to both supplied investigrams. Children do not narrow the producing
 evaluation's exposure index, and grouped descriptions still share one correction
 target. None of these mechanisms establishes semantic independence between siblings.
@@ -171,7 +171,7 @@ item target, and leave that particular item's revision status unestablished. It
 cannot substitute a same-named item from the replacement without correspondence.
 
 The link is within the original follow-up evaluation, so it is not a prior-exposure
-citation and does not itself flag ADMISSION-2. Surfacing the referenced investigram's
+exposure entry and does not itself flag ADMISSION-2. Surfacing the referenced investigram's
 status is useful without adding a propagation or clearance rule. Exact captured
 answers preserve their earlier status context; fresh inspection is separate.
 W’s related-content link uses the same exact addressing rules, with a descriptive
@@ -196,7 +196,7 @@ bearer and qualification repairs do not require different rendered diagrams.
 
 These are checks of authored examples, not a production schema, semantic proof or
 end-to-end Session verification. The linked-investigram status probe is conditional,
-not an implemented access operation. No universal cross-form consistency check,
+not an implemented access operation. No universal cross-type consistency check,
 automatic role alignment, independent item correction, correction revocation, or
 parent/sibling reassessment is introduced. The mixed fixture remains a useful
 comparison; this variant demonstrates the current partition recommendation without
