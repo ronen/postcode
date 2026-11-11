@@ -1043,3 +1043,25 @@ still share dialogue exposure; partition does not narrow reconsideration from pr
 component corrections. No new correction, reassessment mechanism or product API is
 introduced. The first implementation scope remains undecided with respect to live
 composition generation.
+
+## 2026-11-11 — Composition review refinements
+
+The origin-free composition request now supplies current ADMISSION-2 and qualified
+K history without the superseded ADMISSION-1 content. The target remains requestable;
+K's substantive explanation cites its reporter, not its endpoint references. No
+complete-context exemption is claimed. The seven remaining citations still expose
+the ordering-definition child to later component corrections. That cause can also
+reach later definition consumers; partition is not transitive isolation. Record this
+as a planning risk needing explicit acceptance or prioritization of a bounded
+reassessment probe, without changing the governing exposure rule or authorizing it.
+Per-output exposure would require separate design agreement, not agent-declared
+support lists standing in for actual deliveries.
+
+The probe defines and checks a discriminated nested-selector grammar for relations
+and situated state assignments. A state selection must match an actual bearer/category
+pair in the named situation, and ambiguous assignments fail. No live follow-up is
+claimed. Transition assertions remain action prose and after-state snapshots; a
+future transition-level consumer needs new qualified general or scenario-local state
+content. P/B input is explicitly an unordered pair for examining both orderings;
+C-BB/C-BH become single-subject follow-up entry points. These findings refine the open
+Lens-offer and content-form questions without adopting a wider universal contract.

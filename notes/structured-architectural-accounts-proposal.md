@@ -293,6 +293,20 @@ uncleared; that is a disclosed limitation, not a reason to broaden the current s
 Current exposure still does not establish reliance. This is the present scope
 recommendation, not an adopted clearance policy or implementation authorization.
 
+**Composition evidence sharpens this planning risk.** The ordering-only
+COMPOSITION-DEFINITIONS-1 shares seven delivered-account citations with the synthesis.
+A later component correction can flag it, and that cause can propagate to later
+consumers of the definition; a smaller cited unit is not a transitive isolation
+boundary. The current slice has no operation to clear an assessed-as-unaffected
+account. Before completing the planning package, explicitly accept this limitation
+for the first capability or prioritize a bounded reassessment probe. This raises its
+planning priority without authorizing implementation or reversing the agreed scope.
+Per-output exposure is an alternative requiring a consequential revision of the
+current evaluation-wide delivery rules; agent-selected evidence or claimed reliance
+cannot silently substitute for actual delivery. Separate evaluations can limit actual
+exposure but add orchestration. Preserve the cause-specific history whichever future
+policy is chosen.
+
 **Proposed investigation — reconcile selected accounts.** The human proposes selecting
 accounts and asking to reconcile them. Recommend supporting this as an explicit
 qualified investigation, not a display operation or an automatic consequence of
@@ -567,6 +581,14 @@ to a qualified or initially unknown subject, the support it requires, and how an
 offer is explained. Classification may inform this without becoming established
 fact. Deferring compiler capabilities does not by itself settle interpretive offers.
 
+The composition probe supplies concrete scoping evidence: P/B is an unordered set of
+component kinds for a question covering both orders, with no outer/inner meaning in
+input position. Its output introduces C-BB and C-BH as qualified ordered-pattern
+subjects; subsequent pattern investigation can take one subject. This supports
+starting multi-subject offers around explicit joint/comparison questions, rather than
+requiring a pair for every composition follow-up. It does not settle generic Lens
+applicability, arity, role assignment or matching from classification alone.
+
 Relationships may themselves have subject identities and qualified accounts. Use
 the same explicit/local/prose routes rather than requiring every relationship to
 become a shared subject immediately. A relationship account supplies participants,
@@ -833,6 +855,22 @@ resource ontology or general waiting-subject identity is established. Authored
 fixtures and rendered sequence diagrams test representability, not live investigator
 reliability or supported API acceptance. Whether generated composition investigation
 belongs in the first implemented capability remains open.
+
+The revised origin-free composition context selects ADMISSION-2, with K's qualified
+reason and endpoint references. ADMISSION-1 is accessible on request but its content
+is not delivered or directly cited. K's explanation cites its reporter, TRIAL-1;
+this history disclosure is not complete correction context and claims no exemption.
+Relevant conflicting accounts and explicit historical requests remain reasons to
+supply other content under the existing delivery rules.
+
+The probe now defines and checks two exact nested selectors: a local relation key,
+or a particular state assignment identified by situation plus bearer and category.
+Unknown, mixed and ambiguous selectors are rejected. This exercises addressing, not
+a live follow-up or promotion. Both composition traces still describe entry to
+Half-open as action text; their snapshots are after-state assertions, not linked
+transition records. A later need for transition-level correspondence calls for a
+qualified general P-level state model or a scenario-local state-behavior item. Neither
+is supplied by this probe, and the earlier TRIAL-1 statechart is not rebound.
 
 ## Structured content and diagrams
 

@@ -286,3 +286,9 @@ admission/trial fixtures. It deliberately keeps situation and trace roles within
 item. Extracting situations into another form would require qualified correspondence,
 not matching role names. Two rendered sequence diagrams exercise the retained meaning;
 no full structural view, universal resource schema or application API is introduced.
+Its [nested-selector grammar](composition/README.md#nested-selector-grammar-for-this-probe)
+defines only exact relation selection and situated state-assignment selection, with
+structural and resolution checks. This is not a general arbitrary-path selector.
+The origin-free context uses current accounts plus qualified history disclosure;
+endpoint references do not deliver superseded account content or establish complete
+correction context.
