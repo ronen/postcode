@@ -1,6 +1,6 @@
 # Structured architectural accounts: working proposal
 
-Updated: 2026-11-10
+Updated: 2026-11-11
 
 Exploratory synthesis for discussion, incorporating the emerging direction and a
 recommended bounded capability. This is not an adopted design, planning package,
@@ -25,6 +25,9 @@ actual proposed submissions, identity bindings, a qualified correction record an
 two diagrams generated from retained structured fields. That pass deliberately uses
 one investigram per coherent explanation, making repeated replacement content visible
 as a comparison with the earlier child partition. Neither partition is adopted.
+After review, prefer separate identifying children when useful as independent later
+context: their separate citation targets can avoid exposure to behavioral-sibling
+corrections. The payload retains the single-account alternative to expose its costs.
 
 The [foundation](../foundation/README.md), [application specification](../docs/app-specification.md),
 [core concepts](../docs/core-concepts.md), [architectural constraints](../docs/architectural-constraints.md)
@@ -56,6 +59,17 @@ The complete illustrative submission/retrieval/correction example is now availab
 above. Review its actual content and provisional partition before generalizing the
 schema. It is an authored fixture, not an implemented or live investigation path.
 The five remaining decision groups are collected near the end of this note.
+
+Current recommendations sharpened by the complete-example review:
+
+| Topic | Position for the next design pass |
+| --- | --- |
+| Account partition | Prefer independently deliverable identifying children when useful; no one-child-per-subject rule. The cited unit matters as well as evaluation-wide output exposure. |
+| Identifying support | Fresh replacement-aware support uses replacement descriptions. Original input/history is separately labelled; exact older answers remain fixed. `affectedSubjects` is not an item-survival mask. |
+| Relationship K | Retain/index separately; cite its reporter for substantive explanation. This does not deliver the reporter's complete own content or enable independent revision of K. |
+| Behavioral content | Supply completion, classification and explicit causal references. Keep R's model scenario-scoped; broader applicability needs qualified interpretation. |
+| Validation | Check references, ownership, delivery and diagram mappings mechanically; assess cross-form semantics separately. |
+| Request/reuse | Distinguish request plus selected seed context from subsequent acquired context in provenance. Reuse freshness policy remains to be settled. |
 
 ## The proposed capability
 
@@ -165,6 +179,11 @@ cannot fetch today's preferred definition and silently change an exact answer.
 Preserve the descriptions actually grounding selected accounts; do not reinterpret
 an old account by automatically substituting a newer definition. Newer or competing
 descriptions can be exposed distinctly as revision context or separate selected items.
+When the whole containing account is selected through a correction replacement,
+use that replacement's identifying content as current support. Retain the original
+as labelled historical/input context where relevant. `affectedSubjects` describes
+claimed correction scope; it does not exempt embedded items from replacement. This
+selection rule does not prove the replacement true or reconcile competing descriptions.
 
 **Human direction — competing descriptions.** When two accounts describe S differently
 without an explicit correction relationship, show both and supply both as investigator
@@ -208,7 +227,13 @@ information actually supplied in context. Do not create an unqualified link plus
 optional explanatory paragraph. New relationship records can be indexed against
 existing accounts without mutating their original content or exact answer snapshots.
 Calling the material metadata does not exempt it from existing attributable-support
-and complete correction-context delivery requirements.
+and complete correction-context delivery requirements. For the correction path,
+retain the existing reporter-citation rule: substantive delivery of K's explanation
+records exposure to TRIAL-1 and permits citing that reporter, not K. Bare relationship
+and endpoint IDs do not. This delivery alone does not supply TRIAL-1's complete own
+content. Physical storage on K and substantive attribution to TRIAL-1 are compatible;
+no duplicate prose field is required. Independent relationship citations or revocation
+would be separate extensions, not implicit consequences of indexability.
 
 **Agreed distinction:** use “account relationship” for this organizing mechanism.
 Its participants are retained accounts/investigrams; kinds such as alternative,
@@ -314,7 +339,10 @@ to distinguish the intended referents and disclose ambiguity or unavailable supp
 **Needs design:** specify support selection, bounds, intelligibility/completeness
 checks and behavior when adequate support is missing. These rules cannot be left to
 renderer inference. A concise identifying description is not the complete investigram
-and does not confer correction eligibility.
+and does not confer correction eligibility. Identifying excerpts carry their source
+account's applicable qualifications, basis and revision context, as well as item-level
+support and qualifications. Supplying an excerpt cites its containing investigram;
+partial delivery does not establish a complete correction target.
 
 Human presentation alone does not create investigator citations. If this support is
 later supplied to an investigator, its substantive content counts as exposure even
@@ -334,8 +362,12 @@ Retain these distinctions independently of UI design:
 Fresh access can capture later revision context; exact answer retrieval cannot.
 Replacement-aware selection does not reinterpret an unchanged account by substituting
 a newer definition into its original descriptive context. Newer definitions may be
-available separately with that difference visible. Equivalent effective inputs,
-methods and captured support/revision context retain repeatable answer identity.
+available separately with that difference visible. Retained selections with equivalent
+selected content and captured support/revision context have repeatable identity. This
+is distinct from investigator dispatch/reuse: request-time inputs include operation,
+subject, parameters and selected seed context; acquisitions made during the dialogue
+are known only afterward and recorded in provenance. Reusing a retained investigation
+is not a guarantee that a fresh dialogue would acquire the same context or result.
 
 The application supplies the selected qualified information; the UI can arrange it.
 Alignment needs supplied identity/correspondence and synthesis needs qualified
@@ -461,8 +493,11 @@ after complete content is acquired through later requests in that evaluation.
 
 The initial request records its selected seed context; provenance also records what
 the dialogue actually supplies afterward. Available, requested and delivered material
-are distinct. **Needs design:** discovery/query capabilities, continuation/bounds,
-and how context selection and later acquisition interact with reuse and exact support.
+are distinct. Do not make unknown future acquisitions part of a pre-execution request
+key. Request-time identity includes the selected seed context; any reuse policy must
+separately state when later retained-context changes require a fresh investigation.
+**Needs design:** discovery/query capabilities, continuation/bounds, reuse eligibility
+and freshness, and how acquired support is fixed in exact answers.
 Do not treat this as a requirement to choose all relevant accounts before starting.
 
 ### Routes for subject introduction
@@ -605,7 +640,12 @@ bounds and additional associated context for subject-only requests. These are di
 from discovering every referring account; a bare selection does not guarantee that
 ADMISSION-1 is found or available for correction.
 
-### Sequence
+### Sequence — the definition-child alternative
+
+This sequence uses INTRO-1/DEFINITIONS-1 and TRIAL-RESULT-1/ROLE-DEFINITIONS-1
+from the earlier child walkthrough. The complete JSON payload deliberately uses the
+single-account alternative; their account IDs/composition must not be mixed. Both
+exercise the same introduction, follow-up, correction and retained-access obligations.
 
 This adapts the [connected examples](initial-journey/cockatiel-account-examples.md).
 Their static Cockatiel account concerns the recorded revision; the waiting omission
@@ -656,8 +696,11 @@ child is independently correctable; root replacement does not automatically carr
 that child or a corrected successor into its new composition. The walkthrough tests
 the child partition and retained access; a general partition policy is open.
 
-The walkthrough's correction is reported by TRIAL-1, so its reason and qualifications
-are TRIAL-1's substantive content. A later correction of TRIAL-1 preserves the original
+The walkthrough's correction is reported by TRIAL-1. Its reason and qualifications
+are substantively attributed to TRIAL-1 for citation/exposure even when stored on
+the separate organizing record K; they need not be duplicated inside architectural
+content. Receiving them cites TRIAL-1 but does not supply its complete own content.
+A later correction of TRIAL-1 preserves the original
 reporter and correction record; it does not automatically withdraw or rewrite that
 correction edge. **Needs design:** any mechanism for changing a correction's standing
 must be explicit. The example does not claim that capability.
@@ -674,9 +717,14 @@ Existing replacement preference does not resolve conflicts. Exposure-based
 reconsideration remains conservative: seeing an account is not proven reliance,
 and its correction does not prove every exposed result false. Preserve current
 propagation/exemption rules unless a later decision explicitly revises them.
-All investigrams from one evaluation share its conservative exposure index, including
-definition children and replacements. Partitioning narrows correction/delivery units,
-not necessarily reconsideration warnings. Grouped definitions retain this tradeoff.
+On the citing side, all investigrams from one evaluation share its conservative
+exposure index, including definition children and replacements. Splitting that output
+does not narrow its citations. On the cited side, citations name particular
+investigrams: an investigation receiving only a definition child need not cite its
+behavioral sibling, so a later correction of that sibling need not flag it. With
+embedded definitions, even a definition excerpt cites the mixed containing account.
+Prefer separate identifying children when that independent later delivery is useful;
+this avoids a particular exposure path, not all semantic dependencies or warnings.
 
 Agreement in discussion: the investigating agent may judge that new findings warrant
 correcting an earlier account during an ordinary follow-up. It must explicitly
@@ -698,8 +746,8 @@ Capture actual selected input context: a stable subject ID alone is insufficient
 as a reuse key when its supplied descriptions change.
 
 **Needs design — request and origin.** Specify the request alternative above,
-context acquisition/selection policy and effective-input identity. Origin records
-lineage; it affects answer/reuse identity when it changes substantive selected input
+context acquisition/selection policy, request-time identity and reuse freshness.
+Origin records lineage; it affects answer/reuse identity when it changes substantive selected input
 or qualification, not merely because the human reached the same request differently.
 
 ### Composition as a design probe
@@ -918,9 +966,13 @@ A single investigram with keyed content parts gives local addressing and coheren
 qualification delivery, but all parts share the whole-investigram correction target.
 Child investigrams add independent retained targets, associations and correction
 boundaries, at the cost of more support/context delivery and composition/replacement
-rules. They do not narrow the evaluation-wide exposure index. Compare these two
-shapes directly; a diagram's nested graph or keyed node does not require a child
-investigram. Removing the existing hierarchy is not necessary to choose no children
+rules. They do not narrow their producing evaluation's exposure index. They can
+narrow what later evaluations cite by allowing a definition to be delivered without
+its behavioral sibling. This is a stronger argument than avoiding replacement copying.
+Prefer separate identifying children where useful as independent later context;
+retain coherent groups rather than normalizing every assertion into a child.
+Compare actual delivery paths; a diagram's nested graph or keyed node does not
+require a child investigram. Removing the existing hierarchy is not necessary to choose no children
 for a particular result.
 
 Organizational roots still carry qualified interpretation and ordinary exposure and
@@ -1109,10 +1161,11 @@ confidence has sometimes exceeded the examples supporting them.
   relationships. Do not assume a schema for each named concept or let the diagram
   inventory define the full architectural vocabulary. Keep the initial catalogue small.
 - **Definition partition and support.** A definition child is an example partition,
-  not a default normalization rule. It can increase retrieval/support dependencies
-  without narrowing evaluation-wide reconsideration. Compare it with a coherent
-  mixed account using the same correction example. Current correction/exposure
-  constraints remain governing while judging the proposed partition.
+  not a default normalization rule. The current recommendation favors children for
+  independently useful identifying context: later consumers can cite the definition
+  without the behavioral sibling. It still adds support/composition obligations and
+  does not narrow exposure shared by outputs of the producing evaluation. The mixed
+  concrete payload demonstrates the contrasting cost; current rules remain governing.
 - **Automatic identifying support.** Exact snapshots are sound, but selecting which
   descriptions ground a reference can require interpretation. Test two competing
   descriptions of S. Prefer explicitly anchored support or visible unresolved
@@ -1129,9 +1182,9 @@ confidence has sometimes exceeded the examples supporting them.
    needed by the example. Specify returned identifying content, local references,
    promotion declarations and account-relationship metadata. Establish attributable
    support and full/partial delivery, without requiring a comprehensive catalogue.
-2. **Account boundaries.** Choose a provisional investigram/child partition for the
-   concrete example. Show what is retrieved and replaced when one description or
-   admission claim changes, including unchanged content and root/child behavior.
+2. **Account boundaries.** Review the concrete mixed-account payload against the
+   recommendation for independently deliverable identifying children. Show what is
+   retrieved and replaced when one description or admission claim changes, including unchanged content and root/child behavior.
    Addressability and qualification do not establish independent semantic validity.
 3. **Account-relationship semantics.** Specify initial kinds, endpoint roles,
    reporting/support, reference validation and discovery. Preserve distinctions

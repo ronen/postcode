@@ -1,6 +1,6 @@
 # Architectural accounts: concrete walkthrough
 
-Updated: 2026-11-10
+Updated: 2026-11-11
 
 An exploratory example of the [working proposal](structured-architectural-accounts-proposal.md).
 Current recommendations and remaining choices are stated inline. They are provisional,
@@ -14,8 +14,10 @@ runtime investigation.
 include proposed JSON submissions, static source checking and rendered diagrams.
 They use a single investigram for each coherent explanation, with definitions inside
 it, to test the alternative to this walkthrough's child partition. Read the two as
-explicit design alternatives; neither is an adopted default. No live investigator
-or runtime execution has been performed in either pass.
+explicit design alternatives; neither is adopted. The current recommendation favors
+identifying children where independently useful as later context, for the cited-side
+exposure reason below; the complete payload retains the mixed alternative for comparison.
+No live investigator or runtime execution has been performed in either pass.
 
 ## Choices for this pass
 
@@ -40,8 +42,10 @@ and revision, without requiring perfect claim independence or global consistency
 - Retain the follow-up request's answer and provide qualified exact/current access.
   Presume the UI can show and select retained information; no separate assembled
   answer or UI workflow is required by this example.
-- Keep evaluation-wide exposure/reconsideration. Smaller correction units do not
-  establish smaller dependency sets or fewer warnings.
+- Keep evaluation-wide exposure/reconsideration on the citing side. On the cited
+  side, delivering only an identifying child can avoid citing its behavioral sibling
+  and therefore avoid warnings from that sibling's correction. It does not establish
+  independent semantic validity or eliminate other exposure paths.
 
 Only explicit introduction/reuse is exercised as an application path here. Local/prose
 promotion remains a separate probe, not an agreed scope exclusion. The caller may
@@ -81,8 +85,11 @@ investigram containing keyed identifying and behavioral content. That alternativ
 supports local addressing but corrects the whole investigram; children add independent
 retained follow-up/correction targets and associations, with extra delivery and
 replacement rules. Neither choice narrows the evaluation-wide exposure index merely
-by creating smaller content parts. Structured graph nesting does not dictate this
-account partition.
+by creating smaller output parts. However, a later investigation receiving only a
+separate identifying child cites that child, not an undelivered behavioral sibling.
+A definition excerpt from a mixed account cites the whole containing account. This
+is now the strongest reason to prefer independently useful identifying children.
+Structured graph nesting does not dictate this account partition.
 
 **Correction cost motivating smaller units.** The human points out that correcting
 one subject description inside a larger result would require retaining the unchanged
@@ -388,9 +395,11 @@ without a replacement. Preserve type-specific endpoint roles and validation; do 
 treat a new discriminator as sufficient to implement all cases. For this staged
 misleading admission account, correction remains the intended relationship.
 
-TRIAL-1 is the correction reporter, so the reason and qualifications belong to its
-own substantive content. Correcting TRIAL-1 later preserves that original reasoning
-and correction record; it does not automatically revoke or retarget the admission
+TRIAL-1 is the correction reporter. K can store its reason and qualifications in a
+separate organizing record while attributing them to TRIAL-1 for citation/exposure.
+Delivering that explanation cites TRIAL-1, not K, without supplying TRIAL-1's complete
+own content; bare relationship/endpoint IDs do not. Correcting TRIAL-1 later preserves
+that original reasoning and correction record; it does not automatically revoke or retarget the admission
 correction. Changing a correction's standing would need explicit semantics beyond
 this example.
 
@@ -576,8 +585,8 @@ retaining S merely for convenient continuity.
 ## What this pass suggests
 
 The child partition supports correction identity and coherent initial explanations,
-with evaluation-wide propagation costs explicit. Caller-provided context can identify
-ADMISSION-1 as the explanation being followed; referent-based discovery also makes
+with evaluation-wide output exposure and the benefit of narrower cited units explicit.
+Caller-provided context can identify ADMISSION-1 as the explanation being followed; referent-based discovery also makes
 it available when origin is unknown. Per-subject identifies associations and fixed
 identifying support let application results preserve meaning under exact/fresh access.
 

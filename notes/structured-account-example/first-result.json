@@ -52,7 +52,8 @@
           "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
           "Default one-call recovery sampling with zero permitted counted failures.",
           "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
-          "Application-specific usage and business success are not established. Failure classification follows the configured policy."
+          "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+          "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
         ],
         "evidence": [
           "E-state",

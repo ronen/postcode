@@ -76,7 +76,8 @@
           "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
           "Default one-call recovery sampling with zero permitted counted failures.",
           "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
-          "Application-specific usage and business success are not established. Failure classification follows the configured policy."
+          "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+          "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
         ],
         "evidence": [
           "E-state",
@@ -113,7 +114,7 @@
               "introducedSubject": "trial-execution"
             },
             "name": "Trial execution",
-            "description": "An execution occupying the single recovery-trial slot in this scenario. The work is supplied by the application.",
+            "description": "An execution occupying the single recovery-trial slot in this scenario. The work is supplied by the application. The interaction lifeline represents this execution including its supplied work; work completion is distinct from delivery of the final result to its caller.",
             "classification": "execution-role",
             "relativeTo": {
               "introducedSubject": "shared-breaker"
@@ -254,9 +255,10 @@
                 "Closed-to-Open failure-policy behavior",
                 "Manual isolation",
                 "Restored-state behavior",
-                "Non-default sampling"
+                "Non-default sampling",
+                "Reentrant event-listener execution requests during Half-open entry"
               ],
-              "note": "Shared breaker role; default single trial. Static interpretation. Other transitions are omitted."
+              "note": "Shared breaker role; default single trial, no reentrant entry calls. Static partial account; not all configurations of P."
             },
             "states": [
               {
@@ -299,7 +301,7 @@
                 "source": "half-open",
                 "target": "closed",
                 "trigger": "Trial counted successful",
-                "guard": "Same recovery cycle",
+                "guard": "Completing trial belongs to the current Half-open state",
                 "effect": "Close and release waiting executions",
                 "evidence": [
                   "E-half-open",
@@ -312,7 +314,7 @@
                 "source": "half-open",
                 "target": "open",
                 "trigger": "Trial counted failed",
-                "guard": "Same recovery cycle",
+                "guard": "Completing trial belongs to the current Half-open state",
                 "effect": "Restart backoff and release waiting executions",
                 "evidence": [
                   "E-half-open",
@@ -327,7 +329,13 @@
               "E-half-open",
               "E-outcomes",
               "E-default"
-            ]
+            ],
+            "applicability": {
+              "policyKind": {
+                "subject": "P"
+              },
+              "scope": "Recovery of the shared breaker scenario role under the account qualifications. Discoverable as an account about P, not an assertion covering every instance or configuration of P."
+            }
           },
           {
             "key": "concurrent-callers",
@@ -340,7 +348,8 @@
               "The first request finds Open with elapsed backoff.",
               "The second request arrives while the first trial remains in flight.",
               "No isolation, cancellation, restored state or third caller interferes.",
-              "On the failure branch, the new backoff is positive and has not elapsed when the waiting execution rechecks admission."
+              "On the failure branch, the new backoff is positive and has not elapsed when the waiting execution rechecks admission.",
+              "No event listener reenters execution during entry to Half-open."
             ],
             "participants": [
               {
@@ -385,6 +394,9 @@
                 "evidence": [
                   "E-admission",
                   "E-half-open"
+                ],
+                "causedBy": [
+                  "trial-request"
                 ]
               },
               {
@@ -409,6 +421,40 @@
                 "evidence": [
                   "E-half-open"
                 ]
+              },
+              {
+                "key": "trial-work-completes",
+                "kind": "action",
+                "actor": "trial",
+                "text": "Supplied trial work completes with a result or error",
+                "evidence": [
+                  "E-half-open"
+                ]
+              },
+              {
+                "key": "trial-outcome",
+                "kind": "response",
+                "from": "trial",
+                "to": "breaker",
+                "text": "Work outcome becomes available for classification; not final delivery to the trial caller",
+                "causedBy": [
+                  "trial-work-completes"
+                ],
+                "evidence": [
+                  "E-half-open"
+                ]
+              },
+              {
+                "key": "classify-trial-outcome",
+                "kind": "action",
+                "actor": "breaker",
+                "text": "Classify the completed work under the configured failure policy; an unhandled error counts as recovery success",
+                "causedBy": [
+                  "trial-outcome"
+                ],
+                "evidence": [
+                  "E-half-open"
+                ]
               }
             ],
             "alternatives": [
@@ -424,6 +470,9 @@
                     "transition": "close-after-trial",
                     "evidence": [
                       "E-outcomes"
+                    ],
+                    "causedBy": [
+                      "classify-trial-outcome"
                     ]
                   },
                   {
@@ -465,6 +514,9 @@
                     "evidence": [
                       "E-outcomes",
                       "E-default"
+                    ],
+                    "causedBy": [
+                      "classify-trial-outcome"
                     ]
                   },
                   {
@@ -562,7 +614,8 @@
           "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
           "Default one-call recovery sampling with zero permitted counted failures.",
           "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
-          "Application-specific usage and business success are not established. Failure classification follows the configured policy."
+          "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+          "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
         ],
         "evidence": [
           "E-state",
@@ -640,7 +693,7 @@
             "key": "admission-cases",
             "form": "admission-cases/0",
             "concept": "interface",
-            "coverage": "Admission cases in the stated scope, including a caller arriving while the recovery trial is occupied. An admitted operation can later succeed or fail.",
+            "coverage": "Admission cases in the stated scope, excluding reentrant entry calls: the request finding Open after its delay enters Half-open and reserves the sole trial slot; subsequent callers during the occupied trial wait. An admitted operation can later succeed or fail.",
             "cases": [
               {
                 "key": "ordinary",
@@ -682,20 +735,6 @@
                 "outcome": "Refuse execution without running the supplied operation.",
                 "evidence": [
                   "E-admission"
-                ]
-              },
-              {
-                "key": "available-half-open-slot",
-                "when": {
-                  "state": {
-                    "subject": "S"
-                  },
-                  "condition": "A trial slot is available in the current recovery cycle."
-                },
-                "outcome": "Reserve the trial slot and run sampled supplied work.",
-                "evidence": [
-                  "E-half-open",
-                  "E-default"
                 ]
               },
               {
@@ -757,7 +796,8 @@
           "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
           "Default one-call recovery sampling with zero permitted counted failures.",
           "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
-          "Application-specific usage and business success are not established. Failure classification follows the configured policy."
+          "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+          "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
         ],
         "evidence": [
           "E-half-open",

@@ -10,8 +10,11 @@ ID, local element key, evidence reference or account-relationship kind.
 Return one root account, its accompanying replacement accounts if any, and qualified
 account-organizing relationships. Each account supplies its own referents,
 associations, qualifications, evidence and content. Each content item has a local
-`key`, a `concept`, a `form`, and the fields required by that form. A key is stable
-within this exact account only; identical keys in two accounts do not assert identity.
+`key`, a `concept`, a `form`, and the fields required by that form. Content keys are
+unique within their exact account; nested state keys are local to their state model,
+and step keys are unique within their interaction. Identical keys across accounts do
+not assert identity. Introduced-subject keys and submitted-account keys instead are
+submission-scoped, each in its own namespace.
 
 Use `{subject: ID}` for a supplied retained subject. Use
 `{introducedSubject: localKey}` for a subject explicitly introduced in this submission;
@@ -21,17 +24,37 @@ Use `{account: ID}` for an earlier account and `{submittedAccount: key}` for a n
 submitted one. Forward local references are allowed if all resolve in the accepted
 submission. No partial allocation or dangling result is intended.
 
+Exactly one `subject-description/0` item per introduced-subject key declares it with
+`introduceRetainedSubject: true`. References, `referents` membership and `identifies`
+associations do not themselves declare subjects. Duplicate declarations and references
+without a declaration are invalid. ADMISSION-2 may reference a subject declared in
+TRIAL-1 because both belong to this submission. Every construction-pool member in
+this childless sample must be either the root or the replacement of exactly one
+correction; those roles are disjoint and there are no orphan accounts. A future pool
+representation of children would need explicit ownership/reachability rules too.
+
 Account qualifications apply to all its content and associations; items can further
 limit claims and identify their own evidence. The account's evidence union is not
 an assertion that every source supports every item. A nested event/transition keeps
 its more specific evidence. Evidence names here resolve through the fixture registry;
 production must preserve the corresponding captured basis and qualified support.
+An item excerpt must carry its source account identity, applicable account-level
+qualifications and basis, plus its own evidence and qualifications. An excerpt cannot
+silently shed limitations because the full account was not selected. Its substantive
+delivery cites the containing investigram but does not establish complete-target
+delivery. The context ledger spells out this support envelope for the TRIAL-1 excerpts.
 
 `referents` lists substantive subject references; `associations` distinguishes
 `identifies` from `describes`. Identifying content can coexist with behavioral content
 in one investigram. Classification is a qualified description of the subject, not a
 guarantee from allocating its ID. No authoritative global definition is selected by
 silently taking the newest description.
+
+For this example, fresh replacement-aware identifying support uses ADMISSION-2's
+descriptions. ADMISSION-1 remains historical/input context, explicitly labelled as
+such in the follow-up answer. Exact ANSWER-1 retains its original support. A correction's
+`affectedSubjects` does not exempt embedded descriptions from whole-account replacement;
+it is not an item-level validity mask. Selection does not establish a canonical definition.
 
 ## Forms in this example
 
@@ -51,6 +74,14 @@ architectural relationship and text. A state-transition step names a state-conte
 item and one of its transitions. That link reuses an explicit claim; it does not
 authorize an interpreter to derive arbitrary cross-account correspondences.
 
+An optional `causedBy` lists earlier step keys on the same possible path. It asserts
+causal support, not just diagram ordering. Cross-branch or forward references are
+invalid here. Completion, outcome availability and classification use existing action
+and response forms; each outcome transition explicitly cites classification as its
+cause. Structural validation checks that these links resolve in order, not that the
+asserted causality is true. The trial participant denotes the execution including its
+work, so the outcome response is distinct from final delivery to its initiating caller.
+
 The architectural-relation kinds used here are `state-category-of`,
 `instance-role-of`, `execution-uses-instance`, and `waits-for-decision`, with explicit
 role fields. The first three have local identities only; the waiting relation also
@@ -64,6 +95,12 @@ and from participating executions. State what causes a transition, what must hol
 and what it does. Declare partial coverage. A partial statechart may omit an initial
 marker; it must not manufacture one. The present form is a flat subset: richer
 statecharts would require explicit containment, entry/exit and concurrency semantics.
+In this sample the bearer remains scenario role R. The explicit applicability field
+connects the account to P without broadening it to all instances/configurations of P.
+A type-level model and qualified binding to R are a possible later extension, not a
+mechanical reinterpretation of this model. The recovery-outcome guard means the
+completing trial still belongs to the current Half-open state; stale results do not
+perform these transitions.
 
 **Interaction.** Identify participants and their roles before giving ordering. Explain
 whether a sequence is observed, possible or required. Make branch conditions and
@@ -88,6 +125,15 @@ new replacement, affected subjects, reason, qualifications and evidence. The rea
 must establish the claimed error; the kind is not inferred from account age or matching
 names. The target's complete own content must have been supplied in the dialogue.
 The replacement supplies its whole own content; this is not an item patch operation.
+
+Retain K separately, while attributing its substantive reason/qualifications to its
+reporter TRIAL-1 for citation and exposure, preserving the current correction rule.
+Delivering that explanation cites TRIAL-1, not K, and does not supply TRIAL-1's complete
+own content. Bare relationship/endpoint IDs do not cite the reporter. Actual supplied
+support is tracked by the usual rules; an evidence reference alone does not assert
+delivery of its target's content. The ledger gives concrete exposure examples.
+Changing the reporter does not automatically retract K. Independent citations to K
+and relationship revocation are not introduced by this sample.
 
 Alternative and inconsistency records would have different meaning and consequences;
 this sample neither serializes them nor grants them correction effects. A relationship

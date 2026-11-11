@@ -1,11 +1,16 @@
 # Admission → trial → correction: complete illustrative results
 
-Exploratory notes, 2026-11-10. These are authored examples of a **proposed** content
+Exploratory notes, updated 2026-11-11. These are authored examples of a **proposed** content
 contract, not an adopted schema, supported API, or live investigator run. The initial
 omission and its discovery are staged. The [working proposal](../structured-architectural-accounts-proposal.md)
 remains provisional. The [earlier walkthrough](../structured-architectural-accounts-example.md)
 explores a different partition with definition children; this pass deliberately uses
 one investigram per coherent explanation to make the tradeoff concrete.
+
+After review, the recommendation is to separate identifying descriptions when they
+are useful as independent later context. The payloads retain the single-investigram
+alternative so its costs remain inspectable; they are not the recommended default.
+The revised support and exposure rules below apply to this alternative consistently.
 
 ## Read the example
 
@@ -100,13 +105,18 @@ unhandled error can count as recovery success while still reaching its caller.
 
 ## 3. Return a complete replacement and a separate organizing claim
 
-The follow-up returns ADMISSION-2 with the missing Half-open admission cases. It
+The follow-up returns ADMISSION-2 with the missing Half-open waiting case. It
 also repeats the unchanged state descriptions, orientation and inspection content.
 Those descriptions now reference existing S/S-open/S-closed; they do not allocate
 new subjects. This deliberately exposes the duplication cost of correcting a large
-investigram. Definition children would reduce that copying, but add separate
-qualification, support and selection obligations; this example does not settle that
-tradeoff for all investigations.
+investigram. More importantly, an investigation receiving just its identifying
+description still cites ADMISSION-1 and is exposed to its behavioral corrections.
+A separate identifying child can be delivered and cited without its behavioral
+sibling, avoiding that particular reconsideration path. This is about the cited
+unit: splitting the receiving evaluation's outputs does not narrow their shared
+exposure index. Children still add qualification, support and composition obligations.
+Prefer them for descriptions useful independently as later context, not automatically
+one child per subject or assertion. No partition promises semantic independence.
 
 K is a **qualified account-relationship record** with these concrete fields:
 
@@ -121,10 +131,13 @@ K is a **qualified account-relationship record** with these concrete fields:
 | Support | The earlier account and the source supporting waiting/recheck behavior |
 | Qualifications | The static basis and bounded recovery scope stated on K itself |
 
-K is outside account content because it organizes retained accounts; W is inside
-TRIAL-1 because it describes the architecture. Neither is an unsupported bare edge.
-The metadata label does not exempt K's reason or source claims from qualified
-analysis and exposure accounting. A revised reporter would not silently revoke K.
+K is a separate organizing record; W is architectural content inside TRIAL-1. Storage
+and citation attribution are distinct: K's substantive reason and qualifications
+are attributed to TRIAL-1 for exposure and evidence citation, preserving the current
+correction rule. Receiving that explanation cites TRIAL-1, not K, but does not count
+as receiving TRIAL-1's complete own content. Receiving bare K/endpoint IDs creates no
+such exposure. The ledger gives concrete delivery/citation examples. Neither claim
+becomes unqualified by its representation. A revised reporter would not silently revoke K.
 Challenging a correction relationship and undoing its effects remain open design work.
 
 The submission's `accounts` array is a construction pool: one result root and an
@@ -140,11 +153,26 @@ The context ledger gives three expected selections:
 - **ANSWER-1**, captured before K, retains ADMISSION-1 and its original support.
   Exact retrieval must not substitute ADMISSION-2 or a newer identifying description.
 - **FOLLOWUP-ANSWER-1** supplies TRIAL-1, ADMISSION-2 and K, preserving original and
-  replacement references and the attributed descriptions used for support.
+  replacement references. Current identifying support uses ADMISSION-2; ADMISSION-1
+  is separately labelled historical context and the input actually received.
 - **A fresh admission answer** follows the correction to ADMISSION-2, exposes K,
   and supplies the relevant identifying descriptions for the new roles and W.
-  Supplying those excerpts does not make the whole of TRIAL-1 an eligible correction
-  target in a later dialogue.
+  Those excerpts carry TRIAL-1's account qualifications and basis as well as item
+  evidence/qualifications. Their delivery cites TRIAL-1 but does not make its whole
+  account an eligible correction target in a later dialogue.
+
+K's `affectedSubjects: [P]` states its claimed scope; it is not permission to preserve
+selected items as unreplaced. Whole-account replacement also replaces embedded
+identifying content, even when unchanged. Historical or explicitly selected original
+descriptions remain available with their status; fresh support does not silently mix
+them with current support. No authoritative definition is thereby established.
+
+Request-time identity records the operation, subject, parameters and selected seed
+context. Subsequent dialogue acquisitions are recorded in evaluation provenance;
+they are not retroactively treated as inputs known when the request was dispatched.
+Reuse of a prior result does not promise an identical new dialogue or discovery of
+new retained context. The broader policy for refreshing/reusing investigations when
+that context changes remains open; exact retained answers stay fixed.
 
 These are expected outcomes of the proposal, not exercised application calls. Selection
 does not merge the accounts into a canonical model. The old account remains available
@@ -162,6 +190,28 @@ the supplied model is partial and deliberately does not specify initial construc
 The sequence takes participants, ordering, waiting, branches and resumption from
 `trial.content.concurrent-callers`; transition events refer to the state model by
 local keys. A renderer does not infer a state edge from prose or invent an outcome.
+
+The sequence now includes trial-work completion, outcome availability and classification
+before the alternatives. Explicit `causedBy` references connect the outcome transitions
+to that classification; ordinary sequence position alone is not a causality claim.
+The existing action/response forms carry these events without a new universal event
+type. Trial-work completion is distinct from final result delivery to its caller,
+whose order remains omitted.
+
+The state bearer deliberately remains scenario role R. The account describes P, so
+a question about P can find this qualified scenario account; it cannot silently treat
+it as a model of every instance/configuration. A general instance-role model plus a
+qualified binding to R is an open extension. The outcome guard now says the completing
+trial belongs to the current Half-open state: it expresses rejection of stale trial
+updates, not an unexplained “same cycle” phrase.
+
+Static cross-form review removed the separate “available Half-open slot” admission
+case. Entry briefly creates Half-open before reservation, but the bounded account
+abstracts the initiating request and reservation as one admission step. Reentrant
+event-listener execution during entry is explicitly excluded throughout; it would
+need separate analysis. This avoids claiming an additional ordinary admission case
+without supplying its circumstances. This reading is grounded in `execute`,
+`executeHalfOpen`, and the outcome-recording methods at the pinned source linked above.
 
 The diagram styles follow the statechart and sequence forms discussed in the SEI's
 [Documenting Software Architectures: Documenting Behavior](https://www.sei.cmu.edu/documents/1986/2002_004_001_13934.pdf)
@@ -183,18 +233,25 @@ standalone image is not the complete qualified account.
 
 Structural checks cover local and retained references, unique content keys, subject
 allocations, evidence references available to each request, correction linkage,
-state endpoints, interaction participants, cross-form transition references and
-traceability pointers. The two diagrams were rendered with Mermaid CLI 12.0.0 and
+state endpoints, interaction participants, cross-form transition references, earlier
+causal-step references, excerpt qualification preservation, construction-pool ownership
+and traceability pointers. These are not automatic checks of semantic consistency
+between forms. The slot/entry issue was examined manually against the source; the
+example deliberately retains ADMISSION-1's staged error, so validation must not be
+described as certifying every claim. The two diagrams were rendered with Mermaid CLI 12.0.0 and
 visually checked. These checks establish internally resolvable examples and usable
 diagram inputs, **not** semantic correctness, real agent reliability, or acceptance
 by the implemented application. No application code or API was changed.
 
 The next discussion should use this payload to decide:
 
-1. Is repeating unchanged definitions an acceptable initial cost, or does useful
-   independent correction justify children in this case?
-2. Is qualified organizing metadata the right delivery/retention boundary for K,
-   including its own support and effect on current selection?
+1. Which identifying descriptions warrant independent delivery/citation and therefore
+   children? The current recommendation favors that boundary when later investigations
+   need the description without exposure to unrelated behavioral corrections. The
+   retained single-account payload demonstrates the cost of choosing otherwise.
+2. Is retaining K separately while citing its reporter sufficient for the first
+   capability? It preserves the current exposure rule; independent relationship
+   citation, challenge and revocation remain deferred.
 3. Do these two specialized forms contain enough architectural meaning, with prose
    carrying interpretation and limitations, without prematurely designing a universal
    behavior schema?

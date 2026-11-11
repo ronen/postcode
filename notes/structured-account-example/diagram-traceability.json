@@ -92,7 +92,8 @@
     "pointer": "/result/accounts/0/content/7/prefix/0",
     "evidence": [
       "E-admission"
-    ]
+    ],
+    "causedBy": []
   },
   {
     "diagram": "concurrent-callers.mmd",
@@ -103,6 +104,9 @@
       "E-admission",
       "E-half-open"
     ],
+    "causedBy": [
+      "trial-request"
+    ],
     "alsoUsesTransition": "enter-trial"
   },
   {
@@ -112,7 +116,8 @@
     "pointer": "/result/accounts/0/content/7/prefix/2",
     "evidence": [
       "E-half-open"
-    ]
+    ],
+    "causedBy": []
   },
   {
     "diagram": "concurrent-callers.mmd",
@@ -121,6 +126,41 @@
     "pointer": "/result/accounts/0/content/7/prefix/3",
     "evidence": [
       "E-half-open"
+    ],
+    "causedBy": []
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "trial-work-completes",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/prefix/4",
+    "evidence": [
+      "E-half-open"
+    ],
+    "causedBy": []
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "trial-outcome",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/prefix/5",
+    "evidence": [
+      "E-half-open"
+    ],
+    "causedBy": [
+      "trial-work-completes"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "element": "classify-trial-outcome",
+    "account": "TRIAL-1",
+    "pointer": "/result/accounts/0/content/7/prefix/6",
+    "evidence": [
+      "E-half-open"
+    ],
+    "causedBy": [
+      "trial-outcome"
     ]
   },
   {
@@ -130,6 +170,9 @@
     "pointer": "/result/accounts/0/content/7/alternatives/0/steps/0",
     "evidence": [
       "E-outcomes"
+    ],
+    "causedBy": [
+      "classify-trial-outcome"
     ],
     "alsoUsesTransition": "close-after-trial"
   },
@@ -141,7 +184,8 @@
     "evidence": [
       "E-half-open",
       "E-outcomes"
-    ]
+    ],
+    "causedBy": []
   },
   {
     "diagram": "concurrent-callers.mmd",
@@ -151,7 +195,8 @@
     "evidence": [
       "E-admission",
       "E-half-open"
-    ]
+    ],
+    "causedBy": []
   },
   {
     "diagram": "concurrent-callers.mmd",
@@ -161,6 +206,9 @@
     "evidence": [
       "E-outcomes",
       "E-default"
+    ],
+    "causedBy": [
+      "classify-trial-outcome"
     ],
     "alsoUsesTransition": "reopen-after-trial"
   },
@@ -172,7 +220,8 @@
     "evidence": [
       "E-half-open",
       "E-outcomes"
-    ]
+    ],
+    "causedBy": []
   },
   {
     "diagram": "concurrent-callers.mmd",
@@ -181,7 +230,8 @@
     "pointer": "/result/accounts/0/content/7/alternatives/1/steps/2",
     "evidence": [
       "E-admission"
-    ]
+    ],
+    "causedBy": []
   },
   {
     "diagram": "both",
@@ -190,6 +240,7 @@
       "/result/accounts/0/qualifications",
       "/result/accounts/0/evidence",
       "/result/accounts/0/content/6/coverage",
+      "/result/accounts/0/content/6/applicability",
       "/result/accounts/0/content/7/conditions",
       "/result/accounts/0/content/7/notShown"
     ],

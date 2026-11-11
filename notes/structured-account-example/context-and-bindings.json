@@ -142,11 +142,16 @@
       ],
       "identifyingSupport": [
         "ORIENTATION-0",
-        "ADMISSION-1",
         "TRIAL-1",
         "ADMISSION-2"
       ],
-      "revisionContext": "Includes K; retains original and replacement references. Multiple identifying descriptions remain attributed."
+      "revisionContext": "Includes K; current identifying support uses ADMISSION-2. ADMISSION-1 remains explicit historical/input context. affectedSubjects does not exempt embedded definitions from whole-account replacement.",
+      "historicalContext": [
+        {
+          "account": "ADMISSION-1",
+          "role": "Original correction target and input actually received; not selected as current identifying support."
+        }
+      ]
     },
     {
       "id": "FRESH-ADMISSION-ANSWER",
@@ -167,10 +172,63 @@
             "trial-description",
             "caller-description",
             "waiting-description"
-          ]
+          ],
+          "accountQualifications": [
+            "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+            "Default one-call recovery sampling with zero permitted counted failures.",
+            "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+            "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+            "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+          ],
+          "basis": "cockatiel-pinned",
+          "evidence": [
+            "E-default",
+            "E-half-open",
+            "E-outcomes",
+            "E-state"
+          ],
+          "revisionContext": "TRIAL-1 as retained in this answer; no known replacement at capture.",
+          "delivery": "Only the named items, with their own evidence and any item qualifications, plus the account qualifications and basis recorded here. This is not complete own-content delivery."
         }
       ],
       "revisionContext": "A fresh replacement-aware selection; it does not mutate ANSWER-1. Partial identifying support does not make TRIAL-1 a completely delivered correction target."
+    }
+  ],
+  "selectionPolicy": {
+    "currentSupport": "Use identifying descriptions from the selected whole-account replacement; preserve attributed competing descriptions when explicitly selected, without reconciling them.",
+    "historicalSupport": "Exact answers preserve captured descriptions and revision context. Old descriptions can be supplied as labelled historical or explicitly selected context.",
+    "affectedSubjects": "Describes the asserted correction scope; does not grant item-level survival or exempt unlisted subjects from whole-account replacement.",
+    "requestIdentity": "Request-time identity includes the declared operation, subject, parameters and selected seed context. Later acquired deliveries belong to evaluation provenance, not inputs retroactively known at dispatch. Reuse policy must separately address later retained-context changes."
+  },
+  "exposureExamples": [
+    {
+      "delivery": "Bare relationship K and endpoint IDs, without substantive titles or explanation",
+      "citations": [],
+      "completeTargets": []
+    },
+    {
+      "delivery": "K reason, qualifications and supporting references only",
+      "citations": [
+        "TRIAL-1"
+      ],
+      "completeTargets": [],
+      "note": "K is not an independent evidence citation target. Its explanation is attributed to its reporter; this delivery alone is not complete correction context."
+    },
+    {
+      "delivery": "TRIAL-1 identifying excerpts with their applicable qualifications and evidence",
+      "citations": [
+        "TRIAL-1"
+      ],
+      "completeTargets": []
+    },
+    {
+      "delivery": "Complete own content of ADMISSION-1 in the follow-up",
+      "citations": [
+        "ADMISSION-1"
+      ],
+      "completeTargets": [
+        "ADMISSION-1"
+      ]
     }
   ]
 }

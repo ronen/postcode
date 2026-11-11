@@ -917,3 +917,29 @@ Human presentation alone does not add investigator citations. If an investigator
 later receives the identifying support, substantive delivery counts even when called
 support rather than a selected constituent. Preserve that distinction in the proposed
 answer-support contract. Settle that contract and per-subject identification first.
+
+## Complete-example review follow-up (2026-11-11)
+
+The [concrete results](structured-account-example/README.md) and proposal now distinguish
+citing-side evaluation-wide exposure from cited-side investigram boundaries. The
+recommendation favors identifying children where useful as independent later context;
+the mixed payload remains a concrete comparison, not the recommended default.
+
+Fresh support uses replacement descriptions; originals remain labelled historical/input
+context. Rejected the proposed use of `affectedSubjects` as an item-survival exemption:
+whole-account replacement cannot silently become selective validity tracking. K remains
+separate metadata with substantive explanation attributed to its reporter for citation,
+preserving the existing rule rather than introducing independent relationship citations.
+
+The interaction now supplies completion, outcome availability, classification and
+explicit causal step references. No new event kind was necessary. R remains a qualified
+scenario role; generalizing its model to arbitrary instances of P needs interpretation.
+The questionable free-slot case was removed from the bounded admission table, reentrant
+entry calls explicitly excluded, and the stale-trial guard made precise. Structural
+checks do not certify cross-form semantics. Declaration/key scopes, pool ownership,
+qualified excerpts and request-time versus acquired context are now explicit.
+
+Further consolidation of the long proposal is still useful before a planning package;
+this pass adds a current-position table and fixes the relevant sections inline rather
+than treating that editorial work as adoption. No implementation or governing material
+was changed.
