@@ -25,9 +25,10 @@ actual proposed submissions, identity bindings, a qualified correction record an
 two diagrams generated from retained structured fields. That pass deliberately uses
 one investigram per coherent explanation, making repeated replacement content visible
 as a comparison with the earlier child partition. Neither partition is adopted.
-After review, prefer separate identifying children when useful as independent later
-context: their separate citation targets can avoid exposure to behavioral-sibling
-corrections. The payload retains the single-account alternative to expose its costs.
+After review, use explicit shared-subject introduction as the actionable default:
+when identifying descriptions are mixed with behavior, place them in one or more
+identifying children. Their citation targets can avoid exposure to behavioral-sibling
+corrections. Identification-only roots need no extra wrapper; local terms may stay embedded. The payload retains the single-account alternative to expose its costs.
 
 The [foundation](../foundation/README.md), [application specification](../docs/app-specification.md),
 [core concepts](../docs/core-concepts.md), [architectural constraints](../docs/architectural-constraints.md)
@@ -64,10 +65,10 @@ Current recommendations sharpened by the complete-example review:
 
 | Topic | Position for the next design pass |
 | --- | --- |
-| Account partition | Prefer independently deliverable identifying children when useful; no one-child-per-subject rule. The cited unit matters as well as evaluation-wide output exposure. |
+| Account partition | When mixed with behavior, put descriptions of explicitly introduced shared subjects in identifying children by default. Grouping is allowed; identification-only roots need no wrapper. The children variant remains to be exercised. |
 | Identifying support | Fresh replacement-aware support uses replacement descriptions. Original input/history is separately labelled; exact older answers remain fixed. `affectedSubjects` is not an item-survival mask. |
 | Relationship K | Retain/index separately; cite its reporter for substantive explanation. This does not deliver the reporter's complete own content or enable independent revision of K. |
-| Behavioral content | Supply completion, classification and explicit causal references. Keep R's model scenario-scoped; broader applicability needs qualified interpretation. |
+| Behavioral content | Supply the causal chain through classification, transition, resume/recheck and admission outcome. General admission uses form-local roles; R/W belong to a separately qualified illustration. R’s state model stays scenario-scoped. |
 | Validation | Check references, ownership, delivery and diagram mappings mechanically; assess cross-form semantics separately. |
 | Request/reuse | Distinguish request plus selected seed context from subsequent acquired context in provenance. Reuse freshness policy remains to be settled. |
 
@@ -723,8 +724,10 @@ does not narrow its citations. On the cited side, citations name particular
 investigrams: an investigation receiving only a definition child need not cite its
 behavioral sibling, so a later correction of that sibling need not flag it. With
 embedded definitions, even a definition excerpt cites the mixed containing account.
-Prefer separate identifying children when that independent later delivery is useful;
-this avoids a particular exposure path, not all semantic dependencies or warnings.
+Use explicit shared-subject introduction as a signal of expected reuse: if the result
+also explains behavior, put identifying descriptions in children by default, grouping
+where coherent. This avoids a particular exposure path, not all semantic dependencies
+or warnings, and requires no prediction of which later query will occur.
 
 Agreement in discussion: the investigating agent may judge that new findings warrant
 correcting an earlier account during an ordinary follow-up. It must explicitly
@@ -969,8 +972,13 @@ boundaries, at the cost of more support/context delivery and composition/replace
 rules. They do not narrow their producing evaluation's exposure index. They can
 narrow what later evaluations cite by allowing a definition to be delivered without
 its behavioral sibling. This is a stronger argument than avoiding replacement copying.
-Prefer separate identifying children where useful as independent later context;
-retain coherent groups rather than normalizing every assertion into a child.
+An investigator-facing default is: when a result mixes explicit shared-subject
+introductions and behavior, put the identifying descriptions in one or more children.
+An identification-only investigram may be the root without an extra wrapper; local
+terms can stay embedded. Group related descriptions rather than normalizing every
+assertion into a child. A departure should state its coherence/delivery rationale and
+acknowledge the broader correction/citation unit. This remains a recommendation;
+the forthcoming children variant must exercise its ownership and support rules.
 Compare actual delivery paths; a diagram's nested graph or keyed node does not
 require a child investigram. Removing the existing hierarchy is not necessary to choose no children
 for a particular result.
@@ -1161,9 +1169,9 @@ confidence has sometimes exceeded the examples supporting them.
   relationships. Do not assume a schema for each named concept or let the diagram
   inventory define the full architectural vocabulary. Keep the initial catalogue small.
 - **Definition partition and support.** A definition child is an example partition,
-  not a default normalization rule. The current recommendation favors children for
-  independently useful identifying context: later consumers can cite the definition
-  without the behavioral sibling. It still adds support/composition obligations and
+  not a universal normalization rule. The actionable default uses explicit introduction
+  of shared subjects, when mixed with behavior, as the signal for identifying children.
+  Later consumers can cite their definitions without the behavioral sibling. It still adds support/composition obligations and
   does not narrow exposure shared by outputs of the producing evaluation. The mixed
   concrete payload demonstrates the contrasting cost; current rules remain governing.
 - **Automatic identifying support.** Exact snapshots are sound, but selecting which

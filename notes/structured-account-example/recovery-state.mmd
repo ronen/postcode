@@ -11,5 +11,5 @@ stateDiagram-v2
   s2 --> s1: Trial counted failed [Completing trial belongs to the current Half-open state] / Restart backoff and release waiting executions
   note right of s2
     Shared breaker role#59; default single trial, no reentrant<br/>entry calls. Static partial account#59; not all<br/>configurations of P.
-    Success and failure here are breaker classifications.<br/>An error outside the handled failure policy can count<br/>as recovery success while still being delivered to its<br/>caller.
+    Success and failure here are breaker classifications.<br/>An error not matched by the failure policy is recorded<br/>as recovery success and still delivered to its caller.
   end note

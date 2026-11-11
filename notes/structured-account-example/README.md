@@ -7,8 +7,9 @@ remains provisional. The [earlier walkthrough](../structured-architectural-accou
 explores a different partition with definition children; this pass deliberately uses
 one investigram per coherent explanation to make the tradeoff concrete.
 
-After review, the recommendation is to separate identifying descriptions when they
-are useful as independent later context. The payloads retain the single-investigram
+After review, the recommendation is to place descriptions of explicitly introduced
+shared subjects in identifying children by default when mixed with behavior. Grouped
+descriptions and identification-only roots remain possible; local terms may stay embedded. The payloads retain the single-investigram
 alternative so its costs remain inspectable; they are not the recommended default.
 The revised support and exposure rules below apply to this alternative consistently.
 
@@ -101,7 +102,8 @@ These are qualified interpretations of the
 not observed executions. They cover default single-trial recovery, excluding
 cancellation, isolation, restored state, non-default sampling and interfering state
 changes. “Success” is the breaker's classification, not application success: an
-unhandled error can count as recovery success while still reaching its caller.
+error not matched by the failure policy is recorded as recovery success and still
+delivered to its caller.
 
 ## 3. Return a complete replacement and a separate organizing claim
 
@@ -115,8 +117,12 @@ A separate identifying child can be delivered and cited without its behavioral
 sibling, avoiding that particular reconsideration path. This is about the cited
 unit: splitting the receiving evaluation's outputs does not narrow their shared
 exposure index. Children still add qualification, support and composition obligations.
-Prefer them for descriptions useful independently as later context, not automatically
-one child per subject or assertion. No partition promises semantic independence.
+The investigator can use explicit shared-subject introduction as the signal of
+expected reuse: when mixed with behavior, put those identifying descriptions in one
+or more children by default. An identification-only root needs no extra wrapper;
+local terms may stay embedded. This does not require forecasting later queries,
+one child per subject, or semantic independence. The children variant remains next
+work; this pass repairs the mixed comparison before adding that variant.
 
 K is a **qualified account-relationship record** with these concrete fields:
 
@@ -146,6 +152,14 @@ result roots. The reporter and replacement are disjoint, childless trees. Alloca
 and local-reference resolution must be atomic; spelling out the actual application
 contract remains future design work.
 
+The general admission table binds two local roles per request: the requested execution
+and its breaker instance (an instance of P). Its waiting relationship uses those local
+roles, not R or W. A separate qualified illustration binds the roles to R/E-caller and
+names W in TRIAL-1's scenario. This distinguishes a general claim from a particular
+illustration while keeping their asserted correspondence inspectable. The example
+binding remains qualified analysis; neither selection nor rendering establishes it.
+No additional retained subject is needed for these form-local roles.
+
 ## 4. Retain history and choose what to supply
 
 The context ledger gives three expected selections:
@@ -156,7 +170,9 @@ The context ledger gives three expected selections:
   replacement references. Current identifying support uses ADMISSION-2; ADMISSION-1
   is separately labelled historical context and the input actually received.
 - **A fresh admission answer** follows the correction to ADMISSION-2, exposes K,
-  and supplies the relevant identifying descriptions for the new roles and W.
+  and supplies the relevant identifying descriptions for the scenario illustration,
+  including R, its executions and W. These support the illustration, not the general
+  admission rule’s local-role identities.
   Those excerpts carry TRIAL-1's account qualifications and basis as well as item
   evidence/qualifications. Their delivery cites TRIAL-1 but does not make its whole
   account an eligible correction target in a later dialogue.
@@ -193,7 +209,10 @@ local keys. A renderer does not infer a state edge from prose or invent an outco
 
 The sequence now includes trial-work completion, outcome availability and classification
 before the alternatives. Explicit `causedBy` references connect the outcome transitions
-to that classification; ordinary sequence position alone is not a causality claim.
+to that classification. Each resume/recheck cites its releasing transition, and
+ordinary work/refusal cites that recheck. Ordinary sequence position alone is not a
+causality claim, nor is a stated cause necessarily sufficient without the guard and
+scenario conditions. In particular, release does not guarantee admission.
 The existing action/response forms carry these events without a new universal event
 type. Trial-work completion is distinct from final result delivery to its caller,
 whose order remains omitted.
@@ -234,7 +253,8 @@ standalone image is not the complete qualified account.
 Structural checks cover local and retained references, unique content keys, subject
 allocations, evidence references available to each request, correction linkage,
 state endpoints, interaction participants, cross-form transition references, earlier
-causal-step references, excerpt qualification preservation, construction-pool ownership
+causal-step references, form-local role/illustration references, excerpt qualification
+preservation, construction-pool ownership
 and traceability pointers. These are not automatic checks of semantic consistency
 between forms. The slot/entry issue was examined manually against the source; the
 example deliberately retains ADMISSION-1's staged error, so validation must not be
@@ -245,10 +265,11 @@ by the implemented application. No application code or API was changed.
 
 The next discussion should use this payload to decide:
 
-1. Which identifying descriptions warrant independent delivery/citation and therefore
-   children? The current recommendation favors that boundary when later investigations
-   need the description without exposure to unrelated behavioral corrections. The
-   retained single-account payload demonstrates the cost of choosing otherwise.
+1. Exercise the actionable default in the forthcoming children variant: explicit
+   shared-subject introductions mixed with behavior go in identifying children by
+   default. Check grouping, self-contained qualifications, ownership and support when
+   only a behavioral sibling is corrected. The mixed payload remains the comparison;
+   this repair does not yet supply or validate the children variant.
 2. Is retaining K separately while citing its reporter sufficient for the first
    capability? It preserves the current exposure rule; independent relationship
    citation, challenge and revocation remain deferred.

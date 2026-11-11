@@ -185,7 +185,9 @@
       "E-half-open",
       "E-outcomes"
     ],
-    "causedBy": []
+    "causedBy": [
+      "close"
+    ]
   },
   {
     "diagram": "concurrent-callers.mmd",
@@ -196,7 +198,9 @@
       "E-admission",
       "E-half-open"
     ],
-    "causedBy": []
+    "causedBy": [
+      "success-release"
+    ]
   },
   {
     "diagram": "concurrent-callers.mmd",
@@ -221,7 +225,9 @@
       "E-half-open",
       "E-outcomes"
     ],
-    "causedBy": []
+    "causedBy": [
+      "reopen"
+    ]
   },
   {
     "diagram": "concurrent-callers.mmd",
@@ -231,7 +237,9 @@
     "evidence": [
       "E-admission"
     ],
-    "causedBy": []
+    "causedBy": [
+      "failure-release"
+    ]
   },
   {
     "diagram": "both",

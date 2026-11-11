@@ -323,7 +323,7 @@
                 ]
               }
             ],
-            "outcomeQualification": "Success and failure here are breaker classifications. An error outside the handled failure policy can count as recovery success while still being delivered to its caller.",
+            "outcomeQualification": "Success and failure here are breaker classifications. An error not matched by the failure policy is recorded as recovery success and still delivered to its caller.",
             "evidence": [
               "E-admission",
               "E-half-open",
@@ -448,7 +448,7 @@
                 "key": "classify-trial-outcome",
                 "kind": "action",
                 "actor": "breaker",
-                "text": "Classify the completed work under the configured failure policy; an unhandled error counts as recovery success",
+                "text": "Classify the completed work under the configured failure policy. An error not matched by that policy is recorded as recovery success.",
                 "causedBy": [
                   "trial-outcome"
                 ],
@@ -487,6 +487,9 @@
                     "evidence": [
                       "E-half-open",
                       "E-outcomes"
+                    ],
+                    "causedBy": [
+                      "close"
                     ]
                   },
                   {
@@ -497,6 +500,9 @@
                     "evidence": [
                       "E-admission",
                       "E-half-open"
+                    ],
+                    "causedBy": [
+                      "success-release"
                     ]
                   }
                 ]
@@ -531,6 +537,9 @@
                     "evidence": [
                       "E-half-open",
                       "E-outcomes"
+                    ],
+                    "causedBy": [
+                      "reopen"
                     ]
                   },
                   {
@@ -541,6 +550,9 @@
                     "text": "Refuse execution while new backoff remains unelapsed; work is not run",
                     "evidence": [
                       "E-admission"
+                    ],
+                    "causedBy": [
+                      "failure-release"
                     ]
                   }
                 ]
@@ -582,6 +594,9 @@
           },
           {
             "introducedSubject": "waiting"
+          },
+          {
+            "introducedSubject": "concurrent-execution"
           }
         ],
         "associations": [
@@ -747,12 +762,74 @@
                 },
                 "outcome": "Wait for the shared recovery decision, then re-enter admission against the current state. Waiting does not promise execution or success.",
                 "relationship": {
-                  "introducedSubject": "waiting"
+                  "kind": "waits-for-decision",
+                  "waiter": {
+                    "localRole": "requested-execution"
+                  },
+                  "decisionHolder": {
+                    "localRole": "breaker"
+                  },
+                  "release": "Recovery decision becomes available; the execution rechecks admission against the current breaker state."
                 },
                 "stateBearer": {
-                  "introducedSubject": "shared-breaker"
+                  "localRole": "breaker"
                 },
                 "evidence": [
+                  "E-half-open",
+                  "E-outcomes"
+                ]
+              }
+            ],
+            "roles": [
+              {
+                "key": "breaker",
+                "description": "The breaker instance receiving this execution request.",
+                "instanceOf": {
+                  "subject": "P"
+                }
+              },
+              {
+                "key": "requested-execution",
+                "description": "The execution requesting admission through that breaker instance.",
+                "uses": {
+                  "localRole": "breaker"
+                }
+              }
+            ],
+            "roleScope": "Bind these local roles independently for each request covered by the table, under the account qualifications. They do not designate particular scenario subjects or allocate retained identities.",
+            "stateBearer": {
+              "localRole": "breaker"
+            },
+            "execution": {
+              "localRole": "requested-execution"
+            },
+            "illustrations": [
+              {
+                "case": "waiting",
+                "account": {
+                  "submittedAccount": "trial"
+                },
+                "contentKey": "concurrent-callers",
+                "roleBindings": [
+                  {
+                    "role": "breaker",
+                    "subject": {
+                      "introducedSubject": "shared-breaker"
+                    }
+                  },
+                  {
+                    "role": "requested-execution",
+                    "subject": {
+                      "introducedSubject": "concurrent-execution"
+                    }
+                  }
+                ],
+                "relationshipSubject": {
+                  "introducedSubject": "waiting"
+                },
+                "qualification": "TRIAL-1 illustrates this case under its own scenario conditions. These bindings map the general local roles to that illustration only; they do not restrict the general admission claim to those subjects or generalize the entire scenario to all requests.",
+                "evidence": [
+                  "E-admission",
                   "E-half-open",
                   "E-outcomes"
                 ]

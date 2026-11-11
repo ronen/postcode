@@ -15,8 +15,8 @@ include proposed JSON submissions, static source checking and rendered diagrams.
 They use a single investigram for each coherent explanation, with definitions inside
 it, to test the alternative to this walkthrough's child partition. Read the two as
 explicit design alternatives; neither is adopted. The current recommendation favors
-identifying children where independently useful as later context, for the cited-side
-exposure reason below; the complete payload retains the mixed alternative for comparison.
+identifying children for explicit shared-subject introductions mixed with behavior,
+using introduction as the reuse signal rather than predicting future queries; the complete payload retains the mixed alternative for comparison.
 No live investigator or runtime execution has been performed in either pass.
 
 ## Choices for this pass
@@ -88,8 +88,10 @@ replacement rules. Neither choice narrows the evaluation-wide exposure index mer
 by creating smaller output parts. However, a later investigation receiving only a
 separate identifying child cites that child, not an undelivered behavioral sibling.
 A definition excerpt from a mixed account cites the whole containing account. This
-is now the strongest reason to prefer independently useful identifying children.
-Structured graph nesting does not dictate this account partition.
+is now the strongest reason for the actionable default: put descriptions of explicitly
+introduced shared subjects in identifying children when mixed with behavior. Grouping
+is allowed; an identification-only root needs no wrapper and local terms may stay
+embedded. Structured graph nesting does not dictate this account partition.
 
 **Correction cost motivating smaller units.** The human points out that correcting
 one subject description inside a larger result would require retaining the unchanged
@@ -345,6 +347,9 @@ single trial is occupied, and how trial outcomes affect subsequent admission,
 including possible refusal of the waiting caller. ADMISSION-2 restates the complete
 admission account with the missing case and conditions. Both retain default-configuration
 and static possible-scenario limits; neither claims an observed execution.
+The general admission rule uses local roles for a requesting execution and its breaker
+instance. R/E-caller/W belong to a separately qualified illustration, not to the
+general rule's identity or applicability.
 
 The correction explicitly identifies P because it corrects P's admission account.
 For this example, corrected subjects identify whose descriptive accounts are corrected,
@@ -487,9 +492,11 @@ Layout, styling and interactive navigation should not sidetrack this content wor
 | ADMISSION-2 | Admission cases, conditions, effects and inspection/execution distinctions. |
 | TRIAL-1 | Participants, occupancy, waiting, meaningful ordering, alternative outcomes and supported transitions. |
 
-ADMISSION-2 and TRIAL-1 refer to the same W allocated with the follow-up. Qualified
-content supplies its conditions. A consumer can align the referent while preserving
-any conflict between descriptions; identity alone does not reconcile claims.
+ADMISSION-2's separately qualified illustration and TRIAL-1 refer to the same W
+allocated with the follow-up. The general waiting case uses form-local roles instead.
+Qualified content supplies the illustrative binding and conditions. A consumer can
+align that illustration while preserving conflicts; identity alone neither reconciles
+claims nor binds every general admission request to the scenario.
 
 Place detailed recovery-outcome transitions in TRIAL-1 for this probe, with explicit
 state endpoints, owner role, conditions and effects. Mark the transition content
@@ -568,9 +575,10 @@ Partitioning does not assign each child its own claim-level dependency set.
 
 DEFINITIONS-1 also groups several descriptions. Correcting one replaces that whole
 child; exposure to another part still counts. Smaller units narrow correction targets
-and required delivery, not necessarily reconsideration flags. They can change what
-later evaluations choose to retrieve, but once content is exposed the evaluation-wide
-rule remains. This is an explicit tradeoff, not an accidental promise of precision.
+and required delivery. On the cited side, a later evaluation receiving just one such
+unit need not cite an undelivered sibling, avoiding warnings caused solely by that
+sibling's correction. On the citing side, all outputs of the receiving evaluation
+still share its exposure index; splitting those outputs does not narrow their flags. This is an explicit tradeoff, not an accidental promise of precision.
 
 Conversely, ADMISSION-1 was created alongside DEFINITIONS-1. Sibling composition and
 shared S do not establish prior-content exposure, so they do not automatically flag

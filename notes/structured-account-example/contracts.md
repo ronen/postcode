@@ -28,7 +28,8 @@ Exactly one `subject-description/0` item per introduced-subject key declares it 
 `introduceRetainedSubject: true`. References, `referents` membership and `identifies`
 associations do not themselves declare subjects. Duplicate declarations and references
 without a declaration are invalid. ADMISSION-2 may reference a subject declared in
-TRIAL-1 because both belong to this submission. Every construction-pool member in
+TRIAL-1 because both belong to this submission, for example in an explicit scenario
+illustration. Every construction-pool member in
 this childless sample must be either the root or the replacement of exactly one
 correction; those roles are disjoint and there are no orphan accounts. A future pool
 representation of children would need explicit ownership/reachability rules too.
@@ -56,13 +57,28 @@ such in the follow-up answer. Exact ANSWER-1 retains its original support. A cor
 `affectedSubjects` does not exempt embedded descriptions from whole-account replacement;
 it is not an item-level validity mask. Selection does not establish a canonical definition.
 
+## Provisional partition default
+
+When an investigation result mixes identifying descriptions of explicitly introduced
+shared subjects with behavioral explanations, put those descriptions in one or more
+identifying children by default. Explicit introduction is the present signal of
+expected reuse; the investigator need not predict specific future questions. Group
+related descriptions where coherent. An identification-only investigram can itself
+be the root; it does not need a wrapper just to follow this rule. Descriptions of
+local/minor terms can stay embedded. Any departure should explain the coherence or
+delivery reason and acknowledge the wider correction/citation unit.
+
+This is a recommendation for the next variant, not an adopted schema rule. The current
+mixed-account fixture deliberately remains a comparison; child-pool ownership,
+reachability and child-specific support selections have not yet been exercised here.
+
 ## Forms in this example
 
 | Form | Information to supply | What it does not imply |
 | --- | --- | --- |
 | `subject-description/0` | Subject reference, name, identifying description, classification, relevant context (`relativeTo`), evidence; explicit introduction flag when allocating a new subject | Unique discovery, canonical definition, or independent correction unit |
 | `prose/0` | Keyed explanatory text under the appropriate concept, with support and qualifications | Missing graph or interaction structure can be invented from the text |
-| `admission-cases/0` | Explicit coverage claim; keyed cases with state, condition, outcome, optional resulting state/relationship references, and evidence | A complete state machine or a universal interface model |
+| `admission-cases/0` | Explicit coverage claim; optional form-local roles and their scope; keyed cases with state, condition, outcome, optional resulting state/relationship, and evidence; separately qualified scenario illustrations | A complete state machine, universal interface model, or general claim bound to an illustrative subject |
 | `architectural-relations/0` | Keyed, typed relations with role-named endpoints and applicable conditions; optional retained subject for a relation | Account correction, global graph consistency, or mandatory relation identities |
 | `state-behavior/0` | State bearer; coverage and omissions; keyed labelled states; keyed directed transitions with trigger, guard, effect and evidence; outcome qualifications | Initial state, completeness, hierarchy or concurrency when not supplied |
 | `interaction/0` | Scenario meaning/conditions; keyed participants tied to subjects; ordered prefix; alternatives with conditions and keyed steps; omissions and evidence | Observed trace, all possible interleavings, or application-level success |
@@ -76,11 +92,27 @@ authorize an interpreter to derive arbitrary cross-account correspondences.
 
 An optional `causedBy` lists earlier step keys on the same possible path. It asserts
 causal support, not just diagram ordering. Cross-branch or forward references are
-invalid here. Completion, outcome availability and classification use existing action
+invalid here. A cause need not be sufficient or exclusive: branch conditions, guards
+and account qualifications still apply. Missing links are not inferred from ordering
+or transition-effect prose. Completion, outcome availability and classification use existing action
 and response forms; each outcome transition explicitly cites classification as its
 cause. Structural validation checks that these links resolve in order, not that the
 asserted causality is true. The trial participant denotes the execution including its
 work, so the outcome response is distinct from final delivery to its initiating caller.
+Each resume/recheck step cites the transition that releases it; ordinary work or
+refusal cites that recheck. This explicitly connects release of W to subsequent
+admission without claiming that release guarantees work will run.
+
+In `admission-cases/0`, `{localRole: key}` resolves only within that form's `roles`
+collection. Role keys are unique there, and every reference must resolve. The roles
+are variables bound per request under `roleScope`, not newly allocated subjects.
+The general waiting relationship uses those roles for its waiter and decision holder.
+An `illustrations` entry separately names a case and a supplied account/content item,
+maps local roles to scenario subjects, and carries qualification and evidence for the
+mapping. It neither identifies a general role with that subject nor changes the
+general claim's scope. Its substantive subject references still require identifying
+support in an answer that supplies the illustration. These are qualified authored
+bindings, not correspondences invented by a renderer.
 
 The architectural-relation kinds used here are `state-category-of`,
 `instance-role-of`, `execution-uses-instance`, and `waits-for-decision`, with explicit
@@ -125,6 +157,10 @@ new replacement, affected subjects, reason, qualifications and evidence. The rea
 must establish the claimed error; the kind is not inferred from account age or matching
 names. The target's complete own content must have been supplied in the dialogue.
 The replacement supplies its whole own content; this is not an item patch operation.
+If a replacement changes the target's scope, its explanation must disclose the
+difference and resulting limits of coverage, not merely add a background qualification.
+This example has no such scope difference: both admission accounts exclude reentrant
+entry calls. K's reason therefore remains about the missing waiting case.
 
 Retain K separately, while attributing its substantive reason/qualifications to its
 reporter TRIAL-1 for citation and exposure, preserving the current correction rule.

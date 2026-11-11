@@ -943,3 +943,23 @@ Further consolidation of the long proposal is still useful before a planning pac
 this pass adds a current-position table and fixes the relevant sections inline rather
 than treating that editorial work as adoption. No implementation or governing material
 was changed.
+
+## Remaining repairs before the children variant (2026-11-11)
+
+The re-review's claimed scope mismatch was withdrawn: both admission payloads already
+exclude reentrant entry calls. K's reason stays unchanged; scope-change disclosure is
+recorded as a general contract consideration, not a defect in this example.
+
+ADMISSION-2 now expresses general admission with form-local execution/instance roles.
+Its R/E-caller/W references belong to a separately qualified scenario illustration,
+whose bindings do not restrict the general claim. Causal links now continue from
+outcome transition through resume/recheck to ordinary work or refusal; they assert
+causal contribution under the stated conditions, not unconditional sufficiency.
+Classification wording and the residual ambiguous reconsideration sentence are fixed.
+
+The actionable partition recommendation uses explicit shared-subject introduction as
+the reuse signal: when mixed with behavior, put identifying descriptions in one or
+more children by default. Identification-only roots need no wrapper; local terms may
+stay embedded. The human explicitly requested these repairs before the children
+variant. This pass does not introduce that variant or validate its ownership/support
+contracts; the mixed payload remains a comparison.
