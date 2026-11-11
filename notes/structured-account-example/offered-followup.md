@@ -55,6 +55,40 @@ associations remain about P, S and the new scenario roles. The original account 
 no new child. The existing navigation origin from ANSWER-1 is retained independently:
 knowing which account supplied an offer does not prove the user viewed that account.
 
+<a id="optional-diagram-contract"></a>
+## General interpretation versus a promised diagram
+
+The existing concurrent-callers offer promises a qualified interpretation of its
+question. Its prospective result contract is an investigram with valid supported
+content, references, evidence, qualifications and composition/accompanying records.
+The authored result chooses interaction and state-behavior forms; the offer does not
+mandate those forms, and a sufficient qualified prose account is not disallowed by
+its result-shape contract. Whether an account adequately answers the question remains
+an interpretive assessment, not a schema check.
+
+A different selectable offer could promise **Generate a state diagram of recovery
+behavior**. This is a conceptual specialization example, not another executed fixture
+or a new global Lens. It must name its target and scope; for the existing recovery
+item that means scenario breaker R under the qualified default-sampling setup, not
+an unqualified general model of all P instances.
+
+| Contract aspect | Explain recovery behavior | Generate a state diagram of recovery behavior |
+| --- | --- | --- |
+| Investigation output | Qualified investigram; investigator chooses useful supported forms. | Qualified investigram containing state-behavior data sufficient for the requested diagram and scope. |
+| Content validation | Validate each form actually returned, its references and qualifications. | Additionally require the state-diagram information: bearer, states, transitions and applicable conditions/support, with explicit omissions. A concept tag alone does not satisfy this. |
+| Presentation promise | A compatible general presentation; diagrams are available when supported content is present. | A compatible diagram Presentation generates the state diagram from the supplied architectural meaning. It may arrange and label content but cannot invent transitions or conditions. |
+| Partial information | Explain the supported conclusions and limits. | If the contract permits a partial diagram, render it with visible scope and omissions; do not imply completeness. Otherwise report the diagram request as unmet. |
+| No supported state model | A qualified explanation of what is known may still be useful. | Preserve the qualified explanation, but explicitly report that the requested diagram could not be supplied. Prose alone is not successful fulfillment of the diagram promise. |
+
+This separates the investigator's content obligation from rendering. A valid specialized
+payload is necessary but not sufficient for successful diagram presentation; missing
+compatibility or rendering failure cannot be reported as a completed diagram request.
+Conversely, a well-shaped state model is not proof that the interpretation is true.
+The existing [recovery diagram and legend](recovery-state.md) illustrate suitable
+content/presentation, but do not demonstrate the specialized invocation or its failure
+handling. Exact encoding and validation of such optional requirements remain design
+work; the JSON offer and checkers retain their original general result contract.
+
 ## Delivery and later replacement
 
 The [mixed access probe](offer-access.json) and [children access probe](children/offer-access.json)

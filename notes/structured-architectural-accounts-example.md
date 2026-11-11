@@ -470,6 +470,15 @@ of UI layout or selection gestures.
 
 ## 6. Supply diagram meaning and discovery
 
+The follow-up's general result contract is a qualified investigram, not a mandatory
+statechart/interaction pair. The authored answer chooses those forms to explain the
+behavior; each form has a content contract. A different offer explicitly promising
+“generate a state diagram” would additionally require suitable state-behavior content
+and compatible diagram presentation, with partial or unmet outcomes disclosed. The
+[offer-contract comparison](structured-account-example/offered-followup.md#optional-diagram-contract)
+works through that distinction without adding a live invocation to these fixtures.
+
+
 This step moves from the retained-account mechanism to architectural content forms.
 The recommendation is to retain structured claims through the same qualified
 investigrams and subject references used above. For example, a transition's source

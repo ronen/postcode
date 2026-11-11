@@ -136,6 +136,11 @@ semantics—without making a complete investigation catalogue or request journey
 prerequisite. A bounded verification path may specify representative inputs without
 settling the app-wide investigation interface.
 
+**Working-note organization.** Surrounding application discussion remains useful
+exploratory context here. Its length or presence is not itself a scope defect or a
+commitment to delivery. Consolidation or relocation can happen when drafting the
+planning package; reorganizing these notes is not a prerequisite for this design.
+
 Apply this boundary to the open questions below: this work specifies what account
 content, references, qualification, retention and access must preserve. Examples may
 stipulate entry operations and context policies to exercise those guarantees. General
@@ -162,8 +167,8 @@ This vocabulary describes responsibilities, not storage tables or public API typ
 
 | Concept | Proposed responsibility |
 | --- | --- |
-| Subject | The governing role: what a Lens investigates or a claim concerns. Entities, relationships, collections and investigrams can play this role; it is not another entity kind. |
-| Entity | An explicitly identified architectural thing around which accounts and qualified items are organized. Mechanical and interpretive analyses can introduce entities. Identity does not establish one authoritative definition, uniqueness across discoveries or persistence beyond the supported scope. |
+| Subject | The governing role: what a Lens investigates or a claim concerns. Entities, relationships, collections and investigrams can play this role; these examples do not establish mutually exclusive categories. The proposed Entity treatment below includes explicitly identified architectural relationships and patterns. |
+| Entity | An explicitly identified architectural thing around which accounts and qualified items are organized. Mechanical and interpretive analyses can introduce entities, including explicitly identified architectural relationships or patterns under the proposed governing clarification below. Identity does not establish one authoritative definition, uniqueness across discoveries or persistence beyond the supported scope. |
 | Entity reference | A reusable ID identifying an entity. A result uses local IDs for new entities; PostCode allocates global IDs on acceptance and resolves those local references. Existing entities are referenced by global ID. |
 | Referent | What a reference denotes; an entity can be a referent of many accounts. This is not a separate retained-object kind. |
 | Qualified item | Information about one or more subjects, with attributable scope, evidence, method/provenance and limitations. Definitions are one kind of information among others. |
@@ -192,6 +197,23 @@ guarantees, and assess the corresponding decision/document changes. Subject rema
 a role, while Entity names the architectural thing. A selected
 passage, investigram or answer does not become an entity merely through addressability.
 The proposed common mechanism does not erase producer-specific identity guarantees.
+
+**Proposed governing clarification — relationships and patterns as Entities.** Treat
+an explicitly identified architectural relationship, such as W, or an ordered pattern,
+such as C-BB/C-BH, as an Entity when it is given an identity across accounts. Distinguish
+that identity from each qualified claim about its participants, conditions or occurrence.
+Identifying W does not establish that waiting occurs; identifying a pattern does not
+establish that the program implements it. The current Subject examples do not expressly
+form disjoint categories, but this treatment must be made explicit in the governing
+Entity/Relationship definitions and corresponding decision before implementation.
+It is a separate governing-design item alongside interpreted identity, not an assumed
+consequence of changing fixture field names.
+
+Existing mechanical relationship claims, such as a module exporting a symbol, can
+remain claims without independent entity identities. Nor does every structured edge,
+addressable claim or account-organizing relationship become an Entity. Check existing
+implementation assumptions when planning the extension; no general relationship
+migration or change to mechanical identity guarantees follows from this clarification.
 
 Extend existing immutable answer selection as needed for new subjects/content.
 Investigation input selection and UI composition remain distinct responsibilities;
@@ -745,6 +767,29 @@ revision/reconsideration status; do not silently substitute an identically named
 offer from a replacement account. Offers remain within supported investigative
 capabilities rather than creating executable operations by declaration.
 
+**Interpretive result contracts.** The default prospective contract can be a qualified
+investigram with supported content forms, valid references, evidence, qualifications,
+composition and accompanying records. A selected offer supplies the question and
+scope within supported investigative capabilities; it need not declare a specialized
+schema for each question or a list of mandatory diagrams. The general contract is
+explicit rather than “arbitrary content in an investigram wrapper.” Each returned form
+must satisfy its own contract. A general compatible Presentation handles supported
+content, while a particular diagram requires suitable materialized content. An offer
+cannot create a new method, form or renderer just by naming one.
+
+A request can specialize that default when its promise warrants it. “Explain recovery
+behavior” leaves form selection to the investigator. “Generate a state diagram of
+recovery behavior” requires qualified state-behavior content sufficient for that diagram
+and a compatible diagram Presentation. The investigator supplies architectural meaning;
+the renderer produces the picture. Missing evidence, permitted partial results and an
+unmet diagram request must be explicit. A prose-only account can satisfy the former
+request but cannot silently satisfy the latter. This optional specialization preserves
+the governing prospective-contract and Presentation-compatibility obligations without
+requiring a tailored result schema on every offer. Exact encoding remains design work.
+The [offer example](structured-account-example/offered-followup.md#optional-diagram-contract)
+compares the two promises; the existing concurrent-callers fixture retains the general
+contract and does not require the agent to choose its diagrams in advance.
+
 The [bounded retained-offer example](structured-account-example/offered-followup.md)
 now exercises this account-content implication in both partitions: ADMISSION-1 returns
 an offer, the existing follow-up invokes it, and ADMISSION-2 repeats its key without
@@ -752,6 +797,17 @@ retargeting the original. Access probes distinguish an offer excerpt, complete o
 content, captured answers and fresh correction disclosure. No global offer-discovery
 system or initial admission-entry design is added to the remit. Other illustrative
 request paths retain their documented assumptions.
+
+**Remaining offer/origin review questions.** A separate investigation-guidance child
+could keep an offer's address stable when its behavioral sibling is corrected and
+narrow the cited unit for investigator delivery. The current fixtures still keep the
+offer in ADMISSION-1 and repeat it in ADMISSION-2; the child alternative is not yet
+selected or exercised. Human browsing alone does not create investigator exposure.
+Stable offer identity can link prior invocations but does not settle result reuse
+under changed context. A structured originating-occurrence field for an entity
+introduced from selected content is also still open: it would record an exact
+account/item/selector without asserting equivalence or content delivery. Neither
+suggestion is implemented by the result-contract clarification.
 
 The composition probe supplies concrete scoping evidence: P/B is an unordered set of
 component kinds for a question covering both orders, with no outer/inner meaning in
@@ -1147,9 +1203,12 @@ the investigator judges it relevant. Recommend distinguishing concept meaning an
 applicability guidance from its supported structured content forms and diagram
 mappings. A concept may support several forms or no diagram form; several concepts
 may contribute to a diagram. Returning a concept identifier does not by itself
-require a diagram payload. If the request requires a specialized form, however, a
-keyed prose item alone does not silently satisfy it; missing information or unsupported output must
-be explicit. Exact request/result conventions remain to be designed.
+require a diagram payload. The general interpretive contract is a qualified investigram;
+form-specific checks apply to whatever supported forms it supplies. Only an explicitly
+specialized request, such as generating a state diagram, requires suitable diagram
+content. A keyed prose item alone does not silently satisfy that promise; missing
+information or unsupported output must be explicit. Exact request/result conventions
+remain to be designed.
 
 Recommend catalogue entries with stable identifiers, versioned meanings/contracts,
 source/adaptation, applicability guidance, examples and treatment of partial knowledge.
@@ -1531,7 +1590,10 @@ confidence has sometimes exceeded the examples supporting them.
 1. **Concrete concept and content contracts.** Organize concept guidance, supported
    forms and diagram mappings; draft the state-behavior and interaction entries
    needed by the example. Specify returned identifying content, local references,
-   entity declarations and account-relationship metadata. Establish attributable
+   entity declarations and account-relationship metadata. Include governing treatment
+   of explicitly identified relationships/patterns as Entities alongside interpreted
+   identity. Preserve the general qualified-investigram result contract, with optional
+   specialization for explicit content/presentation promises. Establish attributable
    support and full/partial delivery, without requiring a comprehensive catalogue.
 2. **Account boundaries.** Review the concrete mixed-account payload against the
    recommendation for independently deliverable identifying children. Show what is

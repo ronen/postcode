@@ -1177,3 +1177,25 @@ questions and deferred reassessment. They are not implemented by the current fix
 or added to the bounded delivery. The proposal, both payload partitions, composition
 fixtures and their checkers use the revised entity terminology; adopted documents
 and application code remain unchanged.
+
+## 2026-11-11 — Review clarification: Entity and interpretive result contracts
+
+The human directs the agreed clarifications after review. Explicitly identified
+architectural relationships/patterns can use the proposed Entity mechanism, while
+claims about their existence, participants and behavior remain qualified. Mark this
+as governing treatment needed alongside interpreted identity. Existing mechanical
+relationship claims need not become independently identified entities or be migrated.
+
+The general prospective interpretive result contract can remain a qualified investigram;
+not every offer needs a specialized schema or mandatory form list. Returned forms
+still satisfy their own contracts. A request promising a state diagram specializes
+the content requirement and adds a compatible presentation obligation. Partial diagrams
+require explicit scope/omissions and permitted partial fulfillment; unsupported or
+failed diagram delivery cannot silently count as success through prose alone. The
+offer note now illustrates this distinction without changing the executable fixtures.
+
+Surrounding application discussion is legitimate exploratory context, not a flaw merely
+because it occupies space. Leave it in the notes; consolidate when drafting if useful.
+The guidance-child alternative and structured originating-occurrence field from the
+review remain open, not silently adopted by these clarifications. No governing files
+or application contracts are changed.

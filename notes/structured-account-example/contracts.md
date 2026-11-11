@@ -67,6 +67,16 @@ probe](../structured-architectural-accounts-example.md#entity-supersession-probe
 qualified merge/split succession and entity-use reconsideration distinct from existing
 account correction; those proposed extensions are not accepted by this fixture checker.
 
+### Proposed Entity treatment
+
+W identifies an architectural relationship; C-BB/C-BH identify ordered patterns.
+These fixtures propose treating such explicitly identified things as Entities while
+keeping all claims about them qualified. This requires explicit governing treatment
+alongside interpreted identity; it is not already established merely by the field
+name `introducedEntity`. Mechanical export/dependency claims can remain claims without
+independent entity identities. Addressability alone, including that of account-organizing
+metadata or diagram edges, does not introduce an Entity.
+
 ### Ownership and composition
 
 The construction pool is a serialization of a result tree and correction-replacement
@@ -184,13 +194,29 @@ not a general schema or an implemented Lens catalogue. `investigation-guidance` 
 an illustrative content classification, not a claim about the program's architecture.
 
 The offer key uses the existing account-local content-key namespace. Acceptance
-resolves introduced subjects as elsewhere in the submission. Invocation identifies
+resolves introduced entities as elsewhere in the submission. Invocation identifies
 the exact retained account and offer key, with only declared parameter values; names
 and purpose text are not lookup keys. The sample stipulates one supported method:
 an agent cannot create another capability merely by naming it. The architectural
 focus comes from the retained offer, independently of the account playing the request
 subject role. Extra offers and the application discovery mechanism are outside this
 probe; its purpose is to exercise qualified returned content and exact reference use.
+
+The prospective result contract for this offer is the ordinary qualified investigram
+contract. It does not require `interaction/0` or `state-behavior/0`; those are useful
+forms chosen in the authored result. Each supplied form must satisfy its own contract,
+with qualification and reference validation. Concepts alone are neither shape contracts
+nor promises of diagrams. The offer supplies its question and scope within the stipulated
+supported method; it does not create a new executable capability. A compatible general
+presentation handles the supported result content, while specialized diagram availability
+depends on the materialized forms and their semantic preconditions.
+
+An offer/request may explicitly specialize this contract, for example “generate a
+state diagram.” It then requires suitable qualified state-behavior content and the
+requested compatible diagram presentation. Partial/unavailable outcomes must be explicit;
+prose-only content is not silent success. See the [optional-contract example](offered-followup.md#optional-diagram-contract).
+This note does not adopt a new contract field or require one per offer; specialized
+request acceptance is not implemented by the existing checker.
 
 An offer remains subject to its containing account's basis, qualifications, whole-
 account correction and exposure rules. Delivering the substantive offer cites that
