@@ -2,7 +2,7 @@
 
 Exploratory examples, 2026-11-11. Each overview uses meaningful short labels and
 small display-local reference keys. Open a diagram's page for its legend, full
-conditions, qualifications and evidence. The compact image is not the entire account.
+conditions, qualifications and evidence. The compact image is not the entire investigram.
 
 | Example | Overview and legend | What to look for |
 | --- | --- | --- |
@@ -13,7 +13,7 @@ conditions, qualifications and evidence. The compact image is not the entire acc
 
 The first two use the recommended children partition. The mixed partition has its
 own [state legend](recovery-state.md) and [interaction legend](concurrent-callers.md)
-for the same pictures, preserving that variant's exact account context.
+for the same pictures, preserving that variant's exact investigram context.
 
 `displayLabel` and `overviewScope` are authored content in the illustrative payloads.
 T/I/B/S/Q keys are mechanically assigned references within one diagram/legend pair.

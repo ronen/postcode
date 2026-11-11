@@ -1199,3 +1199,18 @@ because it occupies space. Leave it in the notes; consolidate when drafting if u
 The guidance-child alternative and structured originating-occurrence field from the
 review remain open, not silently adopted by these clarifications. No governing files
 or application contracts are changed.
+
+## 2026-11-11 — Account as ordinary language, Investigram as the retained unit
+
+The human chooses account as the informal term for information provided by PostCode,
+not an additional object or grouping mechanism. An investigram can give an account
+of breaker behavior, and a sequence of investigations can collectively present an
+account of the Policy mechanism. Current proposal/example prose now says investigram
+when naming a particular retained interpretation, its relationships, corrections,
+qualifications or content ownership. Composition trees and retained answer selections
+retain their distinct names. No Account aggregate or account-assembly UI is introduced.
+
+Provisional JSON field names and source identifiers using account remain unchanged
+and are explicitly explained as encoding investigrams; governing terminology and
+application code are unchanged. Historical discussion above preserves its original
+wording. Naming of other concepts remains open for further discussion.

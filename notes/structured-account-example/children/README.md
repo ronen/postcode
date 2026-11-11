@@ -3,7 +3,7 @@
 Exploratory notes, 2026-11-11. This is the recommended partition worked through as
 complete authored payloads, not an adopted schema, an executed investigator, or
 supported application input. It uses the [shared contracts](../contracts.md) and the
-same bounded Cockatiel interpretation as the [mixed-account comparison](../README.md).
+same bounded Cockatiel interpretation as the [mixed-content comparison](../README.md).
 Each variant describes its own hypothetical Session; identical readable aliases do
 not imply shared allocated records between variants. The separated category descriptions have been rechecked against the pinned state
 vocabulary and phrased as identification; qualification is not broadened merely by
@@ -20,7 +20,7 @@ use concise authored labels and preserve this variant's own scope and source map
    trial-behavior children, and K with a disjoint admission replacement.
 3. [Context and bindings](context-and-bindings.json): supplied context, allocated IDs,
    selections, composition, exposure and the definition-only consumer probe.
-4. [Illustration access](illustration-access.json): exact versus fresh linked-account
+4. [Illustration access](illustration-access.json): exact versus fresh linked-investigram
    status under an explicitly hypothetical later correction.
 5. [Diagram traceability](diagram-traceability.json): pointers into this variant's
    behavioral child for the shared [statechart](../recovery-state.svg) and
@@ -59,7 +59,7 @@ coverage claim. Grouping the three state descriptions into one child deliberatel
 keeps a coherent correction/delivery unit; it is not a one-entity-per-child rule.
 
 ADMISSION-1 returns a qualified `concurrent-callers-offer`. The follow-up request
-selects that exact account and offer key, whose architectural focus resolves to S.
+selects that exact investigram and offer key, whose architectural focus resolves to S.
 The [offer chain](../offered-followup.md) explains the stipulated invocation; this
 variant's [access probe](offer-access.json) preserves its exact context independently
 of the mixed variant. ADMISSION-2 repeats the offer without migrating old references.
@@ -92,7 +92,7 @@ ROLE-DEFINITIONS-1 preserves the scenario context needed to identify these parti
 roles: one shared breaker, a single trial slot, and the concurrent execution. That is
 different from restricting the identity of state category S to default sampling.
 It does not inherit cancellation, reentrancy or outcome restrictions as blanket
-conditions on identification. Those qualify the behavioral account's claims.
+conditions on identification. Those qualify the behavioral investigram's claims.
 
 W's minimal description identifies the participants and what is awaited. It expressly
 does not supply occurrence/release conditions. Its exact `relatedContent` address
@@ -103,15 +103,15 @@ intelligible without being a complete behavioral explanation.
 K is reported by TRIAL-1, the behavioral child. Its explanation cites that reporter,
 not the root or the relationship ID. The reporter and replacement are in different
 composition trees. The pool representation permits cross-tree content references,
-but those references are not owning edges. Every account has exactly one owning
-position, and the result root reaches every submitted account through composition
+but those references are not owning edges. Every investigram has exactly one owning
+position, and the result root reaches every submitted investigram through composition
 and reporter-to-replacement ownership links.
 
 ADMISSION-2 supplies its entire admission explanation, including the corrected
 waiting case, with its own qualifications and evidence. **It copies no state
 definitions and adopts no old children.** DEFINITIONS-1 was not the correction target
-and remains available as identifying support. This is ordinary independent account
-selection, not an exception to whole-account replacement based on `affectedSubjects`.
+and remains available as identifying support. This is ordinary independent investigram
+selection, not an exception to whole-investigram replacement based on `affectedSubjects`.
 
 ## Shared roles without broadening the state model
 
@@ -151,7 +151,7 @@ TRIAL-RESULT-1. Each answer fixes the identifying support it actually supplies.
 The cited-unit benefit is concrete: a later investigation receiving DEFINITIONS-1
 alone cites that child, so a correction of ADMISSION-1 provides no reconsideration
 path through that citation alone. By contrast, every output of the actual follow-up
-shares its exposure to both supplied accounts. Children do not narrow the producing
+shares its exposure to both supplied investigrams. Children do not narrow the producing
 evaluation's exposure index, and grouped descriptions still share one correction
 target. None of these mechanisms establishes semantic independence between siblings.
 
@@ -160,12 +160,12 @@ target. None of these mechanisms establishes semantic independence between sibli
 ADMISSION-2's illustration targets the exact pair `(TRIAL-1, concurrent-callers)`.
 The access probe postulates a later correction of TRIAL-1 solely to describe retrieval
 behavior; it does not invent a third investigation result or assert another source error.
-Fresh access can report “illustrated account has a replacement,” preserve the original
+Fresh access can report “illustrated investigram has a replacement,” preserve the original
 item target, and leave that particular item's revision status unestablished. It
 cannot substitute a same-named item from the replacement without correspondence.
 
 The link is within the original follow-up evaluation, so it is not a prior-exposure
-citation and does not itself flag ADMISSION-2. Surfacing the referenced account's
+citation and does not itself flag ADMISSION-2. Surfacing the referenced investigram's
 status is useful without adding a propagation or clearance rule. Exact captured
 answers preserve their earlier status context; fresh inspection is separate.
 W’s related-content link uses the same exact addressing rules, with a descriptive
@@ -189,7 +189,7 @@ necessary. Both variants' behavioral diagram data remains identical, so the dire
 bearer and qualification repairs do not require different rendered diagrams.
 
 These are checks of authored examples, not a production schema, semantic proof or
-end-to-end Session verification. The linked-account status probe is conditional,
+end-to-end Session verification. The linked-investigram status probe is conditional,
 not an implemented access operation. No universal cross-form consistency check,
 automatic role alignment, independent item correction, correction revocation, or
 parent/sibling reassessment is introduced. The mixed fixture remains a useful

@@ -58,7 +58,7 @@ Not covered / not shown:
 
 ## Evidence and exact content
 
-Account content: [followup-result.json](followup-result.json). Reference keys below are display-local aliases; the traceability file maps them to exact content locations. They are not entity identities or correction units.
+Investigram content: [followup-result.json](followup-result.json). Reference keys below are display-local aliases; the traceability file maps them to exact content locations. They are not entity identities or correction units.
 
 | Reference | Support |
 | --- | --- |

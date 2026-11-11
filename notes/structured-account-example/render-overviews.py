@@ -57,7 +57,7 @@ def state_category_label(subject):
 
 
 def evidence(ids):
-    return ', '.join(ids) or 'See account support'
+    return ', '.join(ids) or 'See investigram support'
 
 
 def table(headers, rows):
@@ -83,12 +83,12 @@ def scope(a, item, ledger, source):
     if omissions:
         lines += ['Not covered / not shown:', ''] + ['- ' + x for x in omissions] + ['']
     lines += ['## Evidence and exact content', '',
-              f'Account content: [{source}]({source}). Reference keys below are display-local aliases; the traceability file maps them to exact content locations. They are not entity identities or correction units.', '']
+              f'Investigram content: [{source}]({source}). Reference keys below are display-local aliases; the traceability file maps them to exact content locations. They are not entity identities or correction units.', '']
     used = set(a['evidence']) | set(item['evidence'])
     rows = []
     for key in sorted(used):
         record = ledger['evidence'][key]
-        target = f"[source]({record['url']}) — {record['selector']}" if 'url' in record else f"Earlier account {record['account']} — {record['status']}"
+        target = f"[source]({record['url']}) — {record['selector']}" if 'url' in record else f"Earlier investigram {record['account']} — {record['status']}"
         rows.append([key, target])
     lines += table(['Reference', 'Support'], rows)
     lines += ['[Captured basis and delivery context](context-and-bindings.json) · [Exact diagram/legend mapping](diagram-traceability.json)', '']

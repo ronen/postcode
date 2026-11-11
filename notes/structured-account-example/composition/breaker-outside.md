@@ -84,13 +84,13 @@ Not covered / not shown:
 
 ## Evidence and exact content
 
-Account content: [composition-result.json](composition-result.json). Reference keys below are display-local aliases; the traceability file maps them to exact content locations. They are not entity identities or correction units.
+Investigram content: [composition-result.json](composition-result.json). Reference keys below are display-local aliases; the traceability file maps them to exact content locations. They are not entity identities or correction units.
 
 | Reference | Support |
 | --- | --- |
-| A-admission | Earlier account ADMISSION-2 — Prior interpretation, not independent repository corroboration. |
-| A-bulkhead | Earlier account BULKHEAD-1 — Prior interpretation, not independent repository corroboration. |
-| A-trial | Earlier account TRIAL-1 — Prior interpretation, not independent repository corroboration. |
+| A-admission | Earlier investigram ADMISSION-2 — Prior interpretation, not independent repository corroboration. |
+| A-bulkhead | Earlier investigram BULKHEAD-1 — Prior interpretation, not independent repository corroboration. |
+| A-trial | Earlier investigram TRIAL-1 — Prior interpretation, not independent repository corroboration. |
 | E-admission | [source](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts) — execute |
 | E-bulkhead | [source](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/BulkheadPolicy.ts) — execute and dequeue: reservation, pending work, queue and release |
 | E-default | [source](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts) — createHalfOpenSamplingOptions |

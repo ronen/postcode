@@ -3,17 +3,24 @@
 Provisional catalogue slice for the [concrete example](README.md), not a JSON schema
 or a commitment to these names. `/0` marks illustrative form versions. Concept IDs
 organize architectural guidance; form IDs specify data shape. Neither is an entity
-ID, local element key, evidence reference or account-relationship kind.
+ID, local element key, evidence reference or investigram-relationship kind.
+
+**Terminology:** investigram names the specific retained artifact; account remains
+ordinary explanatory language, not a second object or a collection. Existing fixture
+keys `account`, `accounts`, `submittedAccount`, `accountIds`, `accountQualifications`
+and `accountRelationships` encode investigrams or their relationships/context. These
+provisional wire spellings are unchanged in this prose pass; they do not imply an
+Account type. Governing definitions and product APIs are unchanged.
 
 ## Shared envelope and addressing
 
-Return one root account, its accompanying replacement accounts if any, and qualified
-account-organizing relationships. Each account supplies its own referents,
+Return one root investigram, its accompanying replacement investigrams if any, and qualified
+relationships between investigrams. Each investigram supplies its own referents,
 associations, qualifications, evidence and content. Each content item has a local
 `key`, a `concept`, a `form`, and the fields required by that form. Content keys are
-unique within their exact account; nested state keys are local to their state model,
-and step keys are unique within their interaction. Identical keys across accounts do
-not assert identity. Introduced-entity keys and submitted-account keys instead are
+unique within their exact investigram; nested state keys are local to their state model,
+and step keys are unique within their interaction. Identical keys across investigrams do
+not assert identity. Introduced-entity keys and submitted-investigram keys instead are
 submission-scoped, each in its own namespace.
 
 The `subject` field still denotes a role (request subject, association subject, or
@@ -23,7 +30,7 @@ Use `{entity: ID}` for a supplied entity. Use
 `{introducedEntity: localKey}` for an entity explicitly introduced in this submission;
 PostCode allocates the ID on acceptance. Names are display/interpretation aids, never
 identity matching rules. A local state or step key is not automatically an entity.
-Use `{account: ID}` for an earlier account and `{submittedAccount: key}` for a newly
+Use `{account: ID}` for an earlier investigram and `{submittedAccount: key}` for a newly
 submitted one. Forward local references are allowed if all resolve in the accepted
 submission. No partial allocation or dangling result is intended.
 
@@ -36,10 +43,11 @@ or another tree of the same submission; declaration scope is the whole submissio
 
 ### Entity identity and associated information
 
-Entities organize qualified accounts and items around identified architectural things;
+Entities organize qualified information, including investigrams and items, around
+identified architectural things;
 Subject remains the investigative/claim role and Referent describes what a reference
 denotes. Opaque global IDs may be UUIDs; the readable S/P/R aliases here are not an ID
-format proposal. Allocation resolves local IDs and records introducing account/item
+format proposal. Allocation resolves local IDs and records introducing investigram/item
 provenance atomically. It does not prove unique discovery, correctness or persistence
 beyond the supported Session. There is no registration or promotion stage.
 
@@ -49,15 +57,15 @@ for each encounter, become investigrams or acquire interpretive identity guarant
 The seeded M/P orientation illustrates this compatibility, not a delivered migration.
 Selected entity subjects are recorded as result referents at the appropriate scope;
 that does not manufacture a describes/identifies claim or require every child to copy
-all input subjects. Account/selected-passage subjects need not be entities.
+all input subjects. Investigram/selected-passage subjects need not be entities.
 
-Associated items remain attributable to their owning account. `associations` may name
-an own `contentKey` for a precise item or omit it for an account-level association;
-either carries the account's applicable qualifications. Identifying descriptions,
+Associated items remain attributable to their owning investigram. `associations` may name
+an own `contentKey` for a precise item or omit it for an investigram-level association;
+either carries the investigram's applicable qualifications. Identifying descriptions,
 classifications, behavior and open topics remain distinct information, not authoritative
-entity fields. Referring-account discovery remains broader than these item associations.
+entity fields. Referring-investigram discovery remains broader than these item associations.
 An item can be associated with several entities. Finer addressing does not allow
-item-level correction or bypass whole-account replacement/exposure rules.
+item-level correction or bypass whole-investigram replacement/exposure rules.
 
 Ordinary content, node, step and role keys are not entity declarations. Selecting the
 passage “application work has not started” addresses content for Explain; it does not
@@ -65,7 +73,7 @@ create an entity bearing that sentence as its name. An investigation can subsequ
 introduce one using the same declaration protocol. The [walkthrough's supersession
 probe](../structured-architectural-accounts-example.md#entity-supersession-probe) keeps
 qualified merge/split succession and entity-use reconsideration distinct from existing
-account correction; those proposed extensions are not accepted by this fixture checker.
+investigram correction; those proposed extensions are not accepted by this fixture checker.
 
 ### Proposed Entity treatment
 
@@ -74,22 +82,22 @@ These fixtures propose treating such explicitly identified things as Entities wh
 keeping all claims about them qualified. This requires explicit governing treatment
 alongside interpreted identity; it is not already established merely by the field
 name `introducedEntity`. Mechanical export/dependency claims can remain claims without
-independent entity identities. Addressability alone, including that of account-organizing
+independent entity identities. Addressability alone, including that of investigram-organizing
 metadata or diagram edges, does not introduce an Entity.
 
 ### Ownership and composition
 
 The construction pool is a serialization of a result tree and correction-replacement
-trees, not a collection of independent roots. Each account has exactly one owning
+trees, not a collection of independent roots. Each investigram has exactly one owning
 position: the result root, one ordered `children` slot, or one correction's replacement
 root. Child slots use `{submittedAccount: key}` and cannot adopt retained old children.
-All owned accounts must be reachable from the result root by following child slots
-and reporter-to-replacement ownership links. Duplicate owners, disconnected accounts,
+All owned investigrams must be reachable from the result root by following child slots
+and reporter-to-replacement ownership links. Duplicate owners, disconnected investigrams,
 cycles and shared subtrees are invalid. A correction reporter may be a child; its
 replacement belongs to a separate composition tree. Content references and illustration
-links are not ownership edges and cannot make an otherwise orphan account valid.
+links are not ownership edges and cannot make an otherwise orphan investigram valid.
 
-Every account, including each child and an organizational root, carries its own
+Every investigram, including each child and an organizational root, carries its own
 qualifications, evidence, referents and associations. Nothing inherits from a parent
 by omission. Roots may carry orientation and scope claims that make the result
 intelligible without restating the children's behavioral rules. Restatement is
@@ -101,18 +109,18 @@ partition; parent composition does not duplicate that association. Replacing one
 child does not mutate its siblings, its parent, or the parent's fixed child list.
 Replacement-aware selection discloses displacement separately from stored composition.
 
-Account qualifications apply to all its content and associations; items can further
-limit claims and identify their own evidence. The account's evidence union is not
+Investigram qualifications apply to all its content and associations; items can further
+limit claims and identify their own evidence. The investigram's evidence union is not
 an assertion that every source supports every item. A nested event/transition keeps
 its more specific evidence. Evidence names here resolve through the fixture registry;
 production must preserve the corresponding captured basis and qualified support.
 
-When partitioning, determine the qualifications for each account's own claims:
+When partitioning, determine the qualifications for each investigram's own claims:
 
 1. State what it identifies or asserts, including any scenario context needed to
    distinguish the referents. Retain applicable source-basis and method limitations.
 2. Retain every condition needed for those claims. Put a restriction on a narrower
-   item, or separate the content, when it does not apply to the whole account.
+   item, or separate the content, when it does not apply to the whole investigram.
 3. Do not copy unrelated behavioral exclusions merely because they qualified the
    original combined explanation. Do not remove a limitation as an editorial shortcut
    to broader applicability: verify the resulting description against its evidence,
@@ -124,9 +132,9 @@ admission/transition rules. ROLE-DEFINITIONS-1 preserves the single-slot scenari
 context that identifies its roles, without claiming occurrence or release behavior.
 This is claim-level qualification judgment, not a mechanical filter on keywords.
 
-An item excerpt must carry its source account identity, applicable account-level
+An item excerpt must carry its source investigram identity, applicable investigram-level
 qualifications and basis, plus its own evidence and qualifications. An excerpt cannot
-silently shed limitations because the full account was not selected. Its substantive
+silently shed limitations because the full investigram was not selected. Its substantive
 delivery cites the containing investigram but does not establish complete-target
 delivery. The context ledger spells out this support envelope for the TRIAL-1 excerpts.
 
@@ -149,7 +157,7 @@ descriptions. In the children variant, DEFINITIONS-1 remains unchanged because K
 targets its behavioral sibling; no descriptions are copied into ADMISSION-2.
 ADMISSION-1 remains historical/input context, explicitly labelled as such in the
 follow-up answer. Exact ANSWER-1 retains its original support. A correction's
-`affectedSubjects` does not exempt embedded descriptions from whole-account replacement;
+`affectedSubjects` does not exempt embedded descriptions from whole-investigram replacement;
 it is not an item-level validity mask. Selection does not establish a canonical definition.
 
 ## Provisional partition default
@@ -164,7 +172,7 @@ local/minor terms can stay embedded. Any departure should explain the coherence 
 delivery reason and acknowledge the wider correction/citation unit.
 
 Assess partition together with the producing evaluation's exposure. DEFINITIONS-1
-was produced with only ORIENTATION-0 as retained-account context; its consumers can
+was produced with only ORIENTATION-0 as retained-investigram context; its consumers can
 avoid the separate admission sibling's correction path. COMPOSITION-DEFINITIONS-1
 shares seven synthesis citations, so a component correction can reach the definition
 and propagate through it to later consumers. Children narrow direct correction and
@@ -181,7 +189,7 @@ reviewed together; no per-output exposure exception is implied.
 
 This remains a recommendation, not an adopted schema rule. The [children variant](children/README.md)
 now exercises ownership, independent qualification and support selection in authored
-fixtures. The mixed-account fixture remains a comparison; neither is application input.
+fixtures. The mixed-content fixture remains a comparison; neither is application input.
 
 <a id="retained-investigation-offer"></a>
 ## Retained investigation offer — bounded example
@@ -193,12 +201,12 @@ This slice declares one focus target and no additional parameters. It is deliber
 not a general schema or an implemented Lens catalogue. `investigation-guidance` is
 an illustrative content classification, not a claim about the program's architecture.
 
-The offer key uses the existing account-local content-key namespace. Acceptance
+The offer key uses the existing investigram-local content-key namespace. Acceptance
 resolves introduced entities as elsewhere in the submission. Invocation identifies
-the exact retained account and offer key, with only declared parameter values; names
+the exact retained investigram and offer key, with only declared parameter values; names
 and purpose text are not lookup keys. The sample stipulates one supported method:
 an agent cannot create another capability merely by naming it. The architectural
-focus comes from the retained offer, independently of the account playing the request
+focus comes from the retained offer, independently of the investigram playing the request
 subject role. Extra offers and the application discovery mechanism are outside this
 probe; its purpose is to exercise qualified returned content and exact reference use.
 
@@ -218,9 +226,9 @@ prose-only content is not silent success. See the [optional-contract example](of
 This note does not adopt a new contract field or require one per offer; specialized
 request acceptance is not implemented by the existing checker.
 
-An offer remains subject to its containing account's basis, qualifications, whole-
-account correction and exposure rules. Delivering the substantive offer cites that
-account, but is not automatically complete-target delivery. Complete own-content
+An offer remains subject to its containing investigram's basis, qualifications, whole-
+investigram correction and exposure rules. Delivering the substantive offer cites that
+investigram, but is not automatically complete-target delivery. Complete own-content
 delivery includes retained offers as well as other content forms. Knowing the offer's
 source does not establish a human navigation origin or prove all source content was
 supplied. Preserve actual deliveries and exact offer provenance separately.
@@ -230,17 +238,17 @@ not automatic migration or asserted continuity of the older offer. Retain access
 the original, disclose applicable correction context when supplying its content,
 and distinguish partial from complete correction-context delivery. Exact captured
 answers preserve their original selection. Fresh inspection does not independently
-establish whether an offer is affected by its containing account's correction.
+establish whether an offer is affected by its containing investigram's correction.
 
 ## Forms in this example
 
 | Form | Information to supply | What it does not imply |
 | --- | --- | --- |
-| `investigation-offer/0` | Exact local key, label/purpose, qualified targets, supported method and declared parameters, with evidence | A new executable capability, complete source-account delivery, or automatic retargeting to a replacement |
+| `investigation-offer/0` | Exact local key, label/purpose, qualified targets, supported method and declared parameters, with evidence | A new executable capability, complete source-investigram delivery, or automatic retargeting to a replacement |
 | `entity-description/0` | Entity reference, name, identifying description, classification, relevant context (`relativeTo`), evidence; explicit introduction flag when introducing a new entity | Unique discovery, canonical definition, or independent correction unit |
 | `prose/0` | Keyed explanatory text under the appropriate concept, with support and qualifications | Missing graph or interaction structure can be invented from the text |
 | `admission-cases/0` | Explicit coverage claim; optional form-local roles and their scope; keyed cases with state, condition, outcome, optional resulting state/relationship, and evidence; separately qualified scenario illustrations | A complete state machine, universal interface model, or general claim bound to an illustrative subject |
-| `architectural-relations/0` | Keyed, typed relations with role-named endpoints and applicable conditions; optional entity for a relation | Account correction, global graph consistency, or mandatory relation identities |
+| `architectural-relations/0` | Keyed, typed relations with role-named endpoints and applicable conditions; optional entity for a relation | Investigram correction, global graph consistency, or mandatory relation identities |
 | `state-behavior/0` | State bearer; coverage and omissions; keyed labelled states; keyed directed transitions with trigger, guard, effect and evidence; outcome qualifications | Initial state, completeness, hierarchy or concurrency when not supplied |
 | `interaction/0` | Scenario meaning/conditions; keyed participants tied to subjects; ordered prefix; alternatives with conditions and keyed steps; omissions and evidence | Observed trace, all possible interleavings, or application-level success |
 
@@ -249,12 +257,12 @@ The `interaction/0` step vocabulary in this probe is `request`, `response`, `act
 actions supply an actor and text; wait/resume supply participant, decision holder,
 architectural relationship and text. A state-transition step names a state-content
 item and one of its transitions. That link reuses an explicit claim; it does not
-authorize an interpreter to derive arbitrary cross-account correspondences.
+authorize an interpreter to derive arbitrary cross-investigram correspondences.
 
 An optional `causedBy` lists earlier step keys on the same possible path. It asserts
 causal support, not just diagram ordering. Cross-branch or forward references are
 invalid here. A cause need not be sufficient or exclusive: branch conditions, guards
-and account qualifications still apply. Missing links are not inferred from ordering
+and investigram qualifications still apply. Missing links are not inferred from ordering
 or transition-effect prose. Completion, outcome availability and classification use existing action
 and response forms; each outcome transition explicitly cites classification as its
 cause. Structural validation checks that these links resolve in order, not that the
@@ -269,11 +277,11 @@ admission without claiming that release guarantees work will run.
 
 `roles`, `roleScope` and `illustrations` are optional fields of the common structured
 content-item envelope, usable by admission, state, interaction and structural forms.
-They are not separate mechanisms per form and are not account-global variables.
+They are not separate mechanisms per form and are not investigram-global variables.
 `{localRole: key}` resolves within the owning item's `roles` only. Keys are unique
 there, all references resolve, and `roleScope` states how the variables are bound.
 Identical role names in different items do not assert correspondence. The role's full
-context is its exact account, content key and local role key; allocating it does not
+context is its exact investigram, content key and local role key; allocating it does not
 introduce an entity or a general architectural fact.
 
 The admission item binds execution/instance variables separately per request, then
@@ -284,7 +292,7 @@ the fixture no longer forces a second use just to exercise the syntax. A broadly
 applicable state model would require qualified analysis before its instances could
 serve as illustrations.
 
-An `illustrations` entry identifies a target account/content item, binds owner-local
+An `illustrations` entry identifies a target investigram/content item, binds owner-local
 roles to scenario subjects, and supplies qualification and evidence for that mapping.
 An illustration is a general-to-example relationship here, not an alternate encoding
 of identity between two names for the same scenario participant. Use a direct subject
@@ -298,31 +306,31 @@ correspondences invented by a renderer.
 
 ### Exact item addressing and linked revision disclosure
 
-A cross-account item address consists of an exact account reference and `contentKey`.
+A cross-investigram item address consists of an exact investigram reference and `contentKey`.
 Both `illustrations` and descriptive `relatedContent` links use this address shape,
 but they have distinct purposes: related content locates further explanation without
 asserting an illustrative binding or implying that its content has been supplied.
 Within a submission, for example, an illustration has
 `account: {submittedAccount: "trial"}, contentKey: "concurrent-callers"`.
-Acceptance fixes that account reference; subsequent retrieval uses the retained account
-identity. The `stateContent` field is a same-account content-key shorthand. The item
-must exist in its addressed account. Addressability neither makes it an independently
-correctable investigram nor gives its content key identity across replacement accounts.
+Acceptance fixes that investigram reference; subsequent retrieval uses the retained investigram
+identity. The `stateContent` field is a same-investigram content-key shorthand. The item
+must exist in its addressed investigram. Addressability neither makes it an independently
+correctable investigram nor gives its content key identity across replacement investigrams.
 Role/case keys can further designate occurrences inside that exact item under its form's
 rules. Such content designation can support later investigation without allocating
 an entity. The investigation can explicitly introduce an entity if warranted; selection does not
 allocate a shared general relationship identity.
 
-Fresh inspection of an illustration may report its target account's current revision
-status, while preserving the original item address. A superseded account does not
+Fresh inspection of an illustration may report its target investigram's current revision
+status, while preserving the original item address. A superseded investigram does not
 establish that this particular item is wrong or replaced. Even an identical content key
 in a replacement supplies no correspondence and must not trigger automatic retargeting.
 Exact answers preserve captured target/support/revision context; fresh status can be
 requested separately. See the [access probe](illustration-access.json).
 
-This is linked-account status disclosure, not a new propagation rule. A same-result
+This is linked-investigram status disclosure, not a new propagation rule. A same-result
 illustration link can be surfaced even though it is not a prior-exposure citation;
-it does not by itself flag or clear the source account for reconsideration. Delivering
+it does not by itself flag or clear the source investigram for reconsideration. Delivering
 the referenced item's qualified content cites its containing investigram, without
 complete-target eligibility. Bare addresses/status alone do not supply that content;
 substantive correction explanations retain their reporter-citation rule.
@@ -341,7 +349,7 @@ and what it does. Declare partial coverage. A partial statechart may omit an ini
 marker; it must not manufacture one. The present form is a flat subset: richer
 statecharts would require explicit containment, entry/exit and concurrency semantics.
 In this sample the bearer is a direct reference to scenario subject R. The explicit
-applicability field connects the account to P without broadening it to all instances/configurations of P.
+applicability field connects the investigram to P without broadening it to all instances/configurations of P.
 The shared role mechanism also permits a type-level model, but establishing that
 broader applicability remains an open extension, not a mechanical reinterpretation.
 The recovery-outcome guard means the completing trial still belongs to the current Half-open state; stale results do not
@@ -377,7 +385,7 @@ compact generator uses them; other content forms need not acquire them by defaul
 
 A renderer can assign display-local keys such as T1, I4 or S1 mechanically and map
 them to exact content in a separate legend. These keys are not entity identities,
-stable content keys, cross-account correspondences or correction units. Their scope
+stable content keys, cross-investigram correspondences or correction units. Their scope
 is the particular diagram/legend pair; retain the mapping with exact presentation
 artifacts rather than resolving an old key against a later regenerated figure.
 Keep meaningful names where they fit; do not replace every name with a code.
@@ -389,8 +397,8 @@ and effect. A state-change action, after-state snapshot and structured transitio
 remain different kinds of content even if their labels are similar. Preserve stated
 causal links in the legend; proximity and sequence position do not add causes.
 
-The legend carries element-level detail, relevant account/item qualification and
-support, and an exact mapping to the source account content. It is part of the
+The legend carries element-level detail, relevant investigram/item qualification and
+support, and an exact mapping to the source investigram content. It is part of the
 meaning-bearing delivery when the overview depends on it, not optional decoration.
 An isolated image remains explicitly an overview. Moving detail into a legend must
 not shed its limitations or manufacture complete-target delivery: supplying selected
@@ -403,16 +411,16 @@ change is an authored-content change in these fixtures; a mechanically assigned
 legend-key change is presentational. This exploration adopts neither a universal
 label vocabulary nor a full export/navigation system.
 
-## Qualified account relationships
+## Qualified investigram relationships
 
 The example's correction record supplies a local key, kind, reporter, earlier target,
 new replacement, affected subjects, reason, qualifications and evidence. The reason
-must establish the claimed error; the kind is not inferred from account age or matching
+must establish the claimed error; the kind is not inferred from investigram age or matching
 names. The target's complete own content must have been supplied in the dialogue.
 The replacement supplies its whole own content; this is not an item patch operation.
 If a replacement changes the target's scope, its explanation must disclose the
 difference and resulting limits of coverage, not merely add a background qualification.
-This example has no such scope difference: both admission accounts exclude reentrant
+This example has no such scope difference: both admission investigrams exclude reentrant
 entry calls. K's reason therefore remains about the missing waiting case.
 
 Retain K separately, while attributing its substantive reason/qualifications to its
@@ -443,6 +451,6 @@ no full structural view, universal resource schema or application API is introdu
 Its [nested-selector grammar](composition/README.md#nested-selector-grammar-for-this-probe)
 defines only exact relation selection and situated state-assignment selection, with
 structural and resolution checks. This is not a general arbitrary-path selector.
-The origin-free context uses current accounts plus qualified history disclosure;
-endpoint references do not deliver superseded account content or establish complete
+The origin-free context uses current investigrams plus qualified history disclosure;
+endpoint references do not deliver superseded investigram content or establish complete
 correction context.

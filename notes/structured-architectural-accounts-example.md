@@ -24,9 +24,9 @@ runtime execution has been performed in any of these passes.
 
 ## Choices for this pass
 
-Read this as an exercise in organizing partial, qualified accounts, not constructing
+Read this as an exercise in organizing partial, qualified investigrams, not constructing
 a single reconciled architecture graph. Subjects connect explanations; conflicting
-accounts and uncertain correction impact can remain visible pending further inquiry.
+investigrams and uncertain correction impact can remain visible pending further inquiry.
 The partition alternatives below should be judged by useful investigation, retrieval
 and revision, without requiring perfect claim independence or global consistency.
 
@@ -39,9 +39,9 @@ and revision, without requiring perfect claim independence or global consistency
 - Every child delivers its own applicable qualifications. Composition does not
   implicitly inherit substantive limitations from its parent.
 - Identifying descriptions are designated by qualified per-subject identifies
-  associations, independently of an account's content form or other describes roles.
+  associations, independently of an investigram's content form or other describes roles.
 - Every answer supplies fixed identifying support for its substantive subject
-  references. Supporting definitions need not be selected account constituents.
+  references. Supporting definitions need not be selected investigram constituents.
 - Retain the follow-up request's answer and provide qualified exact/current access.
   Presume the UI can show and select retained information; no separate assembled
   answer or UI workflow is required by this example.
@@ -54,7 +54,7 @@ Only explicit entity introduction/reuse is exercised as a proposed application p
 here. Contextual selection and subsequent entity introduction remain a separate probe. The caller may
 be a direct API client. This is an architecture exercise: presume suitable viewing
 and selection affordances and specify only their behavioral inputs. Subject(s), Lens,
-parameters and supplied context are distinct; merely displaying accounts together
+parameters and supplied context are distinct; merely displaying investigrams together
 neither feeds them to an investigator nor creates a new domain result.
 
 ## 1. Establish referents and basis
@@ -79,7 +79,7 @@ it part of the state category's identity.
 
 Allocation guarantees stable reference within the Session, not mechanical correctness,
 uniqueness across discoveries or correspondence across program revisions. Introducing
-provenance and basis remain attributable; later accounts may refine, dispute or
+provenance and basis remain attributable; later investigrams may refine, dispute or
 identify conflation. Mechanical M and interpreted P/S share a reference mechanism
 without sharing guarantees. Interpreted identity's allocation/continuity contract
 still needs an explicit governing decision before implementation.
@@ -97,11 +97,11 @@ retained follow-up/correction targets and associations, with extra delivery and
 replacement rules. Neither choice narrows the evaluation-wide exposure index merely
 by creating smaller output parts. However, a later investigation receiving only a
 separate identifying child cites that child, not an undelivered behavioral sibling.
-A definition excerpt from a mixed account cites the whole containing account. This
+A definition excerpt from a mixed investigram cites the whole containing investigram. This
 is now the strongest reason for the actionable default: put descriptions of explicitly
 introduced entities in identifying children when mixed with behavior. Grouping
 is allowed; an identification-only root needs no wrapper and local terms may stay
-embedded. Structured graph nesting does not dictate this account partition.
+embedded. Structured graph nesting does not dictate this investigram partition.
 
 **Correction cost motivating smaller units.** The human points out that correcting
 one subject description inside a larger result would require retaining the unchanged
@@ -109,11 +109,11 @@ parts in its replacement. Under the existing full replacement contract, that is
 true at the logical/submission level: there is no patch or implicit carry-forward
 of the old investigram's keyed items. Physical storage sharing is a separate matter.
 This is a substantive reason to choose independently correctable children for
-coherent subject or relationship accounts in a larger result, without requiring
+coherent subject or relationship investigrams in a larger result, without requiring
 one child per field or every subject mention. A corrected child's unchanged siblings
 retain their identities; a replacement root does not automatically inherit its old
 children. A clarification that adds compatible information can instead be an
-additional account, but must not be called an addition merely to avoid a necessary
+additional investigram, but must not be called an addition merely to avoid a necessary
 correction. Content partition remains provisional; compare the actual submission
 and delivery costs of this example before settling its units.
 
@@ -121,12 +121,12 @@ and delivery costs of this example before settling its units.
 an incorrect Half-open definition can make the whole originating explanation
 questionable, motivating replacement of the whole result. Independent addressability
 does not establish semantic independence. Distinguish the scope to re-examine from
-the scope ultimately corrected: investigation may review the larger account and
+the scope ultimately corrected: investigation may review the larger investigram and
 justify a local correction, a replacement of the whole result, or unresolved impact.
 A definition that confuses shared breaker state with per-execution progress could
 undermine admission and relationship claims; a narrow descriptive error might not.
 The correction's supported scope should reflect that judgment. Whole replacement
-can restore a coherent account but merely reproducing unchanged text does not prove
+can restore a coherent investigram but merely reproducing unchanged text does not prove
 it was checked. Conversely, a child-only correction does not certify its siblings.
 The earlier preference for a single unit and subsequent inclination toward children
 are competing hypotheses, not a settled default. Current composition/exposure rules
@@ -147,7 +147,7 @@ atomically on acceptance. The concrete fixture's `introducesEntity: true` distin
 an introducing description from another description of an existing entity; it is not
 a separate lifecycle status. Existing entities use their global IDs.
 
-The description remains account content, not an authoritative entity field. An ordinary
+The description remains investigram content, not an authoritative entity field. An ordinary
 key on a paragraph, transition or local variable supplies a content address without
 introducing an entity. An explicitly designated architectural entity, in contrast,
 always gets a reusable ID. Selected text can be investigated without entity allocation.
@@ -165,23 +165,23 @@ INTRO-1                 root: orientation to this result
 
 DEFINITIONS-1 has qualified **identifies** associations with S, S-open and S-closed.
 It may also **describe** P through its state relationships without identifying P.
-Identification is a role on each account–subject association, not a whole-account
+Identification is a role on each investigram–subject association, not a whole-investigram
 content kind. This avoids returning it as P's definition merely because it contains
 identifying content and describes P. It remains one small coherent unit, not an
 investigram for each sentence or a unique authoritative definition.
 
 ADMISSION-1 describes P's admission behavior and refers to S. That reference does
 not automatically make it a describes-S association. It contains the admission cases
-and inspection account, with support and qualifications attributable to those claims.
+and inspection investigram, with support and qualifications attributable to those claims.
 
 Thus Circuit Breaker already has entity reference P, and ADMISSION-1 is
 one qualified item associated with it through a describes association. Here that
 item is an independently addressable investigram. Its composition parent INTRO-1
 is separate from the subject association; neither P nor INTRO-1 owns every future
-account about Circuit Breaker.
+investigram about Circuit Breaker.
 
 INTRO-1 organizes the explanation without repeating the behavioral claims as a
-second account. If its own content were misleading, correcting a child would not
+second investigram. If its own content were misleading, correcting a child would not
 correct the root's claim. Its orientation remains qualified interpretation with
 ordinary exposure/correction
 semantics. Thin roots must still contribute useful context; this example does not
@@ -208,7 +208,7 @@ nor silently retrieves a newer preferred one during exact presentation.
 
 This is support for understanding a referent, not evidence for every behavioral claim
 about it. Supporting definition investigrams need not become selected constituents.
-Preserve the descriptions grounding each selected account, and expose newer or
+Preserve the descriptions grounding each selected investigram, and expose newer or
 competing descriptions separately; do not silently reinterpret old content. Use
 already qualified descriptions from selected context or the new result's explicit
 identifying associations. Deriving a new description would require qualified analysis.
@@ -227,7 +227,7 @@ and does not establish correction eligibility.
 
 The human chooses ADMISSION-1's retained `concurrent-callers-offer`, which targets
 Half-open S. The illustrative Follow-up investigation request names that exact
-account and offer key; the prose question below explains its meaning, not text the
+investigram and offer key; the prose question below explains its meaning, not text the
 human must type. CLI handles or GUI menus/badges are possible affordances
 whose design is deferred.
 
@@ -258,16 +258,16 @@ receive relevant retained identifying descriptions with scope and revision/confl
 context. Only a selection with an explicitly known originating explanation adds that
 explanation on the strength of origin. A bare subject handle supplies no such origin;
 neither the latest answer nor the subject's introduction is a substitute. If the UI
-knows only an answer and cannot identify the originating account, it must represent
+knows only an answer and cannot identify the originating investigram, it must represent
 that actual granularity and make any broader context selection explicit.
 For subject-only requests, identifying-candidate selection and bounds remain open;
 this does not justify omitting all retained definitions or supplying the full history.
 
 ADMISSION-1 explicitly lists S as a referent. The required discovery capability can
-therefore offer it among accounts referring to Half-open, either initially or when
+therefore offer it among investigrams referring to Half-open, either initially or when
 the investigator requests them. Known navigation origin is unnecessary for finding
 it; the index implementation remains an engineering choice. Ordering candidates by
-retention time may be useful, but cannot establish which account the human came from
+retention time may be useful, but cannot establish which investigram the human came from
 or which is authoritative/applicable. Preserve any actual origin separately.
 
 Current describes-style association lookup does not supply this reverse-reference
@@ -292,7 +292,7 @@ open, especially beyond this single-origin case.
 Initial context is a seed for an existing investigator dialogue, not a closed set of
 permitted information. In this path the caller names DEFINITIONS-1 and ADMISSION-1
 up front. More generally, a hybrid can supply identifying descriptions initially,
-expose other available accounts/attributes, and let the investigator request relevant
+expose other available investigrams/attributes, and let the investigator request relevant
 content or missing portions. An independent selection of S could discover further
 context this way once the required subject indexes/queries exist.
 
@@ -312,7 +312,7 @@ interpretation is reusable context, not independent corroboration.
 Structured completeness must already be defined. If bounds omit an admission branch
 or required qualification, ADMISSION-1 is not eligible for correction. Retrieve the
 missing material or finish without the correction. Navigation origin and ordinary
-account follow-up do not bypass this actual-delivery check.
+investigram follow-up do not bypass this actual-delivery check.
 
 ## 4. New role definitions, behavior and correction
 
@@ -364,15 +364,15 @@ and not every relationship correction necessarily preserves identity.
 TRIAL-1 explains shared state across calls, supplied trial work, waiting while the
 single trial is occupied, and how trial outcomes affect subsequent admission,
 including possible refusal of the waiting caller. ADMISSION-2 restates the complete
-admission account with the missing case and conditions. Both retain default-configuration
+admission investigram with the missing case and conditions. Both retain default-configuration
 and static possible-scenario limits; neither claims an observed execution.
 The general admission rule uses local roles for a requesting execution and its breaker
 instance. R/E-caller/W belong to a separately qualified illustration, not to the
 general rule's identity or applicability.
 
-The correction explicitly identifies P because it corrects P's admission account.
-For this example, corrected subjects identify whose descriptive accounts are corrected,
-not every participant or condition. Include S too if explicitly correcting an account
+The correction explicitly identifies P because it corrects P's admission investigram.
+For this example, corrected subjects identify whose descriptive investigrams are corrected,
+not every participant or condition. Include S too if explicitly correcting an investigram
 of S; do not automatically copy input S, origin M or all referents. General validation
 of this rule remains open. Current corrected-subject validation needs extension.
 
@@ -385,39 +385,39 @@ identifying description are unchanged by this behavioral correction.
 ### Proposed common relationship representation applied to this result
 
 Keep the current correction example while testing a common representation for
-account relationships. At the conceptual level the follow-up supplies:
+investigram relationships. At the conceptual level the follow-up supplies:
 
 | Supplied content | Responsibility |
 | --- | --- |
 | TRIAL-1 | Qualified architectural explanation of concurrent callers and recovery. |
-| ADMISSION-2 | Complete qualified admission account, usable without reading a comparison to ADMISSION-1. |
+| ADMISSION-2 | Complete qualified admission investigram, usable without reading a comparison to ADMISSION-1. |
 | Relationship claim K | States that ADMISSION-2 corrects ADMISSION-1, reported by TRIAL-1, with reason, affected subject P, scope, qualifications and evidence. |
 
-The current proposal favors retaining K as qualified account-organizing metadata,
+The current proposal favors retaining K as qualified metadata organizing investigrams,
 supplied alongside architectural accounts, rather than requiring an investigram of
 its own. K still contains the attributable interpretive assertion and its support;
 metadata does not mean mechanically established or optional to inspect. Existing
 correction records already provide a partial precedent. This refines the earlier
 embedded/separate-investigram alternatives without adopting a schema or independent
-relationship-revision operation. One investigation supplies the accounts and
+relationship-revision operation. One investigation supplies the investigrams and
 qualified relationship together. Exact wire packaging and
 composition remain open: this does not introduce a flat multi-root submission by
-implication. PostCode resolves new-account local references, verifies eligible older
+implication. PostCode resolves new-investigram local references, verifies eligible older
 references and support, and accepts the result atomically.
 
-Here K is an **account relationship**: ADMISSION-2 corrects ADMISSION-1. W, by
+Here K is an **investigram relationship**: ADMISSION-2 corrects ADMISSION-1. W, by
 contrast, concerns an execution waiting for a breaker's recovery decision and is
-an **architectural relationship described within an account**. These are separate
-domain concepts; W does not participate in account replacement machinery merely
+an **architectural relationship described within an investigram**. These are separate
+domain concepts; W does not participate in investigram replacement machinery merely
 because both are called relationships. Refer to the proposed organizing type as
 AccountRelationship for clarity, without adopting an API name.
 
 The proposed common machinery could also retain an alternative relationship with
 the same reporting/support responsibilities but no automatic correction effects.
-An inconsistency finding could instead name earlier accounts and explain the tension
+An inconsistency finding could instead name earlier investigrams and explain the tension
 without a replacement. Preserve type-specific endpoint roles and validation; do not
 treat a new discriminator as sufficient to implement all cases. For this staged
-misleading admission account, correction remains the intended relationship.
+misleading admission investigram, correction remains the intended relationship.
 
 TRIAL-1 is the correction reporter. K can store its reason and qualifications in a
 separate organizing record while attributing them to TRIAL-1 for citation/exposure.
@@ -435,12 +435,12 @@ It supplies identifying support for S from DEFINITIONS-1 without making that who
 investigram a selected constituent. New roles are identified through ROLE-DEFINITIONS-1.
 Actual input-context provenance remains a separate responsibility.
 
-The user can view these retained items and select subjects or accounts from them.
+The user can view these retained items and select subjects or investigrams from them.
 How the UI groups them is outside this design. It does not require a second assembled
 answer, a collection Lens or a saved selection. If the UI supplies a selection as
 investigation context, that becomes explicit input and actual delivery is recorded.
 Selecting several subjects for an applicable Lens is a separate semantic operation,
-with declared cardinality/order/roles, not a consequence of displaying accounts together.
+with declared cardinality/order/roles, not a consequence of displaying investigrams together.
 
 A fresh replacement-aware selection from INTRO-1 supplies identifying support for
 ADMISSION-2's new R/E-caller/W references from ROLE-DEFINITIONS-1, although that child
@@ -479,7 +479,7 @@ and compatible diagram presentation, with partial or unmet outcomes disclosed. T
 works through that distinction without adding a live invocation to these fixtures.
 
 
-This step moves from the retained-account mechanism to architectural content forms.
+This step moves from the retained-investigram mechanism to architectural content forms.
 The recommendation is to retain structured claims through the same qualified
 investigrams and subject references used above. For example, a transition's source
 and destination can reference retained state subjects, while its trigger, guard,
@@ -505,10 +505,10 @@ The first concrete contract and payload remain to be drafted.
 Use statechart information requirements for a concrete sufficiency test: named
 states, directed transitions, any meaningful hierarchy, state-bearing participant,
 initial entry when established, and distinct triggers, guards and effects. Keep
-scope, qualifications and exact account/support references. The human's proposed
+scope, qualifications and exact investigram/support references. The human's proposed
 hierarchically grouped directed-graph shape is a starting point to examine, not a
 settled schema; default entry and ordinary incoming transitions need distinguishing.
-A concurrent-caller sequence account should subsequently test the waiting correction
+A concurrent-caller sequence investigram should subsequently test the waiting correction
 and meaningful ordering. First establish that retained content supplies the needed
 meaning, then perform a bounded rendering experiment to validate sufficiency.
 Layout, styling and interactive navigation should not sidetrack this content work.
@@ -528,7 +528,7 @@ claims nor binds every general admission request to the scenario.
 
 Place detailed recovery-outcome transitions in TRIAL-1 for this probe, with explicit
 state endpoints, owner role, conditions and effects. Mark the transition content
-and explicitly associate its account with P and S so later state inquiries can find
+and explicitly associate its investigram with P and S so later state inquiries can find
 it without relying on incidental mentions. This does not promise complete state-machine
 coverage. If transitions warrant separate selection/correction, a future result can
 partition them separately; there is no universal rule binding them to interactions.
@@ -561,7 +561,7 @@ whole-investigram correction unit.
 | Concurrent-caller sequence | Trace-oriented behavior; interacting instances | Sequence diagram. [Behavior §6.2.3][sequences] | How do trial and waiting caller interact? Shared instance and distinct executions, ordering, waiting/release and outcome alternatives. |
 | Composition structure | Component-and-connector view; elements and relations | Graphical primary presentation of a C&C view; exact notation not prescribed. [V&B §§2.2, 2.5][vb-structure] | How do wrapping orders differ? Two scoped patterns with outer/inner roles, delegation, supplied operation and separate state/resource responsibilities. Topology is distinct from containment/ownership. |
 | Composition sequences | Trace-oriented behavior; interacting instances | Sequence diagrams, one or more per order. [Behavior §6.2.3][sequences] | What runs or waits, and what remains occupied? Interactions, capacity/state changes and waiting intervals supplied by qualified composition analysis. |
-| Individual-execution lifecycle (optional) | State-based behavioral modeling | Statechart. [Behavior §6.1.1][statecharts] | What is an execution's progress? Requires a lifecycle account; its waiting is not another breaker state. |
+| Individual-execution lifecycle (optional) | State-based behavioral modeling | Statechart. [Behavior §6.1.1][statecharts] | What is an execution's progress? Requires a lifecycle investigram; its waiting is not another breaker state. |
 | Implementation correspondence (optional) | Mapping between views, here architectural runtime and module views | Mapping representation; no specific diagram type prescribed in this reference. A correspondence graph would be our choice. [V&B §2.5, printed p.7][vb-mapping] | How do architectural roles relate to modules/symbols? Requires qualified mappings; visual proximity or labels do not establish correspondence. |
 
 [vb-structure]: https://www.sei.cmu.edu/documents/2072/2005_004_001_14498.pdf#page=14
@@ -575,17 +575,17 @@ RESP, OWNERSHIP, INTERFACE, STATE and INTERACTION. Mapping each example to a sou
 concept is our design recommendation, not a source assertion about Cockatiel.
 The earlier label “admission activity/decision flow” did not establish UML activity
 diagrams from the inspected references. UCM is a named candidate in those references;
-its suitability for this account remains to be tested, not silently adopted.
+its suitability for this investigram remains to be tested, not silently adopted.
 
 Success/failure and inspection-before-execution cases are sequence variants.
 Original/corrected depictions reuse the corresponding architectural diagram type.
-Correction/evidence graphs concern PostCode's retained accounts: their concepts are
+Correction/evidence graphs concern PostCode's retained investigrams: their concepts are
 the local ACCOUNT/BASIS/CORRECTION entries, with no claimed SEI diagram type.
-No optional account or mapping should be inferred solely to draw a diagram.
+No optional investigram or mapping should be inferred solely to draw a diagram.
 
 Recommend prioritizing runtime structure, breaker statechart and concurrent-caller
 sequence; retain admission flow as a useful contract/correction probe. Composition
-then tests reuse of structural and interaction forms across accounts. Before/after
+then tests reuse of structural and interaction forms across investigrams. Before/after
 correction depictions reuse those forms, keeping exact prior selections available.
 No new source analysis has established complete data for this inventory.
 
@@ -614,7 +614,7 @@ it. Selecting the improved definition does not establish compatibility of old be
 
 Thus the existing policy can be broad for one evaluation's results and silent about
 same-result semantic dependencies. If that is insufficient, add explicit impact
-semantics or qualified checking of affected accounts; do not silently invent it.
+semantics or qualified checking of affected investigrams; do not silently invent it.
 Actual conflation requires distinguished referents and correspondence rather than
 retaining S merely for convenient continuity.
 
@@ -627,13 +627,13 @@ fixtures or their existing citation-based reconsideration results.
 
 | Case | Qualified investigation result | Proposed organizational effect |
 | --- | --- | --- |
-| Separate discoveries | Account A introduces entity S1 and B independently introduces S2 for what each calls Half-open. A later account compares both and asserts same-entity correspondence, with basis and limits. | Preserve both IDs and all original associations. Matching names alone never joins them. Correspondence alone need not retire either identity. |
-| Merge proposal | The comparison account additionally introduces S3, or selects an existing entity, as successor to S1/S2 and explains why those organizing identities should be superseded. | Fresh access discloses the qualified successors; exact references still resolve to S1/S2. Do not silently pool all claims into S3. |
-| Split proposal | An investigation finds that R conflates a state category and an execution phase, introduces category S and phase E, and proposes that they supersede R. | Preserve R and its accounts. Associate particular old content with S or E only through explicit qualified findings; unresolved content stays associated with R. |
+| Separate discoveries | Investigram A introduces entity S1 and B independently introduces S2 for what each calls Half-open. A later investigram compares both and asserts same-entity correspondence, with basis and limits. | Preserve both IDs and all original associations. Matching names alone never joins them. Correspondence alone need not retire either identity. |
+| Merge proposal | The comparison investigram additionally introduces S3, or selects an existing entity, as successor to S1/S2 and explains why those organizing identities should be superseded. | Fresh access discloses the qualified successors; exact references still resolve to S1/S2. Do not silently pool all claims into S3. |
+| Split proposal | An investigation finds that R conflates a state category and an execution phase, introduces category S and phase E, and proposes that they supersede R. | Preserve R and its investigrams. Associate particular old content with S or E only through explicit qualified findings; unresolved content stays associated with R. |
 
 A proposed reconsideration warning identifies the supersession cause and the affected
-entity reference: “This account refers to R, subsequently reported as conflating S and E.”
-That is distinct from exposure to a corrected identifying account. An account can refer
+entity reference: “This investigram refers to R, subsequently reported as conflating S and E.”
+That is distinct from exposure to a corrected identifying investigram. An investigram can refer
 to R without ever receiving its first description. Entity-use reconsideration therefore
 needs an extension; existing correction propagation must not be reported as already
 handling it. Supersession is not a correction of every associated claim. Competing or
