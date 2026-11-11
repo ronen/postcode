@@ -194,6 +194,12 @@ path. Here an ordering-only definition shares seven citations with the synthesis
 a later BULKHEAD-1 or TRIAL-1 correction can leave it flagged despite unchanged
 ordering claims. The current slice has no clearance operation.
 
+Contrast DEFINITIONS-1: its producing evaluation received only ORIENTATION-0,
+so its consumers avoid the behavioral sibling's correction path without inheriting
+this synthesis's broader context. This ties the [partition guidance](../contracts.md#provisional-partition-default)
+to evaluation boundaries. The distinction concerns relevant correction paths, not
+context volume alone; necessary evidence must not be withheld to reduce warnings.
+
 This is now a concrete planning risk, not merely an unspecified future convenience.
 Before settling the implementation package, explicitly accept the cost of uncleared
 causes or prioritize a bounded qualified reassessment probe. Finer per-output exposure

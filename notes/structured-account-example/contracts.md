@@ -116,6 +116,22 @@ be the root; it does not need a wrapper just to follow this rule. Descriptions o
 local/minor terms can stay embedded. Any departure should explain the coherence or
 delivery reason and acknowledge the wider correction/citation unit.
 
+Assess partition together with the producing evaluation's exposure. DEFINITIONS-1
+was produced with only ORIENTATION-0 as retained-account context; its consumers can
+avoid the separate admission sibling's correction path. COMPOSITION-DEFINITIONS-1
+shares seven synthesis citations, so a component correction can reach the definition
+and propagate through it to later consumers. Children narrow direct correction and
+citation units; they do not isolate inherited correction causes. Their reconsideration
+benefit is greatest when the producing evaluation has few relevant exposure paths,
+not simply a small token count or few context records. Qualification-scope and
+independent-access benefits remain even with broad exposure.
+
+Where identification can be adequately established from a bounded basis, a separate
+evaluation can preserve that smaller exposure boundary. This is an orchestration
+tradeoff, not a requirement to introduce subjects early or withhold necessary context
+to avoid warnings. The default partition rule and evaluation boundaries should be
+reviewed together; no per-output exposure exception is implied.
+
 This remains a recommendation, not an adopted schema rule. The [children variant](children/README.md)
 now exercises ownership, independent qualification and support selection in authored
 fixtures. The mixed-account fixture remains a comparison; neither is application input.

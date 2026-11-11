@@ -1078,6 +1078,16 @@ assertion into a child. A departure should state its coherence/delivery rational
 acknowledge the broader correction/citation unit. This remains a recommendation;
 the children variant now exercises ownership, independent qualification and support
 selection in authored fixtures, not through the implemented application.
+Compare the producing evaluations as well as direct citation targets. DEFINITIONS-1
+received only ORIENTATION-0; its consumers avoid the separate admission sibling's
+correction path. COMPOSITION-DEFINITIONS-1 shares seven synthesis citations, so
+component corrections can reach it and then its consumers. The relevant factor is
+which correction paths exist, not context volume alone. Independently qualified
+identification from a bounded basis can make separate evaluations useful, with added
+orchestration cost. Do not withhold necessary context or force premature subject
+introduction to minimize warnings. Broad exposure does not erase the independent
+qualification, access and correction-target benefits of identifying children.
+
 Compare actual delivery paths; a diagram's nested graph or keyed node does not
 require a child investigram. Removing the existing hierarchy is not necessary to choose no children
 for a particular result.
