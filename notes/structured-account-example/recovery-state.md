@@ -69,4 +69,3 @@ Account content: [followup-result.json](followup-result.json). Reference keys be
 | E-state | [source](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts) — CircuitState and state getter |
 
 [Captured basis and delivery context](context-and-bindings.json) · [Exact diagram/legend mapping](diagram-traceability.json)
-

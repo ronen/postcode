@@ -98,4 +98,3 @@ Account content: [composition-result.json](composition-result.json). Reference k
 | E-policy | [source](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/Policy.ts) — wrap: ordered invocation of existing policy instances |
 
 [Captured basis and delivery context](context-and-bindings.json) · [Exact diagram/legend mapping](diagram-traceability.json)
-

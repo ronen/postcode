@@ -138,7 +138,7 @@ def render_state(a, item, ledger, pointer, directory, write):
     trace.append(trace_entry(stem, 'Q', [pointer + '/displayLabel', pointer + '/overviewScope', pointer + '/coverage', pointer + '/applicability', pointer + '/outcomeQualification', pointer + '/stateBearer', pointer.split('/content/')[0] + '/qualifications', pointer.split('/content/')[0] + '/evidence']))
     if directory != BASE / 'children':
         emit(directory / (stem + '.mmd'), '\n'.join(lines) + '\n', write)
-    emit(directory / (stem + '.md'), '\n'.join(page) + '\n', write)
+    emit(directory / (stem + '.md'), '\n'.join(page).rstrip() + '\n', write)
     return trace
 
 
@@ -224,7 +224,7 @@ def render_sequence(a, item, ledger, pointer, directory, stem, account_id, write
     trace.append(trace_entry(stem, 'Q', [account_pointer + '/qualifications', account_pointer + '/evidence'] + [pointer + '/' + k for k in scope_fields], account_id))
     if directory != BASE / 'children':
         emit(directory / (stem + '.mmd'), '\n'.join(lines) + '\n', write)
-    emit(directory / (stem + '.md'), '\n'.join(page) + '\n', write)
+    emit(directory / (stem + '.md'), '\n'.join(page).rstrip() + '\n', write)
     return trace
 
 
