@@ -233,14 +233,15 @@ adequacy for a statechart.
 The concept is **Interaction / trace-oriented behavior**, and the reference diagram
 type is a **sequence diagram**: SEI *Documenting Behavior* §6.2.3, already indexed in
 [the reference notes](../../initial-journey/architectural-concept-references.md#interaction).
-Snapshot notes add explicit resource/state assertions from this payload; we are not
+Snapshot summaries point to explicit resource/state assertions in their legends; we are not
 claiming the reference defines this JSON or a standard resource-occupancy notation.
 
-- [Bulkhead outside breaker](bulkhead-outside.svg) ([Mermaid input](bulkhead-outside.mmd)).
-- [Breaker outside bulkhead](breaker-outside.svg) ([Mermaid input](breaker-outside.mmd)).
+- [Bulkhead outside breaker, with legend](bulkhead-outside.md) ([Mermaid input](bulkhead-outside.mmd)).
+- [Breaker outside bulkhead, with legend](breaker-outside.md) ([Mermaid input](breaker-outside.mmd)).
 
-A small [fixture tool](check-and-render.py) checks references and writes the Mermaid
-inputs plus [traceability](diagram-traceability.json) from the structured records. It
+A small [fixture tool](check-and-render.py) checks references and uses the shared
+[overview generator](../render-overviews.py) to write/check Mermaid inputs, keyed
+legends and [traceability](diagram-traceability.json) from the structured records. It
 adds layout/notation only: it does not calculate occupancy, infer waiting, merge role
 identities or transfer Half-open between bearers. Captions show the scoped prefix;
 the complete qualifications and evidence remain in the linked account and this note.

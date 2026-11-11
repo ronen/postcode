@@ -256,28 +256,32 @@
                 "role": {
                   "localRole": "bulkhead"
                 },
-                "label": "Outer bulkhead"
+                "label": "Outer bulkhead",
+                "displayLabel": "Bulkhead"
               },
               {
                 "key": "breaker",
                 "role": {
                   "localRole": "breaker"
                 },
-                "label": "Inner breaker"
+                "label": "Inner breaker",
+                "displayLabel": "Breaker"
               },
               {
                 "key": "trial",
                 "role": {
                   "localRole": "trial"
                 },
-                "label": "First trial execution"
+                "label": "First trial execution",
+                "displayLabel": "Trial"
               },
               {
                 "key": "caller",
                 "role": {
                   "localRole": "caller"
                 },
-                "label": "Later execution"
+                "label": "Later execution",
+                "displayLabel": "Caller"
               }
             ],
             "policyOrder": [
@@ -318,7 +322,8 @@
                   "E-policy"
                 ],
                 "from": "trial",
-                "to": "bulkhead"
+                "to": "bulkhead",
+                "displayLabel": "Request trial"
               },
               {
                 "key": "reserve-trial-capacity",
@@ -330,7 +335,8 @@
                 "causedBy": [
                   "trial-request"
                 ],
-                "actor": "bulkhead"
+                "actor": "bulkhead",
+                "displayLabel": "Take first slot"
               },
               {
                 "key": "trial-to-breaker",
@@ -343,7 +349,8 @@
                   "reserve-trial-capacity"
                 ],
                 "from": "bulkhead",
-                "to": "breaker"
+                "to": "breaker",
+                "displayLabel": "Invoke breaker"
               },
               {
                 "key": "trial-start",
@@ -357,7 +364,8 @@
                 "causedBy": [
                   "trial-to-breaker"
                 ],
-                "actor": "breaker"
+                "actor": "breaker",
+                "displayLabel": "Start trial work"
               },
               {
                 "key": "caller-request",
@@ -367,7 +375,8 @@
                   "E-policy"
                 ],
                 "from": "caller",
-                "to": "bulkhead"
+                "to": "bulkhead",
+                "displayLabel": "Request later execution"
               },
               {
                 "key": "reserve-caller-capacity",
@@ -379,7 +388,8 @@
                 "causedBy": [
                   "caller-request"
                 ],
-                "actor": "bulkhead"
+                "actor": "bulkhead",
+                "displayLabel": "Take second slot"
               },
               {
                 "key": "caller-to-breaker",
@@ -392,7 +402,8 @@
                   "reserve-caller-capacity"
                 ],
                 "from": "bulkhead",
-                "to": "breaker"
+                "to": "breaker",
+                "displayLabel": "Invoke breaker"
               },
               {
                 "key": "wait",
@@ -410,7 +421,8 @@
                 "relationship": {
                   "localRelation": "recovery-wait"
                 },
-                "condition": "First trial still occupies the sole trial slot on arrival."
+                "condition": "First trial still occupies the sole trial slot on arrival.",
+                "displayLabel": "Await recovery"
               }
             ],
             "alternatives": [],
@@ -477,7 +489,8 @@
                   "E-policy",
                   "E-bulkhead",
                   "E-half-open"
-                ]
+                ],
+                "displayLabel": "Caller holds bulkhead slot while waiting"
               }
             ],
             "notShown": [
@@ -490,7 +503,9 @@
               "E-admission",
               "E-half-open",
               "E-default"
-            ]
+            ],
+            "displayLabel": "Bulkhead outside breaker",
+            "overviewScope": "Possible prefix; two bulkhead slots; one trial"
           },
           {
             "key": "application-of-components",
@@ -639,28 +654,32 @@
                 "role": {
                   "localRole": "breaker"
                 },
-                "label": "Outer breaker"
+                "label": "Outer breaker",
+                "displayLabel": "Breaker"
               },
               {
                 "key": "bulkhead",
                 "role": {
                   "localRole": "bulkhead"
                 },
-                "label": "Inner shared bulkhead"
+                "label": "Inner shared bulkhead",
+                "displayLabel": "Bulkhead"
               },
               {
                 "key": "occupant",
                 "role": {
                   "localRole": "occupant"
                 },
-                "label": "Bulkhead-only execution"
+                "label": "Bulkhead-only execution",
+                "displayLabel": "Other work"
               },
               {
                 "key": "trial",
                 "role": {
                   "localRole": "trial"
                 },
-                "label": "Recovery trial execution"
+                "label": "Recovery trial execution",
+                "displayLabel": "Trial"
               }
             ],
             "policyOrder": [
@@ -702,7 +721,8 @@
                   "E-bulkhead"
                 ],
                 "from": "occupant",
-                "to": "bulkhead"
+                "to": "bulkhead",
+                "displayLabel": "Request independent work"
               },
               {
                 "key": "occupy-capacity",
@@ -714,7 +734,8 @@
                 "causedBy": [
                   "occupant-request"
                 ],
-                "actor": "bulkhead"
+                "actor": "bulkhead",
+                "displayLabel": "Occupy execution slot"
               },
               {
                 "key": "trial-request",
@@ -725,7 +746,8 @@
                   "E-admission"
                 ],
                 "from": "trial",
-                "to": "breaker"
+                "to": "breaker",
+                "displayLabel": "Request trial"
               },
               {
                 "key": "trial-admitted",
@@ -739,7 +761,8 @@
                 "causedBy": [
                   "trial-request"
                 ],
-                "actor": "breaker"
+                "actor": "breaker",
+                "displayLabel": "Reserve trial slot"
               },
               {
                 "key": "inner-request",
@@ -753,7 +776,8 @@
                   "trial-admitted"
                 ],
                 "from": "breaker",
-                "to": "bulkhead"
+                "to": "bulkhead",
+                "displayLabel": "Invoke bulkhead"
               },
               {
                 "key": "enqueue",
@@ -766,7 +790,8 @@
                   "inner-request",
                   "occupy-capacity"
                 ],
-                "actor": "bulkhead"
+                "actor": "bulkhead",
+                "displayLabel": "Queue trial request"
               },
               {
                 "key": "wait",
@@ -786,7 +811,8 @@
                 "relationship": {
                   "localRelation": "capacity-wait"
                 },
-                "condition": "Independent work is still pending and no capacity has been released."
+                "condition": "Independent work is still pending and no capacity has been released.",
+                "displayLabel": "Await capacity"
               }
             ],
             "alternatives": [],
@@ -853,7 +879,8 @@
                   "E-policy",
                   "E-bulkhead",
                   "E-half-open"
-                ]
+                ],
+                "displayLabel": "Trial holds trial slot while queued"
               }
             ],
             "notShown": [
@@ -866,7 +893,9 @@
               "E-admission",
               "E-half-open",
               "E-default"
-            ]
+            ],
+            "displayLabel": "Breaker outside bulkhead",
+            "overviewScope": "Possible prefix; one bulkhead slot + one queue place; one trial"
           },
           {
             "key": "application-of-components",

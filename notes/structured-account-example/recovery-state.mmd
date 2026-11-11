@@ -1,15 +1,15 @@
 ---
-title: "Partial recovery statechart"
+title: "Recovery states"
 ---
 stateDiagram-v2
-  direction TB
+  direction LR
   state "Closed" as s0
   state "Open" as s1
   state "Half-open" as s2
-  s1 --> s2: Execution requested [Recovery delay elapsed] / Reserve trial slot and start supplied work
-  s2 --> s0: Trial counted successful [Completing trial belongs to the current Half-open state] / Close and release waiting executions
-  s2 --> s1: Trial counted failed [Completing trial belongs to the current Half-open state] / Restart backoff and release waiting executions
+  s1 --> s2: T1 · Request [delay elapsed]
+  s2 --> s0: T2 · Counted success [current trial]
+  s2 --> s1: T3 · Counted failure [current trial]
   note right of s2
-    Shared breaker role#59; default single trial, no reentrant<br/>entry calls. Static partial account#59; not all<br/>configurations of P.
-    Success and failure here are breaker classifications.<br/>An error not matched by the failure policy is recorded<br/>as recovery success and still delivered to its caller.
+    Partial model#59; default single trial
+    Q: scope · T1–T3: guarded transitions
   end note

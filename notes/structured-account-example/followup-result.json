@@ -302,7 +302,8 @@
                 "evidence": [
                   "E-admission",
                   "E-half-open"
-                ]
+                ],
+                "displayLabel": "Request [delay elapsed]"
               },
               {
                 "key": "close-after-trial",
@@ -315,7 +316,8 @@
                   "E-half-open",
                   "E-outcomes",
                   "E-default"
-                ]
+                ],
+                "displayLabel": "Counted success [current trial]"
               },
               {
                 "key": "reopen-after-trial",
@@ -328,7 +330,8 @@
                   "E-half-open",
                   "E-outcomes",
                   "E-default"
-                ]
+                ],
+                "displayLabel": "Counted failure [current trial]"
               }
             ],
             "outcomeQualification": "Success and failure here are breaker classifications. An error not matched by the failure policy is recorded as recovery success and still delivered to its caller.",
@@ -343,7 +346,9 @@
                 "subject": "P"
               },
               "scope": "Recovery of the shared breaker scenario role under the account qualifications. Discoverable as an account about P, not an assertion covering every instance or configuration of P."
-            }
+            },
+            "displayLabel": "Recovery states",
+            "overviewScope": "Partial model; default single trial"
           },
           {
             "key": "concurrent-callers",
@@ -365,21 +370,24 @@
                 "subject": {
                   "introducedSubject": "trial-execution"
                 },
-                "label": "Trial execution"
+                "label": "Trial execution",
+                "displayLabel": "Trial"
               },
               {
                 "key": "breaker",
                 "subject": {
                   "introducedSubject": "shared-breaker"
                 },
-                "label": "Shared breaker"
+                "label": "Shared breaker",
+                "displayLabel": "Breaker"
               },
               {
                 "key": "caller",
                 "subject": {
                   "introducedSubject": "concurrent-execution"
                 },
-                "label": "Concurrent execution"
+                "label": "Concurrent execution",
+                "displayLabel": "Caller"
               }
             ],
             "prefix": [
@@ -391,7 +399,8 @@
                 "text": "Request execution after recovery delay",
                 "evidence": [
                   "E-admission"
-                ]
+                ],
+                "displayLabel": "Request trial"
               },
               {
                 "key": "enter",
@@ -405,7 +414,8 @@
                 ],
                 "causedBy": [
                   "trial-request"
-                ]
+                ],
+                "displayLabel": "Start trial"
               },
               {
                 "key": "caller-request",
@@ -415,7 +425,8 @@
                 "text": "Request execution while trial is in flight",
                 "evidence": [
                   "E-half-open"
-                ]
+                ],
+                "displayLabel": "Request while trial pending"
               },
               {
                 "key": "wait",
@@ -433,7 +444,8 @@
                   "caller-request",
                   "enter"
                 ],
-                "condition": "The sole trial slot reserved on entry remains occupied when the concurrent request arrives."
+                "condition": "The sole trial slot reserved on entry remains occupied when the concurrent request arrives.",
+                "displayLabel": "Await recovery"
               },
               {
                 "key": "trial-work-completes",
@@ -442,7 +454,8 @@
                 "text": "Supplied trial work completes with a result or error",
                 "evidence": [
                   "E-half-open"
-                ]
+                ],
+                "displayLabel": "Work completes"
               },
               {
                 "key": "trial-outcome",
@@ -455,7 +468,8 @@
                 ],
                 "evidence": [
                   "E-half-open"
-                ]
+                ],
+                "displayLabel": "Report outcome"
               },
               {
                 "key": "classify-trial-outcome",
@@ -467,7 +481,8 @@
                 ],
                 "evidence": [
                   "E-half-open"
-                ]
+                ],
+                "displayLabel": "Classify outcome"
               }
             ],
             "alternatives": [
@@ -486,7 +501,8 @@
                     ],
                     "causedBy": [
                       "classify-trial-outcome"
-                    ]
+                    ],
+                    "displayLabel": "Close; release waiter"
                   },
                   {
                     "key": "success-release",
@@ -503,22 +519,25 @@
                     ],
                     "causedBy": [
                       "close"
-                    ]
+                    ],
+                    "displayLabel": "Recheck admission"
                   },
                   {
                     "key": "ordinary-work",
                     "kind": "action",
                     "actor": "breaker",
-                    "text": "With Closed still current, invoke the waiting caller’s supplied work",
+                    "text": "With Closed still current, invoke the waiting caller\u2019s supplied work",
                     "evidence": [
                       "E-admission",
                       "E-half-open"
                     ],
                     "causedBy": [
                       "success-release"
-                    ]
+                    ],
+                    "displayLabel": "Run work [still Closed]"
                   }
-                ]
+                ],
+                "displayLabel": "Counted success"
               },
               {
                 "key": "failure",
@@ -536,7 +555,8 @@
                     ],
                     "causedBy": [
                       "classify-trial-outcome"
-                    ]
+                    ],
+                    "displayLabel": "Reopen; release waiter"
                   },
                   {
                     "key": "failure-release",
@@ -553,7 +573,8 @@
                     ],
                     "causedBy": [
                       "reopen"
-                    ]
+                    ],
+                    "displayLabel": "Recheck admission"
                   },
                   {
                     "key": "refusal",
@@ -566,14 +587,16 @@
                     ],
                     "causedBy": [
                       "failure-release"
-                    ]
+                    ],
+                    "displayLabel": "Refuse [delay unelapsed]"
                   }
-                ]
+                ],
+                "displayLabel": "Counted failure"
               }
             ],
             "notShown": [
               "Delivery order of results to the trial caller",
-              "Completion or result of the concurrent caller’s work on the success branch",
+              "Completion or result of the concurrent caller\u2019s work on the success branch",
               "Other scheduling interleavings"
             ],
             "evidence": [
@@ -581,7 +604,9 @@
               "E-half-open",
               "E-outcomes",
               "E-default"
-            ]
+            ],
+            "displayLabel": "One trial, one waiting caller",
+            "overviewScope": "Possible ordering; default single trial"
           }
         ],
         "children": []

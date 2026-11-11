@@ -265,6 +265,46 @@ labels here, not claims that the references standardize these exact payloads.
 Keyed prose is a valid form under any relevant concept. The catalogue need not force
 each concept into one diagram, nor require a diagram for every explanation.
 
+<a id="concise-overviews-and-legends"></a>
+## Concise overviews and keyed legends
+
+The [readability examples](diagrams.md) add two optional authored fields to the
+provisional contract: `displayLabel` is a short, meaningful label on a content item
+or a named element (participant, transition, step, branch or situation), and
+`overviewScope` is a concise statement of an item's scope for an overview. These are
+qualified architectural wording, not an invitation for a renderer to invent summaries.
+Existing detailed descriptions, guards, effects, causes, evidence and qualifications
+remain attached to the same elements. The examples require these fields where the
+compact generator uses them; other content forms need not acquire them by default.
+
+A renderer can assign display-local keys such as T1, I4 or S1 mechanically and map
+them to exact content in a separate legend. These keys are not subject identities,
+stable content keys, cross-account correspondences or correction units. Their scope
+is the particular diagram/legend pair; retain the mapping with exact presentation
+artifacts rather than resolving an old key against a later regenerated figure.
+Keep meaningful names where they fit; do not replace every name with a code.
+
+The overview must signal its partial scope and where full conditions are available.
+Shortening must not present a conditional transition as unconditional: the statechart
+retains terse guard cues on edges, while the legend supplies the exact trigger, guard
+and effect. A state-change action, after-state snapshot and structured transition
+remain different kinds of content even if their labels are similar. Preserve stated
+causal links in the legend; proximity and sequence position do not add causes.
+
+The legend carries element-level detail, relevant account/item qualification and
+support, and an exact mapping to the source account content. It is part of the
+meaning-bearing delivery when the overview depends on it, not optional decoration.
+An isolated image remains explicitly an overview. Moving detail into a legend must
+not shed its limitations or manufacture complete-target delivery: supplying selected
+diagram content and its legend still cites its source investigram but need not
+supply that investigram's complete own content. Exact/full access remains available.
+
+The mixed and children variants can share a picture because their behavioral data
+match; their legend pages and source mappings remain variant-specific. A short label
+change is an authored-content change in these fixtures; a mechanically assigned
+legend-key change is presentational. This exploration adopts neither a universal
+label vocabulary nor a full export/navigation system.
+
 ## Qualified account relationships
 
 The example's correction record supplies a local key, kind, reporter, earlier target,

@@ -1065,3 +1065,15 @@ future transition-level consumer needs new qualified general or scenario-local s
 content. P/B input is explicitly an unordered pair for examining both orderings;
 C-BB/C-BH become single-subject follow-up entry points. These findings refine the open
 Lens-offer and content-form questions without adopting a wider universal contract.
+
+## 2026-11-11 — Clearer overviews and separate legends
+
+The human finds the statechart boxes and sequence annotations too dense. The
+[readability pass](structured-account-example/diagrams.md) uses meaningful concise
+labels, mechanically assigned display references and separate legends for detailed
+meaning. Authored `displayLabel`/`overviewScope` fields remain associated with full
+qualified content; rendering must not invent semantic abbreviations. Keep scope
+visible, conditional edges recognizably conditional, and preserve exact legend/source
+mapping and evidence. Mixed and children variants retain separate legends even when
+their images match. This is an example-level contract refinement and presentation
+probe, not a new GUI or a reason to discard the full accounts.

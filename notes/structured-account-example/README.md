@@ -16,6 +16,9 @@ The [children variant](children/README.md) now supplies complete paired submissi
 self-contained children, exact/fresh selections and ownership checks. Start there
 for the recommended partition; this page remains the mixed-account comparison.
 
+Start with the [compact diagram overviews and keyed legends](diagrams.md) for the
+readability examples. Full meanings and qualifications remain alongside each picture.
+
 ## Read the example
 
 1. [Context and bindings](context-and-bindings.json): the investigation inputs,

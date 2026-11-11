@@ -9,6 +9,9 @@ not imply shared allocated records between variants. The separated category desc
 vocabulary and phrased as identification; qualification is not broadened merely by
 moving content. No broader behavioral/state-model applicability is established.
 
+The [statechart with legend](recovery-state.md) and [interaction with legend](concurrent-callers.md)
+use concise authored labels and preserve this variant's own scope and source mapping.
+
 ## Files and reading order
 
 1. [First result](first-result.json): substantive root plus independently qualified

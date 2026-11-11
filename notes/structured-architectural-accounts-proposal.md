@@ -874,6 +874,17 @@ is supplied by this probe, and the earlier TRIAL-1 statechart is not rebound.
 
 ## Structured content and diagrams
 
+**Readability refinement.** The [four overview examples](structured-account-example/diagrams.md)
+now use concise authored labels and a separate keyed legend. Proposed optional
+`displayLabel` and `overviewScope` fields preserve a direct association with the
+full qualified element; renderers may assign display-local references mechanically.
+Keep meaningful names where possible, retain guard cues and a visible scope notice,
+and put detailed conditions, effects, causes and support in the linked legend.
+The mapping belongs to the exact diagram/legend pair, not subject identity. A selected
+figure and legend are not automatically complete own-account delivery. This updates
+the illustrative content contract without introducing a general presentation system.
+
+
 **Discussion distinction and recommendation.** Retaining qualified accounts and
 expressing architectural meaning are separate design questions. Reuse the subject,
 association, evidence, immutable-account, correction and exact-access mechanisms

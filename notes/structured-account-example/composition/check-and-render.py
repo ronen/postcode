@@ -7,7 +7,6 @@ import json
 from pathlib import Path
 import runpy
 import sys
-import textwrap
 
 BASE = Path(__file__).resolve().parent
 shared = runpy.run_path(str(BASE.parent / 'check-fixtures.py'))
@@ -180,74 +179,9 @@ for name, mutate in mutations.items():
         continue
     raise AssertionError('Malformed composition accepted: ' + name)
 
-# Rendering selects notation only. Snapshot content is asserted in JSON, not computed.
-state_labels = {i['subject']['introducedSubject']: i['name']
-                for a in read(BASE.parent / 'children/first-result.json')['result']['accounts']
-                for i in a['content'] if i['form'] == 'subject-description/0'}
-state_labels = {old_ledger['firstAcceptance']['subjectIds'][k]: v for k, v in state_labels.items()}
-trace = []
-
-
-def label(text):
-    escaped = text.replace('&', '&amp;').replace(';', ',').replace('\n', ' ')
-    return '<br/>'.join(textwrap.wrap(escaped, width=85))
-
-
-for index, stem in [(2, 'bulkhead-outside'), (3, 'breaker-outside')]:
-    a = document['result']['accounts'][index]
-    item = a['content'][0]
-    pointer = f'/result/accounts/{index}/content/0'
-    labels = {r['key']: r['name'] for r in item['roles']}
-    participants = {p['key']: f'p{n}' for n, p in enumerate(item['participants'])}
-    role_participant = {p['role']['localRole']: participants[p['key']] for p in item['participants']}
-    span = ','.join([next(iter(participants.values())), list(participants.values())[-1]])
-    lines = ['sequenceDiagram', '    title ' + item['title']]
-    for p in item['participants']:
-        lines.append(f'    participant {participants[p["key"]]} as {p["label"]}')
-    lines.append(f'    Note over {span}: {label(item["semantics"])}')
-    lines.append(f'    Note over {span}: ' + label('Policy order: ' + ' then '.join(labels[r['localRole']] for r in item['policyOrder'])))
-    for condition in item['conditions']:
-        lines.append(f'    Note over {span}: {label(condition)}')
-    trace.append({'diagram': stem + '.mmd', 'meaning': 'Title, roles, call order and declared scope',
-                  'pointers': [pointer + '/' + k for k in ['title', 'roles', 'participants', 'roleScope', 'policyOrder', 'conditions', 'semantics']],
-                  'qualificationPointer': f'/result/accounts/{index}/qualifications'})
-    for n, step in enumerate(item['prefix']):
-        if step['kind'] in ['request', 'response']:
-            arrow = '->>' if step['kind'] == 'request' else '-->>'
-            lines.append(f'    {participants[step["from"]]}{arrow}{participants[step["to"]]}: {label(step["text"])}')
-        else:
-            actors = participants[step['actor']] if step['kind'] == 'action' else ','.join([participants[step['participant']], participants[step['on']]])
-            lines.append(f'    Note over {actors}: {label(step["text"])}')
-        trace.append({'diagram': stem + '.mmd', 'meaning': step['key'], 'pointers': [pointer + f'/prefix/{n}']})
-    for n, snap in enumerate(item['situations']):
-        lines.append(f'    Note over {span}: Asserted situation after {snap["afterStep"]} - partial snapshot')
-        for state in snap['stateAssignments']:
-            r = state['bearer']['localRole']
-            lines.append(f'    Note over {role_participant[r]}: State: {state_labels[state["category"]["subject"]]}')
-        for occupancy in snap['resourceOccupancy']:
-            holder, owner = occupancy['holder']['localRole'], occupancy['owner']['localRole']
-            text = f'{labels[holder]} occupies {occupancy["amount"]} {RESOURCE_LABELS[occupancy["resource"]]} at {labels[owner]}'
-            lines.append(f'    Note over {role_participant[holder]},{role_participant[owner]}: {label(text)}')
-        for p in snap['executionProgress']:
-            lines.append(f'    Note over {role_participant[p["execution"]["localRole"]]}: Application work: {p["applicationWork"]}')
-        trace.append({'diagram': stem + '.mmd', 'meaning': 'Asserted state, resource occupancy and work progress', 'pointers': [pointer + f'/situations/{n}', pointer + '/relations']})
-    trace.append({'diagram': stem + '.mmd', 'meaning': 'Support and omissions accompany this preview, not drawn as architecture', 'pointers': [pointer + '/evidence', pointer + '/notShown']})
-    output = '\n'.join(lines) + '\n'
-    path = BASE / (stem + '.mmd')
-    if '--write-diagrams' in sys.argv:
-        path.write_text(output)
-    else:
-        assert path.read_text() == output, 'notation differs from payload; regenerate deliberately'
-for entry in trace:
-    for pointer in entry['pointers'] + ([entry['qualificationPointer']] if 'qualificationPointer' in entry else []):
-        value = document
-        for part in pointer.strip('/').split('/'):
-            value = value[int(part)] if isinstance(value, list) else value[part]
-path = BASE / 'diagram-traceability.json'
-if '--write-diagrams' in sys.argv:
-    path.write_text(json.dumps(trace, indent=2) + '\n')
-else:
-    assert read(path) == trace
-print('Composition results, local roles/relations, situation references, deliveries and diagram inputs pass; five malformed payload copies rejected.')
+# Shared overview generation preserves full meanings in keyed legends.
+overviews = runpy.run_path(str(BASE.parent / 'render-overviews.py'))
+overviews['render_composition'](document, '--write-diagrams' in sys.argv)
+print('Composition results, local roles/relations, situation references, deliveries and diagram/legend inputs pass; five malformed payload copies rejected.')
 print('Both follow-up selections resolve; nine malformed or ambiguous nested selections rejected.')
 print('Scope/causality and source applicability require interpretive review. No product or end-to-end acceptance is established.')
