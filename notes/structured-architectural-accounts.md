@@ -1077,3 +1077,23 @@ visible, conditional edges recognizably conditional, and preserve exact legend/s
 mapping and evidence. Mixed and children variants retain separate legends even when
 their images match. This is an example-level contract refinement and presentation
 probe, not a new GUI or a reason to discard the full accounts.
+
+## 2026-11-11 — Available investigations and recognized concepts
+
+Agreed exploratory direction: selectable “find out more” offers can be returned by
+investigations or discovered through a generic investigation-discovery request.
+Their question is atemporal; optional “recommended next” annotations need an inquiry
+context. Concern labels and blurbs help explain relevance without prescribing a
+journey. Retain the proposing account and qualified applicability. A selectable offer
+may carry agent-facing prose; the human need not author a prose question. Generating
+an offer does not create an executable capability. The offer schema and supported
+application interaction still need design.
+
+A subject can carry multiple qualified concept associations. A recognized catalogue
+provides stable meanings; custom concepts remain possible, with definitions rather
+than label-based equivalence. Such classifications can supply compact reusable context
+but remain account content with support, scope and exposure. Catalogue breadth is
+independent of specialized behavior. The human explicitly defers icons, automatic
+concept-specific operations and other special treatments as future features enabled
+by this structure. No comprehensive ontology, concept hierarchy inference or adoption
+of these mechanisms into the first implementation is implied.

@@ -74,6 +74,7 @@ Current recommendations sharpened by the complete-example review:
 | Behavioral content | Supply the causal chain through classification, transition, resume/recheck and admission outcome. Admission uses local variables and an illustration; the scenario state model references R directly. Shared syntax does not require redundant aliases or broader claims. |
 | Validation | Both partitions have a repeatable fixture checker and diagram traceability. Exact illustration access reports linked-account revision status without automatic retargeting or reconsideration. Cross-form semantics remain a separate assessment. |
 | Request/reuse | Distinguish request plus selected seed context from subsequent acquired context in provenance. Reuse freshness policy remains to be settled. |
+| Concept associations and offers | Multiple qualified concepts may describe a subject; recognition is not a whitelist. Selectable investigator-proposed “find out more” offers can carry concern annotations. Icons and automatic concept-specific treatments are deferred; offer delivery/validation remains to be designed. |
 
 ## The proposed capability
 
@@ -576,10 +577,40 @@ from record kind and producer provenance. A free-form assertion that something i
 a module cannot grant compiler capabilities; Lens applicability also requires the
 actual supported analysis context.
 
+**Agreed exploratory direction — concept associations.** A subject may have several
+qualified concept associations: Foo may provide priority-queue behavior, be a shared
+mutable resource, and serve as a scheduler's pending-work queue. Preserve the sense
+of each assertion (implements, is an instance of, uses, or plays a role), its scope,
+origin and support; do not collapse these into an intrinsic unqualified type field.
+Compatible aspects and conflicting classifications must remain distinguishable.
+A compact classification can provide useful context without rediscovery, with fuller
+support requestable. Its substantive delivery still cites its containing account;
+calling it a tag does not remove qualification or exposure obligations.
+
 **Needs design — interpretive Lens offers.** Define what makes a question applicable
 to a qualified or initially unknown subject, the support it requires, and how an
 offer is explained. Classification may inform this without becoming established
 fact. Deferring compiler capabilities does not by itself settle interpretive offers.
+
+**Agreed exploratory direction — selectable “find out more” offers.** The human
+should select an available investigation rather than formulate its question in prose.
+An investigator may return applicable offers with its result or through a generic
+request to discover available investigations. The offer's meaning is atemporal;
+“recommended next” is an optional annotation tied to a particular inquiry, not a
+required sequence. Concise concern labels and explanatory blurbs can accompany it.
+For example, “Compare wrapping orders” can identify timing/resource occupancy as its
+concerns without presupposing a measured performance effect. An annotation asserting
+an architectural effect requires qualified support.
+
+Retain the originating account, exact subjects/roles, applicability and scope. A
+label, intelligible purpose, supported interpretive method and selectable parameters
+can specify the request behind the offer; agent-facing instructions may use prose.
+These fields are recommendations to work through, not an adopted offer schema.
+Offers from different accounts can coexist. Generating an offer does not add a new
+executable capability or establish that the set is exhaustive. Automatic selection
+of operations from concept tags is a separate, deferred treatment; dynamic offers
+need not depend on a complete operation ontology. Availability, retrieval, validation
+and first-capability inclusion still need design.
 
 The composition probe supplies concrete scoping evidence: P/B is an unordered set of
 component kinds for a question covering both orders, with no outer/inner meaning in
@@ -926,6 +957,23 @@ when no diagram is appropriate. Use one structured content model: a supported fo
 can be as simple as a keyed prose explanation, and other forms express states,
 transitions or interactions. Results may combine these forms. The catalogue is not
 limited to diagram types; prose is content within the model, not a separate channel.
+
+**Agreed exploratory direction — recognition without mandatory special treatment.**
+A source-grounded catalogue can grow into a broad recognized vocabulary without
+becoming a long user menu or a whitelist. Curate meanings, aliases and source-specific
+distinctions rather than treating every scraped term as a standardized concept.
+Agents may use an unregistered concept with a name and concise definition; do not
+infer equivalence to a recognized concept merely from matching text. The catalogue
+identifier denotes a meaning; association of that meaning with a subject remains a
+qualified account claim. The associations are many-to-many, not one concept per subject.
+
+Recognition alone does not promise an icon, special renderer, concept-specific
+operation or automatic applicability rule. The human explicitly defers those special
+treatments as future features the structure permits. Likewise, no comprehensive
+hierarchy or automatic inference over concept relationships is required now. Existing
+structured-form/diagram probes remain useful without implementing generalized
+concept-dispatched behavior. Catalogue population can be incremental and independent
+of specialized treatment; exact custom-concept designation/reuse remains to be designed.
 
 An investigator can use a concept because the investigation requests it or because
 the investigator judges it relevant. Recommend distinguishing concept meaning and
@@ -1291,7 +1339,8 @@ confidence has sometimes exceeded the examples supporting them.
   families and notations; it is not already a coherent ontology. Test whether concept
   guidance, content contracts and diagram mappings need distinct entries and
   relationships. Do not assume a schema for each named concept or let the diagram
-  inventory define the full architectural vocabulary. Keep the initial catalogue small.
+  inventory define the full architectural vocabulary. Start with a bounded catalogue
+  slice; allow the recognized vocabulary to grow independently of special treatments.
 - **Definition partition and support.** A definition child is an example partition,
   not a universal normalization rule. The actionable default uses explicit introduction
   of shared subjects, when mixed with behavior, as the signal for identifying children.
