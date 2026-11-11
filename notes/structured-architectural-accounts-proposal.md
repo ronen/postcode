@@ -9,7 +9,8 @@ open. The [discussion notes](structured-architectural-accounts.md) retain the
 alternatives, implementation inspection and research behind this synthesis.
 
 Current recommendations, including the review refinements, are stated inline.
-Remaining choices are marked **Needs design** where they arise and collected below.
+Remaining account-design choices are marked **Needs design** where they arise and
+collected below. Surrounding application choices are context, not prerequisites.
 The proposed reduction of first-delivery scope has not been agreed.
 
 The [first concrete walkthrough](structured-architectural-accounts-example.md) tests
@@ -73,7 +74,7 @@ Current recommendations sharpened by the complete-example review:
 | Relationship K | Retain/index separately; cite its reporter for substantive explanation. This does not deliver the reporter's complete own content or enable independent revision of K. |
 | Behavioral content | Supply the causal chain through classification, transition, resume/recheck and admission outcome. Admission uses local variables and an illustration; the scenario state model references R directly. Shared syntax does not require redundant aliases or broader claims. |
 | Validation | Both partitions have a repeatable fixture checker and diagram traceability. Exact illustration access reports linked-account revision status without automatic retargeting or reconsideration. Cross-form semantics remain a separate assessment. |
-| Request/reuse | Distinguish request plus selected seed context from subsequent acquired context in provenance. Reuse freshness policy remains to be settled. |
+| Request/reuse | Distinguish request plus selected seed context from subsequent acquired context in provenance. Preserve those inputs for application reuse decisions; a general reuse freshness policy is outside this design. |
 | Concept associations and offers | Multiple qualified concepts may describe a subject; recognition is not a whitelist. Selectable investigator-proposed “find out more” offers can carry concern annotations. Icons and automatic concept-specific treatments are deferred; offer delivery/validation remains to be designed. |
 
 ## The proposed capability
@@ -100,9 +101,9 @@ Require enough machinery to retain and retrieve accounts, preserve support and
 scope, follow subjects and explicit relationships, record supported corrections or
 inconsistencies, and expose structured explanations faithfully. Do not make universal
 identity resolution, automatic conflict detection, complete dependency tracking or
-global consistency prerequisites. Reconciliation remains an explicit investigation
-with qualified outcomes. Correction partition should support useful explanation and
-revision, not promise perfect semantic independence; uncertainty about broader
+global consistency prerequisites. Any future reconciliation would require explicit
+investigation with qualified outcomes; no reconciliation operation is required here.
+Correction partition should support useful explanation and revision, not promise perfect semantic independence; uncertainty about broader
 impact can be recorded rather than solved automatically. This framing does not
 relax existing qualification, exact-access or correction obligations. Accept that
 users and investigators may need to compare accounts and perform further inquiry.
@@ -129,6 +130,14 @@ qualified content, exact references, contextual subjects, provenance and deliver
 semantics—without making a complete investigation catalogue or request journey a
 prerequisite. A bounded verification path may specify representative inputs without
 settling the app-wide investigation interface.
+
+Apply this boundary to the open questions below: this work specifies what account
+content, references, qualification, retention and access must preserve. Examples may
+stipulate entry operations and context policies to exercise those guarantees. General
+investigation availability, discovery ranking, resource budgets and reuse policy are
+surrounding application choices, not prerequisites for this proposal. Integration
+must respect existing governing contracts; any necessary bounded extension must be
+identified separately from an app-wide redesign.
 
 Viewing several accounts together does not make them multiple subjects of a Lens,
 supply them to an investigator, establish agreement, or create a new retained aggregate.
@@ -406,11 +415,11 @@ support, without introducing a saved collection solely to support display groupi
 
 ### One mechanism across producers
 
-Use a shared domain mechanism for declaring/reusing subjects, retaining qualified
-information, validating references, indexing associations and selecting content.
-Mechanical analyses and interpretations both contribute through it. Existing modules
-are architectural subjects too; do not introduce parallel architectural module IDs
-or a permanent legacy-subject exception behind a common lookup facade.
+Use a common subject/reference contract for declaring/reusing subjects, retaining
+qualified information, validating references, indexing associations and selecting
+content. Mechanical analyses and interpretations must remain compatible with that
+contract. Existing modules are architectural subjects too; avoid allocating parallel
+architectural module IDs merely to use them in interpreted accounts.
 
 Producers still differ. Mechanical discovery preserves its deterministic
 same-Session identity and capture rules. Interpretation uses supplied IDs and new
@@ -421,6 +430,9 @@ Mechanical results do not become investigrams to fit the common mechanism.
 The human confirms that commonality is necessary at the subject-facing level; how
 deeply producers share internal mechanisms can emerge later. A common subject
 contract does not by itself settle allocation, storage or migration implementation.
+Demonstrate compatibility with an existing mechanical subject in the bounded path;
+shared internal retention/allocation machinery or migration of mechanical producers
+is not a prerequisite. Any such implementation scope needs a separate choice.
 
 The shared contract includes qualified-information retention as well as identity
 and indexing; it need not eagerly compute every mechanical item before Lens
@@ -495,9 +507,10 @@ Ordering by retention time is a possible discovery aid, not evidence that an acc
 is authoritative, most applicable or the one the human came from. Preserve known
 origin separately; leave it unknown when absent. Bare-reference results are not
 content exposure; substantive titles/descriptions and retrieved content are.
-**Needs design:** delivery/query contracts, ordering and bounds. Current association
-lookup does not implement this referent-based capability; it needs extension and
-an origin-free discovery fixture, independently of the caller-selected example.
+**Needs design:** referent-based discovery/retrieval contracts that preserve
+qualification, exposure and disclosed limits. Current association lookup needs
+extension for this capability. An origin-free fixture can stipulate an ordering and
+delivery bound without selecting the general discovery-ranking policy.
 
 ## Introduction and change
 
@@ -525,8 +538,12 @@ the dialogue actually supplies afterward. Available, requested and delivered mat
 are distinct. Do not make unknown future acquisitions part of a pre-execution request
 key. Request-time identity includes the selected seed context; any reuse policy must
 separately state when later retained-context changes require a fresh investigation.
-**Needs design:** discovery/query capabilities, continuation/bounds, reuse eligibility
-and freshness, and how acquired support is fixed in exact answers.
+**Needs design:** access to the new retained content, full/partial delivery and
+omission disclosure, and how acquired support is fixed in exact answers. The hybrid
+above is a provisional example policy. General initial-context selection, discovery
+ordering, dialogue budgets and reuse eligibility/freshness belong to surrounding
+application design. Preserve the information those policies require without making
+their general design part of this capability.
 Do not treat this as a requirement to choose all relevant accounts before starting.
 
 ### Routes for subject introduction
@@ -619,8 +636,9 @@ context for this account design, not its implementation deliverables:
 | Follow-up investigation | Execute an exact retained offer, with its declared selections/parameters, as described below. |
 
 Overview versus Explain is a distinction of information need, not simply long versus
-short output. Exact applicability and parameter contracts still need design; these
-names do not imply the current implementation already supports all these routes.
+short output. Exact applicability and parameter contracts remain surrounding
+application work; these names do not imply the current implementation supports all
+these routes.
 
 Existing structural queries/Lenses, including module listings, provide possible
 subjects for Overview or Explain. They keep their mechanical methods and guarantees;
@@ -650,8 +668,10 @@ These fields are recommendations to work through, not an adopted offer schema.
 Offers from different accounts can coexist. Generating an offer does not add a new
 executable capability or establish that the set is exhaustive. Automatic selection
 of operations from concept tags is a separate, deferred treatment; dynamic offers
-need not depend on a complete operation ontology. Availability, retrieval, validation
-and first-capability inclusion still need design.
+need not depend on a complete operation ontology. Qualified offer content, exact
+references and delivery/validation are account-design questions. General availability
+and discovery are surrounding application work; production invocation is a separate
+first-delivery scope choice, not implied by the retained-offer fixture.
 
 <a id="offered-followup-investigation"></a>
 **Illustrative application context — Follow-up investigation Lens.** Use a general
@@ -667,8 +687,10 @@ P and B as architectural targets, their unordered selection semantics, the suppo
 interpretive method and any selectable parameters. “Composition order” need not
 become a globally predefined Lens: the follow-up Lens provides the invocation
 mechanism, while the selected offer specifies the architectural investigation.
-Exact field names, offer validation and request/reuse identity remain to be designed;
-this is a proposed request shape, not an implemented API.
+The fixture stipulates a request shape to test exact offer resolution and provenance;
+it is not an implemented API. Account-content validation remains in scope. General
+Lens applicability, parameter interaction and request reuse policy remain surrounding
+application work.
 
 Keep invocation subject and architectural referents distinct. The new explanation
 can describe P, B and their ordered patterns, with corresponding associations, even
@@ -775,10 +797,12 @@ qualified scope and revision/conflict context. A contextual selection preserves 
 description used there, with later correction context distinguished. A subject-only
 selection resolves identifying candidates through explicit associations; it need not
 invent an origin to do so. Multiple definitions are not silently reconciled and the
-entire subject history need not be supplied. **Needs design:** candidate selection,
-bounds and additional associated context for subject-only requests. These are distinct
-from discovering every referring account; a bare selection does not guarantee that
-ADMISSION-1 is found or available for correction.
+entire subject history need not be supplied. **Needs design:** identifying-support
+references, qualification and omission disclosure for subject-only requests. Examples
+may stipulate candidate selection and delivery bounds; a general relevance policy
+is outside this work. These guarantees are distinct from discovering every referring
+account; a bare selection does not guarantee that ADMISSION-1 is found or available
+for correction.
 
 ### Sequence — the definition-child alternative
 
@@ -890,10 +914,12 @@ judgments, correspondence and synthesis establishing new claims require qualifie
 Capture actual selected input context: a stable subject ID alone is insufficient
 as a reuse key when its supplied descriptions change.
 
-**Needs design — request and origin.** Specify the request alternative above,
-context acquisition/selection policy, request-time identity and reuse freshness.
-Origin records lineage; it affects answer/reuse identity when it changes substantive selected input
-or qualification, not merely because the human reached the same request differently.
+**Needs design — request and origin.** Specify how the bounded request represents
+selected subjects, exact account/offer references and supplied context, and how actual
+deliveries are recorded. Stipulate a context policy for verification; do not require
+a general relevance or reuse-freshness policy. Origin records lineage; it affects
+answer/reuse identity when it changes substantive selected input or qualification,
+not merely because the human reached the same request differently.
 
 ### Shared local roles and exact illustration addresses
 
@@ -1326,17 +1352,21 @@ promise of a public API or general query store.
 
 ## Proposed scope and validation
 
-Recommend one mechanical producer and subsequent interpretation sharing the subject
-mechanism; admission/follow-up/correction; explicit selection and exact historical
-access; and the representative diagram content above. Preserve all three introduction
-routes in the design, but distinguish model coverage from first delivery.
+Recommend admission/follow-up/correction, explicit selection and exact historical
+access, and the representative diagram content above. Demonstrate compatibility
+between an existing mechanical subject and subsequent interpreted accounts through
+the common subject/reference contract. This does not require migrating a mechanical
+producer or sharing its internal storage. Preserve all three introduction routes in
+the design, but distinguish model coverage from first delivery.
 
 **Scope choice remains open.** The initial proposal exercised all routes through
 implementation. The review recommends explicit introduction/reuse as the delivered
 path, with local/prose promotion, correspondence/conflation and composition as
 design or fixture probes initially. That narrower path is the current recommendation
 for discussion, not an agreed reduction. A fixture using seeded material does not
-demonstrate an implemented promotion or reconciliation operation.
+demonstrate an implemented promotion or reconciliation operation. Qualified
+correspondence and conflation must be representable, but operations that resolve
+identity disputes or reconcile accounts remain outside this bounded capability.
 
 Validation needs several kinds of evidence:
 
@@ -1350,6 +1380,8 @@ Validation needs several kinds of evidence:
   subject, follow it, reuse actual retained content and acquire program evidence.
   Assess semantic fidelity independently. Seeded orientation does not demonstrate
   discovery; a seeded omission does not demonstrate reliable error detection.
+  Use existing supported entry operations or an explicitly bounded integration
+  extension; this check does not require global offer discovery or a new entry catalogue.
 - **Content-to-diagram inspection:** construct small views from retained content;
   check traceability, omissions, conflicts and role distinctions. Content sufficiency,
   truth and human intelligibility are separate questions to assess.
@@ -1440,9 +1472,9 @@ confidence has sometimes exceeded the examples supporting them.
   compatibility merely to make an answer readable. Bounded closure remains open.
 - **One mechanism across producers.** Shared subject/reference semantics remain the
   intended direction. The first delivery's migration depth and common retention
-  machinery are not demonstrated by that principle. Test one mechanical producer
-  and one interpretation before fixing internal factoring or broad migration scope;
-  preserve mechanical guarantees and avoid unnecessary parallel identities.
+  machinery are not demonstrated by that principle. Test interpreted use of an
+  existing mechanical subject before considering shared internal machinery or
+  migration; preserve mechanical guarantees and avoid unnecessary parallel identities.
 
 1. **Concrete concept and content contracts.** Organize concept guidance, supported
    forms and diagram mappings; draft the state-behavior and interaction entries
@@ -1460,13 +1492,14 @@ confidence has sometimes exceeded the examples supporting them.
    deferred; do not accidentally infer withdrawal from revising its reporter.
 4. **End-to-end subject and application access.** Specify interpreted identity and
    reuse guarantees, exact naming/local-key resolution, qualified identifies/refers-to
-   associations, ordinary entry and applicable investigation offers. Work through
-   subject-only versus explicit-origin context, dialogue acquisition, competing
-   descriptions and exact-answer support. Demonstrate one mechanical producer and
-   interpretation through the common subject contract; deeper factoring can emerge.
-5. **First delivery and verification.** Decide which introduction/promotion paths,
-   relationship kinds and reconciliation operations are delivered versus only probed.
-   Composition and merge/split remain design probes unless explicitly included.
+   associations and exact retained-offer references. Use a representative supported
+   invocation to work through subject-only versus explicit-origin context, actual
+   dialogue delivery, competing descriptions and exact-answer support. Demonstrate
+   compatibility with an existing mechanical subject. General entry/offer discovery,
+   context ranking, reuse policy and producer migration are not prerequisites.
+5. **First delivery and verification.** Decide which introduction/promotion paths
+   and account-relationship kinds are delivered versus only probed. Composition and
+   merge/split remain design probes; reconciliation operations are outside this slice.
    Use real investigation to test discovery/reuse, fixtures for lifecycle and API
    guarantees, and bounded rendering for content sufficiency. Human pushback and
    general presentation remain out of scope; detailed reassessment is deferred as

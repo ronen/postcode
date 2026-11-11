@@ -1128,3 +1128,17 @@ but old references remain on ADMISSION-1; access probes distinguish captured ans
 partial offer disclosure and full correction context. This exercises account content,
 resolution and provenance without designing global discovery or changing the broader
 application remit. No live protocol acceptance is claimed.
+
+## 2026-11-11 — Tightening the account-design remit
+
+The human authorizes tightening the proposal after a scope audit. Keep qualified
+account content, subject/reference compatibility, exact access, actual context
+delivery and retained-offer provenance in scope. Global entry operations, offer
+availability/discovery, general context ranking/budgets and investigation reuse
+policy are surrounding application choices; examples may stipulate them without
+making their design prerequisites. Compatibility with an existing mechanical subject
+does not require migrating its producer or sharing internal storage. Qualified
+correspondence/conflation remain representable, while reconciliation operations are
+outside the bounded capability. The proposal's inline open questions and closing
+checklist now apply these distinctions. This does not adopt a payload, authorize
+implementation or settle the remaining first-delivery choices.
