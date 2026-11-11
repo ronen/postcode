@@ -612,6 +612,40 @@ of operations from concept tags is a separate, deferred treatment; dynamic offer
 need not depend on a complete operation ontology. Availability, retrieval, validation
 and first-capability inclusion still need design.
 
+<a id="offered-followup-investigation"></a>
+**Agreed exploratory direction — Follow-up investigation Lens.** Use a general
+follow-up Lens whose subject is the exact retained investigram containing an offer,
+and whose parameter identifies that offer by a stable key local to that investigram.
+The subject is the retained account, not the transient execution record of the
+investigation that produced it. Additional selections can fill parameters declared
+by the offer; human-authored prose is not required.
+
+For example, the user selects “Compare wrapping orders.” The request names the
+originating investigram and its offer key. That retained offer supplies the question,
+P and B as architectural targets, their unordered selection semantics, the supported
+interpretive method and any selectable parameters. “Composition order” need not
+become a globally predefined Lens: the follow-up Lens provides the invocation
+mechanism, while the selected offer specifies the architectural investigation.
+Exact field names, offer validation and request/reuse identity remain to be designed;
+this is a proposed request shape, not an implemented API.
+
+Keep invocation subject and architectural referents distinct. The new explanation
+can describe P, B and their ordered patterns, with corresponding associations, even
+though the request selects the originating account. Record the exact originating
+account/offer and actual supplied context as follow-up provenance. The new result
+does not append a child to the immutable original or establish a correction merely
+by following its offer. The UI may expose the offer while showing its relevant
+subjects without requiring the user to navigate back to the originating account.
+
+Selecting an offer need not deliver its source investigram's complete own content.
+The substantive offer and supporting content actually supplied retain attribution,
+qualification and ordinary exposure semantics; bare identifiers alone do not count
+as content delivery. Offer delivery does not by itself establish complete-target
+eligibility. Resolve the exact offer, preserve its scope and disclose applicable
+revision/reconsideration status; do not silently substitute an identically named
+offer from a replacement account. Offers remain within supported investigative
+capabilities rather than creating executable operations by declaration.
+
 The composition probe supplies concrete scoping evidence: P/B is an unordered set of
 component kinds for a question covering both orders, with no outer/inner meaning in
 input position. Its output introduces C-BB and C-BH as qualified ordered-pattern
