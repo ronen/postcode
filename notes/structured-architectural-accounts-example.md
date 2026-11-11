@@ -593,6 +593,21 @@ semantics or qualified checking of affected accounts; do not silently invent it.
 Actual conflation requires distinguished referents and correspondence rather than
 retaining S merely for convenient continuity.
 
+## Qualification and orientation refinement
+
+The concrete children variant now selects qualifications for each identifying child's
+own claims. State categories are identified at the pinned basis without a default-
+sampling restriction; scenario roles retain the single-slot context needed for their
+identification. Behavioral exclusions stay with the behavior they limit. This does
+not generalize unexamined behavior or make identities authoritative.
+
+TRIAL-RESULT-1 now orients the reader instead of repeating waiting/release claims.
+A root summary would be another correction surface, not a view automatically kept
+current by child replacement. The state bearer references R directly; local variables
+remain available across forms, but identity binding is not called an illustration.
+W's identifying content can be intelligible without including its full behavior;
+an exact related-content link locates that behavior without delivering it implicitly.
+
 ## What this pass suggests
 
 The child partition supports correction identity and coherent initial explanations,

@@ -71,7 +71,7 @@ Current recommendations sharpened by the complete-example review:
 | Account partition | When mixed with behavior, put descriptions of explicitly introduced shared subjects in identifying children by default. Grouping is allowed; identification-only roots need no wrapper. Both partitions now have complete authored fixtures and ownership/support checks. |
 | Identifying support | Use replacement descriptions when their containing account is replaced; unchanged identifying siblings remain available. Original input/history is separately labelled; exact older answers remain fixed. `affectedSubjects` is not an item-survival mask. |
 | Relationship K | Retain/index separately; cite its reporter for substantive explanation. This does not deliver the reporter's complete own content or enable independent revision of K. |
-| Behavioral content | Supply the causal chain through classification, transition, resume/recheck and admission outcome. Shared item-local roles serve admission and state content; qualified illustrations bind scenario subjects. R’s state model stays scenario-scoped. |
+| Behavioral content | Supply the causal chain through classification, transition, resume/recheck and admission outcome. Admission uses local variables and an illustration; the scenario state model references R directly. Shared syntax does not require redundant aliases or broader claims. |
 | Validation | Both partitions have a repeatable fixture checker and diagram traceability. Exact illustration access reports linked-account revision status without automatic retargeting or reconsideration. Cross-form semantics remain a separate assessment. |
 | Request/reuse | Distinguish request plus selected seed context from subsequent acquired context in provenance. Reuse freshness policy remains to be settled. |
 
@@ -761,10 +761,12 @@ or qualification, not merely because the human reached the same request differen
 Use one optional role mechanism in the structured content-item envelope across forms:
 `roles` declares item-local variables, `roleScope` qualifies their binding, and
 `illustrations` supplies qualified mappings to scenario subjects and exact target items.
-The admission and state items now exercise this common mechanism. Keys are scoped to
-an exact owning item, not account-global or automatically shared by name. A local role
-is not a retained subject. Broader applicability requires qualified interpretation;
-changing the state bearer to a local role does not generalize its scenario claim.
+The admission item exercises this mechanism. The scenario state item references R
+directly; a local name for that same participant adds no variable or generality.
+An illustration maps a general account to an example, not two names for one scenario
+participant. Keys remain scoped to exact items, not account-global or matched by name.
+A local role is not a retained subject. Broader applicability still requires qualified
+interpretation; syntax alone does not generalize the state model.
 
 Cross-account item addresses fix an account reference plus a content key. Local keys
 inside the item can further designate a role, case or relationship occurrence under
@@ -779,9 +781,15 @@ an exposure citation or a new reconsideration/clearance rule.
 The children fixture uses one owning position per account: result root, ordered child
 slot or correction-replacement root. All positions are reachable through child and
 reporter-to-replacement ownership links, without cycles or shared subtrees. Content
-references do not supply ownership. Children have their own qualified support and
-identifying associations; replacing the behavioral child leaves the identifying child
-unchanged. Fresh selection discloses displacement rather than mutating the old tree.
+references do not supply ownership. Children have their own applicable qualifications and identifying associations;
+replacing the behavioral child leaves the identifying child unchanged. Self-contained
+qualification means judging each child's own claims, not copying every restriction.
+State-category identification carries basis/method limits without a default-sampling
+restriction; scenario role identification retains the single-slot context needed to
+distinguish those roles. Removing limits requires checking support or narrowing claims,
+not simply deleting inconvenient qualifiers. Minimal identifying support need not
+include occurrence/release behavior: exact related-content links can locate that
+explanation without supplying or citing it. Fresh selection discloses displacement rather than mutating the old tree.
 
 ### Composition as a design probe
 
@@ -1015,7 +1023,11 @@ require a child investigram. Removing the existing hierarchy is not necessary to
 for a particular result.
 
 Organizational roots still carry qualified interpretation and ordinary exposure and
-correction semantics. They must be useful and intelligible, not empty scaffolding
+correction semantics. Orientation and scope claims can make them useful without
+restating child behavior. Restated summaries create additional correction surfaces;
+correcting a child does not silently update its root. Do not force a behavioral
+synthesis simply to satisfy the substantive-root requirement. Roots should be
+intelligible, not empty scaffolding
 disguised as an unqualified result container. A children-only result pattern would
 need separate justification if the examples show the roots add no explanatory value.
 

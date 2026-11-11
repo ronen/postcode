@@ -44,7 +44,11 @@ links are not ownership edges and cannot make an otherwise orphan account valid.
 
 Every account, including each child and an organizational root, carries its own
 qualifications, evidence, referents and associations. Nothing inherits from a parent
-by omission. Roots carry substantive qualified explanations, not empty containers.
+by omission. Roots may carry orientation and scope claims that make the result
+intelligible without restating the children's behavioral rules. Restatement is
+permitted but creates another claim and correction surface: correcting a child does
+not automatically correct a root summary. Do not invent a behavioral synthesis merely
+to make the root substantive.
 `identifies` belongs to the child containing the description when that is the chosen
 partition; parent composition does not duplicate that association. Replacing one
 child does not mutate its siblings, its parent, or the parent's fixed child list.
@@ -55,6 +59,24 @@ limit claims and identify their own evidence. The account's evidence union is no
 an assertion that every source supports every item. A nested event/transition keeps
 its more specific evidence. Evidence names here resolve through the fixture registry;
 production must preserve the corresponding captured basis and qualified support.
+
+When partitioning, determine the qualifications for each account's own claims:
+
+1. State what it identifies or asserts, including any scenario context needed to
+   distinguish the referents. Retain applicable source-basis and method limitations.
+2. Retain every condition needed for those claims. Put a restriction on a narrower
+   item, or separate the content, when it does not apply to the whole account.
+3. Do not copy unrelated behavioral exclusions merely because they qualified the
+   original combined explanation. Do not remove a limitation as an editorial shortcut
+   to broader applicability: verify the resulting description against its evidence,
+   narrow it to identification, or state what remains unestablished.
+
+DEFINITIONS-1 now identifies categories using the pinned `CircuitState` distinctions;
+its designations are not limited to default sampling, but it supplies no general
+admission/transition rules. ROLE-DEFINITIONS-1 preserves the single-slot scenario
+context that identifies its roles, without claiming occurrence or release behavior.
+This is claim-level qualification judgment, not a mechanical filter on keywords.
+
 An item excerpt must carry its source account identity, applicable account-level
 qualifications and basis, plus its own evidence and qualifications. An excerpt cannot
 silently shed limitations because the full account was not selected. Its substantive
@@ -66,6 +88,14 @@ delivery. The context ledger spells out this support envelope for the TRIAL-1 ex
 in one investigram. Classification is a qualified description of the subject, not a
 guarantee from allocating its ID. No authoritative global definition is selected by
 silently taking the newest description.
+
+Identifying intelligibility means enough information to distinguish the referent
+with its applicable scope and limitations, not a complete behavioral explanation.
+W's description identifies the participants and what is awaited; it does not specify
+when waiting occurs or ends. A `subject-description/0` item may supply `relatedContent`
+addresses with a stated purpose so a consumer can request that further explanation.
+The referenced content is not implicitly delivered, cited or needed to make W's
+minimal identification intelligible. If fetched, it carries its own qualifications.
 
 In the mixed variant, fresh replacement-aware identifying support uses ADMISSION-2's
 descriptions. In the children variant, DEFINITIONS-1 remains unchanged because K
@@ -133,14 +163,19 @@ Identical role names in different items do not assert correspondence. The role's
 context is its exact account, content key and local role key; allocating it does not
 introduce a retained subject or a general architectural fact.
 
-The admission item binds execution/instance roles separately per request. The state
-item uses the same mechanism for one scenario-scoped instance, explicitly bound to R
-in its illustration. That is a representational change, not a generalization to all
-instances/configurations of P. A broadly applicable state model requires qualified
-analysis regardless of the availability of a local-role syntax.
+The admission item binds execution/instance variables separately per request, then
+illustrates them with the named scenario. The scenario state item instead refers
+directly to R. It needs no variable plus binding merely to rename that same participant.
+The common mechanism remains available to other forms when variables add meaning;
+the fixture no longer forces a second use just to exercise the syntax. A broadly
+applicable state model would require qualified analysis before its instances could
+serve as illustrations.
 
 An `illustrations` entry identifies a target account/content item, binds owner-local
 roles to scenario subjects, and supplies qualification and evidence for that mapping.
+An illustration is a general-to-example relationship here, not an alternate encoding
+of identity between two names for the same scenario participant. Use a direct subject
+reference for the latter; no separate identity-binding mechanism is introduced.
 In this probe every declared role is bound once in each illustration. A form-specific
 selector may narrow what is illustrated: `case` selects an admission-case key; without
 one, the illustration concerns the owning item. Mapping does not establish global
@@ -151,6 +186,9 @@ correspondences invented by a renderer.
 ### Exact item addressing and linked revision disclosure
 
 A cross-account item address consists of an exact account reference and `contentKey`.
+Both `illustrations` and descriptive `relatedContent` links use this address shape,
+but they have distinct purposes: related content locates further explanation without
+asserting an illustrative binding or implying that its content has been supplied.
 Within a submission, for example, an illustration has
 `account: {submittedAccount: "trial"}, contentKey: "concurrent-callers"`.
 Acceptance fixes that account reference; subsequent retrieval uses the retained account
@@ -188,7 +226,7 @@ and from participating executions. State what causes a transition, what must hol
 and what it does. Declare partial coverage. A partial statechart may omit an initial
 marker; it must not manufacture one. The present form is a flat subset: richer
 statecharts would require explicit containment, entry/exit and concurrency semantics.
-In this sample the bearer is a local role bound to scenario subject R. The explicit
+In this sample the bearer is a direct reference to scenario subject R. The explicit
 applicability field connects the account to P without broadening it to all instances/configurations of P.
 The shared role mechanism also permits a type-level model, but establishing that
 broader applicability remains an open extension, not a mechanical reinterpretation.

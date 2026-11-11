@@ -96,6 +96,11 @@ def check_result(document, bindings, known_subjects, earlier, supplied, evidence
             if roles:
                 assert item['roleScope']
             references(item, roles)
+            for link in item.get('relatedContent', []):
+                ref = link['account']
+                target = accounts[ref['submittedAccount']] if 'submittedAccount' in ref else earlier[ref['account']]
+                assert link['contentKey'] in {i['key'] for i in target['content']}, 'unknown related content item'
+                assert link['purpose'], 'missing related-content purpose'
             for illustration in item.get('illustrations', []):
                 ref = illustration['account']
                 target = accounts[ref['submittedAccount']] if 'submittedAccount' in ref else earlier[ref['account']]
@@ -208,10 +213,13 @@ follow, follow_args = children[1]
 def trial_item(document, key):
     account = next(a for a in document['result']['accounts'] if a['key'] == 'trial')
     return next(i for i in account['content'] if i['key'] == key)
+def admission_item(document):
+    account = next(a for a in document['result']['accounts'] if a['key'] == 'admission-replacement')
+    return next(i for i in account['content'] if i['key'] == 'admission-cases')
 extra_mutations = {
-    'unknown item-local role': lambda d: trial_item(d, 'recovery').update(stateBearer={'localRole': 'absent'}),
-    'unknown target item': lambda d: trial_item(d, 'recovery')['illustrations'][0].update(contentKey='absent'),
-    'unqualified illustration': lambda d: trial_item(d, 'recovery')['illustrations'][0].update(qualification=''),
+    'unknown item-local role': lambda d: admission_item(d).update(stateBearer={'localRole': 'absent'}),
+    'unknown target item': lambda d: admission_item(d)['illustrations'][0].update(contentKey='absent'),
+    'unqualified illustration': lambda d: admission_item(d)['illustrations'][0].update(qualification=''),
     'forward causal reference': lambda d: trial_item(d, 'concurrent-callers')['prefix'][0].update(causedBy=['wait']),
 }
 for name, mutate in extra_mutations.items():

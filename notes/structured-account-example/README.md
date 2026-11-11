@@ -163,9 +163,12 @@ illustration while keeping their asserted correspondence inspectable. The exampl
 binding remains qualified analysis; neither selection nor rendering establishes it.
 No additional retained subject is needed for these item-local roles. `roles`,
 `roleScope` and `illustrations` belong to the shared structured-content envelope,
-not just the admission form. The state item now uses them too, preserving its
-scenario scope and binding its local breaker role to R. Identical role keys across
-items do not imply identity or correspondence.
+not just the admission form. Use them when variables add meaning: the scenario state
+item now references R directly instead of adding a redundant local name and treating
+identity as an illustration. Identical role keys across items do not imply identity
+or correspondence. The children variant separately reviews which qualifications apply
+to its identifying accounts; the mixed account's broad envelope still qualifies its
+embedded descriptions and must remain visible when they are excerpted.
 
 ## 4. Retain history and choose what to supply
 
@@ -226,7 +229,7 @@ The existing action/response forms carry these events without a new universal ev
 type. Trial-work completion is distinct from final result delivery to its caller,
 whose order remains omitted.
 
-The state bearer is now an item-local role explicitly bound to scenario subject R. The account describes P, so
+The state bearer directly references scenario subject R. The account describes P, so
 a question about P can find this qualified scenario account; it cannot silently treat
 it as a model of every instance/configuration. Shared role syntax permits a more
 general model, but establishing its broader applicability remains an open extension. The outcome guard now says the completing
@@ -269,7 +272,8 @@ correspondence. Exact answers retain their captured status/context.
 This gives useful disclosure for an explicit same-result content link without adding
 exposure-based reconsideration, automatic reassessment or retargeting. Delivering the
 target item's substantive content still cites its containing account. The same rules
-apply to the state item's illustration. A local occurrence can be designated for later
+apply to W’s descriptive link to its behavioral explanation; that link is not an
+illustrative binding. A local occurrence can be designated for later
 investigation without already having a shared general relationship identity.
 
 ## Checks and unresolved design choices
@@ -287,7 +291,7 @@ visually checked. These checks establish internally resolvable examples and usab
 diagram inputs, **not** semantic correctness, real agent reliability, or acceptance
 by the implemented application. No application code or API was changed. The
 [standalone fixture checker](check-fixtures.py) checks both partitions with Python 3,
-including shared roles in admission and state forms, child ownership and exact item
+including admission-local roles, direct state-bearer references, child ownership and exact item
 addresses. The children variant has its own traceability pointers into its payload,
 while reusing the identical behavioral diagrams.
 

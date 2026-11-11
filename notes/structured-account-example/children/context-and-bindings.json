@@ -296,6 +296,16 @@
         "ADMISSION-1"
       ],
       "note": "Every output of this evaluation shares these citations, including the role-definition child and replacement; K has its existing same-evaluation exemption."
+    },
+    {
+      "delivery": "Complete ROLE-DEFINITIONS-1 including W identification and a related-content address, without fetching that content",
+      "citations": [
+        "ROLE-DEFINITIONS-1"
+      ],
+      "completeTargets": [
+        "ROLE-DEFINITIONS-1"
+      ],
+      "note": "Identification supplies the participants and what is awaited, plus explicit limits. The address alone does not deliver or cite TRIAL-1; requesting its qualified behavior later would cite it."
     }
   ],
   "partitionProbe": {
@@ -305,5 +315,12 @@
     "laterCorrectionTarget": "ADMISSION-1",
     "expectedReconsiderationFromThisPath": false,
     "limit": "No other citation path is assumed. Grouped descriptions still share one correction target. Correcting DEFINITIONS-1 itself can affect every consumer of any of its descriptions."
+  },
+  "qualificationProbe": {
+    "question": "Can a later investigation of non-default sampling select S?",
+    "identifyingSupport": "DEFINITIONS-1 identifies the state category without limiting its designation to default sampling.",
+    "behavioralSupport": "ADMISSION-1, ADMISSION-2 and TRIAL-1 retain their own default-sampling limits. Reusing S does not generalize those behaviors.",
+    "scenarioSubjects": "R, E-trial, E-caller and W still designate their described scenario roles; ROLE-DEFINITIONS-1 preserves the single-slot identifying context.",
+    "basis": "Static identification checked against CircuitState at the pinned revision; this probe is not a non-default-sampling behavioral investigation."
   }
 }

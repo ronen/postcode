@@ -151,16 +151,24 @@
               "introducedSubject": "waiting"
             },
             "name": "Waiting for the recovery decision",
-            "description": "The relationship in this scenario between the concurrent execution and the shared breaker recovery decision. Its occurrence and release conditions are stated in the behavioral content.",
+            "description": "The scenario-specific relationship of the concurrent execution awaiting the shared breaker recovery decision. This identifies the participants and what is awaited; occurrence and release conditions are not specified by this description.",
             "classification": "architectural-relationship",
             "relativeTo": {
               "introducedSubject": "shared-breaker"
             },
             "evidence": [
-              "E-half-open",
-              "E-outcomes"
+              "E-half-open"
             ],
-            "introduceRetainedSubject": true
+            "introduceRetainedSubject": true,
+            "relatedContent": [
+              {
+                "account": {
+                  "submittedAccount": "trial"
+                },
+                "contentKey": "concurrent-callers",
+                "purpose": "Behavioral conditions and ordering for this scenario; further explanation, not part of the identifying description."
+              }
+            ]
           },
           {
             "key": "state-of",
@@ -245,7 +253,7 @@
             "concept": "state-behavior",
             "title": "Partial recovery statechart",
             "stateBearer": {
-              "localRole": "breaker"
+              "introducedSubject": "shared-breaker"
             },
             "coverage": {
               "status": "partial",
@@ -335,39 +343,7 @@
                 "subject": "P"
               },
               "scope": "Recovery of the shared breaker scenario role under the account qualifications. Discoverable as an account about P, not an assertion covering every instance or configuration of P."
-            },
-            "roles": [
-              {
-                "key": "breaker",
-                "description": "The one breaker instance participating in this qualified concurrent-caller scenario.",
-                "instanceOf": {
-                  "subject": "P"
-                }
-              }
-            ],
-            "roleScope": "One instance in the same bounded scenario described by this account, not a universally quantified recovery model for all instances or configurations of P.",
-            "illustrations": [
-              {
-                "account": {
-                  "submittedAccount": "trial"
-                },
-                "contentKey": "concurrent-callers",
-                "roleBindings": [
-                  {
-                    "role": "breaker",
-                    "subject": {
-                      "introducedSubject": "shared-breaker"
-                    }
-                  }
-                ],
-                "qualification": "The interaction illustrates this scenario-scoped state account with shared breaker role R. The binding does not broaden either account to all instances of P.",
-                "evidence": [
-                  "E-admission",
-                  "E-half-open",
-                  "E-outcomes"
-                ]
-              }
-            ]
+            }
           },
           {
             "key": "concurrent-callers",

@@ -994,3 +994,28 @@ malformed-copy probes. Behavioral diagram data is equal across partitions. This 
 authored design validation, not implemented acceptance or an end-to-end investigation.
 Broader applicability, general relationship identity, composition, and reassessment
 remain open; no governing material or product behavior was changed.
+
+## Applicable qualification and orientation repair (2026-11-11)
+
+The children review exposed a mistaken implementation of self-contained qualification
+as copying all behavioral limitations. DEFINITIONS-1's descriptions were rechecked
+against the pinned state vocabulary and narrowed to identification, with basis/method
+limits but no default-sampling restriction on the categories. ROLE-DEFINITIONS-1 keeps
+the single-slot scenario context needed to distinguish its subjects, without blanket
+behavioral exclusions. Reusing S does not generalize the default-scoped admission or
+trial behavior. Qualification selection is interpretive judgment, not a keyword filter.
+
+TRIAL-RESULT-1 now supplies orientation and locates the children, without restating
+waiting or release rules. Summaries remain permitted but create another correction
+surface; a child correction does not update a root summary. Roots need useful qualified
+content, not mandatory behavioral synthesis.
+
+The scenario state bearer again references R directly in both variants. Its local
+alias and supposed illustration merely renamed the same participant; common role
+syntax was no reason to force that indirection. Illustration retains the distinct
+general-to-example meaning demonstrated by admission. A second binding mechanism is
+not introduced. W's minimal description identifies participants and what is awaited,
+states that it does not specify occurrence/release conditions, and provides an exact
+related-content link. That link locates further explanation without delivering or
+citing the behavioral account. Independent identification need not be behaviorally
+complete. Structural checks cannot certify that the selected qualifications suffice.

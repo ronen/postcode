@@ -5,8 +5,9 @@ complete authored payloads, not an adopted schema, an executed investigator, or
 supported application input. It uses the [shared contracts](../contracts.md) and the
 same bounded Cockatiel interpretation as the [mixed-account comparison](../README.md).
 Each variant describes its own hypothetical Session; identical readable aliases do
-not imply shared allocated records between variants. No new source claims or broader
-state-model applicability are established by repartitioning the content.
+not imply shared allocated records between variants. The separated category descriptions have been rechecked against the pinned state
+vocabulary and phrased as identification; qualification is not broadened merely by
+moving content. No broader behavioral/state-model applicability is established.
 
 ## Files and reading order
 
@@ -36,6 +37,14 @@ delivered without INTRO-1 or ADMISSION-1; its meaning does not depend on inherit
 the root's qualifications. The root has substantive orientation content and describes
 P, rather than merely serving as a list of children.
 
+The definition child's qualifications are selected for its own claims, not copied
+from the behavioral sibling. Its state-category designations are not restricted to
+default sampling; it does not specify admission outcomes or transition rules for
+unexamined configurations. The descriptions use the pinned `CircuitState` distinctions
+([source](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts)).
+A later non-default-sampling inquiry can select S using this identifying support,
+while requiring new qualified behavioral analysis. The ledger includes that probe.
+
 ADMISSION-1 still contains the deliberately staged coverage error: its three cases
 omit waiting during an occupied trial. Its qualifications match the mixed example,
 including the reentrancy exclusion. The identifying descriptions do not repeat that
@@ -49,7 +58,7 @@ INTRO-1's own content is not supplied merely because it owns these children.
 ## Follow-up: new definitions, behavior and a replacement
 
 ```text
-TRIAL-RESULT-1             qualified synthesis: shared decision, separate execution progress
+TRIAL-RESULT-1             orientation: referents, behavioral questions and child scope
 ├── ROLE-DEFINITIONS-1     introduces/identifies R, E-trial, E-caller and W
 └── TRIAL-1                relations, prose, state behavior and interaction
     └─ reports K          ADMISSION-1 → ADMISSION-2 (correction, not composition)
@@ -57,12 +66,26 @@ TRIAL-RESULT-1             qualified synthesis: shared decision, separate execut
 ADMISSION-2                separate replacement tree; complete admission content
 ```
 
-TRIAL-RESULT-1 says that shared recovery state and each execution's progress differ,
-and that release leads to a recheck rather than guaranteed execution. These are
-qualified claims with their own evidence. ROLE-DEFINITIONS-1 supplies all four
-descriptions and their `identifies` associations with its own support. TRIAL-1
+TRIAL-RESULT-1 orients the reader to the shared state, execution roles and relationship
+under examination, and locates the identifying and behavioral explanations. It does
+not restate waiting, admission or release rules. Such summaries would create another
+correction surface; a corrected child would not automatically repair the summary.
+ROLE-DEFINITIONS-1 supplies all four descriptions and their `identifies` associations
+with its own support. TRIAL-1
 describes P and S, referring to the subjects declared in its sibling. It does not
 duplicate their descriptions or identifying associations.
+
+ROLE-DEFINITIONS-1 preserves the scenario context needed to identify these particular
+roles: one shared breaker, a single trial slot, and the concurrent execution. That is
+different from restricting the identity of state category S to default sampling.
+It does not inherit cancellation, reentrancy or outcome restrictions as blanket
+conditions on identification. Those qualify the behavioral account's claims.
+
+W's minimal description identifies the participants and what is awaited. It expressly
+does not supply occurrence/release conditions. Its exact `relatedContent` address
+locates TRIAL-1's interaction for a consumer needing those conditions; the address
+alone neither supplies the behavior nor cites TRIAL-1. The identification can be
+intelligible without being a complete behavioral explanation.
 
 K is reported by TRIAL-1, the behavioral child. Its explanation cites that reporter,
 not the root or the relationship ID. The reporter and replacement are in different
@@ -85,12 +108,12 @@ illustration maps them to R/E-caller and points to TRIAL-1's `concurrent-callers
 item, using W as the illustrated relationship. That mapping is authored, supported
 interpretation, not an inferred correspondence from matching names.
 
-The state item uses the same `roles`/`roleScope`/`illustrations` envelope for its
-breaker bearer. Its scope remains the bounded scenario, with an explicit binding
-to R. Sharing syntax does not make it a model of all instances/configurations of P.
-Role keys belong to exact content items: the two occurrences of `breaker` are not
-automatically one identity. General relationship identity and broader applicability
-remain questions for the composition probe.
+The state bearer is a direct reference to R. An item-local alias for that same
+scenario participant added no useful variable, and calling its binding an illustration
+confused identity with a general-to-example relationship. The redundant alias/binding
+has been removed from both variants. The common role contract remains available
+across forms, but this sample only uses variables where they add meaning. General
+relationship identity and broader state applicability remain for the composition probe.
 
 The interaction explicitly links wait initiation to the caller request and trial
 entry, conditioned on the slot still being occupied. Its later chain is completion,
@@ -132,7 +155,8 @@ The link is within the original follow-up evaluation, so it is not a prior-expos
 citation and does not itself flag ADMISSION-2. Surfacing the referenced account's
 status is useful without adding a propagation or clearance rule. Exact captured
 answers preserve their earlier status context; fresh inspection is separate.
-The analogous state-to-interaction illustration uses the same addressing rules.
+W’s related-content link uses the same exact addressing rules, with a descriptive
+purpose rather than an illustrative binding. Neither link silently delivers its target.
 
 ## Verification and limits
 
@@ -145,6 +169,11 @@ identification and an undeclared subject, plus invalid role/address/qualificatio
 forward-causality references. It also checks that the state/interaction
 items are identical across partitions and that ADMISSION-2 copies no definitions.
 Diagram traceability pointers resolve against this variant's actual payload.
+
+Choosing applicable qualifications was reviewed against the actual descriptions and
+source; the structural checker cannot decide whether a limitation is semantically
+necessary. Both variants' behavioral diagram data remains identical, so the direct
+bearer and qualification repairs do not require different rendered diagrams.
 
 These are checks of authored examples, not a production schema, semantic proof or
 end-to-end Session verification. The linked-account status probe is conditional,

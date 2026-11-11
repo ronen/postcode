@@ -102,15 +102,12 @@
         ],
         "qualifications": [
           "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
-          "Default one-call recovery sampling with zero permitted counted failures.",
-          "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
-          "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
-          "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+          "Identifies state categories of the Circuit breaker policy kind at the pinned revision. The category designations are not restricted to default sampling and do not designate runtime occurrences.",
+          "Identifying distinctions only: this account does not specify admission outcomes, sampling limits, transition timing or interference behavior for any configuration.",
+          "Partial vocabulary: manual isolation is mentioned only to distinguish automated Open; no isolated-state subject is introduced here. Descriptions do not establish observed runtime state or application health."
         ],
         "evidence": [
-          "E-state",
-          "E-admission",
-          "E-default"
+          "E-state"
         ],
         "content": [
           {
@@ -121,14 +118,13 @@
               "introducedSubject": "closed"
             },
             "name": "Closed",
-            "description": "A state category of the Circuit breaker policy kind in which ordinary supplied work is admitted.",
+            "description": "The ordinary-operation state category of the Circuit breaker policy kind, distinct from automated Open, Half-open recovery and manual isolation.",
             "classification": "state-category",
             "relativeTo": {
               "subject": "P"
             },
             "evidence": [
-              "E-state",
-              "E-admission"
+              "E-state"
             ],
             "introduceRetainedSubject": true
           },
@@ -140,14 +136,13 @@
               "introducedSubject": "open"
             },
             "name": "Open",
-            "description": "A state category withholding execution until the configured recovery delay makes an execution eligible to initiate a trial. Elapsed time alone does not change the stored state.",
+            "description": "The automated-open state category of the Circuit breaker policy kind, distinct from manual isolation and Half-open recovery.",
             "classification": "state-category",
             "relativeTo": {
               "subject": "P"
             },
             "evidence": [
-              "E-state",
-              "E-admission"
+              "E-state"
             ],
             "introduceRetainedSubject": true
           },
@@ -159,14 +154,13 @@
               "introducedSubject": "half-open"
             },
             "name": "Half-open",
-            "description": "A recovery state category of the Circuit breaker policy kind. Sampled work contributes to the decision to close or reopen the breaker; the category is not an individual execution or evidence of application health.",
+            "description": "The recovery state category of the Circuit breaker policy kind in which sampled work informs whether the breaker closes or reopens. This identifies a state category, not a runtime occurrence or an individual execution.",
             "classification": "state-category",
             "relativeTo": {
               "subject": "P"
             },
             "evidence": [
-              "E-state",
-              "E-default"
+              "E-state"
             ],
             "introduceRetainedSubject": true
           }

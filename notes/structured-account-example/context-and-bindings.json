@@ -184,7 +184,6 @@
           "evidence": [
             "E-default",
             "E-half-open",
-            "E-outcomes",
             "E-state"
           ],
           "revisionContext": "TRIAL-1 as retained in this answer; no known replacement at capture.",
