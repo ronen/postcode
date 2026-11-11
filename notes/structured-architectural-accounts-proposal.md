@@ -11,7 +11,8 @@ alternatives, implementation inspection and research behind this synthesis.
 Current recommendations, including the review refinements, are stated inline.
 Remaining account-design choices are marked **Needs design** where they arise and
 collected below. Surrounding application choices are context, not prerequisites.
-The proposed reduction of first-delivery scope has not been agreed.
+Remaining first-delivery choices have not been agreed; the earlier three-route
+introduction/promotion model has been replaced by explicit entity introduction/reuse.
 
 The [first concrete walkthrough](structured-architectural-accounts-example.md) tests
 a provisional definition/admission child partition, a subject request with explicit
@@ -26,7 +27,7 @@ actual proposed submissions, identity bindings, a qualified correction record an
 two diagrams generated from retained structured fields. That pass deliberately uses
 one investigram per coherent explanation, making repeated replacement content visible
 as a comparison with the earlier child partition. Neither partition is adopted.
-After review, use explicit shared-subject introduction as the actionable default:
+After review, use explicit entity introduction as the actionable default:
 when identifying descriptions are mixed with behavior, place them in one or more
 identifying children. Their citation targets can avoid exposure to behavioral-sibling
 corrections. Identification-only roots need no extra wrapper; local terms may stay embedded.
@@ -42,12 +43,16 @@ permits exploring this content while preserving qualification and revision contr
 
 ## Current exploratory checkpoint
 
-The design has a stable direction, but no adopted payload schema or planning package:
+The design has a stable direction, but no adopted payload schema or planning package.
+The current naming/model pass uses Entity for identified architectural things and
+Subject for a role; it supersedes the earlier retained-subject/registration vocabulary
+and three introduction routes. These are proposed refinements, not changes to the
+governing definitions or implemented API:
 
 - Retain qualified accounts and their history, allowing partiality and disagreement;
   do not require a reconciled architectural model.
-- Shared subject references provide continuity across accounts; identifying and
-  behavioral descriptions remain qualified claims, not authoritative subject fields.
+- Entity references organize accounts around explicitly identified architectural things; identifying and
+  behavioral descriptions remain qualified claims, not authoritative entity fields.
 - Use a common content protocol, including keyed prose and specialized architectural
   forms. Established concepts guide both investigation and explanation; diagrams
   test content sufficiency through a bounded rendering exercise.
@@ -69,7 +74,7 @@ Current recommendations sharpened by the complete-example review:
 
 | Topic | Position for the next design pass |
 | --- | --- |
-| Account partition | When mixed with behavior, put descriptions of explicitly introduced shared subjects in identifying children by default. Grouping is allowed; identification-only roots need no wrapper. Both partitions now have complete authored fixtures and ownership/support checks. |
+| Account partition | When mixed with behavior, put descriptions of explicitly introduced entities in identifying children by default. Grouping is allowed; identification-only roots need no wrapper. Both partitions now have complete authored fixtures and ownership/support checks. |
 | Identifying support | Use replacement descriptions when their containing account is replaced; unchanged identifying siblings remain available. Original input/history is separately labelled; exact older answers remain fixed. `affectedSubjects` is not an item-survival mask. |
 | Relationship K | Retain/index separately; cite its reporter for substantive explanation. This does not deliver the reporter's complete own content or enable independent revision of K. |
 | Behavioral content | Supply the causal chain through classification, transition, resume/recheck and admission outcome. Admission uses local variables and an illustration; the scenario state model references R directly. Shared syntax does not require redundant aliases or broader claims. |
@@ -92,7 +97,7 @@ consolidated architecture model. The accepted
 [accumulation requirement](../docs/decisions/structured-investigram-content.md#require-accumulated-understanding)
 and its [reaffirmation](../docs/decisions/specialized-architectural-investigation.md#retained-understanding-and-context)
 carry this into intended application behavior. Our discussion should apply that
-framing to the proposed mechanisms. Retained subjects provide continuity of reference
+framing to the proposed mechanisms. Entity references provide continuity of reference
 and access to accounts; they do not require one authoritative description or a
 globally reconciled graph. Architectural structure is asserted within qualified
 accounts, not silently accumulated as universally accepted program facts.
@@ -151,14 +156,16 @@ obtain an account of concurrent callers, see an explicit correction, and still
 retrieve the original answer. Retained content should also supply the meaning for
 representative architectural diagrams without a renderer inventing it.
 
-## Continuing subjects, qualified information, explicit selections
+## Entities, qualified information, explicit selections
 
 This vocabulary describes responsibilities, not storage tables or public API types.
 
 | Concept | Proposed responsibility |
 | --- | --- |
 | Subject | The governing role: what a Lens investigates or a claim concerns. Entities, relationships, collections and investigrams can play this role; it is not another entity kind. |
-| Retained subject reference | Working terminology for the common identity/reference mechanism. It identifies the referent playing the subject role without turning every referent into an Entity. Names aid recognition; references preserve the established identity. |
+| Entity | An explicitly identified architectural thing around which accounts and qualified items are organized. Mechanical and interpretive analyses can introduce entities. Identity does not establish one authoritative definition, uniqueness across discoveries or persistence beyond the supported scope. |
+| Entity reference | A reusable ID identifying an entity. A result uses local IDs for new entities; PostCode allocates global IDs on acceptance and resolves those local references. Existing entities are referenced by global ID. |
+| Referent | What a reference denotes; an entity can be a referent of many accounts. This is not a separate retained-object kind. |
 | Qualified item | Information about one or more subjects, with attributable scope, evidence, method/provenance and limitations. Definitions are one kind of information among others. |
 | Investigram | The existing immutable unit of retained interpretation; proposed content forms include keyed prose and specialized architectural structures. Mechanical claims retain their own character and guarantees. |
 | Architectural account | A coherent explanation that may occupy one or several investigrams. The explanatory term alone does not give a collection an identity or make it a correction target. |
@@ -166,7 +173,7 @@ This vocabulary describes responsibilities, not storage tables or public API typ
 | Identifying support | Qualified content making a referenced subject intelligible, with exact supporting references. It need not be a selected account constituent and is not evidence for every claim about the subject. |
 | Exact answer | A fixed record of selected content and support, including captured revision/association context. The proposed identifying support must be fixed too. |
 
-The retained architectural model comprises subjects, qualified information,
+The retained architectural model comprises entities, qualified information,
 relationships, support and revision/conflict history. It can be partial, contested
 and incomplete. Identity does not establish that a hypothesized relationship exists
 or that an account is correct. Cross-Session persistence and correspondence across
@@ -181,8 +188,10 @@ aggregate. A reference to that answer is distinct from references to its constit
 **Needs design — interpreted identity.** Governing documents allow implemented
 architectural subjects but do not specify the proposed allocation/continuity rules
 for interpreted referents such as Half-open. Specify their grounding, scope and
-guarantees, and assess the corresponding decision/document changes. Do not silently
-redefine Subject or extend Entity to cover every addressable thing.
+guarantees, and assess the corresponding decision/document changes. Subject remains
+a role, while Entity names the architectural thing. A selected
+passage, investigram or answer does not become an entity merely through addressability.
+The proposed common mechanism does not erase producer-specific identity guarantees.
 
 Extend existing immutable answer selection as needed for new subjects/content.
 Investigation input selection and UI composition remain distinct responsibilities;
@@ -235,7 +244,7 @@ suggests that its role in organizing accounts favors metadata rather than ordina
 architectural content. Recommend explicit relationship records supplied alongside
 accounts in the investigation result. They can be interpretively generated while
 serving as metadata in the retained model. This does not automatically make each
-relationship an investigram or promote it to a shared subject. Exact submission
+relationship an investigram or designate it as an architectural entity. Exact submission
 packaging and physical storage remain open.
 
 This refines the preceding partition analogy: if a relationship assertion lives
@@ -413,9 +422,9 @@ analysis. No new assembly Lens or revision-mode UI is selected here. **Needs des
 extend existing retrieval/selection contracts for new references and identifying
 support, without introducing a saved collection solely to support display grouping.
 
-### One mechanism across producers
+### One entity mechanism across producers
 
-Use a common subject/reference contract for declaring/reusing subjects, retaining
+Use a common entity/reference contract for declaring/reusing entities, retaining
 qualified information, validating references, indexing associations and selecting
 content. Mechanical analyses and interpretations must remain compatible with that
 contract. Existing modules are architectural subjects too; avoid allocating parallel
@@ -427,16 +436,33 @@ declarations. A compiler-derived export claim and an interpreted responsibility
 account can concern the same module M without sharing an epistemic guarantee.
 Mechanical results do not become investigrams to fit the common mechanism.
 
+Mechanical analysis introduces/reuses entities and supplies qualified identifying
+information, not their definitive architectural meaning. An entity ID may be opaque,
+but allocation must reuse mechanically established identity within its supported
+scope rather than minting a fresh ID on every encounter. UUID spelling would not
+replace the provider's identity rules. An interpreted policy kind P can still differ
+from its implementing module M.
+
+A result records its selected entity subject(s) as referents and can identify additional
+entities it concerns. Selected-subject provenance, result referents and associated
+qualified items remain distinct: selection does not establish that analysis succeeded
+or produced a definition. Every child need not duplicate the evaluation's entire
+subject list; referent membership belongs to the content/scope of that result unit.
+Qualified identifying, classification, behavior and open-topic items can all attach
+to an entity through exact account/item associations. Merely mentioning the entity
+is a separate discovery relationship. No common authoritative entity definition is
+assembled by either producer.
+
 The human confirms that commonality is necessary at the subject-facing level; how
-deeply producers share internal mechanisms can emerge later. A common subject
+deeply producers share internal mechanisms can emerge later. A common entity/reference
 contract does not by itself settle allocation, storage or migration implementation.
 Demonstrate compatibility with an existing mechanical subject in the bounded path;
 shared internal retention/allocation machinery or migration of mechanical producers
 is not a prerequisite. Any such implementation scope needs a separate choice.
 
-The shared contract includes qualified-information retention as well as identity
+The common entity contract includes qualified-information retention as well as identity
 and indexing; it need not eagerly compute every mechanical item before Lens
-evaluation. Shared allocation does not prevent independent discoveries of duplicate
+evaluation. Common allocation does not prevent independent discoveries of duplicate
 referents, including an interpreter describing a symbol whose mechanical ID it was
 not supplied. Reuse known references; preserve unresolved duplicates for qualified
 correspondence rather than promising automatic semantic deduplication.
@@ -546,50 +572,58 @@ application design. Preserve the information those policies require without maki
 their general design part of this capability.
 Do not treat this as a requirement to choose all relevant accounts before starting.
 
-### Routes for subject introduction
+### Entity introduction, reuse and contextual selection
 
-Allow three routes into the same subject mechanism:
+The purpose of entity identity is to organize accounts and their qualified items
+around the same architectural things, without requiring their descriptions to agree.
+Keeping all accounts alone does not establish which concern the same thing. One
+account can concern several entities; each entity can have identifying descriptions,
+classifications, behavioral items and other topics, as well as merely referring accounts.
+These are explicit qualified associations, not authoritative mutable entity fields.
 
-1. **Explicit introduction.** An investigation declares a useful subject using a
-   submission-local key, a name and an attributable identifying description.
-   PostCode validates the result and assigns a retained ID. Other content in the
-   same result can use that local key before allocation.
-2. **Local designation.** An investigram gives something a local key without creating
-   a shared subject yet. Later exploration can promote the exact investigram/key pair;
-   repeated promotion resolves to its established binding.
-3. **Contextual selection (including prose or diagram components).** A human follows wording such as “Half Open.” PostCode can
-   establish “Half Open as used in account A,” retaining the exact account and
-   selected occurrence/context where available. This records a focus, not an
-   inferred precise architectural definition. The initial designation is an
-   attributed selection record, not an investigram fabricated from the human action.
-   A selected diagram component can similarly resolve to its exact retained content
-   element and context. Display coordinates or a renderer's generated ID are not
-   sufficient identity. If the element already references a shared subject or has
-   an established promotion binding, reuse it. A component assembled from several
-   claims may require explicit disambiguation or qualified analysis; selection alone
-   does not establish their equivalence.
+Use one introduction mechanism. An analysis explicitly identifies new entities with
+local IDs, names and attributable identifying information. PostCode allocates global
+IDs when accepting the result, resolves all local references and retains introduction
+provenance atomically. References to existing entities use their supplied global IDs.
+An opaque ID, potentially a UUID, is a representation choice; no agent-generated IDs,
+preallocation dialogue or additional registration decision is required. Fixture IDs
+such as S are readable aliases. Equal names never establish identity.
 
-Submission-local subject keys and investigram-local designation keys have different
-owners and must remain distinguishable. Equal local keys in ADMISSION-1 and its
-replacement do not establish continuity. Reuse an existing shared subject reference
-or retain an explicit mapping with appropriate support; never inherit by spelling.
+Every explicit entity designation participates in this mechanism. There is no second
+class awaiting promotion because it has not yet proved useful across accounts.
+Whether PostCode eagerly builds an entity record and its associated information or
+resolves that information through indexes is an implementation choice. Submission-local
+entity keys differ from content keys, graph-node keys and other structural addresses:
+those addresses do not automatically designate independent architectural entities.
+New descriptions can name an existing entity without introducing another identity.
 
-**Needs design — contextual selection.** Define the selection record's qualification,
-reference shape and repeated-selection behavior. An exact investigram plus stable
-occurrence selector is a candidate for idempotence, not a selected ID formula.
-Repeated wording alone does not identify an occurrence or resolve its meaning.
+**Contextual selection is an investigation input, not an introduction route.** A user
+can select “application work has not started” and choose Explain. The subject is the
+exact passage in its account context, not a newly allocated entity named after the
+sentence. A selected diagram component likewise resolves to its retained content;
+renderer coordinates or generated display IDs alone are insufficient. Preserve an
+existing explicit entity reference when present. A selection assembled from several
+claims does not establish that their referents are identical.
 
-All routes preserve origin. Later accounts can improve a subject's definition, but
-do not retrospectively enrich the original. Promotion adds a retained mapping or
-qualified association; it does not mutate the originating investigram's referent
-list or earlier answers. Ambiguous wording can remain unresolved pending analysis.
-Subject creation needs an application operation; presentation binding is insufficient.
+The resulting investigation may simply explain the selection, reuse an existing
+entity, or explicitly introduce an entity with qualified identifying information and
+origin in that selection. PostCode does not decide entityhood from arbitrary wording.
+Likewise, an ordinary local content designation is selectable without later promotion;
+if analysis identifies an architectural entity there, it uses the same introduction
+mechanism. Earlier accounts and exact answers remain unchanged.
 
-Later context supplies subject IDs, relevant exact descriptions and qualifications.
-New information identifies the subject ID. Replacement also identifies the exact
-earlier investigram, its replacement and a supported reason: subject ID alone cannot
-choose among several descriptions. Validate local/existing references and accept
-the result atomically, with no partial subject creation on rejection.
+**Needs design:** contextual selection's exact reference shape, qualifications and
+repeated-selection behavior; interpreted entity identity and acceptance guarantees.
+An account plus stable occurrence selector can identify the selected content, but
+neither repeated wording nor the same content key in a replacement establishes entity
+continuity. Reuse an explicit global entity ID or report qualified correspondence.
+
+Later context supplies entity IDs with the relevant qualified descriptions. The
+investigator can reuse only identities made available to it; duplicate discoveries
+remain possible. New items identify their associated entity IDs and exact containing
+accounts/content keys. Replacement additionally identifies the earlier investigram,
+its replacement and supported reason: an entity ID cannot select among descriptions.
+All references must resolve at acceptance, with no partial entity creation on rejection.
 
 ### Continuity, classification and reconciliation
 
@@ -644,11 +678,13 @@ Existing structural queries/Lenses, including module listings, provide possible
 subjects for Overview or Explain. They keep their mechanical methods and guarantees;
 subject discovery need not itself be an interpretive investigation. Another entry
 route selects a term, passage or component within an existing explanation and uses
-its contextual designation for Explain. The working term for these “impromptu
-subjects” is contextual subjects/designations: preserve the exact occurrence and
-available origin, with an initial meaning such as “as used in this account.” Selection
-does not establish an independent global identity or settle the referent's semantics.
-The earlier contextual-introduction rules still govern retention and later promotion.
+its contextual designation for Explain. These “impromptu subjects” are selections
+of exact content occurrences with available origin, not a separate entity class.
+An investigation can explain that occurrence without allocating an entity, or explicitly
+introduce an entity with identifying information grounded in that context. Selection
+alone does not establish entity identity or settle what the passage refers to.
+The contextual-selection rules above govern the input; only explicit entity
+introduction in a result allocates a new entity identity.
 Neither entry route requires the human to formulate an architectural prose query.
 
 **Agreed exploratory direction — selectable “find out more” offers.** The human
@@ -725,9 +761,10 @@ starting multi-subject offers around explicit joint/comparison questions, rather
 requiring a pair for every composition follow-up. It does not settle generic Lens
 applicability, arity, role assignment or matching from classification alone.
 
-Relationships may themselves have subject identities and qualified accounts. Use
-the same explicit/local/prose routes rather than requiring every relationship to
-become a shared subject immediately. A relationship account supplies participants,
+Architectural relationships may themselves be explicitly identified as entities,
+with qualified accounts. A structured relation or prose mention can also remain
+content without an independent entity designation; identifying one uses the same
+entity-introduction mechanism. A relationship account supplies participants,
 roles, conditions and direction/order where meaningful; its identity alone supplies
 none of those claims. Equal labels or endpoints do not establish relationship identity.
 
@@ -765,11 +802,29 @@ describe aspects of the same thing or more specific descriptions; neither should
 be treated as a ready-made conflation split. These references offer useful patterns,
 not a decision procedure for whether two architectural referents are identical.
 
-A correspondence or conflation finding alone does not trigger the existing
-correction-based reconsideration machinery. An explicit correction of an identifying
-investigram can trigger its established propagation; merely referring to the same
-subject is not an exposure dependency. **Needs design:** decide whether that limit
-is sufficient initially or whether further impact signaling is required.
+**Proposed entity supersession and reconsideration.** An investigation can propose
+successors when an entity conflates several things or separate entities designate
+the same thing. A split can introduce S and E as successors to R; a merge can introduce
+R3 or reuse an existing entity as successor to R1/R2. Preserve old IDs and original
+associations, and retain the reporting account, reasons, qualified correspondences
+and scope. A same-entity correspondence differs from a conflation/split relationship.
+Supersession concerns an organizing identity, not automatic correction of all accounts
+about it. Fresh access can disclose successors; exact references still resolve to the
+original entity. Do not redistribute claims, infer transitive equivalence or choose
+between competing supersessions silently. The earlier relabeling idea is optional;
+the qualified finding, not the label, explains what happened.
+
+Entity supersession could cause accounts explicitly referring to or associated with
+the old entity to need reconsideration. Preserve this as a distinct cause from exposure
+to a corrected defining account: entity use can occur without delivery of that account.
+Correcting an identifying investigram already participates in existing citation-based
+propagation; correspondence or entity supersession does not trigger it today. A proposed
+warning can say “This account refers to R, subsequently reported as conflating S and E.”
+It does not declare the account false or automatically flag all its claims as wrong.
+**Needs design:** supersession submission/support, affected-account rules, derived
+status and competing/challenged supersessions. Clearance or narrowing after qualified
+reassessment remains deferred. This is a compatibility/design probe, not an implemented
+operation or an expansion of the first delivery to a reconciliation Lens.
 
 Initially, prefer recording and exposing these accounts over automatic merging,
 transitive equivalence, pooled histories or graph rewriting. Later reconciliation
@@ -890,14 +945,14 @@ does not narrow its citations. On the cited side, citations name particular
 investigrams: an investigation receiving only a definition child need not cite its
 behavioral sibling, so a later correction of that sibling need not flag it. With
 embedded definitions, even a definition excerpt cites the mixed containing account.
-Use explicit shared-subject introduction as a signal of expected reuse: if the result
+Use explicit entity introduction as a signal of expected reuse: if the result
 also explains behavior, put identifying descriptions in children by default, grouping
 where coherent. This avoids a particular exposure path, not all semantic dependencies
 or warnings, and requires no prediction of which later query will occur.
 
 Agreement in discussion: the investigating agent may judge that new findings warrant
 correcting an earlier account during an ordinary follow-up. It must explicitly
-identify the correction and provide reason/support; new detail or a shared subject
+identify the correction and provide reason/support; new detail or an entity
 does not automatically imply replacement. PostCode checks delivery eligibility and
 submission validity without thereby establishing the correction's truth.
 
@@ -930,7 +985,7 @@ The admission item exercises this mechanism. The scenario state item references 
 directly; a local name for that same participant adds no variable or generality.
 An illustration maps a general account to an example, not two names for one scenario
 participant. Keys remain scoped to exact items, not account-global or matched by name.
-A local role is not a retained subject. Broader applicability still requires qualified
+A local role is not an entity. Broader applicability still requires qualified
 interpretation; syntax alone does not generalize the state model.
 
 Cross-account item addresses fix an account reference plus a content key. Local keys
@@ -980,7 +1035,7 @@ the children variant. It reuses P/B/S, introduces the two ordered patterns, and 
 scenario roles and waiting relations local to their interaction items. An explicit
 situation records the bearer of S, occupied execution/queue/trial resources, and
 application-work progress. Exact account/item/role/relation/situation designations
-support follow-up without allocating a new contextual subject automatically.
+support follow-up without allocating a new entity automatically.
 
 This is an initial recommendation to test, not a settled identity design. The cases
 are possible finite prefixes under different explicit setups: the outer-bulkhead
@@ -994,7 +1049,7 @@ Probe-local interaction fields expose policy order, local relations and asserted
 situations. Whether situations should become a separate catalogue form remains open;
 that would require explicit role correspondence across forms. The current one-item
 role scope avoids that mapping and therefore does not validate it. No universal
-resource ontology or general waiting-subject identity is established. Authored
+resource ontology or general waiting-entity identity is established. Authored
 fixtures and rendered sequence diagrams test representability, not live investigator
 reliability or supported API acceptance. Whether generated composition investigation
 belongs in the first implemented capability remains open.
@@ -1009,7 +1064,7 @@ supply other content under the existing delivery rules.
 The probe now defines and checks two exact nested selectors: a local relation key,
 or a particular state assignment identified by situation plus bearer and category.
 Unknown, mixed and ambiguous selectors are rejected. This exercises addressing, not
-a live follow-up or promotion. Both composition traces still describe entry to
+a live follow-up or entity introduction from selected content. Both composition traces still describe entry to
 Half-open as action text; their snapshots are after-state assertions, not linked
 transition records. A later need for transition-level correspondence calls for a
 qualified general P-level state model or a scenario-local state-behavior item. Neither
@@ -1023,7 +1078,7 @@ now use concise authored labels and a separate keyed legend. Proposed optional
 full qualified element; renderers may assign display-local references mechanically.
 Keep meaningful names where possible, retain guard cues and a visible scope notice,
 and put detailed conditions, effects, causes and support in the linked legend.
-The mapping belongs to the exact diagram/legend pair, not subject identity. A selected
+The mapping belongs to the exact diagram/legend pair, not entity identity. A selected
 figure and legend are not automatically complete own-account delivery. This updates
 the illustrative content contract without introducing a general presentation system.
 
@@ -1034,7 +1089,7 @@ association, evidence, immutable-account, correction and exact-access mechanisms
 for structured interpretive content. Add content forms that express the architectural
 claims themselves. A transition record can refer to existing state and participant
 subjects while its containing investigram supplies attributable support and limits.
-It need not become a separately retained subject unless continuity or investigation
+It need not become a separate entity unless explicit identity across accounts
 requires that. Correcting the record initially means replacing its whole investigram,
 not silently updating a canonical state-machine graph.
 
@@ -1114,7 +1169,7 @@ remain open. Specialized forms add explicit architectural relationships and fiel
 where useful. A keyed explanation can discuss a transition without supplying the
 explicit endpoints/conditions needed for a diagram; filling those gaps still
 requires qualified analysis. A form or local key does not by itself allocate a
-shared subject or change whole-investigram correction granularity.
+entity or change whole-investigram correction granularity.
 
 **Tradeoffs raised on review.** Uniform structure does not make prose's architectural
 meaning explicit: consumers still cannot mechanically extract transitions from an
@@ -1140,7 +1195,7 @@ investigated program still require their own evidence and qualifications.
 
 Concept identifiers identify architectural meanings; form identifiers/versions
 identify particular data contracts. Their encoding together or separately remains
-open. Neither is a subject identity or Lens identity. A state-transition account can reference Half-open S without making
+open. Neither is an entity identity or Lens identity. A state-transition account can reference Half-open S without making
 S's subject record an instance of the account schema. Several investigations can
 produce the same form; one investigation can return several forms alongside prose.
 Selecting a form does not itself establish that it applies: the investigation must
@@ -1149,20 +1204,17 @@ forms; an invented label does not create a new understood contract. Start by dra
 the state-behavior entry needed by the example, including a keyed prose form and
 a specialized state/transition form, not a comprehensive catalogue.
 
-**Local keys and later promotion.** The human proposes keys for structured elements
-both for internal references (nodes and transition endpoints) and for later subject
-promotion, while leaving room for investigator discretion and contextual selection.
-Recommend that each contract require local addressability where its structure needs
-references, without requiring every value to have an explicit key. The investigator
-can choose keys and optionally designate additional elements. Structured element keys
-can serve as local designations when their scope and referent meaning are defined;
-they do not automatically allocate shared subjects. An unkeyed retained element can
-still be selected through an exact content locator and contextual designation.
-**Needs design:** key scope across multiple content blocks, distinction between a
-record and the architectural thing it describes, and selection/promotion binding.
-Keys or content paths in different account revisions never establish continuity
-merely by matching. Diagram selection uses the same mechanism by mapping back to
-retained content; it is not a separate source of architectural identity.
+**Local content keys and entity designations.** Require local addressability where
+forms need internal references, such as nodes and transition endpoints; not every
+value needs a key. These are content addresses, not automatically entity identities.
+An investigator can explicitly designate an architectural entity represented by an
+element, using a submission-local entity key or existing global ID. PostCode resolves
+new entity keys on acceptance. An unkeyed passage or component can still be selected
+by exact occurrence for investigation without allocating an entity.
+**Needs design:** key scope across content blocks, contextual-selection addressing,
+and the distinction between selecting a content record and identifying what it describes.
+Matching keys across account revisions do not establish continuity. Diagram selection
+maps to retained content; it is not a separate source of architectural identity.
 
 **Notation-informed information probe.** The human suggests testing whether retained
 content supplies the information needed by an established diagram style, and clarifies
@@ -1241,7 +1293,7 @@ boundaries, at the cost of more support/context delivery and composition/replace
 rules. They do not narrow their producing evaluation's exposure index. They can
 narrow what later evaluations cite by allowing a definition to be delivered without
 its behavioral sibling. This is a stronger argument than avoiding replacement copying.
-An investigator-facing default is: when a result mixes explicit shared-subject
+An investigator-facing default is: when a result mixes explicit entity
 introductions and behavior, put the identifying descriptions in one or more children.
 An identification-only investigram may be the root without an extra wrapper; local
 terms can stay embedded. Group related descriptions rather than normalizing every
@@ -1337,7 +1389,7 @@ contracts now. Originating-context representation and request semantics remain o
 The capability needs a continuous path through:
 
 - Common subject declaration/reuse and lookup, integrated with existing mechanical
-  identity and qualified information; contextual promotion if included in the slice.
+  identity and qualified information; contextual selection if included in the slice.
 - Structured submission, reference/support validation, immutable retention,
   and explicit subject-reference/description indexing.
 - Applicable subject/Lens requests with declared question meaning and selected
@@ -1355,25 +1407,25 @@ promise of a public API or general query store.
 Recommend admission/follow-up/correction, explicit selection and exact historical
 access, and the representative diagram content above. Demonstrate compatibility
 between an existing mechanical subject and subsequent interpreted accounts through
-the common subject/reference contract. This does not require migrating a mechanical
-producer or sharing its internal storage. Preserve all three introduction routes in
-the design, but distinguish model coverage from first delivery.
+the common entity/reference contract. This does not require migrating a mechanical
+producer or sharing its internal storage. Explicit entity introduction/reuse is the
+common model; contextual selection remains a distinct input capability whose first
+delivery is a scope choice.
 
-**Scope choice remains open.** The initial proposal exercised all routes through
-implementation. The review recommends explicit introduction/reuse as the delivered
-path, with local/prose promotion, correspondence/conflation and composition as
-design or fixture probes initially. That narrower path is the current recommendation
-for discussion, not an agreed reduction. A fixture using seeded material does not
-demonstrate an implemented promotion or reconciliation operation. Qualified
-correspondence and conflation must be representable, but operations that resolve
-identity disputes or reconcile accounts remain outside this bounded capability.
+**Scope choice remains open.** Recommend explicit entity introduction/reuse through
+the admission/follow-up/correction path. The earlier three-route model and separate
+promotion stage are withdrawn. Contextual selection, correspondence/conflation,
+entity supersession and composition remain design or fixture probes unless explicitly
+included. A seeded fixture does not demonstrate live discovery, contextual investigation
+or reconciliation. Qualified correspondence and conflation must remain representable;
+operations that resolve identity disputes remain outside the bounded capability.
 
 Validation needs several kinds of evidence:
 
 - **Deterministic application fixtures:** actual retention/evidence/API paths with
   scripted investigator communication. Check reference integrity, duplicate names,
   atomic rejection, full/partial delivery, unsupported corrections, conflicts,
-  continuity and unchanged exact answers. Include promotion and qualified
+  continuity and unchanged exact answers. Include contextual selection and qualified
   correspondence/conflation at the level selected by the scope decision, explicitly
   distinguishing model probes from delivered application operations.
 - **A real investigation:** start at an ordinary supported entry, discover a usable
@@ -1450,9 +1502,9 @@ confidence has sometimes exceeded the examples supporting them.
 - **Continuity under definition correction.** Keeping S across H1/H2 is appropriate
   only if they still concern the same referent. Test a clarification against an actual
   conflation of state category, instance occupancy and execution phase. Neither a
-  stable ID nor the investigator's replacement declaration proves sameness. Local or
-  contextual promotion likewise establishes a designation, not automatic equivalence
-  between the selected content occurrence and an independently known subject.
+  stable ID nor the investigator's replacement declaration proves sameness. A
+  contextual selection establishes an investigation input, not an entity or automatic
+  equivalence between the occurrence and an independently known entity.
 - **Catalogue granularity.** The inventory mixes architectural concepts, view
   families and notations; it is not already a coherent ontology. Test whether concept
   guidance, content contracts and diagram mappings need distinct entries and
@@ -1461,7 +1513,7 @@ confidence has sometimes exceeded the examples supporting them.
   slice; allow the recognized vocabulary to grow independently of special treatments.
 - **Definition partition and support.** A definition child is an example partition,
   not a universal normalization rule. The actionable default uses explicit introduction
-  of shared subjects, when mixed with behavior, as the signal for identifying children.
+  of entities, when mixed with behavior, as the signal for identifying children.
   Later consumers can cite their definitions without the behavioral sibling. It still adds support/composition obligations and
   does not narrow exposure shared by outputs of the producing evaluation. The mixed
   concrete payload demonstrates the contrasting cost; current rules remain governing.
@@ -1470,7 +1522,7 @@ confidence has sometimes exceeded the examples supporting them.
   descriptions of S. Prefer explicitly anchored support or visible unresolved
   alternatives; an application selector must not synthesize a definition or claim
   compatibility merely to make an answer readable. Bounded closure remains open.
-- **One mechanism across producers.** Shared subject/reference semantics remain the
+- **One mechanism across producers.** Common entity/reference semantics remain the
   intended direction. The first delivery's migration depth and common retention
   machinery are not demonstrated by that principle. Test interpreted use of an
   existing mechanical subject before considering shared internal machinery or
@@ -1479,7 +1531,7 @@ confidence has sometimes exceeded the examples supporting them.
 1. **Concrete concept and content contracts.** Organize concept guidance, supported
    forms and diagram mappings; draft the state-behavior and interaction entries
    needed by the example. Specify returned identifying content, local references,
-   promotion declarations and account-relationship metadata. Establish attributable
+   entity declarations and account-relationship metadata. Establish attributable
    support and full/partial delivery, without requiring a comprehensive catalogue.
 2. **Account boundaries.** Review the concrete mixed-account payload against the
    recommendation for independently deliverable identifying children. Show what is
@@ -1497,7 +1549,7 @@ confidence has sometimes exceeded the examples supporting them.
    dialogue delivery, competing descriptions and exact-answer support. Demonstrate
    compatibility with an existing mechanical subject. General entry/offer discovery,
    context ranking, reuse policy and producer migration are not prerequisites.
-5. **First delivery and verification.** Decide which introduction/promotion paths
+5. **First delivery and verification.** Decide which contextual-selection capabilities
    and account-relationship kinds are delivered versus only probed. Composition and
    merge/split remain design probes; reconciliation operations are outside this slice.
    Use real investigation to test discovery/reuse, fixtures for lifecycle and API
@@ -1508,7 +1560,7 @@ confidence has sometimes exceeded the examples supporting them.
 ## Designs and theories to build on
 
 Use [incremental formalization](https://people.engr.tamu.edu/shipman/viki/papers/tochi/tochi.html)
-to guide coexistence of prose, local structure and shared subjects;
+to guide coexistence of prose, local structure and entities;
 [qualified statements](https://www.mediawiki.org/wiki/Wikibase/DataModel/Primer)
 to separate referents from descriptions; and
 [reason maintenance](https://dspace.mit.edu/entities/publication/5377b306-4ecc-4687-b1f5-78cbb4a0543a)

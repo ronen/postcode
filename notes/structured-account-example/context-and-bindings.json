@@ -28,33 +28,47 @@
     }
   },
   "entry": {
-    "knownSubjects": {
+    "knownEntities": {
       "M": "Mechanical module reference for the CircuitBreakerPolicy source at this basis.",
       "P": "Circuit breaker policy kind introduced by a prior orientation account."
     },
     "orientation": {
       "id": "ORIENTATION-0",
       "identifies": {
-        "subject": "P"
+        "entity": "P"
       },
       "description": "A reusable execution-governing policy whose failure and recovery rules determine admission of application-supplied work.",
       "implementationAnchor": {
-        "subject": "M"
+        "entity": "M"
       },
-      "qualification": "Interpreted mapping to the captured module, not proof that the policy kind and module are the same subject. This orientation is a fixture precondition, not demonstrated discovery.",
+      "qualification": "Interpreted mapping to the captured module, not proof that the policy kind and module are the same entity. This orientation is a fixture precondition, not demonstrated discovery.",
       "evidence": [
         "E-admission",
         "E-state"
+      ],
+      "referents": [
+        {
+          "entity": "M"
+        },
+        {
+          "entity": "P"
+        }
       ]
+    },
+    "mechanicalEntityIdentity": {
+      "entity": "M",
+      "identityRule": "Reuse the mechanical provider identity within the supported captured-basis and Session scope; repeated encounter is not a fresh entity introduction.",
+      "referenceRepresentation": "M is a readable alias for an opaque global entity ID; UUID allocation would not replace provider identity rules.",
+      "qualification": "Seeded compatibility assumption, not executed mechanical discovery or migration. Mechanical identifying information does not exhaust the entity architectural meaning."
     }
   },
   "firstRequest": {
     "subject": {
-      "subject": "P"
+      "entity": "P"
     },
     "informationNeed": "Execution admission and state inspection under default recovery sampling.",
     "analysisAnchor": {
-      "subject": "M"
+      "entity": "M"
     },
     "suppliedAccountContext": [
       "ORIENTATION-0"
@@ -67,7 +81,7 @@
     "navigationOrigin": null
   },
   "firstAcceptance": {
-    "subjectIds": {
+    "entityIds": {
       "closed": "S-closed",
       "open": "S-open",
       "half-open": "S"
@@ -83,7 +97,7 @@
     },
     "informationNeed": "Concurrent callers and trial outcomes under default single-trial recovery.",
     "analysisAnchor": {
-      "subject": "M"
+      "entity": "M"
     },
     "navigationOrigin": {
       "answer": "ANSWER-1",
@@ -110,7 +124,7 @@
     "informationNeedRole": "Explanatory wording matching the retained offer purpose; not an executable question field or human-authored request text."
   },
   "followupAcceptance": {
-    "subjectIds": {
+    "entityIds": {
       "shared-breaker": "R",
       "trial-execution": "E-trial",
       "concurrent-execution": "E-caller",
@@ -253,7 +267,7 @@
       {
         "role": "focus",
         "subject": {
-          "subject": "S"
+          "entity": "S"
         }
       }
     ],

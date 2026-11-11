@@ -2,7 +2,7 @@
 
 Provisional catalogue slice for the [concrete example](README.md), not a JSON schema
 or a commitment to these names. `/0` marks illustrative form versions. Concept IDs
-organize architectural guidance; form IDs specify data shape. Neither is a subject
+organize architectural guidance; form IDs specify data shape. Neither is an entity
 ID, local element key, evidence reference or account-relationship kind.
 
 ## Shared envelope and addressing
@@ -13,22 +13,59 @@ associations, qualifications, evidence and content. Each content item has a loca
 `key`, a `concept`, a `form`, and the fields required by that form. Content keys are
 unique within their exact account; nested state keys are local to their state model,
 and step keys are unique within their interaction. Identical keys across accounts do
-not assert identity. Introduced-subject keys and submitted-account keys instead are
+not assert identity. Introduced-entity keys and submitted-account keys instead are
 submission-scoped, each in its own namespace.
 
-Use `{subject: ID}` for a supplied retained subject. Use
-`{introducedSubject: localKey}` for a subject explicitly introduced in this submission;
+The `subject` field still denotes a role (request subject, association subject, or
+what an item describes). Its value is a typed reference; `{entity: ID}` identifies
+an architectural entity, while `{account: ID}` identifies an investigram.
+Use `{entity: ID}` for a supplied entity. Use
+`{introducedEntity: localKey}` for an entity explicitly introduced in this submission;
 PostCode allocates the ID on acceptance. Names are display/interpretation aids, never
-identity matching rules. A local state or step key is not automatically a subject.
+identity matching rules. A local state or step key is not automatically an entity.
 Use `{account: ID}` for an earlier account and `{submittedAccount: key}` for a newly
 submitted one. Forward local references are allowed if all resolve in the accepted
 submission. No partial allocation or dangling result is intended.
 
-Exactly one `subject-description/0` item per introduced-subject key declares it with
-`introduceRetainedSubject: true`. References, `referents` membership and `identifies`
-associations do not declare subjects. Duplicate declarations and references without
-a declaration are invalid. ADMISSION-2 may reference subjects declared in a sibling
+Exactly one `entity-description/0` item per introduced-entity key declares it with
+`introducesEntity: true`. This is a declaration marker, not an additional retention/promotion choice: every
+explicitly declared entity receives an ID. References, `referents` membership and
+`identifies` associations do not themselves declare entities. Duplicate declarations and references without
+a declaration are invalid. ADMISSION-2 may reference entities declared in a sibling
 or another tree of the same submission; declaration scope is the whole submission.
+
+### Entity identity and associated information
+
+Entities organize qualified accounts and items around identified architectural things;
+Subject remains the investigative/claim role and Referent describes what a reference
+denotes. Opaque global IDs may be UUIDs; the readable S/P/R aliases here are not an ID
+format proposal. Allocation resolves local IDs and records introducing account/item
+provenance atomically. It does not prove unique discovery, correctness or persistence
+beyond the supported Session. There is no registration or promotion stage.
+
+Mechanical producers use the same entity/reference semantics, preserving their existing
+identity rules and qualified identifying information. They do not mint a fresh entity
+for each encounter, become investigrams or acquire interpretive identity guarantees.
+The seeded M/P orientation illustrates this compatibility, not a delivered migration.
+Selected entity subjects are recorded as result referents at the appropriate scope;
+that does not manufacture a describes/identifies claim or require every child to copy
+all input subjects. Account/selected-passage subjects need not be entities.
+
+Associated items remain attributable to their owning account. `associations` may name
+an own `contentKey` for a precise item or omit it for an account-level association;
+either carries the account's applicable qualifications. Identifying descriptions,
+classifications, behavior and open topics remain distinct information, not authoritative
+entity fields. Referring-account discovery remains broader than these item associations.
+An item can be associated with several entities. Finer addressing does not allow
+item-level correction or bypass whole-account replacement/exposure rules.
+
+Ordinary content, node, step and role keys are not entity declarations. Selecting the
+passage “application work has not started” addresses content for Explain; it does not
+create an entity bearing that sentence as its name. An investigation can subsequently
+introduce one using the same declaration protocol. The [walkthrough's supersession
+probe](../structured-architectural-accounts-example.md#entity-supersession-probe) keeps
+qualified merge/split succession and entity-use reconsideration distinct from existing
+account correction; those proposed extensions are not accepted by this fixture checker.
 
 ### Ownership and composition
 
@@ -83,7 +120,7 @@ silently shed limitations because the full account was not selected. Its substan
 delivery cites the containing investigram but does not establish complete-target
 delivery. The context ledger spells out this support envelope for the TRIAL-1 excerpts.
 
-`referents` lists substantive subject references; `associations` distinguishes
+`referents` lists explicit entity references in these fixtures; `associations` distinguishes
 `identifies` from `describes`. Identifying content can coexist with behavioral content
 in one investigram. Classification is a qualified description of the subject, not a
 guarantee from allocating its ID. No authoritative global definition is selected by
@@ -92,7 +129,7 @@ silently taking the newest description.
 Identifying intelligibility means enough information to distinguish the referent
 with its applicable scope and limitations, not a complete behavioral explanation.
 W's description identifies the participants and what is awaited; it does not specify
-when waiting occurs or ends. A `subject-description/0` item may supply `relatedContent`
+when waiting occurs or ends. An `entity-description/0` item may supply `relatedContent`
 addresses with a stated purpose so a consumer can request that further explanation.
 The referenced content is not implicitly delivered, cited or needed to make W's
 minimal identification intelligible. If fetched, it carries its own qualifications.
@@ -108,7 +145,7 @@ it is not an item-level validity mask. Selection does not establish a canonical 
 ## Provisional partition default
 
 When an investigation result mixes identifying descriptions of explicitly introduced
-shared subjects with behavioral explanations, put those descriptions in one or more
+entities with behavioral explanations, put those descriptions in one or more
 identifying children by default. Explicit introduction is the present signal of
 expected reuse; the investigator need not predict specific future questions. Group
 related descriptions where coherent. An identification-only investigram can itself
@@ -174,10 +211,10 @@ establish whether an offer is affected by its containing account's correction.
 | Form | Information to supply | What it does not imply |
 | --- | --- | --- |
 | `investigation-offer/0` | Exact local key, label/purpose, qualified targets, supported method and declared parameters, with evidence | A new executable capability, complete source-account delivery, or automatic retargeting to a replacement |
-| `subject-description/0` | Subject reference, name, identifying description, classification, relevant context (`relativeTo`), evidence; explicit introduction flag when allocating a new subject | Unique discovery, canonical definition, or independent correction unit |
+| `entity-description/0` | Entity reference, name, identifying description, classification, relevant context (`relativeTo`), evidence; explicit introduction flag when introducing a new entity | Unique discovery, canonical definition, or independent correction unit |
 | `prose/0` | Keyed explanatory text under the appropriate concept, with support and qualifications | Missing graph or interaction structure can be invented from the text |
 | `admission-cases/0` | Explicit coverage claim; optional form-local roles and their scope; keyed cases with state, condition, outcome, optional resulting state/relationship, and evidence; separately qualified scenario illustrations | A complete state machine, universal interface model, or general claim bound to an illustrative subject |
-| `architectural-relations/0` | Keyed, typed relations with role-named endpoints and applicable conditions; optional retained subject for a relation | Account correction, global graph consistency, or mandatory relation identities |
+| `architectural-relations/0` | Keyed, typed relations with role-named endpoints and applicable conditions; optional entity for a relation | Account correction, global graph consistency, or mandatory relation identities |
 | `state-behavior/0` | State bearer; coverage and omissions; keyed labelled states; keyed directed transitions with trigger, guard, effect and evidence; outcome qualifications | Initial state, completeness, hierarchy or concurrency when not supplied |
 | `interaction/0` | Scenario meaning/conditions; keyed participants tied to subjects; ordered prefix; alternatives with conditions and keyed steps; omissions and evidence | Observed trace, all possible interleavings, or application-level success |
 
@@ -211,7 +248,7 @@ They are not separate mechanisms per form and are not account-global variables.
 there, all references resolve, and `roleScope` states how the variables are bound.
 Identical role names in different items do not assert correspondence. The role's full
 context is its exact account, content key and local role key; allocating it does not
-introduce a retained subject or a general architectural fact.
+introduce an entity or a general architectural fact.
 
 The admission item binds execution/instance variables separately per request, then
 illustrates them with the named scenario. The scenario state item instead refers
@@ -246,7 +283,8 @@ identity. The `stateContent` field is a same-account content-key shorthand. The 
 must exist in its addressed account. Addressability neither makes it an independently
 correctable investigram nor gives its content key identity across replacement accounts.
 Role/case keys can further designate occurrences inside that exact item under its form's
-rules. Such designation can support a later investigation or promotion; it does not
+rules. Such content designation can support later investigation without allocating
+an entity. The investigation can explicitly introduce an entity if warranted; selection does not
 allocate a shared general relationship identity.
 
 Fresh inspection of an illustration may report its target account's current revision
@@ -312,7 +350,7 @@ remain attached to the same elements. The examples require these fields where th
 compact generator uses them; other content forms need not acquire them by default.
 
 A renderer can assign display-local keys such as T1, I4 or S1 mechanically and map
-them to exact content in a separate legend. These keys are not subject identities,
+them to exact content in a separate legend. These keys are not entity identities,
 stable content keys, cross-account correspondences or correction units. Their scope
 is the particular diagram/legend pair; retain the mapping with exact presentation
 artifacts rather than resolving an old key against a later regenerated figure.

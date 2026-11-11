@@ -10,23 +10,23 @@
         "title": "Circuit breaker state categories and execution admission",
         "referents": [
           {
-            "subject": "P"
+            "entity": "P"
           },
           {
-            "introducedSubject": "closed"
+            "introducedEntity": "closed"
           },
           {
-            "introducedSubject": "open"
+            "introducedEntity": "open"
           },
           {
-            "introducedSubject": "half-open"
+            "introducedEntity": "half-open"
           }
         ],
         "associations": [
           {
             "role": "describes",
             "subject": {
-              "subject": "P"
+              "entity": "P"
             }
           }
         ],
@@ -65,36 +65,39 @@
         "title": "State categories used by the admission explanation",
         "referents": [
           {
-            "subject": "P"
+            "entity": "P"
           },
           {
-            "introducedSubject": "closed"
+            "introducedEntity": "closed"
           },
           {
-            "introducedSubject": "open"
+            "introducedEntity": "open"
           },
           {
-            "introducedSubject": "half-open"
+            "introducedEntity": "half-open"
           }
         ],
         "associations": [
           {
             "role": "identifies",
             "subject": {
-              "introducedSubject": "closed"
-            }
+              "introducedEntity": "closed"
+            },
+            "contentKey": "closed-description"
           },
           {
             "role": "identifies",
             "subject": {
-              "introducedSubject": "open"
-            }
+              "introducedEntity": "open"
+            },
+            "contentKey": "open-description"
           },
           {
             "role": "identifies",
             "subject": {
-              "introducedSubject": "half-open"
-            }
+              "introducedEntity": "half-open"
+            },
+            "contentKey": "half-open-description"
           }
         ],
         "qualifications": [
@@ -109,57 +112,57 @@
         "content": [
           {
             "key": "closed-description",
-            "form": "subject-description/0",
+            "form": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
-              "introducedSubject": "closed"
+              "introducedEntity": "closed"
             },
             "name": "Closed",
             "description": "The ordinary-operation state category of the Circuit breaker policy kind, distinct from automated Open, Half-open recovery and manual isolation.",
             "classification": "state-category",
             "relativeTo": {
-              "subject": "P"
+              "entity": "P"
             },
             "evidence": [
               "E-state"
             ],
-            "introduceRetainedSubject": true
+            "introducesEntity": true
           },
           {
             "key": "open-description",
-            "form": "subject-description/0",
+            "form": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
-              "introducedSubject": "open"
+              "introducedEntity": "open"
             },
             "name": "Open",
             "description": "The automated-open state category of the Circuit breaker policy kind, distinct from manual isolation and Half-open recovery.",
             "classification": "state-category",
             "relativeTo": {
-              "subject": "P"
+              "entity": "P"
             },
             "evidence": [
               "E-state"
             ],
-            "introduceRetainedSubject": true
+            "introducesEntity": true
           },
           {
             "key": "half-open-description",
-            "form": "subject-description/0",
+            "form": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
-              "introducedSubject": "half-open"
+              "introducedEntity": "half-open"
             },
             "name": "Half-open",
             "description": "The recovery state category of the Circuit breaker policy kind in which sampled work informs whether the breaker closes or reopens. This identifies a state category, not a runtime occurrence or an individual execution.",
             "classification": "state-category",
             "relativeTo": {
-              "subject": "P"
+              "entity": "P"
             },
             "evidence": [
               "E-state"
             ],
-            "introduceRetainedSubject": true
+            "introducesEntity": true
           }
         ],
         "children": []
@@ -169,24 +172,31 @@
         "title": "Circuit breaker admission and state inspection",
         "referents": [
           {
-            "subject": "P"
+            "entity": "P"
           },
           {
-            "introducedSubject": "closed"
+            "introducedEntity": "closed"
           },
           {
-            "introducedSubject": "open"
+            "introducedEntity": "open"
           },
           {
-            "introducedSubject": "half-open"
+            "introducedEntity": "half-open"
           }
         ],
         "associations": [
           {
             "role": "describes",
             "subject": {
-              "subject": "P"
+              "entity": "P"
             }
+          },
+          {
+            "role": "describes",
+            "subject": {
+              "entity": "P"
+            },
+            "contentKey": "admission-cases"
           }
         ],
         "qualifications": [
@@ -222,7 +232,7 @@
                 "key": "ordinary",
                 "when": {
                   "state": {
-                    "introducedSubject": "closed"
+                    "introducedEntity": "closed"
                   },
                   "condition": "An execution is requested."
                 },
@@ -235,13 +245,13 @@
                 "key": "trial",
                 "when": {
                   "state": {
-                    "introducedSubject": "open"
+                    "introducedEntity": "open"
                   },
                   "condition": "An execution is requested after the recovery delay."
                 },
                 "outcome": "Enter Half-open and start recovery-trial work.",
                 "resultingState": {
-                  "introducedSubject": "half-open"
+                  "introducedEntity": "half-open"
                 },
                 "evidence": [
                   "E-admission"
@@ -251,7 +261,7 @@
                 "key": "refused",
                 "when": {
                   "state": {
-                    "introducedSubject": "open"
+                    "introducedEntity": "open"
                   },
                   "condition": "An execution is requested before the recovery delay has elapsed."
                 },
@@ -282,14 +292,14 @@
               {
                 "role": "focus",
                 "subject": {
-                  "introducedSubject": "half-open"
+                  "introducedEntity": "half-open"
                 }
               }
             ],
             "method": "qualified-architectural-interpretation",
             "parameterDefinitions": [],
             "qualifications": [
-              "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
+              "A question under this account’s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
             ],
             "evidence": [
               "E-admission",

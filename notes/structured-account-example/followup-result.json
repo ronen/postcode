@@ -10,66 +10,70 @@
         "title": "Half-open recovery with a concurrent caller",
         "referents": [
           {
-            "subject": "P"
+            "entity": "P"
           },
           {
-            "subject": "S"
+            "entity": "S"
           },
           {
-            "subject": "S-open"
+            "entity": "S-open"
           },
           {
-            "subject": "S-closed"
+            "entity": "S-closed"
           },
           {
-            "introducedSubject": "shared-breaker"
+            "introducedEntity": "shared-breaker"
           },
           {
-            "introducedSubject": "trial-execution"
+            "introducedEntity": "trial-execution"
           },
           {
-            "introducedSubject": "concurrent-execution"
+            "introducedEntity": "concurrent-execution"
           },
           {
-            "introducedSubject": "waiting"
+            "introducedEntity": "waiting"
           }
         ],
         "associations": [
           {
             "role": "describes",
             "subject": {
-              "subject": "P"
+              "entity": "P"
             }
           },
           {
             "role": "describes",
             "subject": {
-              "subject": "S"
+              "entity": "S"
             }
           },
           {
             "role": "identifies",
             "subject": {
-              "introducedSubject": "shared-breaker"
-            }
+              "introducedEntity": "shared-breaker"
+            },
+            "contentKey": "shared-breaker-description"
           },
           {
             "role": "identifies",
             "subject": {
-              "introducedSubject": "trial-execution"
-            }
+              "introducedEntity": "trial-execution"
+            },
+            "contentKey": "trial-description"
           },
           {
             "role": "identifies",
             "subject": {
-              "introducedSubject": "concurrent-execution"
-            }
+              "introducedEntity": "concurrent-execution"
+            },
+            "contentKey": "caller-description"
           },
           {
             "role": "identifies",
             "subject": {
-              "introducedSubject": "waiting"
-            }
+              "introducedEntity": "waiting"
+            },
+            "contentKey": "waiting-description"
           }
         ],
         "qualifications": [
@@ -89,77 +93,77 @@
         "content": [
           {
             "key": "shared-breaker-description",
-            "form": "subject-description/0",
+            "form": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
-              "introducedSubject": "shared-breaker"
+              "introducedEntity": "shared-breaker"
             },
             "name": "Shared breaker instance",
             "description": "The role of one Circuit breaker instance used by both executions in this scenario; its recovery state and decision are shared across those calls. No actual running instance is identified.",
             "classification": "instance-role",
             "relativeTo": {
-              "subject": "P"
+              "entity": "P"
             },
             "evidence": [
               "E-state",
               "E-half-open"
             ],
-            "introduceRetainedSubject": true
+            "introducesEntity": true
           },
           {
             "key": "trial-description",
-            "form": "subject-description/0",
+            "form": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
-              "introducedSubject": "trial-execution"
+              "introducedEntity": "trial-execution"
             },
             "name": "Trial execution",
             "description": "An execution occupying the single recovery-trial slot in this scenario. The work is supplied by the application. The interaction lifeline represents this execution including its supplied work; work completion is distinct from delivery of the final result to its caller.",
             "classification": "execution-role",
             "relativeTo": {
-              "introducedSubject": "shared-breaker"
+              "introducedEntity": "shared-breaker"
             },
             "evidence": [
               "E-half-open",
               "E-default"
             ],
-            "introduceRetainedSubject": true
+            "introducesEntity": true
           },
           {
             "key": "caller-description",
-            "form": "subject-description/0",
+            "form": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
-              "introducedSubject": "concurrent-execution"
+              "introducedEntity": "concurrent-execution"
             },
             "name": "Concurrent execution",
             "description": "A second execution using the same breaker while the trial is occupied. Its pending progress is distinct from the breaker state.",
             "classification": "execution-role",
             "relativeTo": {
-              "introducedSubject": "shared-breaker"
+              "introducedEntity": "shared-breaker"
             },
             "evidence": [
               "E-half-open"
             ],
-            "introduceRetainedSubject": true
+            "introducesEntity": true
           },
           {
             "key": "waiting-description",
-            "form": "subject-description/0",
+            "form": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
-              "introducedSubject": "waiting"
+              "introducedEntity": "waiting"
             },
             "name": "Waiting for the recovery decision",
             "description": "The scenario-specific relationship of the concurrent execution awaiting the shared breaker recovery decision. This identifies the participants and what is awaited; occurrence and release conditions are not specified by this description.",
             "classification": "architectural-relationship",
             "relativeTo": {
-              "introducedSubject": "shared-breaker"
+              "introducedEntity": "shared-breaker"
             },
             "evidence": [
               "E-half-open"
             ],
-            "introduceRetainedSubject": true,
+            "introducesEntity": true,
             "relatedContent": [
               {
                 "account": {
@@ -179,53 +183,53 @@
                 "key": "half-open-of",
                 "kind": "state-category-of",
                 "state": {
-                  "subject": "S"
+                  "entity": "S"
                 },
                 "policyKind": {
-                  "subject": "P"
+                  "entity": "P"
                 }
               },
               {
                 "key": "instance-kind",
                 "kind": "instance-role-of",
                 "instanceRole": {
-                  "introducedSubject": "shared-breaker"
+                  "introducedEntity": "shared-breaker"
                 },
                 "policyKind": {
-                  "subject": "P"
+                  "entity": "P"
                 }
               },
               {
                 "key": "trial-uses",
                 "kind": "execution-uses-instance",
                 "execution": {
-                  "introducedSubject": "trial-execution"
+                  "introducedEntity": "trial-execution"
                 },
                 "instance": {
-                  "introducedSubject": "shared-breaker"
+                  "introducedEntity": "shared-breaker"
                 }
               },
               {
                 "key": "caller-uses",
                 "kind": "execution-uses-instance",
                 "execution": {
-                  "introducedSubject": "concurrent-execution"
+                  "introducedEntity": "concurrent-execution"
                 },
                 "instance": {
-                  "introducedSubject": "shared-breaker"
+                  "introducedEntity": "shared-breaker"
                 }
               },
               {
                 "key": "waits-on",
                 "kind": "waits-for-decision",
                 "subject": {
-                  "introducedSubject": "waiting"
+                  "introducedEntity": "waiting"
                 },
                 "waiter": {
-                  "introducedSubject": "concurrent-execution"
+                  "introducedEntity": "concurrent-execution"
                 },
                 "decisionHolder": {
-                  "introducedSubject": "shared-breaker"
+                  "introducedEntity": "shared-breaker"
                 },
                 "when": "Single trial occupied",
                 "release": "Shared recovery decision becomes available; admission is rechecked"
@@ -253,7 +257,7 @@
             "concept": "state-behavior",
             "title": "Partial recovery statechart",
             "stateBearer": {
-              "introducedSubject": "shared-breaker"
+              "introducedEntity": "shared-breaker"
             },
             "coverage": {
               "status": "partial",
@@ -272,21 +276,21 @@
               {
                 "key": "closed",
                 "subject": {
-                  "subject": "S-closed"
+                  "entity": "S-closed"
                 },
                 "label": "Closed"
               },
               {
                 "key": "open",
                 "subject": {
-                  "subject": "S-open"
+                  "entity": "S-open"
                 },
                 "label": "Open"
               },
               {
                 "key": "half-open",
                 "subject": {
-                  "subject": "S"
+                  "entity": "S"
                 },
                 "label": "Half-open"
               }
@@ -343,7 +347,7 @@
             ],
             "applicability": {
               "policyKind": {
-                "subject": "P"
+                "entity": "P"
               },
               "scope": "Recovery of the shared breaker scenario role under the account qualifications. Discoverable as an account about P, not an assertion covering every instance or configuration of P."
             },
@@ -368,7 +372,7 @@
               {
                 "key": "trial",
                 "subject": {
-                  "introducedSubject": "trial-execution"
+                  "introducedEntity": "trial-execution"
                 },
                 "label": "Trial execution",
                 "displayLabel": "Trial"
@@ -376,7 +380,7 @@
               {
                 "key": "breaker",
                 "subject": {
-                  "introducedSubject": "shared-breaker"
+                  "introducedEntity": "shared-breaker"
                 },
                 "label": "Shared breaker",
                 "displayLabel": "Breaker"
@@ -384,7 +388,7 @@
               {
                 "key": "caller",
                 "subject": {
-                  "introducedSubject": "concurrent-execution"
+                  "introducedEntity": "concurrent-execution"
                 },
                 "label": "Concurrent execution",
                 "displayLabel": "Caller"
@@ -434,7 +438,7 @@
                 "participant": "caller",
                 "on": "breaker",
                 "relationship": {
-                  "introducedSubject": "waiting"
+                  "introducedEntity": "waiting"
                 },
                 "text": "Because the sole trial slot remains occupied, wait for its recovery decision; supplied work has not started",
                 "evidence": [
@@ -510,7 +514,7 @@
                     "participant": "caller",
                     "on": "breaker",
                     "relationship": {
-                      "introducedSubject": "waiting"
+                      "introducedEntity": "waiting"
                     },
                     "text": "Waiting execution resumes and rechecks admission",
                     "evidence": [
@@ -526,7 +530,7 @@
                     "key": "ordinary-work",
                     "kind": "action",
                     "actor": "breaker",
-                    "text": "With Closed still current, invoke the waiting caller\u2019s supplied work",
+                    "text": "With Closed still current, invoke the waiting caller’s supplied work",
                     "evidence": [
                       "E-admission",
                       "E-half-open"
@@ -564,7 +568,7 @@
                     "participant": "caller",
                     "on": "breaker",
                     "relationship": {
-                      "introducedSubject": "waiting"
+                      "introducedEntity": "waiting"
                     },
                     "text": "Waiting execution resumes and rechecks admission",
                     "evidence": [
@@ -596,7 +600,7 @@
             ],
             "notShown": [
               "Delivery order of results to the trial caller",
-              "Completion or result of the concurrent caller\u2019s work on the success branch",
+              "Completion or result of the concurrent caller’s work on the success branch",
               "Other scheduling interleavings"
             ],
             "evidence": [
@@ -616,51 +620,61 @@
         "title": "Circuit breaker admission, including waiting for recovery",
         "referents": [
           {
-            "subject": "P"
+            "entity": "P"
           },
           {
-            "subject": "S-closed"
+            "entity": "S-closed"
           },
           {
-            "subject": "S-open"
+            "entity": "S-open"
           },
           {
-            "subject": "S"
+            "entity": "S"
           },
           {
-            "introducedSubject": "shared-breaker"
+            "introducedEntity": "shared-breaker"
           },
           {
-            "introducedSubject": "waiting"
+            "introducedEntity": "waiting"
           },
           {
-            "introducedSubject": "concurrent-execution"
+            "introducedEntity": "concurrent-execution"
           }
         ],
         "associations": [
           {
             "role": "describes",
             "subject": {
-              "subject": "P"
+              "entity": "P"
             }
           },
           {
             "role": "identifies",
             "subject": {
-              "subject": "S-closed"
-            }
+              "entity": "S-closed"
+            },
+            "contentKey": "closed-description"
           },
           {
             "role": "identifies",
             "subject": {
-              "subject": "S-open"
-            }
+              "entity": "S-open"
+            },
+            "contentKey": "open-description"
           },
           {
             "role": "identifies",
             "subject": {
-              "subject": "S"
-            }
+              "entity": "S"
+            },
+            "contentKey": "half-open-description"
+          },
+          {
+            "role": "describes",
+            "subject": {
+              "entity": "P"
+            },
+            "contentKey": "admission-cases"
           }
         ],
         "qualifications": [
@@ -680,16 +694,16 @@
         "content": [
           {
             "key": "closed-description",
-            "form": "subject-description/0",
+            "form": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
-              "subject": "S-closed"
+              "entity": "S-closed"
             },
             "name": "Closed",
             "description": "A state category of the Circuit breaker policy kind in which ordinary supplied work is admitted.",
             "classification": "state-category",
             "relativeTo": {
-              "subject": "P"
+              "entity": "P"
             },
             "evidence": [
               "E-state",
@@ -698,16 +712,16 @@
           },
           {
             "key": "open-description",
-            "form": "subject-description/0",
+            "form": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
-              "subject": "S-open"
+              "entity": "S-open"
             },
             "name": "Open",
             "description": "A state category withholding execution until the configured recovery delay makes an execution eligible to initiate a trial. Elapsed time alone does not change the stored state.",
             "classification": "state-category",
             "relativeTo": {
-              "subject": "P"
+              "entity": "P"
             },
             "evidence": [
               "E-state",
@@ -716,16 +730,16 @@
           },
           {
             "key": "half-open-description",
-            "form": "subject-description/0",
+            "form": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
-              "subject": "S"
+              "entity": "S"
             },
             "name": "Half-open",
             "description": "A recovery state category of the Circuit breaker policy kind. Sampled work contributes to the decision to close or reopen the breaker; the category is not an individual execution or evidence of application health.",
             "classification": "state-category",
             "relativeTo": {
-              "subject": "P"
+              "entity": "P"
             },
             "evidence": [
               "E-state",
@@ -752,7 +766,7 @@
                 "key": "ordinary",
                 "when": {
                   "state": {
-                    "subject": "S-closed"
+                    "entity": "S-closed"
                   },
                   "condition": "An execution is requested."
                 },
@@ -765,13 +779,13 @@
                 "key": "trial",
                 "when": {
                   "state": {
-                    "subject": "S-open"
+                    "entity": "S-open"
                   },
                   "condition": "An execution is requested after the recovery delay."
                 },
                 "outcome": "Enter Half-open and start recovery-trial work.",
                 "resultingState": {
-                  "subject": "S"
+                  "entity": "S"
                 },
                 "evidence": [
                   "E-admission"
@@ -781,7 +795,7 @@
                 "key": "refused",
                 "when": {
                   "state": {
-                    "subject": "S-open"
+                    "entity": "S-open"
                   },
                   "condition": "An execution is requested before the recovery delay has elapsed."
                 },
@@ -794,7 +808,7 @@
                 "key": "waiting",
                 "when": {
                   "state": {
-                    "subject": "S"
+                    "entity": "S"
                   },
                   "condition": "The single trial slot is occupied."
                 },
@@ -823,7 +837,7 @@
                 "key": "breaker",
                 "description": "The breaker instance receiving this execution request.",
                 "instanceOf": {
-                  "subject": "P"
+                  "entity": "P"
                 }
               },
               {
@@ -852,18 +866,18 @@
                   {
                     "role": "breaker",
                     "subject": {
-                      "introducedSubject": "shared-breaker"
+                      "introducedEntity": "shared-breaker"
                     }
                   },
                   {
                     "role": "requested-execution",
                     "subject": {
-                      "introducedSubject": "concurrent-execution"
+                      "introducedEntity": "concurrent-execution"
                     }
                   }
                 ],
                 "relationshipSubject": {
-                  "introducedSubject": "waiting"
+                  "introducedEntity": "waiting"
                 },
                 "qualification": "TRIAL-1 illustrates this case under its own scenario conditions. These bindings map the general local roles to that illustration only; they do not restrict the general admission claim to those subjects or generalize the entire scenario to all requests.",
                 "evidence": [
@@ -894,14 +908,14 @@
               {
                 "role": "focus",
                 "subject": {
-                  "subject": "S"
+                  "entity": "S"
                 }
               }
             ],
             "method": "qualified-architectural-interpretation",
             "parameterDefinitions": [],
             "qualifications": [
-              "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
+              "A question under this account’s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
             ],
             "evidence": [
               "E-admission",
@@ -927,7 +941,7 @@
         },
         "affectedSubjects": [
           {
-            "subject": "P"
+            "entity": "P"
           }
         ],
         "reason": "ADMISSION-1 presents its cases as covering admission in this scope, but omits waiting while the single trial is occupied. ADMISSION-2 includes that outcome and the subsequent admission recheck. This does not claim that every statement of ADMISSION-1 was wrong.",

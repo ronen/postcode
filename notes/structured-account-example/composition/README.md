@@ -75,7 +75,7 @@ conditions. The general pattern does not promise that a wait occurs.
 | --- | --- | --- |
 | P and S (Half-open) | Reused from earlier accounts | Policy kind and state category; reuse does not broaden earlier behavior. |
 | B | Introduced by the separate bulkhead investigation | Policy kind, not an observed bulkhead instance. |
-| C-BB and C-BH | Explicitly introduced shared subjects | The two ordered patterns, useful as primary results for later investigation. |
+| C-BB and C-BH | Explicitly introduced entities | The two ordered patterns, useful as primary results for later investigation. |
 | `breaker`, `bulkhead`, execution roles | Item-local variables | Bound once in each scenario. Equal keys in the other item do not identify the same object. |
 | `recovery-wait`, `capacity-wait` | Item-local relationship designations | Different relationships with different awaited conditions. Neither is earlier W. |
 | Earlier R, E-trial, E-caller and W | Available with TRIAL-1's identifying support | Comparison context only; no identity with these new scenario participants is asserted. |
@@ -84,16 +84,16 @@ The contextual state claim is explicit: **bearer = this item's breaker role,
 category = S, situation = waiting-cut**. It does not allocate another Half-open or a
 universal contextual-identity object. Exact account/item/role/situation designation
 suffices to revisit it in this example. A subsequent investigation can introduce a
-shared subject with that designation as its qualified origin if continuity needs it.
+entity with that designation as its qualified origin if continuity needs it.
 
 This deliberately tests leaving the new relationships local. Giving every role and
 relation an ID now would simplify cross-item references but require reusable identifying
 support for every scenario detail. Conversely, local variables make cross-item reuse
 more expensive: another account cannot use `{localRole: breaker}` to refer back here.
 It must designate the exact prior occurrence and establish any correspondence, or
-use an explicitly promoted subject. No renderer may match roles by spelling.
+use an explicitly introduced entity. No renderer may match roles by spelling.
 
-The probe therefore does **not** establish that contextual subjects or shared general
+The probe therefore does **not** establish that context-specific entities or shared general
 waiting relationships are never needed. It shows a smaller representation suffices
 for these two explanations and exact follow-up selection. “Waiting for recovery in
 general” would be a new abstraction with its own qualified account, not a rename of W.
@@ -103,7 +103,7 @@ general” would be a new abstraction with its own qualified account, not a rena
 The existing [shared envelope](../contracts.md#shared-roles-and-illustrations) is used
 for `roles` and `roleScope` on interaction items. This is a second form using the same
 role mechanism, without introducing an identity-binding illustration. Participants
-may designate a local role instead of a retained subject. No illustration is needed:
+may designate a local role instead of an entity. No illustration is needed:
 the traces are new scenario accounts, not an assertion that an old trace generalizes.
 
 The following are **probe-local extensions to `interaction/0`**, pending discussion,
@@ -114,7 +114,7 @@ not silently adopted fields of the earlier sample:
 | `pattern` | Retained/introduction reference for the ordered pattern being illustrated by this scenario. It does not assert equality with a runtime wrapper. |
 | `policyOrder` | Ordered local policy-instance roles for the composite execution path. Independent bulkhead-only work is explicitly outside this path. |
 | `relations` | Keyed architectural relations scoped to this interaction, with typed endpoints, conditions and evidence. |
-| `{localRelation: key}` | Resolves only in this item's relations. Wait steps and situation records can refer to it without allocating a subject. |
+| `{localRelation: key}` | Resolves only in this item's relations. Wait steps and situation records can refer to it without allocating an entity. |
 | `situations` | Qualified snapshots at an exact `afterStep`, with explicit state assignments, resource occupancy, execution progress and active relations. These are asserted content, not simulated states derived by the renderer. |
 
 `waits-for-decision` names a waiter and decision holder; `waits-for-capacity` names a
@@ -143,19 +143,19 @@ two resolve to an exact retained account and one of its `interaction/0` items.
 ```json
 {"kind": "relation", "key": "recovery-wait"}
 {"kind": "state-assignment", "situation": "waiting-cut",
- "bearer": {"localRole": "breaker"}, "category": {"subject": "S"}}
+ "bearer": {"localRole": "breaker"}, "category": {"entity": "S"}}
 ```
 
 A relation selector resolves exactly one key in that item's `relations`. A state
 assignment selector resolves one situation and exactly one assertion in its
 `stateAssignments` whose bearer and category both match. It selects an asserted
-state assignment, not a transition, every use of S, or a new subject. Merely finding
+state assignment, not a transition, every use of S, or a new entity. Merely finding
 the role and category separately is insufficient. Duplicate matching assertions are
 ambiguous and rejected. Keys remain scoped to the addressed item; bare role selectors,
 arbitrary paths, combined selectors and migration to replacements are not defined
 by this probe. Its checker resolves both follow-up selections and rejects malformed
 or nonresolving alternatives. Selection addressing is now exercised; a subsequent
-investigation or promotion from it is still not executed.
+investigation or entity introduction from it is still not executed.
 
 This does not make an occurrence an independent correction unit. Related-content
 links locate earlier qualified interpretations; they neither adopt them into the tree
@@ -259,10 +259,12 @@ arrows; they remain explicit, inspectable content in each step.
 
 ## Recommendations to discuss
 
-1. **Keep the new scenario details local for this probe.** Explicitly retain the two
-   patterns, reuse P/B/S, and promote individual roles or relations only when subsequent
-   use warrants it. We should test a later investigation of one designated wait before
-   concluding that local addressing is sufficient in the application boundary.
+1. **Keep the new scenario details local for this probe.** Introduce the two pattern
+   entities and reuse P/B/S; role variables and keyed relation content remain local
+   structural addresses. A later investigation of a designated wait can explain that
+   content, reuse an existing entity or explicitly introduce one. There is no promotion
+   threshold. Test that follow-up before concluding local addressing is sufficient at
+   the application boundary.
 2. **Retain explicit situations, but leave their final form open.** Resource ownership,
    occupancy and whether application work has started are necessary meaning here;
    an ordinary arrow sequence cannot supply them by itself. Whether situations belong

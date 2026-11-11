@@ -21,7 +21,7 @@ now place an `investigation-offer/0` content item in ADMISSION-1:
 | Qualification | A question under the account's scope; it does not assert a concurrency outcome or certify the account's admission coverage. |
 | Support | Existing admission and default-sampling evidence available to the initial investigation. |
 
-The offer is ordinary qualified account content. It does not allocate another subject,
+The offer is ordinary qualified account content. It does not allocate another entity,
 assert that waiting has already been discovered, or modify the existing subject
 associations. The children partition keeps this behavioral offer on ADMISSION-1,
 not the identifying child. Its basis and account qualifications apply as usual.

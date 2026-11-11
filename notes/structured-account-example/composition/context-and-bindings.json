@@ -56,7 +56,7 @@
     "analysisAnchor": "Mechanical BulkheadPolicy module made available as a fixture precondition; discovery not exercised."
   },
   "bulkheadAcceptance": {
-    "subjectIds": {
+    "entityIds": {
       "bulkhead": "B"
     },
     "accountIds": {
@@ -141,7 +141,7 @@
     "contextSelectionPolicy": "For this origin-free question, select the relevant current admission account ADMISSION-2 and disclose its qualified correction history. Do not deliver superseded originals by default. They remain requestable with applicable correction-context delivery; relevance, conflicts and explicit historical requests can change this selection."
   },
   "compositionAcceptance": {
-    "subjectIds": {
+    "entityIds": {
       "bulkhead-outside": "C-BB",
       "breaker-outside": "C-BH"
     },
@@ -194,7 +194,7 @@
           "key": "recovery-wait"
         }
       },
-      "meaning": "Investigate this locally designated waiting relation without assuming it is W or allocating a universal waiting subject. A later qualified introduction may promote this occurrence."
+      "meaning": "Investigate this locally designated waiting relation without assuming it is W or allocating a universal waiting entity. A later investigation may explicitly introduce an entity grounded in this occurrence; selection itself does not allocate one."
     },
     {
       "selection": {
@@ -207,11 +207,11 @@
             "localRole": "breaker"
           },
           "category": {
-            "subject": "S"
+            "entity": "S"
           }
         }
       },
-      "meaning": "Half-open as held by this scenario role at this point; S remains the existing category. This designation does not create a contextual subject automatically."
+      "meaning": "Half-open as held by this scenario role at this point; S remains the existing category. This designation does not create an entity automatically."
     }
   ],
   "laterCorrectionProbe": {
@@ -221,7 +221,7 @@
   },
   "patternFollowupRequest": {
     "subject": {
-      "subject": "C-BB"
+      "entity": "C-BB"
     },
     "informationNeed": "Examine capacity occupancy in the bulkhead-outside-breaker pattern.",
     "inputMeaning": "One retained pattern subject with its qualified identifying support; it does not require resubmitting an unordered pair or identify particular runtime instances."

@@ -1142,3 +1142,38 @@ correspondence/conflation remain representable, while reconciliation operations 
 outside the bounded capability. The proposal's inline open questions and closing
 checklist now apply these distinctions. This does not adopt a payload, authorize
 implementation or settle the remaining first-delivery choices.
+
+## 2026-11-11 — Entities as the common organizing identity
+
+The human directs updating the proposal/examples after the naming and identity
+exploration. Use Entity for an explicitly identified architectural thing, Subject
+for the role an investigation/claim concerns, and Referent for what a reference
+denotes. The earlier retained-subject and registered-entity distinctions are removed.
+The purpose is organizing qualified accounts/items about the same things, not merely
+keeping records alive. Each explicit new entity declaration uses a local ID; PostCode
+allocates a global ID and resolves references on atomic acceptance. Later results reuse
+supplied entity IDs. UUID format is optional and does not establish semantic sameness.
+
+There is no registration/promotion threshold or separate contextual introduction
+route. A selected passage such as “application work has not started” is a valid
+investigation input without becoming an entity. Its analysis may explain it, reuse
+an existing entity, or introduce one. Content/node/role keys remain distinct from
+explicit entity designations. Items still attach through qualified account/item
+associations; a mere list of referring investigrams does not replace that organization.
+
+Mechanical analyses participate in the same conceptual model, supplying qualified
+identifying information rather than definitive architectural meaning. Reuse their
+provider-established identities within supported scope; assigning opaque IDs must
+not mint a new identity on each encounter. Selected-subject provenance, result
+referents and successful descriptive claims remain distinct. Common semantics do
+not mandate migrating every producer or changing storage in the first delivery.
+
+The human also proposes qualified entity supersession for splits/merges, preserving
+old identities and correspondences. Entity use could become a separate cause of
+needs-reconsideration from exposure to a corrected defining account. Preserve exact
+references and original associations; do not redistribute claims automatically.
+The walkthrough now illustrates these proposed extensions, their challenge/conflict
+questions and deferred reassessment. They are not implemented by the current fixtures
+or added to the bounded delivery. The proposal, both payload partitions, composition
+fixtures and their checkers use the revised entity terminology; adopted documents
+and application code remain unchanged.

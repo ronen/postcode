@@ -14,7 +14,7 @@ def read(path):
     return json.loads(path.read_text())
 
 
-def check_result(document, bindings, known_subjects, earlier, supplied, evidence):
+def check_result(document, bindings, known_entities, earlier, supplied, evidence):
     result = document['result']
     accounts = {a['key']: a for a in result['accounts']}
     assert len(accounts) == len(result['accounts']), 'duplicate account key'
@@ -59,25 +59,29 @@ def check_result(document, bindings, known_subjects, earlier, supplied, evidence
     for a in accounts.values():
         assert a['qualifications'] and a['evidence'] and a['referents'], 'missing own qualification/support'
         assert len({i['key'] for i in a['content']}) == len(a['content'])
+        for association in a['associations']:
+            if 'contentKey' in association:
+                assert association['contentKey'] in {i['key'] for i in a['content']}, 'unknown associated item'
         identifies = {canon(x['subject']) for x in a['associations'] if x['role'] == 'identifies'}
         for item in a['content']:
-            if item['form'] == 'subject-description/0':
+            if item['form'] == 'entity-description/0':
                 assert canon(item['subject']) in identifies, 'missing identifying association on owner'
-            if item.get('introduceRetainedSubject'):
-                key = item['subject']['introducedSubject']
-                assert key not in declarations, 'duplicate subject declaration'
+                assert any(x['role'] == 'identifies' and x['subject'] == item['subject'] and x.get('contentKey') == item['key'] for x in a['associations']), 'identifying item not addressed'
+            if item.get('introducesEntity'):
+                key = item['subject']['introducedEntity']
+                assert key not in declarations, 'duplicate entity declaration'
                 assert item['name'] and item['description']
                 declarations[key] = item
-    assert set(declarations) == set(bindings['subjectIds'])
+    assert set(declarations) == set(bindings['entityIds'])
     def references(value, roles=None):
         if isinstance(value, list):
             for child in value:
                 references(child, roles)
         elif isinstance(value, dict):
-            if set(value) == {'subject'} and isinstance(value['subject'], str):
-                assert value['subject'] in known_subjects, 'unknown retained subject'
-            if set(value) == {'introducedSubject'}:
-                assert value['introducedSubject'] in declarations, 'undeclared subject'
+            if set(value) == {'entity'} and isinstance(value['entity'], str):
+                assert value['entity'] in known_entities, 'unknown entity'
+            if set(value) == {'introducedEntity'}:
+                assert value['introducedEntity'] in declarations, 'undeclared entity'
             if set(value) == {'submittedAccount'}:
                 assert value['submittedAccount'] in accounts, 'unknown submitted account'
             if set(value) == {'account'} and isinstance(value['account'], str):
@@ -118,7 +122,7 @@ def check_result(document, bindings, known_subjects, earlier, supplied, evidence
                 assert item['method'] in OFFER_METHODS, 'unsupported offer method'
                 assert item['parameterDefinitions'] == [], 'parameterized offers outside this probe'
                 assert len(item['targets']) == 1 and item['targets'][0]['role'] == 'focus'
-                assert set(item['targets'][0]['subject']) in [{'subject'}, {'introducedSubject'}]
+                assert set(item['targets'][0]['subject']) in [{'entity'}, {'introducedEntity'}]
             if item['form'] == 'state-behavior/0':
                 states = {s['key'] for s in item['states']}
                 assert len(states) == len(item['states'])
@@ -147,7 +151,7 @@ def check_result(document, bindings, known_subjects, earlier, supplied, evidence
     return accounts
 
 
-def resolve_offer_request(request, accounts, subject_bindings):
+def resolve_offer_request(request, accounts, entity_bindings):
     assert request['operation'] == 'follow-up-investigation', 'unsupported invocation'
     assert set(request['subject']) == {'account'}, 'offer invocation needs an exact account'
     params = request['parameters']
@@ -161,8 +165,8 @@ def resolve_offer_request(request, accounts, subject_bindings):
     targets = copy.deepcopy(offer['targets'])
     for target in targets:
         ref = target['subject']
-        if 'introducedSubject' in ref:
-            target['subject'] = {'subject': subject_bindings[origin][ref['introducedSubject']]}
+        if 'introducedEntity' in ref:
+            target['subject'] = {'entity': entity_bindings[origin][ref['introducedEntity']]}
     return {'offer': {'account': origin, 'contentKey': offer['key']}, 'method': offer['method'],
             'architecturalTargets': targets, 'parameterValues': params['values']}
 
@@ -171,7 +175,7 @@ def check_offer_chain(directory, accounts):
     ledger = read(directory / 'context-and-bindings.json')
     bindings = {}
     for stage in ['firstAcceptance', 'followupAcceptance']:
-        bindings.update({a: ledger[stage]['subjectIds'] for a in ledger[stage]['accountIds'].values()})
+        bindings.update({a: ledger[stage]['entityIds'] for a in ledger[stage]['accountIds'].values()})
     request = ledger['followupRequest']
     resolved = resolve_offer_request(request, accounts, bindings)
     documentary_change = copy.deepcopy(request)
@@ -196,8 +200,8 @@ def check_offer_chain(directory, accounts):
         content = copy.deepcopy(next(i for i in original['content'] if i['key'] == address['contentKey']))
         for target in content['targets']:
             ref = target['subject']
-            if 'introducedSubject' in ref:
-                target['subject'] = {'subject': bindings[address['account']][ref['introducedSubject']]}
+            if 'introducedEntity' in ref:
+                target['subject'] = {'entity': bindings[address['account']][ref['introducedEntity']]}
         assert delivery['content'] == content, 'offer excerpt lost or changed content'
         assert delivery['accountQualifications'] == original['qualifications'], 'offer lost account scope'
         assert delivery['basis'] == ledger['basis']['id']
@@ -228,7 +232,7 @@ def check_offer_chain(directory, accounts):
 
 def check_variant(directory):
     ledger = read(directory / 'context-and-bindings.json')
-    known = set(ledger['entry']['knownSubjects'])
+    known = set(ledger['entry']['knownEntities'])
     earlier = {'ORIENTATION-0': {'content': []}}
     saved = []
     for filename, stage, request in [('first-result.json', 'firstAcceptance', 'firstRequest'),
@@ -238,7 +242,7 @@ def check_variant(directory):
         args = (ledger[stage], set(known), dict(earlier), complete, set(ledger[request]['suppliedEvidence']))
         accounts = check_result(doc, *args)
         saved.append((doc, args))
-        known.update(ledger[stage]['subjectIds'].values())
+        known.update(ledger[stage]['entityIds'].values())
         earlier.update({ledger[stage]['accountIds'][k]: a for k, a in accounts.items()})
     all_account_ids = {**ledger['firstAcceptance']['accountIds'], **ledger['followupAcceptance']['accountIds']}
     for selection in ledger['expectedSelections']:
@@ -278,7 +282,7 @@ offer_request, offer_bindings = check_offer_chain(BASE / 'children', child_accou
 for key in ['recovery', 'concurrent-callers']:
     get = lambda a: next(i for i in a['TRIAL-1']['content'] if i['key'] == key)
     assert get(mixed_accounts) == get(child_accounts)
-assert not any(i['form'] == 'subject-description/0' for i in child_accounts['ADMISSION-2']['content'])
+assert not any(i['form'] == 'entity-description/0' for i in child_accounts['ADMISSION-2']['content'])
 assert child_accounts['INTRO-1']['children'] == [{'submittedAccount': 'state-definitions'}, {'submittedAccount': 'admission'}]
 # Negative probes: invariants reject malformed copies, never edit the fixture files.
 first, args = children[0]
@@ -288,7 +292,7 @@ mutations = {
     'orphan child': lambda d: d['result']['accounts'][0]['children'].pop(),
     'missing child qualifications': lambda d: d['result']['accounts'][1].update(qualifications=[]),
     'missing child identifies': lambda d: d['result']['accounts'][1].update(associations=[]),
-    'undeclared subject': lambda d: d['result']['accounts'][1]['content'][0].update(subject={'introducedSubject': 'absent'}),
+    'undeclared entity': lambda d: d['result']['accounts'][1]['content'][0].update(subject={'introducedEntity': 'absent'}),
 }
 for name, mutate in mutations.items():
     invalid = copy.deepcopy(first)
@@ -324,7 +328,7 @@ offer_request_mutations = {
     'unknown key': lambda r, a: r['parameters'].update(offerKey='absent'),
     'label instead of key': lambda r, a: r['parameters'].update(offerKey='Concurrent callers and trial outcomes'),
     'non-offer item': lambda r, a: r['parameters'].update(offerKey='admission-cases'),
-    'architectural target as invocation subject': lambda r, a: r.update(subject={'subject': 'S'}),
+    'architectural target as invocation subject': lambda r, a: r.update(subject={'entity': 'S'}),
     'unknown operation': lambda r, a: r.update(operation='arbitrary-question'),
     'undeclared user parameters': lambda r, a: r['parameters'].update(values={'question': 'another question'}),
     'missing original with same-key replacement': lambda r, a: a.pop('ADMISSION-1'),
@@ -339,7 +343,7 @@ for name, mutate in offer_request_mutations.items():
         continue
     raise AssertionError('Invalid offer invocation accepted: ' + name)
 for name, change in [('missing offer qualification', {'qualifications': []}),
-                     ('undeclared offer target', {'targets': [{'role': 'focus', 'subject': {'introducedSubject': 'absent'}}]})]:
+                     ('undeclared offer target', {'targets': [{'role': 'focus', 'subject': {'introducedEntity': 'absent'}}]})]:
     invalid = copy.deepcopy(first)
     next(a for a in invalid['result']['accounts'] if a['key'] == 'admission')['content'][-1].update(change)
     try:
@@ -350,3 +354,20 @@ for name, change in [('missing offer qualification', {'qualifications': []}),
 print('Offer chain and exact/replacement access pass in both variants; ten additional malformed offer submissions/requests rejected.')
 print('Both variants pass structural checks and traceability; ten malformed copies rejected.')
 print('State and interaction content match across partitions. This is not product acceptance or semantic verification.')
+
+# Item associations are exact own-content references, not title-based matching.
+for path in [BASE / 'first-result.json', BASE / 'children/first-result.json']:
+    ledger = read(path.parent / 'context-and-bindings.json')
+    fixture = read(path)
+    check_result(fixture, ledger['firstAcceptance'], set(ledger['entry']['knownEntities']), {'ORIENTATION-0'}, {'ORIENTATION-0'}, set(ledger['evidence']))
+    for bad_key in ['absent-item', 'admission-cases']:
+        bad = copy.deepcopy(fixture)
+        owner = next(a for a in bad['result']['accounts'] if any(x['role'] == 'identifies' for x in a['associations']))
+        next(x for x in owner['associations'] if x['role'] == 'identifies')['contentKey'] = bad_key
+        try:
+            check_result(bad, ledger['firstAcceptance'], set(ledger['entry']['knownEntities']), {'ORIENTATION-0'}, {'ORIENTATION-0'}, set(ledger['evidence']))
+        except AssertionError:
+            pass
+        else:
+            raise AssertionError('invalid identifying-item association accepted')
+print('Exact item associations pass; four dangling or mismatched association copies rejected.')

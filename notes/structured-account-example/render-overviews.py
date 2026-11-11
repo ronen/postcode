@@ -34,12 +34,12 @@ def short(item):
 
 
 def ref_text(ref, ledger):
-    if 'subject' in ref:
-        return ref['subject']
-    if 'introducedSubject' in ref:
+    if 'entity' in ref:
+        return ref['entity']
+    if 'introducedEntity' in ref:
         for key, stage in ledger.items():
-            if key.endswith('Acceptance') and ref['introducedSubject'] in stage.get('subjectIds', {}):
-                return stage['subjectIds'][ref['introducedSubject']]
+            if key.endswith('Acceptance') and ref['introducedEntity'] in stage.get('entityIds', {}):
+                return stage['entityIds'][ref['introducedEntity']]
     if 'localRole' in ref:
         return 'local role ' + ref['localRole']
     if 'localRelation' in ref:
@@ -51,7 +51,7 @@ def state_category_label(subject):
     ledger = read(BASE / 'children/context-and-bindings.json')
     for account in read(BASE / 'children/first-result.json')['result']['accounts']:
         for item in account['content']:
-            if item['form'] == 'subject-description/0' and ledger['firstAcceptance']['subjectIds'][item['subject']['introducedSubject']] == subject:
+            if item['form'] == 'entity-description/0' and ledger['firstAcceptance']['entityIds'][item['subject']['introducedEntity']] == subject:
                 return item['name']
     raise AssertionError('No supplied state-category label: ' + subject)
 
@@ -83,7 +83,7 @@ def scope(a, item, ledger, source):
     if omissions:
         lines += ['Not covered / not shown:', ''] + ['- ' + x for x in omissions] + ['']
     lines += ['## Evidence and exact content', '',
-              f'Account content: [{source}]({source}). Reference keys below are display-local aliases; the traceability file maps them to exact content locations. They are not retained subject identities or correction units.', '']
+              f'Account content: [{source}]({source}). Reference keys below are display-local aliases; the traceability file maps them to exact content locations. They are not entity identities or correction units.', '']
     used = set(a['evidence']) | set(item['evidence'])
     rows = []
     for key in sorted(used):
@@ -204,7 +204,7 @@ def render_sequence(a, item, ledger, pointer, directory, stem, account_id, write
     for n, snap in enumerate(item.get('situations', [])):
         page += [f'## S{n+1} — {short(snap)}', '', 'Asserted after ' + keys[snap['afterStep']] + '. Partial snapshot: absent entries are unspecified, not zero or false.', '']
         for st in snap['stateAssignments']:
-            page += ['- State: ' + ref_text(st['bearer'], ledger) + ' has category ' + ref_text(st['category'], ledger) + ' (' + state_category_label(st['category']['subject']) + ').']
+            page += ['- State: ' + ref_text(st['bearer'], ledger) + ' has category ' + ref_text(st['category'], ledger) + ' (' + state_category_label(st['category']['entity']) + ').']
         page += [''] + table(['Holder', 'Resource owner', 'Resource', 'Amount'], [[ref_text(x['holder'], ledger), ref_text(x['owner'], ledger), {'execution-capacity': 'Execution slot', 'queue-capacity': 'Queue place', 'recovery-trial-slot': 'Recovery trial slot'}[x['resource']], x['amount']] for x in snap['resourceOccupancy']])
         for x in snap['executionProgress']:
             page += ['- Application work: ' + ref_text(x['execution'], ledger) + ' — ' + x['applicationWork'] + '.']

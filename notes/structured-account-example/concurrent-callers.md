@@ -73,7 +73,7 @@ Not covered / not shown:
 
 ## Evidence and exact content
 
-Account content: [followup-result.json](followup-result.json). Reference keys below are display-local aliases; the traceability file maps them to exact content locations. They are not retained subject identities or correction units.
+Account content: [followup-result.json](followup-result.json). Reference keys below are display-local aliases; the traceability file maps them to exact content locations. They are not entity identities or correction units.
 
 | Reference | Support |
 | --- | --- |

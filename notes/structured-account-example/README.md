@@ -1,5 +1,17 @@
 # Admission → trial → correction: complete illustrative results
 
+The current entity model uses `{introducedEntity: localKey}` for new architectural
+entities and `{entity: ID}` for existing ones. PostCode resolves local keys to global
+IDs at acceptance; there is no registration/promotion threshold. `entity-description/0`
+provides qualified identifying content, not a definitive entity field. `subject`
+continues to name a role in requests and associations. Exact `contentKey` associations
+exercise both identifying descriptions and P's admission-behavior item, alongside
+broader referring-account discovery. Existing account IDs, evidence, correction and
+exposure semantics remain unchanged. Contextual-selection and entity-supersession
+examples are [conceptual probes](../structured-architectural-accounts-example.md#entity-supersession-probe);
+the executable checks do not implement those proposed operations.
+
+
 Exploratory notes, updated 2026-11-11. These are authored examples of a **proposed** content
 contract, not an adopted schema, supported API, or live investigator run. The initial
 omission and its discovery are staged. The [working proposal](../structured-architectural-accounts-proposal.md)
@@ -8,7 +20,7 @@ explores a different partition with definition children; this pass deliberately 
 one investigram per coherent explanation to make the tradeoff concrete.
 
 After review, the recommendation is to place descriptions of explicitly introduced
-shared subjects in identifying children by default when mixed with behavior. Grouped
+entities in identifying children by default when mixed with behavior. Grouped
 descriptions and identification-only roots remain possible; local terms may stay embedded. The payloads retain the single-investigram
 alternative so its costs remain inspectable; they are not the recommended default.
 The revised support and exposure rules below apply to this alternative consistently.
@@ -53,7 +65,7 @@ Half-open's submitted description says:
 > an individual execution or evidence of application health.
 
 That item has a local key, the name “Half-open,” a classification, evidence references,
-and `introduceRetainedSubject: true`. Its subject reference is initially the submission
+and `introducesEntity: true`. Its subject reference is initially the submission
 local `half-open`; acceptance allocates S. The account's qualified `identifies S`
 association makes the description discoverable as identifying support. The description
 remains account content, rather than becoming an authoritative field on S.
@@ -96,7 +108,8 @@ The account contains their identifying descriptions, architectural relationships
 explanatory prose, a partial state model, and an interaction with two outcomes.
 This is one qualified explanation with multiple forms, not a requirement that every
 item have its own investigram or every architectural relationship have a subject ID.
-W is promoted explicitly here to exercise that option.
+W is explicitly introduced as an entity here; other relationships can remain
+structured content without an independent entity designation.
 
 The retained behavioral content says:
 
@@ -131,7 +144,7 @@ A separate identifying child can be delivered and cited without its behavioral
 sibling, avoiding that particular reconsideration path. This is about the cited
 unit: splitting the receiving evaluation's outputs does not narrow their shared
 exposure index. Children still add qualification, support and composition obligations.
-The investigator can use explicit shared-subject introduction as the signal of
+The investigator can use explicit entity introduction as the signal of
 expected reuse: when mixed with behavior, put those identifying descriptions in one
 or more children by default. An identification-only root needs no extra wrapper;
 local terms may stay embedded. This does not require forecasting later queries,
@@ -181,7 +194,7 @@ roles, not R or W. A separate qualified illustration binds the roles to R/E-call
 names W in TRIAL-1's scenario. This distinguishes a general claim from a particular
 illustration while keeping their asserted correspondence inspectable. The example
 binding remains qualified analysis; neither selection nor rendering establishes it.
-No additional retained subject is needed for these item-local roles. `roles`,
+No additional entity is needed for these item-local roles. `roles`,
 `roleScope` and `illustrations` belong to the shared structured-content envelope,
 not just the admission form. Use them when variables add meaning: the scenario state
 item now references R directly instead of adding a redundant local name and treating
@@ -276,7 +289,7 @@ The committed [statechart source](recovery-state.mmd) and
 The converter selects notation and layout only: nodes from states, edges from
 transitions, arrows from request/response steps, notes from actions/wait/resume,
 and branches from alternatives. The traceability file maps semantic elements to
-JSON pointers and evidence references. Layout aliases such as `s0` are not subject IDs.
+JSON pointers and evidence references. Layout aliases such as `s0` are not entity IDs.
 Qualifications and source references remain available alongside each diagram; a
 standalone image is not the complete qualified account.
 
@@ -331,6 +344,6 @@ The next discussion should use this payload to decide:
 Composition remains a design probe: another account could refer to P/R and add
 wrapper-order or interaction claims, but must qualify that correspondence and cannot
 silently fuse its states with this account. This sample does not demonstrate that
-investigation. Initial discovery, origin-free retrieval, local/prose promotion,
-subject merge/split, competing accounts and end-to-end Session validation likewise
+investigation. Initial discovery, origin-free retrieval, contextual selection and subsequent entity introduction,
+entity merge/split, competing accounts and end-to-end Session validation likewise
 remain unexercised. Human pushback and detailed reassessment stay outside this pass.

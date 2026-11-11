@@ -10,41 +10,41 @@
         "title": "Two policy orders and their waiting points",
         "referents": [
           {
-            "subject": "P"
+            "entity": "P"
           },
           {
-            "subject": "B"
+            "entity": "B"
           },
           {
-            "introducedSubject": "bulkhead-outside"
+            "introducedEntity": "bulkhead-outside"
           },
           {
-            "introducedSubject": "breaker-outside"
+            "introducedEntity": "breaker-outside"
           }
         ],
         "associations": [
           {
             "role": "describes",
             "subject": {
-              "subject": "P"
+              "entity": "P"
             }
           },
           {
             "role": "describes",
             "subject": {
-              "subject": "B"
+              "entity": "B"
             }
           },
           {
             "role": "describes",
             "subject": {
-              "introducedSubject": "bulkhead-outside"
+              "introducedEntity": "bulkhead-outside"
             }
           },
           {
             "role": "describes",
             "subject": {
-              "introducedSubject": "breaker-outside"
+              "introducedEntity": "breaker-outside"
             }
           }
         ],
@@ -83,30 +83,32 @@
         "title": "The two ordered patterns",
         "referents": [
           {
-            "subject": "P"
+            "entity": "P"
           },
           {
-            "subject": "B"
+            "entity": "B"
           },
           {
-            "introducedSubject": "bulkhead-outside"
+            "introducedEntity": "bulkhead-outside"
           },
           {
-            "introducedSubject": "breaker-outside"
+            "introducedEntity": "breaker-outside"
           }
         ],
         "associations": [
           {
             "role": "identifies",
             "subject": {
-              "introducedSubject": "bulkhead-outside"
-            }
+              "introducedEntity": "bulkhead-outside"
+            },
+            "contentKey": "bulkhead-outside-description"
           },
           {
             "role": "identifies",
             "subject": {
-              "introducedSubject": "breaker-outside"
-            }
+              "introducedEntity": "breaker-outside"
+            },
+            "contentKey": "breaker-outside-description"
           }
         ],
         "qualifications": [
@@ -119,30 +121,30 @@
         "content": [
           {
             "key": "bulkhead-outside-description",
-            "form": "subject-description/0",
+            "form": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
-              "introducedSubject": "bulkhead-outside"
+              "introducedEntity": "bulkhead-outside"
             },
             "name": "Bulkhead outside breaker",
             "description": "Ordered policy-use pattern: an execution reaches the bulkhead before the circuit breaker and application work.",
             "classification": "ordered-composition-pattern",
-            "introduceRetainedSubject": true,
+            "introducesEntity": true,
             "evidence": [
               "E-policy"
             ]
           },
           {
             "key": "breaker-outside-description",
-            "form": "subject-description/0",
+            "form": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
-              "introducedSubject": "breaker-outside"
+              "introducedEntity": "breaker-outside"
             },
             "name": "Breaker outside bulkhead",
             "description": "Ordered policy-use pattern: an execution reaches the circuit breaker before the bulkhead and application work.",
             "classification": "ordered-composition-pattern",
-            "introduceRetainedSubject": true,
+            "introducesEntity": true,
             "evidence": [
               "E-policy"
             ]
@@ -155,41 +157,41 @@
         "title": "Execution capacity held while awaiting recovery",
         "referents": [
           {
-            "subject": "P"
+            "entity": "P"
           },
           {
-            "subject": "B"
+            "entity": "B"
           },
           {
-            "subject": "S"
+            "entity": "S"
           },
           {
-            "introducedSubject": "bulkhead-outside"
+            "introducedEntity": "bulkhead-outside"
           }
         ],
         "associations": [
           {
             "role": "describes",
             "subject": {
-              "subject": "P"
+              "entity": "P"
             }
           },
           {
             "role": "describes",
             "subject": {
-              "subject": "B"
+              "entity": "B"
             }
           },
           {
             "role": "describes",
             "subject": {
-              "subject": "S"
+              "entity": "S"
             }
           },
           {
             "role": "describes",
             "subject": {
-              "introducedSubject": "bulkhead-outside"
+              "introducedEntity": "bulkhead-outside"
             }
           }
         ],
@@ -218,7 +220,7 @@
             "concept": "interaction",
             "title": "Bulkhead outside breaker",
             "pattern": {
-              "introducedSubject": "bulkhead-outside"
+              "introducedEntity": "bulkhead-outside"
             },
             "semantics": "Possible finite execution prefix, not an observed trace; stops while the stated waiting condition still holds.",
             "roles": [
@@ -227,7 +229,7 @@
                 "name": "Outer bulkhead",
                 "classification": "policy-instance-role",
                 "policyKind": {
-                  "subject": "B"
+                  "entity": "B"
                 }
               },
               {
@@ -235,7 +237,7 @@
                 "name": "Inner breaker",
                 "classification": "policy-instance-role",
                 "policyKind": {
-                  "subject": "P"
+                  "entity": "P"
                 }
               },
               {
@@ -436,7 +438,7 @@
                       "localRole": "breaker"
                     },
                     "category": {
-                      "subject": "S"
+                      "entity": "S"
                     }
                   }
                 ],
@@ -552,41 +554,41 @@
         "title": "A trial waiting in the bulkhead queue",
         "referents": [
           {
-            "subject": "P"
+            "entity": "P"
           },
           {
-            "subject": "B"
+            "entity": "B"
           },
           {
-            "subject": "S"
+            "entity": "S"
           },
           {
-            "introducedSubject": "breaker-outside"
+            "introducedEntity": "breaker-outside"
           }
         ],
         "associations": [
           {
             "role": "describes",
             "subject": {
-              "subject": "P"
+              "entity": "P"
             }
           },
           {
             "role": "describes",
             "subject": {
-              "subject": "B"
+              "entity": "B"
             }
           },
           {
             "role": "describes",
             "subject": {
-              "subject": "S"
+              "entity": "S"
             }
           },
           {
             "role": "describes",
             "subject": {
-              "introducedSubject": "breaker-outside"
+              "introducedEntity": "breaker-outside"
             }
           }
         ],
@@ -616,7 +618,7 @@
             "concept": "interaction",
             "title": "Breaker outside bulkhead",
             "pattern": {
-              "introducedSubject": "breaker-outside"
+              "introducedEntity": "breaker-outside"
             },
             "semantics": "Possible finite execution prefix, not an observed trace; stops while the stated waiting condition still holds.",
             "roles": [
@@ -625,7 +627,7 @@
                 "name": "Outer breaker",
                 "classification": "policy-instance-role",
                 "policyKind": {
-                  "subject": "P"
+                  "entity": "P"
                 }
               },
               {
@@ -633,7 +635,7 @@
                 "name": "Inner shared bulkhead",
                 "classification": "policy-instance-role",
                 "policyKind": {
-                  "subject": "B"
+                  "entity": "B"
                 }
               },
               {
@@ -826,7 +828,7 @@
                       "localRole": "breaker"
                     },
                     "category": {
-                      "subject": "S"
+                      "entity": "S"
                     }
                   }
                 ],

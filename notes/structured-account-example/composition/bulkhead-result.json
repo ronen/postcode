@@ -10,14 +10,14 @@
         "title": "Bulkhead vocabulary and admission",
         "referents": [
           {
-            "introducedSubject": "bulkhead"
+            "introducedEntity": "bulkhead"
           }
         ],
         "associations": [
           {
             "role": "describes",
             "subject": {
-              "introducedSubject": "bulkhead"
+              "introducedEntity": "bulkhead"
             }
           }
         ],
@@ -53,15 +53,16 @@
         "title": "Bulkhead policy kind",
         "referents": [
           {
-            "introducedSubject": "bulkhead"
+            "introducedEntity": "bulkhead"
           }
         ],
         "associations": [
           {
             "role": "identifies",
             "subject": {
-              "introducedSubject": "bulkhead"
-            }
+              "introducedEntity": "bulkhead"
+            },
+            "contentKey": "bulkhead-description"
           }
         ],
         "qualifications": [
@@ -74,15 +75,15 @@
         "content": [
           {
             "key": "bulkhead-description",
-            "form": "subject-description/0",
+            "form": "entity-description/0",
             "concept": "architectural-identification",
             "subject": {
-              "introducedSubject": "bulkhead"
+              "introducedEntity": "bulkhead"
             },
             "name": "Bulkhead",
             "description": "The reusable policy kind that bounds concurrent execution and pending queue capacity for supplied operations.",
             "classification": "policy-kind",
-            "introduceRetainedSubject": true,
+            "introducesEntity": true,
             "evidence": [
               "E-bulkhead"
             ]
@@ -95,14 +96,14 @@
         "title": "Bulkhead capacity and queue",
         "referents": [
           {
-            "introducedSubject": "bulkhead"
+            "introducedEntity": "bulkhead"
           }
         ],
         "associations": [
           {
             "role": "describes",
             "subject": {
-              "introducedSubject": "bulkhead"
+              "introducedEntity": "bulkhead"
             }
           }
         ],

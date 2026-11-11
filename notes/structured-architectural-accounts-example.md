@@ -15,7 +15,7 @@ include proposed JSON submissions, static source checking and rendered diagrams.
 They use a single investigram for each coherent explanation, with definitions inside
 it, to test the alternative to this walkthrough's child partition. Read the two as
 explicit design alternatives; neither is adopted. The current recommendation favors
-identifying children for explicit shared-subject introductions mixed with behavior,
+identifying children for explicit entity introductions mixed with behavior,
 using introduction as the reuse signal rather than predicting future queries; the complete payload retains the mixed alternative for comparison.
 The [paired children payloads](structured-account-example/children/README.md) now
 exercise this walkthrough's partition concretely, with shared role semantics,
@@ -50,8 +50,8 @@ and revision, without requiring perfect claim independence or global consistency
   and therefore avoid warnings from that sibling's correction. It does not establish
   independent semantic validity or eliminate other exposure paths.
 
-Only explicit introduction/reuse is exercised as an application path here. Local/prose
-promotion remains a separate probe, not an agreed scope exclusion. The caller may
+Only explicit entity introduction/reuse is exercised as a proposed application path
+here. Contextual selection and subsequent entity introduction remain a separate probe. The caller may
 be a direct API client. This is an architecture exercise: presume suitable viewing
 and selection affordances and specify only their behavioral inputs. Subject(s), Lens,
 parameters and supplied context are distinct; merely displaying accounts together
@@ -59,9 +59,16 @@ neither feeds them to an investigator nor creates a new domain result.
 
 ## 1. Establish referents and basis
 
-A mechanical module analysis yields M and its qualified information. An orientation
+A mechanical module analysis yields entity M and its qualified identifying information.
+Its provider establishes identity within the captured basis and Session; a global
+reference reuses that identity rather than minting a new one at each encounter.
+Mechanical identifying information is not the final architectural definition of M. An orientation
 investigation from M introduces Circuit breaker policy kind P, with an attributable
-definition and qualified implementation mapping. This is a proposed discovery path;
+identifying description and qualified implementation mapping.
+The orientation result refers to its selected entity M as well as newly introduced P;
+its identifies association is to P. Being selected does not by itself make M the
+subject of a successful identifying claim. The concrete fixture seeds these facts
+and does not execute a mechanical-producer migration. This is a proposed discovery path;
 seeding orientation in a fixture cannot demonstrate discovery.
 
 The admission investigation introduces S for Half-open and S-open/S-closed for the
@@ -79,7 +86,7 @@ still needs an explicit governing decision before implementation.
 
 The shared-instance role R is deliberately introduced during the follow-up. Knowing
 that a policy has instances would not logically preclude missing waiting behavior,
-but delaying R here preserves the original journey and tests genuinely new subjects.
+but delaying R here preserves the original journey and tests new entities.
 
 ## 2. One introduction, separate correction units
 
@@ -92,7 +99,7 @@ by creating smaller output parts. However, a later investigation receiving only 
 separate identifying child cites that child, not an undelivered behavioral sibling.
 A definition excerpt from a mixed account cites the whole containing account. This
 is now the strongest reason for the actionable default: put descriptions of explicitly
-introduced shared subjects in identifying children when mixed with behavior. Grouping
+introduced entities in identifying children when mixed with behavior. Grouping
 is allowed; an identification-only root needs no wrapper and local terms may stay
 embedded. Structured graph nesting does not dictate this account partition.
 
@@ -129,20 +136,24 @@ its parent; any additional impact behavior needs explicit design.
 The hierarchy itself is existing machinery: one investigation can already return
 a root and recursive child investigrams, each with its own retained ID. Choosing
 definition and admission children is this example's proposed use of that machinery.
-Introducing Half-open as a shared subject and recording which investigram identifies
+Introducing Half-open as an entity and recording which investigram identifies
 it are proposed extensions, not existing hierarchy behavior.
 
-**Expanded introduction item.** The human clarifies that shorthand such as
-“half-open-description identifies S” has several parts: name “Half-open,” an
-internal identifier, identifying description and an explicit indication to promote
-it to a retained subject. For a newly introduced subject, distinguish the
-investigator's local identifier from the shared ID S allocated by PostCode at
-acceptance. Other content in the result can reference the local identifier, resolved
-to S during acceptance. Exact field names and whether the indication is a flag or
-declaration form remain open. Promotion concerns shared subject identity: an item
-without promotion can still be retained as investigram content with a local address.
-The description remains qualified account content; allocation does not turn it into
-an authoritative mutable definition. Existing subjects are referenced by retained ID.
+**Entity introduction item.** “Half-open description identifies S” includes the
+name Half-open, a submission-local entity key, and a qualified identifying description.
+Explicit declaration introduces an entity; there is no separate importance, retention
+or promotion flag. PostCode allocates the reusable ID S and resolves local references
+atomically on acceptance. The concrete fixture's `introducesEntity: true` distinguishes
+an introducing description from another description of an existing entity; it is not
+a separate lifecycle status. Existing entities use their global IDs.
+
+The description remains account content, not an authoritative entity field. An ordinary
+key on a paragraph, transition or local variable supplies a content address without
+introducing an entity. An explicitly designated architectural entity, in contrast,
+always gets a reusable ID. Selected text can be investigated without entity allocation.
+For example, selecting “application work has not started” makes that exact passage the
+subject of Explain. Its result may explain the claim, reuse an existing execution
+entity, or introduce one with qualified identification; the selection itself creates none.
 
 The admission evaluation returns a fixed composition:
 
@@ -163,7 +174,7 @@ ADMISSION-1 describes P's admission behavior and refers to S. That reference doe
 not automatically make it a describes-S association. It contains the admission cases
 and inspection account, with support and qualifications attributable to those claims.
 
-Thus Circuit Breaker already has retained subject reference P, and ADMISSION-1 is
+Thus Circuit Breaker already has entity reference P, and ADMISSION-1 is
 one qualified item associated with it through a describes association. Here that
 item is an independently addressable investigram. Its composition parent INTRO-1
 is separate from the subject association; neither P nor INTRO-1 owns every future
@@ -366,7 +377,7 @@ of S; do not automatically copy input S, origin M or all referents. General vali
 of this rule remains open. Current corrected-subject validation needs extension.
 
 TRIAL-RESULT-1's reporting tree and ADMISSION-2's replacement tree are disjoint.
-Shared subject IDs and evidence do not constitute shared composition children.
+Shared entity IDs and evidence do not constitute shared composition children.
 Neither adopts DEFINITIONS-1 or appends to INTRO-1. The correction's reason,
 qualifications and evidence remain accessible as reporting content. S and its
 identifying description are unchanged by this behavioral correction.
@@ -464,7 +475,7 @@ The recommendation is to retain structured claims through the same qualified
 investigrams and subject references used above. For example, a transition's source
 and destination can reference retained state subjects, while its trigger, guard,
 effect and state-bearing participant are explicit content. The transition does not
-require its own shared subject identity merely to be structured. Its containing
+require its own entity identity merely to be structured. Its containing
 investigram remains the initial correction unit.
 
 The terminology and field meanings remain to be worked through using established
@@ -530,7 +541,7 @@ of a key with prose. A diagram is one possible communication form: keyed prose m
 accompany diagram-supporting content or suffice when no diagram is useful. The
 catalogue distinguishes concept guidance, supported content forms and diagram
 mappings; selecting a concept does not automatically require diagram data. Local
-keys make prose addressable without allocating shared subjects or changing the
+keys make prose addressable without allocating entities or changing the
 whole-investigram correction unit.
 
 | Candidate | Reference concept | Diagram type / reference status | Question and information requirements |
@@ -598,6 +609,28 @@ semantics or qualified checking of affected accounts; do not silently invent it.
 Actual conflation requires distinguished referents and correspondence rather than
 retaining S merely for convenient continuity.
 
+<a id="entity-supersession-probe"></a>
+## Entity correspondence and supersession probe
+
+This conceptual continuation tests the design without claiming implemented acceptance,
+entity-status derivation or a reconciliation Lens. It does not change the admission
+fixtures or their existing citation-based reconsideration results.
+
+| Case | Qualified investigation result | Proposed organizational effect |
+| --- | --- | --- |
+| Separate discoveries | Account A introduces entity S1 and B independently introduces S2 for what each calls Half-open. A later account compares both and asserts same-entity correspondence, with basis and limits. | Preserve both IDs and all original associations. Matching names alone never joins them. Correspondence alone need not retire either identity. |
+| Merge proposal | The comparison account additionally introduces S3, or selects an existing entity, as successor to S1/S2 and explains why those organizing identities should be superseded. | Fresh access discloses the qualified successors; exact references still resolve to S1/S2. Do not silently pool all claims into S3. |
+| Split proposal | An investigation finds that R conflates a state category and an execution phase, introduces category S and phase E, and proposes that they supersede R. | Preserve R and its accounts. Associate particular old content with S or E only through explicit qualified findings; unresolved content stays associated with R. |
+
+A proposed reconsideration warning identifies the supersession cause and the affected
+entity reference: “This account refers to R, subsequently reported as conflating S and E.”
+That is distinct from exposure to a corrected identifying account. An account can refer
+to R without ever receiving its first description. Entity-use reconsideration therefore
+needs an extension; existing correction propagation must not be reported as already
+handling it. Supersession is not a correction of every associated claim. Competing or
+challenged supersessions, downstream propagation and eventual cause-specific clearance
+remain design questions; detailed reassessment is deferred.
+
 ## Qualification and orientation refinement
 
 The concrete children variant now selects qualifications for each identifying child's
@@ -624,5 +657,5 @@ identifying support let application results preserve meaning under exact/fresh a
 Continue with the underlying contracts: support selection and delivery, applicability,
 contextual identity, and reconsideration. Presume UI viewing/selection capabilities;
 retain only their effects on actual request inputs and context. Composition-role and
-local/prose-promotion probes, migration, delivery scope and correction-standing semantics
+contextual-selection probes, migration, delivery scope and correction-standing semantics
 remain open. No planning package is authorized by this example.

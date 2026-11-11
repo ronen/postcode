@@ -13,14 +13,14 @@ shared = runpy.run_path(str(BASE.parent / 'check-fixtures.py'))
 read, check_result = shared['read'], shared['check_result']
 ledger = read(BASE / 'context-and-bindings.json')
 old_ledger = read(BASE.parent / 'children/context-and-bindings.json')
-known = set(old_ledger['entry']['knownSubjects'])
+known = set(old_ledger['entry']['knownEntities'])
 for stage in ['firstAcceptance', 'followupAcceptance']:
-    known.update(old_ledger[stage]['subjectIds'].values())
+    known.update(old_ledger[stage]['entityIds'].values())
 earlier = dict(shared['child_accounts'])
 bulk = read(BASE / 'bulkhead-result.json')
 bulk_accounts = check_result(bulk, ledger['bulkheadAcceptance'], known, earlier,
                              set(), set(ledger['bulkheadRequest']['suppliedEvidence']))
-known.update(ledger['bulkheadAcceptance']['subjectIds'].values())
+known.update(ledger['bulkheadAcceptance']['entityIds'].values())
 earlier.update({ledger['bulkheadAcceptance']['accountIds'][k]: a for k, a in bulk_accounts.items()})
 request = ledger['compositionRequest']
 complete = {x['account'] for x in request['suppliedAccountContext']}
@@ -78,7 +78,7 @@ def check(document):
                 assert all(r['localRelation'] in relations for r in snap['activeRelations'])
                 for state in snap['stateAssignments']:
                     assert state['bearer']['localRole'] in roles
-                    assert state['category']['subject'] in known
+                    assert state['category']['entity'] in known
                 for occupancy in snap['resourceOccupancy']:
                     assert occupancy['holder']['localRole'] in roles
                     assert occupancy['owner']['localRole'] in roles
@@ -119,12 +119,12 @@ def check_selection(selection, registry):
         assert set(selector) == {'kind', 'situation', 'bearer', 'category'}, 'invalid state selector'
         assert isinstance(selector['situation'], str)
         assert isinstance(selector['bearer'], dict) and set(selector['bearer']) == {'localRole'}
-        assert isinstance(selector['category'], dict) and set(selector['category']) == {'subject'}
-        assert isinstance(selector['bearer']['localRole'], str) and isinstance(selector['category']['subject'], str)
+        assert isinstance(selector['category'], dict) and set(selector['category']) == {'entity'}
+        assert isinstance(selector['bearer']['localRole'], str) and isinstance(selector['category']['entity'], str)
         situations = [s for s in item['situations'] if s['key'] == selector['situation']]
         assert len(situations) == 1, 'unknown or ambiguous situation'
         assert selector['bearer']['localRole'] in {r['key'] for r in item['roles']}
-        assert selector['category']['subject'] in known
+        assert selector['category']['entity'] in known
         matches = [a for a in situations[0]['stateAssignments']
                    if a['bearer'] == selector['bearer'] and a['category'] == selector['category']]
         assert len(matches) == 1, 'unknown or ambiguous state assignment'
@@ -134,7 +134,7 @@ def check_selection(selection, registry):
 
 for probe in ledger['followupProbes']:
     check_selection(probe['selection'], retained_accounts)
-assert ledger['patternFollowupRequest']['subject']['subject'] in ledger['compositionAcceptance']['subjectIds'].values()
+assert ledger['patternFollowupRequest']['subject']['entity'] in ledger['compositionAcceptance']['entityIds'].values()
 relation_selection = ledger['followupProbes'][0]['selection']
 state_selection = ledger['followupProbes'][1]['selection']
 selector_mutations = [

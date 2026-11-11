@@ -34,7 +34,7 @@ INTRO-1                    qualified orientation: state and execution progress d
 └── ADMISSION-1            describes P's admission and inspection behavior
 ```
 
-The explicit subject declarations and `identifies` associations live on DEFINITIONS-1.
+The explicit entity declarations and `identifies` associations live on DEFINITIONS-1.
 It has its own qualifications, evidence, referents and description items. It can be
 delivered without INTRO-1 or ADMISSION-1; its meaning does not depend on inheriting
 the root's qualifications. The root has substantive orientation content and describes
@@ -56,7 +56,7 @@ ADMISSION-1 still contains the deliberately staged coverage error: its three cas
 omit waiting during an occupied trial. Its qualifications match the mixed example,
 including the reentrancy exclusion. The identifying descriptions do not repeat that
 coverage claim. Grouping the three state descriptions into one child deliberately
-keeps a coherent correction/delivery unit; it is not a one-subject-per-child rule.
+keeps a coherent correction/delivery unit; it is not a one-entity-per-child rule.
 
 ADMISSION-1 returns a qualified `concurrent-callers-offer`. The follow-up request
 selects that exact account and offer key, whose architectural focus resolves to S.
@@ -178,7 +178,7 @@ It checks both variants' declaration/reference resolution, unique ownership,
 reachability, qualification, identifying associations, local roles, illustration
 addresses/bindings and ordered causal links. It rejects malformed copies with
 duplicate owners, a cycle, an orphan, missing child qualifications, missing child
-identification and an undeclared subject, plus invalid role/address/qualification and
+identification and an undeclared entity, plus invalid role/address/qualification and
 forward-causality references. It also checks that the state/interaction
 items are identical across partitions and that ADMISSION-2 copies no definitions.
 Diagram traceability pointers resolve against this variant's actual payload.

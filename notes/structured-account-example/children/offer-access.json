@@ -1,5 +1,5 @@
 {
-  "status": "Authored access probes, not additional executed investigations. Retained subject references in delivered offers are resolved on acceptance.",
+  "status": "Authored access probes, not additional executed investigations. Entity references in delivered offers are resolved on acceptance.",
   "exactAnswer": {
     "answer": "ANSWER-1",
     "offer": {
@@ -32,14 +32,14 @@
           {
             "role": "focus",
             "subject": {
-              "subject": "S"
+              "entity": "S"
             }
           }
         ],
         "method": "qualified-architectural-interpretation",
         "parameterDefinitions": [],
         "qualifications": [
-          "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
+          "A question under this account’s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
         ],
         "evidence": [
           "E-admission",
@@ -86,14 +86,14 @@
           {
             "role": "focus",
             "subject": {
-              "subject": "S"
+              "entity": "S"
             }
           }
         ],
         "method": "qualified-architectural-interpretation",
         "parameterDefinitions": [],
         "qualifications": [
-          "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
+          "A question under this account’s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
         ],
         "evidence": [
           "E-admission",
@@ -163,14 +163,14 @@
           {
             "role": "focus",
             "subject": {
-              "subject": "S"
+              "entity": "S"
             }
           }
         ],
         "method": "qualified-architectural-interpretation",
         "parameterDefinitions": [],
         "qualifications": [
-          "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
+          "A question under this account’s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
         ],
         "evidence": [
           "E-admission",
