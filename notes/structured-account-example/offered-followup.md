@@ -5,7 +5,14 @@ stipulated for this probe; it is not a product API or a design of global discove
 ranking or menus. The initial admission investigation remains a fixture precondition.
 The existing behavioral result and diagrams are unchanged.
 
-## Return and invoke the offer
+**Current direction versus fixture:** offers are now proposed as qualified guidance
+metadata, not interpretation-content items. This example preserves the earlier
+`investigation-offer/0` encoding so its verified behavior remains accurately described.
+The [consolidation](../structured-architectural-accounts-consolidation.md) separates
+metadata placement from guidance ownership and correction continuity. A later fixture
+revision must resolve those choices and address namespaces explicitly.
+
+## Return and invoke the offer in the current fixture
 
 Both the [mixed](first-result.json) and [children](children/first-result.json) results
 now place an `investigation-offer/0` content item in ADMISSION-1:
@@ -21,7 +28,7 @@ now place an `investigation-offer/0` content item in ADMISSION-1:
 | Qualification | A question under the investigram's scope; it does not assert a concurrency outcome or certify the investigram's admission coverage. |
 | Support | Existing admission and default-sampling evidence available to the initial investigation. |
 
-The offer is ordinary qualified investigram content. It does not allocate another entity,
+In this fixture encoding, the offer is a qualified investigram content item. It does not allocate another entity,
 assert that waiting has already been discovered, or modify the existing subject
 associations. The children partition keeps this behavioral offer on ADMISSION-1,
 not the identifying child. Its basis and investigram qualifications apply as usual.

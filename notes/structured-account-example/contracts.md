@@ -12,6 +12,15 @@ and `accountRelationships` encode investigrams or their relationships/context. T
 provisional wire spellings are unchanged in this prose pass; they do not imply an
 Account type. Governing definitions and product APIs are unchanged.
 
+**Representation checkpoint:** this document describes the executable authored
+fixtures, which still put offers in `investigation-offer/0` content items. The latest
+[structure consolidation](../structured-architectural-accounts-consolidation.md)
+recommends offers and presentation recommendations as qualified guidance metadata,
+and a distinct diagram-type input catalogue. Those representations, ownership and
+address-namespace rules are not yet encoded or checked here. Moving information to
+metadata does not waive qualification, exposure or complete-target delivery rules;
+the required delivery envelope must be specified when changing the protocol.
+
 ## Shared envelope and addressing
 
 Return one root investigram, its accompanying replacement investigrams if any, and qualified
@@ -192,7 +201,7 @@ now exercises ownership, independent qualification and support selection in auth
 fixtures. The mixed-content fixture remains a comparison; neither is application input.
 
 <a id="retained-investigation-offer"></a>
-## Retained investigation offer — bounded example
+## Retained investigation offer — earlier encoding exercised by fixtures
 
 The [offered follow-up](offered-followup.md) adds `investigation-offer/0`: a keyed
 content item with label, purpose, architectural targets and their roles, a supported

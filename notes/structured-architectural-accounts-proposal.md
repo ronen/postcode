@@ -41,6 +41,14 @@ and applicable accepted decisions remain governing. The
 [structured-interpretation decision](../docs/decisions/structured-investigram-content.md)
 permits exploring this content while preserving qualification and revision contracts.
 
+The [structure consolidation](structured-architectural-accounts-consolidation.md)
+now maps conceptual responsibilities, submitted results, retained records and derived
+information. It records the current guidance-as-metadata direction and the three
+catalogue responsibilities, and walks the existing examples through their ownership
+boundaries. The JSON fixtures still encode offers as content items and use fixed
+diagram entry points; they do not yet validate the revised guidance placement or a
+diagram-recommendation protocol.
+
 ## Current exploratory checkpoint
 
 The design has a stable direction, but no adopted payload schema or planning package.
@@ -198,6 +206,33 @@ additional Account object or required account-assembly UI. Provisional fixture f
 such as `account`, `accounts` and `accountRelationships` still encode investigram
 references, records and relationships; they are serialization spellings, not separate
 concepts. This terminology pass does not rename those fields or governing definitions.
+
+### Consolidated investigram structure
+
+The governing five-part description states information obligations, not a complete
+schema or five disjoint compartments. Claims are assertions, not necessarily separate
+records. The proposed keyed content items live inside Interpretation content; each
+can express several claims. Child investigrams are complete separately identified
+artifacts, not content items. Evidence, qualification and provenance apply across
+content and substantive metadata and need not be physically duplicated.
+
+Distinguish these responsibilities before adding fields:
+
+- **Architectural content:** descriptions, prose, models and interactions, with
+  supported form contracts and explicit references.
+- **Organizing information:** referent inventory, qualified associations, composition
+  and relationships between investigrams. An entity description is content; saying
+  that an investigram or item identifies/refers to that entity is organizing information.
+- **Guidance metadata:** investigation offers and presentation recommendations.
+  They describe ways to investigate or present information, rather than being parts
+  of the architectural account. Their interpretive judgments remain qualified.
+
+This is not a proposal for three generic wrapper fields. New entity declarations
+are acceptance instructions anchored to identifying content; resulting entity IDs
+belong to the common identity mechanism. Provenance and relationship records can
+be referenced from an investigram. Indexes, current status and rendered diagrams are
+not additional assertions to copy into its payload. The [ownership audit](structured-architectural-accounts-consolidation.md)
+separates these responsibilities and their correction/delivery implications.
 
 **Needs design — interpreted identity.** Governing documents allow implemented
 architectural subjects but do not specify the proposed allocation/continuity rules
@@ -718,8 +753,11 @@ The contextual-selection rules above govern the input; only explicit entity
 introduction in a result allocates a new entity identity.
 Neither entry route requires the human to formulate an architectural prose query.
 
-**Agreed exploratory direction — selectable “find out more” offers.** The human
-should select an available investigation rather than formulate its question in prose.
+**Agreed exploratory direction — selectable “find out more” offers.** Treat offers
+as explicit investigram guidance metadata, not architectural interpretation-content
+items. They can be communicated to a user or investigator without becoming part of
+the architectural explanation. The human should select an available investigation
+rather than formulate its question in prose.
 An investigator may return applicable offers with its result or through a generic
 request to discover available investigations. The offer's meaning is atemporal;
 “recommended next” is an optional annotation tied to a particular inquiry, not a
@@ -800,16 +838,21 @@ compares the two promises; the existing concurrent-callers fixture retains the g
 contract and does not require the agent to choose its diagrams in advance.
 
 The [bounded retained-offer example](structured-account-example/offered-followup.md)
-now exercises this investigram-content implication in both partitions: ADMISSION-1 returns
+exercises the earlier offer-as-content encoding in both partitions: ADMISSION-1 returns
 an offer, the existing follow-up invokes it, and ADMISSION-2 repeats its key without
 retargeting the original. Access probes distinguish an offer excerpt, complete own
 content, captured answers and fresh correction disclosure. No global offer-discovery
 system or initial admission-entry design is added to the remit. Other illustrative
 request paths retain their documented assumptions.
 
-**Remaining offer/origin review questions.** A separate investigation-guidance child
+**Remaining guidance ownership/origin questions.** Moving offers to metadata does
+not change their lifetime automatically. If owned by an immutable investigram, they
+remain subject to its replacement and qualified delivery. A separate guidance child
 could keep an offer's address stable when its behavioral sibling is corrected and
-narrow the cited unit for investigator delivery. The current fixtures still keep the
+narrow the cited unit for investigator delivery. Under the new metadata framing, a
+guidance-only child must also meet the substantive-investigram requirement; do not
+invent empty architectural prose to justify a wrapper. Separate guidance records are
+another alternative, not an adopted extension. The current fixtures still keep the
 offer in ADMISSION-1 and repeat it in ADMISSION-2; the child alternative is not yet
 selected or exercised. Human browsing alone does not create investigator exposure.
 Stable offer identity can link prior invocations but does not settle result reuse
@@ -946,7 +989,8 @@ and its discovery are staged. This proposal adds no verification of library beha
    the descriptions distinguishing S from an execution. ANSWER-1 fixes content and support.
    Other introduction/partition choices remain open in the broader design.
 3. **Offered follow-up.** ADMISSION-1 returns `concurrent-callers-offer`, a qualified
-   content item targeting Half-open S. The illustrative Follow-up investigation Lens
+   offer targeting Half-open S. The JSON fixture encodes it as a content item; the
+   current direction places it in qualified guidance metadata. The illustrative Follow-up investigation Lens
    takes ADMISSION-1 as invocation subject and the exact offer key as parameter; S
    is its resolved architectural focus. The caller separately selects DEFINITIONS-1
    and complete ADMISSION-1 from ANSWER-1 as context. `informationNeed` is explanatory
@@ -1252,6 +1296,48 @@ schema, extensibility would become unnecessarily expensive; those obligations
 depend on the form's intended handling. The recommendation is a common content
 protocol with varied semantic detail, not an assertion that all content is equally
 amenable to mechanical use. Exact mandatory keys and nesting remain open.
+
+**Consolidated catalogue responsibilities.** Architectural concept guidance is not
+merely the schema for a diagram: it helps the investigator recognize useful distinctions,
+form questions and explain meaning. Content-form contracts describe how to express
+that meaning, with fields, references and attributable support. A concept can inform
+several forms, and one item can express several concepts; do not require a complete
+independent item per concept. Exact encoding of concept associations on an item remains
+open rather than dictated by the fixtures' single `concept` field.
+
+Share identity through entity references and share assertions through exact references
+to qualified content. Referencing S does not import a particular description of S.
+Each item's contract can be satisfied by its own data plus explicitly referenced,
+available material, without copying everything; necessary unresolved references do
+not make an explanation complete. Cross-item alignment and newly asserted connections
+need qualified content, not renderer inference. Initially prefer straightforward shared
+entities/identifying support and add deeper content sharing only where examples justify it.
+
+**Diagram-type catalogue and presentation recommendations.** Keep a distinct catalogue
+responsibility for supported diagram types, input contracts and mappings under the
+existing Presentation/compatibility model, not a parallel rendering architecture. A presentation
+recommendation is guidance metadata naming a diagram type and bindings to exact items,
+entities or selections permitted by that type. For example, a state-diagram recommendation
+can bind its `model` input to TRIAL-1's `recovery` item; the sequence diagram can bind
+TRIAL-1's `concurrent-callers` item. The diagram contract can accept an entire model
+rather than demand a duplicate node/edge list. Multi-item diagrams require explicit
+input roles and qualified correspondence wherever alignment establishes meaning.
+
+PostCode resolves the declared inputs/support, validates compatibility and sufficiency,
+and applies a known rendering mapping. Layout, display aliases and legends must not
+invent architectural relationships. A form may have a default presentation, but returning
+diagram-capable content is distinct from recommending a diagram. The catalogue split
+is conceptual, not a choice of separate files/registries or a full presentation system.
+The [consolidation example](structured-architectural-accounts-consolidation.md#catalogue-responsibilities)
+shows this flow. Existing generators use fixed fixture entry points rather than
+implementing a general diagram catalogue or recommendation protocol.
+
+**Future presentation annotations.** Required/optional annotations and groups of
+alternative presentations are possible later extensions. Distinguish required by the
+request from an investigator's judgment that a presentation is essential; the latter
+does not change the request's obligations. Alternative presentations need not contain
+identical information. Record purpose and qualification where relevant; defer their
+selection/UI behavior. They are not mandatory new fields in this capability.
 
 **Agreed exploratory direction — agent source references.** Catalogue entries should
 give concise, self-contained guidance and may directly refer agents to source
@@ -1597,11 +1683,12 @@ confidence has sometimes exceeded the examples supporting them.
   migration; preserve mechanical guarantees and avoid unnecessary parallel identities.
 
 1. **Concrete concept and content contracts.** Organize concept guidance, supported
-   forms and diagram mappings; draft the state-behavior and interaction entries
+   forms and diagram-type input contracts/mappings; draft the state-behavior and interaction entries
    needed by the example. Specify returned identifying content, local references,
    entity declarations and investigram-relationship metadata. Include governing treatment
    of explicitly identified relationships/patterns as Entities alongside interpreted
-   identity. Preserve the general qualified-investigram result contract, with optional
+   identity. Settle guidance ownership and address namespaces before changing fixture
+   encoding; metadata placement alone does not solve correction continuity. Preserve the general qualified-investigram result contract, with optional
    specialization for explicit content/presentation promises. Establish attributable
    support and full/partial delivery, without requiring a comprehensive catalogue.
 2. **Investigram boundaries.** Review the concrete mixed-content payload against the

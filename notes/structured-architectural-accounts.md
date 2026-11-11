@@ -1214,3 +1214,41 @@ Provisional JSON field names and source identifiers using account remain unchang
 and are explicitly explained as encoding investigrams; governing terminology and
 application code are unchanged. Historical discussion above preserves its original
 wording. Naming of other concepts remains open for further discussion.
+
+## 2026-11-11 — Structure, guidance and diagram contracts; consolidation
+
+The human authorizes recording the latest discussion and a consolidation pass before
+adding more mechanisms. Content items structure Interpretation content; a claim is an
+assertion, not necessarily a separately keyed object; children are complete investigrams.
+The governing five-part definition is an information-obligation list, not a complete
+or disjoint schema. Identifying descriptions are content, while explicit referent
+inventories and associations organize it.
+
+Offers now belong to qualified guidance metadata rather than architectural content.
+Presentation recommendations are also guidance: name a supported diagram type and bind
+its inputs to exact content/entity references under its input contract. Distinguish
+architectural concept guidance, content-form contracts and diagram-type input contracts/
+mappings. Concepts and items need not correspond one-to-one. Shared entity references
+establish identity; shared assertions need exact qualified content references. Rendering
+resolves explicit inputs/support, validates compatibility and chooses layout, not new
+architectural meaning. An optional recommendation differs from a promised diagram.
+
+Required/optional and alternative-presentation annotations are future extensions;
+request obligations differ from investigator judgments, and alternatives need not
+contain identical information. Their selection/UI behavior is deferred.
+
+The new consolidation note maps both the submitted result and retained investigram,
+then audits ownership, correction, qualification and delivery against admission/trial/
+correction and composition. Not everything belongs in an investigram field: entity
+allocation is an acceptance responsibility, provenance and relationships can have
+separate records, and indexes/current status/rendered diagrams are derived or produced.
+Guidance ownership and referenced-content delivery remain the main structural choices.
+A guidance-only child needs consideration under the substantive-investigram contract;
+metadata placement alone does not make offers survive correction. Exact origin/address
+namespaces remain a smaller open detail. No wrapper schema or new independent guidance
+record is adopted by this grouping.
+
+The proposal records this direction inline. Existing JSON and checkers remain unchanged
+and are explicitly labelled as exercising the earlier offer-as-content encoding and
+fixed diagram entry points. This pass is a conceptual consolidation, not verification
+of guidance metadata, a general diagram registry or a live end-to-end investigation.

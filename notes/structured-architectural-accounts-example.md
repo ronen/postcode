@@ -10,6 +10,13 @@ revision, default single-trial recovery, static interpretation. The admission om
 and discovery in this walkthrough are staged; it does not report a new source or
 runtime investigation.
 
+The [structure consolidation](structured-architectural-accounts-consolidation.md)
+now maps this walkthrough to the full submitted result and retained investigram.
+Content items belong inside Interpretation content; children are separate investigrams.
+Offers and presentation recommendations are proposed as qualified guidance metadata.
+The linked JSON still exercises offers as content items and fixed diagram entry points,
+not that new metadata/recommendation representation.
+
 **Concrete payload comparison:** the newer [complete illustrative results](structured-account-example/README.md)
 include proposed JSON submissions, static source checking and rendered diagrams.
 They use a single investigram for each coherent explanation, with definitions inside

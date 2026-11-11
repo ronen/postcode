@@ -1,5 +1,11 @@
 # Admission → trial → correction: complete illustrative results
 
+The [structure consolidation](../structured-architectural-accounts-consolidation.md)
+records a newer recommendation for offers and presentation recommendations as guidance
+metadata and for explicit diagram-type input bindings. These fixtures still test the
+earlier offer-as-content encoding and fixed diagram generation; their checks do not
+claim those new mechanisms are implemented.
+
 The current entity model uses `{introducedEntity: localKey}` for new architectural
 entities and `{entity: ID}` for existing ones. PostCode resolves local keys to global
 IDs at acceptance; there is no registration/promotion threshold. `entity-description/0`
@@ -76,7 +82,7 @@ mistake; the claim that they cover admission in this scope is.** Waiting during 
 occupied trial is missing. A merely partial table without that coverage claim might
 warrant an addition rather than a correction.
 
-For this pass all content items, including the retained investigation offer, belong to one investigram. Their local keys make
+In this earlier fixture encoding all content items, including the retained investigation offer, belong to one investigram. Their local keys make
 them addressable within content; they do not make them independently correctable
 investigrams. No child investigrams are returned.
 
