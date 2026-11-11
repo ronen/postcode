@@ -120,6 +120,16 @@ selection gestures or a separate assembly workflow here. Describe only selection
 that affect application behavior: subject(s) and their roles, Lens/parameters,
 explicit prior context, actual navigation origin, and exact versus fresh access.
 
+**Remit clarification:** the global investigation set, Overview versus Explain,
+structural-query entry routes, offer discovery and the Follow-up investigation Lens
+are illustrative surrounding application usage. They help test how structured
+accounts could fit PostCode; designing or delivering those application capabilities
+is not part of this work. Preserve the account implications they expose—representable
+qualified content, exact references, contextual subjects, provenance and delivery
+semantics—without making a complete investigation catalogue or request journey a
+prerequisite. A bounded verification path may specify representative inputs without
+settling the app-wide investigation interface.
+
 Viewing several accounts together does not make them multiple subjects of a Lens,
 supply them to an investigator, establish agreement, or create a new retained aggregate.
 Those are distinct operations requiring explicit application meaning. The UI can
@@ -587,17 +597,19 @@ A compact classification can provide useful context without rediscovery, with fu
 support requestable. Its substantive delivery still cites its containing account;
 calling it a tag does not remove qualification or exposure obligations.
 
-**Needs design — interpretive Lens offers.** Define what makes a question applicable
+**Surrounding application design — interpretive Lens offers.** The broader app needs
+to define what makes a question applicable
 to a qualified or initially unknown subject, the support it requires, and how an
 offer is explained. Classification may inform this without becoming established
 fact. Deferring compiler capabilities does not by itself settle interpretive offers.
 
 <a id="global-investigation-entry"></a>
-**Agreed exploratory direction — global entry investigations.** Retain both Overview
+**Illustrative application context — global entry investigations.** Retain both Overview
 and Explain in a small globally defined set. Global means the operation is known to
 PostCode before an investigator proposes an offer; it does not guarantee applicability
 to every subject or require every operation to be displayed everywhere. Supported
-subject/basis/method constraints still apply. The proposed purposes are:
+subject/basis/method constraints still apply. The purposes below provide usage
+context for this account design, not its implementation deliverables:
 
 | Investigation | Information need |
 | --- | --- |
@@ -642,7 +654,7 @@ need not depend on a complete operation ontology. Availability, retrieval, valid
 and first-capability inclusion still need design.
 
 <a id="offered-followup-investigation"></a>
-**Agreed exploratory direction — Follow-up investigation Lens.** Use a general
+**Illustrative application context — Follow-up investigation Lens.** Use a general
 follow-up Lens whose subject is the exact retained investigram containing an offer,
 and whose parameter identifies that offer by a stable key local to that investigram.
 The subject is the retained account, not the transient execution record of the

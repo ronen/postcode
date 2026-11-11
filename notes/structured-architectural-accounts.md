@@ -1110,4 +1110,9 @@ Follow-up investigation complete the proposed global starting set; applicability
 and parameters remain to be specified. This provides entry before any offers exist
 without turning every architectural question into a global menu entry. No fixture
 has yet been converted into a complete global-entry → returned-offer → invocation
-chain; that remains the concrete request-path work identified by the audit.
+chain. The human clarifies that this is illustrative surrounding application usage,
+not additional design or delivery scope for structured architectural accounts. The
+audit identifies assumptions to make explicit in examples; it does not require
+settling the global investigation set or implementing a complete offer-discovery
+journey. Keep the implications for account content, references, qualification,
+contextual designation and provenance within the current remit.
