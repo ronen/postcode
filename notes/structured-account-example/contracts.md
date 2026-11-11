@@ -16,8 +16,9 @@ Account type. Governing definitions and product APIs are unchanged.
 fixtures, which still put offers in `investigation-offer/0` content items. The latest
 [structure consolidation](../structured-architectural-accounts-consolidation.md)
 recommends offers and presentation recommendations as qualified guidance metadata,
-and a distinct diagram-type input catalogue. Those representations, ownership and
-address-namespace rules are not yet encoded or checked here. Moving information to
+and a distinct diagram-type input catalogue. Metadata ownership is settled: each
+investigram owns its metadata and a replacement supplies its own. The metadata
+representation and address/delivery rules are not yet encoded or checked here. Moving information to
 metadata does not waive qualification, exposure or complete-target delivery rules;
 the required delivery envelope must be specified when changing the protocol.
 

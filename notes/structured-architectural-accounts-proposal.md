@@ -845,21 +845,29 @@ content, captured answers and fresh correction disclosure. No global offer-disco
 system or initial admission-entry design is added to the remit. Other illustrative
 request paths retain their documented assumptions.
 
-**Remaining guidance ownership/origin questions.** Moving offers to metadata does
-not change their lifetime automatically. If owned by an immutable investigram, they
-remain subject to its replacement and qualified delivery. A separate guidance child
-could keep an offer's address stable when its behavioral sibling is corrected and
-narrow the cited unit for investigator delivery. Under the new metadata framing, a
-guidance-only child must also meet the substantive-investigram requirement; do not
-invent empty architectural prose to justify a wrapper. Separate guidance records are
-another alternative, not an adopted extension. The current fixtures still keep the
-offer in ADMISSION-1 and repeat it in ADMISSION-2; the child alternative is not yet
-selected or exercised. Human browsing alone does not create investigator exposure.
-Stable offer identity can link prior invocations but does not settle result reuse
-under changed context. A structured originating-occurrence field for an entity
-introduced from selected content is also still open: it would record an exact
-investigram/item/selector without asserting equivalence or content delivery. Neither
-suggestion is implemented by the result-contract clarification.
+**Settled exploratory direction — metadata belongs to its exact investigram.**
+Referent information, associations, investigation offers and presentation recommendations
+are about that specific immutable interpretation. A replacement supplies its own
+metadata; earlier metadata remains with the earlier investigram and its exact references.
+For example, A1 says “Foo is X” and offers investigation of X; A2 corrects that to
+“Foo is Y.” The X offer does not carry forward as guidance for A2. A question about X
+may independently remain interesting without being A2's follow-up offer.
+
+This version-specific behavior is appropriate, not a continuity defect. Withdraw the
+recommendation to move offers to a parent or guidance child merely to preserve their
+addresses; no separate guidance lifecycle is needed. ADMISSION-2 repeating an offer
+means a new explicitly supplied offer at a new address. Matching wording establishes
+neither continuity nor automatic invocation/reuse. Earlier invocations retain their
+exact offer provenance. Historical access and fresh correction disclosure remain intact;
+human browsing alone does not create investigator exposure.
+
+**Remaining metadata contract details.** Preserve applicable qualifications and exact
+addresses when metadata is delivered independently. Moving offers out of content does
+not make an excerpt complete-investigram delivery or waive evidence/exposure rules.
+The structured originating-occurrence field for an entity introduced from selection
+remains open: it records an exact investigram/item/selector, not equivalence or delivery.
+The next fixture pass should encode this ownership and delivery envelope, not reopen
+whether offers need to survive correction as the same objects.
 
 The composition probe supplies concrete scoping evidence: P/B is an unordered set of
 component kinds for a question covering both orders, with no outer/inner meaning in
@@ -1332,6 +1340,16 @@ The [consolidation example](structured-architectural-accounts-consolidation.md#c
 shows this flow. Existing generators use fixed fixture entry points rather than
 implementing a general diagram catalogue or recommendation protocol.
 
+**Presentation remit.** Our responsibility is the retained architectural meaning,
+qualifications and exact references, declared intended diagram inputs, and representative
+rendering to demonstrate sufficiency. General input-retrieval strategy, arrangement of
+legends/details and navigation are later presentation work. Do not add a presentation
+context-selection policy or a universal referenced-content closure service to this
+proposal. If an example exposes missing meaning or ambiguous references, fix that in
+the content contract. Selecting context for a subsequent investigation is different:
+retain explicit supplied context, requestable additions, qualification and actual-delivery
+records under the established investigation contracts.
+
 **Future presentation annotations.** Required/optional annotations and groups of
 alternative presentations are possible later extensions. Distinguish required by the
 request from an investigator's judgment that a presentation is essential; the latter
@@ -1675,7 +1693,9 @@ confidence has sometimes exceeded the examples supporting them.
   descriptions ground a reference can require interpretation. Test two competing
   descriptions of S. Prefer explicitly anchored support or visible unresolved
   alternatives; an application selector must not synthesize a definition or claim
-  compatibility merely to make an answer readable. Bounded closure remains open.
+  compatibility merely to make an answer readable. Preserve explicit support references
+  and report missing support; general presentation retrieval/arrangement is outside
+  this remit, distinct from investigator context acquisition.
 - **One mechanism across producers.** Common entity/reference semantics remain the
   intended direction. The first delivery's migration depth and common retention
   machinery are not demonstrated by that principle. Test interpreted use of an
@@ -1687,8 +1707,9 @@ confidence has sometimes exceeded the examples supporting them.
    needed by the example. Specify returned identifying content, local references,
    entity declarations and investigram-relationship metadata. Include governing treatment
    of explicitly identified relationships/patterns as Entities alongside interpreted
-   identity. Settle guidance ownership and address namespaces before changing fixture
-   encoding; metadata placement alone does not solve correction continuity. Preserve the general qualified-investigram result contract, with optional
+   identity. Encode metadata owned by the exact investigram, with explicit address and
+   qualification/delivery rules; replacements supply their own metadata. Preserve the
+   general qualified-investigram result contract, with optional
    specialization for explicit content/presentation promises. Establish attributable
    support and full/partial delivery, without requiring a comprehensive catalogue.
 2. **Investigram boundaries.** Review the concrete mixed-content payload against the

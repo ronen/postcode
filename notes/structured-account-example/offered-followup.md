@@ -9,8 +9,9 @@ The existing behavioral result and diagrams are unchanged.
 metadata, not interpretation-content items. This example preserves the earlier
 `investigation-offer/0` encoding so its verified behavior remains accurately described.
 The [consolidation](../structured-architectural-accounts-consolidation.md) separates
-metadata placement from guidance ownership and correction continuity. A later fixture
-revision must resolve those choices and address namespaces explicitly.
+metadata placement from its settled ownership: an offer belongs to its exact
+investigram, and a replacement supplies its own offers. A later fixture revision
+must encode metadata addresses and delivery rules while preserving that behavior.
 
 ## Return and invoke the offer in the current fixture
 

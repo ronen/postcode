@@ -13,7 +13,7 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 ## Current notes
 
 - Structured architectural accounts: [working proposal](structured-architectural-accounts-proposal.md) consolidates the emerging design; [discussion notes](structured-architectural-accounts.md) retain exploration, alternatives and research.
-- Investigram structure: [consolidation checkpoint](structured-architectural-accounts-consolidation.md) maps submission, retained ownership, guidance metadata and concept/content/diagram contracts, with remaining lifecycle choices.
+- Investigram structure: [consolidation checkpoint](structured-architectural-accounts-consolidation.md) maps submission, retained ownership, guidance metadata and concept/content/diagram contracts, with investigram-specific metadata ownership and remaining contract details.
 - Complete illustrative account results: [children variant](structured-account-example/children/README.md) and [mixed-account comparison](structured-account-example/README.md), with qualified correction metadata, retained selections, shared roles and diagrams generated from structured content.
 - Composition design probe: [two wrapping orders](structured-account-example/composition/README.md), with separate component accounts, local scenario roles and relationships, explicit resource/state snapshots, and generated sequence diagrams.
 - Diagram readability examples: [compact overviews and keyed legends](structured-account-example/diagrams.md), with concise authored labels and full qualified meaning kept alongside.

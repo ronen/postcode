@@ -1252,3 +1252,27 @@ The proposal records this direction inline. Existing JSON and checkers remain un
 and are explicitly labelled as exercising the earlier offer-as-content encoding and
 fixed diagram entry points. This pass is a conceptual consolidation, not verification
 of guidance metadata, a general diagram registry or a live end-to-end investigation.
+
+## 2026-11-11 — Metadata ownership settled; presentation boundary restored
+
+The human clarifies that an offer makes sense as follow-up to the investigram that
+generated it. A1's “Foo is X” and offer about X do not carry forward when A2 corrects
+that to “Foo is Y.” Metadata is about the specific immutable investigram: referents,
+associations, offers and presentation recommendations stay with its version. Replacements
+supply their own metadata. Prior offer invocations retain exact provenance. Matching
+wording in a replacement creates neither shared offer identity nor automatic rerun/reuse.
+The earlier proposal to preserve guidance identity through a parent, guidance child or
+independent record is withdrawn; no separate lifecycle is needed for this purpose.
+
+The human also restores the presentation remit boundary. Retain architectural meaning,
+qualifications and exact references; recommendations identify intended diagram inputs;
+representative diagrams prove sufficiency. General retrieval, detail/legend arrangement
+and navigation belong to presentation work. This differs from context supplied to an
+investigator, which preserves explicit delivery, requestable additions and exposure.
+Do not turn these into one universal closure/context-selection problem.
+
+The proposal and consolidation now reflect these resolutions. The structure is more
+coherent because these questions no longer motivate extra owners or services; remaining
+work includes precise metadata addressing/qualification/delivery, fixture alignment and
+previously recorded identity/governing choices. Existing fixtures still use the older
+offer-as-content encoding; this documentation pass does not claim protocol implementation.
