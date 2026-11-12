@@ -724,5 +724,143 @@
       "question": "Concurrent callers and trial outcomes under default single-trial recovery.",
       "scope": "Concurrent trial/caller behavior under the selected option and pinned default single-trial scope; excludes reentrant entry and other interference as stated by the option source."
     }
+  },
+  "renewAdmission": {
+    "request": {
+      "id": "Q-renew-admission",
+      "operation": "authored-lifecycle-probe",
+      "subject": {
+        "entity": "P"
+      },
+      "resultEntity": "RESULT-renew-admission",
+      "deliveries": [
+        {
+          "entity": "P",
+          "associations": [
+            {
+              "investigram": "ADMISSION-1",
+              "associationKey": "admission-cases"
+            }
+          ],
+          "items": [],
+          "options": []
+        },
+        {
+          "entity": "P",
+          "associations": [
+            {
+              "investigram": "ADMISSION-2",
+              "associationKey": "admission-cases"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state",
+        "E-admission"
+      ],
+      "declaredMeaning": {
+        "question": "Reassert the original admission content in a lifecycle-only renewal branch.",
+        "scope": "Counterfactual test of a displaced cause, not a new Cockatiel finding or certification of the original admission claim."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-renew-admission"
+      },
+      "investigramIds": {
+        "contribution": "RENEW-ADMISSION-1"
+      }
+    },
+    "submission": {
+      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "result": {
+        "queryInvocation": "Q-renew-admission",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "compositionRoots": [
+          {
+            "submittedInvestigram": "contribution"
+          }
+        ],
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Renew the original admission use in a counterfactual branch",
+            "qualifications": [
+              "Authored lifecycle counterfactual only; no new repository finding or claim that the original admission content is correct.",
+              "Superseding the later admission association does not reinstate the original association or clear historical reconsideration causes."
+            ],
+            "evidence": [
+              "E-state",
+              "E-admission"
+            ],
+            "referents": [
+              {
+                "entity": "P"
+              }
+            ],
+            "content": [],
+            "associationSpecifications": [
+              {
+                "key": "renew-admission",
+                "operation": "supersession",
+                "target": {
+                  "entity": {
+                    "entity": "P"
+                  },
+                  "role": "describes"
+                },
+                "displaces": [
+                  {
+                    "investigram": {
+                      "investigram": "ADMISSION-2"
+                    },
+                    "associationKey": "admission-cases"
+                  }
+                ],
+                "reason": "Reassert the exact earlier content solely to exercise current standing of a historical cause; source qualifications remain and earlier concerns are not cleared.",
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "ADMISSION-1"
+                      },
+                      "contentKey": "admission-cases"
+                    }
+                  }
+                ]
+              },
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "associationKey": "renew-admission"
+                    }
+                  }
+                ]
+              }
+            ],
+            "children": [],
+            "followupOptions": [],
+            "presentations": []
+          }
+        ]
+      }
+    }
   }
 }

@@ -157,6 +157,12 @@ listing many entries need not create many content-exposure edges. Actual snapsho
 preserved. Storage sharing, repeated-delivery indexing and transitive-cause computation are
 implementation concerns; no performance bound or scaling benchmark is established here.
 
+Reuse without acquiring its source association has no automatic exposure path from later
+displacement of that association. This is an accepted coverage limit, not a reason to infer
+exposure from an outgoing reference. Result membership contributes causes only for included
+associations; a direct reference to the shared item is insufficient. A future audit can derive
+references without recorded delivery. No retained audit flag or new dependency is added here.
+
 ## Manual assessment of likely changes
 
 This section assesses the earlier entity-wide experiment, retained for comparison; those

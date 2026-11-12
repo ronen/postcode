@@ -181,6 +181,42 @@ def check(directory, write=False):
     # Historical fact of the original displacement remains; no automatic reinstatement.
     assert replacement in notices.standing(('ADMISSION-1', 'admission-cases'))['displacedBy']
 
+    # A recipient exposed to A before B retains cause B when C later displaces B.
+    # Fresh access resolves B's current standing without inventing receipt of B or C.
+    renewal = copy.deepcopy(model)
+    original_input = copy.deepcopy(renewal.queries['Q-excerpt']['deliveries'])
+    original_snapshot = copy.deepcopy(renewal.snapshots['Q-excerpt'])
+    original_causes = renewal.reconsideration()['evaluations']['Q-excerpt']
+    assert replacement in original_causes
+    assert all(replacement not in renewal.delivered_declarations(p) for p in original_input)
+    result_selection = {'entity': 'RESULT-excerpt',
+                        'associations': [{'investigram': 'EXCERPT-1', 'associationKey': 'result'}],
+                        'items': [], 'options': []}
+    before_renewal = renewal.project(result_selection)
+    assert replacement in before_renewal['notices']
+    accept(renewal, probes['renewAdmission'])
+    renewal_cause = 'RENEW-ADMISSION-1::renew-admission'
+    after_causes = renewal.reconsideration()['evaluations']['Q-excerpt']
+    assert after_causes == original_causes and renewal_cause not in after_causes
+    assert renewal.standing(('ADMISSION-1', 'admission-cases'))['displacedBy'] == [replacement]
+    cause_standing = renewal.standing(('ADMISSION-2', 'admission-cases'))
+    assert cause_standing['displacedBy'] == [renewal_cause]
+    fresh_result = renewal.project(result_selection)
+    assert {replacement, renewal_cause} <= set(fresh_result['notices'])
+    assert renewal_cause not in before_renewal['notices']
+    assert renewal.queries['Q-excerpt']['deliveries'] == original_input
+    assert renewal.snapshots['Q-excerpt'] == original_snapshot
+    # Resolving fresh status is read-only. A new investigator delivery records both
+    # qualified declarations, but neither is a later change for that new recipient.
+    fresh_reader = renamed(probes['noticeReader'], 'renewal-status-reader')
+    fresh_reader['request']['subject'] = {'entity': 'RESULT-excerpt'}
+    fresh_reader['request']['deliveries'] = [result_selection]
+    incomplete = copy.deepcopy(fresh_result); incomplete['notices'].pop(renewal_cause)
+    rejected(renewal, fresh_reader, [incomplete])
+    accept(renewal, fresh_reader, [fresh_result])
+    assert not renewal.reconsideration()['evaluations']['Q-renewal-status-reader']
+    assert renewal.reconsideration()['evaluations']['Q-excerpt'] == original_causes
+
     report = {
         'status': 'Authored acquisition/disclosure refinement; no architectural coverage dependency, live dialogue or semantic impact proof.',
         'scopeSelectedInitialContext': {'before': delivery_summary(model, p), 'exactReferenceContrast': delivery_summary(model, exact), 'after': delivery_summary(scoped, fresh), 'impact': scope_impact,
@@ -188,6 +224,12 @@ def check(directory, write=False):
             'earlierAcquisitionCauses': scoped.reconsideration()['evaluations']['Q-scope-finishes-later']},
         'discoveryFollowup': {'q2Deliveries': [delivery_summary(discovery, d) for d in deliveries], 'independentComparisons': discovery_comparisons},
         'displacementInstructionBoundary': instruction_boundary,
+        'displacedCauseAccess': {'recipient': 'Q-excerpt', 'historicalCauses': original_causes,
+            'causesAfterRenewal': after_causes, 'cause': replacement, 'causeCurrentStanding': cause_standing,
+            'before': delivery_summary(renewal, before_renewal), 'freshResult': delivery_summary(renewal, fresh_result),
+            'originalInputAndSnapshotUnchanged': True,
+            'freshRecipientCauses': renewal.reconsideration()['evaluations']['Q-renewal-status-reader'],
+            'qualification': 'Counterfactual renewal; no original association reinstatement, clearance, or new Cockatiel claim.'},
         'substantiveDeclarationDisclosure': {'before': delivery_summary(notices, notice_delivery), 'after': delivery_summary(notices, fresh_notice), 'withdrawalCause': wid,
             'directRecipientCauses': status['evaluations']['Q-notice-reader'],
             'replacementProducerCauses': status['evaluations']['Q2'],
@@ -201,7 +243,7 @@ def check(directory, write=False):
     path = directory / 'acquisition-report.json'
     if write: path.write_text(json.dumps(report, indent=2) + '\n')
     else: assert read(path) == report, 'stale acquisition report'
-    print(f'{directory.name}: scoped description addition reaches 1 direct + 1 inherited recipient; discovery Q2 branch reaches 3/7 evaluations and 4/8 designations; exact reason-displacement/timing and instruction-boundary checks pass.')
+    print(f'{directory.name}: scoped description addition reaches 1 direct + 1 inherited recipient; discovery Q2 branch reaches 3/7 evaluations and 4/8 designations; exact reason-displacement/timing, renewal cause access and instruction-boundary checks pass.')
     return report
 
 

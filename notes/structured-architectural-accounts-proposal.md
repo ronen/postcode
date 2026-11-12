@@ -371,6 +371,29 @@ fixture create their own associations to earlier items; their actual incoming ex
 not shared text, supplies any inherited concern. Entity merge/split effects remain a separate
 unimplemented identity question.
 
+Removing acquisition gates makes one coverage limit explicit: an ordinary association can
+reference an earlier item without its producer receiving the source association. Later displacement
+of that source association then has no exposure path to the reuser. This is not a reason to invent
+exposure or make one association's displacement invalidate every use of shared content. Even with
+acquisition, the path is the exact association actually delivered, not a uniquely privileged
+"original association." Instruction-following affects whether that path exists.
+
+Result designations acquire membership causes when they include the exact association being
+displaced (directly or through nested declaration membership). A direct item reference alone does
+not supply this protection. References, deliveries and designated membership are distinct.
+An audit of references without prior delivery can be derived from the existing records for a
+future study or dialog check. Defer a dedicated retained "used without delivery" field and any
+propagation dependency based on it; neither follows from structural acceptance.
+
+<a id="current-standing-of-causes"></a>
+Fresh inspection of a reconsideration cause should expose its current declaration standing. If B
+superseded A and C later supersedes B, an earlier recipient of A still has historical cause B;
+C is not a new exposure-based cause merely because it changes B. Fresh qualified access can show
+B together with C and their exact relationship. It does not clear B, certify the recipient's answer,
+or reinstate A. The current standing is derived from retained declarations, not a new stored flag.
+The [renewal probe](structured-account-example/acquisition.md#current-standing-of-a-cause) exercises
+this through existing standing lookup and fresh result disclosure, preserving captured history.
+
 The prototype retains conservative generating-evaluation propagation: a cause affecting
 actual input can follow that producer's delivered contributions. A selected result designation
 can transmit its membership concerns; this does not establish item-level causal reliance.

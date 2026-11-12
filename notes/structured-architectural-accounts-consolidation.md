@@ -295,6 +295,18 @@ policies still need bounded treatment. The contract is at the investigation boun
 tools and storage sharing are implementation choices. The broad earlier counts no longer
 establish a first-delivery need for reassessment.
 
+Reuse without acquisition can lack an exposure path from a later displacement of the source
+association. Preserve that limit without treating shared content as a global dependency. Result
+membership helps only when it includes the displaced association; direct item membership is not
+equivalent. References without recorded delivery can be audited from existing data. A dedicated
+retained flag and dependency rule remain deferred.
+
+Fresh cause inspection exposes the cause declaration's current standing: C's displacement of B
+can accompany historical cause B without clearing it, marking a new exposure cause on the original
+recipient, or reinstating A. The renewal probe uses existing standing and disclosure, preserves
+captured inputs/answers and adds no retained status field. See the
+[probe](structured-account-example/acquisition.md#current-standing-of-a-cause).
+
 Investigator-directed propagation is deferred alongside targeted suppression, reassessment/
 clearance and automatic scheduling. It could identify a qualified concern for an exact earlier
 result that structural propagation missed. An exposure-index lookup might find candidates;

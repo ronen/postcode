@@ -241,10 +241,10 @@
           "Q2"
         ],
         "inheritedOnlyViaProducerQueries": {
-          "Q-updated": [
+          "Q-role-only": [
             "Q2"
           ],
-          "Q-role-only": [
+          "Q-updated": [
             "Q2"
           ]
         },
@@ -313,10 +313,10 @@
           "Q2"
         ],
         "inheritedOnlyViaProducerQueries": {
-          "Q-updated": [
+          "Q-role-only": [
             "Q2"
           ],
-          "Q-role-only": [
+          "Q-updated": [
             "Q2"
           ]
         },
@@ -382,6 +382,224 @@
       "completeTargetSupportDelivered": false,
       "interpretiveAdequacyEstablished": false
     }
+  },
+  "displacedCauseAccess": {
+    "recipient": "Q-excerpt",
+    "historicalCauses": [
+      "ADMISSION-2::admission-cases"
+    ],
+    "causesAfterRenewal": [
+      "ADMISSION-2::admission-cases"
+    ],
+    "cause": "ADMISSION-2::admission-cases",
+    "causeCurrentStanding": {
+      "displacedBy": [
+        "RENEW-ADMISSION-1::renew-admission"
+      ],
+      "competingDeclarations": false
+    },
+    "before": {
+      "entity": "RESULT-excerpt",
+      "asOfAcceptance": 7,
+      "associationUses": [
+        "EXCERPT-1::result",
+        "EXCERPT-1::selected-result"
+      ],
+      "fullDeclarations": [
+        "EXCERPT-1::result",
+        "EXCERPT-1::selected-result"
+      ],
+      "items": [
+        "ADMISSION-1::admission-cases"
+      ],
+      "inventory": null,
+      "selectionScope": null,
+      "qualifiedDeclarationDisclosures": {
+        "ADMISSION-2::admission-cases": {
+          "value": {
+            "key": "admission-cases",
+            "operation": "supersession",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "investigram": "ADMISSION-2"
+                  },
+                  "contentKey": "admission-cases"
+                }
+              }
+            ],
+            "displaces": [
+              {
+                "investigram": {
+                  "investigram": "ADMISSION-1"
+                },
+                "associationKey": "admission-cases"
+              }
+            ],
+            "reason": "ADMISSION-1 presents its cases as covering admission in this scope, but omits waiting while the single trial is occupied. ADMISSION-2 includes that outcome and the subsequent admission recheck. This does not claim that every statement of ADMISSION-1 was wrong."
+          },
+          "sourceInvestigram": "ADMISSION-2",
+          "queryInvocation": "Q2",
+          "basis": {
+            "id": "cockatiel-pinned",
+            "revision": "f48bea55022ab15ab07eb52a79bfc1e661300fd4",
+            "method": "Static source inspection plus the prior exploratory accounts; no runtime execution."
+          },
+          "sourceQualifications": [
+            "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+            "Default one-call recovery sampling with zero permitted counted failures.",
+            "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+            "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+            "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+          ],
+          "sourceEvidence": [
+            "E-state",
+            "E-admission",
+            "E-default",
+            "E-half-open",
+            "E-outcomes"
+          ]
+        }
+      },
+      "sourceQueries": [
+        "Q-excerpt",
+        "Q1",
+        "Q2"
+      ]
+    },
+    "freshResult": {
+      "entity": "RESULT-excerpt",
+      "asOfAcceptance": 8,
+      "associationUses": [
+        "EXCERPT-1::result",
+        "EXCERPT-1::selected-result"
+      ],
+      "fullDeclarations": [
+        "EXCERPT-1::result",
+        "EXCERPT-1::selected-result"
+      ],
+      "items": [
+        "ADMISSION-1::admission-cases"
+      ],
+      "inventory": null,
+      "selectionScope": null,
+      "qualifiedDeclarationDisclosures": {
+        "ADMISSION-2::admission-cases": {
+          "value": {
+            "key": "admission-cases",
+            "operation": "supersession",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "investigram": "ADMISSION-2"
+                  },
+                  "contentKey": "admission-cases"
+                }
+              }
+            ],
+            "displaces": [
+              {
+                "investigram": {
+                  "investigram": "ADMISSION-1"
+                },
+                "associationKey": "admission-cases"
+              }
+            ],
+            "reason": "ADMISSION-1 presents its cases as covering admission in this scope, but omits waiting while the single trial is occupied. ADMISSION-2 includes that outcome and the subsequent admission recheck. This does not claim that every statement of ADMISSION-1 was wrong."
+          },
+          "sourceInvestigram": "ADMISSION-2",
+          "queryInvocation": "Q2",
+          "basis": {
+            "id": "cockatiel-pinned",
+            "revision": "f48bea55022ab15ab07eb52a79bfc1e661300fd4",
+            "method": "Static source inspection plus the prior exploratory accounts; no runtime execution."
+          },
+          "sourceQualifications": [
+            "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+            "Default one-call recovery sampling with zero permitted counted failures.",
+            "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+            "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+            "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+          ],
+          "sourceEvidence": [
+            "E-state",
+            "E-admission",
+            "E-default",
+            "E-half-open",
+            "E-outcomes"
+          ]
+        },
+        "RENEW-ADMISSION-1::renew-admission": {
+          "value": {
+            "key": "renew-admission",
+            "operation": "supersession",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "displaces": [
+              {
+                "investigram": {
+                  "investigram": "ADMISSION-2"
+                },
+                "associationKey": "admission-cases"
+              }
+            ],
+            "reason": "Reassert the exact earlier content solely to exercise current standing of a historical cause; source qualifications remain and earlier concerns are not cleared.",
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "investigram": "ADMISSION-1"
+                  },
+                  "contentKey": "admission-cases"
+                }
+              }
+            ]
+          },
+          "sourceInvestigram": "RENEW-ADMISSION-1",
+          "queryInvocation": "Q-renew-admission",
+          "basis": {
+            "id": "cockatiel-pinned",
+            "revision": "f48bea55022ab15ab07eb52a79bfc1e661300fd4",
+            "method": "Static source inspection plus the prior exploratory accounts; no runtime execution."
+          },
+          "sourceQualifications": [
+            "Authored lifecycle counterfactual only; no new repository finding or claim that the original admission content is correct.",
+            "Superseding the later admission association does not reinstate the original association or clear historical reconsideration causes."
+          ],
+          "sourceEvidence": [
+            "E-state",
+            "E-admission"
+          ]
+        }
+      },
+      "sourceQueries": [
+        "Q-excerpt",
+        "Q-renew-admission",
+        "Q1",
+        "Q2"
+      ]
+    },
+    "originalInputAndSnapshotUnchanged": true,
+    "freshRecipientCauses": [],
+    "qualification": "Counterfactual renewal; no original association reinstatement, clearance, or new Cockatiel claim."
   },
   "substantiveDeclarationDisclosure": {
     "before": {

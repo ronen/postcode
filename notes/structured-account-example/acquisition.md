@@ -113,6 +113,24 @@ They demonstrate the deferred acquisition-completeness gate, not adequate ground
 with the investigator instruction. Unknown targets and missing grounds are still rejected;
 accurate captured delivery, qualification and disclosure checks remain enforced.
 
+<a id="current-standing-of-a-cause"></a>
+## Current standing of a cause after renewal
+
+This is a separate counterfactual lifecycle branch, not a claim that the original Cockatiel
+admission account is correct. Q-excerpt received A (ADMISSION-1's admission association) before
+B (ADMISSION-2) superseded it, and acquired historical cause B. It never received B as input.
+C (RENEW-ADMISSION-1) now supersedes B while reusing A's exact content with original qualification.
+
+Q-excerpt still has B as its cause; C is not added merely because it displaced B. A remains
+displaced, and no warning is cleared. Looking up B's standing yields C. Fresh access to Q-excerpt's
+result supplies B and C as qualified disclosures, including C's reason and exact displacement
+of B. The original input and captured answer remain unchanged. The report's `causeCurrentStanding`
+is a derived observation from existing declarations, not additional retained metadata.
+
+A new recipient of that fresh result sees both declarations as already-known context and has
+no retrospective cause. Omitting C from the disclosure fails the existing completeness check.
+The probe adds no propagation, clearance or reinstatement rule and no change to `model.py`.
+
 ## Deferred coverage remedies
 
 ADMISSION-1 already has an explicit architectural coverage claim. A newly added waiting case
@@ -138,6 +156,6 @@ Run `python3 notes/structured-account-example/check-acquisition.py`; `--write` r
 two condensed reports of delivered references, scope, qualified disclosures and exact causes.
 Checks cover scope/reference contrasts, new matching descriptions, source-time reconstruction,
 later finishing evaluations, discovery/retrieval, direct notice-declaration displacement,
-bare-reference controls, fresh disclosure completeness and the displacement instruction boundary.
-**24 malformed scope/disclosure/declaration cases** are rejected atomically across the partitions. Existing
+bare-reference controls, fresh disclosure completeness, current standing of a displaced cause,
+and the displacement instruction boundary. **26 malformed scope/disclosure/declaration cases** are rejected atomically across the partitions. Existing
 addition, lifecycle, guidance, composition, selector and diagram checks remain separate regressions.

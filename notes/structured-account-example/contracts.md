@@ -299,6 +299,15 @@ No historical warning is cleared. Identity events, general declaration revocatio
 clearance and reassessment remain deferred; no general whole-investigram completeness exemption
 is imported.
 
+### Current standing of a historical cause
+
+If a recipient received A before B superseded it, later supersession of B by C does not by itself
+expose that recipient to B or C, clear historical cause B, or reinstate A. Fresh inspection can
+resolve B's current standing and deliver qualified C context through the existing disclosure
+closure. A new investigator receiving that context records its actual delivery at that time;
+the original recipient's captured input and answer remain fixed. No extra retained cause-status
+field or propagation rule is needed for this lookup. The counterfactual renewal probe exercises it.
+
 ### Association versus inventory exposure
 
 The [revised addition probe](additions.md) makes inventory acquisition explicit. A selection
@@ -357,6 +366,12 @@ that the retained association inventory was complete. Declared dependencies and 
 propagation are deferred pending observed coverage gaps. Either would supplement exposure tracking;
 no standing change scope follows implicitly from a coverage claim. A newly added waiting case may
 challenge ADMISSION-1 without an automatic cause if no relevant scope exposure or displacement exists.
+
+Reuse without acquisition may have no exposure path to later displacement of an association
+whose content it references. Result membership supplies a separate path only for the exact
+association included, not direct item membership alone. No association is a privileged owner of
+all uses of an item. Auditing references without prior delivery is derivable from declarations
+and captured deliveries; a retained audit flag and a new propagation rule are deferred.
 
 ### Deferred investigator-directed concerns
 

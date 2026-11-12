@@ -181,7 +181,8 @@ options to suppress warnings. The revised baseline is 0/7 evaluations and 0/8 de
 explicit inventory branches reach 2/9 and 2/10, one direct and one inherited. These are boundary
 controls, not warning-rate estimates. The acquisition checker adds scope-selected descriptions
 and a discovery-before-retrieval Q2 (3/7 evaluations, 4/8 designations), plus direct exposure to
-supplied declaration reasons. It rejects 24 malformed scope, disclosure or declaration cases. It also accepts deliberately
+supplied declaration reasons. A counterfactual renewal also checks fresh cause standing while preserving the original concern
+and captured history. It rejects 26 malformed scope, disclosure or declaration cases. It also accepts deliberately
 incomplete target-support branches to demonstrate the instruction/enforcement boundary, not sound
 analysis. `--write` regenerates its condensed reports in both partitions.
 

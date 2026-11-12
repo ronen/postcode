@@ -1817,6 +1817,9 @@ product behavior changes are needed for this agreement.
 
 ## 2026-11-12 — Displacement acquisition guidance, structural acceptance
 
+Reader note added after review: the later [general validation boundary](#general-validation-boundary)
+removes the two remaining acquisition gates mentioned in this historical entry.
+
 The human agrees that investigators can reasonably be expected to follow instructions. Before
 superseding or withdrawing an association, they must acquire its complete designated content,
 qualifications and required support. Mechanical enforcement of that completeness rule is deferred
@@ -1834,6 +1837,7 @@ deliberate instruction-boundary test, without implying sound investigation or in
 It still rejects unknown targets, missing grounds and malformed delivery. End-to-end investigation
 should examine instruction-following before deciding whether to add a mechanical completeness gate.
 
+<a id="general-validation-boundary"></a>
 ## 2026-11-12 — General validation boundary and future dialog recovery
 
 The human proposes the general rule: mechanically check data integrity as good programming
@@ -1853,3 +1857,19 @@ The authored model removes the reuse and prior-query-acquisition gates. Positive
 accept no-context reuse/redesignation and inventory-only reuse without fabricating deliveries.
 Captured question context, if selected, must remain accurate; unresolved references still fail.
 The adopted governing material and product code remain unchanged.
+
+## 2026-11-12 — Review clarifications: reuse coverage and current cause standing
+
+The human agrees to document the reuse coverage limit and defer a dedicated "used without
+delivery" record or dependency. References without recorded delivery can be derived for a future
+audit. Ordinary association reuse without acquisition need not inherit a later displacement of
+the source association. Result membership protects only the specific included association, not
+any direct reference to its item. No privileged original association governs all uses of content.
+
+Fresh inspection should reveal a cause declaration's current standing without treating the cause
+as cleared or the original result as sound. The new counterfactual renewal branch has C supersede
+B and reassert A's content. An original recipient of A retains historical cause B and receives no
+new automatic C cause. Existing standing lookup and fresh disclosure expose C's relationship to B;
+captured inputs and answers remain unchanged. New recipient delivery records B and C as known
+context. No model behavior or retained status field is added. A forward pointer clarifies the
+historical entry whose remaining acquisition gates were removed in the next discussion.
