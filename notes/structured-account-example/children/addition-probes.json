@@ -1,9 +1,9 @@
 {
-  "status": "Independent variants branch from the same seven-query baseline: Q1, Q-observer, Q-excerpt, Q2, Q-updated, Q-role-only, Q-reference-only. The complementary and behavioral additions run independently first, then sequentially in a cumulative branch. A host-side conservative policy applies to all additions, including baseline additions; no agent-selected impact exemption. Original displacement-only regressions remain a separate comparison.",
+  "status": "Authored association/inventory exposure comparison. Original seven-query baseline has no inventories. Two additions run independently, then cumulatively. An extended branch explicitly requests an S inventory and passes its result to a downstream consumer. The earlier entity-wide policy is reproduced only as a historical comparison.",
   "policy": {
-    "scope": "Every entity explicitly organizing substantively delivered information, including target entities of supplied association uses; designation membership includes exact member-association targets. No matching by names, concepts, content referents or local roles. No role narrowing: identifies and describes share the entity scope.",
-    "timing": "Actual delivery and designation acceptance boundaries, known direct/inherited notice completeness and producer exemption remain unchanged.",
-    "status": "New-information causes retain the exact addition declaration. They do not displace earlier associations or assert earlier content false."
+    "scope": "Addition triggers require an actually delivered inventory whose entity and role scope includes the new association. Association content delivery alone is not inventory exposure. Inventories list mechanical addresses/roles of all retained associations in scope, including displaced ones; no content, reasons or status judgments.",
+    "timing": "Each inventory and content delivery has a captured retained-state position. Only later matching events trigger; later refresh does not erase an earlier acquisition. Producer exemption remains.",
+    "status": "Exact addition declaration remains the new-information cause. Fixed designation membership does not imply inventory exposure; producer concerns still propagate. Exact association supersession/withdrawal rules remain unchanged."
   },
   "complementary": {
     "request": {
@@ -597,6 +597,215 @@
                         "investigram": "DEFINITIONS-1"
                       },
                       "associationKey": "half-open-description"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "inventoryConsumer": {
+    "request": {
+      "id": "Q-inventory",
+      "operation": "authored-addition-probe",
+      "subject": {
+        "entity": "S"
+      },
+      "resultEntity": "RESULT-inventory",
+      "deliveries": [
+        {
+          "entity": "S",
+          "associations": [],
+          "items": [],
+          "options": [],
+          "inventory": {
+            "roles": [
+              "identifies",
+              "describes"
+            ]
+          }
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state"
+      ],
+      "declaredMeaning": {
+        "question": "What other retained associations are available about Half-open?",
+        "scope": "Inspect the complete retained association inventory in the stated roles; do not retrieve or interpret listed content."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-inventory"
+      },
+      "investigramIds": {
+        "contribution": "INVENTORY-1"
+      }
+    },
+    "submission": {
+      "illustration": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "result": {
+        "queryInvocation": "Q-inventory",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "compositionRoots": [
+          {
+            "submittedInvestigram": "contribution"
+          }
+        ],
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Inventory-only availability control",
+            "qualifications": [
+              "Authored inventory-only control at the pinned basis; no live investigation.",
+              "The inventory supplies association addresses and roles only. No listed architectural content or interpretive reason was supplied."
+            ],
+            "evidence": [
+              "E-state"
+            ],
+            "referents": [
+              {
+                "entity": "S"
+              }
+            ],
+            "content": [
+              {
+                "key": "no-finding",
+                "contentType": "prose/0",
+                "concept": "architectural-identification",
+                "text": "No architectural conclusion about the selected entity is asserted by this inventory-only control.",
+                "evidence": [
+                  "E-state"
+                ]
+              }
+            ],
+            "children": [],
+            "followupOptions": [],
+            "presentations": [],
+            "associationSpecifications": [
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "contentKey": "no-finding"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "inventoryDependent": {
+    "request": {
+      "id": "Q-inventory-dependent",
+      "operation": "authored-addition-probe",
+      "subject": {
+        "entity": "RESULT-inventory"
+      },
+      "resultEntity": "RESULT-inventory-dependent",
+      "deliveries": [
+        {
+          "entity": "RESULT-inventory",
+          "associations": [
+            {
+              "investigram": "INVENTORY-1",
+              "associationKey": "result"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state",
+        "E-half-open",
+        "E-outcomes",
+        "E-default"
+      ],
+      "declaredMeaning": {
+        "question": "Retain the inventory-reading investigation result.",
+        "scope": "Receive that result, not its original inventory or the contents of listed associations. Exercise inherited producer concerns."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-inventory-dependent"
+      },
+      "investigramIds": {
+        "contribution": "INVENTORY-DEPENDENT-1"
+      }
+    },
+    "submission": {
+      "illustration": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "result": {
+        "queryInvocation": "Q-inventory-dependent",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "compositionRoots": [
+          {
+            "submittedInvestigram": "contribution"
+          }
+        ],
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Downstream inventory-result control",
+            "qualifications": [
+              "Authored reuse control; no new architectural conclusion or source finding.",
+              "Receives the inventory-reading result and its provenance, not the inventory or listed architectural content."
+            ],
+            "evidence": [
+              "E-state",
+              "E-half-open",
+              "E-outcomes",
+              "E-default"
+            ],
+            "referents": [
+              {
+                "entity": "RESULT-inventory"
+              }
+            ],
+            "content": [],
+            "children": [],
+            "followupOptions": [],
+            "presentations": [],
+            "associationSpecifications": [
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "INVENTORY-1"
+                      },
+                      "contentKey": "no-finding"
                     }
                   }
                 ]

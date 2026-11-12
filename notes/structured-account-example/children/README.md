@@ -104,5 +104,7 @@ live investigator, universal graph schema, merge/split, or reassessment is demon
 ## Conservative addition comparison
 
 The separate [addition probe](../additions.md) runs against both partitions. Its
-[inputs](addition-probes.json) and [report](addition-report.json) show the same broad
-spread here: child qualification boundaries do not remove generating-evaluation exposure.
+[inputs](addition-probes.json) and [report](addition-report.json) show the same refined result:
+0/7 original evaluations and 0/8 designations acquire either addition cause, since they had
+no inventory exposure. An explicit inventory reader and its downstream recipient are affected.
+Child qualification boundaries do not remove those actual generating-evaluation exposures.

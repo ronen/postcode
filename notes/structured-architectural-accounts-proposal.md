@@ -224,12 +224,21 @@ simulator exercises association-backed selection, not this broader discovery/ret
 that path needs an explicit context-entity/delivery contract rather than being silently lost
 in the new model. Mention inventory, association target and evidential support are distinct.
 
-Dialogue can acquire additional material after the initial context. A useful candidate is
-identifying support up front plus discoverable further attributes, alternatives and evidence;
-an inventory-first variant may suit large/ambiguous context. Bounds need not be a rigid
-initial cutoff. Available, requested and delivered information are distinct. Substantive
-listing summaries are actual context, whereas bare IDs are not. A target can become eligible
-for displacement after further complete qualified acquisition during the same evaluation.
+Specify acquisition at the investigation boundary, leaving dialog tools to implementation.
+An investigation receives its subject, question and explicitly selected initial context, and
+can discover/acquire further qualified information. Identifying support can be supplied up
+front without an inventory. A separate “what else is known?” acquisition supplies an inventory
+of associations with explicit scope and captured retained-state position. It establishes
+inventory exposure, not delivery of the listed content. Requesting a particular association
+then establishes content exposure. No automatic delivery of every other association's reason.
+General relevance ranking and initial-selection policy remain outside this bounded contract.
+
+Available, requested and delivered information remain distinct. Mechanical inventory entries
+record availability; substantive listing summaries would additionally be delivered interpretive
+content with its own provenance and qualifications. A target can become eligible for displacement
+only after the necessary qualified content is acquired, not merely by appearing in an inventory.
+Incomplete/paged inventories must disclose their actual coverage; the probe uses complete scoped
+lists and does not yet generalize those acquisition policies.
 
 Request identity captures operation, subject, parameters and selected seed context. Later
 acquisitions belong to generating provenance and cannot be known in a pre-execution request
@@ -258,19 +267,25 @@ A fuller description can reveal important behavior or edge cases without showing
 one false. Explicit supersession or withdrawal can therefore create a reconsideration cause.
 The reason explains it; factual-error classification is not required to trigger review.
 The warning is not invalidation, proven reliance, or automatic rejection of an account.
-The [conservative addition probe](structured-account-example/additions.md) now exercises
-new-information causes separately from displacement: no claim that earlier consumers received
-the newly added association. Its explicit entity scope includes substantive delivery context
-and delivered association targets; role does not narrow it, and bare referents do not expand it.
-Membership follows designated association targets. The same timing and provenance rules apply.
-A category clarification and a behavioral caveat each mark 5/7 prior evaluations and 7/8
-result designations in both partitions. Both are newly associated information drawn from
-already retained content; semantic novelty is not checked. Broad qualified-notice disclosure
-also creates indirect propagation paths. This is an experimental policy with a real precision
-cost, not an adopted universal trigger. The original displacement-only regression remains
-available as a separate comparison.
+The [revised addition probe](structured-account-example/additions.md) distinguishes
+**association exposure** from **inventory exposure**. Later additions affect earlier inventory
+recipients when the new association falls within the inventory's scope. Merely receiving a
+definition, another association, or a fixed result containing it is not inventory exposure.
+The cause is the exact new declaration; it does not claim that new content was received earlier.
 
-Two paths matter:
+The fixture lists all retained association addresses/roles for an entity and selected roles,
+including displaced ones, without interpretive summaries or standing claims. A supersession
+also introduces an entry and can affect that inventory. Withdrawal preserves the historical
+entry, so it affects exact content recipients but not this inventory's membership. Current-only,
+status-bearing, ranked or partial inventories need their own explicit change/coverage rules.
+
+Neither tested addition now affects any of the original seven evaluations or eight designations;
+none received an inventory. A separate inventory reader and recipient of its result are both
+marked: one direct and one inherited path, 2/9 evaluations and 2/10 designations. The earlier
+entity-wide 5/7 and 7/8 counts are reproduced as a historical comparison, not the current policy.
+No targeted suppression or semantic harmlessness assertion is used.
+
+Three paths matter:
 
 1. **Exposure during investigation.** Q receives entity information, and its produced result
    and contributions retain that actual delivery provenance. A relevant later change can
@@ -278,6 +293,9 @@ Two paths matter:
 2. **Designated result membership.** Q may itself create an entity and its description. A
    later change to an association included in RESULT-Q can affect that result even though
    Q had no incoming exposure to its newly created entity. Do not fabricate such exposure.
+3. **Inventory exposure.** Q requests an availability inventory; a later matching association
+   could have changed its choice of what to inspect. Its outputs can inherit that concern.
+   A fixed result membership list is not a live inventory or an implicit completeness claim.
 
 Exposure uses the actual association versions delivered, not all information associated
 with the same entity. The entity remains the organizing context and discovery identity.
@@ -325,10 +343,12 @@ disclose known direct and indirect causes with qualified reasons. Notice receipt
 awareness, not sufficient replacement context or endorsement of the displaced association.
 Further acquisition and qualification obligations still apply.
 
-This timing rule does not implement reassessment or clearance. Final addition scope, richer
+This timing rule does not implement reassessment or clearance. Richer inventory coverage and
 partial-delivery precision, declaration challenge and reassessment remain open. Displacement
-still requires exact association exposure; the separate addition experiment uses the explicit
-entity scope above without inventing exposure to future content or shared-item reliance.
+uses exact association exposure; additions use actual scoped inventory exposure. A newly read
+inventory includes already accepted entries without a later-change warning; a refresh does
+not erase an earlier inventory exposure. Acquiring a description before an addition and the
+inventory only afterward does not create a pre-addition inventory dependency.
 
 Causes remain distinct; no automatic transitive equivalence, last-writer truth, or disappearance
 of a cause through context trimming. A supersession can be contested. Competing declarations
@@ -359,17 +379,20 @@ Only actual reassessment deliveries create new exposure. Pending-status behavior
 versus background execution and scheduling limits remain deferred presentation/orchestration
 choices, rather than requirements of the retained-content model.
 
-Automatic scheduling and targeted suppression/clearance remain unimplemented. The addition
-probe now shows broad propagation even for a complementary clarification, including through
-notice provenance and information some recipients already knew. Revisit whether bounded
-cause-specific reassessment is necessary for first delivery, alongside the scope/disclosure
-choices driving that breadth. Alternatively, explicitly accept a coarse new-information
-signal initially. Subsequent manual inspection found no clear required substantive change for
-either addition in the five flagged evaluations' outputs or seven designations: most consumers
-only retain admission content, and Q2 already states both distinctions. This redundancy probe
-therefore does not establish that reassessment is necessary in first delivery. A comparison
-with genuinely new information challenging an earlier conclusion would strengthen that choice.
-The probe does not decide between these options or authorize implementation.
+Automatic scheduling and targeted suppression/clearance remain unimplemented. The original
+broad experiment flagged outputs that manual inspection found unlikely to require substantive
+change. The refined boundary removes those addition causes structurally: no inventory was
+received. It does not prove semantic harmlessness or establish that every important new fact
+will be noticed. A genuinely new finding might matter to an investigator that never requested
+an inventory. Keep that coverage limitation explicit; do not reintroduce implicit entity-wide
+exposure through result membership to hide it. These results do not establish that first delivery
+requires suppression or clearance. Test further if that scope decision needs stronger evidence.
+
+Exposure granularity grows with actual acquisition, not every retained association. Inventory
+exposure can be indexed by its scope/position without creating content-exposure edges for all
+entries. Implementations may share delivery records across outputs and index direct edges
+separately from derived propagation, preserving meaningful acquisition times. No performance
+bound or storage representation is decided by the authored probe.
 
 ## Architectural content and diagrams
 
@@ -491,7 +514,7 @@ The planning package would need explicit treatment of:
 | Entity and result identity | Common reference mechanism; settle invocation/evaluation/reuse guarantees and first migration depth. No semantic deduplication. |
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
 | Support and eligibility | Fixture delivers full targeted declarations/members with qualifications; settle bounded acquisition, competing definitions and missing support. |
-| Reconsideration | Conservative addition probe completed: broad spread in both partitions. Settle entity/disclosure scope and whether to accept coarse marks or include bounded cause-specific reassessment. Retain exact displacement exposure and delivery timing; suppression/clearance/scheduling remain unimplemented. |
+| Reconsideration | Distinguish actual association and inventory exposure; additions trigger matching prior inventories, not every entity use or fixed result membership. Refined probe removes the earlier broad marks. General inventory scope/coverage and reassessment needs remain open; suppression/clearance/scheduling are unimplemented. |
 | Declaration standing | Competing declarations are retained; challenge/reinstatement and result selection policy remain open. Do not infer revocation from a newer bundle. |
 | Entity merge/split | Qualified correspondence and preserved old IDs; supersession/reassignment effects remain a design probe, not delivered automatically by association operations. |
 | First capability | Choose delivered relationship kinds, contextual selection depth, mechanical compatibility and which composition/diagram probes become implementation acceptance tests. |

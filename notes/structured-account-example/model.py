@@ -32,7 +32,9 @@ def resolve(value, bindings):
 
 class Model:
     def __init__(self, seed, basis, addition_policy="displacement-only"):
-        assert addition_policy in {"displacement-only", "conservative"}
+        # Host-side comparison modes: "conservative" reproduces the earlier broad
+        # entity policy; "inventory" is the current proposed acquisition boundary.
+        assert addition_policy in {"displacement-only", "conservative", "inventory"}
         self.addition_policy = addition_policy
         self.entities = copy.deepcopy(seed['entities'])
         self.investigrams = {x['id']: copy.deepcopy(x) for x in seed['investigrams']}
@@ -122,6 +124,14 @@ class Model:
             entities.add(projection['entity'])
         return entities
 
+    @staticmethod
+    def inventory_matches(projection, declaration):
+        """Availability exposure has an explicit entity/role scope, not content provenance."""
+        inventory = projection.get('inventory')
+        return bool(inventory and declaration['operation'] != 'withdrawal'
+                    and inventory['entity'] == declaration['target']['entity']['entity']
+                    and declaration['target']['role'] in inventory['roles'])
+
     def project(self, selection, as_of=None):
         """Exact delivered information and organizing identities; no future content is inferred."""
         as_of = self.acceptance_order if as_of is None else as_of
@@ -178,6 +188,23 @@ class Model:
                 'items': {label(x): self.qualified(x[0], self.items()[x]) for x in sorted(its)},
                 'options': opts, 'notices': notices,
                 'noticeLimits': 'Includes direct displacement and inherited concerns known at this delivery position. Notices preserve standing and qualified reasons, not replacement-member delivery, adequate understanding, clearance, or automatic redesignation.'}
+        if 'inventory' in selection:
+            scope = selection['inventory']
+            assert set(scope) == {'roles'}, 'inventory requires explicit supported scope'
+            roles = scope['roles']
+            allowed = {'result'} if self.entities[entity]['kind'] == 'query-result' else {'identifies', 'describes'}
+            assert isinstance(roles, list) and roles and all(isinstance(r, str) for r in roles)
+            assert len(set(roles)) == len(roles) and set(roles) <= allowed, 'invalid inventory roles'
+            # Mechanical list of retained association addresses, including displaced ones.
+            # No reasons, summaries, status judgments, member content or producer exposure.
+            projection['inventory'] = {
+                'entity': entity, 'roles': sorted(roles), 'coverage': 'all-retained-in-scope',
+                'asOfAcceptance': as_of,
+                'entries': [{'association': {'investigram': r[0], 'associationKey': r[1]},
+                             'role': d['target']['role']}
+                            for r, d in sorted(self.declarations().items())
+                            if self.accepted_at(r) <= as_of and d['operation'] != 'withdrawal'
+                            and d['target']['entity']['entity'] == entity and d['target']['role'] in roles]}
         if self.addition_policy == 'conservative':
             projection['noticeLimits'] += ' Conservative mode also discloses unsupplied additions in the explicit entity scope, without claiming semantic novelty or displacement.'
             about = self.projection_entities(projection)
@@ -211,6 +238,7 @@ class Model:
             expected = self.project(selection, projection['asOfAcceptance'])
             assert projection['associationUses'] == expected['associationUses'], 'missing or altered association-use provenance'
             assert projection['notices'] == expected['notices'], 'missing or altered known-cause disclosure at delivery'
+            assert projection.get('inventory') == expected.get('inventory'), 'missing or altered inventory delivery'
         assert request['declaredMeaning']['question'] and request['declaredMeaning']['scope'], 'missing declared question/scope'
         qid = request['id']
         subject = request['subject']
@@ -397,7 +425,7 @@ class Model:
         eval_causes = {qid: set() for qid in queries}
         for cause, declaration in decls.items():
             addition = declaration['operation'] == 'addition'
-            if addition and self.addition_policy != 'conservative':
+            if addition and self.addition_policy == 'displacement-only':
                 continue
             cid = label(cause)
             cause_at = self.accepted_at(cause)
@@ -408,14 +436,20 @@ class Model:
             prior = {qid: [p for p in q['deliveries'] if p['asOfAcceptance'] < cause_at]
                      for qid, q in queries.items()}
             for qid in queries:
-                direct = any(target_entity in self.projection_entities(p) if addition else
-                             bool(set(p['associationUses']) & {label(r) for r in displaced})
-                             for p in prior[qid])
+                if self.addition_policy == 'inventory':
+                    direct = any(self.inventory_matches(p, declaration) or
+                                 bool(set(p['associationUses']) & {label(r) for r in displaced})
+                                 for p in prior[qid])
+                else:
+                    direct = any(target_entity in self.projection_entities(p) if addition else
+                                 bool(set(p['associationUses']) & {label(r) for r in displaced})
+                                 for p in prior[qid])
                 if qid != producer and direct:
                     eval_causes[qid].add(cid)
             for ref in designations:
                 represented = {decls[r]['target']['entity']['entity'] for r in membership[ref] | {ref}}
-                relevant = target_entity in represented if addition else bool(membership[ref] & displaced)
+                relevant = ((self.addition_policy == 'conservative' and target_entity in represented)
+                            if addition else bool(membership[ref] & displaced))
                 if self.accepted_at(ref) < cause_at and relevant:
                     member_causes[ref].add(cid)
             changed = True
@@ -449,7 +483,7 @@ class Model:
                 'generatingEvaluationCauses': sorted(generated),
                 'needsReconsideration': sorted(member_causes[ref] | generated)}
         result = {'designations': statuses, 'evaluations': {k: sorted(v) for k, v in eval_causes.items()}}
-        if self.addition_policy == 'conservative':
+        if self.addition_policy != 'displacement-only':
             result['causeKinds'] = {label(r): ('new-information' if d['operation'] == 'addition' else 'displacement')
                                     for r, d in decls.items()}
         return result

@@ -40,7 +40,7 @@ provide the investigation background.
 | [Follow-up](followup-result.json) | Q2 introduces scenario roles and trial behavior, supersedes P's admission association, redesignates RESULT-Q1 and designates RESULT-Q2. |
 | [Lifecycle probes](lifecycle-probes.json) | Earlier-result consumer, fuller description, declaration-only reuse, and withdrawal. |
 | [Generated report](lifecycle-report.json) | Exact qualified projections, displacement links, exposure and distinct evaluation/designation reconsideration causes in the displacement-only regression. |
-| [Addition probe](additions.md) | Conservative policy comparison, authored inputs and reports for both partitions; broad warning spread and scope/disclosure costs. |
+| [Addition probe](additions.md) | Association/inventory exposure comparison in both partitions: original readers no longer acquire addition causes; an explicit inventory reader and its consumer do. Earlier broad counts remain reproducible. |
 | [Children variant](children/README.md) | Same behavior with appropriately separated qualification boundaries. Its own seed/ledger/probes/reports describe a separate hypothetical Session. |
 | [Composition](composition/README.md) | Two wrapping orders, local roles/relations/situations and exact follow-up selectors. |
 | [Follow-up options](followup-options.md) | RESULT-Q1 as context/subject, exact originating metadata as option address. |
@@ -113,8 +113,8 @@ merely from sharing an entity or content item in this displacement-only regressi
 independent expansion/competition probes so successful redesignation is visible. It
 uses actual delivery timing: disclosed prior causes are known context, while later changes
 can trigger warnings. Missing direct or inherited disclosure is a delivery defect. Producer
-exemption remains. The separate addition experiment exercises entity-scoped new-information
-causes; final scope, clearance, reinstatement and finer precision stay open.
+exemption remains. The separate addition experiment uses explicit inventory exposure for new-information
+causes, not every entity use. General inventory coverage, clearance and reinstatement stay open.
 
 <a id="verification"></a>
 ## Verification
@@ -143,10 +143,13 @@ rejection and matching architectural state/interaction content. It rejects 72 ma
 cases across the partitions. Use `--write` only to deliberately regenerate lifecycle
 reports after changing authored input or the bounded simulator.
 
-The addition checker runs independent and cumulative comparisons in both partitions, verifies
-unchanged standing/history and timing, and rejects four incomplete addition disclosures.
-Its `--write` regenerates the separate addition reports. This host-selected experimental mode
-is not a per-investigator option to suppress warnings.
+The addition checker compares the earlier broad mode with association/inventory exposure,
+including independent/cumulative runs, empty/filtered inventories, inherited concerns and
+separate acquisition timing in both partitions. It rejects 26 malformed inventory, disclosure
+or ineligible-reuse cases plus four historical broad-policy disclosure negatives. Its `--write`
+regenerates both comparison reports. Modes are host-selected experiments, not investigator
+options to suppress warnings. The revised baseline is 0/7 evaluations and 0/8 designations;
+explicit inventory branches reach 2/9 and 2/10, one direct and one inherited.
 
 The guidance checker rejects 26 malformed metadata/address/request cases and verifies
 both trial diagrams resolve identically without recommendations. Composition checks

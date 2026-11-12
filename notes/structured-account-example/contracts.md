@@ -260,27 +260,45 @@ No historical warning is cleared. Final addition scope, identity events, declara
 clearance and reassessment remain open; no general whole-investigram completeness exemption
 is imported.
 
-### Experimental conservative addition policy
+### Association versus inventory exposure
 
-The [addition probe](additions.md) enables all additions from the start, separately from the
-original displacement-only regression. An addition has an exact `new-information` cause;
-it leaves earlier association standing unchanged. Its scope is the organizing entity of a
-substantive delivery plus the targets of explicitly delivered association uses. Roles do not
-narrow scope; bare IDs and content referents do not expand it. Result membership is affected
-when a later addition targets the designation's own entity or a member association's target.
-Raw item-only members do not imply architectural associations from their prose.
+The [revised addition probe](additions.md) makes inventory acquisition explicit. A selection
+may add `inventory: {roles: [...]}` for its organizing entity, independently of association
+content. The returned snapshot includes entity, roles, coverage, captured `asOfAcceptance`,
+and association addresses/roles. Roles must be nonempty, distinct and valid for the entity:
+`identifies`/`describes` for architectural entities, `result` for query-result entities.
 
-Actual-delivery and designation-acceptance timing still apply; producer exemption and
-conservative generating-evaluation propagation remain. The experiment discloses every existing
-unsupplied addition in scope as a qualified notice, without delivering its member content.
-This deliberately broad disclosure choice can create future exposure paths through notice
-provenance. It is not a settled discovery policy. Missing required notices are rejected;
-known additions create no new later-change warning. A refresh does not clear earlier exposure.
+This fixture covers **all retained associations in scope**, including displaced ones. It has
+no standing field, interpretive summary, reason, name or member content. Entries are not
+association uses, do not contribute producing-query exposure, and cannot establish reuse or
+displacement eligibility. A complete empty inventory still establishes scope. Missing, altered,
+unsolicited or future-position inventories are rejected atomically. Content requests can be
+made separately before or after inventory acquisition; each actual delivery retains its time.
 
-The host-selected experiment mode is not an investigator-supplied impact classification.
-No semantic novelty check, suppression or clearance is implemented. The probe's substantial
-warning spread is evidence to review trigger/disclosure scope and first-delivery reassessment,
-not a decision that every addition everywhere must flag every use of a mentioned entity.
+A later addition creates an exact `new-information` cause for matching prior inventory
+recipients. A supersession also introduces an association entry, so its exact declaration can
+be a cause via either inventory scope or displaced-association use. Withdrawal leaves this
+historical inventory's entries unchanged; its ordinary content-displacement effects remain.
+Current-only/status-bearing inventories would need removal/status rules; pagination, ranked
+search and partially disclosed scope are not generalized by this probe.
+
+No addition cause follows solely from a delivered description or fixed result membership.
+An included exact association's displacement still creates membership concerns; an inventory-
+affected generating evaluation still passes its concern to its results and actual consumers.
+The same cause/timing rules and producer exemption apply. A fresh matching inventory contains
+already accepted entries without treating them as later changes; refresh does not clear an
+older acquisition. Inventory receipt does not imply member-content receipt or comprehension.
+
+Do not automatically disclose every other addition about the entity. Qualified displacement
+and inherited-cause disclosures for actually supplied material remain required; their substantive
+reasons still carry exposure. The new inventory-only representation does not exempt delivered
+interpretive explanations or summaries. General context selection and the dialog protocol
+remain implementation work under these boundary requirements.
+
+The earlier entity-wide mode is retained only to reproduce the prior comparison. No semantic
+novelty test, targeted suppression or clearance is implemented in either mode. Actual inventory
+exposure is the boundary for additions; the model does not guarantee that unrequested new
+information cannot matter to an earlier interpretation.
 
 <a id="retained-investigation-offer"></a>
 ## Retained follow-up option metadata

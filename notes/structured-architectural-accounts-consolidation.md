@@ -47,7 +47,7 @@ unique discovery, or equivalence of independently allocated entities.
 | Follow-up option | Available investigation associated with exact originating metadata; atemporal availability, not implied priority. |
 | Presentation recommendation | Judgment of usefulness, not permission to render compatible content. |
 | Context delivery | Exact material supplied, including ownership, basis, qualification and completeness. |
-| Exposure index | Organizing entities/query results plus exact association uses actually delivered. Current product `citation` indexes remain investigram-based until an adopted migration. |
+| Exposure index | Exact association content uses plus separately acquired inventories with entity/scope/delivery position. Bare IDs and listed association entries do not deliver their content. Product `citation` indexes remain investigram-based until an adopted migration. |
 | Support | Attributed grounds for a claim, not inferred from delivery alone. |
 
 Qualified information is a broad description, not another record kind. “Metadata” does
@@ -168,8 +168,8 @@ change. A prior acquisition can still affect its producer, even if the query fin
 Later refresh does not clear that earlier warning. Historical statuses remain intact.
 
 The fixture records host-assigned acceptance positions and delivery-state positions; these
-are ordering aids, not proposed public timestamps or agent-supplied exemption claims. Final addition
-scope, challenge, clearance and reassessment remain open. Producers still exclude their own causes. Identifying content newly established from the
+are ordering aids, not proposed public timestamps or agent-supplied exemption claims. General inventory
+coverage, challenge, clearance and reassessment remain open. Producers still exclude their own causes. Identifying content newly established from the
 pinned basis need not copy irrelevant source behavioral restrictions; original reused content
 retains its qualifications, while new scenario examples carry their own applicable limits.
 
@@ -220,23 +220,27 @@ same architectural diagrams and assertions remain authored content.
 
 ## Open decisions and verification limits
 
-The [addition probe](structured-account-example/additions.md) now compares a category
-clarification and a recovery caveat with all ordinary additions enabled. Each marks 5/7 prior
-evaluations and 7/8 designations in both partitions. New-information scope uses explicit
-context/association target entities, without role narrowing or inference from bare referents.
-The exact-displacement regression remains separate. Qualified notice provenance and repeated
-information contribute to the broad spread; the probe discloses all unsupplied additions in
-scope, an experimental completeness choice that also needs review.
+The [revised addition probe](structured-account-example/additions.md) distinguishes delivered
+association content from an explicitly acquired inventory. Description-only context does not
+imply an inventory; a separate availability request records entity, scope and delivery position.
+The fixture lists all retained association addresses/roles in scope, including displaced ones,
+without delivering their content or interpretive reasons. New matching entries affect prior
+inventory recipients; exact supersession/withdrawal still affects actual association uses.
 
-Targeted suppression, qualified reassessment and automatic scheduling remain unimplemented.
-The evidence supports revisiting whether first delivery needs bounded cause-specific assessment,
-or can explicitly accept coarse marks. Manual inspection subsequently found no clear required
-substantive changes for these two additions: most recipients merely retain earlier content,
-and the substantive trial result already includes both distinctions. The probe demonstrates
-redundant marking, not the typical impact of genuinely new findings; it cannot settle first-
-delivery reassessment scope alone.
-Any assessment must preserve independent paths/causes; an unchanged target does not imply
-unaffected consumers. Automatic scheduling is a further policy over that mechanism.
+Fixed designation membership is not inventory exposure. Merely adding another description of
+S does not mark a result containing an earlier description; its producer can still be affected
+through an actually acquired inventory. The original seven evaluations and eight designations
+now acquire no causes from either addition. Adding an explicit inventory reader and downstream
+result consumer yields two affected evaluations/designations, one direct and one inherited,
+in both partitions. The earlier broad 5/7 and 7/8 comparison remains reproducible.
+
+Removing implicit entity-wide exposure and unsolicited addition reasons is a structural
+refinement, not targeted suppression or semantic clearance. It leaves a coverage limit:
+unrequested new information may matter even when no inventory dependency was established.
+General initial selection, ranked/paged/current-only inventories, reassessment and scheduling
+remain open. The contract is at the investigation boundary; dialog tools and storage sharing
+are implementation choices. The broad earlier counts no longer establish a first-delivery
+need for reassessment.
 
 Before drafting: settle identity/migration depth, result designation shape, support selection
 and delivery bounds, addition/exposure precision, reassessment/clearance, declaration

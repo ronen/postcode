@@ -10,7 +10,8 @@ admission omission is staged, not a new live investigator discovery.
 Q1 is a particular invocation about policy kind P, grounded in the mechanical module M.
 P and M are distinct seeded identities with qualified identifying information; discovering
 them end to end is not claimed. Q1 receives a qualified projection of P's orientation.
-Its exposure index records P, not the whole orientation investigram as a context unit.
+Its exposure index records the exact supplied orientation association under P; no inventory
+is implied and the whole orientation investigram is not the context unit.
 
 PostCode allocates RESULT-Q1 and resolves Q1's explicit introductions of Closed, Open and
 Half-open S. No registration/promotion threshold or matching by name. S's category identity
@@ -258,13 +259,19 @@ reconsideration. The existing state/sequence diagrams and their legends still re
 They do not establish live investigation quality, a product API, universal result organization,
 general reassessment, performance bounds, semantic identity or automatic reconciliation.
 
-## Conservative additions after the walkthrough
+## Association and inventory exposure after the walkthrough
 
-The [addition probe](structured-account-example/additions.md) branches from the same initial
-history to add a category clarification or a recovery caveat about S, without displacing
-anything. Each reaches 5/7 earlier evaluations and 7/8 result designations, in both partitions.
-An informed later recipient is clear of already-known causes, while an earlier acquisition
-remains exposed. The report distinguishes direct entity scope from inherited notice/producer
-provenance; bare referents alone do not trigger. This motivates reviewing scope and bounded
-reassessment before deciding first delivery, rather than assuming conservative marks will
-be selective. The original displacement-only walkthrough remains a separate regression.
+The [addition probe](structured-account-example/additions.md) compares the original broad
+entity rule with separately recorded association and inventory acquisition. Giving an
+investigator an identifying description is not giving it the entity's inventory. An explicit
+“what else is known?” acquisition supplies availability entries with their scope/time;
+requesting an entry's content is a separate delivery. Fixed result membership is not inventory
+exposure, and unrelated association reasons are not automatically supplied.
+
+Neither the category clarification nor the recovery caveat now marks any of the original
+seven evaluations or eight designations. An additional inventory reader and a recipient of
+its result are both marked by later matching additions, one directly and one by producer
+provenance. Filtered/empty inventories and acquisition timing are exercised. Exact content
+supersession still affects recipients and memberships; earlier content and snapshots stay
+fixed. The original displacement-only walkthrough remains a separate regression. This is a
+boundary contract, not a dialog design or proof that unrequested information cannot matter.

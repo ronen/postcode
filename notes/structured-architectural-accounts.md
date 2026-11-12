@@ -1687,3 +1687,32 @@ earlier inference: the probe usefully shows redundancy costs, but does not estab
 often genuinely new findings change previous answers or that first delivery needs clearance.
 An earlier explicit conclusion challenged by genuinely new information would be a stronger
 next comparison. No qualified reassessment was executed and no stored cause was cleared.
+
+## 2026-11-12 — Association exposure and explicit inventory acquisition
+
+The human requested conformance of proposal/probe to the distinction between receiving a
+specific association and separately asking what other associations are available. The
+[revised probe](structured-account-example/additions.md) records both at the investigation
+boundary; dialog tools are left to implementation. Mechanical inventory entries do not
+deliver their content or produce exposure to each listed investigator. Scope and captured
+position are explicit; substantive summaries would be additional content exposure.
+
+The old blanket delivery of unrelated additions' reasons is removed. Exact association
+displacement and required qualified/inherited context remain. Additions affect earlier
+matching inventories; fixed result membership does not imply inventory exposure. This
+fixture's all-retained inventory gains entries on additions/supersessions, even when
+previously empty; it does not remove entries on withdrawal. Other inventory policies need
+explicit coverage and change rules.
+
+The two additions now affect 0/7 original evaluations and 0/8 designations in each partition,
+compared with 5/7 and 7/8 under the reproduced earlier broad rule. A separately requested S
+inventory and downstream consumption of its result yield 2/9 evaluations and 2/10 designations
+affected (one direct, one inherited). The cumulative second addition reaches those two plus
+an intervening inventory reader: 3/11 evaluations and 3/12 designations. Exact causes and
+actual-delivery timing survive; no semantic suppression or clearance is implemented.
+
+This narrows structural overreach without establishing that unrequested new information
+cannot matter. General discovery/ranking, partial inventories, complete-answer claims,
+qualified reassessment and production-scale storage remain open. Inventory exposure need
+not create one content edge per listed entry; implementations can share delivery records
+while retaining meaningful times. No performance claim follows from these authored counts.
