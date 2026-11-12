@@ -130,8 +130,13 @@ its marks do not guarantee that every materially affected explanation has been f
 
 No automatic live “all information about S” designation is modeled. A future completeness
 claim or live collection needs an explicit scope/dependency, not an implication from a fixed
-membership list. Qualified reassessment, targeted suppression, clearance, declaration challenge
-and automatic scheduling remain separate, unimplemented choices.
+membership list. The human accepts imperfect coverage. Investigator-directed propagation
+could later complement structural causes: find candidate prior results through the exposure
+index, inspect their question/content/support, then assert a qualified concern for an exact
+result and new finding. A candidate is not an impact judgment; a concern would not fabricate
+exposure or displace earlier information. No such lookup/concern contract is implemented.
+Investigator-directed propagation, targeted suppression, reassessment/clearance and automatic
+scheduling are deferred. Declaration challenge remains a separate standing-design question.
 
 At the boundary, inventory deliveries can be indexed once by their scope and position;
 listing many entries need not create many content-exposure edges. Actual snapshots remain

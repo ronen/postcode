@@ -70,6 +70,21 @@ Redesignation also requires Q1's exact question/scope and parameters in context;
 optional, not a duty to update every containing result. The follow-up option stays on ADMISSION-1 and is not copied to ADMISSION-2 because this
 submission already answers it.
 
+## Exposure boundary and deferred extensions
+
+Entity and query-result IDs organize access. Actual association uses and qualified content
+are recorded separately from explicitly requested inventories with scope/coverage and time.
+A description, fixed result membership or bare subject reference does not imply an inventory.
+Listing an association does not deliver its content; substantive summaries/options/reasons
+still require content provenance. Exact displacement and inherited-cause context remains
+required, without automatically supplying every unrelated addition's reason.
+
+The [addition comparison](additions.md) shows why this distinction matters. The human accepts
+that structural exposure cannot find every semantically affected explanation. Investigator-
+directed propagation could later identify exact-target concerns after inspecting candidate
+prior results; targeted suppression, reassessment/clearance and automatic scheduling are
+also deferred. None is added to the submitted payloads or implemented by these fixtures.
+
 ## Qualification and partition costs
 
 Mixed descriptions still carry their original investigram-level default-sampling scope.

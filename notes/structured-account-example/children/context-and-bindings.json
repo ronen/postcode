@@ -150,7 +150,7 @@
   },
   "reconsiderationPolicy": {
     "supersessionAndWithdrawal": "causes",
-    "addition": "not triggered in this displacement-only regression; conservative addition experiment is separate",
+    "addition": "No inventory is acquired in this displacement regression; explicit inventory addition triggers and the historical broad-policy comparison are exercised separately.",
     "precision": "Exact delivered association uses and exact designation membership; source-query exposure provenance retained. Entity and shared-item overlap alone do not trigger.",
     "exemptions": "Producer excludes its own causes. A cause accepted before actual delivery is disclosed as known context, not a later-change warning. Missing disclosure is a delivery defect. New designation membership follows the same timing distinction; earlier exposures are not cleared by later refresh. Reassessment remains separate."
   }

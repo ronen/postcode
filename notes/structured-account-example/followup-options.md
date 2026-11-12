@@ -82,9 +82,10 @@ work; the JSON option and checkers retain their original general result contract
 The [mixed access probe](followup-option-access.json) and [children access probe](children/followup-option-access.json)
 record these boundaries:
 
-- An exact option excerpt with qualification/basis/provenance is substantive RESULT-Q1
-  context when supplied through that result. It does not deliver the source bundle or
-  establish eligibility to displace an association.
+- An exact option excerpt with qualification/basis/provenance is substantive guidance
+  delivered through RESULT-Q1, with exact owner/key and generating provenance. It does not
+  expose every association of RESULT-Q1, supply an association inventory, deliver the source
+  bundle or establish eligibility to displace an association.
 - The actual Q2 delivery separately includes full original result declarations/members.
   This is sufficient for the two targeted supersessions under the provisional eligibility
   rule. It is not a universal full-history default for invoking an option.
@@ -98,14 +99,17 @@ record these boundaries:
 
 The exact original result snapshot stays fixed. Fresh access and further acquisition
 are separate. Human browsing is not investigator exposure; actual substantive delivery
-is. Guidance metadata remains qualified interpretation even though it is not architectural
-content. There is no new guidance child, mutable option registry or automatic rerun.
+is. A separately requested mechanical association inventory creates inventory exposure, not
+content exposure to each entry. A substantive option label/purpose is qualified interpretation;
+it cannot be treated as a mechanical reference just because it is metadata. The inventory
+probe does not define an option-discovery inventory or its change rules. There is no new
+guidance child, mutable option registry or automatic rerun.
 
 ## What the probe establishes
 
 The [guidance checker](check-guidance.py) resolves the exact owner/key and supported method,
 preserves source qualification/provenance, rejects wrong namespaces, undeclared parameters
-and owner fallback, and verifies result-entity exposure. It also checks direct diagram
+and owner fallback, and verifies exact qualified option delivery through its result context. It also checks direct diagram
 selection independently of recommendations. See [all checks](README.md#verification).
 
 This exercises one structured invocation chain. Overview/Explain and structural listings

@@ -175,11 +175,13 @@ entire history. Competing descriptions can remain visible. Subject-only context 
 inferred navigation origin. A UI may supply an explicit origin; context and origin remain
 separate.
 
-Selecting something in Q's result uses RESULT-Q as context. Supplying the selected material
-creates exposure to that result entity. Human browsing, selection, an available ID or a
-reference alone creates no exposure. The selected passage need not itself become an entity.
-Qualified item/declaration addresses retain original ownership even through another entity's
-projection. Actual deliveries, including exact association-use provenance, not the investigator's claimed reliance, determine exposure.
+Selecting something in Q's result uses RESULT-Q as organizing context. Supplying the selected
+material records exact association/content exposure through its designation route, not exposure
+to everything about that result entity. A separately acquired inventory records its scope and
+delivery position. Human browsing, selection or a bare reference alone creates neither kind of
+investigator exposure. The selected passage need not itself become an entity. Qualified addresses
+retain original ownership even through another entity's projection. Actual deliveries, not an
+investigator's claimed reliance, determine the structural exposure record.
 
 The fixture materializes delivered values with source investigram, query provenance, captured
 basis, source qualifications/evidence and any narrower item/declaration information. It
@@ -251,7 +253,8 @@ and budgets remain surrounding application design.
 | Access | Required distinction |
 | --- | --- |
 | Exact captured answer | Keep its membership, content, support and captured status/qualification context fixed. |
-| Exact item/declaration inspected afresh | Preserve its target while separately exposing later declarations and qualified notices. |
+| Exact item/declaration inspected afresh | Preserve its target and supply applicable displacement/inherited-cause context, not every addition about the entity. |
+| Explicit inventory acquisition | Capture availability scope, actual entries/coverage and delivery position without pretending the listed content was supplied. |
 | Newly selected entity/result information | Capture the chosen original/new/competing associations and support; selection does not rewrite their sources. |
 | Further investigation | Use declared question meaning and explicit seed/acquired deliveries; preserve what was actually supplied. |
 
@@ -356,7 +359,26 @@ remain available; the fixture does not select a winner by timestamp. Withdrawal 
 are not themselves associations to supersede in this bounded prototype. Reinstatement and
 challenging the standing of declarations remain design questions, not silent undo.
 
-### Deferred qualified reassessment and proactive scheduling
+### Deferred investigator-directed propagation, reassessment and scheduling
+
+The human accepts the coverage limit: an exposure-based mechanism cannot find every earlier
+explanation that new information might affect. The current direction is suitable for the first
+capability; do not reinstate broad entity-based propagation to seek perfect coverage.
+
+**Investigator-directed propagation** could later supplement structural causes. An investigator
+might already know an earlier result, or ask which earlier evaluations received associations
+about an entity (including other information roles). An exposure-index lookup would identify
+candidates, not assert impact or deliver their substantive content. The investigator would
+acquire selected results, their questions/scopes and relevant qualified support, then identify
+an exact result designation that may need updating, with an exact new finding/cause and a
+qualified explanation. That concern could enter the same cause-preserving propagation mechanism.
+Candidate discovery, eligibility and the concern's retained representation still need design;
+no reverse-lookup API, new declaration type or executed probe is introduced here.
+
+This differs from targeted suppression: it adds a justified concern where automatic exposure
+rules missed one. It does not retroactively invent inventory/content exposure, displace the
+earlier information, establish a replacement, or require exhaustive search of earlier results.
+Actual review deliveries would themselves be recorded. An omitted assessment means unassessed.
 
 Keep targeted suppression by the causing investigator and later reassessment together as
 a deferred, qualified, target-and-cause assessment mechanism. An omitted assessment does
@@ -379,7 +401,8 @@ Only actual reassessment deliveries create new exposure. Pending-status behavior
 versus background execution and scheduling limits remain deferred presentation/orchestration
 choices, rather than requirements of the retained-content model.
 
-Automatic scheduling and targeted suppression/clearance remain unimplemented. The original
+Investigator-directed propagation, targeted suppression, reassessment/clearance and automatic
+scheduling remain deferred and unimplemented. The original
 broad experiment flagged outputs that manual inspection found unlikely to require substantive
 change. The refined boundary removes those addition causes structurally: no inventory was
 received. It does not prove semantic harmlessness or establish that every important new fact
@@ -501,7 +524,9 @@ The planning package would need explicit treatment of:
   declaration-only results and result designation separate from fixed child composition.
 - Association addition/supersession/withdrawal replacing whole-investigram correction,
   including validation, delivery eligibility, conflict/standing and exact historical access.
-- Entity/result exposure and reconsideration with qualified notices and cause identities.
+- Exact association/content exposure, separate scoped inventory exposure, and result-membership
+  reconsideration with qualified context disclosures and exact cause identities. Entity/result
+  IDs organize access; they are not blanket exposure units.
   Renaming citation index to exposure index should be considered alongside the actual semantic
   change; it is no longer sufficient to characterize this whole migration as just a rename.
 - Representation-independent qualification, captured basis, direct/exact application access,
@@ -514,14 +539,15 @@ The planning package would need explicit treatment of:
 | Entity and result identity | Common reference mechanism; settle invocation/evaluation/reuse guarantees and first migration depth. No semantic deduplication. |
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
 | Support and eligibility | Fixture delivers full targeted declarations/members with qualifications; settle bounded acquisition, competing definitions and missing support. |
-| Reconsideration | Distinguish actual association and inventory exposure; additions trigger matching prior inventories, not every entity use or fixed result membership. Refined probe removes the earlier broad marks. General inventory scope/coverage and reassessment needs remain open; suppression/clearance/scheduling are unimplemented. |
+| Reconsideration | Distinguish actual association and inventory exposure; additions trigger matching prior inventories, not every entity use or fixed result membership. Refined probe removes the earlier broad marks. Set first-delivery inventory coverage explicitly; richer inventories remain open. Investigator-directed propagation, suppression, reassessment/clearance and scheduling are deferred. |
 | Declaration standing | Competing declarations are retained; challenge/reinstatement and result selection policy remain open. Do not infer revocation from a newer bundle. |
 | Entity merge/split | Qualified correspondence and preserved old IDs; supersession/reassignment effects remain a design probe, not delivered automatically by association operations. |
 | First capability | Choose delivered relationship kinds, contextual selection depth, mechanical compatibility and which composition/diagram probes become implementation acceptance tests. |
 
-Detailed reassessment, persistence, global discovery and broader UI are candidates for
-deferral, but make that boundary explicit before drafting. Do not leave a first-delivery
-requirement undecided merely because the fixture can serialize it.
+Investigator-directed propagation, targeted suppression, reassessment/clearance and automatic
+scheduling are deferred beyond the first capability unless a later concrete need changes that
+scope. Persistence, global discovery and broader UI remain outside this work. The plan must
+carry these boundaries explicitly, while resolving the actual first-delivery contracts.
 
 Verification should combine deterministic acceptance/history/API tests, an actual bounded
 investigation testing discovery/reuse and supported dialogue, and representative rendering.

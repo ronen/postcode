@@ -12,9 +12,11 @@ record includes earlier alternatives later revised, particularly account-scoped
 identity, eager relationship-subject creation and a facade over legacy subjects.
 The [concrete walkthrough](structured-architectural-accounts-example.md) and
 [current fixtures](structured-account-example/README.md) now exercise entity/result
-context and association declarations. Earlier dated entries preserve their then-current
-alternatives; claims in those entries that fixtures use the old correction model are
-historical. The [conformance entry](#entity-context-conformance) records the current pass.
+context and association declarations, with separate association/content and inventory exposure.
+Earlier dated entries preserve their then-current alternatives; whole-investigram correction,
+blanket entity exposure and automatic disclosure of all additions in those entries are
+historical. See the [exposure model alignment](#exposure-model-alignment) for the current pass;
+the [earlier conformance entry](#entity-context-conformance) records the preceding migration.
 
 ## Scope established by the human
 
@@ -1716,3 +1718,28 @@ cannot matter. General discovery/ranking, partial inventories, complete-answer c
 qualified reassessment and production-scale storage remain open. Inventory exposure need
 not create one content edge per listed entry; implementations can share delivery records
 while retaining meaningful times. No performance claim follows from these authored counts.
+
+<a id="exposure-model-alignment"></a>
+## 2026-11-12 — Exposure model accepted as working direction; document alignment
+
+The human accepts association/content exposure plus separately acquired inventory exposure
+as a sound bounded direction, including imperfect semantic coverage and the need to specify
+richer inventory policies later. All current working documents now use entity/query-result
+IDs as organizing context rather than blanket exposure units. Exact membership is not an
+inventory; unrequested association reasons are not automatically delivered. Qualified reasons,
+options and substantive summaries remain content, even when called metadata. The proposal
+states these obligations at the investigation boundary, leaving dialog tools to implementation.
+
+The human suggested a deferred investigator-directed propagation route: an investigation
+could locate earlier query results through their exposure to associations about an entity,
+including other attributes, inspect selected questions/results/support, and identify a result
+that may need updating. Candidate discovery is not an impact assertion or content delivery.
+A qualified concern would identify an exact target and new finding/cause; it could propagate
+without fabricating historical exposure or replacing earlier information. The representation,
+eligibility and reverse-lookup operation remain undesigned and unimplemented.
+
+Investigator-directed propagation, targeted suppression, reassessment/clearance and automatic
+scheduling stay deferred beyond the first capability. The refined probe does not establish
+a need to bring them forward. No exhaustive search obligation, new payload field, declaration
+operation, product behavior or governing change is introduced by this documentation pass.
+Historical dated discussion and the labeled earlier entity-wide experiment remain intact.

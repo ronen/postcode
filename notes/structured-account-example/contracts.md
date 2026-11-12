@@ -179,7 +179,7 @@ an investigation mixes general identities and narrower behavior, as in this exam
 Independent association supersession and item delivery now work in both partitions;
 children are no longer necessary merely to get those affordances. The previous claim
 that each child supplies a smaller citation/correction unit must not be carried over
-unchanged to entity exposure.
+unchanged to association/content and separately acquired inventory exposure.
 
 Actual generating-context provenance can still conservatively affect later consumers
 of a small definition. Separate evaluations can bound that context at an orchestration
@@ -195,8 +195,8 @@ Each delivered item/declaration/option preserves its own value, source investigr
 generating query, captured basis, source qualifications and evidence. A declaration's
 members from another owner retain that owner's support too.
 
-The entity/result exposure index is an organizing summary, not a change subscription to
-every association with that identity. `associationUses` records exact uses actually supplied,
+Entity/result IDs organize the exposure index; they are not change subscriptions to every
+association with that identity. Content and inventory exposure are recorded separately. `associationUses` records exact uses actually supplied,
 with source qualification and generating provenance. Full association delivery records its
 expanded declarations; an item excerpt requires `viaAssociation` and records only paths to
 that item. These partial use records do not claim full declaration/member delivery and cannot
@@ -257,7 +257,7 @@ clear the old exposure. Query-start time and final acceptance are not delivery-t
 Notices preserve reasons, qualification and exact standing; they do not deliver all referenced
 replacement members or establish sufficient understanding. Those acquisition obligations remain.
 No historical warning is cleared. Final addition scope, identity events, declaration challenge,
-clearance and reassessment remain open; no general whole-investigram completeness exemption
+clearance and reassessment remain deferred; no general whole-investigram completeness exemption
 is imported.
 
 ### Association versus inventory exposure
@@ -299,6 +299,19 @@ The earlier entity-wide mode is retained only to reproduce the prior comparison.
 novelty test, targeted suppression or clearance is implemented in either mode. Actual inventory
 exposure is the boundary for additions; the model does not guarantee that unrequested new
 information cannot matter to an earlier interpretation.
+
+### Deferred investigator-directed concerns
+
+The human accepts the limits of automatic exposure-based coverage. An investigator could
+later supplement it by identifying an exact earlier result that may need updating because of
+a qualified new finding. Exposure-index lookup could locate candidate investigations that
+received other associations about an entity; the lookup itself would not assert impact or
+supply their content. Relevant question/result/support acquisition would precede the assessment.
+A retained concern would need exact target, cause/finding and qualified grounds and could then
+propagate with its cause identity. It would not retroactively create exposure, withdraw an
+association or establish a replacement. No concern schema, reverse-lookup API, new declaration
+operation or automatic search duty is added here. Investigator-directed propagation, targeted
+suppression, reassessment/clearance and scheduling remain deferred beyond this capability.
 
 <a id="retained-investigation-offer"></a>
 ## Retained follow-up option metadata

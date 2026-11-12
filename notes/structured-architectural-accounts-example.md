@@ -166,9 +166,10 @@ category identity need not inherit a behavioral default-sampling limitation mere
 initial behavior and identification were returned together. Original qualification is not
 silently removed when an item is associated elsewhere.
 
-Partition alone does not prevent reconsideration. Actual entity/result exposure, exact designated
-membership and generating-query provenance determine the prototype's warnings. The more precise
-policy remains an open decision, including partial delivery and the conservative effects of generating-evaluation exposure.
+Partition alone does not prevent reconsideration. Exact association/content delivery, separately
+acquired inventories, exact displaced result members and generating-query provenance determine
+the proposed warnings. General partial/inventory coverage still needs bounded contracts;
+semantic-impact assessment remains deferred. The baseline has no inventory deliveries.
 
 ## 8. Composition and subsequent selection
 
@@ -275,3 +276,9 @@ provenance. Filtered/empty inventories and acquisition timing are exercised. Exa
 supersession still affects recipients and memberships; earlier content and snapshots stay
 fixed. The original displacement-only walkthrough remains a separate regression. This is a
 boundary contract, not a dialog design or proof that unrequested information cannot matter.
+
+The accepted coverage limit is that unrequested new information may matter without an automatic
+cause. Deferred investigator-directed propagation could supplement this: discover candidate
+prior results through the exposure index, inspect selected questions/results/support, and state
+a qualified exact-target concern tied to the new finding. That would neither invent historical
+exposure nor replace the earlier result. No such operation is present in these payloads.

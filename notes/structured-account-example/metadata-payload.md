@@ -49,9 +49,16 @@ The role/category target and the exact association displaced are different addre
 A request's `deliveries` select entities plus exact associations, item excerpts or
 options. The model expands chosen association members and required content dependencies,
 then captures original qualification, basis, evidence and source-query provenance.
-The exposure index records selected context entities/results plus exact association-use
-routes; reconsideration uses those exact routes, not other information sharing an entity.
-Result projections also preserve the invocation's declared meaning, scope and parameters. Bare IDs and human browsing do not create exposure.
+Association exposure records exact supplied content and association-use routes; entity/result
+IDs organize access, not blanket exposure. Result projections also preserve the invocation's
+meaning, scope and parameters. Bare subject IDs and human browsing create no exposure.
+
+Inventory exposure is separate: an explicit availability request records scope/coverage,
+entries and actual delivery position. The [addition probe](additions.md) lists mechanical
+association addresses/roles, without delivering member content or producing-investigation
+reasons. Requesting a listed association later creates content exposure. Descriptions and
+fixed result membership do not imply inventory acquisition. Substantive listing summaries
+would themselves require qualified content exposure.
 
 Q2's subject/context entity is RESULT-Q1. Its option address remains
 ADMISSION-1/concurrent-callers-option, and its architectural focus is S. Those are
@@ -64,6 +71,9 @@ do not themselves deliver every old/new member. Captured answers remain unchange
 Generated [lifecycle reports](children/lifecycle-report.json) show both fresh historical
 admission access and selected new admission access, with exact source provenance.
 There is no automatic current-definition selection or whole-source superseded status.
+Later matching inventory entries can affect an investigator's earlier selection opportunity;
+additions do not affect every recipient of an entity's description. Required exact displacement
+and inherited-cause disclosures remain; unrelated addition reasons are not automatically sent.
 
 ## Diagrams and guidance
 
@@ -90,9 +100,11 @@ mutable canonical entity model.
 The [verification guide](README.md#verification) lists checks. Same-target displacement,
 full declaration/member eligibility and one initial result designation are explicit
 provisional choices. Exact designation statuses separate displacement from membership and
-generating-context concerns; shared entity/item identity alone is not a cause. Required dependency delivery for
-arbitrary excerpts, declaration challenge and reassessment
-remain decisions to make before the plan. No governing/product files were changed.
+generating-context concerns; shared entity/item identity alone is not a cause. General inventory
+coverage, required dependency delivery for arbitrary excerpts and declaration standing need
+bounded contracts. Investigator-directed propagation, targeted suppression, reassessment/clearance
+and automatic scheduling are deferred. They do not need new payload fields in this capability.
+No governing/product files were changed.
 
 
 Delivery snapshots record their retained-state position, and accepted contributions record

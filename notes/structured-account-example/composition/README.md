@@ -177,8 +177,10 @@ Q4 receives these explicitly selected qualified projections without a navigation
 | R | ROLE-DEFINITIONS-1's shared-instance identity plus TRIAL-1 recovery and interaction. |
 | B | BULKHEAD-DEFINITION-1 identity and BULKHEAD-1 capacity/queue behavior. |
 
-The exposure index is P/S/R/B, with exact delivered items/declarations and their generating
-provenance preserved. ADMISSION-1's old admission payload is not delivered by default;
+P/S/R/B organize the context; exposure records the exact delivered associations/items and
+their generating provenance. No inventory is supplied in this composition request. Merely
+adding another association about P, S, R or B therefore does not create an addition cause.
+An explicit later inventory acquisition would record its own scope and delivery position. ADMISSION-1's old admission payload is not delivered by default;
 references in later declarations do not supply it. There is no K record, reporter exposure
 rule or claim of complete-correction-context exemption. Historical content remains explicitly
 requestable under the new delivery rules. Origin-free selection is a relevance example,
@@ -199,9 +201,11 @@ exposure or semantic independence.
 
 Contrast an identity established with less relevant incoming context. A separate evaluation
 can narrow exposure, at an orchestration cost; necessary evidence must not be withheld to
-avoid warnings. Before drafting, choose acceptable conservative warning costs, finer
-exposure/propagation, or a bounded qualified reassessment mechanism. This probe implements
-no clearance. Known causes must accompany fresh deliveries and are not subsequent changes
+avoid warnings. The current first-capability direction accepts conservative propagation
+through actual delivered producer context. Qualified reassessment, suppression and investigator-
+directed propagation are deferred; this probe does not implement clearance or identify
+claim-level independence. Inventory precision removes implicit addition dependencies, not
+actual displacement exposure. Known causes must accompany fresh deliveries and are not subsequent changes
 to those deliveries; this timing distinction does not establish claim-level independence. The [partition guidance](../contracts.md#provisional-partition-default)
 now treats qualification scope and evaluation boundaries separately.
 
@@ -266,5 +270,7 @@ arrows; they remain explicit, inspectable content in each step.
 The first bounded capability can still be admission → trial → correction. Composition
 has exposed additional content/addressing needs without demonstrating a new core
 identity type is necessary. Identity/migration guarantees, support-selection bounds,
-interpretive Lens options, declaration standing and reconsideration precision remain open. This fixture exercises
-neither end-to-end investigation nor the current API's acceptance of these payloads.
+interpretive Lens options and declaration standing remain open. Association/inventory exposure
+now supplies the proposed boundary; richer inventory coverage and semantic-impact assessment
+are not established by composition. This fixture exercises neither end-to-end investigation
+nor the current API's acceptance of these payloads.

@@ -537,7 +537,7 @@
       ],
       "declaredMeaning": {
         "question": "Inspect the original category identification with current change context.",
-        "scope": "Deliberately retains the exact identifying association; known additions are disclosed without claiming their content was fully acquired."
+        "scope": "Deliberately retains the exact identifying association. Applicable context follows the selected boundary policy; other association members are not presumed acquired."
       }
     },
     "bindings": {
@@ -566,7 +566,7 @@
             "title": "Inspect the original category identification with current change context.",
             "qualifications": [
               "Authored static fixture at the pinned Cockatiel revision; no live investigator or newly verified source discovery.",
-              "Deliberately retains the exact identifying association; known additions are disclosed without claiming their content was fully acquired."
+              "Deliberately retains the exact identifying association. Applicable context follows the selected boundary policy; other association members are not presumed acquired."
             ],
             "evidence": [
               "E-state"

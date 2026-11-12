@@ -72,7 +72,8 @@ meaning in their legends; diagram content is identical to the mixed variant.
 
 Children give coherent qualification and presentation boundaries. They are no longer
 needed just to make one association independently supersedable or to deliver one item.
-The earlier citation-unit argument does not transfer unchanged to entity/result exposure.
+The earlier citation-unit argument does not transfer unchanged to association/content and
+separately acquired inventory exposure.
 The admission association can be displaced without touching the S association in **both**
 partitions; only their inherited source qualifications differ.
 
@@ -85,8 +86,8 @@ routes remain visible in the [report](lifecycle-report.json).
 The [lifecycle probes](lifecycle-probes.json) also exercise declaration-only old-content
 reuse and withdrawal. Displacing one use does not mutate the item or displace its other
 uses. Shared-item overlap alone now causes neither a warning nor a displacement notice.
-Generating-context concerns remain possible through actual delivered associations; clearance
-and reassessment remain open. The same rules apply in both partitions.
+Generating-context concerns remain possible through actual delivered associations. Investigator-
+directed propagation, suppression, clearance and reassessment remain deferred. The same rules apply in both partitions.
 
 ## Files and verification
 

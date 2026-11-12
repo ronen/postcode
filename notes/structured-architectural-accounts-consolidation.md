@@ -47,7 +47,9 @@ unique discovery, or equivalence of independently allocated entities.
 | Follow-up option | Available investigation associated with exact originating metadata; atemporal availability, not implied priority. |
 | Presentation recommendation | Judgment of usefulness, not permission to render compatible content. |
 | Context delivery | Exact material supplied, including ownership, basis, qualification and completeness. |
-| Exposure index | Exact association content uses plus separately acquired inventories with entity/scope/delivery position. Bare IDs and listed association entries do not deliver their content. Product `citation` indexes remain investigram-based until an adopted migration. |
+| Association exposure | Exact association uses/content actually delivered, retaining route, source qualification and generating provenance. |
+| Inventory exposure | A separately supplied availability snapshot with entity, scope/coverage and actual delivery position; its entries do not imply delivery of listed content. |
+| Exposure index | Indexes actual content and inventory deliveries, with entity/query-result IDs organizing access. Qualified guidance and reason delivery also retain source exposure. Product `citation` indexes remain investigram-based until adoption. |
 | Support | Attributed grounds for a claim, not inferred from delivery alone. |
 
 Qualified information is a broad description, not another record kind. “Metadata” does
@@ -88,7 +90,8 @@ Immutable investigrams
   Original items, declarations, qualifications, evidence, guidance, child links
 Association indexes by entity + role
 Query-result designations with explicit member references
-Captured answers and exact delivered projections
+Captured answers and exact delivered content projections
+Separately acquired inventory snapshots with scope, coverage and delivery position
 ```
 
 An entity/role target denotes a category of information. It is not a single value slot.
@@ -100,7 +103,8 @@ the original content; the new association has its own attributable grounds.
 
 ```text
 Association standing: displacement links and competing declarations
-Entity projections: explicit selected information with qualifications and notices
+Entity projections: explicit selected information with qualifications and applicable context disclosures
+Inventory acquisition: scoped availability, without implicit content delivery
 Result membership: exact declarations/items, never implicit current substitutions
 Reconsideration causes on evaluations and exact result designations
 Validated diagram inputs and rendered diagrams/legends
@@ -122,7 +126,8 @@ qualified organizing assertions are meaningful; no filler prose is required.
 | Child composition | Fixed submitted-bundle structure; not result membership, current answer selection, exposure or architectural containment. |
 | Follow-up option | Exact producing metadata remains owned by its investigram. Access through a result/entity does not retarget or transfer it. |
 | Presentation recommendation | Original usefulness judgment; selecting a different compatible diagram changes no retained record. |
-| Context projection | Captures actual delivered material, original qualification, source provenance and applicable notices. An ID or human browsing is not exposure. |
+| Context projection | Captures actual delivered content, original qualification, source provenance and applicable disclosures. A subject ID or human browsing is not exposure. |
+| Inventory delivery | Captures availability scope/coverage and time separately. Matching later entries may affect selection; listed content is not supplied merely by appearing. |
 | Reconsideration | Derived cause-specific warning, not proof of wrongness or automatic withdrawal. |
 
 The fixture provisionally requires same-target supersession, historical displacement
@@ -132,14 +137,18 @@ they are not hidden consequences of the word association.
 ## Exposure and result membership
 
 Supplying entity S means supplying a selected qualified projection, not its ID or a
-canonical definition. Selecting a portion of Q's result and delivering it records
-exposure to RESULT-Q. Record the exact portion, not future associations of that entity.
-The selected text/node need not become another entity.
+canonical definition. Selecting a portion of Q's result and delivering it records its exact
+association/designation route under RESULT-Q, not every association of that entity. Receiving
+an inventory is separate, with its own scope and timing. The selected text/node need not
+become another entity.
 
 A result can need reconsideration because its producer received subsequently displaced
 information. It can also need reconsideration because a constituent association was later
 displaced—even when its producer created that entity and never received it as context.
 The second route is designated membership, not fabricated exposure or the fixed child tree.
+A third route is an actual inventory acquisition: a later matching entry could have changed
+what the investigator chose to inspect. Receiving a description or selecting fixed result
+members does not establish that inventory dependency.
 
 The executable prototype tracks exact delivered association uses. Entity identity alone
 cannot expose an evaluation to information created later. Item excerpts record their route;
@@ -237,14 +246,22 @@ in both partitions. The earlier broad 5/7 and 7/8 comparison remains reproducibl
 Removing implicit entity-wide exposure and unsolicited addition reasons is a structural
 refinement, not targeted suppression or semantic clearance. It leaves a coverage limit:
 unrequested new information may matter even when no inventory dependency was established.
-General initial selection, ranked/paged/current-only inventories, reassessment and scheduling
-remain open. The contract is at the investigation boundary; dialog tools and storage sharing
-are implementation choices. The broad earlier counts no longer establish a first-delivery
-need for reassessment.
+The human accepts that coverage limitation. General initial selection and richer inventory
+policies still need bounded treatment. The contract is at the investigation boundary; dialog
+tools and storage sharing are implementation choices. The broad earlier counts no longer
+establish a first-delivery need for reassessment.
 
-Before drafting: settle identity/migration depth, result designation shape, support selection
-and delivery bounds, addition/exposure precision, reassessment/clearance, declaration
-challenge/reinstatement, and first-delivery scope. Entity merge/split remains a separate
+Investigator-directed propagation is deferred alongside targeted suppression, reassessment/
+clearance and automatic scheduling. It could identify a qualified concern for an exact earlier
+result that structural propagation missed. An exposure-index lookup might find candidates;
+acquiring their questions, results and support would permit assessment. A candidate listing
+is not an impact judgment, and a concern neither displaces earlier content nor fabricates
+past exposure. No reverse-lookup API or concern declaration is implemented. See the
+[proposal](structured-architectural-accounts-proposal.md#deferred-investigator-directed-propagation-reassessment-and-scheduling).
+
+Before drafting: settle identity/migration depth, result designation shape, support selection,
+first-delivery inventory coverage and delivery bounds, declaration challenge/reinstatement,
+and first-delivery scope. Carry the assessment/propagation deferrals explicitly. Entity merge/split remains a separate
 qualified identity probe; association displacement does not automatically merge IDs or
 redistribute their histories.
 
