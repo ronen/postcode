@@ -1,72 +1,54 @@
-# One retained follow-up option and its follow-up
+# One retained follow-up option and its invocation
 
-Exploratory investigram-content example, 2026-11-11. The Follow-up investigation Lens is
-stipulated for this probe; it is not a product API or a design of global discovery,
-ranking or menus. The initial admission investigation remains a fixture precondition.
-The behavioral content and diagrams are unchanged; metadata now carries the options
-and the trial diagram recommendations.
+Updated 2026-11-12. The Follow-up investigation Lens is stipulated for this probe,
+not a product API or a global discovery/menu design. The initial investigation is
+an authored precondition. [Payload tour](metadata-payload.md) shows current ownership.
 
-Options are qualified guidance metadata owned by their exact investigram. The
-[complete-payload tour](metadata-payload.md) shows the current representation, delivery
-and diagram bindings. A replacement supplies its own options; this does not establish
-option continuity or migrate old invocations.
+Options are qualified metadata owned by exact investigrams. Their address differs
+from the entity/result through which they are made available and supplied as context.
+Changing an association does not migrate an option or rewrite an earlier invocation.
 
-## Return and invoke the option in the current fixture
+## Return and invoke the option
 
-Both the [mixed](first-result.json) and [children](children/first-result.json) results
-place an entry in ADMISSION-1's `followupOptions` metadata:
+Both partitions put `concurrent-callers-option` on ADMISSION-1. Its label and purpose
+concern concurrent callers/trial outcomes in the stated single-trial scope. Its focus
+is S, initially a local introduction reference; its method is the stipulated supported
+qualified architectural interpretation method. It declares no additional parameters.
+Its qualification says this is a question, not an assertion of a concurrency outcome
+or certification of admission coverage. Source basis and applicable qualification remain.
 
-| Field | Value / meaning |
-| --- | --- |
-| Local key | `concurrent-callers-option` |
-| Label | Concurrent callers and trial outcomes |
-| Purpose | Concurrent callers and trial outcomes in the stated default single-trial scope. |
-| Architectural target | Half-open S, initially referenced by its submission-local introduction key. |
-| Method | A stipulated supported qualified-architectural-interpretation method. |
-| Additional parameters | None in this example. |
-| Qualification | A question under the investigram's scope; it does not assert a concurrency outcome or certify the investigram's admission coverage. |
-| Support | Existing admission and default-sampling evidence available to the initial investigation. |
-
-The option is qualified metadata, addressed by `{investigram, optionKey}`. It does not allocate another entity,
-assert that waiting has already been discovered, or modify the existing subject
-associations. The children partition keeps this behavioral option on ADMISSION-1,
-not the identifying child. Its basis and investigram qualifications apply as usual.
-
-After acceptance, the illustrative request is:
+After allocation the relevant request fields are:
 
 ```json
 {
+  "id": "Q2",
   "operation": "follow-up-investigation",
-  "subject": {"investigram": "ADMISSION-1"},
-  "parameters": {
-    "optionKey": "concurrent-callers-option",
-    "values": {}
-  }
+  "subject": {"entity": "RESULT-Q1"},
+  "option": {"investigram": "ADMISSION-1", "optionKey": "concurrent-callers-option"},
+  "parameterValues": {},
+  "resultEntity": "RESULT-Q2"
 }
 ```
 
-Resolve that item in that exact investigram; its submitted Half-open reference has been
-bound to retained S. The request does not carry a human-authored question or override
-the option's architectural targets. Its existing `informationNeed` field is explicitly
-documentary wording; changing that wording cannot select a different question.
-The option's purpose and scope, the supported method, declared values, basis and actual
-context determine the investigation meaning. This is one bounded proposed shape,
-not a general option/parameter schema.
+The actual [mixed ledger](context-and-bindings.json) and [children ledger](children/context-and-bindings.json)
+also capture basis/evidence, deliveries, architectural focus and explicit navigation
+origin. The request is selected structurally; `informationNeed` is documentary wording,
+not a human-authored query parameter. The option's purpose/scope supplies the delegated
+question under a supported method. An investigator cannot create an executable Lens
+by naming an unsupported method.
 
-The [mixed ledger](context-and-bindings.json) and [children ledger](children/context-and-bindings.json)
-record the resolution and provenance: ADMISSION-1 is the invocation subject; S is
-the architectural focus. All follow-up outputs retain the exact request/option origin
-and actual supplied context, including the correction replacement. Their architectural
-associations remain about P, S and the new scenario roles. The original investigram gains
-no new child. The existing navigation origin from ANSWER-1 is retained independently:
-knowing which investigram supplied an option does not prove the user viewed that investigram.
+RESULT-Q1 is the request subject/context, ADMISSION-1 is the metadata owner, and S is
+the architectural focus. Receiving the option preserves all three. The original result
+and its fixed bundle structure gain no children from Q2. Q2 contributes independently,
+including its new designation for RESULT-Q1. An exact option address alone does not
+establish human navigation history.
 
 <a id="optional-diagram-contract"></a>
 ## General interpretation versus a promised diagram
 
 The existing concurrent-callers option promises a qualified interpretation of its
 question. Its prospective result contract is an investigram with valid supported
-content, references, evidence, qualifications and composition/accompanying records.
+content, association declarations, references, evidence, qualifications and result designation.
 The authored result chooses interaction and state-behavior types; the option does not
 mandate those types, and a sufficient qualified prose investigram is not disallowed by
 its result-shape contract. Whether an investigram adequately answers the question remains
@@ -95,46 +77,37 @@ content/presentation, but do not demonstrate the specialized invocation or its f
 handling. Exact encoding and validation of such optional requirements remain design
 work; the JSON option and checkers retain their original general result contract.
 
-## Delivery and later replacement
+## Delivery and later association changes
 
 The [mixed access probe](followup-option-access.json) and [children access probe](children/followup-option-access.json)
-make four distinctions:
+record these boundaries:
 
-- **Option excerpt before correction:** deliver the exact option with basis, investigram
-  qualifications, item qualifications and support. This records exposure to ADMISSION-1 but does
-  not deliver its complete own content or establish correction-target eligibility.
-- **The actual follow-up:** separately supplies complete ADMISSION-1 own content,
-  including options and presentations metadata; the children variant also supplies DEFINITIONS-1. This preserves
-  the earlier eligibility and exposure conditions without introducing another source
-  investigram merely to host the option.
-- **Fresh access to the original option after K:** preserve its exact address and
-  qualified content. Supply K's reason, support and qualifications with replacement
-  references. The partial sample records exposure to ADMISSION-1 and reporter TRIAL-1; it explicitly
-  omits full target/replacement content and claims no complete-context exemption.
-  Further context remains requestable before investigation. A correction of the
-  containing investigram is not a separate finding that this particular option is unsuitable.
-- **Replacement without a repeated option:** ADMISSION-2 has an empty `followupOptions` list
-  because TRIAL-1 from this submission already addresses the question. Attempting to
-  select that option on ADMISSION-2 fails; it does not fall back to ADMISSION-1.
-  This is an authoring choice, not a prohibition on useful reinvestigation or a rule
-  that options must be temporally "next". No `addressedBy` field is needed here.
+- An exact option excerpt with qualification/basis/provenance is substantive RESULT-Q1
+  context when supplied through that result. It does not deliver the source bundle or
+  establish eligibility to displace an association.
+- The actual Q2 delivery separately includes full original result declarations/members.
+  This is sufficient for the two targeted supersessions under the provisional eligibility
+  rule. It is not a universal full-history default for invoking an option.
+- ADMISSION-1 and its option remain unchanged. Association displacement notices concern
+  exact designated information; no whole-owner replacement automatically invalidates,
+  transfers or reissues the option. Its suitability after changes remains qualified
+  selection work, not a lifecycle inferred from the owner ID.
+- ADMISSION-2 does not repeat the option because TRIAL-1 already answers it. Selecting
+  that option key on ADMISSION-2 fails, with no fallback to the old owner. This is an
+  authoring choice, not a rule that options are always unanswered or temporally next.
 
-Exact ANSWER-1 preserves its original investigram and option under its captured revision
-context. That is distinct from correction-aware investigator delivery of historical
-content. Whole-investigram replacement includes the old option within its target; a key
-is not an independently correctable retained unit, and the original content is not
-patched or reparented.
+The exact original result snapshot stays fixed. Fresh access and further acquisition
+are separate. Human browsing is not investigator exposure; actual substantive delivery
+is. Guidance metadata remains qualified interpretation even though it is not architectural
+content. There is no new guidance child, mutable option registry or automatic rerun.
 
-## What this checks
+## What the probe establishes
 
-The existing checker validates option metadata, support, qualifications, subject reference
-resolution and the stipulated method. It resolves the follow-up invocation in both partitions and
-checks excerpt preservation, provenance, complete-target distinctions and exact versus
-replacement access. Ten additional malformed option submissions/requests are rejected,
-including label-as-key selection, a non-option content key, missing original despite a
-hypothetical same-key successor, unsupported method, undeclared parameters and architectural focus
-mistaken for the invocation subject.
+The [guidance checker](check-guidance.py) resolves the exact owner/key and supported method,
+preserves source qualification/provenance, rejects wrong namespaces, undeclared parameters
+and owner fallback, and verifies result-entity exposure. It also checks direct diagram
+selection independently of recommendations. See [all checks](README.md#verification).
 
-This makes one prose-like request concrete through retained content. It does not
-settle the global Overview/Explain entry routes, turn every other illustrative request
-into an option, or demonstrate a live investigator accepting the proposed protocol.
+This exercises one structured invocation chain. Overview/Explain and structural listings
+remain surrounding application examples. It does not design global entry routes, test a
+live agent, or settle which old options should be offered after an association changes.

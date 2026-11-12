@@ -1,50 +1,24 @@
-"""Check authored composition fixtures; optionally generate notation, not analysis.
-Python 3, no dependencies. --write-diagrams updates Mermaid and traceability files.
-No PostCode API calls or claim of semantic validation.
-"""
+"""Composition content/selector checks with entity projections and association declarations."""
 import copy
-import json
 from pathlib import Path
 import runpy
 import sys
-
-BASE = Path(__file__).resolve().parent
-shared = runpy.run_path(str(BASE.parent / 'check-fixtures.py'))
-read, check_result = shared['read'], shared['check_result']
-ledger = read(BASE / 'context-and-bindings.json')
-old_ledger = read(BASE.parent / 'children/context-and-bindings.json')
-known = set(old_ledger['entry']['knownEntities'])
-for stage in ['firstAcceptance', 'followupAcceptance']:
-    known.update(old_ledger[stage]['entityIds'].values())
-earlier = dict(shared['child_investigrams'])
-bulk = read(BASE / 'bulkhead-result.json')
-bulk_investigrams = check_result(bulk, ledger['bulkheadAcceptance'], known, earlier,
-                             set(), set(ledger['bulkheadRequest']['suppliedEvidence']))
-known.update(ledger['bulkheadAcceptance']['entityIds'].values())
-earlier.update({ledger['bulkheadAcceptance']['investigramIds'][k]: a for k, a in bulk_investigrams.items()})
-request = ledger['compositionRequest']
-complete = {x['investigram'] for x in request['suppliedInvestigramContext']}
-assert complete <= set(earlier)
-history = request['revisionHistory']
-expected_exposure_index = complete | ({history['reporter']} if history['substantiveExplanationDelivered'] else set())
-assert expected_exposure_index == set(ledger['exposure']['exposureIndex'])
-assert {'ADMISSION-2', 'TRIAL-1'} <= complete
-assert 'ADMISSION-1' not in complete | expected_exposure_index
-assert 'ADMISSION-1' in request['notSupplied']
-assert not any(history[k] for k in ['targetContentDelivered', 'completeCorrectionContext', 'claimsExemption'])
-assert (history['relationship'], history['target'], history['replacement'], history['reporter']) == ('K', 'ADMISSION-1', 'ADMISSION-2', 'TRIAL-1')
-selection = request['subjectSelection']
-assert selection['kind'] == 'unordered-set'
-assert len(selection['members']) == len(set(selection['members'])) == 2
-assert set(selection['members']) == {'P', 'B'}
-for ev in ledger['evidence'].values():
-    if 'investigram' in ev:
-        assert ev['investigram'] in complete, 'undelivered interpretation contribution'
-args = (ledger['compositionAcceptance'], known, earlier, complete, set(request['suppliedEvidence']))
-
+BASE=Path(__file__).resolve().parent
+m=runpy.run_path(str(BASE.parent/'model.py'));read=m['read']
+ledger=read(BASE/'context-and-bindings.json')
+model=m['run_variant'](BASE.parent/'children')
+model.entities.update(copy.deepcopy(ledger['entryEntities']))
+model.accept(read(BASE/'bulkhead-result.json'),ledger['bulkheadAcceptance'],ledger['bulkheadRequest'])
+pre=copy.deepcopy(model)
+known=set(model.entities)|set(ledger['compositionAcceptance']['entityIds'].values())
+request=ledger['compositionRequest']
+selection=request['subjectSelection']
+assert selection['kind']=='unordered-set' and set(selection['members'])=={'P','B'}
 
 def check(document):
-    investigrams = check_result(document, *args)
+    candidate=copy.deepcopy(pre)
+    candidate.accept(document,ledger['compositionAcceptance'],request)
+    investigrams={k:candidate.investigrams[v] for k,v in ledger['compositionAcceptance']['investigramIds'].items()}
     for a in investigrams.values():
         for item in a['content']:
             if item['contentType'] != 'interaction/0':
@@ -90,19 +64,15 @@ def check(document):
     return investigrams
 
 
-RESOURCE_LABELS = {'execution-capacity': 'execution slot', 'queue-capacity': 'queue place',
-                   'recovery-trial-slot': 'recovery trial slot'}
-document = read(BASE / 'composition-result.json')
-investigrams = check(document)
-accepted = set(ledger['compositionAcceptance']['investigramIds'].values())
-assert set(ledger['retainedAnswer']['selectedInvestigrams']) == accepted
-assert set(ledger['retainedAnswer']['identifyingSupport']) <= set(earlier) | accepted
-
-
-retained_investigrams = dict(earlier)
-retained_investigrams.update({ledger['compositionAcceptance']['investigramIds'][k]: a for k, a in investigrams.items()})
-
-
+RESOURCE_LABELS = {'execution-capacity':'execution slot','queue-capacity':'queue place','recovery-trial-slot':'recovery trial slot'}
+document=read(BASE/'composition-result.json')
+check(document)
+model.accept(document,ledger['compositionAcceptance'],request)
+retained_investigrams=model.investigrams
+assert model.queries['Q4']['exposureIndex']==['B','P','R','S']
+# No superseded admission payload is delivered merely because its owner contributed other content.
+assert all('ADMISSION-1::admission-cases' not in p['items'] for p in model.queries['Q4']['deliveries'])
+assert model.entities['RESULT-Q4']['queryInvocation']=='Q4'
 def check_selection(selection, registry):
     assert isinstance(selection, dict) and set(selection) == {'investigram', 'contentKey', 'selector'}, 'invalid selection envelope'
     assert isinstance(selection['investigram'], str) and isinstance(selection['contentKey'], str)
@@ -135,6 +105,7 @@ def check_selection(selection, registry):
 for probe in ledger['followupProbes']:
     check_selection(probe['selection'], retained_investigrams)
 assert ledger['patternFollowupRequest']['subject']['entity'] in ledger['compositionAcceptance']['entityIds'].values()
+assert all(p['contextEntity']=='RESULT-Q4' for p in ledger['followupProbes'])
 relation_selection = ledger['followupProbes'][0]['selection']
 state_selection = ledger['followupProbes'][1]['selection']
 selector_mutations = [

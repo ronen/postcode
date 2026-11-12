@@ -1,9 +1,6 @@
 {
-  "illustration": "Children-partition follow-up in the same hypothetical Session as children/first-result.json. Root and all children carry their own qualifications; K is reported by behavioral child TRIAL-1; its complete replacement is a disjoint tree.",
+  "illustration": "Authored proposed contribution bundle, not product input or a live investigator. Investigrams retain provenance; association declarations organize entity and query-result information. The initial admission omission remains deliberate.",
   "result": {
-    "rootInvestigram": {
-      "submittedInvestigram": "trial-result"
-    },
     "investigrams": [
       {
         "key": "trial-result",
@@ -32,20 +29,6 @@
           },
           {
             "introducedEntity": "waiting"
-          }
-        ],
-        "contentAssociations": [
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "P"
-            }
-          },
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "S"
-            }
           }
         ],
         "qualifications": [
@@ -78,7 +61,206 @@
           }
         ],
         "followupOptions": [],
-        "presentations": []
+        "presentations": [],
+        "associationSpecifications": [
+          {
+            "key": "orientation",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "trial-result"
+                  },
+                  "contentKey": "orientation"
+                }
+              }
+            ]
+          },
+          {
+            "key": "updated-admission-result",
+            "operation": "supersession",
+            "target": {
+              "entity": {
+                "entity": "RESULT-Q1"
+              },
+              "role": "result"
+            },
+            "members": [
+              {
+                "declaration": {
+                  "investigram": {
+                    "investigram": "INTRO-1"
+                  },
+                  "associationKey": "orientation"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "investigram": "DEFINITIONS-1"
+                  },
+                  "associationKey": "closed-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "investigram": "DEFINITIONS-1"
+                  },
+                  "associationKey": "open-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "investigram": "DEFINITIONS-1"
+                  },
+                  "associationKey": "half-open-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "investigram": "ADMISSION-1"
+                  },
+                  "associationKey": "orientation"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "investigram": "ADMISSION-1"
+                  },
+                  "associationKey": "inspection"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "admission-update"
+                  },
+                  "associationKey": "admission-cases"
+                }
+              }
+            ],
+            "displaces": [
+              {
+                "investigram": {
+                  "investigram": "INTRO-1"
+                },
+                "associationKey": "result"
+              }
+            ],
+            "reason": "The original result omits waiting from its claimed admission coverage. This result association retains its identifying and inspection information by exact reference and designates the expanded admission account. No investigram is replaced."
+          },
+          {
+            "key": "result",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "query-result"
+              },
+              "role": "result"
+            },
+            "members": [
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial-result"
+                  },
+                  "associationKey": "orientation"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "role-definitions"
+                  },
+                  "associationKey": "shared-breaker-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "role-definitions"
+                  },
+                  "associationKey": "trial-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "role-definitions"
+                  },
+                  "associationKey": "caller-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "role-definitions"
+                  },
+                  "associationKey": "waiting-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "associationKey": "state-of"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "associationKey": "explanation"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "associationKey": "recovery"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "associationKey": "concurrent-callers"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "admission-update"
+                  },
+                  "associationKey": "admission-cases"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial-result"
+                  },
+                  "associationKey": "updated-admission-result"
+                }
+              }
+            ]
+          }
+        ]
       },
       {
         "key": "role-definitions",
@@ -98,36 +280,6 @@
           },
           {
             "introducedEntity": "waiting"
-          }
-        ],
-        "contentAssociations": [
-          {
-            "role": "identifies",
-            "subject": {
-              "introducedEntity": "shared-breaker"
-            },
-            "contentKey": "shared-breaker-description"
-          },
-          {
-            "role": "identifies",
-            "subject": {
-              "introducedEntity": "trial-execution"
-            },
-            "contentKey": "trial-description"
-          },
-          {
-            "role": "identifies",
-            "subject": {
-              "introducedEntity": "concurrent-execution"
-            },
-            "contentKey": "caller-description"
-          },
-          {
-            "role": "identifies",
-            "subject": {
-              "introducedEntity": "waiting"
-            },
-            "contentKey": "waiting-description"
           }
         ],
         "qualifications": [
@@ -228,7 +380,89 @@
         ],
         "children": [],
         "followupOptions": [],
-        "presentations": []
+        "presentations": [],
+        "associationSpecifications": [
+          {
+            "key": "shared-breaker-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "shared-breaker"
+              },
+              "role": "identifies"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "role-definitions"
+                  },
+                  "contentKey": "shared-breaker-description"
+                }
+              }
+            ]
+          },
+          {
+            "key": "trial-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "trial-execution"
+              },
+              "role": "identifies"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "role-definitions"
+                  },
+                  "contentKey": "trial-description"
+                }
+              }
+            ]
+          },
+          {
+            "key": "caller-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "concurrent-execution"
+              },
+              "role": "identifies"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "role-definitions"
+                  },
+                  "contentKey": "caller-description"
+                }
+              }
+            ]
+          },
+          {
+            "key": "waiting-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "waiting"
+              },
+              "role": "identifies"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "role-definitions"
+                  },
+                  "contentKey": "waiting-description"
+                }
+              }
+            ]
+          }
+        ]
       },
       {
         "key": "trial",
@@ -257,20 +491,6 @@
           },
           {
             "introducedEntity": "waiting"
-          }
-        ],
-        "contentAssociations": [
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "P"
-            }
-          },
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "S"
-            }
           }
         ],
         "qualifications": [
@@ -772,11 +992,93 @@
               "E-default"
             ]
           }
+        ],
+        "associationSpecifications": [
+          {
+            "key": "state-of",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "contentKey": "state-of"
+                }
+              }
+            ]
+          },
+          {
+            "key": "explanation",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "contentKey": "explanation"
+                }
+              }
+            ]
+          },
+          {
+            "key": "recovery",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "shared-breaker"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "contentKey": "recovery"
+                }
+              }
+            ]
+          },
+          {
+            "key": "concurrent-callers",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "shared-breaker"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "contentKey": "concurrent-callers"
+                }
+              }
+            ]
+          }
         ]
       },
       {
-        "key": "admission-replacement",
-        "title": "Circuit breaker admission, including waiting for recovery",
+        "key": "admission-update",
+        "title": "Additional admission account including waiting",
         "referents": [
           {
             "entity": "P"
@@ -800,21 +1102,6 @@
             "introducedEntity": "concurrent-execution"
           }
         ],
-        "contentAssociations": [
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "P"
-            }
-          },
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "P"
-            },
-            "contentKey": "admission-cases"
-          }
-        ],
         "qualifications": [
           "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
           "Default one-call recovery sampling with zero permitted counted failures.",
@@ -830,16 +1117,6 @@
           "E-outcomes"
         ],
         "content": [
-          {
-            "key": "orientation",
-            "contentType": "prose/0",
-            "concept": "interface",
-            "text": "The application supplies work. The breaker controls admission and records outcomes according to its failure policy. State categories describe the policy, not the progress of a particular caller.",
-            "evidence": [
-              "E-admission",
-              "E-state"
-            ]
-          },
           {
             "key": "admission-cases",
             "contentType": "admission-cases/0",
@@ -971,57 +1248,54 @@
                 ]
               }
             ]
-          },
-          {
-            "key": "inspection",
-            "contentType": "prose/0",
-            "concept": "interface",
-            "text": "State inspection reports the stored state. It neither reserves trial capacity nor initiates work; a later execution can encounter different conditions.",
-            "evidence": [
-              "E-state",
-              "E-admission"
-            ]
           }
         ],
         "children": [],
         "followupOptions": [],
-        "presentations": []
-      }
-    ],
-    "investigramRelationships": [
-      {
-        "key": "admission-correction",
-        "kind": "correction",
-        "reporter": {
-          "submittedInvestigram": "trial"
-        },
-        "target": {
-          "investigram": "ADMISSION-1"
-        },
-        "replacement": {
-          "submittedInvestigram": "admission-replacement"
-        },
-        "affectedSubjects": [
+        "presentations": [],
+        "associationSpecifications": [
           {
-            "entity": "P"
-          }
-        ],
-        "reason": "ADMISSION-1 presents its cases as covering admission in this scope, but omits waiting while the single trial is occupied. ADMISSION-2 includes that outcome and the subsequent admission recheck. This does not claim that every statement of ADMISSION-1 was wrong.",
-        "qualifications": [
-          "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
-          "Default one-call recovery sampling with zero permitted counted failures.",
-          "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
-          "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
-          "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
-        ],
-        "evidence": [
-          "E-half-open",
-          "E-admission",
-          "E-outcomes",
-          {
-            "investigram": "ADMISSION-1"
+            "key": "admission-cases",
+            "operation": "supersession",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "admission-update"
+                  },
+                  "contentKey": "admission-cases"
+                }
+              }
+            ],
+            "displaces": [
+              {
+                "investigram": {
+                  "investigram": "ADMISSION-1"
+                },
+                "associationKey": "admission-cases"
+              }
+            ],
+            "reason": "ADMISSION-1 presents its cases as covering admission in this scope, but omits waiting while the single trial is occupied. ADMISSION-2 includes that outcome and the subsequent admission recheck. This does not claim that every statement of ADMISSION-1 was wrong."
           }
         ]
+      }
+    ],
+    "queryInvocation": "Q2",
+    "queryResult": {
+      "introducedEntity": "query-result"
+    },
+    "compositionRoots": [
+      {
+        "submittedInvestigram": "trial-result"
+      },
+      {
+        "submittedInvestigram": "admission-update"
       }
     ]
   }

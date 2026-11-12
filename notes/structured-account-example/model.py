@@ -1,0 +1,332 @@
+"""Bounded authored declaration/context model. No PostCode API or semantic certification."""
+import copy
+import json
+import runpy
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent
+GUIDANCE = runpy.run_path(str(BASE / 'guidance.py'))
+
+def read(path):
+    return json.loads(Path(path).read_text())
+
+def owner(ref):
+    return ref['investigram'] if isinstance(ref, dict) else ref
+
+def address(ref, field):
+    return (owner(ref['investigram']), ref[field])
+
+def label(ref):
+    return '::'.join(ref)
+
+def resolve(value, bindings):
+    if isinstance(value, list):
+        return [resolve(x, bindings) for x in value]
+    if isinstance(value, dict):
+        if set(value) == {'introducedEntity'}:
+            return {'entity': bindings['entityIds'][value['introducedEntity']]}
+        if set(value) == {'submittedInvestigram'}:
+            return {'investigram': bindings['investigramIds'][value['submittedInvestigram']]}
+        return {k: resolve(v, bindings) for k, v in value.items()}
+    return value
+
+class Model:
+    def __init__(self, seed, basis):
+        self.entities = copy.deepcopy(seed['entities'])
+        self.investigrams = {x['id']: copy.deepcopy(x) for x in seed['investigrams']}
+        self.basis = copy.deepcopy(basis)
+        self.queries = {}
+        self.snapshots = {}
+
+    def declarations(self):
+        return {(oid, x['key']): x for oid, a in self.investigrams.items() for x in a['associationSpecifications']}
+
+    def items(self):
+        return {(oid, x['key']): x for oid, a in self.investigrams.items() for x in a['content']}
+
+    def qualified(self, oid, value):
+        a = self.investigrams[oid]
+        return {'value': copy.deepcopy(value), 'sourceInvestigram': oid,
+                'queryInvocation': a['queryInvocation'], 'basis': copy.deepcopy(self.basis),
+                'sourceQualifications': copy.deepcopy(a['qualifications']),
+                'sourceEvidence': copy.deepcopy(a['evidence'])}
+
+    def expand(self, ref, visiting=None):
+        """Exact result membership, never current-association substitution or whole bundle delivery."""
+        visiting = set() if visiting is None else visiting
+        assert ref not in visiting, 'cyclic association membership'
+        spec = self.declarations()[ref]
+        declarations = {ref}
+        items = set()
+        for member in spec.get('members', []):
+            assert len(member) == 1
+            if 'item' in member:
+                item_ref = address(member['item'], 'contentKey')
+                self.items()[item_ref]
+                items.add(item_ref)
+            else:
+                assert 'declaration' in member and spec['target']['role'] == 'result', 'nested membership only for query results'
+                ds, its = self.expand(address(member['declaration'], 'associationKey'), visiting | {ref})
+                declarations |= ds
+                items |= its
+        # Required semantic dependencies, not all informative links or all referent definitions.
+        for oid, key in list(items):
+            item = self.items()[(oid, key)]
+            if item['contentType'] == 'interaction/0':
+                steps = item['prefix'] + [s for b in item['alternatives'] for s in b['steps']]
+                for step in steps:
+                    if step['kind'] == 'state-transition':
+                        dep = (oid, step['stateContent'])
+                        model = self.items()[dep]
+                        assert model['contentType'] == 'state-behavior/0'
+                        assert step['transition'] in {t['key'] for t in model['transitions']}
+                        items.add(dep)
+        return declarations, items
+
+    def project(self, selection):
+        """A delivered entity projection with exact contents, qualification, and bounded notices."""
+        entity = selection['entity']
+        assert entity in self.entities
+        ds, its, opts = set(), set(), {}
+        for ref in selection.get('associations', []):
+            key = address(ref, 'associationKey')
+            assert self.declarations()[key]['target']['entity']['entity'] == entity, 'association belongs to another entity'
+            more_ds, more_items = self.expand(key)
+            ds |= more_ds; its |= more_items
+        # An explicit item excerpt must be reachable through an association with the selected entity.
+        available = set()
+        for ref, declaration in self.declarations().items():
+            if declaration['target']['entity']['entity'] == entity:
+                available |= self.expand(ref)[1]
+        for ref in selection.get('items', []):
+            key = address(ref, 'contentKey')
+            assert key in available, 'item is not associated with context entity'
+            its.add(key)
+        for ref in selection.get('options', []):
+            oid, key = address(ref, 'optionKey')
+            assert any(source == oid for source, _ in available), 'option owner is not part of selected entity information'
+            found = [x for x in self.investigrams[oid]['followupOptions'] if x['key'] == key]
+            assert len(found) == 1
+            opts[label((oid, key))] = self.qualified(oid, found[0])
+        notices = {}
+        for ref, declaration in self.declarations().items():
+            if declaration['operation'] == 'addition':
+                continue
+            displaced = [address(x, 'associationKey') for x in declaration['displaces']]
+            affected_items = set().union(*(self.expand(x)[1] for x in displaced))
+            if ds.intersection(displaced) or its.intersection(affected_items):
+                notices[label(ref)] = self.qualified(ref[0], declaration)
+        return {'entity': entity,
+                'declarations': {label(x): self.qualified(x[0], self.declarations()[x]) for x in sorted(ds)},
+                'items': {label(x): self.qualified(x[0], self.items()[x]) for x in sorted(its)},
+                'options': opts, 'notices': notices,
+                'noticeLimits': 'A notice references displaced/new members but does not deliver them. Explicit further selections are required; no complete-known-cause exemption is implemented.'}
+
+    def accept(self, document, bindings, request, delivered=None):
+        """Stage everything on a copy; bad declarations never partially change retained state."""
+        staged = copy.deepcopy(self)
+        projections = [self.project(x) for x in request['deliveries']] if delivered is None else copy.deepcopy(delivered)
+        qid = request['id']
+        subject = request['subject']
+        assert set(subject) in [{'entity'}, {'entities'}]
+        assert set(subject.get('entities', [subject.get('entity')])) <= set(self.entities), 'unknown query subject'
+        assert qid not in self.queries
+        result = resolve(document['result'], bindings)
+        assert result['queryInvocation'] == qid
+        rid = result['queryResult']['entity']
+        assert rid == request['resultEntity'] and rid not in self.entities
+        assert len(set(bindings['entityIds'].values())) == len(bindings['entityIds'])
+        assert not set(bindings['entityIds'].values()) & set(self.entities), 'new entity collision'
+        assert set(bindings['investigramIds']) == {a['key'] for a in result['investigrams']}
+        assert len(set(bindings['investigramIds'].values())) == len(result['investigrams'])
+        assert not set(bindings['investigramIds'].values()) & set(self.investigrams), 'bundle identity collision'
+        staged.entities.update({eid: {'kind': 'architectural'} for eid in bindings['entityIds'].values()})
+        staged.entities[rid] = {'kind': 'query-result', 'queryInvocation': qid}
+        new_owners = set()
+        introductions = []
+        for raw in result['investigrams']:
+            a = copy.deepcopy(raw)
+            oid = bindings['investigramIds'][a.pop('key')]
+            a.update(id=oid, queryInvocation=qid)
+            assert a['qualifications'] and a['evidence'], 'missing own qualification/support'
+            assert len({x['key'] for x in a['content']}) == len(a['content'])
+            assert len({x['key'] for x in a['associationSpecifications']}) == len(a['associationSpecifications'])
+            for x in a['content']:
+                if x.get('introducesEntity'):
+                    assert x['name'] and x['description']
+                    introductions.append(x['subject']['entity'])
+            staged.investigrams[oid] = a
+            new_owners.add(oid)
+        assert len(introductions) == len(set(introductions))
+        assert set(introductions) | {rid} == set(bindings['entityIds'].values()), 'entity allocation lacks introduction'
+        staged.validate_content(new_owners, set(request['suppliedEvidence']))
+        decls = staged.declarations()
+        new_decls = {k: v for k, v in decls.items() if k[0] in new_owners}
+        supplied_ds = {k: v for p in projections for k, v in p['declarations'].items()}
+        supplied_items = {k: v for p in projections for k, v in p['items'].items()}
+        covered = set()
+        for ref, sp in new_decls.items():
+            assert sp['operation'] in ['addition', 'supersession', 'withdrawal']
+            target = sp['target']
+            assert set(target) == {'entity', 'role'} and set(target['entity']) == {'entity'}
+            eid = target['entity']['entity']
+            assert eid in staged.entities
+            is_result = staged.entities[eid]['kind'] == 'query-result'
+            assert (target['role'] == 'result') == is_result, 'result role/target mismatch'
+            assert target['role'] in ['result', 'identifies', 'describes'], 'unsupported bounded role'
+            if sp['operation'] == 'withdrawal':
+                assert not sp.get('members'), 'withdrawal has replacement members'
+            else:
+                assert sp['members'], 'empty association contribution'
+            if sp['operation'] == 'addition':
+                assert not sp.get('displaces'), 'addition displaces earlier information'
+            else:
+                assert sp['reason'] and sp['displaces'], 'displacement needs reason and exact targets'
+                old_refs = [address(x, 'associationKey') for x in sp['displaces']]
+                assert len(old_refs) == len(set(old_refs))
+                for old_ref in old_refs:
+                    assert old_ref in self.declarations(), 'displacement target must predate this acceptance'
+                    assert self.declarations()[old_ref]['operation'] != 'withdrawal', 'withdrawal is not an association to supersede'
+                    assert self.declarations()[old_ref]['target'] == target, 'use withdrawal and addition to change target'
+                    old_ds, old_items = self.expand(old_ref)
+                    for r in old_ds:
+                        assert supplied_ds.get(label(r)) == self.qualified(r[0], self.declarations()[r]), 'incomplete declaration delivery'
+                    for r in old_items:
+                        assert supplied_items.get(label(r)) == self.qualified(r[0], self.items()[r]), 'incomplete member/qualification delivery'
+            ds, its = staged.expand(ref)
+            covered |= its
+            for r in its:
+                if r[0] not in new_owners:
+                    assert supplied_items.get(label(r)) == self.qualified(r[0], self.items()[r]), 'new association based on undelivered content'
+            for r in ds:
+                if r[0] not in new_owners:
+                    assert supplied_ds.get(label(r)) == self.qualified(r[0], self.declarations()[r]), 'result includes undelivered association'
+        assert {(oid, x['key']) for oid in new_owners for x in staged.investigrams[oid]['content']} <= covered, 'unassociated own content'
+        for oid in new_owners:
+            for x in staged.investigrams[oid]['content']:
+                if x.get('introducesEntity'):
+                    assert any(s['target'] == {'entity': x['subject'], 'role': 'identifies'} and (oid, x['key']) in staged.expand(r)[1] for r, s in new_decls.items()), 'introduction lacks identifying association'
+        own_results = [r for r, s in new_decls.items() if s['target'] == {'entity': {'entity': rid}, 'role': 'result'} and s['operation'] == 'addition']
+        assert len(own_results) == 1, 'one initial designation per query result'
+        parents = {oid: 0 for oid in new_owners}
+        for r in result['compositionRoots']:
+            assert owner(r) in new_owners
+            parents[owner(r)] += 1
+        for oid in new_owners:
+            for r in staged.investigrams[oid]['children']:
+                assert owner(r) in new_owners, 'old bundle cannot be adopted as child'
+                parents[owner(r)] += 1
+        assert all(v == 1 for v in parents.values()), 'composition forest ownership'
+        visited = set()
+        def visit(oid):
+            assert oid not in visited, 'composition cycle'
+            visited.add(oid)
+            for child in staged.investigrams[oid]['children']: visit(owner(child))
+        for root in result['compositionRoots']: visit(owner(root))
+        assert visited == new_owners
+        exposure = sorted({p['entity'] for p in projections if p['items'] or p['declarations'] or p['options'] or p['notices']})
+        sources = sorted({x['queryInvocation'] for p in projections for field in ['items','declarations','options','notices'] for x in p[field].values()})
+        staged.queries[qid] = {'request':copy.deepcopy(request), 'resultEntity':rid,'initialDesignation':own_results[0], 'deliveries':projections,'exposureIndex':exposure,'sourceQueries':sources,'declarations':list(new_decls)}
+        # Exact returned answer is fixed, separate from later declarations targeting the same result entity.
+        initial = staged.project({'entity':rid,'associations':[{'investigram':own_results[0][0],'associationKey':own_results[0][1]}]})
+        staged.snapshots[qid] = initial
+        self.__dict__ = staged.__dict__
+        return self
+
+    def validate_content(self, owners, evidence):
+        """Representation checks; never certify Cockatiel semantics or identity judgments."""
+        all_items = self.items()
+        def refs(v):
+            if isinstance(v,list):
+                for x in v: refs(x)
+            elif isinstance(v,dict):
+                if set(v)=={'entity'}: assert v['entity'] in self.entities, 'unknown entity reference'
+                if set(v)=={'investigram'} and isinstance(v['investigram'],str): assert v['investigram'] in self.investigrams
+                for e in v.get('evidence',[]):
+                    if isinstance(e,str): assert e in evidence, 'unavailable evidence'
+                for x in v.values(): refs(x)
+        for oid in owners:
+            a=self.investigrams[oid]; refs(a)
+            GUIDANCE['presentation_plans'](a, oid)
+            for item in a['content']:
+                assert item['contentType'] in {'prose/0','entity-description/0','admission-cases/0','architectural-relations/0','state-behavior/0','interaction/0'}, 'unsupported content type'
+                roles={x['key'] for x in item.get('roles',[])}
+                assert len(roles)==len(item.get('roles',[]))
+                if roles: assert item['roleScope']
+                def local(v):
+                    if isinstance(v,list):
+                        for x in v: local(x)
+                    elif isinstance(v,dict):
+                        if set(v)=={'localRole'}: assert v['localRole'] in roles
+                        for x in v.values(): local(x)
+                local(item)
+                for link in item.get('relatedContent',[])+item.get('illustrations',[]):
+                    assert address(link,'contentKey') in all_items
+                    if 'roleBindings' in link:
+                        assert link['qualification'] and link['evidence']
+                        assert {x['role'] for x in link['roleBindings']}==roles
+                if item['contentType']=='state-behavior/0':
+                    states={x['key'] for x in item['states']}
+                    assert len(states)==len(item['states'])
+                    assert len({x['key'] for x in item['transitions']})==len(item['transitions'])
+                    assert all(x['source'] in states and x['target'] in states for x in item['transitions'])
+                if item['contentType']=='interaction/0':
+                    participants={x['key'] for x in item['participants']}
+                    assert len(participants)==len(item['participants'])
+                    def path(steps,seen):
+                        seen=set(seen)
+                        for step in steps:
+                            assert step['key'] not in seen
+                            assert set(step.get('causedBy',[]))<=seen
+                            for field in ['from','to','actor','participant','on']:
+                                if field in step: assert step[field] in participants
+                            if step['kind']=='state-transition':
+                                model=all_items[(oid,step['stateContent'])]
+                                assert model['contentType']=='state-behavior/0'
+                                assert step['transition'] in {x['key'] for x in model['transitions']}
+                            seen.add(step['key'])
+                        return seen
+                    steps=item['prefix']+[x for branch in item['alternatives'] for x in branch['steps']]
+                    assert len({x['key'] for x in steps})==len(steps)
+                    prefix=path(item['prefix'],set())
+                    for branch in item['alternatives']: path(branch['steps'],prefix)
+
+    def standing(self, ref):
+        by=[label(r) for r,s in self.declarations().items() if any(address(x,'associationKey')==ref for x in s.get('displaces',[]))]
+        return {'displacedBy':sorted(by),'competingDeclarations':len(by)>1}
+
+    def reconsideration(self):
+        """Conservative prototype; no automatic clearance or inherited old completeness exemption."""
+        output={q['resultEntity']:set() for q in self.queries.values()}
+        evaluation={qid:set() for qid in self.queries}
+        for cause,decl in self.declarations().items():
+            if decl['operation']=='addition': continue
+            cid=label(cause);producer=self.investigrams[cause[0]]['queryInvocation']
+            displaced={address(x,'associationKey') for x in decl['displaces']}
+            changed_items=set().union(*(self.expand(x)[1] for x in displaced))
+            affected_entity=decl['target']['entity']['entity']
+            for qid,q in self.queries.items():
+                if qid==producer: continue
+                if affected_entity in q['exposureIndex']: evaluation[qid].add(cid)
+                ds,its=self.expand(q['initialDesignation'])
+                if ds & displaced or its & changed_items: output[q['resultEntity']].add(cid)
+            changed=True
+            while changed:
+                before=copy.deepcopy((output,evaluation))
+                for qid,q in self.queries.items():
+                    if qid==producer: continue
+                    if any(cid in output.get(e,set()) for e in q['exposureIndex']) or any(cid in evaluation.get(src,set()) for src in q['sourceQueries']):
+                        evaluation[qid].add(cid)
+                    if cid in evaluation[qid]: output[q['resultEntity']].add(cid)
+                changed=before!=(output,evaluation)
+        return {'results':{k:sorted(v) for k,v in output.items()},'evaluations':{k:sorted(v) for k,v in evaluation.items()}}
+
+def initial_model(directory):
+    ledger=read(directory/'context-and-bindings.json')
+    return Model(read(directory/'seed-context.json'),ledger['basis'])
+
+def run_variant(directory):
+    ledger=read(directory/'context-and-bindings.json'); model=initial_model(directory)
+    for file,stage,request in [('first-result.json','firstAcceptance','firstRequest'),('followup-result.json','followupAcceptance','followupRequest')]:
+        model.accept(read(directory/file),ledger[stage],ledger[request])
+    return model

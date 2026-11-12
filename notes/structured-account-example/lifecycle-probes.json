@@ -1,0 +1,502 @@
+{
+  "status": "Steps run in order: first result, observer, follow-up, expansion, reuse, withdrawal. Rare declaration-only outputs and expansion without factual-error claims are intentional. Probe decisions are qualified authoring examples, not mechanically proved judgments.",
+  "observer": {
+    "request": {
+      "id": "Q-observer",
+      "operation": "authored-lifecycle-probe",
+      "subject": {
+        "entity": "RESULT-Q1"
+      },
+      "resultEntity": "RESULT-observer",
+      "deliveries": [
+        {
+          "entity": "RESULT-Q1",
+          "associations": [
+            {
+              "investigram": "ADMISSION-1",
+              "associationKey": "result"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-admission"
+      ]
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-observer"
+      },
+      "investigramIds": {
+        "contribution": "OBSERVER-1"
+      }
+    },
+    "submission": {
+      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "result": {
+        "queryInvocation": "Q-observer",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "compositionRoots": [
+          {
+            "submittedInvestigram": "contribution"
+          }
+        ],
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Q-observer",
+            "qualifications": [
+              "Authored qualified association probe at the pinned basis; no new runtime observation."
+            ],
+            "evidence": [
+              "E-admission"
+            ],
+            "referents": [
+              {
+                "entity": "P"
+              }
+            ],
+            "content": [],
+            "associationSpecifications": [
+              {
+                "key": "selected-result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "P"
+                  },
+                  "role": "describes"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "ADMISSION-1"
+                      },
+                      "contentKey": "admission-cases"
+                    }
+                  }
+                ],
+                "reason": "Retain the supplied admission account as an explicitly staged pre-follow-up consumer."
+              },
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "associationKey": "selected-result"
+                    }
+                  }
+                ]
+              }
+            ],
+            "children": [],
+            "followupOptions": [],
+            "presentations": []
+          }
+        ]
+      }
+    }
+  },
+  "expansion": {
+    "request": {
+      "id": "Q-expansion",
+      "operation": "authored-lifecycle-probe",
+      "subject": {
+        "entity": "S"
+      },
+      "resultEntity": "RESULT-expansion",
+      "deliveries": [
+        {
+          "entity": "S",
+          "associations": [
+            {
+              "investigram": "ADMISSION-1",
+              "associationKey": "half-open-description"
+            }
+          ],
+          "items": [],
+          "options": []
+        },
+        {
+          "entity": "R",
+          "associations": [
+            {
+              "investigram": "TRIAL-1",
+              "associationKey": "concurrent-callers"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state",
+        "E-admission",
+        "E-half-open"
+      ]
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-expansion"
+      },
+      "investigramIds": {
+        "contribution": "EXPANSION-1"
+      }
+    },
+    "submission": {
+      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "result": {
+        "queryInvocation": "Q-expansion",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "compositionRoots": [
+          {
+            "submittedInvestigram": "contribution"
+          }
+        ],
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Q-expansion",
+            "qualifications": [
+              "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+              "Default one-call recovery sampling with zero permitted counted failures.",
+              "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+              "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+              "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+            ],
+            "evidence": [
+              "E-state",
+              "E-admission",
+              "E-half-open"
+            ],
+            "referents": [
+              {
+                "entity": "S"
+              },
+              {
+                "entity": "R"
+              }
+            ],
+            "content": [
+              {
+                "key": "expanded-half-open",
+                "contentType": "entity-description/0",
+                "concept": "architectural-identification",
+                "subject": {
+                  "entity": "S"
+                },
+                "name": "Half-open",
+                "description": "A recovery state category of the Circuit breaker policy kind. Sampled work contributes to the decision to close or reopen the breaker; the category is not an individual execution or evidence of application health. A particular caller can be waiting while the shared breaker is in this category; inspecting the category does not itself start that caller\u2019s work.",
+                "classification": "state-category",
+                "relativeTo": {
+                  "entity": "P"
+                },
+                "evidence": [
+                  "E-state",
+                  "E-admission",
+                  "E-half-open"
+                ]
+              }
+            ],
+            "associationSpecifications": [
+              {
+                "key": "expanded-identification",
+                "operation": "supersession",
+                "target": {
+                  "entity": {
+                    "entity": "S"
+                  },
+                  "role": "identifies"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "contentKey": "expanded-half-open"
+                    }
+                  }
+                ],
+                "displaces": [
+                  {
+                    "investigram": {
+                      "investigram": "ADMISSION-1"
+                    },
+                    "associationKey": "half-open-description"
+                  }
+                ],
+                "reason": "Expand the identifying account with the state/execution distinction illustrated by waiting; the earlier description is not asserted false. This explicit supersession can still matter to later analysis."
+              },
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "associationKey": "expanded-identification"
+                    }
+                  }
+                ]
+              }
+            ],
+            "children": [],
+            "followupOptions": [],
+            "presentations": []
+          }
+        ]
+      }
+    }
+  },
+  "reuse": {
+    "request": {
+      "id": "Q-reuse",
+      "operation": "authored-lifecycle-probe",
+      "subject": {
+        "entity": "S"
+      },
+      "resultEntity": "RESULT-reuse",
+      "deliveries": [
+        {
+          "entity": "S",
+          "associations": [
+            {
+              "investigram": "ADMISSION-1",
+              "associationKey": "half-open-description"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state"
+      ]
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-reuse"
+      },
+      "investigramIds": {
+        "contribution": "REUSE-1"
+      }
+    },
+    "submission": {
+      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "result": {
+        "queryInvocation": "Q-reuse",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "compositionRoots": [
+          {
+            "submittedInvestigram": "contribution"
+          }
+        ],
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Q-reuse",
+            "qualifications": [
+              "Authored qualified association probe at the pinned basis; no new runtime observation."
+            ],
+            "evidence": [
+              "E-state"
+            ],
+            "referents": [
+              {
+                "entity": "P"
+              },
+              {
+                "entity": "S"
+              }
+            ],
+            "content": [],
+            "associationSpecifications": [
+              {
+                "key": "policy-state-description",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "P"
+                  },
+                  "role": "describes"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "ADMISSION-1"
+                      },
+                      "contentKey": "half-open-description"
+                    }
+                  }
+                ],
+                "reason": "Associate the original state-category description with its policy kind as scoped descriptive information; preserve the original content and qualifications."
+              },
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "associationKey": "policy-state-description"
+                    }
+                  }
+                ]
+              }
+            ],
+            "children": [],
+            "followupOptions": [],
+            "presentations": []
+          }
+        ]
+      }
+    }
+  },
+  "withdrawal": {
+    "request": {
+      "id": "Q-withdraw",
+      "operation": "authored-lifecycle-probe",
+      "subject": {
+        "entity": "P"
+      },
+      "resultEntity": "RESULT-withdraw",
+      "deliveries": [
+        {
+          "entity": "P",
+          "associations": [
+            {
+              "investigram": "REUSE-1",
+              "associationKey": "policy-state-description"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state"
+      ]
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-withdraw"
+      },
+      "investigramIds": {
+        "contribution": "WITHDRAW-1"
+      }
+    },
+    "submission": {
+      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "result": {
+        "queryInvocation": "Q-withdraw",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "compositionRoots": [
+          {
+            "submittedInvestigram": "contribution"
+          }
+        ],
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Q-withdraw",
+            "qualifications": [
+              "Authored qualified association probe at the pinned basis; no new runtime observation."
+            ],
+            "evidence": [
+              "E-state"
+            ],
+            "referents": [
+              {
+                "entity": "P"
+              }
+            ],
+            "content": [],
+            "associationSpecifications": [
+              {
+                "key": "withdraw-policy-indexing",
+                "operation": "withdrawal",
+                "target": {
+                  "entity": {
+                    "entity": "P"
+                  },
+                  "role": "describes"
+                },
+                "displaces": [
+                  {
+                    "investigram": {
+                      "investigram": "REUSE-1"
+                    },
+                    "associationKey": "policy-state-description"
+                  }
+                ],
+                "reason": "Withdraw this broad policy-description indexing choice; it is only one state-category description. Its original identifying use and other associations are not withdrawn, and its text is not declared false."
+              },
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "associationKey": "withdraw-policy-indexing"
+                    }
+                  }
+                ]
+              }
+            ],
+            "children": [],
+            "followupOptions": [],
+            "presentations": []
+          }
+        ]
+      }
+    }
+  }
+}

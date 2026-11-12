@@ -1,140 +1,56 @@
 {
-  "status": "Authored guidance-metadata access probes, not live investigations. Entity references resolve on acceptance; optionKey and contentKey are different address namespaces.",
-  "exactAnswer": {
-    "answer": "ANSWER-1",
-    "followupOption": {
+  "status": "Exact option ownership is unchanged; contextual subject is the query-result entity. Selecting does not itself deliver content.",
+  "invocation": {
+    "id": "Q2",
+    "operation": "follow-up-investigation",
+    "subject": {
+      "entity": "RESULT-Q1"
+    },
+    "resultEntity": "RESULT-Q2",
+    "option": {
       "investigram": "ADMISSION-1",
       "optionKey": "concurrent-callers-option"
     },
-    "capturedRevisionContext": "Before K; the original account and option remain in this exact human-facing answer. Investigator retrieval of historical content still requires applicable current correction disclosure."
-  },
-  "optionOnlyBeforeCorrection": {
-    "delivery": {
-      "address": {
-        "investigram": "ADMISSION-1",
-        "optionKey": "concurrent-callers-option"
-      },
-      "basis": "cockatiel-pinned",
-      "investigramQualifications": [
-        "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
-        "Default one-call recovery sampling with zero permitted counted failures.",
-        "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
-        "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
-        "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
-      ],
-      "followupOption": {
-        "key": "concurrent-callers-option",
-        "label": "Concurrent callers and trial outcomes",
-        "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
-        "targets": [
+    "parameterValues": {},
+    "architecturalFocus": {
+      "entity": "S"
+    },
+    "informationNeed": "Concurrent callers and trial outcomes under default single-trial recovery.",
+    "suppliedEvidence": [
+      "E-state",
+      "E-admission",
+      "E-half-open",
+      "E-outcomes",
+      "E-default"
+    ],
+    "deliveries": [
+      {
+        "entity": "RESULT-Q1",
+        "associations": [
           {
-            "role": "focus",
-            "subject": {
-              "entity": "S"
-            }
+            "investigram": "INTRO-1",
+            "associationKey": "result"
           }
         ],
-        "method": "qualified-architectural-interpretation",
-        "parameterDefinitions": [],
-        "qualifications": [
-          "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
-        ],
-        "evidence": [
-          "E-admission",
-          "E-default"
-        ]
-      }
-    },
-    "exposureIndex": [
-      "ADMISSION-1"
-    ],
-    "completeTargets": [],
-    "meaning": "An option excerpt is substantive originating-account exposure, but not complete-own-content delivery."
-  },
-  "actualFollowup": {
-    "request": "context-and-bindings.json#/followupRequest",
-    "resolution": "context-and-bindings.json#/followupResolution",
-    "completeTargets": [
-      "ADMISSION-1",
-      "DEFINITIONS-1"
-    ],
-    "meaning": "Complete own delivery includes all declared own metadata even though options are no longer interpretation content. Eligibility is not granted by option selection or an excerpt."
-  },
-  "freshOriginalOptionAfterCorrection": {
-    "delivery": {
-      "address": {
-        "investigram": "ADMISSION-1",
-        "optionKey": "concurrent-callers-option"
-      },
-      "basis": "cockatiel-pinned",
-      "investigramQualifications": [
-        "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
-        "Default one-call recovery sampling with zero permitted counted failures.",
-        "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
-        "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
-        "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
-      ],
-      "followupOption": {
-        "key": "concurrent-callers-option",
-        "label": "Concurrent callers and trial outcomes",
-        "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
-        "targets": [
+        "items": [],
+        "options": [
           {
-            "role": "focus",
-            "subject": {
-              "entity": "S"
-            }
+            "investigram": "ADMISSION-1",
+            "optionKey": "concurrent-callers-option"
           }
-        ],
-        "method": "qualified-architectural-interpretation",
-        "parameterDefinitions": [],
-        "qualifications": [
-          "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
-        ],
-        "evidence": [
-          "E-admission",
-          "E-default"
         ]
       }
-    },
-    "revisionNotice": {
-      "relationship": "K",
-      "target": "ADMISSION-1",
-      "replacement": "ADMISSION-2",
-      "reporter": "TRIAL-1",
-      "reason": "ADMISSION-1 presents its cases as covering admission in this scope, but omits waiting while the single trial is occupied. ADMISSION-2 includes that outcome and the subsequent admission recheck. This does not claim that every statement of ADMISSION-1 was wrong.",
-      "qualifications": [
-        "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
-        "Default one-call recovery sampling with zero permitted counted failures.",
-        "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
-        "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
-        "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
-      ],
-      "evidence": [
-        "E-half-open",
-        "E-admission",
-        "E-outcomes",
-        {
-          "investigram": "ADMISSION-1"
-        }
-      ]
-    },
-    "automaticRetarget": false,
-    "exposureIndex": [
-      "ADMISSION-1",
-      "TRIAL-1"
     ],
-    "completeTargets": [],
-    "completeCorrectionContext": false,
-    "omissions": [
-      "Full target and replacement own content; full reporter content."
-    ],
-    "meaning": "Deliver original qualified option and K explanation, with replacement reference. K substance records exposure to its reporter. Partial delivery claims no exemption; additional context can be acquired before investigation. The correction does not independently establish whether this option is unsuitable."
+    "navigationOrigin": {
+      "capturedAnswer": "ANSWER-Q1",
+      "resultEntity": "RESULT-Q1"
+    }
   },
-  "replacementHasNoOption": {
-    "investigram": "ADMISSION-2",
-    "followupOptions": [],
-    "absentOptionKey": "concurrent-callers-option",
-    "meaning": "This submission already answers the question in TRIAL-1. No repeated option, addressed-by field, or automatic migration is introduced; the historical ADMISSION-1 option remains available."
-  }
+  "historicalOption": {
+    "investigram": "ADMISSION-1",
+    "optionKey": "concurrent-callers-option"
+  },
+  "updatedAdmissionBundle": "ADMISSION-2",
+  "updatedAdmissionHasNoRepeatedOption": true,
+  "reason": "Q2 already addresses the question. A later result selection does not retarget the original option."
 }

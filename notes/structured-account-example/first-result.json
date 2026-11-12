@@ -1,9 +1,6 @@
 {
-  "illustration": "Proposed submission only; no supported PostCode API accepts this format today. The coverage claim intentionally omits waiting to exercise correction. This annotation is outside the simulated investigator result.",
+  "illustration": "Authored proposed contribution bundle, not product input or a live investigator. Investigrams retain provenance; association declarations organize entity and query-result information. The initial admission omission remains deliberate.",
   "result": {
-    "rootInvestigram": {
-      "submittedInvestigram": "admission"
-    },
     "investigrams": [
       {
         "key": "admission",
@@ -20,42 +17,6 @@
           },
           {
             "introducedEntity": "half-open"
-          }
-        ],
-        "contentAssociations": [
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "P"
-            }
-          },
-          {
-            "role": "identifies",
-            "subject": {
-              "introducedEntity": "closed"
-            },
-            "contentKey": "closed-description"
-          },
-          {
-            "role": "identifies",
-            "subject": {
-              "introducedEntity": "open"
-            },
-            "contentKey": "open-description"
-          },
-          {
-            "role": "identifies",
-            "subject": {
-              "introducedEntity": "half-open"
-            },
-            "contentKey": "half-open-description"
-          },
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "P"
-            },
-            "contentKey": "admission-cases"
           }
         ],
         "qualifications": [
@@ -224,9 +185,199 @@
             ]
           }
         ],
-        "presentations": []
+        "presentations": [],
+        "associationSpecifications": [
+          {
+            "key": "closed-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "closed"
+              },
+              "role": "identifies"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "contentKey": "closed-description"
+                }
+              }
+            ]
+          },
+          {
+            "key": "open-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "open"
+              },
+              "role": "identifies"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "contentKey": "open-description"
+                }
+              }
+            ]
+          },
+          {
+            "key": "half-open-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "half-open"
+              },
+              "role": "identifies"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "contentKey": "half-open-description"
+                }
+              }
+            ]
+          },
+          {
+            "key": "orientation",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "contentKey": "orientation"
+                }
+              }
+            ]
+          },
+          {
+            "key": "admission-cases",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "contentKey": "admission-cases"
+                }
+              }
+            ]
+          },
+          {
+            "key": "inspection",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "contentKey": "inspection"
+                }
+              }
+            ]
+          },
+          {
+            "key": "result",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "query-result"
+              },
+              "role": "result"
+            },
+            "members": [
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "associationKey": "closed-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "associationKey": "open-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "associationKey": "half-open-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "associationKey": "orientation"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "associationKey": "admission-cases"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "associationKey": "inspection"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
-    "investigramRelationships": []
+    "queryInvocation": "Q1",
+    "queryResult": {
+      "introducedEntity": "query-result"
+    },
+    "compositionRoots": [
+      {
+        "submittedInvestigram": "admission"
+      }
+    ]
   }
 }

@@ -1,94 +1,5 @@
 {
-  "status": "Authored own-delivery and presentation-metadata probes. The checker materializes these selections from fixture records; this is not product retention, a live investigator, or a presentation retrieval policy.",
-  "addressNamespaces": {
-    "content": "{investigram, contentKey}",
-    "followupOption": "{investigram, optionKey}",
-    "presentation": "{investigram, presentationKey}"
-  },
-  "completeOriginalDelivery": {
-    "investigram": "ADMISSION-1",
-    "includedParts": [
-      "contentAssociations",
-      "children",
-      "content",
-      "evidence",
-      "id",
-      "followupOptions",
-      "presentations",
-      "qualifications",
-      "referents",
-      "title"
-    ],
-    "basis": "cockatiel-pinned",
-    "provenance": {
-      "ledger": "context-and-bindings.json",
-      "request": "firstRequest"
-    },
-    "expectedComplete": true,
-    "meaning": "Complete own delivery includes options and presentations even though neither is interpretation content. Child links are included; descendant content is not implied."
-  },
-  "withoutOptionMetadata": {
-    "investigram": "ADMISSION-1",
-    "includedParts": [
-      "contentAssociations",
-      "children",
-      "content",
-      "evidence",
-      "id",
-      "presentations",
-      "qualifications",
-      "referents",
-      "title"
-    ],
-    "expectedComplete": false
-  },
-  "presentationOnly": {
-    "delivery": {
-      "address": {
-        "investigram": "TRIAL-1",
-        "presentationKey": "recovery-state"
-      },
-      "value": {
-        "key": "recovery-state",
-        "diagramType": "state-diagram/0",
-        "inputs": {
-          "model": {
-            "investigram": {
-              "investigram": "TRIAL-1"
-            },
-            "contentKey": "recovery"
-          }
-        },
-        "qualifications": [
-          "Optional overview of the qualified scenario in these exact items; does not promise a general recovery model or replace their scope and conditions."
-        ],
-        "evidence": [
-          "E-admission",
-          "E-half-open",
-          "E-outcomes",
-          "E-default"
-        ]
-      },
-      "investigramQualifications": [
-        "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
-        "Default one-call recovery sampling with zero permitted counted failures.",
-        "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
-        "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
-        "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
-      ],
-      "basis": "cockatiel-pinned",
-      "provenance": {
-        "ledger": "context-and-bindings.json",
-        "request": "followupRequest",
-        "resolution": "followupResolution"
-      }
-    },
-    "exposureIndexIfSuppliedToInvestigator": [
-      "TRIAL-1"
-    ],
-    "completeTargets": [],
-    "meaning": "The qualified recommendation excerpt does not deliver the referenced model. Human presentation alone creates no investigator exposure entry."
-  },
+  "status": "Diagram inputs and direct rendering remain unchanged. Metadata is delivered through a selected entity/result projection with source qualification; no whole-investigram eligibility test.",
   "presentationInputs": [
     {
       "address": {
@@ -124,7 +35,6 @@
       ]
     }
   ],
-  "replacementPolicy": "Metadata belongs to its exact owner. ADMISSION-1 option references remain historical with K disclosure; ADMISSION-2 has no repeated option because TRIAL-1 already addresses it. Presentation recommendations follow the same exact-owner rule, with no substitution by key. No new correction of TRIAL-1 is asserted by this probe.",
   "directDiagramSelections": [
     {
       "diagramType": "state-diagram/0",
@@ -148,5 +58,9 @@
         }
       }
     }
-  ]
+  ],
+  "optionSelection": {
+    "investigram": "ADMISSION-1",
+    "optionKey": "concurrent-callers-option"
+  }
 }

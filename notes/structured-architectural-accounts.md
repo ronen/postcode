@@ -10,11 +10,11 @@ For the consolidated current direction, start with the
 [working proposal](structured-architectural-accounts-proposal.md). This discussion
 record includes earlier alternatives later revised, particularly account-scoped
 identity, eager relationship-subject creation and a facade over legacy subjects.
-The [concrete walkthrough](structured-architectural-accounts-example.md) tests a
-provisional arrangement without adopting it.
-Its second-review revision explicitly assigns context selection and working-answer
-assembly to the caller, separates new role definitions, and clarifies qualification
-delivery and evaluation-wide exposure. These remain provisional example choices.
+The [concrete walkthrough](structured-architectural-accounts-example.md) and
+[current fixtures](structured-account-example/README.md) now exercise entity/result
+context and association declarations. Earlier dated entries preserve their then-current
+alternatives; claims in those entries that fixtures use the old correction model are
+historical. The [conformance entry](#entity-context-conformance) records the current pass.
 
 ## Scope established by the human
 
@@ -1496,3 +1496,62 @@ requirements, result designation, applicability of earlier exemptions, competing
 challenged declarations, and migration from investigram exposure need explicit design
 and a worked example. Governing documents, product implementation and executable
 fixtures remain on the earlier model; passing those checks does not validate this one.
+
+
+<a id="entity-context-conformance"></a>
+## 2026-11-12 — Conformance pass for entity context and declarations
+
+The human requested that the working material be conformed throughout before another
+review. The proposal, consolidation, walkthrough, contract and example guides now describe
+one current direction rather than accumulating incompatible amendments. Governing/product
+files remain unchanged. This is exploratory validation, not an adopted plan.
+
+The mixed and children fixtures now allocate query-result identities and use association
+addition/supersession/withdrawal. Q2 supersedes the admission association and separately
+redesignates RESULT-Q1, referencing unchanged definitions rather than copying them. The
+original investigrams, child links and captured answers stay exact. No K-style correction
+record, whole-owner superseded flag or special replacement tree remains in current fixtures.
+The source continues to own its guidance; a RESULT-Q1 invocation names the exact originating
+ADMISSION-1 option. ADMISSION-2 does not repeat what the submission already answers.
+
+New authored probes cover a consumer of the original result, a fuller identifying description
+without a factual-error claim, old-content reuse with no new items, withdrawal without
+replacement and competing supersessions. The simulator separates evaluation exposure from
+result-membership causes: Q1 never received newly introduced S, but its result can need
+reconsideration after S's identifying association is superseded. Actual consumers of that
+result can inherit the concern. Declaration-only results can include the withdrawal itself.
+
+**Provisional choices made concrete for review:**
+
+- One query-result identity/initial designation per fixture invocation; result members
+  reference exact items or declarations. `result` applies iff the target is a query-result
+  entity. All submitted items are associated, which is coverage rather than semantic proof.
+- Supersession displaces exact earlier associations at the same target; changing target
+  uses withdrawal plus addition. Withdrawal is not itself an association to supersede in
+  this bounded model. Challenge and reinstatement remain open.
+- Displacement requires actual delivery of the target declaration and its full designated
+  content/dependencies with applicable source qualification. Reusing foreign content also
+  requires delivery. Neither demands all unrelated content/metadata in the owning bundle.
+- Supersession/withdrawal cause conservative entity-exposure and result-membership warnings,
+  including shared-item overlap. An unchanged valid association can receive a warning
+  without being displaced. Generating-context provenance remains relevant across projections.
+- The producer is exempt from its own declaration causes. No received-cause exemption or
+  clearance is implemented. Addition-trigger policy remains open; absence of a prototype
+  trigger is not an agreement that additions cannot matter.
+
+These choices need review rather than being presented as settled by the conversation.
+Support selection, exact propagation/exemptions, declaration standing and first migration
+scope still need decisions in notes before drafting. Broad reassessment/merge-split features
+can be deferred only with an explicit first-capability boundary.
+
+The children comparison now demonstrates qualification scope, not a required independent
+correction/citation unit. The mixed variant's inherited behavioral limitations remain visible
+on description excerpts. Composition selects P/S/R/B projections and designates RESULT-Q4;
+its exact local follow-up selectors use that result as context. Existing architectural
+state/interaction content, diagrams and qualified legends are preserved.
+
+The [verification guide](structured-account-example/README.md#verification) records the
+current checks: both lifecycle partitions, 50 malformed lifecycle/delivery copies, 26 guidance
+cases, five malformed composition cases and nine selector cases, plus generated diagram
+source/legend/traceability checks. JSON and local links were checked. These are authored
+probes, not live agent, semantic-source or supported-API verification.

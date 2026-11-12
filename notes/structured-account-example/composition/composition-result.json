@@ -1,9 +1,6 @@
 {
-  "illustration": "Authored composition design probe continuing only the children variant hypothetical Session; not supported application input.",
+  "illustration": "Authored proposed contribution bundle, not product input or a live investigator. Investigrams retain provenance; association declarations organize entity and query-result information. The initial admission omission remains deliberate.",
   "result": {
-    "rootInvestigram": {
-      "submittedInvestigram": "composition-result"
-    },
     "investigrams": [
       {
         "key": "composition-result",
@@ -20,32 +17,6 @@
           },
           {
             "introducedEntity": "breaker-outside"
-          }
-        ],
-        "contentAssociations": [
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "P"
-            }
-          },
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "B"
-            }
-          },
-          {
-            "role": "describes",
-            "subject": {
-              "introducedEntity": "bulkhead-outside"
-            }
-          },
-          {
-            "role": "describes",
-            "subject": {
-              "introducedEntity": "breaker-outside"
-            }
           }
         ],
         "qualifications": [
@@ -78,7 +49,97 @@
           }
         ],
         "followupOptions": [],
-        "presentations": []
+        "presentations": [],
+        "associationSpecifications": [
+          {
+            "key": "orientation",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "composition-result"
+                  },
+                  "contentKey": "orientation"
+                }
+              }
+            ]
+          },
+          {
+            "key": "result",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "query-result"
+              },
+              "role": "result"
+            },
+            "members": [
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "composition-result"
+                  },
+                  "associationKey": "orientation"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "pattern-definitions"
+                  },
+                  "associationKey": "bulkhead-outside-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "pattern-definitions"
+                  },
+                  "associationKey": "breaker-outside-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "bulkhead-outside-case"
+                  },
+                  "associationKey": "capacity-held-during-recovery"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "bulkhead-outside-case"
+                  },
+                  "associationKey": "application-of-components"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "breaker-outside-case"
+                  },
+                  "associationKey": "trial-queued-for-capacity"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "breaker-outside-case"
+                  },
+                  "associationKey": "application-of-components"
+                }
+              }
+            ]
+          }
+        ]
       },
       {
         "key": "pattern-definitions",
@@ -95,22 +156,6 @@
           },
           {
             "introducedEntity": "breaker-outside"
-          }
-        ],
-        "contentAssociations": [
-          {
-            "role": "identifies",
-            "subject": {
-              "introducedEntity": "bulkhead-outside"
-            },
-            "contentKey": "bulkhead-outside-description"
-          },
-          {
-            "role": "identifies",
-            "subject": {
-              "introducedEntity": "breaker-outside"
-            },
-            "contentKey": "breaker-outside-description"
           }
         ],
         "qualifications": [
@@ -154,7 +199,49 @@
         ],
         "children": [],
         "followupOptions": [],
-        "presentations": []
+        "presentations": [],
+        "associationSpecifications": [
+          {
+            "key": "bulkhead-outside-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "bulkhead-outside"
+              },
+              "role": "identifies"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "pattern-definitions"
+                  },
+                  "contentKey": "bulkhead-outside-description"
+                }
+              }
+            ]
+          },
+          {
+            "key": "breaker-outside-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "breaker-outside"
+              },
+              "role": "identifies"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "pattern-definitions"
+                  },
+                  "contentKey": "breaker-outside-description"
+                }
+              }
+            ]
+          }
+        ]
       },
       {
         "key": "bulkhead-outside-case",
@@ -171,32 +258,6 @@
           },
           {
             "introducedEntity": "bulkhead-outside"
-          }
-        ],
-        "contentAssociations": [
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "P"
-            }
-          },
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "B"
-            }
-          },
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "S"
-            }
-          },
-          {
-            "role": "describes",
-            "subject": {
-              "introducedEntity": "bulkhead-outside"
-            }
           }
         ],
         "qualifications": [
@@ -553,7 +614,49 @@
         ],
         "children": [],
         "followupOptions": [],
-        "presentations": []
+        "presentations": [],
+        "associationSpecifications": [
+          {
+            "key": "capacity-held-during-recovery",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "bulkhead-outside-case"
+                  },
+                  "contentKey": "capacity-held-during-recovery"
+                }
+              }
+            ]
+          },
+          {
+            "key": "application-of-components",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "bulkhead-outside-case"
+                  },
+                  "contentKey": "application-of-components"
+                }
+              }
+            ]
+          }
+        ]
       },
       {
         "key": "breaker-outside-case",
@@ -570,32 +673,6 @@
           },
           {
             "introducedEntity": "breaker-outside"
-          }
-        ],
-        "contentAssociations": [
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "P"
-            }
-          },
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "B"
-            }
-          },
-          {
-            "role": "describes",
-            "subject": {
-              "entity": "S"
-            }
-          },
-          {
-            "role": "describes",
-            "subject": {
-              "introducedEntity": "breaker-outside"
-            }
           }
         ],
         "qualifications": [
@@ -945,9 +1022,59 @@
         ],
         "children": [],
         "followupOptions": [],
-        "presentations": []
+        "presentations": [],
+        "associationSpecifications": [
+          {
+            "key": "trial-queued-for-capacity",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "breaker-outside-case"
+                  },
+                  "contentKey": "trial-queued-for-capacity"
+                }
+              }
+            ]
+          },
+          {
+            "key": "application-of-components",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "breaker-outside-case"
+                  },
+                  "contentKey": "application-of-components"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
-    "investigramRelationships": []
+    "queryInvocation": "Q4",
+    "queryResult": {
+      "introducedEntity": "query-result"
+    },
+    "compositionRoots": [
+      {
+        "submittedInvestigram": "composition-result"
+      }
+    ]
   }
 }

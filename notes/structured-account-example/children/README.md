@@ -1,203 +1,100 @@
-# Children variant: independent identification and behavioral correction
+# Children variant: scoped qualification and association declarations
 
-Exploratory notes, 2026-11-11. This is the recommended partition worked through as
-complete authored payloads, not an adopted schema, an executed investigator, or
-supported application input. It uses the [shared contracts](../contracts.md) and the
-same bounded Cockatiel interpretation as the [mixed-content comparison](../README.md).
-Each variant describes its own hypothetical Session; identical readable aliases do
-not imply shared allocated records between variants. The separated category descriptions have been rechecked against the pinned state
-vocabulary and phrased as identification; qualification is not broadened merely by
-moving content. No broader behavioral/state-model applicability is established.
+Updated 2026-11-12. Authored hypothetical Session using the [shared contracts](../contracts.md),
+not a live investigation or adopted schema. It preserves the same behavioral models as
+the [mixed comparison](../README.md), with separate qualification boundaries.
 
-The [statechart with legend](recovery-state.md) and [interaction with legend](concurrent-callers.md)
-use concise authored labels and preserve this variant's own scope and source mapping.
-
-The [metadata payload tour](../metadata-payload.md) applies here too: options belong to
-their behavioral investigram, TRIAL-1 recommends two diagrams with explicit input
-bindings, and [guidance access](guidance-access.json) keeps excerpts distinct from
-complete own delivery. No guidance child or independent option lifecycle is added.
-
-## Files and reading order
-
-1. [First result](first-result.json): substantive root plus independently qualified
-   state-definition and admission children.
-2. [Follow-up result](followup-result.json): substantive root, role-definition and
-   trial-behavior children, and K with a disjoint admission replacement.
-3. [Context and bindings](context-and-bindings.json): supplied context, allocated IDs,
-   selections, composition, exposure and the definition-only consumer probe.
-4. [Illustration access](illustration-access.json): exact versus fresh linked-investigram
-   status under an explicitly hypothetical later correction.
-5. [Diagram traceability](diagram-traceability.json): pointers into this variant's
-   behavioral child for the shared [statechart](../recovery-state.svg) and
-   [interaction](../concurrent-callers.svg).
-
-## First result: useful parts with their own support
+## Initial contribution
 
 ```text
-INTRO-1                    qualified orientation: state and execution progress differ
-├── DEFINITIONS-1          identifies S-closed, S-open and S (Half-open)
-└── ADMISSION-1            describes P's admission and inspection behavior
+INTRO-1                  orientation: state and execution progress differ
+├── DEFINITIONS-1        identifies Closed, Open and Half-open S
+└── ADMISSION-1          admission cases and inspection behavior for P
 ```
 
-The explicit entity declarations and `identifies` associations live on DEFINITIONS-1.
-It has its own qualifications, evidence, referents and description items. It can be
-delivered without INTRO-1 or ADMISSION-1; its meaning does not depend on inheriting
-the root's qualifications. The root has substantive orientation content and describes
-P, rather than merely serving as a list of children.
+Q1 designates RESULT-Q1 using exact associations to those items. DEFINITIONS-1 carries
+static-source/method limitations but no unrelated default-sampling exclusion. It identifies
+categories; it does not establish general admission/transition rules. INTRO-1 similarly
+qualifies its orientation, not every behavioral restriction. ADMISSION-1 carries the
+bounded sampling/reentrancy/interference limits and the deliberately incomplete coverage.
 
-INTRO-1 likewise qualifies only its orientation: the state/progress distinction is
-not restricted to default sampling. Admission-specific sampling and interference
-limits remain on ADMISSION-1; the root does not assert its admission rules.
+This differs materially from the mixed fixture, where original account-level qualifications
+apply even to description excerpts. Reassociating a mixed item cannot silently broaden it.
+The partition was checked against the pinned source distinctions, not produced by dropping
+limitation keywords mechanically.
 
-The definition child's qualifications are selected for its own claims, not copied
-from the behavioral sibling. Its state-category designations are not restricted to
-default sampling; it does not specify admission outcomes or transition rules for
-unexamined configurations. The descriptions use the pinned `CircuitState` distinctions
-([source](https://github.com/connor4312/cockatiel/blob/f48bea55022ab15ab07eb52a79bfc1e661300fd4/src/CircuitBreakerPolicy.ts)).
-A later non-default-sampling inquiry can select S using this identifying support,
-while requiring new qualified behavioral analysis. The ledger includes that probe.
-
-ADMISSION-1 still contains the deliberately staged coverage error: its three cases
-omit waiting during an occupied trial. Its qualifications match the mixed example,
-including the reentrancy exclusion. The identifying descriptions do not repeat that
-coverage claim. Grouping the three state descriptions into one child deliberately
-keeps a coherent correction/delivery unit; it is not a one-entity-per-child rule.
-
-ADMISSION-1 returns a qualified `concurrent-callers-option`. The follow-up request
-selects that exact investigram and option key, whose architectural focus resolves to S.
-The [option chain](../followup-options.md) explains the stipulated invocation; this
-variant's [access probe](followup-option-access.json) preserves its exact context independently
-of the mixed variant. ADMISSION-2 has no repeated option because TRIAL-1 already
-addresses the question; historical ADMISSION-1 options remain available.
-
-The follow-up receives the complete own content of DEFINITIONS-1 and
-ADMISSION-1. The first identifies the subject; the second is eligible for correction.
-INTRO-1's own content is not supplied merely because it owns these children.
-
-## Follow-up: new definitions, behavior and a replacement
+## Follow-up contribution
 
 ```text
-TRIAL-RESULT-1             orientation: referents, behavioral questions and child scope
-├── ROLE-DEFINITIONS-1     introduces/identifies R, E-trial, E-caller and W
-└── TRIAL-1                relations, prose, state behavior and interaction
-    └─ reports K          ADMISSION-1 → ADMISSION-2 (correction, not composition)
+TRIAL-RESULT-1           orientation and result designations
+├── ROLE-DEFINITIONS-1   identifies R, E-trial, E-caller and W
+└── TRIAL-1              relations, prose, state model and interaction
 
-ADMISSION-2                separate replacement tree; complete admission content
+ADMISSION-2             new admission item and supersession declaration
 ```
 
-TRIAL-RESULT-1 orients the reader to the shared state, execution roles and relationship
-under examination, and locates the identifying and behavioral explanations. It does
-not restate waiting, admission or release rules. Such summaries would create another
-correction surface; a corrected child would not automatically repair the summary.
-ROLE-DEFINITIONS-1 supplies all four descriptions and their `identifies` associations
-with its own support. TRIAL-1
-describes P and S, referring to the subjects declared in its sibling. It does not
-duplicate their descriptions or identifying associations.
+These are two roots of one submitted forest, not a result tree plus a special replacement
+tree. All original bundles/children remain unchanged. Local references resolve across
+the submission; references do not create owning edges.
 
-ROLE-DEFINITIONS-1 preserves the scenario context needed to identify these particular
-roles: one shared breaker, a single trial slot, and the concurrent execution. That is
-different from restricting the identity of state category S to default sampling.
-It does not inherit cancellation, reentrancy or outcome restrictions as blanket
-conditions on identification. Those qualify the behavioral investigram's claims.
+Q2 selects RESULT-Q1 and names ADMISSION-1's exact follow-up option. The request deliberately
+delivers the original result's declarations/members, including what Q2 will displace.
+S is the architectural focus. No prose question or implicit human navigation history
+is required. See [option invocation](../followup-options.md).
 
-W's minimal description identifies the participants and what is awaited. It expressly
-does not supply occurrence/release conditions. Its exact `relatedContent` address
-locates TRIAL-1's interaction for a consumer needing those conditions; the address
-alone neither supplies the behavior nor records exposure to TRIAL-1. The identification can be
-intelligible without being a complete behavioral explanation.
+ADMISSION-2 supersedes only P's admission-cases association and copies no unchanged
+content. Q2's root separately supersedes RESULT-Q1's initial designation, reusing the
+original descriptions and inspection associations by exact address. RESULT-Q2 records
+Q2's own contributed answer. Historical result captures do not substitute either update.
+There is no K record and no global source status on ADMISSION-1.
 
-K is reported by TRIAL-1, the behavioral child. Its explanation records exposure to that reporter,
-not the root or the relationship ID. The reporter and replacement are in different
-composition trees. The pool representation permits cross-tree content references,
-but those references are not owning edges. Every investigram has exactly one owning
-position, and the result root reaches every submitted investigram through composition
-and reporter-to-replacement ownership links.
+TRIAL-RESULT-1 orients without restating release behavior. ROLE-DEFINITIONS-1 preserves
+scenario context needed to identify roles without restricting Half-open's category identity.
+W minimally identifies who waits for whose decision; its `relatedContent` address locates
+TRIAL-1's explanation without delivering it. Each child supplies its own qualification
+and evidence. The parent does not supply them by inheritance.
 
-ADMISSION-2 supplies its entire admission explanation, including the corrected
-waiting case, with its own qualifications and evidence. **It copies no state
-definitions and adopts no old children.** DEFINITIONS-1 was not the correction target
-and remains available as identifying support. This is ordinary independent investigram
-selection, not an exception to whole-investigram replacement based on `affectedSubjects`.
+## Architectural meaning remains unchanged
 
-## Shared roles without broadening the state model
+General admission uses item-local execution and breaker-instance roles. A separately
+qualified illustration maps them to the scenario. The recovery state model uses R directly;
+it is scenario-specific, not a universal P statechart or a redundant identity illustration.
 
-The general admission item declares local roles for a requested execution and its
-breaker instance. Its waiting claim uses those variables. A separately qualified
-illustration maps them to R/E-caller and points to TRIAL-1's `concurrent-callers`
-item, using W as the illustrated relationship. That mapping is authored, supported
-interpretation, not an inferred correspondence from matching names.
+The wait starts because of caller arrival and occupied trial reservation. Completion,
+classification, outcome transition, resume/recheck and ordinary work/refusal have explicit
+causal links. Guards and scope still apply; causes are not claimed sufficient. An error
+not matched by the failure policy is recorded as recovery success. The
+[statechart](recovery-state.md) and [sequence](concurrent-callers.md) retain full qualified
+meaning in their legends; diagram content is identical to the mixed variant.
 
-The state bearer is a direct reference to R. An item-local alias for that same
-scenario participant added no useful variable, and calling its binding an illustration
-confused identity with a general-to-example relationship. The redundant alias/binding
-has been removed from both variants. The common role contract remains available
-across types, but this sample only uses variables where they add meaning. General
-relationship identity and broader state applicability remain for the composition probe.
+## What this partition does and does not buy
 
-The interaction explicitly links wait initiation to the caller request and trial
-entry, conditioned on the slot still being occupied. Its later chain is completion,
-classification, transition, resume/recheck, and ordinary work or refusal. Causes
-are not asserted to be sufficient without the stated conditions.
+Children give coherent qualification and presentation boundaries. They are no longer
+needed just to make one association independently supersedable or to deliver one item.
+The earlier citation-unit argument does not transfer unchanged to entity/result exposure.
+The admission association can be displaced without touching the S association in **both**
+partitions; only their inherited source qualifications differ.
 
-## What remains selected after correction
+Generating-context exposure can still reach consumers of a small identifying item.
+Q1 originally received P orientation, not its newly introduced S. The expansion probe
+therefore marks RESULT-Q1 through identifying membership, without fabricating Q1 exposure
+to S. Q-observer receives the result and can inherit its cause. Different propagation
+routes remain visible in the [report](lifecycle-report.json).
 
-| Access | Selected content and support |
-| --- | --- |
-| Exact ANSWER-1 | INTRO-1 with its captured DEFINITIONS-1 and ADMISSION-1 children; original support and revision context |
-| Follow-up answer | TRIAL-RESULT-1 with its two children, accompanying ADMISSION-2 and K; identifying support from DEFINITIONS-1 and ROLE-DEFINITIONS-1 |
-| Fresh admission answer | ADMISSION-2 and K; unchanged DEFINITIONS-1, plus ROLE-DEFINITIONS-1 for the scenario illustration |
-| Fresh replacement-aware initial answer | INTRO-1 and DEFINITIONS-1, with ADMISSION-2 selected in place of ADMISSION-1 and that displacement disclosed |
+The [lifecycle probes](lifecycle-probes.json) also exercise declaration-only old-content
+reuse and withdrawal. Displacing one use does not mutate the item or displace its other
+uses. The conservative shared-item warning policy may still flag those results for review;
+that does not establish wrongness. Precision and clearance remain open.
 
-INTRO-1's stored child list always remains `[DEFINITIONS-1, ADMISSION-1]`; a fresh
-projection is not a rewrite of its composition or own text. Supporting descriptions
-can be supplied without selecting their parent roots. Delivering the complete
-ROLE-DEFINITIONS-1 child gives complete context for that child, not for TRIAL-1 or
-TRIAL-RESULT-1. Each answer fixes the identifying support it actually supplies.
+## Files and verification
 
-The benefit of narrower exposure is concrete: a later investigation receiving DEFINITIONS-1
-alone records exposure to that child, so a correction of ADMISSION-1 provides no reconsideration
-path through that exposure entry alone. By contrast, every output of the actual follow-up
-shares its exposure to both supplied investigrams. Children do not narrow the producing
-evaluation's exposure index, and grouped descriptions still share one correction
-target. None of these mechanisms establishes semantic independence between siblings.
+Read [first result](first-result.json), [follow-up](followup-result.json),
+[context/bindings](context-and-bindings.json), then [lifecycle report](lifecycle-report.json).
+[Guidance access](guidance-access.json), [option access](followup-option-access.json) and
+[illustration access](illustration-access.json) record exact addressing boundaries.
 
-## Illustration status without automatic reassessment
-
-ADMISSION-2's illustration targets the exact pair `(TRIAL-1, concurrent-callers)`.
-The access probe postulates a later correction of TRIAL-1 solely to describe retrieval
-behavior; it does not invent a third investigation result or assert another source error.
-Fresh access can report “illustrated investigram has a replacement,” preserve the original
-item target, and leave that particular item's revision status unestablished. It
-cannot substitute a same-named item from the replacement without correspondence.
-
-The link is within the original follow-up evaluation, so it is not a prior-exposure
-exposure entry and does not itself flag ADMISSION-2. Surfacing the referenced investigram's
-status is useful without adding a propagation or clearance rule. Exact captured
-answers preserve their earlier status context; fresh inspection is separate.
-W’s related-content link uses the same exact addressing rules, with a descriptive
-purpose rather than an illustrative binding. Neither link silently delivers its target.
-
-## Verification and limits
-
-[The standalone fixture checker](../check-fixtures.py) can be run with Python 3.
-It checks both variants' declaration/reference resolution, unique ownership,
-reachability, qualification, identifying associations, local roles, illustration
-addresses/bindings and ordered causal links. It rejects malformed copies with
-duplicate owners, a cycle, an orphan, missing child qualifications, missing child
-identification and an undeclared entity, plus invalid role/address/qualification and
-forward-causality references. It also checks that the state/interaction
-items are identical across partitions and that ADMISSION-2 copies no definitions.
-Diagram traceability pointers resolve against this variant's actual payload.
-
-Choosing applicable qualifications was reviewed against the actual descriptions and
-source; the structural checker cannot decide whether a limitation is semantically
-necessary. Both variants' behavioral diagram data remains identical, so the direct
-bearer and qualification repairs do not require different rendered diagrams.
-
-These are checks of authored examples, not a production schema, semantic proof or
-end-to-end Session verification. The linked-investigram status probe is conditional,
-not an implemented access operation. No universal cross-type consistency check,
-automatic role alignment, independent item correction, correction revocation, or
-parent/sibling reassessment is introduced. The mixed fixture remains a useful
-comparison; this variant demonstrates the current partition recommendation without
-adopting it as a requirement for every explanation.
+The [shared verification commands](../README.md#verification) exercise both partitions,
+immutable history, source qualification, atomic declaration acceptance, result membership,
+context exposure and ordered causal references. The checker cannot prove applicable
+qualification or interpretive truth. No product API, cross-owner diagram retrieval,
+live investigator, universal graph schema, merge/split, or reassessment is demonstrated.

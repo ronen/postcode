@@ -1,13 +1,10 @@
 """Bounded fixture helpers for investigram-owned metadata, not product code."""
-import copy
 import json
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
 DIAGRAMS = json.loads((BASE / 'diagram-contracts.json').read_text())['types']
 OPTION_METHODS = {'qualified-architectural-interpretation'}
-OWN_PARTS = {'id', 'title', 'content', 'referents', 'contentAssociations', 'qualifications',
-             'evidence', 'children', 'followupOptions', 'presentations'}
 
 
 def validate_option(followupOption):
@@ -67,57 +64,3 @@ def presentation_plans(investigram, owner_id=None):
         plan['recommendation'] = rec
         plans.append(plan)
     return plans
-
-
-def resolve_references(value, entities, investigrams):
-    if isinstance(value, list):
-        return [resolve_references(x, entities, investigrams) for x in value]
-    if isinstance(value, dict):
-        if set(value) == {'introducedEntity'}:
-            return {'entity': entities[value['introducedEntity']]}
-        if set(value) == {'submittedInvestigram'}:
-            return {'investigram': investigrams[value['submittedInvestigram']]}
-        return {k: resolve_references(v, entities, investigrams) for k, v in value.items()}
-    return value
-
-
-def retained(document, bindings):
-    result = {}
-    for investigram in document['result']['investigrams']:
-        value = resolve_references(investigram, bindings['entityIds'], bindings['investigramIds'])
-        key = value.pop('key')
-        value['id'] = bindings['investigramIds'][key]
-        result[value['id']] = value
-    return result
-
-
-def metadata_excerpt(registry, address, basis, provenance):
-    assert len(address) == 2 and 'investigram' in address, 'exact metadata address required'
-    kinds = {'optionKey': 'followupOptions', 'presentationKey': 'presentations'}
-    found = set(address) & set(kinds)
-    assert len(found) == 1, 'metadata namespace required'
-    field = next(iter(found))
-    owner = registry[address['investigram']]
-    matches = [x for x in owner[kinds[field]] if x['key'] == address[field]]
-    assert len(matches) == 1, 'missing exact metadata entry'
-    return {'address': copy.deepcopy(address), 'value': copy.deepcopy(matches[0]),
-            'investigramQualifications': copy.deepcopy(owner['qualifications']),
-            'basis': basis, 'provenance': copy.deepcopy(provenance)}
-
-
-def own_delivery(owner, parts):
-    assert len(parts) == len(set(parts)) and set(parts) <= OWN_PARTS, 'invalid own-part selection'
-    return {k: copy.deepcopy(owner[k]) for k in parts}
-
-
-def complete_own_delivery(owner, delivered):
-    # Complete own delivery is explicitly different from expanding every child/input.
-    return set(delivered) == OWN_PARTS and all(delivered[k] == owner[k] for k in OWN_PARTS)
-
-
-def complete_delivery(owner, delivered, basis, provenance):
-    """Fixture evidence context is explicit; full own parts alone do not suffice."""
-    return (set(delivered) == {'own', 'basis', 'provenance'}
-            and complete_own_delivery(owner, delivered['own'])
-            and delivered['basis'] == basis
-            and delivered['provenance'] == provenance)

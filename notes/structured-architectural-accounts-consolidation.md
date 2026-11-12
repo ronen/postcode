@@ -2,242 +2,213 @@
 
 Updated: 2026-11-12
 
-Exploratory consolidation of the [working proposal](structured-architectural-accounts-proposal.md), not a schema, adopted decision or implementation task. This records the current direction and tests ownership against the existing examples. It does not add a new Account object, a universal metadata framework or a presentation/navigation system.
+Current exploratory model, not an adopted schema or product behavior. The
+[proposal](structured-architectural-accounts-proposal.md) states scope, consequences and
+open decisions; [fixtures](structured-account-example/README.md) now exercise the new
+direction. Prior discussion remains in the [historical notes](structured-architectural-accounts.md).
+Governing documents still describe whole-investigram correction.
 
-**2026-11-12 discussion update:** [Association declarations and information targets](structured-architectural-accounts.md#association-declarations)
-now explore a common addition/supersession/withdrawal mechanism for entity-and-role
-associations and result associations, including declarations referring to content owned
-by other investigrams. This would replace the whole-investigram supersession approach
-in the earlier model. Its correction, delivery and reconsideration consequences still
-need resolution. The detailed synthesis and executable fixtures below have not yet
-been reconciled with this direction; their earlier correction rules are not evidence
-that the new mechanism is already specified or adopted.
-The subsequent [entity-context and query-result discussion](structured-architectural-accounts.md#entity-context-and-result-exposure)
-proposes entities and their associations as the context-facing accounts, with query-result
-entities and distinct exposure/result-composition paths into reconsideration. Q is a
-particular query invocation. These changes also remain to be reconciled with the
-previous synthesis and fixtures.
+## Center of the model
 
-## Assessment
+Entities organize qualified information. Queries request information. Investigations
+contribute content and association declarations; investigrams preserve those contributions
+and their provenance. A query's result has an entity identity through which original and
+later designated answers can be organized. It is not the query, and Q identifies a particular
+invocation, not a recurring question.
 
-The model has a coherent center: an investigram communicates a qualified interpretation, identifies what it concerns, and can carry guidance for using or investigating it. The muddiness came from mixing conceptual responsibilities, submission instructions, retained records and indexes in one growing list of possible fields.
+An investigram is never globally superseded in this proposed model. Later declarations can
+displace particular associations, including the designation of an earlier query's result.
+Its original information, names, evidence and metadata remain attributable to it. An exact
+captured answer remains fixed. Fresh access can disclose later declarations and select
+other information explicitly.
 
-Three corrections make the structure clearer:
-
-- Content items structure **Interpretation content**; they are not child investigrams or independently retained Claim objects.
-- Follow-up options and presentation recommendations are **qualified guidance metadata**, not architectural content types. Metadata can contain interpretive judgments and is not exempt from evidence, attribution or delivery rules.
-- Entity allocation belongs to acceptance of an analysis result. Entity identity, evaluation provenance, separately recorded relationships, derived indexes and rendered diagrams are not all fields to copy into every investigram.
-
-Metadata ownership is now settled in the exploratory direction: it is about one exact immutable investigram. Its referents, associations, options and presentation recommendations stay with that version; a replacement supplies its own metadata. Guidance is not required to survive replacement as the same option. The earlier guidance-child/independent-lifecycle question is withdrawn rather than solved by another artifact type.
-
-Presentation retrieval and arrangement are outside this remit. Our responsibility is to preserve architectural meaning, qualifications and exact references, identify intended diagram inputs, and demonstrate sufficiency in representative examples. That is distinct from choosing context for an investigator, which retains its existing explicit delivery, requestable-context and exposure rules.
-
-This is a more coherent structure, not yet a completed protocol. Most remaining work is contract precision and fixture alignment, rather than deciding where another top-level field belongs. New concepts and diagrams should extend the appropriate content/input catalogue rather than grow the investigram envelope. Entity identity guarantees and proposed supersession/reconsideration semantics still need their own governing treatment; consolidation has not proved them implemented or universally sufficient.
-
-## What the governing definition means
-
-The [five information obligations](../docs/core-concepts.md#interpretation-content) are not five disjoint storage compartments. Evidence and provenance also qualify claims; qualifications must be attributable to the portions they constrain. Composition, associations, corrections and investigator exposure are described after that initial list. The [implemented record](../src/lib/investigation/contracts.ts) already has child references, associations, correction references and a provenance reference in addition to prose and support.
-
-| Term | Meaning in this design |
-| --- | --- |
-| Account | Ordinary language for information or explanation provided by PostCode, potentially across investigations. No separate aggregate identity. |
-| Investigram | Immutable, addressable unit of qualified interpretation; it has its own content and may reference child investigrams. |
-| Claim | Something asserted. A prose paragraph or a structured item can make several claims without separately allocated claim records. |
-| Content item | Addressable portion of Interpretation content, with a supported type and attributable qualifications/support. Its key does not make it independently correctable. |
-| Child investigram | Another complete investigram in the fixed composition tree, with its own identity, qualification and correction boundary. |
-| Entity | Explicitly identified architectural thing around which information is organized. Descriptions remain qualified information, not authoritative fields on its identity. |
-| Subject / referent | Roles: what is investigated or concerned; what a reference denotes. Not additional container types. |
+There is no single canonical definition per entity. Several descriptions, scopes and
+conflicting interpretations can coexist. Identity/reuse does not establish agreement,
+unique discovery, or equivalence of independently allocated entities.
 
 <a id="working-vocabulary"></a>
-## Agreed working vocabulary
-
-These names describe the exploratory model. They do not adopt changes to governing
-definitions or product APIs. Entity, Subject, Referent, Investigram and informal
-account retain the meanings above. Use **qualified information** broadly; it does
-not name another item/record type alongside a content item.
+## Working vocabulary
 
 | Term | Meaning |
 | --- | --- |
-| Content item | Keyed item within Interpretation content; not an independent correction unit. |
-| Content type | Supported kind of content item, identified in a defined, extensible catalogue. |
-| Content-type contract | Required data and their semantic, reference and qualification rules. |
-| Schema | Mechanically checkable data shape within that contract; not proof of architectural truth. |
-| Architectural concept | Concept used to frame architectural interpretation, distinct from its data representation. |
-| Follow-up option | Available investigation associated with an exact investigram; atemporal "find out more", with no implied recommendation or priority. |
-| Presentation recommendation | Investigator judgment that a presentation is useful; not permission to render or a request's promised outcome. |
-| Architectural relationship | Relationship between things in the described architecture. |
-| Investigram relationship | Qualified relationship between investigrams, such as correction, alternative or inconsistency. |
-| Content association | Qualified association of an entity/subject with an investigram or content item, such as identifies or describes. A bare referent listing is weaker. |
-| Exposure index | Prior investigrams whose substantive content was supplied during the generating evaluation; not proven reliance, endorsement or comprehension. |
-| Context delivery | What was actually supplied, including portions, qualifications and completeness. |
-| Support | Material attributed as grounds for a claim; delivery alone does not establish support. |
+| Entity | Identified thing around which qualified information is organized; the proposed kinds include architectural things and query results. |
+| Subject / referent | Roles: what an investigation concerns; what a reference denotes. |
+| Query invocation | One request with captured subjects, parameters and context. Its result identity is separate. |
+| Investigram | Immutable, qualified contribution bundle from an investigation. Not the default context or supersession unit. |
+| Account | Ordinary language for information provided by PostCode; no additional Account object. |
+| Content item | Keyed item within Interpretation content. Identity of content is not identity of the described entity. |
+| Content type | A supported kind of content item in a defined, extensible catalogue. |
+| Content-type contract / schema | Required data, semantics, qualification and reference rules / mechanically checkable shape within that contract. |
+| Architectural concept | Vocabulary for framing interpretation, not a required representation or diagram. |
+| Architectural relationship | Relationship in the described architecture. It may itself be identified as an entity, without making every edge one. |
+| Content association | Qualified use of content for a target entity and information role. |
+| Association specification / declaration | Submitted specification expressing addition, supersession or withdrawal, attributable to its producing investigram. |
+| Investigram relationship | Qualified comparison of investigations/accounts, such as reported inconsistency. It does not silently displace associations; whole-bundle correction is replaced by declarations in this proposal. |
+| Follow-up option | Available investigation associated with exact originating metadata; atemporal availability, not implied priority. |
+| Presentation recommendation | Judgment of usefulness, not permission to render compatible content. |
+| Context delivery | Exact material supplied, including ownership, basis, qualification and completeness. |
+| Exposure index | Entities/query results whose substantive projections were delivered. Current product `citation` indexes remain investigram-based until an adopted migration. |
+| Support | Attributed grounds for a claim, not inferred from delivery alone. |
 
-Investigators choose supported content types; they may introduce new topics or concepts
-without inventing unsupported structures. A type identifier, its semantic contract and
-its schema are related but distinct. The schema can validate shape; additional checks
-resolve references, and qualified analysis establishes claims.
+Qualified information is a broad description, not another record kind. “Metadata” does
+not imply mechanical truth or exemption from evidence obligations. Content associations,
+withdrawal reasons and result organization can be the substantive interpretation.
 
-**Exposure terminology boundary.** Exposure index is the preferred name for the existing
-**citation index**. Citation remains ordinary language for explicit attribution, not
-the automatic delivery-derived mechanism. Working fixtures now use `exposureIndex`;
-no exposure, completeness, propagation or exemption rule changes. During drafting,
-consider including the governing/API/implementation rename explicitly as semantics-
-preserving cleanup. It is neither adopted here nor automatically a separate backlog
-commitment. Actual evidence attribution remains distinct from exposure.
+## Three ownership maps
 
-**Fixture spelling alignment.** The provisional payloads now use `investigram`,
-`investigrams`, `submittedInvestigram`, `investigramIds`, `investigramQualifications`,
-`investigramRelationships`, `contentType`, `contentAssociations`, `followupOptions`,
-`optionKey` and `exposureIndex`. Existing readable investigram/entity IDs and content
-keys remain; the option's local key is now `concurrent-callers-option`. These authored
-fixtures have no product migration promise. Historical discussion and links to adopted
-material retain earlier terminology where needed to preserve what was said.
-
-## Two maps, not one ever-growing record
-
-These maps show responsibilities and ownership, not proposed field names or a requirement to inline records.
-
-### Submitted investigation result
+### Submitted investigation contribution
 
 ```text
-Submitted result
-  Proposed investigrams
-    Local identity and architectural content
-    Explicit referents and qualified content associations
-    Child links forming a result tree and any replacement trees
-    Applicable support and qualifications
-    Options and presentation recommendations, attributed to an owner
-  New entity declarations / references to existing entities
-    Local new IDs; qualified identifying information anchored in the result
-  Proposed relationships between investigrams
-    Reporter, exact participants, reasons and support
+Invocation Q and its allocated result entity RESULT-Q
+  Contribution pool of investigrams
+    Content items, referents, qualifications, evidence
+    Association specifications
+      addition / supersession / withdrawal
+      target entity + information role
+      exact content/declaration members where applicable
+      exact earlier associations displaced
+      reason and attributable grounds
+    Follow-up options and presentation recommendations
+    Fixed local child links, arranged as a forest
+  Local entity introductions and references to existing identities
 ```
 
-The existing fixture uses an `introducesEntity` marker on an identifying content item. Conceptually this does two jobs: a submission instruction requests an identity, while the description supplies a qualified claim. Separating those jobs does not require a new declaration-list field: the marker can remain an encoding if acceptance can unambiguously resolve the declaration, owner and identifying support. Reuse references existing entity IDs; names do not deduplicate entities.
+Acceptance resolves local IDs, validates all declarations and references, and retains
+atomically. The result entity is allocated with the invocation; architectural entities
+are introduced through qualified identifying content. Existing mechanical identities
+retain provider guarantees. Own-result/earlier-result targets use the same entity mechanism.
+The `result` role applies if and only if the target is a query-result entity.
 
-PostCode accepts the result atomically: allocate identities, resolve local references, validate ownership/support and retain records. Actual request, method, captured basis and deliveries are recorded through evaluation provenance; the investigator does not fabricate its own delivery history. There is no additional registration/promotion stage.
-
-### Retained investigram and its surroundings
+### Retained information
 
 ```text
-Investigram
-  Identity
-  Interpretation content: keyed architectural content items
-  Referent information and qualified content associations
-  Child-investigram references
-  Qualified guidance: follow-up options, presentation recommendations
-  Attributable evidence, qualifications and provenance references
-  Links to accompanying relationships
-
-Related retained information, not duplicated inside every investigram
-  Entity identities and their introduction provenance
-  Evaluation provenance and actual delivery records
-  Qualified relationships between investigrams
-  Exact answer selections and captured support/revision context
-
-Derived or produced information
-  Entity/referring-investigram indexes
-  Current revision and reconsideration status
-  Validated presentation inputs and rendered diagrams/legends
+Entity identities and introduction provenance
+Query invocations and their generating/delivery history
+Immutable investigrams
+  Original items, declarations, qualifications, evidence, guidance, child links
+Association indexes by entity + role
+Query-result designations with explicit member references
+Captured answers and exact delivered projections
 ```
 
-“Qualified guidance” groups responsibilities for this discussion; it is not a proposal for a generic extensible bag of metadata. Inline versus referenced storage remains open. Metadata belongs to the exact immutable investigram it describes. A replacement has its own metadata; no entry is silently transferred or retargeted. Exact answers preserve what they selected; fresh access can separately disclose later status.
+An entity/role target denotes a category of information. It is not a single value slot.
+Exact displaced-association references are additional to the target. The new declaration's
+owner and the referenced content's owner may differ. Original qualification remains with
+the original content; the new association has its own attributable grounds.
 
-## Ownership and lifecycle audit
+### Derived/access information
 
-| Responsibility | Owner and meaning | Correction, qualification and access |
-| --- | --- | --- |
-| Architectural content | The containing investigram; prose, identifying descriptions, models and interactions. | Whole-investigram correction remains the boundary. Item and nested-element addresses do not authorize patches. Applicable support travels with excerpts. |
-| Referent inventory | Explicit declaration that this investigram concerns an entity or other supported referent. | Not an authoritative description. Indexes can derive from explicit references; prose alone must not be mined for inferred identities. Automatic extraction from structured fields needs content-type-specific rules. |
-| Content associations | Qualified relation between an entity/subject and an investigram or exact content item, such as identifies or describes. | Can organize several descriptions without synthesizing a canonical one. Historical association and revision context remain fixed in exact answers. |
-| Entity introduction | Analysis declaration resolved by PostCode; identifying information stays in qualified content. | Correcting that description does not delete the identity. Mechanical identity rules still govern reuse. Duplicate discoveries remain possible. |
-| Child composition | Owning investigram references its fixed children. | Correcting a child does not rewrite parent composition or automatically correct its other claims. No adoption of old children into a new tree by reference. |
-| Follow-up options | Qualified metadata of the exact originating investigram, with option key, targets, scope and supported method. | Remains with that version; a replacement supplies its own options. Matching wording does not establish continuity or reuse. Investigator delivery of substantive guidance remains exposure; human browsing alone is not. |
-| Presentation recommendations | Metadata of the exact investigram, naming a supported presentation/diagram type and bindings to exact content or entities. | Presentation does not establish new correspondence or causal claims. An optional recommendation expresses usefulness, not permission to render compatible content, and differs from a promised request outcome. Exact recommendations cannot silently retarget newer content. |
-| Investigram relationships | Explicit supported records with reporter and exact endpoints; currently prefer separate retention/indexing. | Correction, alternative and inconsistency have different consequences. Revising the reporter does not silently revoke the relationship. |
-| Evidence, qualification and provenance | Cross-cutting attribution, including support for metadata when it asserts claims. | No unqualified side channel. “Metadata” does not imply mechanical truth, automatic inclusion or exemption from delivery/completeness rules. |
-| Indexes / current status | Derived views over retained declarations, relationships and delivery history. | Indexing is not semantic synthesis. Entity-supersession reconsideration remains a proposed extension, distinct from existing investigator exposure. |
+```text
+Association standing: displacement links and competing declarations
+Entity projections: explicit selected information with qualifications and notices
+Result membership: exact declarations/items, never implicit current substitutions
+Reconsideration causes on evaluations and query results
+Validated diagram inputs and rendered diagrams/legends
+```
 
-For interpretive results this is not yet a final ownership schema. The mechanical producer participates in common identity/reference and qualified-information semantics without becoming an investigram or requiring identical storage.
+No global investigram superseded flag is derived. A new declaration can reference old
+content without copying it. A rare declaration-only investigram is meaningful when its
+qualified organizing assertions are meaningful; no filler prose is required.
 
-## Concepts, content and diagrams
+## Ownership and effect audit
+
+| Responsibility | Owner / effect |
+| --- | --- |
+| Architectural content | Original investigram owns exact items and applicable qualification. New wording needs new content. |
+| Addition | Producing investigram owns a new association. Existing associations coexist. |
+| Supersession | Producing investigram owns a new association explicitly displacing earlier associations, not their owner bundles. |
+| Withdrawal | Producing investigram records displacement without replacement members. Old content and other associations remain. |
+| Result designation | Association targeting a query-result entity. Can include exact items/declarations originating elsewhere. |
+| Child composition | Fixed submitted-bundle structure; not result membership, current answer selection, exposure or architectural containment. |
+| Follow-up option | Exact producing metadata remains owned by its investigram. Access through a result/entity does not retarget or transfer it. |
+| Presentation recommendation | Original usefulness judgment; selecting a different compatible diagram changes no retained record. |
+| Context projection | Captures actual delivered material, original qualification, source provenance and applicable notices. An ID or human browsing is not exposure. |
+| Reconsideration | Derived cause-specific warning, not proof of wrongness or automatic withdrawal. |
+
+The fixture provisionally requires same-target supersession, historical displacement
+targets and full delivery of the targeted declaration/members. These rules need review;
+they are not hidden consequences of the word association.
+
+## Exposure and result membership
+
+Supplying entity S means supplying a selected qualified projection, not its ID or a
+canonical definition. Selecting a portion of Q's result and delivering it records
+exposure to RESULT-Q. Record the exact portion, not future associations of that entity.
+The selected text/node need not become another entity.
+
+A result can need reconsideration because its producer received subsequently displaced
+information. It can also need reconsideration because a constituent association was later
+displaced—even when its producer created that entity and never received it as context.
+The second route is designated membership, not fabricated exposure or the fixed child tree.
+
+The executable prototype separates evaluation causes from result causes. An affected result
+can affect consumers; affected generating-context provenance can follow delivered contributions
+through architectural entities too. The current conservative rule also warns on shared-item
+membership, without displacing valid other associations. This overbreadth is explicit and
+needs review. Merely having a reference does not assert semantic dependence.
+
+Supersession for fuller coverage can trigger reconsideration without declaring earlier
+content false. Withdrawal can also trigger it. Addition-trigger policy remains open.
+The fixture exempts producers from their own causes, but has no received-cause exemption,
+clearance or automatic reversal of a declaration. These are exposed limitations, not claims
+that the old whole-investigram exemptions already fit the new model.
 
 <a id="catalogue-responsibilities"></a>
-Keep three catalogue responsibilities distinct, even if packaged together:
+## Catalogue responsibilities and diagrams
 
-| Catalogue responsibility | Defines | Does not imply |
-| --- | --- | --- |
-| Architectural concept guidance | Meaning, useful distinctions, questions to investigate, examples and sources. | A required diagram, a schema for every concept or automatic applicability to an entity. |
-| Content-type contract | Meaning and representation of an item: fields, references, qualifications and explicit partial/unknown cases. | One item per concept or one independently retained claim per field. |
-| Diagram-type input contract and mapping | Supported diagram inputs, bindings, compatibility/preconditions and their mapping to visual elements/legends. | Inference of architectural relationships or a duplicate canonical model. |
+| Catalogue responsibility | Purpose |
+| --- | --- |
+| Architectural concept guidance | Meanings, investigative distinctions, examples and references. |
+| Content-type contract | Required data, semantics, qualification, references and partial/unknown cases. |
+| Diagram-type input contract/mapping | Compatible inputs and their known mapping to a diagram and legend. |
 
-Diagram types describe supported diagram Presentations under the existing result/Presentation compatibility model; this catalogue does not introduce a competing presentation architecture.
+One concept can have several representations; one item can express several concepts.
+Entity references share identity; exact qualified item references share assertions.
+The supported catalogue is extensible, but an investigator cannot invent an understood
+content type just by naming it. Prose is a supported structure, not an unqualified escape.
 
-One content item may express several concepts. One concept may have several representations or only prose. Referencing Half-open S shares identity; it does not share every claim about S. Sharing a description or transition requires an exact reference to that qualified content. Satisfying a content contract can use explicit, available referenced material rather than duplication; a bare unresolved ID is not sufficient when its meaning is needed. Cross-item scope/role alignment must be asserted with support, not guessed from equal keys.
+TRIAL-1's state diagram binds `recovery`; the sequence binds `concurrent-callers` and
+follows its existing `stateContent`/`transition` references. No duplicate state-model
+binding or renderer-invented dependency. Both diagrams render unchanged with recommendations
+removed. Legends preserve conditions, qualifications and source mappings. Presentation
+retrieval, arrangement and UI remain outside this remit.
 
-A diagram type can accept one complete state-behavior item, rather than require every node and edge to be supplied again. Another type may accept several explicitly bound items. PostCode follows only the dependencies declared by the input/content contracts, checks sufficiency and renders. It does not search accumulated knowledge for a plausible diagram or synthesize missing transitions while laying it out.
+## What the current examples show
 
-### Recommendation example
+Q1 introduces state categories and an incomplete admission account. Its result designation
+includes the entity associations. Q2 receives RESULT-Q1's selected qualified information;
+it adds trial content, supersedes the admission association and redesignates RESULT-Q1
+while referencing unchanged descriptions. ADMISSION-1 remains unchanged. No K-style
+whole-investigram correction or special replacement tree is returned.
 
-```text
-Interpretation content in TRIAL-1
-  recovery: state-behavior model
-  concurrent-callers: interaction
+The later expansion probe supersedes identifying information without alleging factual
+error. Q1 had never received S, but RESULT-Q1 included S's identifying declaration and
+therefore receives a membership cause. A consumer of RESULT-Q1 inherits it. Other probes
+reuse an earlier item in a declaration-only result and withdraw that new association
+without changing the original item or its other association standings. Competing
+supersessions remain available.
 
-Presentation recommendations attributed to TRIAL-1
-  state-diagram: model = TRIAL-1 / recovery
-  sequence-diagram: interaction = TRIAL-1 / concurrent-callers
-```
+The mixed and children partitions preserve the same behavioral models. Children can
+still give descriptions appropriate qualification boundaries, but they are no longer
+necessary to obtain independent association supersession or item delivery. Entity/result
+exposure changes the earlier argument about smaller citation units; do not present that
+argument as unchanged. Evaluation-wide provenance can still cause conservative warnings.
 
-This is a conceptual example, not an adopted payload. Entity labels/identifying support and any explicitly shared model elements remain exact qualified references. An entity reference alone does not select which of its competing descriptions to draw. The content contracts and diagram input bindings must make that selection explicit where it matters.
+Composition receives selected P/S/R/B projections and returns pattern entities plus
+RESULT-Q4. Exact local selectors remain valid; their context entity is RESULT-Q4. The
+same architectural diagrams and assertions remain authored content.
 
-A supported diagram type can render compatible content without a retained recommendation.
-Adding a renderer or selecting a different compatible diagram does not change the
-investigram or require correction. Original recommendations remain historical metadata.
-An erroneous recommendation could warrant correction; absence of a newly available
-diagram suggestion is not an error. No separate mutable guidance lifecycle is needed.
+## Open decisions and verification limits
 
-A supported request promising a state diagram requires both suitable qualified data and compatible diagram presentation. A general explanation may choose useful types and recommend a diagram without promising it. Required/optional annotations and groups of alternative presentations are future extensions. Distinguish a request obligation from an investigator's judgment that a presentation is essential; alternatives need not assert identical information. Selection/UI behavior for those annotations is deferred.
+Before drafting: settle identity/migration depth, result designation shape, support selection
+and delivery bounds, addition/exposure precision, cause exemptions/reassessment, declaration
+challenge/reinstatement, and first-delivery scope. Entity merge/split remains a separate
+qualified identity probe; association displacement does not automatically merge IDs or
+redistribute their histories.
 
-## Walk the existing examples through the map
-
-1. **Initial result.** INTRO-1 owns DEFINITIONS-1 and ADMISSION-1 in the children partition. The identifying descriptions introduce local keys for S/open/closed; acceptance resolves them to entity IDs. The descriptions remain content in DEFINITIONS-1. Associations locate them precisely; behavioral items in ADMISSION-1 refer to those entities.
-2. **Option.** The concurrent-callers option is investigative guidance associated with its exact originating investigram and key. JSON now encodes it in ADMISSION-1's `followupOptions`, addressed by `{investigram, optionKey}`. Its question, targets, qualifications and delivery obligations survive the move to metadata; a content key cannot substitute for an option key.
-3. **Follow-up and correction.** Invocation selects that exact option. Actual delivery of complete ADMISSION-1 and identifying support establishes the context/eligibility exercised by the fixture. TRIAL-1 introduces scenario roles and W, supplies behavioral content, and reports correction K with ADMISSION-2. Entity declarations, architectural claims and K's organizing meaning remain separate responsibilities. The same scenario role/entity references can be shared between state and interaction items without asserting broader applicability.
-4. **Diagrams.** TRIAL-1's `presentations` now bind its state and interaction items through two bounded diagram contracts. The sequence resolves the interaction's existing `stateContent`/`transition` references through the content contract; its recommendation does not duplicate that dependency. Generation preserves the previous diagrams and qualified legends, including with recommendations removed and diagram/content selected directly. This exercises declared inputs, not a general reference-resolving presentation service; composition remains a fixed-entry probe.
-5. **After correction.** Exact old references and options remain on ADMISSION-1, with applicable correction context on fresh access. ADMISSION-2 supplies its own metadata and no repeated option, because TRIAL-1 already addresses it. This authoring choice does not restrict options to unanswered next steps; they remain atemporal "find out more" guidance. Earlier invocations retain ADMISSION-1/option provenance. This is intended version-specific behavior, not a continuity defect. More plainly: if A1 says “Foo is X” and options further investigation of X, while A2 corrects it to “Foo is Y,” A1's X option does not become follow-up guidance for A2. The same rule applies to presentation recommendations and other metadata.
-6. **Composition and selected content.** The ordered-pattern entities C-BB/C-BH organize later information; scenario-local role/relation keys remain content addresses. Selecting a wait is a valid input without entity allocation. A subsequent identifying interpretation can introduce an entity grounded in that occurrence. A structured origin address remains an open small extension; the current selector check is not proof of that introduction path.
-
-The mixed-content partition retains the same core semantics with larger correction/qualification units. No new group named Account is needed in either case.
-
-## Recommendations and remaining choices
-
-**Keep now:** content items inside Interpretation content; children as complete investigrams; entity identity outside any authoritative description; explicit qualified content associations; guidance outside architectural content; provenance/indexes/status with their actual owners; three distinct catalogue responsibilities. Do not add a top-level field for every new architectural concept or diagram type. Add a content type or diagram input contract only for a demonstrated explanatory need.
-
-**Settled ownership and remaining contract details:**
-
-1. **Version-specific metadata.** Keep guidance on the investigram whose explanation it extends. Do not move it to a parent, guidance child or independent record merely to preserve its address through correction. Historical metadata remains available with its original investigram; replacements supply their own. This removes the need for a separate guidance lifecycle.
-2. **Content sufficiency, not presentation policy.** Specify meaningful content, qualification, exact references and declared diagram inputs. Representative rendering tests whether those inputs contain enough meaning without inference. General retrieval strategy, legend/detail arrangement and user navigation belong to later presentation work, not another context-selection mechanism in this design. Missing meaning or ambiguous references exposed by an example remain in scope to fix.
-3. **Investigator delivery and metadata qualification.** Preserve applicable investigram qualifications and narrower qualifications where needed. Supplying an option excerpt does not supply the whole investigram or establish complete-target eligibility. Actual investigator deliveries, requestable additional context and exposure remain separate from what a human sees. The bounded fixture now encodes and checks this envelope: all own parts, applicable qualifications and basis/provenance context. This does not settle general context ranking or prove every correction precondition.
-4. **Origin and address namespaces.** The fixture distinguishes `{investigram, contentKey}`, `{investigram, optionKey}` and `{investigram, presentationKey}` in separate collections. Preserve historical references; specify migration only when changing the actual protocol. Add a structured selected-occurrence origin when an introduction example exercises it. It records provenance, not proof of equivalence or delivery.
-
-These are narrower choices than designing a universal knowledge store. Entity supersession/challenge and cause-specific reassessment remain the previously identified future compatibility questions. Full UI, global operation discovery, persistence, a comprehensive catalogue and broader producer migration remain outside this slice.
-
-## What is and is not verified
-
-The [complete-payload pass](structured-account-example/metadata-payload.md) exercises
-investigram-owned options and presentation recommendations in both partitions. Checks
-cover exact namespaces, full versus excerpt delivery, basis/provenance, metadata
-retention through correction and explicit diagram bindings. Trial generation uses
-those bindings and produces the existing diagrams and qualified legends unchanged.
-The shared checks still cover entity allocation bindings, content associations, both
-partitions, correction/access, composition and selectors.
-
-This is a bounded authored protocol, not product acceptance, a live investigation,
-a full diagram catalogue or a general presentation retrieval policy. Only own-investigram
-diagram inputs are exercised. No guidance child or independent guidance lifecycle is
-needed. Review corrected a duplication: the sequence's state-model dependency already
-belongs to its content contract, not a second presentation binding. Recommendation-free
-rendering now exercises this boundary. Existing identity/governing, support-selection and correction-standing
-questions remain open. The [proposal](structured-architectural-accounts-proposal.md)
-and [fixture contracts](structured-account-example/contracts.md) carry this direction inline.
+The [checkers](structured-account-example/README.md#verification) validate authored references,
+qualification delivery, atomicity, exact history, declaration lifecycle, conservative
+reconsideration and diagram/selector inputs. Their source judgments are not mechanically
+proved. No live investigator, supported product API, general cross-investigram renderer,
+performance bound, persistence or migration is demonstrated. The plan must explicitly
+revise the governing correction/exposure model before implementation.

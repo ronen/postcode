@@ -1,31 +1,12 @@
 {
-  "status": "Illustrative access expectations. The later correction is a hypothetical condition, not an accepted result or a claim about Cockatiel.",
-  "source": {
-    "investigram": "ADMISSION-2",
-    "contentKey": "admission-cases",
-    "illustrationIndex": 0
-  },
-  "fixedTarget": {
+  "status": "An exact item reference remains exact; fresh access discloses declarations affecting associated information, not a superseded owning investigram.",
+  "item": {
     "investigram": "TRIAL-1",
     "contentKey": "concurrent-callers"
   },
-  "atCapture": {
-    "targetInvestigramRevision": "no-known-replacement",
-    "exactTargetContent": "TRIAL-1/concurrent-callers"
+  "source": "ADMISSION-2/admission-cases illustration",
+  "projectionRoute": {
+    "entity": "RESULT-Q2"
   },
-  "laterCondition": "A later accepted correction replaces TRIAL-1; no qualified correspondence for its content items is supplied here.",
-  "freshAccess": {
-    "preservedTarget": {
-      "investigram": "TRIAL-1",
-      "contentKey": "concurrent-callers"
-    },
-    "targetInvestigramRevision": "superseded",
-    "notice": "Illustrated account has a replacement; the illustration still targets the original item.",
-    "targetItemRevision": "not-established",
-    "automaticRetarget": false,
-    "reconsiderationOfSourceFromThisSameResultLink": false,
-    "interpretation": "This is linked-account revision disclosure, not a propagated correctness judgment or automatic reassessment."
-  },
-  "exactCapturedAnswer": "Preserve atCapture revision context and original target; option any newer inspection separately.",
-  "exposure": "An account/content key alone is not content delivery. Delivering the target item with its qualifications records exposure to TRIAL-1 without granting complete-target eligibility. Bare revision status does not count as the correction explanation."
+  "noticePolicy": "Include applicable association displacement notices and omissions; a reference is not delivery. No invented later correction in this fixture."
 }

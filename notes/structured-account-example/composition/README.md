@@ -1,6 +1,6 @@
 # Composition probe: where a wrapped execution waits
 
-Exploratory working notes, 2026-11-11. This is a first authored continuation of the
+Exploratory working notes, updated 2026-11-12. This is a first authored continuation of the
 [children variant](../children/README.md), not an adopted design or an executed
 investigation. It tests the [proposal's composition question](../../structured-architectural-accounts-proposal.md#composition-as-a-design-probe).
 It does not change product code or broaden the first implementation scope.
@@ -52,9 +52,8 @@ same claim. The evidence ledger distinguishes them from source inspection.
    mechanical-module availability is a fixture precondition, not demonstrated discovery.
 2. [Composition result](composition-result.json) supplies an orientation root,
    identifying child for the two patterns, and one behavioral child per order.
-3. [Context and bindings](context-and-bindings.json) records delivered own content,
-   allocation, K history disclosure, the retained answer and two checked follow-up
-   designations.
+3. [Context and bindings](context-and-bindings.json) records selected entity projections,
+   allocation, query/result identity and two checked follow-up designations.
    All records continue this children variant's hypothetical Session only.
 
 ```text
@@ -64,8 +63,8 @@ COMPOSITION-RESULT-1       orientation, not a restatement of waiting rules
 └── COMPOSITION-BH-1        breaker outside bulkhead
 ```
 
-Earlier component investigrams are supplied context and exact links, **not adopted
-children** of the new result. Pattern definitions have no sampling/capacity exclusion;
+Earlier component items and declarations are delivered through P/S/R/B projections,
+with exact source provenance, **not adopted children** of the new result. Pattern definitions have no sampling/capacity exclusion;
 behavioral children carry their own applicable sampling, interference and scenario
 conditions. The general pattern does not promise that a wait occurs.
 
@@ -83,8 +82,9 @@ conditions. The general pattern does not promise that a wait occurs.
 The contextual state claim is explicit: **bearer = this item's breaker role,
 category = S, situation = waiting-cut**. It does not allocate another Half-open or a
 universal contextual-identity object. Exact investigram/item/role/situation designation
-suffices to revisit it in this example. A subsequent investigation can introduce a
-entity with that designation as its qualified origin if continuity needs it.
+suffices to revisit it in this example. A subsequent investigation could introduce an
+entity with that designation as its qualified origin if useful. A structured origin
+field and the live follow-up remain to be exercised.
 
 This deliberately tests leaving the new relationships local. Giving every role and
 relation an ID now would simplify cross-item references but require reusable identifying
@@ -98,6 +98,7 @@ waiting relationships are never needed. It shows a smaller representation suffic
 for these two explanations and exact follow-up selection. “Waiting for recovery in
 general” would be a new abstraction with its own qualified investigram, not a rename of W.
 
+<a id="small-experimental-additions-to-the-content-contract"></a>
 ## Small experimental additions to the content contract
 
 The existing [shared envelope](../contracts.md#shared-roles-and-illustrations) is used
@@ -134,6 +135,7 @@ one item namespace avoids inventing that mapping now, but this sample consequent
 does not validate cross-type or cross-investigram role binding. `policyOrder` is likewise
 only the call order; it is not a full component-and-connector structural view.
 
+<a id="nested-selector-grammar-for-this-probe"></a>
 ### Nested selector grammar for this probe
 
 Every nested selection has exactly `investigram`, `contentKey` and `selector`. The first
@@ -152,68 +154,54 @@ assignment selector resolves one situation and exactly one assertion in its
 state assignment, not a transition, every use of S, or a new entity. Merely finding
 the role and category separately is insufficient. Duplicate matching assertions are
 ambiguous and rejected. Keys remain scoped to the addressed item; bare role selectors,
-arbitrary paths, combined selectors and migration to replacements are not defined
+arbitrary paths, combined selectors and implicit retargeting are not defined
 by this probe. Its checker resolves both follow-up selections and rejects malformed
 or nonresolving alternatives. Selection addressing is now exercised; a subsequent
 investigation or entity introduction from it is still not executed.
 
-This does not make an occurrence an independent correction unit. Related-content
-links locate earlier qualified interpretations; they neither adopt them into the tree
-nor imply delivery. This request actually receives the investigrams listed in the ledger.
+These are occurrence addresses, not entity introductions or association declarations.
+Related-content links neither adopt their targets into the tree nor imply delivery.
+Both follow-up probes now name RESULT-Q4 as the context entity for the selected occurrence.
+The selector checker validates addresses; it does not execute a further investigation.
 
-## Retention, correction and access
+## Entity context, history and reconsideration
 
-For this origin-free request, supply the relevant current admission investigram
-ADMISSION-2. Disclose K's reason, qualifications and endpoint references as history;
-retain access to ADMISSION-1 without delivering its interpretation by default.
-ADMISSION-2 is not itself corrected here, so this selection does not require supplying
-the superseded target or claiming complete correction-context delivery. A later
-explicit request for ADMISSION-1 must follow the existing corrected-content rules.
-This is a proposed relevance policy for this question, not a rule to hide competing
-investigrams or omit requested historical context.
+Q3 identifies B from the seeded mechanical module M-bulkhead and supplied source evidence;
+RESULT-Q3 designates its contributions. Mechanical discovery remains a precondition.
+Q4 receives these explicitly selected qualified projections without a navigation origin:
 
-K's substantive explanation records exposure to its reporter TRIAL-1, which is already supplied
-in full. Bare references to the target do not record exposure to ADMISSION-1. The resulting exposure index contains seven investigrams. No new complete-K-context exemption is claimed; earlier
-outputs produced with K retain their own cause-specific exemption. This example
-proposes no new investigram relationship: architectural waiting/composition relations
-are content, not correction metadata.
+| Context entity | Selected information |
+| --- | --- |
+| P | ADMISSION-2's admission association, with full source qualification. |
+| S | DEFINITIONS-1's Half-open identifying association. |
+| R | ROLE-DEFINITIONS-1's shared-instance identity plus TRIAL-1 recovery and interaction. |
+| B | BULKHEAD-DEFINITION-1 identity and BULKHEAD-1 capacity/queue behavior. |
 
-All four composition outputs share the investigation's actual exposure, including
-the identifying child. Item evidence lists explain support; they do not narrow the
-exposure index. If BULKHEAD-1 is later corrected, the applicable reconsideration path
-can flag both cases and the definition child. It establishes neither invalidity nor
-which claim needs changing. Separate evaluations could narrow exposure, at a cost;
-splitting the result tree alone cannot do so.
+The exposure index is P/S/R/B, with exact delivered items/declarations and their generating
+provenance preserved. ADMISSION-1's old admission payload is not delivered by default;
+references in later declarations do not supply it. There is no K record, reporter exposure
+rule or claim of complete-correction-context exemption. Historical content remains explicitly
+requestable under the new delivery rules. Origin-free selection is a relevance example,
+not an exhaustive automatic context policy.
 
-A later consumer receiving just COMPOSITION-DEFINITIONS-1 records exposure to that investigram, not
-its behavioral siblings. That still does not sever the definition investigram's own
-prior-exposure history: if a cause reaches the definition, it can propagate to that
-later consumer too. Narrower direct exposure targets do not prevent this transitive
-path. Here an ordering-only definition shares seven exposure entries with the synthesis;
-a later BULKHEAD-1 or TRIAL-1 correction can leave it flagged despite unchanged
-ordering claims. The current slice has no clearance operation.
+RESULT-Q4 includes orientation, pattern identification and scenario associations. Exact
+captures stay fixed. Later supersession of one association does not rewrite its original
+owner or the result designation; explicit result redesignation is separate. A nested
+occurrence selection delivered from this result creates RESULT-Q4 exposure.
 
-Contrast DEFINITIONS-1: its producing evaluation received only ORIENTATION-0,
-so its consumers avoid the behavioral sibling's correction path without inheriting
-this synthesis's broader context. This ties the [partition guidance](../contracts.md#provisional-partition-default)
-to evaluation boundaries. The distinction concerns relevant correction paths, not
-context volume alone; necessary evidence must not be withheld to reduce warnings.
+Pattern definitions still share Q4's actual generating context. A later supersession on
+B can flag Q4's evaluation/result and reach a consumer receiving an ordering definition
+through its source provenance. Splitting outputs into children does not isolate that path.
+This remains a concrete cost: the definition may need no substantive revision yet receive
+an uncleared warning. Association precision does not automatically provide per-output
+exposure or semantic independence.
 
-This is now a concrete planning risk, not merely an unspecified future convenience.
-Before settling the implementation package, explicitly accept the cost of uncleared
-causes or prioritize a bounded qualified reassessment probe. Finer per-output exposure
-is another design alternative, but changes the governing delivered-context semantics;
-agent-declared evidence or claimed nonreliance cannot silently replace that record.
-Separate evaluations can bound actual delivery at the cost of more orchestration.
-No reassessment or narrower-exposure policy is adopted by these notes.
-
-COMPOSITION-ANSWER-1 captures its selected investigrams, identifying support, basis,
-history disclosure and revision context. Exact access preserves them and the
-original role designations;
-fresh status or selection is separate. A future correction of a case replaces its
-whole investigram, without mutating the old root, another case or its captured diagrams.
-No same-named role or content key auto-migrates to a replacement. Reassessment and
-clearing warnings remain outside this probe.
+Contrast an identity established with less relevant incoming context. A separate evaluation
+can narrow exposure, at an orchestration cost; necessary evidence must not be withheld to
+avoid warnings. Before drafting, choose acceptable conservative warning costs, finer
+exposure/propagation, or a bounded qualified reassessment mechanism. This probe implements
+no clearance or received-cause exemption. The [partition guidance](../contracts.md#provisional-partition-default)
+now treats qualification scope and evaluation boundaries separately.
 
 ## State-change representation remains partial
 
@@ -246,8 +234,8 @@ identities or transfer Half-open between bearers. Captions show the scoped prefi
 the complete qualifications and evidence remain in the linked investigram and this note.
 Rendering is a limited proof of sufficiency, not the proposed presentation system.
 
-Verification: the earlier two partitions still pass their checks and ten malformed
-copies are rejected. This probe passes its additional role, relation, situation,
+Verification: the [current lifecycle and guidance checks](../README.md#verification)
+cover both partitions. This probe passes its additional role, relation, situation,
 delivery and diagram-input checks, rejecting five malformed payload copies plus
 nine invalid nested selections (including a selection with ambiguous target data).
 Mermaid renders
@@ -275,6 +263,6 @@ arrows; they remain explicit, inspectable content in each step.
 
 The first bounded capability can still be admission → trial → correction. Composition
 has exposed additional content/addressing needs without demonstrating a new core
-identity type is necessary. Interpreted identity guarantees, support-selection bounds,
-interpretive Lens options and correction standing remain open. This fixture exercises
+identity type is necessary. Identity/migration guarantees, support-selection bounds,
+interpretive Lens options, declaration standing and reconsideration precision remain open. This fixture exercises
 neither end-to-end investigation nor the current API's acceptance of these payloads.

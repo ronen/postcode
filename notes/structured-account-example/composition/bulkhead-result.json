@@ -1,9 +1,6 @@
 {
-  "illustration": "Authored composition design probe continuing only the children variant hypothetical Session; not supported application input.",
+  "illustration": "Authored proposed contribution bundle, not product input or a live investigator. Investigrams retain provenance; association declarations organize entity and query-result information. The initial admission omission remains deliberate.",
   "result": {
-    "rootInvestigram": {
-      "submittedInvestigram": "bulkhead-result"
-    },
     "investigrams": [
       {
         "key": "bulkhead-result",
@@ -11,14 +8,6 @@
         "referents": [
           {
             "introducedEntity": "bulkhead"
-          }
-        ],
-        "contentAssociations": [
-          {
-            "role": "describes",
-            "subject": {
-              "introducedEntity": "bulkhead"
-            }
           }
         ],
         "qualifications": [
@@ -48,7 +37,65 @@
           }
         ],
         "followupOptions": [],
-        "presentations": []
+        "presentations": [],
+        "associationSpecifications": [
+          {
+            "key": "orientation",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "bulkhead"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "bulkhead-result"
+                  },
+                  "contentKey": "orientation"
+                }
+              }
+            ]
+          },
+          {
+            "key": "result",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "query-result"
+              },
+              "role": "result"
+            },
+            "members": [
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "bulkhead-result"
+                  },
+                  "associationKey": "orientation"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "bulkhead-definition"
+                  },
+                  "associationKey": "bulkhead-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "bulkhead-admission"
+                  },
+                  "associationKey": "capacity-and-queue"
+                }
+              }
+            ]
+          }
+        ]
       },
       {
         "key": "bulkhead-definition",
@@ -56,15 +103,6 @@
         "referents": [
           {
             "introducedEntity": "bulkhead"
-          }
-        ],
-        "contentAssociations": [
-          {
-            "role": "identifies",
-            "subject": {
-              "introducedEntity": "bulkhead"
-            },
-            "contentKey": "bulkhead-description"
           }
         ],
         "qualifications": [
@@ -93,7 +131,29 @@
         ],
         "children": [],
         "followupOptions": [],
-        "presentations": []
+        "presentations": [],
+        "associationSpecifications": [
+          {
+            "key": "bulkhead-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "bulkhead"
+              },
+              "role": "identifies"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "bulkhead-definition"
+                  },
+                  "contentKey": "bulkhead-description"
+                }
+              }
+            ]
+          }
+        ]
       },
       {
         "key": "bulkhead-admission",
@@ -101,14 +161,6 @@
         "referents": [
           {
             "introducedEntity": "bulkhead"
-          }
-        ],
-        "contentAssociations": [
-          {
-            "role": "describes",
-            "subject": {
-              "introducedEntity": "bulkhead"
-            }
           }
         ],
         "qualifications": [
@@ -132,9 +184,39 @@
         ],
         "children": [],
         "followupOptions": [],
-        "presentations": []
+        "presentations": [],
+        "associationSpecifications": [
+          {
+            "key": "capacity-and-queue",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "bulkhead"
+              },
+              "role": "describes"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "bulkhead-admission"
+                  },
+                  "contentKey": "capacity-and-queue"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
-    "investigramRelationships": []
+    "queryInvocation": "Q3",
+    "queryResult": {
+      "introducedEntity": "query-result"
+    },
+    "compositionRoots": [
+      {
+        "submittedInvestigram": "bulkhead-result"
+      }
+    ]
   }
 }
