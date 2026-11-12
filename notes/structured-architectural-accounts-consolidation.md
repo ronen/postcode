@@ -48,7 +48,7 @@ unique discovery, or equivalence of independently allocated entities.
 | Presentation recommendation | Judgment of usefulness, not permission to render compatible content. |
 | Context delivery | Exact material supplied, including ownership, basis, qualification and completeness. |
 | Association exposure | Exact association uses/content actually delivered, retaining route, source qualification and generating provenance. |
-| Inventory exposure | A separately supplied availability snapshot with entity, scope/coverage and actual delivery position; its entries do not imply delivery of listed content. |
+| Inventory/selection-scope exposure | Dependency on an acquired availability inventory or content selected by an explicit scope, with coverage and actual delivery position. A scope-selected delivery need not present a separate list; bare entries do not deliver listed content. |
 | Exposure index | Indexes actual content and inventory deliveries, with entity/query-result IDs organizing access. Qualified guidance and reason delivery also retain source exposure. Product `citation` indexes remain investigram-based until adoption. |
 | Support | Attributed grounds for a claim, not inferred from delivery alone. |
 
@@ -146,9 +146,9 @@ A result can need reconsideration because its producer received subsequently dis
 information. It can also need reconsideration because a constituent association was later
 displaced—even when its producer created that entity and never received it as context.
 The second route is designated membership, not fabricated exposure or the fixed child tree.
-A third route is an actual inventory acquisition: a later matching entry could have changed
-what the investigator chose to inspect. Receiving a description or selecting fixed result
-members does not establish that inventory dependency.
+A third route is availability/selection scope: a later matching entry could have changed an
+acquired inventory or the content selected by an explicit scope. A description acquired by
+exact reference or fixed result membership does not establish that scope dependency.
 
 The executable prototype tracks exact delivered association uses. Entity identity alone
 cannot expose an evaluation to information created later. Item excerpts record their route;
@@ -229,19 +229,27 @@ same architectural diagrams and assertions remain authored content.
 
 ## Open decisions and verification limits
 
-The [revised addition probe](structured-account-example/additions.md) distinguishes delivered
-association content from an explicitly acquired inventory. Description-only context does not
-imply an inventory; a separate availability request records entity, scope and delivery position.
+The [revised addition probe](structured-account-example/additions.md) distinguishes exact
+association content from availability/selection scope. A description supplied by reference does
+not imply a scope guarantee. Initial descriptions selected by scope do carry that dependency,
+even without a separate list request; `selectionScope` records the guarantee with actual delivery
+time. Explicit inventory acquisition also records entity, scope and position.
 The fixture lists all retained association addresses/roles in scope, including displaced ones,
 without delivering their content or interpretive reasons. New matching entries affect prior
 inventory recipients; exact supersession/withdrawal still affects actual association uses.
 
 Fixed designation membership is not inventory exposure. Merely adding another description of
 S does not mark a result containing an earlier description; its producer can still be affected
-through an actually acquired inventory. The original seven evaluations and eight designations
-now acquire no causes from either addition. Adding an explicit inventory reader and downstream
-result consumer yields two affected evaluations/designations, one direct and one inherited,
-in both partitions. The earlier broad 5/7 and 7/8 comparison remains reproducible.
+through an actually acquired inventory. The original by-reference seven-evaluation/eight-designation control acquires no causes from
+either addition. Adding an inventory reader and consumer gives two affected evaluations/results.
+This does not estimate realistic warning frequency: a [Q2 discovery branch](structured-account-example/acquisition.md)
+that lists associations before retrieving content reaches 3/7 evaluations and 4/8 designations.
+The earlier broad 5/7 and 7/8 comparison remains reproducible. Both partitions agree.
+
+A qualified declaration reason supplied as context creates exact exposure to that declaration;
+later displacement can affect its recipient directly. Referenced members are not delivered
+or made eligible for reuse/correction merely by the reason. Fresh disclosures follow later
+displacement of the supplied declaration too, without implying reinstatement of its predecessor.
 
 Removing implicit entity-wide exposure and unsolicited addition reasons is a structural
 refinement, not targeted suppression or semantic clearance. It leaves a coverage limit:
@@ -261,7 +269,10 @@ past exposure. No reverse-lookup API or concern declaration is implemented. See 
 
 Before drafting: settle identity/migration depth, result designation shape, support selection,
 first-delivery inventory coverage and delivery bounds, declaration challenge/reinstatement,
-and first-delivery scope. Carry the assessment/propagation deferrals explicitly. Entity merge/split remains a separate
+and first-delivery scope. Architectural coverage dependencies are separately unresolved:
+ADMISSION-1 already claims runtime admission coverage, which is not the same as completeness
+of a retained-information selection. No standing coverage subscription is introduced by this
+pass. Carry the assessment/propagation deferrals explicitly. Entity merge/split remains a separate
 qualified identity probe; association displacement does not automatically merge IDs or
 redistribute their histories.
 

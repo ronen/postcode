@@ -109,3 +109,9 @@ The separate [addition probe](../additions.md) runs against both partitions. Its
 0/7 original evaluations and 0/8 designations acquire either addition cause, since they had
 no inventory exposure. An explicit inventory reader and its downstream recipient are affected.
 Child qualification boundaries do not remove those actual generating-evaluation exposures.
+
+The [acquisition refinements](../acquisition.md), with local [inputs](acquisition-probes.json)
+and [report](acquisition-report.json), exercise initial content selected by scope, a Q2 that
+actually discovers then retrieves information (3/7 evaluations and 4/8 designations), and
+later displacement of a substantively supplied declaration reason. They do not add a standing
+architectural coverage dependency or turn the by-reference zero into a warning-rate estimate.

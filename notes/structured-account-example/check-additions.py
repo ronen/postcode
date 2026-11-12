@@ -382,14 +382,15 @@ def check_inventory(directory, legacy, write=False):
     return report
 
 
-legacy_start = rejected_count
-mixed_legacy = check_legacy(BASE)
-children_legacy = check_legacy(BASE / 'children')
-legacy_rejections = rejected_count - legacy_start
-current_start = rejected_count
-mixed = check_inventory(BASE, mixed_legacy, '--write' in sys.argv)
-children = check_inventory(BASE / 'children', children_legacy, '--write' in sys.argv)
-for name in ['complementary', 'behavioral']:
-    for group in ['independentComparisons', 'explicitInventoryComparisons']:
-        assert mixed['associationInventoryPolicy'][group][name]['counts'] == children['associationInventoryPolicy'][group][name]['counts']
-print(f'Association/inventory scope, timing, acquisition, exact history and displacement checks pass; {rejected_count - current_start} malformed inventory/reuse cases rejected; {legacy_rejections} historical broad-policy disclosure negatives retained.')
+if __name__ == '__main__':
+    legacy_start = rejected_count
+    mixed_legacy = check_legacy(BASE)
+    children_legacy = check_legacy(BASE / 'children')
+    legacy_rejections = rejected_count - legacy_start
+    current_start = rejected_count
+    mixed = check_inventory(BASE, mixed_legacy, '--write' in sys.argv)
+    children = check_inventory(BASE / 'children', children_legacy, '--write' in sys.argv)
+    for name in ['complementary', 'behavioral']:
+        for group in ['independentComparisons', 'explicitInventoryComparisons']:
+            assert mixed['associationInventoryPolicy'][group][name]['counts'] == children['associationInventoryPolicy'][group][name]['counts']
+    print(f'Association/inventory scope, timing, acquisition, exact history and displacement checks pass; {rejected_count - current_start} malformed inventory/reuse cases rejected; {legacy_rejections} historical broad-policy disclosure negatives retained.')

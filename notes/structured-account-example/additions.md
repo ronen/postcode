@@ -3,9 +3,11 @@
 Updated 2026-11-12. Exploratory authored boundary experiment, not an adopted protocol,
 live investigation, product implementation or qualified clearance operation.
 
-**Current result:** either addition now marks **0/7 original evaluations and 0/8 original
-result designations**, compared with 5/7 and 7/8 under the earlier entity-wide rule. None
-of those original evaluations received an inventory. An extended branch explicitly requests
+**By-reference boundary control:** either addition marks **0/7 original evaluations and 0/8
+original result designations**, compared with 5/7 and 7/8 under the earlier entity-wide rule. None
+of those original evaluations received an inventory or scoped context selection. This is not
+an estimate of realistic warning frequency. The [discovery follow-up](acquisition.md) adds Q2
+inventory discovery and content retrieval to that baseline and reaches **3/7 and 4/8**. An extended branch explicitly requests
 an inventory of Half-open's associations, then consumes that investigation's result: either
 addition marks **2/9 evaluations and 2/10 designations**, one directly and one by inherited
 producer provenance. Both partitions give the same counts.
@@ -37,8 +39,10 @@ means no new cause from either tested addition, not that all baseline results ar
 ## Current boundary contract
 
 **Association exposure** records the exact association uses and qualified content actually
-supplied. Initial identifying information is such a delivery; it does not silently include
-all other information about the entity, nor a subscription to future associations. Exact
+supplied. Initial identifying information named by exact reference is such a delivery; it
+does not silently include all other entity information. Initial context selected by scope,
+such as all undisplaced identifying descriptions, additionally records that selection dependency
+and time. See the [acquisition refinement](acquisition.md); a separate list need not be shown. Exact
 supersession/withdrawal continues to affect those recipients and exact result memberships.
 
 **Inventory exposure** records a separately requested availability snapshot, with its entity,
@@ -77,7 +81,9 @@ pass its concern to its results and their actual recipients. This prevents the o
 trigger from reappearing through designation membership.
 
 Automatic delivery of every other association's reason is removed. Relevant displacement
-and inherited-cause context for actually supplied material still accompanies it. For example,
+and inherited-cause context for actually supplied material still accompanies it. A substantively
+supplied declaration reason exposes that exact declaration to later displacement, without
+supplying its referenced members or full eligibility context. For example,
 freshly receiving Q-inventory's result after an addition discloses its known cause; merely
 requesting S's original description does not pull in every added S association. No blanket
 exemption for interpretive reasons has been introduced.
@@ -129,8 +135,10 @@ The revised mechanism intentionally does not manufacture that unreceived invento
 its marks do not guarantee that every materially affected explanation has been found.
 
 No automatic live “all information about S” designation is modeled. A future completeness
-claim or live collection needs an explicit scope/dependency, not an implication from a fixed
-membership list. The human accepts imperfect coverage. Investigator-directed propagation
+claim or live collection needs explicit treatment, not an implication from a fixed membership
+list. ADMISSION-1 already contains an architectural coverage claim; whether to give such claims
+a standing future-information dependency is now a separate open design question. Runtime-domain
+coverage is not the same as completeness of a scoped retained-information selection. The human accepts imperfect coverage. Investigator-directed propagation
 could later complement structural causes: find candidate prior results through the exposure
 index, inspect their question/content/support, then assert a qualified concern for an exact
 result and new finding. A candidate is not an impact judgment; a concern would not fabricate

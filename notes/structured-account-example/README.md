@@ -40,6 +40,7 @@ provide the investigation background.
 | [Follow-up](followup-result.json) | Q2 introduces scenario roles and trial behavior, supersedes P's admission association, redesignates RESULT-Q1 and designates RESULT-Q2. |
 | [Lifecycle probes](lifecycle-probes.json) | Earlier-result consumer, fuller description, declaration-only reuse, and withdrawal. |
 | [Generated report](lifecycle-report.json) | Exact qualified projections, displacement links, exposure and distinct evaluation/designation reconsideration causes in the displacement-only regression. |
+| [Acquisition refinements](acquisition.md) | Scope-selected initial content, discovery before retrieval, and exact exposure to delivered declaration reasons; coverage dependency remains unresolved. |
 | [Addition probe](additions.md) | Association/inventory exposure comparison in both partitions: original readers no longer acquire addition causes; an explicit inventory reader and its consumer do. Earlier broad counts remain reproducible. |
 | [Children variant](children/README.md) | Same behavior with appropriately separated qualification boundaries. Its own seed/ledger/probes/reports describe a separate hypothetical Session. |
 | [Composition](composition/README.md) | Two wrapping orders, local roles/relations/situations and exact follow-up selectors. |
@@ -74,7 +75,10 @@ submission already answers it.
 
 Entity and query-result IDs organize access. Actual association uses and qualified content
 are recorded separately from explicitly requested inventories with scope/coverage and time.
-A description, fixed result membership or bare subject reference does not imply an inventory.
+A by-reference description, fixed result membership or bare subject reference does not imply
+an inventory. Content selected by explicit scope also records a scope/time dependency, even
+when no separate list is requested. Substantively delivered declaration reasons expose their
+own exact declaration, without delivering every referenced member.
 Listing an association does not deliver its content; substantive summaries/options/reasons
 still require content provenance. Exact displacement and inherited-cause context remains
 required, without automatically supplying every unrelated addition's reason.
@@ -148,6 +152,7 @@ Run from the worktree root with Python 3:
 python3 notes/structured-account-example/check-fixtures.py
 python3 notes/structured-account-example/check-guidance.py
 python3 notes/structured-account-example/check-additions.py
+python3 notes/structured-account-example/check-acquisition.py
 python3 notes/structured-account-example/composition/check-and-render.py
 python3 notes/structured-account-example/render-overviews.py
 ```
@@ -164,7 +169,11 @@ separate acquisition timing in both partitions. It rejects 26 malformed inventor
 or ineligible-reuse cases plus four historical broad-policy disclosure negatives. Its `--write`
 regenerates both comparison reports. Modes are host-selected experiments, not investigator
 options to suppress warnings. The revised baseline is 0/7 evaluations and 0/8 designations;
-explicit inventory branches reach 2/9 and 2/10, one direct and one inherited.
+explicit inventory branches reach 2/9 and 2/10, one direct and one inherited. These are boundary
+controls, not warning-rate estimates. The acquisition checker adds scope-selected descriptions
+and a discovery-before-retrieval Q2 (3/7 evaluations, 4/8 designations), plus direct exposure to
+supplied declaration reasons. It rejects 22 malformed/ineligible cases; `--write` regenerates
+its condensed reports in both partitions.
 
 The guidance checker rejects 26 malformed metadata/address/request cases and verifies
 both trial diagrams resolve identically without recommendations. Composition checks

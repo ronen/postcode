@@ -125,12 +125,27 @@ class Model:
         return entities
 
     @staticmethod
+    def delivered_declarations(projection):
+        """Exact declarations supplied as uses or substantive disclosures, not nested refs."""
+        return set(projection['associationUses']) | set(projection['notices'])
+
+    @staticmethod
     def inventory_matches(projection, declaration):
-        """Availability exposure has an explicit entity/role scope, not content provenance."""
-        inventory = projection.get('inventory')
-        return bool(inventory and declaration['operation'] != 'withdrawal'
-                    and inventory['entity'] == declaration['target']['entity']['entity']
-                    and declaration['target']['role'] in inventory['roles'])
+        """Scope dependencies arise from a list OR content acquired by an explicit scope."""
+        return declaration['operation'] != 'withdrawal' and any(
+            scope and scope['entity'] == declaration['target']['entity']['entity']
+            and declaration['target']['role'] in scope['roles']
+            for scope in [projection.get('inventory'), projection.get('selectionScope')])
+
+    def scoped_associations(self, entity, roles, as_of, undisplaced=False):
+        allowed = {'result'} if self.entities[entity]['kind'] == 'query-result' else {'identifies', 'describes'}
+        assert isinstance(roles, list) and roles and all(isinstance(r, str) for r in roles)
+        assert len(set(roles)) == len(roles) and set(roles) <= allowed, 'invalid scope roles'
+        declarations = {r: d for r, d in self.declarations().items() if self.accepted_at(r) <= as_of}
+        displaced = {address(x, 'associationKey') for d in declarations.values() for x in d.get('displaces', [])}
+        return [r for r, d in sorted(declarations.items())
+                if d['operation'] != 'withdrawal' and d['target']['entity']['entity'] == entity
+                and d['target']['role'] in roles and (not undisplaced or r not in displaced)]
 
     def project(self, selection, as_of=None):
         """Exact delivered information and organizing identities; no future content is inferred."""
@@ -139,7 +154,17 @@ class Model:
         entity = selection['entity']
         assert entity in self.entities
         ds, its, uses, opts = set(), set(), set(), {}
-        for ref in selection.get('associations', []):
+        association_selection = list(selection.get('associations', []))
+        selection_scope = None
+        if 'scopeSelection' in selection:
+            scope = selection['scopeSelection']
+            assert set(scope) == {'roles', 'standing'} and scope['standing'] == 'undisplaced', 'unsupported selection scope'
+            assert not association_selection and not selection.get('items') and 'inventory' not in selection, 'ambiguous acquisition mode'
+            selected = self.scoped_associations(entity, scope['roles'], as_of, undisplaced=True)
+            association_selection = [{'investigram': r[0], 'associationKey': r[1]} for r in selected]
+            selection_scope = {'entity': entity, 'roles': sorted(scope['roles']),
+                               'coverage': 'all-undisplaced-in-scope', 'asOfAcceptance': as_of}
+        for ref in association_selection:
             key = address(ref, 'associationKey')
             assert self.declarations()[key]['target']['entity']['entity'] == entity, 'association belongs to another entity'
             assert self.accepted_at(key) <= as_of, 'association did not exist at delivery'
@@ -188,23 +213,18 @@ class Model:
                 'items': {label(x): self.qualified(x[0], self.items()[x]) for x in sorted(its)},
                 'options': opts, 'notices': notices,
                 'noticeLimits': 'Includes direct displacement and inherited concerns known at this delivery position. Notices preserve standing and qualified reasons, not replacement-member delivery, adequate understanding, clearance, or automatic redesignation.'}
+        if selection_scope is not None:
+            # The scope guarantee accompanies the selected content; no unseen list is invented.
+            projection['selectionScope'] = selection_scope
         if 'inventory' in selection:
             scope = selection['inventory']
             assert set(scope) == {'roles'}, 'inventory requires explicit supported scope'
-            roles = scope['roles']
-            allowed = {'result'} if self.entities[entity]['kind'] == 'query-result' else {'identifies', 'describes'}
-            assert isinstance(roles, list) and roles and all(isinstance(r, str) for r in roles)
-            assert len(set(roles)) == len(roles) and set(roles) <= allowed, 'invalid inventory roles'
-            # Mechanical list of retained association addresses, including displaced ones.
-            # No reasons, summaries, status judgments, member content or producer exposure.
+            refs = self.scoped_associations(entity, scope['roles'], as_of)
             projection['inventory'] = {
-                'entity': entity, 'roles': sorted(roles), 'coverage': 'all-retained-in-scope',
+                'entity': entity, 'roles': sorted(scope['roles']), 'coverage': 'all-retained-in-scope',
                 'asOfAcceptance': as_of,
                 'entries': [{'association': {'investigram': r[0], 'associationKey': r[1]},
-                             'role': d['target']['role']}
-                            for r, d in sorted(self.declarations().items())
-                            if self.accepted_at(r) <= as_of and d['operation'] != 'withdrawal'
-                            and d['target']['entity']['entity'] == entity and d['target']['role'] in roles]}
+                             'role': self.declarations()[r]['target']['role']} for r in refs]}
         if self.addition_policy == 'conservative':
             projection['noticeLimits'] += ' Conservative mode also discloses unsupplied additions in the explicit entity scope, without claiming semantic novelty or displacement.'
             about = self.projection_entities(projection)
@@ -216,7 +236,12 @@ class Model:
         status = self.reconsideration(as_of)
         by_label = {label(r): r for r in self.declarations()}
         while True:
-            known = set()
+            # A substantive notice supplies its own declaration. Fresh access must
+            # disclose later displacement of that declaration too, not just its producer.
+            delivered = self.delivered_declarations(projection)
+            known = {label(r) for r, d in self.declarations().items()
+                     if self.accepted_at(r) <= as_of and
+                     any(label(address(x, 'associationKey')) in delivered for x in d.get('displaces', []))}
             for ref in uses:
                 known.update(status['designations'].get(label(ref), {}).get('needsReconsideration', []))
             for source in self.projection_sources(projection):
@@ -239,6 +264,9 @@ class Model:
             assert projection['associationUses'] == expected['associationUses'], 'missing or altered association-use provenance'
             assert projection['notices'] == expected['notices'], 'missing or altered known-cause disclosure at delivery'
             assert projection.get('inventory') == expected.get('inventory'), 'missing or altered inventory delivery'
+            assert projection.get('selectionScope') == expected.get('selectionScope'), 'missing or altered selection-scope delivery'
+            if 'scopeSelection' in selection:
+                assert projection['declarations'] == expected['declarations'] and projection['items'] == expected['items'], 'incomplete scope-selected content'
         assert request['declaredMeaning']['question'] and request['declaredMeaning']['scope'], 'missing declared question/scope'
         qid = request['id']
         subject = request['subject']
@@ -438,11 +466,11 @@ class Model:
             for qid in queries:
                 if self.addition_policy == 'inventory':
                     direct = any(self.inventory_matches(p, declaration) or
-                                 bool(set(p['associationUses']) & {label(r) for r in displaced})
+                                 bool(self.delivered_declarations(p) & {label(r) for r in displaced})
                                  for p in prior[qid])
                 else:
                     direct = any(target_entity in self.projection_entities(p) if addition else
-                                 bool(set(p['associationUses']) & {label(r) for r in displaced})
+                                 bool(self.delivered_declarations(p) & {label(r) for r in displaced})
                                  for p in prior[qid])
                 if qid != producer and direct:
                     eval_causes[qid].add(cid)

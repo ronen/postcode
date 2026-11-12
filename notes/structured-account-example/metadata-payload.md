@@ -56,8 +56,10 @@ meaning, scope and parameters. Bare subject IDs and human browsing create no exp
 Inventory exposure is separate: an explicit availability request records scope/coverage,
 entries and actual delivery position. The [addition probe](additions.md) lists mechanical
 association addresses/roles, without delivering member content or producing-investigation
-reasons. Requesting a listed association later creates content exposure. Descriptions and
-fixed result membership do not imply inventory acquisition. Substantive listing summaries
+reasons. Requesting a listed association later creates content exposure. By-reference descriptions and
+fixed result membership do not imply inventory acquisition. Descriptions selected by a declared
+scope, rather than exact references, also record that selection guarantee and position; they
+need not be preceded by a separately displayed inventory. Substantive listing summaries
 would themselves require qualified content exposure.
 
 Q2's subject/context entity is RESULT-Q1. Its option address remains
@@ -67,7 +69,8 @@ members it will supersede. Ordinary option delivery need not do that; the histor
 owner's complete metadata is no longer an eligibility unit.
 
 Fresh projections disclose relevant qualified displacement reasons, whose references
-do not themselves deliver every old/new member. Captured answers remain unchanged.
+do not themselves deliver every old/new member. The supplied declaration/reason is itself an
+exact exposure for later displacement, distinct from its referenced members and eligibility. Captured answers remain unchanged.
 Generated [lifecycle reports](children/lifecycle-report.json) show both fresh historical
 admission access and selected new admission access, with exact source provenance.
 There is no automatic current-definition selection or whole-source superseded status.

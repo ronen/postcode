@@ -199,9 +199,13 @@ excerpt without its declaration, missing members and stripped qualification/basi
 This replaces, rather than quietly weakens, the current whole-investigram delivery rule and
 requires explicit adoption. Exceptions for partial/narrow reassociation are not implemented.
 
-Fresh delivery discloses later declarations affecting exact selected association uses,
-with reason, ownership and qualifications. References in a notice do not deliver those
-members. Further acquisition remains explicit. An exact captured answer stays unchanged.
+Fresh delivery discloses applicable declarations with reason, ownership and qualifications.
+A substantively supplied declaration is itself an exact exposure, so its later displacement can
+create a direct cause. Bare references inside that declaration do not deliver their targets or
+members. The fixture derives declaration exposure from its captured qualified disclosures;
+full-member eligibility remains separate. Fresh access also discloses subsequent displacement
+of those supplied declarations, without retroactive warnings or automatic reinstatement.
+Further acquisition remains explicit. An exact captured answer stays unchanged.
 
 ### Identifying support, alternatives and acquisition
 
@@ -227,13 +231,20 @@ that path needs an explicit context-entity/delivery contract rather than being s
 in the new model. Mention inventory, association target and evidential support are distinct.
 
 Specify acquisition at the investigation boundary, leaving dialog tools to implementation.
-An investigation receives its subject, question and explicitly selected initial context, and
-can discover/acquire further qualified information. Identifying support can be supplied up
-front without an inventory. A separate “what else is known?” acquisition supplies an inventory
-of associations with explicit scope and captured retained-state position. It establishes
-inventory exposure, not delivery of the listed content. Requesting a particular association
-then establishes content exposure. No automatic delivery of every other association's reason.
-General relevance ranking and initial-selection policy remain outside this bounded contract.
+An investigation receives its subject, question and selected initial context, and can acquire
+further qualified information. Selection by exact association reference creates content exposure
+only. Selection by scope—for example all undisplaced identifying descriptions of S—also records
+the scope guarantee and delivery position, even without a separately requested inventory list.
+A matching later description could have changed the supplied selection. Do not invent an unseen
+list as delivered content, or erase the actual selection dependency because the coordinator made
+it up front. The fixture's `selectionScope` captures one complete undisplaced entity/role policy;
+it is not an authority ranking or general initial-context algorithm.
+
+A separate “what else is known?” acquisition supplies an inventory with scope/coverage and
+captured position, without delivering listed content. Requesting a particular association then
+establishes content exposure. Scope-selected content and explicit inventory acquisition both
+create selection-opportunity dependencies. No automatic delivery of every other association's
+reason. General ranking and partial selection remain outside this bounded contract.
 
 Available, requested and delivered information remain distinct. Mechanical inventory entries
 record availability; substantive listing summaries would additionally be delivered interpretive
@@ -272,8 +283,9 @@ The reason explains it; factual-error classification is not required to trigger 
 The warning is not invalidation, proven reliance, or automatic rejection of an account.
 The [revised addition probe](structured-account-example/additions.md) distinguishes
 **association exposure** from **inventory exposure**. Later additions affect earlier inventory
-recipients when the new association falls within the inventory's scope. Merely receiving a
-definition, another association, or a fixed result containing it is not inventory exposure.
+recipients when the new association falls within an acquired inventory's or content-selection
+scope. Receiving a definition by exact reference, or a fixed result containing it, does not by
+itself imply that scope dependency. Receiving all definitions selected by a declared scope does.
 The cause is the exact new declaration; it does not claim that new content was received earlier.
 
 The fixture lists all retained association addresses/roles for an entity and selected roles,
@@ -282,11 +294,15 @@ also introduces an entry and can affect that inventory. Withdrawal preserves the
 entry, so it affects exact content recipients but not this inventory's membership. Current-only,
 status-bearing, ranked or partial inventories need their own explicit change/coverage rules.
 
-Neither tested addition now affects any of the original seven evaluations or eight designations;
-none received an inventory. A separate inventory reader and recipient of its result are both
-marked: one direct and one inherited path, 2/9 evaluations and 2/10 designations. The earlier
-entity-wide 5/7 and 7/8 counts are reproduced as a historical comparison, not the current policy.
-No targeted suppression or semantic harmlessness assertion is used.
+The original by-reference boundary control remains 0/7 evaluations and 0/8 designations for
+either tested addition; none acquired an inventory or content-selection scope. This is not a
+realistic warning-rate estimate. A separate inventory reader and its result consumer give 2/9
+and 2/10. In the [discovery follow-up](structured-account-example/acquisition.md), Q2 actually
+lists S's available associations and retrieves selected content: either addition then reaches
+3/7 evaluations and 4/8 designations. A separate scope-selected identifying-context probe also
+reacts to another identifying description while its exact-reference counterpart does not.
+The older entity-wide 5/7 and 7/8 counts remain a historical comparison. No targeted suppression,
+semantic harmlessness assertion or empirical frequency claim is used.
 
 Three paths matter:
 
@@ -296,9 +312,9 @@ Three paths matter:
 2. **Designated result membership.** Q may itself create an entity and its description. A
    later change to an association included in RESULT-Q can affect that result even though
    Q had no incoming exposure to its newly created entity. Do not fabricate such exposure.
-3. **Inventory exposure.** Q requests an availability inventory; a later matching association
-   could have changed its choice of what to inspect. Its outputs can inherit that concern.
-   A fixed result membership list is not a live inventory or an implicit completeness claim.
+3. **Availability/selection scope.** Q acquires an inventory or receives content selected by
+   a declared scope, initially or later. A matching association could have changed the selection.
+   Its outputs can inherit that concern. Fixed result membership alone is not such a scope.
 
 Exposure uses the actual association versions delivered, not all information associated
 with the same entity. The entity remains the organizing context and discovery identity.
@@ -358,6 +374,21 @@ of a cause through context trimming. A supersession can be contested. Competing 
 remain available; the fixture does not select a winner by timestamp. Withdrawal declarations
 are not themselves associations to supersede in this bounded prototype. Reinstatement and
 challenging the standing of declarations remain design questions, not silent undo.
+
+### Architectural coverage dependency — unresolved
+
+ADMISSION-1's admission item already claims coverage of runtime admission cases. New waiting
+information could challenge that claim even if added without superseding it and without any
+prior inventory/scope acquisition. The current repairs do not assign that claim a standing
+dependency on future P/describes associations. Completeness of a selection of retained
+information is distinct from completeness of an architectural account of program behavior.
+
+Decide separately whether a coverage claim should declare a standing change scope, with what
+precision and effect on result membership, or whether qualified later interpretation should
+identify that impact. Broad P/describes scope admits unrelated information; narrower admission
+semantics require design. Investigator-directed propagation remains deferred, but its relationship
+to this case deserves discussion. No new coverage field or automatic standing dependency has
+been adopted by the scope-selection/declaration-exposure fixes.
 
 ### Deferred investigator-directed propagation, reassessment and scheduling
 
@@ -539,7 +570,8 @@ The planning package would need explicit treatment of:
 | Entity and result identity | Common reference mechanism; settle invocation/evaluation/reuse guarantees and first migration depth. No semantic deduplication. |
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
 | Support and eligibility | Fixture delivers full targeted declarations/members with qualifications; settle bounded acquisition, competing definitions and missing support. |
-| Reconsideration | Distinguish actual association and inventory exposure; additions trigger matching prior inventories, not every entity use or fixed result membership. Refined probe removes the earlier broad marks. Set first-delivery inventory coverage explicitly; richer inventories remain open. Investigator-directed propagation, suppression, reassessment/clearance and scheduling are deferred. |
+| Reconsideration | Distinguish actual association and inventory exposure; additions trigger matching prior inventories, not every entity use or fixed result membership. Refined probe removes the earlier broad marks. Record both inventory and scope-selected content acquisition; exact delivered declaration reasons are exposure too. Set first-delivery coverage explicitly; richer selectors remain open. Investigator-directed propagation, suppression, reassessment/clearance and scheduling are deferred. |
+| Architectural coverage dependencies | ADMISSION-1 already claims admission coverage. Decide whether such claims need a standing future-information dependency; runtime-domain completeness is not retained-inventory completeness. No automatic rule added. |
 | Declaration standing | Competing declarations are retained; challenge/reinstatement and result selection policy remain open. Do not infer revocation from a newer bundle. |
 | Entity merge/split | Qualified correspondence and preserved old IDs; supersession/reassignment effects remain a design probe, not delivered automatically by association operations. |
 | First capability | Choose delivered relationship kinds, contextual selection depth, mechanical compatibility and which composition/diagram probes become implementation acceptance tests. |

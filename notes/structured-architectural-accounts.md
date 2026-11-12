@@ -1743,3 +1743,30 @@ scheduling stay deferred beyond the first capability. The refined probe does not
 a need to bring them forward. No exhaustive search obligation, new payload field, declaration
 operation, product behavior or governing change is introduced by this documentation pass.
 Historical dated discussion and the labeled earlier entity-wide experiment remain intact.
+
+## 2026-11-12 — Review fixes: acquisition scope and declaration-reason exposure
+
+The human authorized the accepted review fixes before discussing architectural coverage
+dependencies. Initial content selected by explicit scope now records its selection guarantee
+and delivery position, without claiming that a separate inventory list was supplied. Exact
+reference selection stays narrower. The bounded policy selects all undisplaced associations
+in the entity/role scope; it is not an authority ranking. The probe contrasts identical initial
+content acquired by these two routes, then adds another identifying description.
+
+A qualified declaration reason supplied as context now contributes exact direct exposure to
+that declaration. Its later displacement reaches the recipient even when the producer is
+unaffected. Nested bare references do not deliver their targets or establish full-member
+eligibility. Fresh disclosure includes later displacement of the supplied declaration too;
+no predecessor is automatically reinstated.
+
+The [acquisition probes](structured-account-example/acquisition.md) add a Q2 discovery/retrieval
+branch: each tested addition marks 3/7 evaluations and 4/8 designations in both partitions.
+The original 0/7 and 0/8 baseline is labeled a by-reference boundary control, not realistic
+warning frequency. The review's 400-character dialog excerpt claim was checked: dialog
+listing returns references; the excerpts are in human-facing association presentation.
+
+ADMISSION-1 already claims architectural admission coverage. A newly added waiting case could
+challenge it even without inventory exposure, but whether coverage claims require a standing
+future-information dependency remains unresolved. Coverage of runtime behavior is distinct
+from completeness of retained-information selection. This pass adds no coverage dependency,
+new concern operation or suppression/reassessment feature.

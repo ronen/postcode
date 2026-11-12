@@ -210,7 +210,11 @@ links and actual content acquisition remain distinct. Arbitrary excerpt dependen
 is not fully generalized by the bounded renderer.
 
 Fresh projections disclose qualified displacement notices for exact supplied uses, not every
-other use of a shared item. Notice references do not deliver the old/new members. Original
+other use of a shared item. The notice's own substantively supplied declaration is an exact
+exposure; the fixture derives its address from the captured `notices` map alongside
+`associationUses`. Later displacement of that declaration can be a direct cause. References
+inside a notice do not deliver their targets or old/new members, nor confer full-member eligibility.
+Fresh projections close over subsequent displacement of the actually supplied declarations too. Original
 answer/delivery snapshots stay fixed. General warnings are inspected separately through
 `reconsideration()`, whose statuses name exact designation addresses rather than only RESULT-Q.
 
@@ -275,14 +279,25 @@ displacement eligibility. A complete empty inventory still establishes scope. Mi
 unsolicited or future-position inventories are rejected atomically. Content requests can be
 made separately before or after inventory acquisition; each actual delivery retains its time.
 
-A later addition creates an exact `new-information` cause for matching prior inventory
-recipients. A supersession also introduces an association entry, so its exact declaration can
+Content can instead be selected by scope: the bounded `scopeSelection` specifies roles and
+`standing: undisplaced`. The host selects all qualifying associations at the captured position,
+delivers their qualified declarations/members, and records `selectionScope` (entity, roles,
+all-undisplaced-in-scope coverage and time). All competing undisplaced associations are selected;
+this is not authority or recency reconciliation. The scope guarantee accompanies the content,
+without fabricating a separate inventory list. Missing/altered scope, incomplete scoped content,
+unsupported policies or mixing scoped and exact-reference acquisition are rejected. Exact
+reference requests cannot silently acquire a scope dependency. Historical selection uses its
+captured state, not current standing. An empty selection still depends on its declared scope.
+
+A later addition creates an exact `new-information` cause for matching prior inventory or
+scope-selected content recipients. A supersession also introduces an association entry, so its exact declaration can
 be a cause via either inventory scope or displaced-association use. Withdrawal leaves this
 historical inventory's entries unchanged; its ordinary content-displacement effects remain.
 Current-only/status-bearing inventories would need removal/status rules; pagination, ranked
 search and partially disclosed scope are not generalized by this probe.
 
-No addition cause follows solely from a delivered description or fixed result membership.
+No addition cause follows solely from a description delivered by exact reference or fixed
+result membership; a declared scope used to select descriptions is a distinct dependency.
 An included exact association's displacement still creates membership concerns; an inventory-
 affected generating evaluation still passes its concern to its results and actual consumers.
 The same cause/timing rules and producer exemption apply. A fresh matching inventory contains
@@ -296,9 +311,15 @@ interpretive explanations or summaries. General context selection and the dialog
 remain implementation work under these boundary requirements.
 
 The earlier entity-wide mode is retained only to reproduce the prior comparison. No semantic
-novelty test, targeted suppression or clearance is implemented in either mode. Actual inventory
-exposure is the boundary for additions; the model does not guarantee that unrequested new
+novelty test, targeted suppression or clearance is implemented in either mode. Actual inventory or content-selection
+scope is the boundary for additions; the model does not guarantee that unrequested new
 information cannot matter to an earlier interpretation.
+
+The [acquisition probes](acquisition.md) exercise scoped initial descriptions, discovery before
+retrieval and exact declaration-reason exposure. They do not introduce architectural coverage
+dependencies. Existing `admission-cases/0.coverage` concerns program cases, not an assertion
+that the retained association inventory was complete. Whether that content needs a standing
+change scope is an explicit unresolved question, not a hidden consequence of the inventory rule.
 
 ### Deferred investigator-directed concerns
 

@@ -167,7 +167,7 @@ initial behavior and identification were returned together. Original qualificati
 silently removed when an item is associated elsewhere.
 
 Partition alone does not prevent reconsideration. Exact association/content delivery, separately
-acquired inventories, exact displaced result members and generating-query provenance determine
+acquired inventories or scope-selected context, exact supplied declarations/displaced members and generating-query provenance determine
 the proposed warnings. General partial/inventory coverage still needs bounded contracts;
 semantic-impact assessment remains deferred. The baseline has no inventory deliveries.
 
@@ -282,3 +282,11 @@ cause. Deferred investigator-directed propagation could supplement this: discove
 prior results through the exposure index, inspect selected questions/results/support, and state
 a qualified exact-target concern tied to the new finding. That would neither invent historical
 exposure nor replace the earlier result. No such operation is present in these payloads.
+
+The [acquisition review probes](structured-account-example/acquisition.md) refine this boundary:
+initial descriptions chosen by scope carry a selection dependency; exact references do not.
+A Q2 that actually discovers an inventory and retrieves content produces 3/7 evaluation and
+4/8 designation causes for the tested additions. Qualified declaration reasons also create
+exact exposure to their own declaration. The zero-warning by-reference control is not a
+prediction of typical investigation behavior. ADMISSION-1's existing architectural coverage
+claim raises a separate standing-dependency question, still unresolved.
