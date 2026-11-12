@@ -201,7 +201,8 @@ Contrast an identity established with less relevant incoming context. A separate
 can narrow exposure, at an orchestration cost; necessary evidence must not be withheld to
 avoid warnings. Before drafting, choose acceptable conservative warning costs, finer
 exposure/propagation, or a bounded qualified reassessment mechanism. This probe implements
-no clearance or received-cause exemption. The [partition guidance](../contracts.md#provisional-partition-default)
+no clearance. Known causes must accompany fresh deliveries and are not subsequent changes
+to those deliveries; this timing distinction does not establish claim-level independence. The [partition guidance](../contracts.md#provisional-partition-default)
 now treats qualification scope and evaluation boundaries separately.
 
 ## State-change representation remains partial

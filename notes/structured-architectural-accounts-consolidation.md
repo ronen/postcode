@@ -159,8 +159,17 @@ designations receive fresh notices/status rather than automatic redesignation. N
 must maintain every result that references an affected association.
 
 Supersession for fuller coverage and withdrawal can trigger review without asserting falsehood.
-Addition policy, received-cause exemptions, clearance and reassessment remain open. The fixture
-still exempts producers from their own causes. Identifying content newly established from the
+Known causes accepted before an actual delivery are disclosed context, not later-change
+warnings. This covers direct exposure, designation concerns and inherited producer concerns.
+A fresh projection must disclose all those applicable causes; missing/altered disclosure is
+rejected. Notice receipt is awareness, not adequate replacement evidence or endorsement.
+New designation membership retains already-displaced standing without treating it as a new
+change. A prior acquisition can still affect its producer, even if the query finishes later.
+Later refresh does not clear that earlier warning. Historical statuses remain intact.
+
+The fixture records host-assigned acceptance positions and delivery-state positions; these
+are ordering aids, not proposed public timestamps or agent-supplied exemption claims. Addition
+policy, challenge, clearance and reassessment remain open. Producers still exclude their own causes. Identifying content newly established from the
 pinned basis need not copy irrelevant source behavioral restrictions; original reused content
 retains its qualifications, while new scenario examples carry their own applicable limits.
 
@@ -212,7 +221,7 @@ same architectural diagrams and assertions remain authored content.
 ## Open decisions and verification limits
 
 Before drafting: settle identity/migration depth, result designation shape, support selection
-and delivery bounds, addition/exposure precision, cause exemptions/reassessment, declaration
+and delivery bounds, addition/exposure precision, reassessment/clearance, declaration
 challenge/reinstatement, and first-delivery scope. Entity merge/split remains a separate
 qualified identity probe; association displacement does not automatically merge IDs or
 redistribute their histories.

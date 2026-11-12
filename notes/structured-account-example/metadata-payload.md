@@ -91,5 +91,13 @@ The [verification guide](README.md#verification) lists checks. Same-target displ
 full declaration/member eligibility and one initial result designation are explicit
 provisional choices. Exact designation statuses separate displacement from membership and
 generating-context concerns; shared entity/item identity alone is not a cause. Required dependency delivery for
-arbitrary excerpts, declaration challenge, source-aware exemptions and reassessment
+arbitrary excerpts, declaration challenge and reassessment
 remain decisions to make before the plan. No governing/product files were changed.
+
+
+Delivery snapshots record their retained-state position, and accepted contributions record
+acceptance order. Known direct and indirect concerns accompany fresh projections. They do
+not become new warnings for that recipient; missing disclosure is rejected instead. Earlier
+snapshots and warnings remain unchanged, and a later refresh is not reassessment. The
+[lifecycle report](children/lifecycle-report.json) includes explicit timing probes and the
+complete main ordering, including excerpt/updated-answer consumers and the competing copy.

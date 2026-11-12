@@ -99,6 +99,81 @@
       ]
     }
   },
+  "timingProbes": {
+    "oldDeliveryAt": 3,
+    "admissionAcceptedAt": 4,
+    "freshDeliveryAt": 9,
+    "reuseKnownCauses": [
+      "EXPANSION-1::expanded-identification"
+    ],
+    "competingKnownCauses": [
+      "EXPANSION-1::expanded-identification"
+    ],
+    "inheritedKnownCauses": [
+      "ADMISSION-2::admission-cases",
+      "COMPETING-1::expanded-identification",
+      "EXPANSION-1::expanded-identification",
+      "TRIAL-RESULT-1::updated-admission-result"
+    ],
+    "branchEvaluations": {
+      "Q-spanning": [
+        "ADMISSION-2::admission-cases"
+      ],
+      "Q-fresh-acquisition": [],
+      "Q-informed-source": [],
+      "Q-informed-membership": []
+    },
+    "newHistoricalDesignation": {
+      "resultEntity": "RESULT-informed-membership",
+      "displacedBy": [],
+      "competingDeclarations": false,
+      "membershipCauses": [],
+      "generatingEvaluationCauses": [],
+      "needsReconsideration": []
+    }
+  },
+  "acceptanceOrder": {
+    "Q1": 1,
+    "Q-observer": 2,
+    "Q-excerpt": 3,
+    "Q2": 4,
+    "Q-updated": 5,
+    "Q-expansion": 6,
+    "Q-reuse": 7,
+    "Q-withdraw": 8,
+    "Q-competing": 9
+  },
+  "deliveryPositions": {
+    "Q1": [
+      0
+    ],
+    "Q-observer": [
+      1
+    ],
+    "Q-excerpt": [
+      2
+    ],
+    "Q2": [
+      3
+    ],
+    "Q-updated": [
+      4
+    ],
+    "Q-expansion": [
+      5,
+      5
+    ],
+    "Q-reuse": [
+      6
+    ],
+    "Q-withdraw": [
+      7
+    ],
+    "Q-competing": [
+      8,
+      8
+    ]
+  },
   "q1QuestionDeliveredForRedesignation": {
     "queryInvocation": "Q1",
     "resultEntity": "RESULT-Q1",
@@ -151,12 +226,8 @@
         "displacedBy": [],
         "competingDeclarations": false,
         "membershipCauses": [],
-        "generatingEvaluationCauses": [
-          "EXPANSION-1::expanded-identification"
-        ],
-        "needsReconsideration": [
-          "EXPANSION-1::expanded-identification"
-        ]
+        "generatingEvaluationCauses": [],
+        "needsReconsideration": []
       },
       "EXCERPT-1::result": {
         "resultEntity": "RESULT-excerpt",
@@ -226,12 +297,10 @@
           "WITHDRAW-1::withdraw-policy-indexing"
         ],
         "generatingEvaluationCauses": [
-          "COMPETING-1::expanded-identification",
-          "EXPANSION-1::expanded-identification"
+          "COMPETING-1::expanded-identification"
         ],
         "needsReconsideration": [
           "COMPETING-1::expanded-identification",
-          "EXPANSION-1::expanded-identification",
           "WITHDRAW-1::withdraw-policy-indexing"
         ]
       },
@@ -289,12 +358,10 @@
         "competingDeclarations": false,
         "membershipCauses": [],
         "generatingEvaluationCauses": [
-          "COMPETING-1::expanded-identification",
-          "EXPANSION-1::expanded-identification"
+          "COMPETING-1::expanded-identification"
         ],
         "needsReconsideration": [
-          "COMPETING-1::expanded-identification",
-          "EXPANSION-1::expanded-identification"
+          "COMPETING-1::expanded-identification"
         ]
       }
     },
@@ -321,16 +388,12 @@
         "COMPETING-1::expanded-identification"
       ],
       "Q-reuse": [
-        "COMPETING-1::expanded-identification",
-        "EXPANSION-1::expanded-identification"
+        "COMPETING-1::expanded-identification"
       ],
       "Q-withdraw": [
-        "COMPETING-1::expanded-identification",
-        "EXPANSION-1::expanded-identification"
+        "COMPETING-1::expanded-identification"
       ],
-      "Q-competing": [
-        "EXPANSION-1::expanded-identification"
-      ]
+      "Q-competing": []
     }
   },
   "checkpoints": {
@@ -475,11 +538,8 @@
           "membershipCauses": [
             "WITHDRAW-1::withdraw-policy-indexing"
           ],
-          "generatingEvaluationCauses": [
-            "EXPANSION-1::expanded-identification"
-          ],
+          "generatingEvaluationCauses": [],
           "needsReconsideration": [
-            "EXPANSION-1::expanded-identification",
             "WITHDRAW-1::withdraw-policy-indexing"
           ]
         },
@@ -528,12 +588,8 @@
           "displacedBy": [],
           "competingDeclarations": false,
           "membershipCauses": [],
-          "generatingEvaluationCauses": [
-            "EXPANSION-1::expanded-identification"
-          ],
-          "needsReconsideration": [
-            "EXPANSION-1::expanded-identification"
-          ]
+          "generatingEvaluationCauses": [],
+          "needsReconsideration": []
         }
       },
       "evaluations": {
@@ -553,17 +609,14 @@
           "EXPANSION-1::expanded-identification"
         ],
         "Q-expansion": [],
-        "Q-reuse": [
-          "EXPANSION-1::expanded-identification"
-        ],
-        "Q-withdraw": [
-          "EXPANSION-1::expanded-identification"
-        ]
+        "Q-reuse": [],
+        "Q-withdraw": []
       }
     }
   },
   "qualifiedCurrentAdmissionProjection": {
     "entity": "P",
+    "asOfAcceptance": 5,
     "associationUses": {
       "ADMISSION-2::admission-cases": {
         "value": {
@@ -816,10 +869,11 @@
     },
     "options": {},
     "notices": {},
-    "noticeLimits": "Notices concern exact supplied association uses; their references do not deliver members. No shared-item or entity-wide displacement inference, received-cause exemption, or automatic redesignation."
+    "noticeLimits": "Includes direct displacement and inherited concerns known at this delivery position. Notices preserve standing and qualified reasons, not replacement-member delivery, adequate understanding, clearance, or automatic redesignation."
   },
   "qualifiedHistoricalAdmissionProjection": {
     "entity": "P",
+    "asOfAcceptance": 5,
     "associationUses": {
       "ADMISSION-1::admission-cases": {
         "value": {
@@ -1027,10 +1081,11 @@
         ]
       }
     },
-    "noticeLimits": "Notices concern exact supplied association uses; their references do not deliver members. No shared-item or entity-wide displacement inference, received-cause exemption, or automatic redesignation."
+    "noticeLimits": "Includes direct displacement and inherited concerns known at this delivery position. Notices preserve standing and qualified reasons, not replacement-member delivery, adequate understanding, clearance, or automatic redesignation."
   },
   "qualifiedDeclarationOnlyResult": {
     "entity": "RESULT-withdraw",
+    "asOfAcceptance": 8,
     "associationUses": {
       "WITHDRAW-1::result": {
         "value": {
@@ -1183,11 +1238,11 @@
     "items": {},
     "options": {},
     "notices": {},
-    "noticeLimits": "Notices concern exact supplied association uses; their references do not deliver members. No shared-item or entity-wide displacement inference, received-cause exemption, or automatic redesignation."
+    "noticeLimits": "Includes direct displacement and inherited concerns known at this delivery position. Notices preserve standing and qualified reasons, not replacement-member delivery, adequate understanding, clearance, or automatic redesignation."
   },
   "limitations": [
     "Additions do not trigger in this prototype; policy unresolved.",
     "Exact association uses determine displacement exposure; generating-evaluation provenance remains conservative across its outputs.",
-    "No received-cause completeness exemption, reassessment clearance, or automatic reinstatement of withdrawn associations."
+    "Known causes are disclosed without a new later-change warning; notice receipt does not establish adequate replacement context. No reassessment clearance or automatic reinstatement."
   ]
 }

@@ -1593,3 +1593,31 @@ warn other uses of the same item, and an updated designation still receives a la
 membership cause. Query-meaning and excerpt-route rejection cases bring lifecycle malformed
 cases to 64 across both partitions. The other guidance, composition, selector and diagram
 checks remain applicable. These remain authored notes/probes, not product implementation.
+
+
+## 2026-11-12 — Known changes are context, not later-change warnings
+
+The human approved applying the timing correction from re-review. Each delivery captures
+its retained-state position; causes accepted before it must be disclosed and are not later
+changes to that delivery. Missing disclosure is a delivery-completeness defect. Fresh
+projections now include known direct, designation-membership and inherited producer concerns,
+so a known cause cannot return through another propagation route. Notices preserve qualified
+reasons and standing without proving adequate replacement context or endorsing historical use.
+
+New designation membership uses its acceptance boundary: already-displaced members remain
+visibly displaced but do not introduce new membership warnings. The producing evaluation may
+still be affected if it acquired relevant content earlier. Actual acquisitions govern, not
+query start or final acceptance. A later refresh leaves earlier exposure and historical
+warnings intact. No general reassessment or clearance operation is introduced.
+
+Q-reuse and Q-competing no longer acquire EXPANSION-1 as a later-change cause when their
+input already disclosed it, and Q-withdraw does not inherit that known cause through reuse.
+The later competing declaration still affects earlier recipients. Probe-order documentation
+now includes Q-excerpt, Q-updated and the generated competing copy. Separate branches test
+pre-change capture followed by later acceptance/refresh, informed acquisition during a query,
+inherited disclosure and new historical membership. Missing/altered disclosure and invalid
+positions are rejected; lifecycle malformed cases total 72 across both partitions.
+
+The proposal, consolidation, walkthrough, contracts and fixture guides now state this timing
+rule inline. Earlier statements here that there is no received-cause distinction are historical.
+Governing/product files remain unchanged; the scope remains authored exploratory validation.

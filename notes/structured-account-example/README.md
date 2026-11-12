@@ -85,6 +85,11 @@ costs; the current fixture conservatively preserves those warning paths.
 
 ## New lifecycle probes
 
+Main acceptance order: Q1, Q-observer, Q-excerpt, Q2, Q-updated, Q-expansion, Q-reuse,
+Q-withdraw, then the checker-generated Q-competing. The input `status` and generated
+report give this order; separate timing branches below do not change the main sequence.
+
+
 - Q-observer receives RESULT-Q1 before Q2. It contributes an association to already
   delivered admission content without creating a new item, plus its own result designation.
 - Q-excerpt receives an admission item with its exact P association route, without the
@@ -105,11 +110,20 @@ Warnings and association standing are different. Each exact result designation r
 displacement separately from membership/generating-context concerns. No warning follows
 merely from sharing an entity or content item. The report includes checkpoints before the
 independent expansion/competition probes so successful redesignation is visible. It
-implements only a producer exemption; addition-trigger policy,
-received-cause exemptions, clearance, reinstatement and more precise propagation remain open.
+uses actual delivery timing: disclosed prior causes are known context, while later changes
+can trigger warnings. Missing direct or inherited disclosure is a delivery defect. Producer
+exemption remains; addition-trigger policy, clearance, reinstatement and finer precision stay open.
 
 <a id="verification"></a>
 ## Verification
+
+Timing branches contrast delivery before a change with informed delivery afterward,
+including an investigation finishing later, a later refresh that does not clear an old
+exposure, inherited producer concerns and knowingly designating historical membership.
+Q-reuse/Q-withdraw do not acquire the already-disclosed expansion cause. Q-competing does
+not acquire the expansion it knew about, while its new cause still reaches earlier consumers.
+The report preserves acceptance/delivery positions and qualified known-cause notices.
+
 
 Run from the worktree root with Python 3:
 
@@ -122,7 +136,7 @@ python3 notes/structured-account-example/render-overviews.py
 
 The first checks both partitions, qualified delivery/eligibility, immutable original
 answers, exact association standing, result-membership versus exposure paths, atomic
-rejection and matching architectural state/interaction content. It rejects 64 malformed
+rejection and matching architectural state/interaction content. It rejects 72 malformed
 cases across the partitions. Use `--write` only to deliberately regenerate lifecycle
 reports after changing authored input or the bounded simulator.
 

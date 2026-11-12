@@ -295,10 +295,29 @@ unimplemented identity question.
 The prototype retains conservative generating-evaluation propagation: a cause affecting
 actual input can follow that producer's delivered contributions. A selected result designation
 can transmit its membership concerns; this does not establish item-level causal reliance.
-It exempts originating evaluations from their own causes, but has no received-cause exemption
-or clearance. An informed later investigation may still be flagged for an exact old association
-it actually received. Addition policy, richer partial-delivery precision, exemptions and
-reassessment remain open; broad entity/shared-item displacement triggers have been removed.
+The timing boundary is each actual delivery, including later acquisitions during a dialogue.
+A displacement already accepted at that point is known context and must be disclosed; it is
+not a later change to that delivery. Missing disclosure is a delivery defect, not a substitute
+reconsideration warning. This applies to direct association exposure, designation concerns and
+inherited generating-context concerns, so a known cause cannot re-enter through another path.
+The producing evaluation also remains exempt from its own causes.
+
+New designation membership follows the same distinction: an association already displaced
+when the designation is accepted retains that standing, without a new membership warning.
+Its producer can still need reconsideration if it actually acquired the relevant information
+before the displacement. A later refresh does not erase an earlier exposure or clear its
+warning. Historical designations and their existing causes remain unchanged.
+
+The fixture records host-assigned acceptance positions and the retained-state position of each
+captured delivery. An investigation may finish after a change while its inputs precede it;
+neither query start nor final acceptance substitutes for actual delivery time. Fresh projections
+disclose known direct and indirect causes with qualified reasons. Notice receipt establishes
+awareness, not sufficient replacement context or endorsement of the displaced association.
+Further acquisition and qualification obligations still apply.
+
+This timing rule does not implement reassessment or clearance. Addition policy, richer partial-
+delivery precision, declaration challenge and reassessment remain open; broad entity/shared-item
+triggers remain excluded.
 
 Causes remain distinct; no automatic transitive equivalence, last-writer truth, or disappearance
 of a cause through context trimming. A supersession can be contested. Competing declarations
@@ -426,7 +445,7 @@ The planning package would need explicit treatment of:
 | Entity and result identity | Common reference mechanism; settle invocation/evaluation/reuse guarantees and first migration depth. No semantic deduplication. |
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
 | Support and eligibility | Fixture delivers full targeted declarations/members with qualifications; settle bounded acquisition, competing definitions and missing support. |
-| Reconsideration | Agree addition policy, partial-delivery/producer precision, received-context exemptions and warning clearance or explicit deferral; exact association/designation identity is retained. |
+| Reconsideration | Agree addition policy, partial-delivery/producer precision, warning clearance or explicit deferral; exact association/designation identity and actual-delivery timing are retained. |
 | Declaration standing | Competing declarations are retained; challenge/reinstatement and result selection policy remain open. Do not infer revocation from a newer bundle. |
 | Entity merge/split | Qualified correspondence and preserved old IDs; supersession/reassignment effects remain a design probe, not delivered automatically by association operations. |
 | First capability | Choose delivered relationship kinds, contextual selection depth, mechanical compatibility and which composition/diagram probes become implementation acceptance tests. |

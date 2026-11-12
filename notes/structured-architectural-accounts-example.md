@@ -106,9 +106,13 @@ designation; it does not inherit warnings merely because its context entity is a
 The report shows this checkpoint before subsequent independent expansion.
 
 Withdrawal of a later P association does not flag Q1 or other uses merely sharing its item.
-The prototype still has no received-cause exemption or reassessment clearance. Exact old
-associations received after a notice can still cause warnings; generating-evaluation
-provenance remains conservative. Those limitations do not justify entity-wide exposure.
+Actual delivery time now distinguishes known context from subsequent change. A projection
+received after displacement carries that notice; the known cause does not newly flag its
+recipient. This also applies to indirect designation/producer concerns and new designation
+membership, without clearing the historical source's warnings. Missing required disclosure
+is a delivery defect. Notices do not supply all replacement content or prove its adequacy.
+A query that acquired the item before the change can still be flagged even if it finishes
+later or refreshes afterward. General reassessment and clearance remain unimplemented.
 
 ## 5. Expansion without a factual-error claim
 
@@ -140,6 +144,12 @@ explains why that use is being withdrawn. It does not alter the original text, e
 history, or withdraw its identifying use for S. The source description's earlier explicit
 supersession remains a different declaration with its own cause. WITHDRAW-1's result contains
 the withdrawal declaration, making a declaration-only answer meaningful without filler prose.
+
+The order matters: Q-reuse receives the original description after EXPANSION-1, including
+its displacement notice. It therefore has no new expansion cause, nor does Q-withdraw inherit
+that known cause through REUSE-1. The later competing declaration still affects earlier
+recipients. Q-competing itself receives the expansion notice and is not flagged by the
+already-known declaration it competes with. Competition and displaced standing remain visible.
 
 These are deliberately bounded organizational examples, not semantic judgments a schema can
 certify. Reasons normally remain inline; additional exact evidence/content references can
@@ -246,4 +256,4 @@ The exact payloads exercise references, association operations, result designati
 entity context, immutable history, rare declaration-only contributions and two paths into
 reconsideration. The existing state/sequence diagrams and their legends still regenerate.
 They do not establish live investigation quality, a product API, universal result organization,
-received-cause exemptions, performance bounds, semantic identity or automatic reconciliation.
+general reassessment, performance bounds, semantic identity or automatic reconciliation.

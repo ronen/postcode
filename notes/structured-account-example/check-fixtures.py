@@ -135,7 +135,18 @@ def check_variant(directory,write=False):
         assert candidate.__dict__==saved, 'invalid acceptance partially mutated state'
     # Expansion flags result composition even though Q1 was never exposed to the newly introduced S.
     assert 'S' not in state.queries['Q1']['exposureIndex']
-    for name in ['expansion','reuse','withdrawal']:
+    p=probes['expansion'];state.accept(p['submission'],p['bindings'],p['request'])
+    informed=[state.project(x) for x in probes['reuse']['request']['deliveries']]
+    assert 'EXPANSION-1::expanded-identification' in informed[0]['notices']
+    for defect in ['missing','altered','future-position']:
+        bad_delivery=copy.deepcopy(informed)
+        if defect=='missing':bad_delivery[0]['notices']={}
+        elif defect=='altered':next(iter(bad_delivery[0]['notices'].values()))['value']['reason']='changed'
+        else:bad_delivery[0]['asOfAcceptance']=state.acceptance_order+1
+        candidate=copy.deepcopy(state);saved=copy.deepcopy(candidate.__dict__);p=probes['reuse']
+        rejected('invalid prior-cause disclosure '+defect,lambda:candidate.accept(p['submission'],p['bindings'],p['request'],bad_delivery))
+        assert candidate.__dict__==saved
+    for name in ['reuse','withdrawal']:
         p=probes[name];state.accept(p['submission'],p['bindings'],p['request'])
     expansion_cause='EXPANSION-1::expanded-identification'
     status=state.reconsideration()
@@ -144,6 +155,8 @@ def check_variant(directory,write=False):
     assert expansion_cause in warnings(state,'OBSERVER-1::result')
     assert expansion_cause in warnings(state,updated_designation), 'updated designation incorrectly clears an independent later cause'
     assert status['evaluations']['Q1']==[], 'later associations on P fabricated earlier exposure'
+    assert expansion_cause not in status['evaluations']['Q-reuse'], 'disclosed prior cause treated as later change'
+    assert expansion_cause not in status['evaluations']['Q-withdraw'], 'known cause re-entered through producing provenance'
     withdrawal_cause='WITHDRAW-1::withdraw-policy-indexing'
     assert withdrawal_cause in warnings(state,'REUSE-1::result')
     assert all(withdrawal_cause not in cs for cs in status['evaluations'].values()), 'withdrawal reached unexposed or own producer evaluation'
@@ -167,8 +180,65 @@ def check_variant(directory,write=False):
     competing['bindings']['investigramIds']['contribution']='COMPETING-1'
     state.accept(competing['submission'],competing['bindings'],competing['request'])
     assert state.standing(original_definition)['competingDeclarations']
+    assert expansion_cause not in state.reconsideration()['evaluations']['Q-competing'], 'competition treated as ignorance of disclosed cause'
+    assert 'COMPETING-1::expanded-identification' in state.reconsideration()['evaluations']['Q-expansion'], 'genuine later cause was suppressed'
+    assert expansion_cause in state.queries['Q-competing']['deliveries'][0]['notices']
+
+    # Separate branches isolate actual delivery time, not query start or final acceptance.
+    def consumer(template, suffix):
+        probe=copy.deepcopy(template);qid='Q-'+suffix;rid='RESULT-'+suffix
+        probe['request'].update(id=qid,resultEntity=rid,startedAfterAcceptance=1)
+        probe['submission']['result']['queryInvocation']=qid
+        probe['bindings']['entityIds']['query-result']=rid
+        local=next(iter(probe['bindings']['investigramIds']))
+        probe['bindings']['investigramIds'][local]=suffix.upper()
+        return probe
+    old_selection=probes['excerptConsumer']['request']['deliveries'][0]
+    old_delivery=before_follow.project(old_selection)
+    fresh_delivery=state.project(old_selection)
+    assert old_delivery['asOfAcceptance'] < state.investigrams['ADMISSION-2']['acceptedAt'] <= fresh_delivery['asOfAcceptance']
+    branch=copy.deepcopy(state);spanning=consumer(probes['excerptConsumer'],'spanning')
+    spanning['request']['deliveries']=[old_selection,old_selection]
+    branch.accept(spanning['submission'],spanning['bindings'],spanning['request'],[old_delivery,fresh_delivery])
+    assert branch.reconsideration()['evaluations']['Q-spanning']==[admission_cause], 'fresh acquisition silently cleared earlier exposure'
+    fresh=consumer(probes['excerptConsumer'],'fresh-acquisition')
+    branch.accept(fresh['submission'],fresh['bindings'],fresh['request'])
+    assert branch.reconsideration()['evaluations']['Q-fresh-acquisition']==[], 'query start mistaken for actual delivery time'
+
+    # Inherited producer concerns must be disclosed, then must not re-enter as new warnings.
+    source=consumer(probes['observer'],'informed-source')
+    source['request']['subject']={'entity':'P'}
+    observer_assoc=next(sp['key'] for sp in state.investigrams['OBSERVER-1']['associationSpecifications'] if sp['target']['role']=='describes')
+    source['request']['deliveries']=[selection('P','OBSERVER-1',observer_assoc)]
+    source_delivery=state.project(source['request']['deliveries'][0])
+    assert updated_designation in source_delivery['notices'], 'indirect producer concern omitted'
+    incomplete=copy.deepcopy(source_delivery);incomplete['notices'].pop(updated_designation)
+    rejected('missing inherited disclosure',lambda:copy.deepcopy(state).accept(source['submission'],source['bindings'],source['request'],[incomplete]))
+    branch.accept(source['submission'],source['bindings'],source['request'])
+    assert branch.reconsideration()['evaluations']['Q-informed-source']==[], 'known producer cause re-entered indirectly'
+
+    # A newly declared historical answer may intentionally include already-displaced membership.
+    historical=consumer(probes['observer'],'informed-membership')
+    result_spec=declaration(historical['submission'],'result')
+    result_spec['members'].append({'declaration':{'investigram':{'investigram':ledger['initialResultAssociation']['investigram']},'associationKey':'result'}})
+    branch.accept(historical['submission'],historical['bindings'],historical['request'])
+    assert not warnings(branch,'INFORMED-MEMBERSHIP::result'), 'known membership cause re-entered at designation acceptance'
+    assert warnings(branch,initial_designation), 'historical warning was cleared'
+    assert branch.snapshots['Q1']==original_answer
+    timing_report={
+        'oldDeliveryAt':old_delivery['asOfAcceptance'], 'admissionAcceptedAt':state.investigrams['ADMISSION-2']['acceptedAt'],
+        'freshDeliveryAt':fresh_delivery['asOfAcceptance'],
+        'reuseKnownCauses':sorted(state.queries['Q-reuse']['deliveries'][0]['notices']),
+        'competingKnownCauses':sorted({c for d in state.queries['Q-competing']['deliveries'] for c in d['notices']}),
+        'inheritedKnownCauses':sorted(source_delivery['notices']),
+        'branchEvaluations':{q:branch.reconsideration()['evaluations'][q] for q in ['Q-spanning','Q-fresh-acquisition','Q-informed-source','Q-informed-membership']},
+        'newHistoricalDesignation':designation_status(branch,'INFORMED-MEMBERSHIP::result')}
+
     report={'status':'Generated by check-fixtures.py from current authored fixtures. No application/live validation.',
             'queryExposure':{k:{'contextEntities':v['exposureIndex'], 'associationUses':sorted({r for d in v['deliveries'] for r in d['associationUses']})} for k,v in state.queries.items()},
+            'timingProbes':timing_report,
+            'acceptanceOrder':{qid:q['acceptedAt'] for qid,q in state.queries.items()},
+            'deliveryPositions':{qid:[d['asOfAcceptance'] for d in q['deliveries']] for qid,q in state.queries.items()},
             'q1QuestionDeliveredForRedesignation':state.queries['Q2']['deliveries'][0]['queryMeanings']['RESULT-Q1'],
             'negativeAssertions':['Q1 has no incoming-exposure causes from its own output or subsequently created associations.','Q-excerpt receives the admission cause, not displacement of an undelivered result designation.','The updated designation and its consumer have no admission/redesignation warnings before independent expansion.','Withdrawal does not warn other uses of the same content; optional redesignation leaves other result membership unchanged.'],
             'originalAnswerStillExact':state.snapshots['Q1']==original_answer,
@@ -179,7 +249,7 @@ def check_variant(directory,write=False):
             'qualifiedCurrentAdmissionProjection':new_projection,
             'qualifiedHistoricalAdmissionProjection':old_projection,
             'qualifiedDeclarationOnlyResult':withdrawal_projection,
-            'limitations':['Additions do not trigger in this prototype; policy unresolved.','Exact association uses determine displacement exposure; generating-evaluation provenance remains conservative across its outputs.','No received-cause completeness exemption, reassessment clearance, or automatic reinstatement of withdrawn associations.']}
+            'limitations':['Additions do not trigger in this prototype; policy unresolved.','Exact association uses determine displacement exposure; generating-evaluation provenance remains conservative across its outputs.','Known causes are disclosed without a new later-change warning; notice receipt does not establish adequate replacement context. No reassessment clearance or automatic reinstatement.']}
     path=directory/'lifecycle-report.json'
     if write:path.write_text(json.dumps(report,indent=2)+'\n')
     else:assert read(path)==report, 'stale lifecycle report'

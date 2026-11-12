@@ -1,5 +1,5 @@
 {
-  "status": "Steps run in order: first result, observer, follow-up, expansion, reuse, withdrawal. Rare declaration-only outputs and expansion without factual-error claims are intentional. Probe decisions are qualified authoring examples, not mechanically proved judgments.",
+  "status": "Main acceptance order: first result (Q1), observer, excerpt consumer, follow-up (Q2), updated-answer consumer, expansion, reuse, withdrawal, then the checker-generated competing expansion. Separate checker branches exercise pre-change delivery with later acceptance/refresh, informed inherited context and newly designated historical membership. Declaration-only outputs and expansion without factual-error claims are intentional authored probes, not mechanically proved judgments.",
   "observer": {
     "request": {
       "id": "Q-observer",

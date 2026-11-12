@@ -37,6 +37,7 @@ class Model:
         self.basis = copy.deepcopy(basis)
         self.queries = {}
         self.snapshots = {}
+        self.acceptance_order = 0
 
     def declarations(self):
         return {(oid, x['key']): x for oid, a in self.investigrams.items() for x in a['associationSpecifications']}
@@ -103,14 +104,25 @@ class Model:
                 route |= self.item_route(address(member['declaration'], 'associationKey'), item)
         return route
 
-    def project(self, selection):
+    def accepted_at(self, ref):
+        return self.investigrams[ref[0]].get('acceptedAt', 0)
+
+    @staticmethod
+    def projection_sources(projection):
+        return {x['queryInvocation'] for field in ['items', 'declarations', 'associationUses', 'options', 'notices']
+                for x in projection[field].values()}
+
+    def project(self, selection, as_of=None):
         """Exact association uses, qualified content and question; never entity-wide exposure."""
+        as_of = self.acceptance_order if as_of is None else as_of
+        assert isinstance(as_of, int) and 0 <= as_of <= self.acceptance_order, 'invalid delivery position'
         entity = selection['entity']
         assert entity in self.entities
         ds, its, uses, opts = set(), set(), set(), {}
         for ref in selection.get('associations', []):
             key = address(ref, 'associationKey')
             assert self.declarations()[key]['target']['entity']['entity'] == entity, 'association belongs to another entity'
+            assert self.accepted_at(key) <= as_of, 'association did not exist at delivery'
             more_ds, more_items = self.expand(key)
             ds |= more_ds; its |= more_items; uses |= more_ds
         # Excerpts retain the exact association route without claiming full member delivery.
@@ -118,13 +130,14 @@ class Model:
             key = address(ref, 'contentKey')
             via = address(ref['viaAssociation'], 'associationKey')
             assert self.declarations()[via]['target']['entity']['entity'] == entity
+            assert self.accepted_at(via) <= as_of, 'excerpt route did not exist at delivery'
             route = self.item_route(via, key)
             assert route, 'item is not part of the specified association use'
             uses |= route
             its.add(key)
         available = set()
         for ref, declaration in self.declarations().items():
-            if declaration['target']['entity']['entity'] == entity:
+            if self.accepted_at(ref) <= as_of and declaration['target']['entity']['entity'] == entity:
                 available |= self.expand(ref)[1]
         for ref in selection.get('options', []):
             oid, key = address(ref, 'optionKey')
@@ -134,7 +147,7 @@ class Model:
             opts[label((oid, key))] = self.qualified(oid, found[0])
         notices = {}
         for ref, declaration in self.declarations().items():
-            if uses.intersection(address(x, 'associationKey') for x in declaration.get('displaces', [])):
+            if self.accepted_at(ref) <= as_of and uses.intersection(address(x, 'associationKey') for x in declaration.get('displaces', [])):
                 notices[label(ref)] = self.qualified(ref[0], declaration)
         use_records = {}
         for ref in sorted(uses):
@@ -148,13 +161,29 @@ class Model:
                            if self.declarations()[r]['target']['role'] == 'result'}
         if self.entities[entity]['kind'] == 'query-result' and (uses or opts):
             result_entities.add(entity)
-        return {'entity': entity,
+        projection = {'entity': entity, 'asOfAcceptance': as_of,
                 'associationUses': use_records,
                 'queryMeanings': {eid: self.query_meaning(eid) for eid in sorted(result_entities)},
                 'declarations': {label(x): self.qualified(x[0], self.declarations()[x]) for x in sorted(ds)},
                 'items': {label(x): self.qualified(x[0], self.items()[x]) for x in sorted(its)},
                 'options': opts, 'notices': notices,
-                'noticeLimits': 'Notices concern exact supplied association uses; their references do not deliver members. No shared-item or entity-wide displacement inference, received-cause exemption, or automatic redesignation.'}
+                'noticeLimits': 'Includes direct displacement and inherited concerns known at this delivery position. Notices preserve standing and qualified reasons, not replacement-member delivery, adequate understanding, clearance, or automatic redesignation.'}
+        # Disclose already-known indirect concerns too, including provenance of notice text.
+        status = self.reconsideration(as_of)
+        by_label = {label(r): r for r in self.declarations()}
+        while True:
+            known = set()
+            for ref in uses:
+                known.update(status['designations'].get(label(ref), {}).get('needsReconsideration', []))
+            for source in self.projection_sources(projection):
+                known.update(status['evaluations'].get(source, []))
+            missing = known - set(notices)
+            if not missing:
+                break
+            for cid in sorted(missing):
+                ref = by_label[cid]
+                notices[cid] = self.qualified(ref[0], self.declarations()[ref])
+        return projection
 
     def accept(self, document, bindings, request, delivered=None):
         """Stage everything on a copy; bad declarations never partially change retained state."""
@@ -162,7 +191,9 @@ class Model:
         projections = [self.project(x) for x in request['deliveries']] if delivered is None else copy.deepcopy(delivered)
         assert len(projections) == len(request['deliveries'])
         for projection, selection in zip(projections, request['deliveries']):
-            assert projection['associationUses'] == self.project(selection)['associationUses'], 'missing or altered association-use provenance'
+            expected = self.project(selection, projection['asOfAcceptance'])
+            assert projection['associationUses'] == expected['associationUses'], 'missing or altered association-use provenance'
+            assert projection['notices'] == expected['notices'], 'missing or altered known-cause disclosure at delivery'
         assert request['declaredMeaning']['question'] and request['declaredMeaning']['scope'], 'missing declared question/scope'
         qid = request['id']
         subject = request['subject']
@@ -185,7 +216,7 @@ class Model:
         for raw in result['investigrams']:
             a = copy.deepcopy(raw)
             oid = bindings['investigramIds'][a.pop('key')]
-            a.update(id=oid, queryInvocation=qid)
+            a.update(id=oid, queryInvocation=qid, acceptedAt=self.acceptance_order + 1)
             assert a['qualifications'] and a['evidence'], 'missing own qualification/support'
             assert len({x['key'] for x in a['content']}) == len(a['content'])
             assert len({x['key'] for x in a['associationSpecifications']}) == len(a['associationSpecifications'])
@@ -266,8 +297,9 @@ class Model:
         for root in result['compositionRoots']: visit(owner(root))
         assert visited == new_owners
         exposure = sorted({p['entity'] for p in projections if p['items'] or p['declarations'] or p['options'] or p['notices']})
-        sources = sorted({x['queryInvocation'] for p in projections for field in ['items','declarations','associationUses','options','notices'] for x in p[field].values()})
-        staged.queries[qid] = {'request':copy.deepcopy(request), 'resultEntity':rid,'initialDesignation':own_results[0], 'deliveries':projections,'exposureIndex':exposure,'sourceQueries':sources,'declarations':list(new_decls)}
+        sources = sorted({src for p in projections for src in self.projection_sources(p)})
+        staged.acceptance_order = self.acceptance_order + 1
+        staged.queries[qid] = {'acceptedAt': staged.acceptance_order, 'request':copy.deepcopy(request), 'resultEntity':rid,'initialDesignation':own_results[0], 'deliveries':projections,'exposureIndex':exposure,'sourceQueries':sources,'declarations':list(new_decls)}
         # Exact returned answer is fixed, separate from later declarations targeting the same result entity.
         initial = staged.project({'entity':rid,'associations':[{'investigram':own_results[0][0],'associationKey':own_results[0][1]}]})
         staged.snapshots[qid] = initial
@@ -336,43 +368,49 @@ class Model:
         by=[label(r) for r,s in self.declarations().items() if any(address(x,'associationKey')==ref for x in s.get('displaces',[]))]
         return {'displacedBy':sorted(by),'competingDeclarations':len(by)>1}
 
-    def reconsideration(self):
-        """Warnings on exact designations; displaced standing is a separate historical fact."""
-        decls = self.declarations()
+    def reconsideration(self, as_of=None):
+        """Later changes only, relative to each delivery and designation's acceptance."""
+        as_of = self.acceptance_order if as_of is None else as_of
+        decls = {r: d for r, d in self.declarations().items() if self.accepted_at(r) <= as_of}
+        queries = {qid: q for qid, q in self.queries.items() if q['acceptedAt'] <= as_of}
         designations = {r: d for r, d in decls.items()
                         if d['target']['role'] == 'result' and d['operation'] != 'withdrawal'}
         membership = {r: self.expand(r)[0] - {r} for r in designations}
-        uses = {qid: {key for p in q['deliveries'] for key in p['associationUses']}
-                for qid, q in self.queries.items()}
         member_causes = {r: set() for r in designations}
-        eval_causes = {qid: set() for qid in self.queries}
+        eval_causes = {qid: set() for qid in queries}
         for cause, declaration in decls.items():
             if declaration['operation'] == 'addition':
                 continue
             cid = label(cause)
+            cause_at = self.accepted_at(cause)
             producer = self.investigrams[cause[0]]['queryInvocation']
             displaced = {address(x, 'associationKey') for x in declaration['displaces']}
-            for qid in self.queries:
-                if qid != producer and uses[qid] & {label(r) for r in displaced}:
+            # Old deliveries remain exposures even if the same query acquires fresh context later.
+            prior = {qid: [p for p in q['deliveries'] if p['asOfAcceptance'] < cause_at]
+                     for qid, q in queries.items()}
+            for qid in queries:
+                if qid != producer and any(set(p['associationUses']) & {label(r) for r in displaced}
+                                           for p in prior[qid]):
                     eval_causes[qid].add(cid)
             for ref in designations:
-                if self.investigrams[ref[0]]['queryInvocation'] != producer and membership[ref] & displaced:
+                if self.accepted_at(ref) < cause_at and membership[ref] & displaced:
                     member_causes[ref].add(cid)
             changed = True
             while changed:
                 before = copy.deepcopy(eval_causes)
-                for qid, query in self.queries.items():
+                for qid in queries:
                     if qid == producer:
                         continue
-                    received_affected_designation = any(
-                        label(ref) in uses[qid] and
-                        (cid in member_causes[ref] or
-                         cid in eval_causes.get(self.investigrams[ref[0]]['queryInvocation'], set()))
-                        for ref in designations)
-                    received_affected_producer = any(cid in eval_causes.get(src, set())
-                                                     for src in query['sourceQueries'])
-                    if received_affected_designation or received_affected_producer:
-                        eval_causes[qid].add(cid)
+                    for projection in prior[qid]:
+                        received_affected_designation = any(
+                            label(ref) in projection['associationUses'] and
+                            (cid in member_causes[ref] or
+                             cid in eval_causes.get(self.investigrams[ref[0]]['queryInvocation'], set()))
+                            for ref in designations)
+                        received_affected_producer = any(cid in eval_causes.get(src, set())
+                                                         for src in self.projection_sources(projection))
+                        if received_affected_designation or received_affected_producer:
+                            eval_causes[qid].add(cid)
                 changed = before != eval_causes
         statuses = {}
         for ref, declaration in sorted(designations.items()):
@@ -380,7 +418,10 @@ class Model:
             generated = eval_causes.get(qid, set())
             statuses[label(ref)] = {
                 'resultEntity': declaration['target']['entity']['entity'],
-                **self.standing(ref),
+                'displacedBy': sorted(label(r) for r, d in decls.items()
+                                      if any(address(x, 'associationKey') == ref for x in d.get('displaces', []))),
+                'competingDeclarations': sum(any(address(x, 'associationKey') == ref for x in d.get('displaces', []))
+                                            for d in decls.values()) > 1,
                 'membershipCauses': sorted(member_causes[ref]),
                 'generatingEvaluationCauses': sorted(generated),
                 'needsReconsideration': sorted(member_causes[ref] | generated)}

@@ -229,8 +229,34 @@ is not proof that every received excerpt relied on the affected claim.
 
 The simulator uses supersession/withdrawal as causes and exempts the producer from its own
 causes. It uses exact displaced associations, not entity equality or shared-item overlap.
-Additions, identity events, received-cause exemptions, challenge, clearance and reassessment
-remain open. Earlier whole-investigram completeness exemptions are not silently reused.
+
+### Actual-delivery timing and known causes
+
+`acceptedAt` orders accepted contributions; `asOfAcceptance` records the retained-state
+position at which a projection was captured for delivery. These are host-owned fixture
+provenance, not an agent's declaration that it already knew a cause. Acceptance checks
+recorded projections against their captured positions, not against the latest state.
+Default fixture requests acquire immediately before submission; separate probes retain
+an earlier delivery across an intervening change and acquire further context afterward.
+
+A cause accepted before a delivery is already part of its context. Fresh delivery must
+include qualified notices for direct displacement, affected designation membership and
+inherited generating-context concerns, including concerns attached to substantive notice
+sources. The checker rejects omitted/altered required notices. An old captured delivery
+that predates a cause is valid without that notice; it remains an exposure to later change.
+A future position or references unavailable at the recorded position are invalid.
+
+All propagation paths compare the cause to each actual delivery. Known causes cannot re-enter
+as new warnings via a source query or result designation. New designation membership compares
+against designation acceptance: already-displaced members retain their standing but do not
+create new membership causes. Its producing evaluation may still carry a cause from an earlier
+acquisition. If a query receives both an old and a refreshed projection, the refresh does not
+clear the old exposure. Query-start time and final acceptance are not delivery-time proxies.
+
+Notices preserve reasons, qualification and exact standing; they do not deliver all referenced
+replacement members or establish sufficient understanding. Those acquisition obligations remain.
+No historical warning is cleared. Additions, identity events, declaration challenge, clearance
+and reassessment remain open; no general whole-investigram completeness exemption is imported.
 
 <a id="retained-investigation-offer"></a>
 ## Retained follow-up option metadata
