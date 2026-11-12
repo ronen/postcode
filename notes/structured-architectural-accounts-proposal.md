@@ -344,6 +344,14 @@ an orchestration policy over the same assessment mechanism, not weaker evidence 
 or permission to silently discard a cause. Whether to assess before surfacing warnings or
 to expose pending status while assessing remains future behavior, not a UI commitment here.
 
+Scheduling could also respond to UI state: prioritize information underlying currently
+visible views, or reassess when a user re-exposes a view. The interface supplies a scheduling
+signal; the assessment still concerns exact retained targets and causes. Visibility alone
+is not investigator exposure and does not clear warnings or rewrite an exact captured answer.
+Only actual reassessment deliveries create new exposure. Pending-status behavior, blocking
+versus background execution and scheduling limits remain deferred presentation/orchestration
+choices, rather than requirements of the retained-content model.
+
 Defer automatic scheduling alongside targeted suppression/clearance. First exercise the
 conservative addition rule; if a short chain produces pervasive unhelpful warnings, revisit
 whether bounded reassessment is necessary for first delivery. These mechanisms are not

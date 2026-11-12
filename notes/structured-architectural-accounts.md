@@ -1642,3 +1642,10 @@ without marking/notifying and waiting for user action as the only possible workf
 a scheduling option over qualified reassessment, not a separate weaker inference mechanism.
 Pending-status presentation, resource limits and scheduling policy remain future work. Preserve
 the possibility without adopting a notification system or expanding the first implementation.
+
+
+The human adds UI-state-dependent scheduling examples: automatically reassess information
+underlying views currently exposed to the user, or trigger reassessment when a view is
+re-exposed. Retain these as deferred scheduling options over the same exact target/cause
+mechanism. Human visibility is not investigator exposure; actual material delivered during
+reassessment is. Scheduling alone changes neither historical captures nor cause standing.
