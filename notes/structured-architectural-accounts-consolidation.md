@@ -220,6 +220,14 @@ same architectural diagrams and assertions remain authored content.
 
 ## Open decisions and verification limits
 
+The latest discussion favors testing conservative reconsideration on additions. That probe
+has not yet changed the displacement-only executable model. Targeted suppression, later
+qualified reassessment and automatic scheduling of reassessment for immediately affected
+results are deferred together. Automatic scheduling could stop a cause along assessed paths
+without awaiting user action; it uses the same target-and-cause assessment requirements,
+preserves independent paths and does not imply that an unchanged target's consumers are
+unaffected. The addition probe should inform whether first delivery needs such assessment.
+
 Before drafting: settle identity/migration depth, result designation shape, support selection
 and delivery bounds, addition/exposure precision, reassessment/clearance, declaration
 challenge/reinstatement, and first-delivery scope. Entity merge/split remains a separate

@@ -1621,3 +1621,24 @@ positions are rejected; lifecycle malformed cases total 72 across both partition
 The proposal, consolidation, walkthrough, contracts and fixture guides now state this timing
 rule inline. Earlier statements here that there is no received-cause distinction are historical.
 Governing/product files remain unchanged; the scope remains authored exploratory validation.
+
+
+## 2026-11-12 — Addition policy and deferred proactive reassessment
+
+The human prefers a conservative addition trigger over investigator-selected harmless versus
+consequential additions. The agreed next step is to exercise that default and inspect warning
+volume before including targeted suppression in first delivery. Addition impact has no exact
+displaced association; its proposed entity/context scope must be explicit rather than treated
+as receipt of information created later. The existing executable fixtures remain displacement-only.
+
+Targeted suppression by the causing investigator and later reassessment are related qualified
+assessments for an exact target and cause. They remain deferred. Distinguish "this target needs
+no change" from stopping propagation through it; retain other causes and independent paths.
+Neither current implementation nor the prototype supplies general clearance.
+
+The human also proposes deferring proactive orchestration: PostCode could automatically assess
+the immediately affected ("0th-order") dependents and potentially stop propagation there,
+without marking/notifying and waiting for user action as the only possible workflow. This is
+a scheduling option over qualified reassessment, not a separate weaker inference mechanism.
+Pending-status presentation, resource limits and scheduling policy remain future work. Preserve
+the possibility without adopting a notification system or expanding the first implementation.

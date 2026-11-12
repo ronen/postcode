@@ -258,7 +258,11 @@ A fuller description can reveal important behavior or edge cases without showing
 one false. Explicit supersession or withdrawal can therefore create a reconsideration cause.
 The reason explains it; factual-error classification is not required to trigger review.
 The warning is not invalidation, proven reliance, or automatic rejection of an account.
-Whether additions should also trigger reconsideration remains open.
+The latest discussion favors a conservative addition trigger, to be exercised next in
+the fixtures. New information about an entity could warrant review of earlier consumers
+and designations containing information about it. That is a distinct new-information
+cause, not a claim that they received the new association. Exact trigger scope and warning
+volume still need the probe; the executable model currently triggers only displacement.
 
 Two paths matter:
 
@@ -324,6 +328,26 @@ of a cause through context trimming. A supersession can be contested. Competing 
 remain available; the fixture does not select a winner by timestamp. Withdrawal declarations
 are not themselves associations to supersede in this bounded prototype. Reinstatement and
 challenging the standing of declarations remain design questions, not silent undo.
+
+### Deferred qualified reassessment and proactive scheduling
+
+Keep targeted suppression by the causing investigator and later reassessment together as
+a deferred, qualified, target-and-cause assessment mechanism. An omitted assessment does
+not mean unaffected. An assessment that a target needs no change is distinct from a finding
+that this cause need not propagate through it. Other causes and independent paths remain;
+neither operation certifies the target generally or rewrites historical deliveries.
+
+PostCode could later initiate reassessment automatically, starting with immediately affected
+results (the discussion's "0th-order dependents"). Qualified findings might stop further
+propagation along those paths without waiting for a user to request reassessment. This is
+an orchestration policy over the same assessment mechanism, not weaker evidence requirements
+or permission to silently discard a cause. Whether to assess before surfacing warnings or
+to expose pending status while assessing remains future behavior, not a UI commitment here.
+
+Defer automatic scheduling alongside targeted suppression/clearance. First exercise the
+conservative addition rule; if a short chain produces pervasive unhelpful warnings, revisit
+whether bounded reassessment is necessary for first delivery. These mechanisms are not
+implemented by the existing propagation model.
 
 ## Architectural content and diagrams
 
@@ -445,7 +469,7 @@ The planning package would need explicit treatment of:
 | Entity and result identity | Common reference mechanism; settle invocation/evaluation/reuse guarantees and first migration depth. No semantic deduplication. |
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
 | Support and eligibility | Fixture delivers full targeted declarations/members with qualifications; settle bounded acquisition, competing definitions and missing support. |
-| Reconsideration | Agree addition policy, partial-delivery/producer precision, warning clearance or explicit deferral; exact association/designation identity and actual-delivery timing are retained. |
+| Reconsideration | Probe conservative addition triggers and their scope; retain exact displacement exposure and delivery timing. Targeted suppression, qualified clearance and proactive reassessment are deferred, subject to evidence that first delivery needs them. |
 | Declaration standing | Competing declarations are retained; challenge/reinstatement and result selection policy remain open. Do not infer revocation from a newer bundle. |
 | Entity merge/split | Qualified correspondence and preserved old IDs; supersession/reassignment effects remain a design probe, not delivered automatically by association operations. |
 | First capability | Choose delivered relationship kinds, contextual selection depth, mechanical compatibility and which composition/diagram probes become implementation acceptance tests. |
