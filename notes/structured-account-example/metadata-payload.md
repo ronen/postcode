@@ -70,7 +70,7 @@ owner's complete metadata is no longer an eligibility unit.
 
 Fresh projections disclose relevant qualified displacement reasons, whose references
 do not themselves deliver every old/new member. The supplied declaration/reason is itself an
-exact exposure for later displacement, distinct from its referenced members and eligibility. Captured answers remain unchanged.
+exact exposure for later displacement, distinct from its referenced members and the displacement acquisition instruction. Captured answers remain unchanged.
 Generated [lifecycle reports](children/lifecycle-report.json) show both fresh historical
 admission access and selected new admission access, with exact source provenance.
 There is no automatic current-definition selection or whole-source superseded status.
@@ -101,8 +101,9 @@ The main new design pressure is delivery and reconsideration precision, not addi
 mutable canonical entity model.
 
 The [verification guide](README.md#verification) lists checks. Same-target displacement,
-full declaration/member eligibility and one initial result designation are explicit
-provisional choices. Exact designation statuses separate displacement from membership and
+one initial result designation and accurate qualified deliveries are explicit provisional choices.
+Complete target-support acquisition before displacement is an investigator instruction; mechanical
+completeness enforcement is deferred. Separate foreign-content reuse checks remain. Exact designation statuses separate displacement from membership and
 generating-context concerns; shared entity/item identity alone is not a cause. General inventory
 coverage, required dependency delivery for arbitrary excerpts and declaration standing need
 bounded contracts. Investigator-directed propagation, targeted suppression, reassessment/clearance

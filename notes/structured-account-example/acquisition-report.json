@@ -369,6 +369,20 @@
       }
     }
   },
+  "displacementInstructionBoundary": {
+    "reason-only": {
+      "structurallyAccepted": true,
+      "deliveryCount": 1,
+      "completeTargetSupportDelivered": false,
+      "interpretiveAdequacyEstablished": false
+    },
+    "no-target-content": {
+      "structurallyAccepted": true,
+      "deliveryCount": 0,
+      "completeTargetSupportDelivered": false,
+      "interpretiveAdequacyEstablished": false
+    }
+  },
   "substantiveDeclarationDisclosure": {
     "before": {
       "entity": "P",
@@ -567,6 +581,6 @@
     "Undisplaced means no accepted displacement at capture time, not authoritative or reconciled; all competing undisplaced descriptions are selected.",
     "The original 0/7 and 0/8 baseline is a by-reference boundary control. Discovery branch counts are authored examples, not measured warning frequency.",
     "Architectural coverage of program behavior is not assigned an inventory dependency. Declared dependencies and investigator-directed propagation are deferred pending observed coverage gaps.",
-    "A supplied reason exposes its exact declaration, not every referenced member or full source bundle. No eligibility or reinstatement is inferred."
+    "A supplied reason exposes its exact declaration, not referenced members or full source bundles. Complete target-support acquisition is an investigator instruction; structural acceptance does not establish compliance, adequacy or reinstatement."
   ]
 }

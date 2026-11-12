@@ -57,7 +57,7 @@ successive boundary deliveries:
 The content is already reachable in Q2's initial context; the extra acquisition makes the
 agent's discovery choice explicit rather than asserting a new architectural finding. These are
 authored dialogue-shaped requests, not a live investigator choosing tools. The list itself
-contains no prose summaries and grants no full-member evidence eligibility.
+contains no prose summaries and does not establish member delivery or fulfillment of the displacement acquisition instruction.
 
 With this Q2 in the same seven-query history, either subsequent S/describes addition affects:
 
@@ -91,8 +91,9 @@ producing evaluation to acquire a concern.
 
 The model derives this exact exposure from the already captured `notices` map alongside
 `associationUses`. No second copy of the reason or redundant payload field is needed. Bare
-references *inside* the supplied declaration do not recursively expose their targets. Full
-`declarations` and member delivery remain separate eligibility requirements.
+references *inside* the supplied declaration do not recursively expose their targets. Investigators
+are instructed to acquire the full target declaration and designated support before displacement;
+mechanical enforcement of that acquisition completeness is deferred.
 
 In the authored branch, Q-notice-reader receives the original admission content and the
 qualified ADMISSION-2 declaration. WITHDRAW-UPDATE-1 then withdraws the revised admission
@@ -104,8 +105,13 @@ the historical entry and never supplied the reason or current standing.
 Fresh original-admission access now discloses both the supersession declaration and its later
 withdrawal. Omitting that applicable context is rejected. A recipient of the fresh disclosure
 is not warned retrospectively; a pre-withdrawal acquisition still is. The original displacement
-fact remains retained, and no original association is automatically reinstated. Attempting to
-withdraw ADMISSION-2 based only on its disclosed reason fails: its member content was not acquired.
+fact remains retained, and no original association is automatically reinstated.
+
+Two separate branches deliberately withdraw ADMISSION-2 with only its disclosed reason or with
+no target content delivered. Both are structurally accepted, without fabricating member exposure.
+They demonstrate the deferred acquisition-completeness gate, not adequate grounds or compliance
+with the investigator instruction. Unknown targets and missing grounds are still rejected;
+accurate captured delivery, qualification and disclosure checks remain enforced.
 
 ## Deferred coverage remedies
 
@@ -132,6 +138,6 @@ Run `python3 notes/structured-account-example/check-acquisition.py`; `--write` r
 two condensed reports of delivered references, scope, qualified disclosures and exact causes.
 Checks cover scope/reference contrasts, new matching descriptions, source-time reconstruction,
 later finishing evaluations, discovery/retrieval, direct notice-declaration displacement,
-bare-reference controls, fresh disclosure completeness and full-member eligibility.
-**22 malformed/ineligible cases** are rejected atomically across the partitions. Existing
+bare-reference controls, fresh disclosure completeness and the displacement instruction boundary.
+**24 malformed scope/disclosure/declaration cases** are rejected atomically across the partitions. Existing
 addition, lifecycle, guidance, composition, selector and diagram checks remain separate regressions.

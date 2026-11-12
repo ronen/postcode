@@ -83,7 +83,7 @@ trigger from reappearing through designation membership.
 Automatic delivery of every other association's reason is removed. Relevant displacement
 and inherited-cause context for actually supplied material still accompanies it. A substantively
 supplied declaration reason exposes that exact declaration to later displacement, without
-supplying its referenced members or full eligibility context. For example,
+supplying its referenced members or fulfilling the complete-support acquisition instruction. For example,
 freshly receiving Q-inventory's result after an addition discloses its known cause; merely
 requesting S's original description does not pull in every added S association. No blanket
 exemption for interpretive reasons has been introduced.

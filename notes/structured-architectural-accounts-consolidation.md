@@ -185,8 +185,9 @@ retains its qualifications, while new scenario examples carry their own applicab
 Renewed assertions need no reinstatement operation: after B supersedes A, C may supersede B
 using A's original content, retaining its provenance and qualifications and supplying C's own
 grounds. A stays displaced. After withdrawal, C may add a new association to the earlier content.
-D may later disagree with C through another supersession or withdrawal. Normal acquisition and
-eligibility apply; historical causes and result designations are not cleared or restored.
+D may later disagree with C through another supersession or withdrawal. The complete-support
+acquisition instruction and structural rules apply; historical causes and result designations
+are not cleared or restored.
 General declaration revocation/reinstatement is deferred. See the
 [working agreement](structured-architectural-accounts-proposal.md#renewed-association).
 
@@ -194,9 +195,18 @@ Competing undisplaced associations remain available and are both included when a
 descriptions in scope, with qualified grounds and support. Recency does not pick a winner. Exact
 requests remain narrower and fixed result memberships do not expand automatically. With sequential
 investigations, C acquiring A after B superseded it receives disclosure of B and can acquire the
-support needed to supersede B explicitly. Deliberately leaving B standing remains valid; parallel
+support the investigator is instructed to acquire before superseding B explicitly. Deliberately leaving B standing remains valid; parallel
 execution is not required to explain the competing fixture. See the
 [working agreement](structured-architectural-accounts-proposal.md#competing-associations).
+
+Before superseding or withdrawing an association, the investigator is instructed to acquire its
+complete designated content, qualifications and required support. For the first capability,
+mechanical target-support completeness enforcement is deferred: PostCode validates structural
+rules and accurate qualified deliveries, not whether the investigator understood enough to justify
+a change. Deliberately incomplete acquisitions in the probe are structurally accepted without
+fabricating exposure or certifying instruction compliance. The separate fixture checks for foreign
+content reuse and prior query meaning remain. See the
+[working agreement](structured-architectural-accounts-proposal.md#displacement-acquisition-guidance).
 
 <a id="catalogue-responsibilities"></a>
 ## Catalogue responsibilities and diagrams
@@ -264,7 +274,7 @@ The earlier broad 5/7 and 7/8 comparison remains reproducible. Both partitions a
 
 A qualified declaration reason supplied as context creates exact exposure to that declaration;
 later displacement can affect its recipient directly. Referenced members are not delivered
-or made eligible for reuse/correction merely by the reason. Fresh disclosures follow later
+by the reason; it does not fulfill the displacement acquisition instruction or establish member delivery for reuse. Fresh disclosures follow later
 displacement of the supplied declaration too, without implying reinstatement of its predecessor.
 
 Removing implicit entity-wide exposure and unsolicited addition reasons is a structural

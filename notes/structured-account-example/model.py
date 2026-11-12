@@ -265,8 +265,9 @@ class Model:
             assert projection['notices'] == expected['notices'], 'missing or altered known-cause disclosure at delivery'
             assert projection.get('inventory') == expected.get('inventory'), 'missing or altered inventory delivery'
             assert projection.get('selectionScope') == expected.get('selectionScope'), 'missing or altered selection-scope delivery'
-            if 'scopeSelection' in selection:
-                assert projection['declarations'] == expected['declarations'] and projection['items'] == expected['items'], 'incomplete scope-selected content'
+            # Validate what the selected delivery actually contained, independently of
+            # whether it was sufficient for the investigator's later displacement.
+            assert projection['declarations'] == expected['declarations'] and projection['items'] == expected['items'], 'missing or altered selected content'
         assert request['declaredMeaning']['question'] and request['declaredMeaning']['scope'], 'missing declared question/scope'
         qid = request['id']
         subject = request['subject']
@@ -333,11 +334,8 @@ class Model:
                     assert old_ref in self.declarations(), 'displacement target must predate this acceptance'
                     assert self.declarations()[old_ref]['operation'] != 'withdrawal', 'withdrawal is not an association to supersede'
                     assert self.declarations()[old_ref]['target'] == target, 'use withdrawal and addition to change target'
-                    old_ds, old_items = self.expand(old_ref)
-                    for r in old_ds:
-                        assert supplied_ds.get(label(r)) == self.qualified(r[0], self.declarations()[r]), 'incomplete declaration delivery'
-                    for r in old_items:
-                        assert supplied_items.get(label(r)) == self.qualified(r[0], self.items()[r]), 'incomplete member/qualification delivery'
+                    # Acquiring the target's complete qualified support is an investigator
+                    # instruction, not an acceptance gate in the first capability.
             ds, its = staged.expand(ref)
             covered |= its
             for r in its:

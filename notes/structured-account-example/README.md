@@ -65,8 +65,10 @@ is neither a patched tree nor a global replacement flag.
 
 Q2 receives a RESULT-Q1 projection including the exact declarations/members it will
 displace. This is a deliberate completeness example, not a default to deliver every
-historical result. Supersession eligibility provisionally requires the exact target
-and designated members with qualifications; an option excerpt alone is insufficient.
+historical result. Investigators are instructed to acquire the exact target and designated
+members with qualifications before displacement; an option excerpt alone does not fulfill that
+instruction. Mechanical target-support completeness enforcement is deferred; structural validity
+and accurate delivery records remain mandatory.
 Redesignation also requires Q1's exact question/scope and parameters in context; it is
 optional, not a duty to update every containing result. The follow-up option stays on ADMISSION-1 and is not copied to ADMISSION-2 because this
 submission already answers it.
@@ -159,7 +161,7 @@ python3 notes/structured-account-example/composition/check-and-render.py
 python3 notes/structured-account-example/render-overviews.py
 ```
 
-The first checks both partitions, qualified delivery/eligibility, immutable original
+The first checks both partitions, qualified delivery, structural eligibility and reuse checks, immutable original
 answers, exact association standing, result-membership versus exposure paths, atomic
 rejection and matching architectural state/interaction content. It rejects 72 malformed
 cases across the partitions. Use `--write` only to deliberately regenerate lifecycle
@@ -174,8 +176,9 @@ options to suppress warnings. The revised baseline is 0/7 evaluations and 0/8 de
 explicit inventory branches reach 2/9 and 2/10, one direct and one inherited. These are boundary
 controls, not warning-rate estimates. The acquisition checker adds scope-selected descriptions
 and a discovery-before-retrieval Q2 (3/7 evaluations, 4/8 designations), plus direct exposure to
-supplied declaration reasons. It rejects 22 malformed/ineligible cases; `--write` regenerates
-its condensed reports in both partitions.
+supplied declaration reasons. It rejects 24 malformed scope, disclosure or declaration cases. It also accepts deliberately
+incomplete target-support branches to demonstrate the instruction/enforcement boundary, not sound
+analysis. `--write` regenerates its condensed reports in both partitions.
 
 The guidance checker rejects 26 malformed metadata/address/request cases and verifies
 both trial diagrams resolve identically without recommendations. Composition checks

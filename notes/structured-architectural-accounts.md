@@ -1814,3 +1814,22 @@ requirements still apply: disclosure of B's declaration is not delivery of all o
 C can deliberately leave B standing; competition need not imply parallelism. The existing probe
 remains useful as that deliberate case, without claiming empirical frequency. No fixture or
 product behavior changes are needed for this agreement.
+
+## 2026-11-12 — Displacement acquisition guidance, structural acceptance
+
+The human agrees that investigators can reasonably be expected to follow instructions. Before
+superseding or withdrawing an association, they must acquire its complete designated content,
+qualifications and required support. Mechanical enforcement of that completeness rule is deferred
+for the first capability; an acceptance gate cannot establish actual understanding.
+
+Structural checks remain mandatory: existing eligible exact targets, compatible target/role,
+valid operation shape and required grounds. Delivery records still faithfully record actual
+qualified content and notices; IDs never become exposure to unseen content. The fixture separately
+retains foreign-content reuse and earlier-query-meaning requirements. This decision concerns the
+prior support required for displacement, not those separate checks. Governing qualification,
+evidence and provenance requirements are not relaxed; their replacement design needs adoption.
+
+The acquisition probe now accepts reason-only and no-target-content withdrawal branches as a
+deliberate instruction-boundary test, without implying sound investigation or invented exposure.
+It still rejects unknown targets, missing grounds and malformed delivery. End-to-end investigation
+should examine instruction-following before deciding whether to add a mechanical completeness gate.

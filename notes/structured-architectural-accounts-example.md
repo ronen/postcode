@@ -43,7 +43,7 @@ Q2 explicitly receives RESULT-Q1's initial designated members and the qualified 
 is full selected-result delivery in this example, not a default to transmit every entity's
 history. The record materializes exact declarations/items with their owner, source qualifications,
 evidence references, captured basis and query provenance. The projection also supplies Q1's declared question, subjects, parameters and scope. The option excerpt alone would not
-establish eligibility to displace a result association. Human browsing alone is not exposure.
+fulfill the complete-support acquisition instruction before displacing a result association. Human browsing alone is not exposure.
 
 The option promises qualified investigation, not a particular diagram. The investigator
 chooses state and interaction content because it is useful. A different explicit diagram
@@ -89,10 +89,12 @@ answers that question. No independent guidance lifecycle or automatic transfer i
 
 An exact lookup identifies the requested declaration/item. Fresh access can include displacement
 notices and qualified new alternatives; references in those notices are not delivery of all
-old/new content. The fixture's new eligibility rule requires receipt of the entire targeted
-declaration and its designated members with qualification, not every item in its owner.
-It rejects identifier-only or qualification-stripped targets. This proposed rule replaces an
-existing governing requirement and must be adopted explicitly before product work.
+old/new content. Investigators are instructed to acquire the entire targeted declaration and its
+designated members with qualification before displacement, not every item in its owner.
+Mechanical enforcement of target-support completeness is deferred; structural acceptance does not
+certify adequate investigation. The fixture still rejects inaccurate recorded delivery and stripped
+qualification. This proposed boundary replaces an existing governing requirement and must be adopted
+explicitly before product work.
 
 Q1 remains the producer of its original assertions and has no incoming-exposure warning:
 its P orientation was not the admission association it later created. RESULT-Q1's original

@@ -77,15 +77,15 @@ def check_variant(directory,write=False):
     assert state.investigrams['ADMISSION-2']['content'][0]['key']=='admission-cases'
     assert len(state.investigrams['ADMISSION-2']['content'])==1
     assert state.investigrams['ADMISSION-2']['followupOptions']==[]
-    # Excerpt/identifier delivery is not enough to displace a whole selected association.
+    # Captured delivery must faithfully contain what its selection says was delivered.
     actual=[before_follow.project(x) for x in ledger['followupRequest']['deliveries']]
     for part in ['items','declarations']:
         delivered=copy.deepcopy(actual);delivered[0][part]={}
-        rejected('incomplete target '+part,lambda: copy.deepcopy(before_follow).accept(follow,ledger['followupAcceptance'],ledger['followupRequest'],delivered))
+        rejected('altered captured delivery '+part,lambda: copy.deepcopy(before_follow).accept(follow,ledger['followupAcceptance'],ledger['followupRequest'],delivered))
     for field in ['sourceQualifications','sourceEvidence','basis','queryInvocation']:
         delivered=copy.deepcopy(actual)
         next(iter(delivered[0]['items'].values())).pop(field)
-        rejected('missing target '+field,lambda: copy.deepcopy(before_follow).accept(follow,ledger['followupAcceptance'],ledger['followupRequest'],delivered))
+        rejected('stripped delivered qualification '+field,lambda: copy.deepcopy(before_follow).accept(follow,ledger['followupAcceptance'],ledger['followupRequest'],delivered))
     for field in ['missing','scope','subject','parameterValues']:
         delivered=copy.deepcopy(actual)
         if field=='missing':delivered[0]['queryMeanings']={}

@@ -85,10 +85,10 @@ record these boundaries:
 - An exact option excerpt with qualification/basis/provenance is substantive guidance
   delivered through RESULT-Q1, with exact owner/key and generating provenance. It does not
   expose every association of RESULT-Q1, supply an association inventory, deliver the source
-  bundle or establish eligibility to displace an association.
+  bundle or fulfill the instruction to acquire complete target support before displacement.
 - The actual Q2 delivery separately includes full original result declarations/members.
-  This is sufficient for the two targeted supersessions under the provisional eligibility
-  rule. It is not a universal full-history default for invoking an option.
+  This fulfills the acquisition instruction for the two targeted supersessions; mechanical
+  enforcement of that completeness instruction is deferred. It is not a universal full-history default for invoking an option.
 - ADMISSION-1 and its option remain unchanged. Association displacement notices concern
   exact designated information; no whole-owner replacement automatically invalidates,
   transfers or reissues the option. Its suitability after changes remains qualified

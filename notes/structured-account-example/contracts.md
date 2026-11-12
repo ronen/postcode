@@ -98,18 +98,30 @@ are inline in this slice; no redundant mandatory `support` list repeats the disp
 address. Additional grounds can be supplied as new qualified content without a special
 operation for editing an earlier reason.
 
-**Provisional acceptance rules exercised here:** displaced declarations must predate
-the submission, share the new declaration's target and be additions/supersessions,
-not withdrawals. Changing the target uses withdrawal plus addition. The exact target
-declaration and its complete designated membership/dependencies must have been delivered
-with source qualification and provenance. A reason alone, an ID, or an option excerpt
-is insufficient. Reusing foreign content/declarations also requires their actual qualified
-delivery. These are reviewable choices, not assumed consequences of the new direction.
+**Structural acceptance rules exercised here:** displaced declarations must predate the
+submission, share the new declaration's target and be additions/supersessions, not withdrawals.
+Changing the target uses withdrawal plus addition. A displacement requires exact targets and
+nonempty qualified grounds; mechanical checks verify required fields, not justification quality.
+
+**Investigator instruction:** before superseding or withdrawing an association, acquire its
+complete designated content, qualifications and required support/dependencies. A reason alone,
+an ID or an option excerpt does not fulfill that instruction. Acquisition may happen over multiple
+dialog requests. Mechanical enforcement of target-support completeness is deferred for the first
+capability. Structurally valid declarations can be accepted without complete prior support; this
+is not proof of sound analysis or compliance. Missing support is an investigation obligation,
+not something that PostCode may silently count as delivered.
+
+Recorded deliveries must accurately match the selected content, including its original qualifications,
+evidence and provenance; missing or altered selected payloads remain invalid. Foreign content/
+declarations reused by a new association still require their actual qualified delivery in this
+fixture, and redesignating an earlier result still requires its question/scope. These separate
+rules do not require all members of a displaced association to have been delivered.
+
 Renewed assertions use these same operations: if B superseded A, C can supersede B with
 members referencing A's original content and its own qualified grounds. A stays displaced;
 source ownership, evidence, qualifications and provenance stay with the reused content.
 After a withdrawal, C can add an association referencing that content without revoking the
-withdrawal. D can later supersede or withdraw C. Normal delivery/eligibility obligations apply;
+withdrawal. D can later supersede or withdraw C. The acquisition instruction and structural rules apply;
 none of these operations clears earlier causes or reinstates old result designations.
 General declaration revocation/reinstatement is deferred. This agreement does not add an
 operation or claim an executed A → B → C → D fixture.
@@ -125,7 +137,7 @@ not a universal active-winner algorithm.
 
 Sequential investigation does not prevent deliberate competition. Acquiring A after B superseded
 it discloses B; acquiring B's required membership/support then permits explicitly superseding B.
-C can instead leave B standing. Disclosure alone does not satisfy full displacement eligibility.
+C can instead leave B standing. Disclosure alone does not fulfill the complete-support acquisition instruction.
 The authored competing probe exercises this edge case, not parallel producers or typical frequency.
 
 A fuller description can supersede an earlier association without alleging factual
@@ -214,8 +226,8 @@ Entity/result IDs organize the exposure index; they are not change subscriptions
 association with that identity. Content and inventory exposure are recorded separately. `associationUses` records exact uses actually supplied,
 with source qualification and generating provenance. Full association delivery records its
 expanded declarations; an item excerpt requires `viaAssociation` and records only paths to
-that item. These partial use records do not claim full declaration/member delivery and cannot
-establish displacement eligibility. The captured route cannot expand to later associations.
+that item. These partial use records do not claim full declaration/member delivery or fulfillment
+of the complete-support acquisition instruction. The captured route cannot expand to later associations.
 
 Selecting a portion of Q's result retains its exact designation route as well as RESULT-Q.
 Human browsing, bare IDs and undelivered siblings do not create delivered association entries.
@@ -228,7 +240,7 @@ Fresh projections disclose qualified displacement notices for exact supplied use
 other use of a shared item. The notice's own substantively supplied declaration is an exact
 exposure; the fixture derives its address from the captured `notices` map alongside
 `associationUses`. Later displacement of that declaration can be a direct cause. References
-inside a notice do not deliver their targets or old/new members, nor confer full-member eligibility.
+inside a notice do not deliver their targets or old/new members, nor fulfill the complete-support acquisition instruction.
 Fresh projections close over subsequent displacement of the actually supplied declarations too. Original
 answer/delivery snapshots stay fixed. General warnings are inspected separately through
 `reconsideration()`, whose statuses name exact designation addresses rather than only RESULT-Q.
@@ -289,8 +301,8 @@ and association addresses/roles. Roles must be nonempty, distinct and valid for 
 
 This fixture covers **all retained associations in scope**, including displaced ones. It has
 no standing field, interpretive summary, reason, name or member content. Entries are not
-association uses, do not contribute producing-query exposure, and cannot establish reuse or
-displacement eligibility. A complete empty inventory still establishes scope. Missing, altered,
+association uses, do not contribute producing-query exposure, and do not establish member delivery
+for reuse or fulfill the acquisition instruction for displacement. A complete empty inventory still establishes scope. Missing, altered,
 unsolicited or future-position inventories are rejected atomically. Content requests can be
 made separately before or after inventory acquisition; each actual delivery retains its time.
 

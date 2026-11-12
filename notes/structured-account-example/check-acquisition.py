@@ -21,7 +21,7 @@ def rejected(model, probe, deliveries=None):
     except (AssertionError, KeyError, TypeError):
         rejected_count += 1
     else:
-        raise AssertionError('Malformed or ineligible acquisition was accepted')
+        raise AssertionError('Malformed acquisition was accepted')
     assert branch.__dict__ == before
 
 
@@ -139,10 +139,30 @@ def check(directory, write=False):
     assert any(x['association']['investigram'] == 'ADMISSION-2' for x in bare_delivery['inventory']['entries'])
     assert not notices.delivered_declarations(bare_delivery) and not notices.projection_sources(bare_delivery)
     accept(notices, bare)
-    # A reason is not complete target/member delivery, even though it creates exposure.
-    invalid = copy.deepcopy(probes['withdrawAdmissionUpdate'])
-    invalid['request']['deliveries'] = [notice_selection]
-    rejected(notices, invalid, [notice_delivery])
+    # Target-support acquisition is an investigator instruction, not a mechanical gate.
+    # Both deliberately incomplete branches are structurally accepted without inventing
+    # exposure. They do not demonstrate sound investigation or compliance with instructions.
+    instruction_boundary = {}
+    for kind, selections, supplied in [('reason-only', [notice_selection], [notice_delivery]),
+                                        ('no-target-content', [], [])]:
+        branch = copy.deepcopy(notices)
+        probe = copy.deepcopy(probes['withdrawAdmissionUpdate'])
+        probe['request']['deliveries'] = selections
+        accept(branch, probe, supplied)
+        captured = branch.queries[probe['request']['id']]['deliveries']
+        assert captured == supplied
+        assert all('ADMISSION-2::admission-cases' not in p['items'] for p in captured)
+        instruction_boundary[kind] = {'structurallyAccepted': True,
+            'deliveryCount': len(captured), 'completeTargetSupportDelivered': False,
+            'interpretiveAdequacyEstablished': False}
+    # Well-formedness remains mandatory, independent of acquisition completeness.
+    for defect in ['unknown-target', 'missing-grounds']:
+        bad = copy.deepcopy(probes['withdrawAdmissionUpdate'])
+        bad['request']['deliveries'] = []
+        declaration = bad['submission']['result']['investigrams'][0]['associationSpecifications'][0]
+        if defect == 'unknown-target': declaration['displaces'][0]['associationKey'] = 'absent'
+        else: declaration['reason'] = ''
+        rejected(notices, bad, [])
     accept(notices, probes['withdrawAdmissionUpdate'])
     wid = 'WITHDRAW-UPDATE-1::' + probes['withdrawAdmissionUpdate']['submission']['result']['investigrams'][0]['associationSpecifications'][0]['key']
     status = notices.reconsideration()
@@ -167,6 +187,7 @@ def check(directory, write=False):
             'freshRecipientCauses': scoped.reconsideration()['evaluations']['Q-scope-after'],
             'earlierAcquisitionCauses': scoped.reconsideration()['evaluations']['Q-scope-finishes-later']},
         'discoveryFollowup': {'q2Deliveries': [delivery_summary(discovery, d) for d in deliveries], 'independentComparisons': discovery_comparisons},
+        'displacementInstructionBoundary': instruction_boundary,
         'substantiveDeclarationDisclosure': {'before': delivery_summary(notices, notice_delivery), 'after': delivery_summary(notices, fresh_notice), 'withdrawalCause': wid,
             'directRecipientCauses': status['evaluations']['Q-notice-reader'],
             'replacementProducerCauses': status['evaluations']['Q2'],
@@ -176,11 +197,11 @@ def check(directory, write=False):
         'limitations': ['Undisplaced means no accepted displacement at capture time, not authoritative or reconciled; all competing undisplaced descriptions are selected.',
                        'The original 0/7 and 0/8 baseline is a by-reference boundary control. Discovery branch counts are authored examples, not measured warning frequency.',
                        'Architectural coverage of program behavior is not assigned an inventory dependency. Declared dependencies and investigator-directed propagation are deferred pending observed coverage gaps.',
-                       'A supplied reason exposes its exact declaration, not every referenced member or full source bundle. No eligibility or reinstatement is inferred.']}
+                       'A supplied reason exposes its exact declaration, not referenced members or full source bundles. Complete target-support acquisition is an investigator instruction; structural acceptance does not establish compliance, adequacy or reinstatement.']}
     path = directory / 'acquisition-report.json'
     if write: path.write_text(json.dumps(report, indent=2) + '\n')
     else: assert read(path) == report, 'stale acquisition report'
-    print(f'{directory.name}: scoped description addition reaches 1 direct + 1 inherited recipient; discovery Q2 branch reaches 3/7 evaluations and 4/8 designations; exact reason-displacement/timing/eligibility checks pass.')
+    print(f'{directory.name}: scoped description addition reaches 1 direct + 1 inherited recipient; discovery Q2 branch reaches 3/7 evaluations and 4/8 designations; exact reason-displacement/timing and instruction-boundary checks pass.')
     return report
 
 
@@ -188,4 +209,4 @@ mixed = check(BASE, '--write' in sys.argv)
 children = check(BASE / 'children', '--write' in sys.argv)
 for name in ['complementary', 'behavioral']:
     assert mixed['discoveryFollowup']['independentComparisons'][name]['counts'] == children['discoveryFollowup']['independentComparisons'][name]['counts']
-print(f'{rejected_count} malformed scope or incomplete disclosure/eligibility cases rejected atomically.')
+print(f'{rejected_count} malformed scope, disclosure or declaration cases rejected atomically.')

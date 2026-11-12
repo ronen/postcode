@@ -190,20 +190,33 @@ not every informative link or every entity's descriptions. Identifying support c
 explicitly included or requested through dialogue. General ranking, bounds and missing-support
 behavior still need a bounded contract; presentation retrieval/navigation remains outside scope.
 
-**Provisional displacement eligibility:** the investigation must receive the exact earlier
-association declaration and all designated members, including required semantic dependencies
-and applicable source qualifications. Result targets recursively include their designated
-declarations/items. That is not a demand for entire owner bundles or children. Foreign content
-used by a new association must also have actually been delivered. Tests reject an ID, an item
-excerpt without its declaration, missing members and stripped qualification/basis/provenance.
-This replaces, rather than quietly weakens, the current whole-investigram delivery rule and
-requires explicit adoption. Exceptions for partial/narrow reassociation are not implemented.
+<a id="displacement-acquisition-guidance"></a>
+**Displacement acquisition is an investigator instruction.** Before superseding or withdrawing
+an association, acquire its complete designated content, qualifications and required support,
+including semantic dependencies. Result targets include their designated declarations/items;
+this does not require entire owner bundles or unrelated children. Acquisition may proceed over
+successive dialog requests. Investigators are expected to follow this instruction and supply
+qualified grounds; PostCode does not attempt to verify understanding.
+
+For the first capability, defer mechanical enforcement of target-support completeness. Structural
+acceptance still validates exact existing eligible targets, compatible target/role, operation
+shape and required grounds. It also validates the accuracy and qualification of recorded deliveries:
+an ID is not delivered content, and a reason does not deliver its referenced members. A declaration
+can therefore be structurally accepted even if the recorded context is insufficient under the
+investigator instruction. That is not certification of adequate analysis or instruction compliance.
+Observe instruction-following in the end-to-end investigation before deciding whether a completeness
+gate is needed. This changes the proposed replacement for the governing correction rule and needs
+explicit adoption before product implementation; qualification/evidence/provenance obligations remain.
+
+The fixture still separately checks actual delivery of foreign content used in a new association
+and the exact question/scope when redesignating an earlier query result. Those are not a restored
+requirement to deliver every member of the displaced association. No product rule is changed here.
 
 Fresh delivery discloses applicable declarations with reason, ownership and qualifications.
 A substantively supplied declaration is itself an exact exposure, so its later displacement can
 create a direct cause. Bare references inside that declaration do not deliver their targets or
 members. The fixture derives declaration exposure from its captured qualified disclosures;
-full-member eligibility remains separate. Fresh access also discloses subsequent displacement
+target-support acquisition remains an investigator obligation, not a mechanical gate. Fresh access also discloses subsequent displacement
 of those supplied declarations, without retroactive warnings or automatic reinstatement.
 Further acquisition remains explicit. An exact captured answer stays unchanged.
 
@@ -248,8 +261,9 @@ reason. General ranking and partial selection remain outside this bounded contra
 
 Available, requested and delivered information remain distinct. Mechanical inventory entries
 record availability; substantive listing summaries would additionally be delivered interpretive
-content with its own provenance and qualifications. A target can become eligible for displacement
-only after the necessary qualified content is acquired, not merely by appearing in an inventory.
+content with its own provenance and qualifications. Inventory discovery does not satisfy the
+instruction to acquire complete qualified support before displacement; structural acceptance
+and fulfillment of that instruction are separate.
 Incomplete/paged inventories must disclose their actual coverage; the probe uses complete scoped
 lists and does not yet generalize those acquisition policies.
 
@@ -381,7 +395,7 @@ Working agreement: challenge earlier information through new qualified associati
 revoking the historical displacement. If B superseded A, C may supersede B while referencing
 A's original content. A remains displaced; C is the new assertion. Reused content retains its
 original ownership, evidence, qualifications and provenance, while C has its own attributable
-grounds. The usual delivery and eligibility requirements apply. Reuse does not clear causes or
+grounds. The acquisition instruction and structural eligibility rules apply. Reuse does not clear causes or
 establish that the original content is generally sound.
 
 After a withdrawal, C can add a new association to the earlier content without undoing or
@@ -408,8 +422,8 @@ The bounded discussion assumes sequential investigations, not parallel producers
 A after B's supersession, fresh delivery discloses B's declaration. C can acquire the required
 members/support and explicitly supersede B if warranted. Competition is therefore an edge case,
 not an assumed routine race: C may deliberately leave B standing while asserting a different
-account. Merely learning that B exists neither delivers all of B's content nor authorizes its
-displacement. The fixture's competing declaration remains a useful deliberate case; it does not
+account. Merely learning that B exists does not deliver all of B's content or fulfill the
+acquisition instruction, even though no target-support completeness gate is enforced. The fixture's competing declaration remains a useful deliberate case; it does not
 establish an observed frequency. General delivery bounds remain to be specified without silently
 choosing a winner or claiming complete coverage for a partial selection.
 
@@ -598,7 +612,7 @@ The planning package would need explicit treatment of:
 - Investigrams as immutable contributions; item addresses, cross-owner references,
   declaration-only results and result designation separate from fixed child composition.
 - Association addition/supersession/withdrawal replacing whole-investigram correction,
-  including validation, delivery eligibility, conflict/standing and exact historical access.
+  including structural validation, acquisition guidance, conflict/standing and exact historical access.
 - Exact association/content exposure, separate scoped inventory exposure, and result-membership
   reconsideration with qualified context disclosures and exact cause identities. Entity/result
   IDs organize access; they are not blanket exposure units.
@@ -613,7 +627,7 @@ The planning package would need explicit treatment of:
 | --- | --- |
 | Entity and result identity | Common reference mechanism; settle invocation/evaluation/reuse guarantees and first migration depth. No semantic deduplication. |
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
-| Support and eligibility | Fixture delivers full targeted declarations/members with qualifications; settle bounded acquisition and missing support. Scoped current-description acquisition includes competing undisplaced associations; exact-reference acquisition remains narrower. |
+| Support acquisition | Complete target-support acquisition is an investigator instruction; mechanical completeness enforcement is deferred. Structural validity and accurate qualified deliveries remain enforced. Set bounded acquisition/missing-support behavior; scoped current-description acquisition includes competing undisplaced associations and exact-reference acquisition remains narrower. |
 | Reconsideration | Distinguish actual association and inventory exposure; additions trigger matching prior inventories, not every entity use or fixed result membership. Refined probe removes the earlier broad marks. Record both inventory and scope-selected content acquisition; exact delivered declaration reasons are exposure too. Set first-delivery coverage explicitly; richer selectors remain open. Investigator-directed propagation, suppression, reassessment/clearance and scheduling are deferred. |
 | Entity merge/split | Qualified correspondence and preserved old IDs; supersession/reassignment effects remain a design probe, not delivered automatically by association operations. |
 | First capability | Choose delivered relationship kinds, contextual selection depth, mechanical compatibility and which composition/diagram probes become implementation acceptance tests. |
