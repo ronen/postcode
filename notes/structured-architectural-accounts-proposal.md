@@ -1,6 +1,6 @@
 # Structured architectural accounts: working proposal
 
-Updated: 2026-11-11
+Updated: 2026-11-12
 
 Exploratory synthesis for discussion, incorporating the emerging direction and a
 recommended bounded capability. This is not an adopted design, planning package,
@@ -48,6 +48,15 @@ boundaries. The [complete metadata payload](structured-account-example/metadata-
 now exercises qualified metadata, exact option/presentation addresses and explicit
 trial diagram inputs in both partitions. This is an authored fixture protocol;
 product acceptance and a general presentation system remain unimplemented.
+
+**2026-11-12 discussion update:** [Association declarations and information targets](structured-architectural-accounts.md#association-declarations)
+now explore a common addition/supersession/withdrawal mechanism for entity-and-role
+associations and result associations, including declarations referring to content owned
+by other investigrams. This would replace the whole-investigram supersession approach
+in the earlier model. Its correction, delivery and reconsideration consequences still
+need resolution. The detailed synthesis and executable fixtures below have not yet
+been reconciled with this direction; their earlier correction rules are not evidence
+that the new mechanism is already specified or adopted.
 
 ## Current exploratory checkpoint
 

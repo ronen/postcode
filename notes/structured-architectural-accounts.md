@@ -1347,3 +1347,92 @@ decided when drafting. It is not adopted now or automatically put on a separate 
 Current notes, fixture keys/checkers and generated source pointers now use the agreed
 names; governing/product files remain unchanged. Historical entries above retain the
 language of their discussion. The consolidation's vocabulary is the current reference.
+
+
+<a id="association-declarations"></a>
+## 2026-11-12 — Association declarations and information targets
+
+Current exploratory direction from the discussion, not an adopted governing change
+or a fixture protocol. Resolve substantive choices and deferral boundaries in notes
+before translating them into a draft planning package.
+
+**Identity/reuse clarified.** Reusing an entity ID means referring to the previously
+identified thing, not agreeing with an earlier description. Descriptions and names
+remain qualified content; identity is not an authoritative definition or proof that
+independently introduced IDs denote different architectural things. Entity introduction,
+identifying content and content association remain distinct responsibilities.
+
+**Association supersession.** The human intends an expanded description to be able to
+supersede an earlier identifying association without correcting the whole investigram.
+Earlier discussion contemplated updating associated information, but the concrete
+fixtures had not specified independent association supersession. The human also proposes
+withdrawal without replacement. Existing association/content provenance is never mutated.
+Different applicability alone does not warrant withdrawal: an association that remains
+appropriate in its stated scope can coexist with another qualified association.
+
+**Preferred unification under development — proposal (I).** Use association declarations
+for both entity-related information and an investigation's designated result, rather
+than a separate whole-investigram supersession mechanism. B can declare associations
+concerning A's result, not just B's own result. B can replace the designated result and
+independently displace other associations. Historical production provenance and captured
+answers remain fixed. This is a substantive alternative to the governing correction
+model; the old fixtures still demonstrate whole-investigram correction.
+
+The alternative (II), superseding content items directly, is less attractive because one
+item can participate in several associations and remain appropriate for some of them.
+Association-specific declarations can preserve those uses without copying content.
+The proposed coverage check that each content item participates in at least one
+association remains to be worked through; it does not by itself cover direct item access
+or semantic dependencies.
+
+**Names and structure agreed in discussion.** An investigram includes a collection of
+association specifications expressing association declarations. The three declaration
+kinds are addition, supersession and withdrawal:
+
+- Addition introduces an association.
+- Supersession introduces a replacement association and identifies the exact earlier
+  associations displaced.
+- Withdrawal identifies exact earlier associations displaced without replacements.
+
+An association target is a choice between:
+
+- an investigram's result; or
+- an entity together with an applicable role, such as identifies or describes.
+
+A separate role field is not needed for result targets. Own-result and other-result
+references are cases of the same target kind. New entity/local investigram references
+resolve on acceptance; existing references use exact retained IDs. Entity plus role
+identifies a category of information, not a single mutable slot or one canonical
+content item. Target, associated content, and exact supersession/withdrawal references
+are distinct. Multiple competing associations need not be reconciled automatically.
+
+**Cross-investigram content and ownership.** B may declare an association referring to
+an exact content item owned by A. A keeps ownership, original evidence, qualifications
+and provenance of the item; B owns the new qualified association. References do not
+copy/reparent the item, broaden its scope or silently rewrite it. New wording requires
+new content. This extends the fixture's own-content-only association contract. An
+investigram with no new content items but substantive qualified association declarations
+is permitted in principle, likely rare; it should not require filler prose. This revisits
+the earlier substantive-root-content rule, not the requirement for meaningful qualified
+interpretation.
+
+**Reasons and grounds.** Supersession and withdrawal require an explicit qualified
+reason, normally inline with the declaration. Ordinary additions need attributable
+grounds, not redundant explanatory prose. A fuller explanation can be referenced as
+content. Targeting an earlier association already locates its participants/content;
+repeat references are not mandatory support. Additional evidence or exact content
+references are supplied where needed to substantiate the new judgment. Actual delivery
+and evidence provenance remain preserved. No mandatory separate support list or special
+operation for updating a declaration's reasons is proposed. A later investigation can
+provide additional qualified grounds concerning an earlier claim, with exact references;
+it does not rewrite the original investigation's evidence or automatically strengthen
+an aggregated conclusion.
+
+**Still to resolve before adopting this direction.** Distinguish replacement by an
+expanded description from reporting a factual error; specify correction/reconsideration
+consequences and direct-content-access disclosure without treating every withdrawal as
+proof of falsehood. Define what a result association designates (items and child content),
+what must be delivered before displacement, and how competing/challenged declarations
+are handled. Reconcile guidance, composition, historical access and verification with
+this proposed mechanism. No governing, product, or fixture changes are made in this
+recording pass.
