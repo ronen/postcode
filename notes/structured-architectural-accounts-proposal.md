@@ -363,7 +363,7 @@ awareness, not sufficient replacement context or endorsement of the displaced as
 Further acquisition and qualification obligations still apply.
 
 This timing rule does not implement reassessment or clearance. Richer inventory coverage and
-partial-delivery precision, declaration challenge and reassessment remain open. Displacement
+partial-delivery precision and reassessment remain open. Displacement
 uses exact association exposure; additions use actual scoped inventory exposure. A newly read
 inventory includes already accepted entries without a later-change warning; a refresh does
 not erase an earlier inventory exposure. Acquiring a description before an addition and the
@@ -372,8 +372,27 @@ inventory only afterward does not create a pre-addition inventory dependency.
 Causes remain distinct; no automatic transitive equivalence, last-writer truth, or disappearance
 of a cause through context trimming. A supersession can be contested. Competing declarations
 remain available; the fixture does not select a winner by timestamp. Withdrawal declarations
-are not themselves associations to supersede in this bounded prototype. Reinstatement and
-challenging the standing of declarations remain design questions, not silent undo.
+are not themselves associations to supersede in this bounded prototype.
+
+<a id="renewed-association"></a>
+### Renewed assertions without reinstatement
+
+Working agreement: challenge earlier information through new qualified associations, without
+revoking the historical displacement. If B superseded A, C may supersede B while referencing
+A's original content. A remains displaced; C is the new assertion. Reused content retains its
+original ownership, evidence, qualifications and provenance, while C has its own attributable
+grounds. The usual delivery and eligibility requirements apply. Reuse does not clear causes or
+establish that the original content is generally sound.
+
+After a withdrawal, C can add a new association to the earlier content without undoing or
+superseding the withdrawal declaration. D can later disagree with C and supersede or withdraw
+C in turn; it can reuse qualified earlier content where appropriate. C acquires no final
+authority, and no timestamp silently settles competing assertions. These operations restore availability
+through a new assertion, not the standing of an old association or an old result designation.
+
+Defer general declaration revocation and reinstatement. Historical deliveries, displacement
+records and reconsideration causes remain; this choice adds no clearance or reassessment rule.
+The A → B → C → D sequence is an illustrative contract case, not a newly executed fixture.
 
 ### Architectural coverage dependencies — deferred
 
@@ -577,7 +596,7 @@ The planning package would need explicit treatment of:
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
 | Support and eligibility | Fixture delivers full targeted declarations/members with qualifications; settle bounded acquisition, competing definitions and missing support. |
 | Reconsideration | Distinguish actual association and inventory exposure; additions trigger matching prior inventories, not every entity use or fixed result membership. Refined probe removes the earlier broad marks. Record both inventory and scope-selected content acquisition; exact delivered declaration reasons are exposure too. Set first-delivery coverage explicitly; richer selectors remain open. Investigator-directed propagation, suppression, reassessment/clearance and scheduling are deferred. |
-| Declaration standing | Competing declarations are retained; challenge/reinstatement and result selection policy remain open. Do not infer revocation from a newer bundle. |
+| Result selection | Renewed assertions use new associations, preserving original content provenance; declaration revocation/reinstatement is deferred. Set selection policy for competing associations without inferring a winner from time. |
 | Entity merge/split | Qualified correspondence and preserved old IDs; supersession/reassignment effects remain a design probe, not delivered automatically by association operations. |
 | First capability | Choose delivered relationship kinds, contextual selection depth, mechanical compatibility and which composition/diagram probes become implementation acceptance tests. |
 

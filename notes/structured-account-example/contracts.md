@@ -105,7 +105,14 @@ declaration and its complete designated membership/dependencies must have been d
 with source qualification and provenance. A reason alone, an ID, or an option excerpt
 is insufficient. Reusing foreign content/declarations also requires their actual qualified
 delivery. These are reviewable choices, not assumed consequences of the new direction.
-Challenge/reinstatement of withdrawal and a complete standing algebra remain open.
+Renewed assertions use these same operations: if B superseded A, C can supersede B with
+members referencing A's original content and its own qualified grounds. A stays displaced;
+source ownership, evidence, qualifications and provenance stay with the reused content.
+After a withdrawal, C can add an association referencing that content without revoking the
+withdrawal. D can later supersede or withdraw C. Normal delivery/eligibility obligations apply;
+none of these operations clears earlier causes or reinstates old result designations.
+General declaration revocation/reinstatement is deferred. This agreement does not add an
+operation or claim an executed A → B → C → D fixture.
 
 Every newly submitted content item is covered by at least one association in this
 prototype. Coverage does not prove semantic adequacy, nor require every association
@@ -260,7 +267,7 @@ clear the old exposure. Query-start time and final acceptance are not delivery-t
 
 Notices preserve reasons, qualification and exact standing; they do not deliver all referenced
 replacement members or establish sufficient understanding. Those acquisition obligations remain.
-No historical warning is cleared. Final addition scope, identity events, declaration challenge,
+No historical warning is cleared. Identity events, general declaration revocation/reinstatement,
 clearance and reassessment remain deferred; no general whole-investigram completeness exemption
 is imported.
 

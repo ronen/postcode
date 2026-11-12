@@ -133,7 +133,9 @@ independent expansion/competition probes so successful redesignation is visible.
 uses actual delivery timing: disclosed prior causes are known context, while later changes
 can trigger warnings. Missing direct or inherited disclosure is a delivery defect. Producer
 exemption remains. The separate addition experiment uses explicit inventory exposure for new-information
-causes, not every entity use. General inventory coverage, clearance and reinstatement stay open.
+causes, not every entity use. General inventory coverage remains open; clearance and general
+reinstatement are deferred. Renewed assertions can use new associations to original qualified
+content, preserving provenance without undoing earlier displacement (see [contracts](contracts.md)).
 
 <a id="verification"></a>
 ## Verification

@@ -178,9 +178,17 @@ Later refresh does not clear that earlier warning. Historical statuses remain in
 
 The fixture records host-assigned acceptance positions and delivery-state positions; these
 are ordering aids, not proposed public timestamps or agent-supplied exemption claims. General inventory
-coverage, challenge, clearance and reassessment remain open. Producers still exclude their own causes. Identifying content newly established from the
+coverage, clearance and reassessment remain open. Producers still exclude their own causes. Identifying content newly established from the
 pinned basis need not copy irrelevant source behavioral restrictions; original reused content
 retains its qualifications, while new scenario examples carry their own applicable limits.
+
+Renewed assertions need no reinstatement operation: after B supersedes A, C may supersede B
+using A's original content, retaining its provenance and qualifications and supplying C's own
+grounds. A stays displaced. After withdrawal, C may add a new association to the earlier content.
+D may later disagree with C through another supersession or withdrawal. Normal acquisition and
+eligibility apply; historical causes and result designations are not cleared or restored.
+General declaration revocation/reinstatement is deferred. See the
+[working agreement](structured-architectural-accounts-proposal.md#renewed-association).
 
 <a id="catalogue-responsibilities"></a>
 ## Catalogue responsibilities and diagrams
@@ -268,7 +276,7 @@ past exposure. No reverse-lookup API or concern declaration is implemented. See 
 [proposal](structured-architectural-accounts-proposal.md#deferred-investigator-directed-propagation-reassessment-and-scheduling).
 
 Before drafting: settle identity/migration depth, result designation shape, support selection,
-first-delivery inventory coverage and delivery bounds, declaration challenge/reinstatement,
+first-delivery inventory coverage and delivery bounds, competing-association selection,
 and first-delivery scope. Declared dependencies and investigator-directed propagation are deferred:
 observe coverage gaps before choosing anticipatory dependency declarations, qualified impact
 assessment when new findings emerge, or both. Either would supplement actual exposure tracking.

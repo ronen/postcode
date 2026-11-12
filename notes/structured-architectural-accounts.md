@@ -1786,3 +1786,17 @@ or explicit displacement. The current mechanism does not guarantee a warning in 
 accepted coverage limit does not mean the earlier claim is unaffected. Runtime-domain completeness
 and completeness of a retained-information selection remain distinct. The next discussion can
 address the remaining first-capability choices rather than design these deferred remedies now.
+
+## 2026-11-12 — Renewed assertions preserve provenance without reinstatement
+
+The human agrees that if B supersedes A, a later C should be able to supersede B while using
+A's original content. The content retains its original provenance and qualifications; C supplies
+a new attributable assertion and grounds. A remains displaced. This also leaves D free to
+disagree again through a later qualified association. After a withdrawal, a new addition can
+associate the earlier content without undoing the withdrawal declaration.
+
+Normal acquisition and eligibility requirements continue to apply. Historical declarations,
+deliveries, result designations and causes are preserved; this is not reassessment or clearance.
+General declaration revocation/reinstatement is deferred. Competing-association selection still
+needs bounded treatment. No new operation, product behavior or executed fixture is added by
+this notes pass.
