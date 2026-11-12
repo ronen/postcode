@@ -39,7 +39,8 @@ provide the investigation background.
 | [First result](first-result.json) | Q1 introduces state categories and associates definitions/admission with P/S; designates RESULT-Q1. |
 | [Follow-up](followup-result.json) | Q2 introduces scenario roles and trial behavior, supersedes P's admission association, redesignates RESULT-Q1 and designates RESULT-Q2. |
 | [Lifecycle probes](lifecycle-probes.json) | Earlier-result consumer, fuller description, declaration-only reuse, and withdrawal. |
-| [Generated report](lifecycle-report.json) | Exact qualified projections, displacement links, exposure and distinct evaluation/designation reconsideration causes. |
+| [Generated report](lifecycle-report.json) | Exact qualified projections, displacement links, exposure and distinct evaluation/designation reconsideration causes in the displacement-only regression. |
+| [Addition probe](additions.md) | Conservative policy comparison, authored inputs and reports for both partitions; broad warning spread and scope/disclosure costs. |
 | [Children variant](children/README.md) | Same behavior with appropriately separated qualification boundaries. Its own seed/ledger/probes/reports describe a separate hypothetical Session. |
 | [Composition](composition/README.md) | Two wrapping orders, local roles/relations/situations and exact follow-up selectors. |
 | [Follow-up options](followup-options.md) | RESULT-Q1 as context/subject, exact originating metadata as option address. |
@@ -108,11 +109,12 @@ report give this order; separate timing branches below do not change the main se
 
 Warnings and association standing are different. Each exact result designation records
 displacement separately from membership/generating-context concerns. No warning follows
-merely from sharing an entity or content item. The report includes checkpoints before the
+merely from sharing an entity or content item in this displacement-only regression. The report includes checkpoints before the
 independent expansion/competition probes so successful redesignation is visible. It
 uses actual delivery timing: disclosed prior causes are known context, while later changes
 can trigger warnings. Missing direct or inherited disclosure is a delivery defect. Producer
-exemption remains; addition-trigger policy, clearance, reinstatement and finer precision stay open.
+exemption remains. The separate addition experiment exercises entity-scoped new-information
+causes; final scope, clearance, reinstatement and finer precision stay open.
 
 <a id="verification"></a>
 ## Verification
@@ -130,6 +132,7 @@ Run from the worktree root with Python 3:
 ```sh
 python3 notes/structured-account-example/check-fixtures.py
 python3 notes/structured-account-example/check-guidance.py
+python3 notes/structured-account-example/check-additions.py
 python3 notes/structured-account-example/composition/check-and-render.py
 python3 notes/structured-account-example/render-overviews.py
 ```
@@ -139,6 +142,11 @@ answers, exact association standing, result-membership versus exposure paths, at
 rejection and matching architectural state/interaction content. It rejects 72 malformed
 cases across the partitions. Use `--write` only to deliberately regenerate lifecycle
 reports after changing authored input or the bounded simulator.
+
+The addition checker runs independent and cumulative comparisons in both partitions, verifies
+unchanged standing/history and timing, and rejects four incomplete addition disclosures.
+Its `--write` regenerates the separate addition reports. This host-selected experimental mode
+is not a per-investigator option to suppress warnings.
 
 The guidance checker rejects 26 malformed metadata/address/request cases and verifies
 both trial diagrams resolve identically without recommendations. Composition checks

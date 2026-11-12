@@ -249,7 +249,7 @@ def check_variant(directory,write=False):
             'qualifiedCurrentAdmissionProjection':new_projection,
             'qualifiedHistoricalAdmissionProjection':old_projection,
             'qualifiedDeclarationOnlyResult':withdrawal_projection,
-            'limitations':['Additions do not trigger in this prototype; policy unresolved.','Exact association uses determine displacement exposure; generating-evaluation provenance remains conservative across its outputs.','Known causes are disclosed without a new later-change warning; notice receipt does not establish adequate replacement context. No reassessment clearance or automatic reinstatement.']}
+            'limitations':['Additions do not trigger in this displacement-only regression; see the separate conservative addition experiment.','Exact association uses determine displacement exposure; generating-evaluation provenance remains conservative across its outputs.','Known causes are disclosed without a new later-change warning; notice receipt does not establish adequate replacement context. No reassessment clearance or automatic reinstatement.']}
     path=directory/'lifecycle-report.json'
     if write:path.write_text(json.dumps(report,indent=2)+'\n')
     else:assert read(path)==report, 'stale lifecycle report'

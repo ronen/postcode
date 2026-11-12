@@ -168,8 +168,8 @@ change. A prior acquisition can still affect its producer, even if the query fin
 Later refresh does not clear that earlier warning. Historical statuses remain intact.
 
 The fixture records host-assigned acceptance positions and delivery-state positions; these
-are ordering aids, not proposed public timestamps or agent-supplied exemption claims. Addition
-policy, challenge, clearance and reassessment remain open. Producers still exclude their own causes. Identifying content newly established from the
+are ordering aids, not proposed public timestamps or agent-supplied exemption claims. Final addition
+scope, challenge, clearance and reassessment remain open. Producers still exclude their own causes. Identifying content newly established from the
 pinned basis need not copy irrelevant source behavioral restrictions; original reused content
 retains its qualifications, while new scenario examples carry their own applicable limits.
 
@@ -220,13 +220,19 @@ same architectural diagrams and assertions remain authored content.
 
 ## Open decisions and verification limits
 
-The latest discussion favors testing conservative reconsideration on additions. That probe
-has not yet changed the displacement-only executable model. Targeted suppression, later
-qualified reassessment and automatic scheduling of reassessment for immediately affected
-results are deferred together. Automatic scheduling could stop a cause along assessed paths
-without awaiting user action; it uses the same target-and-cause assessment requirements,
-preserves independent paths and does not imply that an unchanged target's consumers are
-unaffected. The addition probe should inform whether first delivery needs such assessment.
+The [addition probe](structured-account-example/additions.md) now compares a category
+clarification and a recovery caveat with all ordinary additions enabled. Each marks 5/7 prior
+evaluations and 7/8 designations in both partitions. New-information scope uses explicit
+context/association target entities, without role narrowing or inference from bare referents.
+The exact-displacement regression remains separate. Qualified notice provenance and repeated
+information contribute to the broad spread; the probe discloses all unsupplied additions in
+scope, an experimental completeness choice that also needs review.
+
+Targeted suppression, qualified reassessment and automatic scheduling remain unimplemented.
+The evidence supports revisiting whether first delivery needs bounded cause-specific assessment,
+or can explicitly accept coarse marks. It does not establish that every mark is unhelpful.
+Any assessment must preserve independent paths/causes; an unchanged target does not imply
+unaffected consumers. Automatic scheduling is a further policy over that mechanism.
 
 Before drafting: settle identity/migration depth, result designation shape, support selection
 and delivery bounds, addition/exposure precision, reassessment/clearance, declaration

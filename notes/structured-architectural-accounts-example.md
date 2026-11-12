@@ -257,3 +257,14 @@ entity context, immutable history, rare declaration-only contributions and two p
 reconsideration. The existing state/sequence diagrams and their legends still regenerate.
 They do not establish live investigation quality, a product API, universal result organization,
 general reassessment, performance bounds, semantic identity or automatic reconciliation.
+
+## Conservative additions after the walkthrough
+
+The [addition probe](structured-account-example/additions.md) branches from the same initial
+history to add a category clarification or a recovery caveat about S, without displacing
+anything. Each reaches 5/7 earlier evaluations and 7/8 result designations, in both partitions.
+An informed later recipient is clear of already-known causes, while an earlier acquisition
+remains exposed. The report distinguishes direct entity scope from inherited notice/producer
+provenance; bare referents alone do not trigger. This motivates reviewing scope and bounded
+reassessment before deciding first delivery, rather than assuming conservative marks will
+be selective. The original displacement-only walkthrough remains a separate regression.

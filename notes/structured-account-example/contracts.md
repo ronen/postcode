@@ -227,8 +227,9 @@ designation. Delivered contributions from an exposure-affected producing evaluat
 retain that concern. This remains conservative at evaluation/designation granularity; it
 is not proof that every received excerpt relied on the affected claim.
 
-The simulator uses supersession/withdrawal as causes and exempts the producer from its own
-causes. It uses exact displaced associations, not entity equality or shared-item overlap.
+The displacement-only regression uses supersession/withdrawal as causes and exempts the
+producer from its own causes. It uses exact displaced associations, not entity equality or
+shared-item overlap. The separate addition experiment below preserves this rule for displacement.
 
 ### Actual-delivery timing and known causes
 
@@ -255,8 +256,31 @@ clear the old exposure. Query-start time and final acceptance are not delivery-t
 
 Notices preserve reasons, qualification and exact standing; they do not deliver all referenced
 replacement members or establish sufficient understanding. Those acquisition obligations remain.
-No historical warning is cleared. Additions, identity events, declaration challenge, clearance
-and reassessment remain open; no general whole-investigram completeness exemption is imported.
+No historical warning is cleared. Final addition scope, identity events, declaration challenge,
+clearance and reassessment remain open; no general whole-investigram completeness exemption
+is imported.
+
+### Experimental conservative addition policy
+
+The [addition probe](additions.md) enables all additions from the start, separately from the
+original displacement-only regression. An addition has an exact `new-information` cause;
+it leaves earlier association standing unchanged. Its scope is the organizing entity of a
+substantive delivery plus the targets of explicitly delivered association uses. Roles do not
+narrow scope; bare IDs and content referents do not expand it. Result membership is affected
+when a later addition targets the designation's own entity or a member association's target.
+Raw item-only members do not imply architectural associations from their prose.
+
+Actual-delivery and designation-acceptance timing still apply; producer exemption and
+conservative generating-evaluation propagation remain. The experiment discloses every existing
+unsupplied addition in scope as a qualified notice, without delivering its member content.
+This deliberately broad disclosure choice can create future exposure paths through notice
+provenance. It is not a settled discovery policy. Missing required notices are rejected;
+known additions create no new later-change warning. A refresh does not clear earlier exposure.
+
+The host-selected experiment mode is not an investigator-supplied impact classification.
+No semantic novelty check, suppression or clearance is implemented. The probe's substantial
+warning spread is evidence to review trigger/disclosure scope and first-delivery reassessment,
+not a decision that every addition everywhere must flag every use of a mentioned entity.
 
 <a id="retained-investigation-offer"></a>
 ## Retained follow-up option metadata

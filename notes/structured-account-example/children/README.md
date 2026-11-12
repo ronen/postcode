@@ -100,3 +100,9 @@ immutable history, source qualification, atomic declaration acceptance, result m
 context exposure and ordered causal references. The checker cannot prove applicable
 qualification or interpretive truth. No product API, cross-owner diagram retrieval,
 live investigator, universal graph schema, merge/split, or reassessment is demonstrated.
+
+## Conservative addition comparison
+
+The separate [addition probe](../additions.md) runs against both partitions. Its
+[inputs](addition-probes.json) and [report](addition-report.json) show the same broad
+spread here: child qualification boundaries do not remove generating-evaluation exposure.

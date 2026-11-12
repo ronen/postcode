@@ -31,7 +31,9 @@ def resolve(value, bindings):
     return value
 
 class Model:
-    def __init__(self, seed, basis):
+    def __init__(self, seed, basis, addition_policy="displacement-only"):
+        assert addition_policy in {"displacement-only", "conservative"}
+        self.addition_policy = addition_policy
         self.entities = copy.deepcopy(seed['entities'])
         self.investigrams = {x['id']: copy.deepcopy(x) for x in seed['investigrams']}
         self.basis = copy.deepcopy(basis)
@@ -112,8 +114,16 @@ class Model:
         return {x['queryInvocation'] for field in ['items', 'declarations', 'associationUses', 'options', 'notices']
                 for x in projection[field].values()}
 
+    @staticmethod
+    def projection_entities(projection):
+        """Explicitly delivered association targets, not every entity mentioned in content."""
+        entities = {x['value']['target']['entity']['entity'] for x in projection['associationUses'].values()}
+        if any(projection[field] for field in ['items', 'declarations', 'options', 'notices']):
+            entities.add(projection['entity'])
+        return entities
+
     def project(self, selection, as_of=None):
-        """Exact association uses, qualified content and question; never entity-wide exposure."""
+        """Exact delivered information and organizing identities; no future content is inferred."""
         as_of = self.acceptance_order if as_of is None else as_of
         assert isinstance(as_of, int) and 0 <= as_of <= self.acceptance_order, 'invalid delivery position'
         entity = selection['entity']
@@ -168,6 +178,13 @@ class Model:
                 'items': {label(x): self.qualified(x[0], self.items()[x]) for x in sorted(its)},
                 'options': opts, 'notices': notices,
                 'noticeLimits': 'Includes direct displacement and inherited concerns known at this delivery position. Notices preserve standing and qualified reasons, not replacement-member delivery, adequate understanding, clearance, or automatic redesignation.'}
+        if self.addition_policy == 'conservative':
+            projection['noticeLimits'] += ' Conservative mode also discloses unsupplied additions in the explicit entity scope, without claiming semantic novelty or displacement.'
+            about = self.projection_entities(projection)
+            for ref, declaration in self.declarations().items():
+                if (declaration['operation'] == 'addition' and self.accepted_at(ref) <= as_of
+                        and declaration['target']['entity']['entity'] in about and ref not in uses):
+                    notices[label(ref)] = self.qualified(ref[0], declaration)
         # Disclose already-known indirect concerns too, including provenance of notice text.
         status = self.reconsideration(as_of)
         by_label = {label(r): r for r in self.declarations()}
@@ -379,21 +396,27 @@ class Model:
         member_causes = {r: set() for r in designations}
         eval_causes = {qid: set() for qid in queries}
         for cause, declaration in decls.items():
-            if declaration['operation'] == 'addition':
+            addition = declaration['operation'] == 'addition'
+            if addition and self.addition_policy != 'conservative':
                 continue
             cid = label(cause)
             cause_at = self.accepted_at(cause)
             producer = self.investigrams[cause[0]]['queryInvocation']
-            displaced = {address(x, 'associationKey') for x in declaration['displaces']}
+            displaced = {address(x, 'associationKey') for x in declaration.get('displaces', [])}
+            target_entity = declaration['target']['entity']['entity']
             # Old deliveries remain exposures even if the same query acquires fresh context later.
             prior = {qid: [p for p in q['deliveries'] if p['asOfAcceptance'] < cause_at]
                      for qid, q in queries.items()}
             for qid in queries:
-                if qid != producer and any(set(p['associationUses']) & {label(r) for r in displaced}
-                                           for p in prior[qid]):
+                direct = any(target_entity in self.projection_entities(p) if addition else
+                             bool(set(p['associationUses']) & {label(r) for r in displaced})
+                             for p in prior[qid])
+                if qid != producer and direct:
                     eval_causes[qid].add(cid)
             for ref in designations:
-                if self.accepted_at(ref) < cause_at and membership[ref] & displaced:
+                represented = {decls[r]['target']['entity']['entity'] for r in membership[ref] | {ref}}
+                relevant = target_entity in represented if addition else bool(membership[ref] & displaced)
+                if self.accepted_at(ref) < cause_at and relevant:
                     member_causes[ref].add(cid)
             changed = True
             while changed:
@@ -425,11 +448,15 @@ class Model:
                 'membershipCauses': sorted(member_causes[ref]),
                 'generatingEvaluationCauses': sorted(generated),
                 'needsReconsideration': sorted(member_causes[ref] | generated)}
-        return {'designations': statuses, 'evaluations': {k: sorted(v) for k, v in eval_causes.items()}}
+        result = {'designations': statuses, 'evaluations': {k: sorted(v) for k, v in eval_causes.items()}}
+        if self.addition_policy == 'conservative':
+            result['causeKinds'] = {label(r): ('new-information' if d['operation'] == 'addition' else 'displacement')
+                                    for r, d in decls.items()}
+        return result
 
-def initial_model(directory):
+def initial_model(directory, addition_policy='displacement-only'):
     ledger=read(directory/'context-and-bindings.json')
-    return Model(read(directory/'seed-context.json'),ledger['basis'])
+    return Model(read(directory/'seed-context.json'),ledger['basis'],addition_policy)
 
 def run_variant(directory):
     ledger=read(directory/'context-and-bindings.json'); model=initial_model(directory)

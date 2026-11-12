@@ -1649,3 +1649,25 @@ underlying views currently exposed to the user, or trigger reassessment when a v
 re-exposed. Retain these as deferred scheduling options over the same exact target/cause
 mechanism. Human visibility is not investigator exposure; actual material delivered during
 reassessment is. Scheduling alone changes neither historical captures nor cause standing.
+
+## 2026-11-12 — Conservative addition probe completed
+
+At the human's request, the [probe](structured-account-example/additions.md) now runs a
+category clarification and a recovery caveat independently against identical history in
+both partitions, then cumulatively. Each addition targets S/describes and displaces nothing.
+All ordinary additions are enabled from the beginning; the existing displacement regression
+remains separate. Neither example claims a new source discovery: the added association
+re-expresses qualified information already retained elsewhere.
+
+Each marks 5/7 prior evaluations and 7/8 designations. The cumulative second addition marks
+9/10 prior designations. Qualified notices create an indirect path to the P-only excerpt
+consumer; an R-only recovery recipient inherits Q2's concern. Neither is fabricated direct
+S exposure. Bare subject/referent selection remains unflagged. Actual-delivery timing keeps
+informed recipients clear; refresh does not clear an older exposure. Exact cause references,
+original bundles, snapshots and association standing are preserved.
+
+The probe makes entity scope and broad unsupplied-addition notice disclosure explicit; they
+are experimental choices requiring review, not automatically adopted completeness rules.
+The recommendation for discussion is to revisit deferring all bounded cause-specific
+reassessment, or explicitly accept coarse new-information marks. No suppression, clearance,
+reassessment or scheduling was implemented, and no new first-delivery decision was made.

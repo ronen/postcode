@@ -1,0 +1,772 @@
+{
+  "status": "Authored conservative policy experiment, not product or live investigation. Two branch comparisons have identical history and target scope; no inferred harmlessness exception.",
+  "additionPolicy": "conservative",
+  "acceptanceOrder": {
+    "Q1": 1,
+    "Q-observer": 2,
+    "Q-excerpt": 3,
+    "Q2": 4,
+    "Q-updated": 5,
+    "Q-role-only": 6,
+    "Q-reference-only": 7
+  },
+  "baseline": {
+    "statusIncludingAllEarlierAdditions": {
+      "designations": {
+        "EXCERPT-1::result": {
+          "resultEntity": "RESULT-excerpt",
+          "displacedBy": [],
+          "competingDeclarations": false,
+          "membershipCauses": [
+            "TRIAL-1::explanation",
+            "TRIAL-1::state-of",
+            "TRIAL-RESULT-1::orientation",
+            "UPDATED-1::selected-result"
+          ],
+          "generatingEvaluationCauses": [
+            "ADMISSION-2::admission-cases",
+            "TRIAL-1::explanation",
+            "TRIAL-1::state-of",
+            "TRIAL-RESULT-1::orientation",
+            "TRIAL-RESULT-1::updated-admission-result",
+            "UPDATED-1::selected-result"
+          ],
+          "needsReconsideration": [
+            "ADMISSION-2::admission-cases",
+            "TRIAL-1::explanation",
+            "TRIAL-1::state-of",
+            "TRIAL-RESULT-1::orientation",
+            "TRIAL-RESULT-1::updated-admission-result",
+            "UPDATED-1::selected-result"
+          ]
+        },
+        "INTRO-1::result": {
+          "resultEntity": "RESULT-Q1",
+          "displacedBy": [
+            "TRIAL-RESULT-1::updated-admission-result"
+          ],
+          "competingDeclarations": false,
+          "membershipCauses": [
+            "ADMISSION-2::admission-cases",
+            "EXCERPT-1::selected-result",
+            "OBSERVER-1::selected-result",
+            "TRIAL-1::explanation",
+            "TRIAL-1::state-of",
+            "TRIAL-RESULT-1::orientation",
+            "UPDATED-1::selected-result"
+          ],
+          "generatingEvaluationCauses": [
+            "EXCERPT-1::selected-result",
+            "OBSERVER-1::selected-result",
+            "TRIAL-1::explanation",
+            "TRIAL-1::state-of",
+            "TRIAL-RESULT-1::orientation",
+            "UPDATED-1::selected-result"
+          ],
+          "needsReconsideration": [
+            "ADMISSION-2::admission-cases",
+            "EXCERPT-1::selected-result",
+            "OBSERVER-1::selected-result",
+            "TRIAL-1::explanation",
+            "TRIAL-1::state-of",
+            "TRIAL-RESULT-1::orientation",
+            "UPDATED-1::selected-result"
+          ]
+        },
+        "OBSERVER-1::result": {
+          "resultEntity": "RESULT-observer",
+          "displacedBy": [],
+          "competingDeclarations": false,
+          "membershipCauses": [
+            "EXCERPT-1::selected-result",
+            "TRIAL-1::explanation",
+            "TRIAL-1::state-of",
+            "TRIAL-RESULT-1::orientation",
+            "UPDATED-1::selected-result"
+          ],
+          "generatingEvaluationCauses": [
+            "ADMISSION-2::admission-cases",
+            "EXCERPT-1::selected-result",
+            "TRIAL-1::explanation",
+            "TRIAL-1::state-of",
+            "TRIAL-RESULT-1::orientation",
+            "TRIAL-RESULT-1::updated-admission-result",
+            "UPDATED-1::selected-result"
+          ],
+          "needsReconsideration": [
+            "ADMISSION-2::admission-cases",
+            "EXCERPT-1::selected-result",
+            "TRIAL-1::explanation",
+            "TRIAL-1::state-of",
+            "TRIAL-RESULT-1::orientation",
+            "TRIAL-RESULT-1::updated-admission-result",
+            "UPDATED-1::selected-result"
+          ]
+        },
+        "REFERENCE-ONLY-1::result": {
+          "resultEntity": "RESULT-reference-only",
+          "displacedBy": [],
+          "competingDeclarations": false,
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [],
+          "needsReconsideration": []
+        },
+        "ROLE-READER-1::result": {
+          "resultEntity": "RESULT-role-only",
+          "displacedBy": [],
+          "competingDeclarations": false,
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [],
+          "needsReconsideration": []
+        },
+        "TRIAL-RESULT-1::result": {
+          "resultEntity": "RESULT-Q2",
+          "displacedBy": [],
+          "competingDeclarations": false,
+          "membershipCauses": [
+            "UPDATED-1::selected-result"
+          ],
+          "generatingEvaluationCauses": [
+            "UPDATED-1::selected-result"
+          ],
+          "needsReconsideration": [
+            "UPDATED-1::selected-result"
+          ]
+        },
+        "TRIAL-RESULT-1::updated-admission-result": {
+          "resultEntity": "RESULT-Q1",
+          "displacedBy": [],
+          "competingDeclarations": false,
+          "membershipCauses": [
+            "UPDATED-1::selected-result"
+          ],
+          "generatingEvaluationCauses": [
+            "UPDATED-1::selected-result"
+          ],
+          "needsReconsideration": [
+            "UPDATED-1::selected-result"
+          ]
+        },
+        "UPDATED-1::result": {
+          "resultEntity": "RESULT-updated",
+          "displacedBy": [],
+          "competingDeclarations": false,
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [],
+          "needsReconsideration": []
+        }
+      },
+      "evaluations": {
+        "Q1": [
+          "EXCERPT-1::selected-result",
+          "OBSERVER-1::selected-result",
+          "TRIAL-1::explanation",
+          "TRIAL-1::state-of",
+          "TRIAL-RESULT-1::orientation",
+          "UPDATED-1::selected-result"
+        ],
+        "Q-observer": [
+          "ADMISSION-2::admission-cases",
+          "EXCERPT-1::selected-result",
+          "TRIAL-1::explanation",
+          "TRIAL-1::state-of",
+          "TRIAL-RESULT-1::orientation",
+          "TRIAL-RESULT-1::updated-admission-result",
+          "UPDATED-1::selected-result"
+        ],
+        "Q-excerpt": [
+          "ADMISSION-2::admission-cases",
+          "TRIAL-1::explanation",
+          "TRIAL-1::state-of",
+          "TRIAL-RESULT-1::orientation",
+          "TRIAL-RESULT-1::updated-admission-result",
+          "UPDATED-1::selected-result"
+        ],
+        "Q2": [
+          "UPDATED-1::selected-result"
+        ],
+        "Q-updated": [],
+        "Q-role-only": [],
+        "Q-reference-only": []
+      },
+      "causeKinds": {
+        "ORIENTATION-0::policy": "new-information",
+        "INTRO-1::orientation": "new-information",
+        "INTRO-1::result": "new-information",
+        "DEFINITIONS-1::closed-description": "new-information",
+        "DEFINITIONS-1::open-description": "new-information",
+        "DEFINITIONS-1::half-open-description": "new-information",
+        "ADMISSION-1::orientation": "new-information",
+        "ADMISSION-1::admission-cases": "new-information",
+        "ADMISSION-1::inspection": "new-information",
+        "OBSERVER-1::selected-result": "new-information",
+        "OBSERVER-1::result": "new-information",
+        "EXCERPT-1::selected-result": "new-information",
+        "EXCERPT-1::result": "new-information",
+        "TRIAL-RESULT-1::orientation": "new-information",
+        "TRIAL-RESULT-1::updated-admission-result": "displacement",
+        "TRIAL-RESULT-1::result": "new-information",
+        "ROLE-DEFINITIONS-1::shared-breaker-description": "new-information",
+        "ROLE-DEFINITIONS-1::trial-description": "new-information",
+        "ROLE-DEFINITIONS-1::caller-description": "new-information",
+        "ROLE-DEFINITIONS-1::waiting-description": "new-information",
+        "TRIAL-1::state-of": "new-information",
+        "TRIAL-1::explanation": "new-information",
+        "TRIAL-1::recovery": "new-information",
+        "TRIAL-1::concurrent-callers": "new-information",
+        "ADMISSION-2::admission-cases": "displacement",
+        "UPDATED-1::selected-result": "new-information",
+        "UPDATED-1::result": "new-information",
+        "ROLE-READER-1::result": "new-information",
+        "REFERENCE-ONLY-1::result": "new-information"
+      }
+    },
+    "deliveredContext": {
+      "Q1": [
+        {
+          "contextEntity": "P",
+          "asOfAcceptance": 0,
+          "newInformationScope": [
+            "P"
+          ],
+          "associationUses": [
+            "ORIENTATION-0::policy"
+          ],
+          "notices": [],
+          "sourceQueries": [
+            "Q0"
+          ]
+        }
+      ],
+      "Q-observer": [
+        {
+          "contextEntity": "RESULT-Q1",
+          "asOfAcceptance": 1,
+          "newInformationScope": [
+            "P",
+            "RESULT-Q1",
+            "S",
+            "S-closed",
+            "S-open"
+          ],
+          "associationUses": [
+            "ADMISSION-1::admission-cases",
+            "ADMISSION-1::inspection",
+            "ADMISSION-1::orientation",
+            "DEFINITIONS-1::closed-description",
+            "DEFINITIONS-1::half-open-description",
+            "DEFINITIONS-1::open-description",
+            "INTRO-1::orientation",
+            "INTRO-1::result"
+          ],
+          "notices": [
+            "ORIENTATION-0::policy"
+          ],
+          "sourceQueries": [
+            "Q0",
+            "Q1"
+          ]
+        }
+      ],
+      "Q-excerpt": [
+        {
+          "contextEntity": "P",
+          "asOfAcceptance": 2,
+          "newInformationScope": [
+            "P"
+          ],
+          "associationUses": [
+            "ADMISSION-1::admission-cases"
+          ],
+          "notices": [
+            "ADMISSION-1::inspection",
+            "ADMISSION-1::orientation",
+            "INTRO-1::orientation",
+            "OBSERVER-1::selected-result",
+            "ORIENTATION-0::policy"
+          ],
+          "sourceQueries": [
+            "Q-observer",
+            "Q0",
+            "Q1"
+          ]
+        }
+      ],
+      "Q2": [
+        {
+          "contextEntity": "RESULT-Q1",
+          "asOfAcceptance": 3,
+          "newInformationScope": [
+            "P",
+            "RESULT-Q1",
+            "S",
+            "S-closed",
+            "S-open"
+          ],
+          "associationUses": [
+            "ADMISSION-1::admission-cases",
+            "ADMISSION-1::inspection",
+            "ADMISSION-1::orientation",
+            "DEFINITIONS-1::closed-description",
+            "DEFINITIONS-1::half-open-description",
+            "DEFINITIONS-1::open-description",
+            "INTRO-1::orientation",
+            "INTRO-1::result"
+          ],
+          "notices": [
+            "EXCERPT-1::selected-result",
+            "OBSERVER-1::selected-result",
+            "ORIENTATION-0::policy"
+          ],
+          "sourceQueries": [
+            "Q-excerpt",
+            "Q-observer",
+            "Q0",
+            "Q1"
+          ]
+        }
+      ],
+      "Q-updated": [
+        {
+          "contextEntity": "RESULT-Q1",
+          "asOfAcceptance": 4,
+          "newInformationScope": [
+            "P",
+            "RESULT-Q1",
+            "S",
+            "S-closed",
+            "S-open"
+          ],
+          "associationUses": [
+            "ADMISSION-1::inspection",
+            "ADMISSION-1::orientation",
+            "ADMISSION-2::admission-cases",
+            "DEFINITIONS-1::closed-description",
+            "DEFINITIONS-1::half-open-description",
+            "DEFINITIONS-1::open-description",
+            "INTRO-1::orientation",
+            "TRIAL-RESULT-1::updated-admission-result"
+          ],
+          "notices": [
+            "ADMISSION-1::admission-cases",
+            "ADMISSION-2::admission-cases",
+            "EXCERPT-1::selected-result",
+            "INTRO-1::result",
+            "OBSERVER-1::selected-result",
+            "ORIENTATION-0::policy",
+            "TRIAL-1::explanation",
+            "TRIAL-1::state-of",
+            "TRIAL-RESULT-1::orientation",
+            "TRIAL-RESULT-1::updated-admission-result"
+          ],
+          "sourceQueries": [
+            "Q-excerpt",
+            "Q-observer",
+            "Q0",
+            "Q1",
+            "Q2"
+          ]
+        }
+      ],
+      "Q-role-only": [
+        {
+          "contextEntity": "R",
+          "asOfAcceptance": 5,
+          "newInformationScope": [
+            "R"
+          ],
+          "associationUses": [
+            "TRIAL-1::recovery"
+          ],
+          "notices": [
+            "ROLE-DEFINITIONS-1::shared-breaker-description",
+            "TRIAL-1::concurrent-callers",
+            "UPDATED-1::selected-result"
+          ],
+          "sourceQueries": [
+            "Q-updated",
+            "Q2"
+          ]
+        }
+      ],
+      "Q-reference-only": []
+    },
+    "warningCounts": {
+      "EXCERPT-1::result": 6,
+      "INTRO-1::result": 7,
+      "OBSERVER-1::result": 7,
+      "REFERENCE-ONLY-1::result": 0,
+      "ROLE-READER-1::result": 0,
+      "TRIAL-RESULT-1::result": 1,
+      "TRIAL-RESULT-1::updated-admission-result": 1,
+      "UPDATED-1::result": 0
+    }
+  },
+  "independentComparisons": {
+    "complementary": {
+      "cause": "CATEGORY-DETAIL-1::addition",
+      "causeKind": "new-information",
+      "targetEntity": "S",
+      "acceptedAt": 8,
+      "directEvaluations": [
+        "Q-observer",
+        "Q-updated",
+        "Q2"
+      ],
+      "inheritedOnlyEvaluations": [
+        "Q-excerpt",
+        "Q-role-only"
+      ],
+      "affectedEvaluations": [
+        "Q-excerpt",
+        "Q-observer",
+        "Q-role-only",
+        "Q-updated",
+        "Q2"
+      ],
+      "inheritedOnlyViaProducerQueries": {
+        "Q-role-only": [
+          "Q-updated",
+          "Q2"
+        ],
+        "Q-excerpt": [
+          "Q-observer"
+        ]
+      },
+      "unaffectedEvaluations": [
+        "Q-reference-only",
+        "Q1"
+      ],
+      "affectedDesignations": {
+        "EXCERPT-1::result": {
+          "resultEntity": "RESULT-excerpt",
+          "displacedBy": [],
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [
+            "CATEGORY-DETAIL-1::addition"
+          ]
+        },
+        "INTRO-1::result": {
+          "resultEntity": "RESULT-Q1",
+          "displacedBy": [
+            "TRIAL-RESULT-1::updated-admission-result"
+          ],
+          "membershipCauses": [
+            "CATEGORY-DETAIL-1::addition"
+          ],
+          "generatingEvaluationCauses": []
+        },
+        "OBSERVER-1::result": {
+          "resultEntity": "RESULT-observer",
+          "displacedBy": [],
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [
+            "CATEGORY-DETAIL-1::addition"
+          ]
+        },
+        "ROLE-READER-1::result": {
+          "resultEntity": "RESULT-role-only",
+          "displacedBy": [],
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [
+            "CATEGORY-DETAIL-1::addition"
+          ]
+        },
+        "TRIAL-RESULT-1::result": {
+          "resultEntity": "RESULT-Q2",
+          "displacedBy": [],
+          "membershipCauses": [
+            "CATEGORY-DETAIL-1::addition"
+          ],
+          "generatingEvaluationCauses": [
+            "CATEGORY-DETAIL-1::addition"
+          ]
+        },
+        "TRIAL-RESULT-1::updated-admission-result": {
+          "resultEntity": "RESULT-Q1",
+          "displacedBy": [],
+          "membershipCauses": [
+            "CATEGORY-DETAIL-1::addition"
+          ],
+          "generatingEvaluationCauses": [
+            "CATEGORY-DETAIL-1::addition"
+          ]
+        },
+        "UPDATED-1::result": {
+          "resultEntity": "RESULT-updated",
+          "displacedBy": [],
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [
+            "CATEGORY-DETAIL-1::addition"
+          ]
+        }
+      },
+      "counts": {
+        "priorEvaluations": 7,
+        "affectedEvaluations": 5,
+        "priorDesignations": 8,
+        "affectedDesignations": 7
+      },
+      "timingChecks": {
+        "knownAdditionDisclosed": true,
+        "noticeDoesNotDeliverNewMembers": true,
+        "informedEvaluationCauses": [],
+        "preAdditionAcquisitionPreservesCause": true
+      }
+    },
+    "behavioral": {
+      "cause": "RECOVERY-CAVEAT-1::addition",
+      "causeKind": "new-information",
+      "targetEntity": "S",
+      "acceptedAt": 8,
+      "directEvaluations": [
+        "Q-observer",
+        "Q-updated",
+        "Q2"
+      ],
+      "inheritedOnlyEvaluations": [
+        "Q-excerpt",
+        "Q-role-only"
+      ],
+      "affectedEvaluations": [
+        "Q-excerpt",
+        "Q-observer",
+        "Q-role-only",
+        "Q-updated",
+        "Q2"
+      ],
+      "inheritedOnlyViaProducerQueries": {
+        "Q-role-only": [
+          "Q-updated",
+          "Q2"
+        ],
+        "Q-excerpt": [
+          "Q-observer"
+        ]
+      },
+      "unaffectedEvaluations": [
+        "Q-reference-only",
+        "Q1"
+      ],
+      "affectedDesignations": {
+        "EXCERPT-1::result": {
+          "resultEntity": "RESULT-excerpt",
+          "displacedBy": [],
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ]
+        },
+        "INTRO-1::result": {
+          "resultEntity": "RESULT-Q1",
+          "displacedBy": [
+            "TRIAL-RESULT-1::updated-admission-result"
+          ],
+          "membershipCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ],
+          "generatingEvaluationCauses": []
+        },
+        "OBSERVER-1::result": {
+          "resultEntity": "RESULT-observer",
+          "displacedBy": [],
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ]
+        },
+        "ROLE-READER-1::result": {
+          "resultEntity": "RESULT-role-only",
+          "displacedBy": [],
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ]
+        },
+        "TRIAL-RESULT-1::result": {
+          "resultEntity": "RESULT-Q2",
+          "displacedBy": [],
+          "membershipCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ],
+          "generatingEvaluationCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ]
+        },
+        "TRIAL-RESULT-1::updated-admission-result": {
+          "resultEntity": "RESULT-Q1",
+          "displacedBy": [],
+          "membershipCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ],
+          "generatingEvaluationCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ]
+        },
+        "UPDATED-1::result": {
+          "resultEntity": "RESULT-updated",
+          "displacedBy": [],
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ]
+        }
+      },
+      "counts": {
+        "priorEvaluations": 7,
+        "affectedEvaluations": 5,
+        "priorDesignations": 8,
+        "affectedDesignations": 7
+      },
+      "timingChecks": {
+        "knownAdditionDisclosed": true,
+        "noticeDoesNotDeliverNewMembers": true,
+        "informedEvaluationCauses": [],
+        "preAdditionAcquisitionPreservesCause": true
+      }
+    }
+  },
+  "cumulative": {
+    "secondAddition": {
+      "cause": "RECOVERY-CAVEAT-1::addition",
+      "causeKind": "new-information",
+      "targetEntity": "S",
+      "acceptedAt": 10,
+      "directEvaluations": [
+        "Q-aware",
+        "Q-category-detail",
+        "Q-observer",
+        "Q-updated",
+        "Q2"
+      ],
+      "inheritedOnlyEvaluations": [
+        "Q-excerpt",
+        "Q-role-only"
+      ],
+      "affectedEvaluations": [
+        "Q-aware",
+        "Q-category-detail",
+        "Q-excerpt",
+        "Q-observer",
+        "Q-role-only",
+        "Q-updated",
+        "Q2"
+      ],
+      "inheritedOnlyViaProducerQueries": {
+        "Q-role-only": [
+          "Q-updated",
+          "Q2"
+        ],
+        "Q-excerpt": [
+          "Q-observer"
+        ]
+      },
+      "unaffectedEvaluations": [
+        "Q-reference-only",
+        "Q1"
+      ],
+      "affectedDesignations": {
+        "AWARE-1::result": {
+          "resultEntity": "RESULT-aware",
+          "displacedBy": [],
+          "membershipCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ],
+          "generatingEvaluationCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ]
+        },
+        "CATEGORY-DETAIL-1::result": {
+          "resultEntity": "RESULT-category-detail",
+          "displacedBy": [],
+          "membershipCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ],
+          "generatingEvaluationCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ]
+        },
+        "EXCERPT-1::result": {
+          "resultEntity": "RESULT-excerpt",
+          "displacedBy": [],
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ]
+        },
+        "INTRO-1::result": {
+          "resultEntity": "RESULT-Q1",
+          "displacedBy": [
+            "TRIAL-RESULT-1::updated-admission-result"
+          ],
+          "membershipCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ],
+          "generatingEvaluationCauses": []
+        },
+        "OBSERVER-1::result": {
+          "resultEntity": "RESULT-observer",
+          "displacedBy": [],
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ]
+        },
+        "ROLE-READER-1::result": {
+          "resultEntity": "RESULT-role-only",
+          "displacedBy": [],
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ]
+        },
+        "TRIAL-RESULT-1::result": {
+          "resultEntity": "RESULT-Q2",
+          "displacedBy": [],
+          "membershipCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ],
+          "generatingEvaluationCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ]
+        },
+        "TRIAL-RESULT-1::updated-admission-result": {
+          "resultEntity": "RESULT-Q1",
+          "displacedBy": [],
+          "membershipCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ],
+          "generatingEvaluationCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ]
+        },
+        "UPDATED-1::result": {
+          "resultEntity": "RESULT-updated",
+          "displacedBy": [],
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [
+            "RECOVERY-CAVEAT-1::addition"
+          ]
+        }
+      },
+      "counts": {
+        "priorEvaluations": 9,
+        "affectedEvaluations": 7,
+        "priorDesignations": 10,
+        "affectedDesignations": 9
+      }
+    },
+    "laterInformedEvaluationCauses": [],
+    "knownAdditionCauses": [
+      "CATEGORY-DETAIL-1::addition",
+      "RECOVERY-CAVEAT-1::addition"
+    ]
+  },
+  "limitations": [
+    "Manual relevance assessment, not measured warning precision or a live study.",
+    "No semantic novelty/deduplication: a new qualified association can trigger even if some consumers previously saw equivalent content through another entity.",
+    "Roles do not narrow new-information scope. Bare referents do not expand it. Raw item-only membership needs its explicit association route for entity-specific membership effects.",
+    "All known applicable additions are disclosed with qualified reasons; omitted new members are not presumed read.",
+    "No targeted suppression, reassessment, clearance, notification UI, or automatic scheduling is implemented."
+  ]
+}

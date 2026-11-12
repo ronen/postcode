@@ -258,11 +258,17 @@ A fuller description can reveal important behavior or edge cases without showing
 one false. Explicit supersession or withdrawal can therefore create a reconsideration cause.
 The reason explains it; factual-error classification is not required to trigger review.
 The warning is not invalidation, proven reliance, or automatic rejection of an account.
-The latest discussion favors a conservative addition trigger, to be exercised next in
-the fixtures. New information about an entity could warrant review of earlier consumers
-and designations containing information about it. That is a distinct new-information
-cause, not a claim that they received the new association. Exact trigger scope and warning
-volume still need the probe; the executable model currently triggers only displacement.
+The [conservative addition probe](structured-account-example/additions.md) now exercises
+new-information causes separately from displacement: no claim that earlier consumers received
+the newly added association. Its explicit entity scope includes substantive delivery context
+and delivered association targets; role does not narrow it, and bare referents do not expand it.
+Membership follows designated association targets. The same timing and provenance rules apply.
+A category clarification and a behavioral caveat each mark 5/7 prior evaluations and 7/8
+result designations in both partitions. Both are newly associated information drawn from
+already retained content; semantic novelty is not checked. Broad qualified-notice disclosure
+also creates indirect propagation paths. This is an experimental policy with a real precision
+cost, not an adopted universal trigger. The original displacement-only regression remains
+available as a separate comparison.
 
 Two paths matter:
 
@@ -290,7 +296,7 @@ independent concerns about its exact members or producing evaluation. Historical
 answers remain fixed; fresh status reports are separate. Receiving the new designation must
 not be confused with receiving the old designation of the same result entity.
 
-Membership and exposure operate on exact association references. Sharing a content item
+For displacement, membership and exposure operate on exact association references. Sharing a content item
 through different associations is not alone a warning path. Observer/reuse results in the
 fixture create their own associations to earlier items; their actual incoming exposure,
 not shared text, supplies any inherited concern. Entity merge/split effects remain a separate
@@ -319,9 +325,10 @@ disclose known direct and indirect causes with qualified reasons. Notice receipt
 awareness, not sufficient replacement context or endorsement of the displaced association.
 Further acquisition and qualification obligations still apply.
 
-This timing rule does not implement reassessment or clearance. Addition policy, richer partial-
-delivery precision, declaration challenge and reassessment remain open; broad entity/shared-item
-triggers remain excluded.
+This timing rule does not implement reassessment or clearance. Final addition scope, richer
+partial-delivery precision, declaration challenge and reassessment remain open. Displacement
+still requires exact association exposure; the separate addition experiment uses the explicit
+entity scope above without inventing exposure to future content or shared-item reliance.
 
 Causes remain distinct; no automatic transitive equivalence, last-writer truth, or disappearance
 of a cause through context trimming. A supersession can be contested. Competing declarations
@@ -352,10 +359,12 @@ Only actual reassessment deliveries create new exposure. Pending-status behavior
 versus background execution and scheduling limits remain deferred presentation/orchestration
 choices, rather than requirements of the retained-content model.
 
-Defer automatic scheduling alongside targeted suppression/clearance. First exercise the
-conservative addition rule; if a short chain produces pervasive unhelpful warnings, revisit
-whether bounded reassessment is necessary for first delivery. These mechanisms are not
-implemented by the existing propagation model.
+Automatic scheduling and targeted suppression/clearance remain unimplemented. The addition
+probe now shows broad propagation even for a complementary clarification, including through
+notice provenance and information some recipients already knew. Revisit whether bounded
+cause-specific reassessment is necessary for first delivery, alongside the scope/disclosure
+choices driving that breadth. Alternatively, explicitly accept a coarse new-information
+signal initially. The probe does not decide between these options or authorize implementation.
 
 ## Architectural content and diagrams
 
@@ -477,7 +486,7 @@ The planning package would need explicit treatment of:
 | Entity and result identity | Common reference mechanism; settle invocation/evaluation/reuse guarantees and first migration depth. No semantic deduplication. |
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
 | Support and eligibility | Fixture delivers full targeted declarations/members with qualifications; settle bounded acquisition, competing definitions and missing support. |
-| Reconsideration | Probe conservative addition triggers and their scope; retain exact displacement exposure and delivery timing. Targeted suppression, qualified clearance and proactive reassessment are deferred, subject to evidence that first delivery needs them. |
+| Reconsideration | Conservative addition probe completed: broad spread in both partitions. Settle entity/disclosure scope and whether to accept coarse marks or include bounded cause-specific reassessment. Retain exact displacement exposure and delivery timing; suppression/clearance/scheduling remain unimplemented. |
 | Declaration standing | Competing declarations are retained; challenge/reinstatement and result selection policy remain open. Do not infer revocation from a newer bundle. |
 | Entity merge/split | Qualified correspondence and preserved old IDs; supersession/reassignment effects remain a design probe, not delivered automatically by association operations. |
 | First capability | Choose delivered relationship kinds, contextual selection depth, mechanical compatibility and which composition/diagram probes become implementation acceptance tests. |
