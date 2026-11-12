@@ -117,8 +117,16 @@ operation or claim an executed A → B → C → D fixture.
 Every newly submitted content item is covered by at least one association in this
 prototype. Coverage does not prove semantic adequacy, nor require every association
 to be included in the query's result. Result-only content is allowed. Competing
-supersessions can both be retained; timestamps do not choose truth. The checker reports
-displacement links and competition, not a universal active-winner algorithm.
+supersessions can both be retained; timestamps do not choose truth. Scoped current-description
+acquisition includes all competing undisplaced associations with qualifications, grounds and
+required support; exact-reference requests need not claim that complete scope. Fixed result
+memberships do not automatically expand. The checker reports displacement links and competition,
+not a universal active-winner algorithm.
+
+Sequential investigation does not prevent deliberate competition. Acquiring A after B superseded
+it discloses B; acquiring B's required membership/support then permits explicitly superseding B.
+C can instead leave B standing. Disclosure alone does not satisfy full displacement eligibility.
+The authored competing probe exercises this edge case, not parallel producers or typical frequency.
 
 A fuller description can supersede an earlier association without alleging factual
 error. Different context alone is not grounds to withdraw a still-valid scoped use.

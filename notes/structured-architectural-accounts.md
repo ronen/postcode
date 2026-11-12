@@ -1800,3 +1800,17 @@ deliveries, result designations and causes are preserved; this is not reassessme
 General declaration revocation/reinstatement is deferred. Competing-association selection still
 needs bounded treatment. No new operation, product behavior or executed fixture is added by
 this notes pass.
+
+## 2026-11-12 — Competing associations and sequential investigation
+
+The human agrees that if B and C both supersede A without displacing each other, current-description
+acquisition should include both with their qualifications and grounds. PostCode does not select
+a winner by recency. Exact-reference acquisition stays narrower, and fixed result designations
+do not silently grow. General delivery bounds still need treatment without hiding competition.
+
+The human notes that this should be an edge case in the sequential setting: C acquiring A after
+B's supersession receives that information and can supersede B explicitly. The normal eligibility
+requirements still apply: disclosure of B's declaration is not delivery of all of its members.
+C can deliberately leave B standing; competition need not imply parallelism. The existing probe
+remains useful as that deliberate case, without claiming empirical frequency. No fixture or
+product behavior changes are needed for this agreement.

@@ -394,6 +394,25 @@ Defer general declaration revocation and reinstatement. Historical deliveries, d
 records and reconsideration causes remain; this choice adds no clearance or reassessment rule.
 The A → B → C → D sequence is an illustrative contract case, not a newly executed fixture.
 
+<a id="competing-associations"></a>
+### Competing associations remain available
+
+Working agreement: if B and C both supersede A and neither displaces the other, both remain
+available. Scoped acquisition of current descriptions includes both with their qualifications,
+grounds and required support; current here means undisplaced, not reconciled or authoritative.
+PostCode does not choose by recency. Exact-reference acquisition can still request one particular
+association and must disclose its applicable standing; that is not a claim to have acquired all
+current descriptions. Fixed result designations are not silently expanded.
+
+The bounded discussion assumes sequential investigations, not parallel producers. When C acquires
+A after B's supersession, fresh delivery discloses B's declaration. C can acquire the required
+members/support and explicitly supersede B if warranted. Competition is therefore an edge case,
+not an assumed routine race: C may deliberately leave B standing while asserting a different
+account. Merely learning that B exists neither delivers all of B's content nor authorizes its
+displacement. The fixture's competing declaration remains a useful deliberate case; it does not
+establish an observed frequency. General delivery bounds remain to be specified without silently
+choosing a winner or claiming complete coverage for a partial selection.
+
 ### Architectural coverage dependencies — deferred
 
 ADMISSION-1's admission item already claims coverage of runtime admission cases. New waiting
@@ -594,9 +613,8 @@ The planning package would need explicit treatment of:
 | --- | --- |
 | Entity and result identity | Common reference mechanism; settle invocation/evaluation/reuse guarantees and first migration depth. No semantic deduplication. |
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
-| Support and eligibility | Fixture delivers full targeted declarations/members with qualifications; settle bounded acquisition, competing definitions and missing support. |
+| Support and eligibility | Fixture delivers full targeted declarations/members with qualifications; settle bounded acquisition and missing support. Scoped current-description acquisition includes competing undisplaced associations; exact-reference acquisition remains narrower. |
 | Reconsideration | Distinguish actual association and inventory exposure; additions trigger matching prior inventories, not every entity use or fixed result membership. Refined probe removes the earlier broad marks. Record both inventory and scope-selected content acquisition; exact delivered declaration reasons are exposure too. Set first-delivery coverage explicitly; richer selectors remain open. Investigator-directed propagation, suppression, reassessment/clearance and scheduling are deferred. |
-| Result selection | Renewed assertions use new associations, preserving original content provenance; declaration revocation/reinstatement is deferred. Set selection policy for competing associations without inferring a winner from time. |
 | Entity merge/split | Qualified correspondence and preserved old IDs; supersession/reassignment effects remain a design probe, not delivered automatically by association operations. |
 | First capability | Choose delivered relationship kinds, contextual selection depth, mechanical compatibility and which composition/diagram probes become implementation acceptance tests. |
 

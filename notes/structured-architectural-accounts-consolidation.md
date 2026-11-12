@@ -190,6 +190,14 @@ eligibility apply; historical causes and result designations are not cleared or 
 General declaration revocation/reinstatement is deferred. See the
 [working agreement](structured-architectural-accounts-proposal.md#renewed-association).
 
+Competing undisplaced associations remain available and are both included when acquiring current
+descriptions in scope, with qualified grounds and support. Recency does not pick a winner. Exact
+requests remain narrower and fixed result memberships do not expand automatically. With sequential
+investigations, C acquiring A after B superseded it receives disclosure of B and can acquire the
+support needed to supersede B explicitly. Deliberately leaving B standing remains valid; parallel
+execution is not required to explain the competing fixture. See the
+[working agreement](structured-architectural-accounts-proposal.md#competing-associations).
+
 <a id="catalogue-responsibilities"></a>
 ## Catalogue responsibilities and diagrams
 
@@ -276,8 +284,7 @@ past exposure. No reverse-lookup API or concern declaration is implemented. See 
 [proposal](structured-architectural-accounts-proposal.md#deferred-investigator-directed-propagation-reassessment-and-scheduling).
 
 Before drafting: settle identity/migration depth, result designation shape, support selection,
-first-delivery inventory coverage and delivery bounds, competing-association selection,
-and first-delivery scope. Declared dependencies and investigator-directed propagation are deferred:
+first-delivery inventory coverage and delivery bounds, and first-delivery scope. Declared dependencies and investigator-directed propagation are deferred:
 observe coverage gaps before choosing anticipatory dependency declarations, qualified impact
 assessment when new findings emerge, or both. Either would supplement actual exposure tracking.
 ADMISSION-1 already claims runtime admission coverage, which is not the same as completeness
