@@ -36,7 +36,8 @@ It does not displace the other associations originally owned by ADMISSION-1.
 Q2's root separately declares `updated-admission-result` for RESULT-Q1/result,
 superseding Q1's original result association. Its members reference unchanged earlier
 declarations plus ADMISSION-2's new association. No item is copied merely to carry
-it forward. Q2 also supplies its own initial result association for RESULT-Q2.
+it forward. This optional redesignation requires Q1's exact question in context; other
+containing results are not automatically updated. Q2 also supplies its own initial result association for RESULT-Q2.
 
 A member is either an exact item reference or, for result designations, an exact
 `declaration` reference. Withdrawal can therefore be meaningful answer content without
@@ -48,8 +49,9 @@ The role/category target and the exact association displaced are different addre
 A request's `deliveries` select entities plus exact associations, item excerpts or
 options. The model expands chosen association members and required content dependencies,
 then captures original qualification, basis, evidence and source-query provenance.
-The exposure index records selected context entities/results, not the entire owning
-investigrams. Bare IDs and human browsing do not create exposure.
+The exposure index records selected context entities/results plus exact association-use
+routes; reconsideration uses those exact routes, not other information sharing an entity.
+Result projections also preserve the invocation's declared meaning, scope and parameters. Bare IDs and human browsing do not create exposure.
 
 Q2's subject/context entity is RESULT-Q1. Its option address remains
 ADMISSION-1/concurrent-callers-option, and its architectural focus is S. Those are
@@ -86,7 +88,8 @@ The main new design pressure is delivery and reconsideration precision, not addi
 mutable canonical entity model.
 
 The [verification guide](README.md#verification) lists checks. Same-target displacement,
-full declaration/member eligibility, one initial result designation and the conservative
-cause algorithm are explicit provisional choices. Required dependency delivery for
+full declaration/member eligibility and one initial result designation are explicit
+provisional choices. Exact designation statuses separate displacement from membership and
+generating-context concerns; shared entity/item identity alone is not a cause. Required dependency delivery for
 arbitrary excerpts, declaration challenge, source-aware exemptions and reassessment
 remain decisions to make before the plan. No governing/product files were changed.

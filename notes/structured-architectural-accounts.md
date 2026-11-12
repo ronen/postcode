@@ -1555,3 +1555,41 @@ current checks: both lifecycle partitions, 50 malformed lifecycle/delivery copie
 cases, five malformed composition cases and nine selector cases, plus generated diagram
 source/legend/traceability checks. JSON and local links were checked. These are authored
 probes, not live agent, semantic-source or supported-API verification.
+
+
+## 2026-11-12 — Exact exposure and designation-status review fixes
+
+Following the human's direction to apply the review fixes, the prototype now uses exact
+association uses actually delivered. The earlier entity-wide exposure and shared-item
+membership rules were too broad: receipt of P orientation incorrectly flagged Q1 for its
+own later admission output and for a P association created by Q-reuse. Those rules are
+withdrawn in the current synthesis/fixtures; older dated entries preserve the exploration.
+
+Entity/result identities remain organizing context. Qualified `associationUses` record
+exact versions/routes, including `viaAssociation` for excerpts, without pretending that
+an excerpt delivered full membership. The producer's actual generating-context exposure
+can still propagate through its delivered contributions. Identity events remain separate.
+
+Status now names each result designation, distinguishing displaced standing, membership
+concerns and generating-evaluation concerns. An updated designation does not receive the
+cause that created it, and receiving it is distinct from receiving the original designation
+of the same RESULT-Q. Unrelated later causes still apply. Exact captures are unchanged;
+fresh status inspection is separate. There is no new reassessment/clearance decision.
+
+Redesignation is optional and requires actual delivery of the earlier invocation's declared
+question/scope, subjects, parameters and operation/option. `queryMeanings` captures that
+request context alongside the projection. Superseding a component association does not
+require finding/redesignating all containing results; their exact designations retain
+membership and receive appropriate fresh notices/status.
+
+The new expansion description has identification-specific qualification in both partitions.
+Its waiting example is separately scoped related content, not an unqualified general waiting
+rule. Previously retained mixed items still keep their original source qualifications.
+
+New probes exercise an excerpt consumer and a consumer of the updated answer. Checkpoints
+show the updated designation clear of admission/redesignation warnings before later independent
+expansion. Checks assert Q1 has no fabricated exposure, one association's withdrawal does not
+warn other uses of the same item, and an updated designation still receives a later relevant
+membership cause. Query-meaning and excerpt-route rejection cases bring lifecycle malformed
+cases to 64 across both partitions. The other guidance, composition, selector and diagram
+checks remain applicable. These remain authored notes/probes, not product implementation.

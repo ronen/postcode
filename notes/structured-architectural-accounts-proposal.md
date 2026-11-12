@@ -141,6 +141,18 @@ It must not mutate that captured answer or redirect an exact item/association re
 The historical fact that Q produced its contributions remains fixed for the supported
 lifetime; this is not a promise of indefinite cross-Session storage.
 
+Redesignation is optional, for a result whose declared question and scope the investigator
+has actually received. It requires that invocation's operation, subjects, parameters, any
+selected option, and declared meaning—not merely its old answer. The fixture captures this
+in `queryMeanings` alongside result projections and checks exact delivery before any new
+declaration targets an earlier query result. This retained request meaning is not human
+prose input or a new global operation.
+
+Superseding an architectural association does not oblige the investigator to find and
+redesignate every containing result. Other designations retain exact membership and expose
+fresh displacement/membership concerns. Redesignation is never performed by the index or
+renderer just to keep two organizing structures synchronized.
+
 The fixture retains fixed, single-parent child trees as provenance/composition of submitted
 bundles. A contribution pool may have several roots; no special replacement tree is needed.
 Cross-investigram content references do not adopt old children. Atomic acceptance still
@@ -167,7 +179,7 @@ Selecting something in Q's result uses RESULT-Q as context. Supplying the select
 creates exposure to that result entity. Human browsing, selection, an available ID or a
 reference alone creates no exposure. The selected passage need not itself become an entity.
 Qualified item/declaration addresses retain original ownership even through another entity's
-projection. Actual deliveries, not the investigator's claimed reliance, determine exposure.
+projection. Actual deliveries, including exact association-use provenance, not the investigator's claimed reliance, determine exposure.
 
 The fixture materializes delivered values with source investigram, query provenance, captured
 basis, source qualifications/evidence and any narrower item/declaration information. It
@@ -185,7 +197,7 @@ excerpt without its declaration, missing members and stripped qualification/basi
 This replaces, rather than quietly weakens, the current whole-investigram delivery rule and
 requires explicit adoption. Exceptions for partial/narrow reassociation are not implemented.
 
-Fresh delivery discloses later declarations affecting selected associations or shared items,
+Fresh delivery discloses later declarations affecting exact selected association uses,
 with reason, ownership and qualifications. References in a notice do not deliver those
 members. Further acquisition remains explicit. An exact captured answer stays unchanged.
 
@@ -257,21 +269,36 @@ Two paths matter:
    later change to an association included in RESULT-Q can affect that result even though
    Q had no incoming exposure to its newly created entity. Do not fabricate such exposure.
 
-The executable prototype keeps result causes separate from generating-evaluation causes.
-A membership-only cause does not retroactively say the producer received the information.
-A consumer receiving an affected result can inherit that cause. When delivered information
-was produced by an evaluation affected through exposure, its producer provenance carries
-that qualified concern even when the route is an architectural entity rather than RESULT-Q.
-This does not turn whole investigrams back into context bundles.
+Exposure uses the actual association versions delivered, not all information associated
+with the same entity. The entity remains the organizing context and discovery identity.
+Q1 received P's orientation; it was not exposed to its own subsequently produced admission
+association, nor to a P association another investigation creates later. Item excerpts retain
+an explicit association route so partial delivery does not lose this distinction.
 
-**Conservative fixture choices, not settled policy:** entity-level exposure reacts to a
-supersession/withdrawal targeting that entity; explicit result membership and shared-item
-membership seed result warnings. A different association to the same content may remain
-valid yet receive a reconsideration warning. Originating evaluations are exempt from their
-own causes. The old complete-correction-context exemption is not automatically transplanted:
-the fixture has no received-cause exemption or clearance. Thus a fully informed later
-investigation may still be conservatively flagged. Review granularity, cause scope,
-received-context exemptions and reassessment before treating this as an implementation plan.
+Result status belongs to each exact **designation**, not one warning set on RESULT-Q.
+Distinguish displaced standing (a newer designation exists), membership concerns (an exact
+included association was displaced), and concerns inherited from the generating evaluation's
+actual context. A designation's displacement is not itself a reconsideration warning on that
+same designation. Consumers that received it can nevertheless need reconsideration.
+
+The updated designation does not acquire the cause that created it. It can still acquire
+independent concerns about its exact members or producing evaluation. Historical captured
+answers remain fixed; fresh status reports are separate. Receiving the new designation must
+not be confused with receiving the old designation of the same result entity.
+
+Membership and exposure operate on exact association references. Sharing a content item
+through different associations is not alone a warning path. Observer/reuse results in the
+fixture create their own associations to earlier items; their actual incoming exposure,
+not shared text, supplies any inherited concern. Entity merge/split effects remain a separate
+unimplemented identity question.
+
+The prototype retains conservative generating-evaluation propagation: a cause affecting
+actual input can follow that producer's delivered contributions. A selected result designation
+can transmit its membership concerns; this does not establish item-level causal reliance.
+It exempts originating evaluations from their own causes, but has no received-cause exemption
+or clearance. An informed later investigation may still be flagged for an exact old association
+it actually received. Addition policy, richer partial-delivery precision, exemptions and
+reassessment remain open; broad entity/shared-item displacement triggers have been removed.
 
 Causes remain distinct; no automatic transitive equivalence, last-writer truth, or disappearance
 of a cause through context trimming. A supersession can be contested. Competing declarations
@@ -399,7 +426,7 @@ The planning package would need explicit treatment of:
 | Entity and result identity | Common reference mechanism; settle invocation/evaluation/reuse guarantees and first migration depth. No semantic deduplication. |
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
 | Support and eligibility | Fixture delivers full targeted declarations/members with qualifications; settle bounded acquisition, competing definitions and missing support. |
-| Reconsideration | Agree addition policy, entity/item precision, shared-item effects, received-context exemptions and warning clearance or explicit deferral. |
+| Reconsideration | Agree addition policy, partial-delivery/producer precision, received-context exemptions and warning clearance or explicit deferral; exact association/designation identity is retained. |
 | Declaration standing | Competing declarations are retained; challenge/reinstatement and result selection policy remain open. Do not infer revocation from a newer bundle. |
 | Entity merge/split | Qualified correspondence and preserved old IDs; supersession/reassignment effects remain a design probe, not delivered automatically by association operations. |
 | First capability | Choose delivered relationship kinds, contextual selection depth, mechanical compatibility and which composition/diagram probes become implementation acceptance tests. |

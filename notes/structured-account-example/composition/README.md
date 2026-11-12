@@ -187,10 +187,11 @@ not an exhaustive automatic context policy.
 RESULT-Q4 includes orientation, pattern identification and scenario associations. Exact
 captures stay fixed. Later supersession of one association does not rewrite its original
 owner or the result designation; explicit result redesignation is separate. A nested
-occurrence selection delivered from this result creates RESULT-Q4 exposure.
+occurrence selection delivered from this result retains RESULT-Q4 context and the exact
+designation/association route; it is not exposure to every future designation of RESULT-Q4.
 
-Pattern definitions still share Q4's actual generating context. A later supersession on
-B can flag Q4's evaluation/result and reach a consumer receiving an ordering definition
+Pattern definitions still share Q4's actual generating context. A later supersession of a B association actually delivered to Q4 can flag Q4's
+evaluation and its result designation and reach a consumer receiving an ordering definition
 through its source provenance. Splitting outputs into children does not isolate that path.
 This remains a concrete cost: the definition may need no substantive revision yet receive
 an uncleared warning. Association precision does not automatically provide per-output

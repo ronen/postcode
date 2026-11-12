@@ -39,7 +39,7 @@ provide the investigation background.
 | [First result](first-result.json) | Q1 introduces state categories and associates definitions/admission with P/S; designates RESULT-Q1. |
 | [Follow-up](followup-result.json) | Q2 introduces scenario roles and trial behavior, supersedes P's admission association, redesignates RESULT-Q1 and designates RESULT-Q2. |
 | [Lifecycle probes](lifecycle-probes.json) | Earlier-result consumer, fuller description, declaration-only reuse, and withdrawal. |
-| [Generated report](lifecycle-report.json) | Exact qualified projections, displacement links, exposure and distinct evaluation/result reconsideration causes. |
+| [Generated report](lifecycle-report.json) | Exact qualified projections, displacement links, exposure and distinct evaluation/designation reconsideration causes. |
 | [Children variant](children/README.md) | Same behavior with appropriately separated qualification boundaries. Its own seed/ledger/probes/reports describe a separate hypothetical Session. |
 | [Composition](composition/README.md) | Two wrapping orders, local roles/relations/situations and exact follow-up selectors. |
 | [Follow-up options](followup-options.md) | RESULT-Q1 as context/subject, exact originating metadata as option address. |
@@ -65,7 +65,8 @@ Q2 receives a RESULT-Q1 projection including the exact declarations/members it w
 displace. This is a deliberate completeness example, not a default to deliver every
 historical result. Supersession eligibility provisionally requires the exact target
 and designated members with qualifications; an option excerpt alone is insufficient.
-The follow-up option stays on ADMISSION-1 and is not copied to ADMISSION-2 because this
+Redesignation also requires Q1's exact question/scope and parameters in context; it is
+optional, not a duty to update every containing result. The follow-up option stays on ADMISSION-1 and is not copied to ADMISSION-2 because this
 submission already answers it.
 
 ## Qualification and partition costs
@@ -86,6 +87,9 @@ costs; the current fixture conservatively preserves those warning paths.
 
 - Q-observer receives RESULT-Q1 before Q2. It contributes an association to already
   delivered admission content without creating a new item, plus its own result designation.
+- Q-excerpt receives an admission item with its exact P association route, without the
+  result designation. Q-updated receives the new RESULT-Q1 designation after Q2; neither
+  gets warnings for unreceived associations merely sharing the entity.
 - Q-expansion supersedes S's identifying association with a fuller description, without
   claiming the earlier identification was false. RESULT-Q1 is affected through membership;
   Q1 itself was never exposed to S. Q-observer is reached through its actual result exposure.
@@ -97,9 +101,11 @@ costs; the current fixture conservatively preserves those warning paths.
 - A checker-only competing supersession remains alongside the first; recency does not
   silently reconcile them.
 
-Warnings and association standing are different. The prototype conservatively warns on
-shared-item overlap even when another association remains valid. It tracks cause identities,
-not just a boolean. It implements only a producer exemption; addition-trigger policy,
+Warnings and association standing are different. Each exact result designation records
+displacement separately from membership/generating-context concerns. No warning follows
+merely from sharing an entity or content item. The report includes checkpoints before the
+independent expansion/competition probes so successful redesignation is visible. It
+implements only a producer exemption; addition-trigger policy,
 received-cause exemptions, clearance, reinstatement and more precise propagation remain open.
 
 <a id="verification"></a>
@@ -116,7 +122,7 @@ python3 notes/structured-account-example/render-overviews.py
 
 The first checks both partitions, qualified delivery/eligibility, immutable original
 answers, exact association standing, result-membership versus exposure paths, atomic
-rejection and matching architectural state/interaction content. It rejects 50 malformed
+rejection and matching architectural state/interaction content. It rejects 64 malformed
 cases across the partitions. Use `--write` only to deliberately regenerate lifecycle
 reports after changing authored input or the bounded simulator.
 

@@ -41,7 +41,7 @@ origin would not imply that the user came from ADMISSION-1 or ANSWER-Q1.
 Q2 explicitly receives RESULT-Q1's initial designated members and the qualified option. This
 is full selected-result delivery in this example, not a default to transmit every entity's
 history. The record materializes exact declarations/items with their owner, source qualifications,
-evidence references, captured basis and query provenance. The option excerpt alone would not
+evidence references, captured basis and query provenance. The projection also supplies Q1's declared question, subjects, parameters and scope. The option excerpt alone would not
 establish eligibility to displace a result association. Human browsing alone is not exposure.
 
 The option promises qualified investigation, not a particular diagram. The investigator
@@ -75,6 +75,8 @@ Separately, Q2's root declares a new association for RESULT-Q1, superseding its 
 result designation. It includes the original definitions/orientation/inspection associations
 and the new admission association. Existing items keep their owners and qualification.
 RESULT-Q2's own initial association designates Q2's contributions, including the redesignation.
+Redesignation is optional and limited to the given result/question. Other results containing
+affected associations receive notices or membership concerns, not automatic rewritten answers.
 No investigram is globally superseded. There is no replacement-owned tree or K record.
 
 ADMISSION-1's other associations remain; RESULT-Q1's original designation remains historically
@@ -91,22 +93,31 @@ declaration and its designated members with qualification, not every item in its
 It rejects identifier-only or qualification-stripped targets. This proposed rule replaces an
 existing governing requirement and must be adopted explicitly before product work.
 
-Q1 remains the producer of its original assertions. RESULT-Q1 and RESULT-observer receive
-cause-specific reconsideration warnings. Q2 is exempt from the declarations it produced.
-No warning asserts falsehood, removes an association or updates an exact answer.
+Q1 remains the producer of its original assertions and has no incoming-exposure warning:
+its P orientation was not the admission association it later created. RESULT-Q1's original
+designation receives a membership concern about admission and separately records its successor.
+The new designation receives neither its own creation cause nor the old admission cause.
+Q2 is exempt from its own declaration causes. No warning changes an exact capture.
 
-The prototype has no received-cause completeness exemption or reassessment clearance. It is
-conservative about entity-level exposure and shared-item membership. A new reader can be
-flagged even after receiving a notice. This is a visible design limitation for review, not
-a claim that previous correction-context rules have already migrated successfully.
+Q-observer received the original result designation and inherits its concerns. Q-excerpt
+received only the admission item via its P association: it receives the admission cause,
+not the redesignation cause of an answer it never received. Q-updated receives the new
+designation; it does not inherit warnings merely because its context entity is also RESULT-Q1.
+The report shows this checkpoint before subsequent independent expansion.
+
+Withdrawal of a later P association does not flag Q1 or other uses merely sharing its item.
+The prototype still has no received-cause exemption or reassessment clearance. Exact old
+associations received after a notice can still cause warnings; generating-evaluation
+provenance remains conservative. Those limitations do not justify entity-wide exposure.
 
 ## 5. Expansion without a factual-error claim
 
 Q-expansion delivers S's initial identifying association and trial behavior through R. It
-produces a fuller description distinguishing the category from a caller waiting in that
-category, and supersedes the original identifying association. It does not allege the old
-identifying text false. The description carries its proper inherited source scope; the probe
-is not an editorial broadening of a previously qualified claim.
+produces a fuller category identification distinguishing the breaker state from execution
+progress, and supersedes the original identifying association without alleging it false.
+Both variants use qualification appropriate to this new identification. The waiting example
+is a separately scoped related-content link to TRIAL-1, not a general behavior claim. Original
+source excerpts retain their old limitations; new identification is grounded at the pinned basis.
 
 This can affect later analysis. Q1 was never exposed to newly introduced S, but RESULT-Q1
 includes S's identifying declaration. A result-membership cause therefore reaches RESULT-Q1,
@@ -146,7 +157,7 @@ silently removed when an item is associated elsewhere.
 
 Partition alone does not prevent reconsideration. Actual entity/result exposure, exact designated
 membership and generating-query provenance determine the prototype's warnings. The more precise
-policy remains an open decision, particularly for an unchanged association to shared content.
+policy remains an open decision, including partial delivery and the conservative effects of generating-evaluation exposure.
 
 ## 8. Composition and subsequent selection
 

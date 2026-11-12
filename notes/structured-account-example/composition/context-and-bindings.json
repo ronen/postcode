@@ -58,7 +58,11 @@
     "suppliedEvidence": [
       "E-bulkhead"
     ],
-    "informationNeed": "Identify the bulkhead policy kind and its capacity/queue lifetime."
+    "informationNeed": "Identify the bulkhead policy kind and its capacity/queue lifetime.",
+    "declaredMeaning": {
+      "question": "Identify the bulkhead policy kind and its capacity/queue lifetime.",
+      "scope": "Static bounded component/scenario investigation at the pinned revision. For composition, compare the two explicitly different wrapping-order setups; no general performance or completion guarantee."
+    }
   },
   "bulkheadAcceptance": {
     "entityIds": {
@@ -161,7 +165,11 @@
       "A-bulkhead"
     ],
     "informationNeed": "Compare the two wrapping orders at a possible waiting point: which instance holds which state or resource, and whose application work has begun?",
-    "navigationOrigin": null
+    "navigationOrigin": null,
+    "declaredMeaning": {
+      "question": "Compare the two wrapping orders at a possible waiting point: which instance holds which state or resource, and whose application work has begun?",
+      "scope": "Static bounded component/scenario investigation at the pinned revision. For composition, compare the two explicitly different wrapping-order setups; no general performance or completion guarantee."
+    }
   },
   "compositionAcceptance": {
     "entityIds": {

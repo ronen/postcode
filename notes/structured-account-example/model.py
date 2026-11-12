@@ -83,25 +83,49 @@ class Model:
                         items.add(dep)
         return declarations, items
 
+    def query_meaning(self, entity):
+        qid = self.entities[entity]['queryInvocation']
+        request = self.queries[qid]['request']
+        return {'queryInvocation': qid, 'resultEntity': entity,
+                'operation': request['operation'], 'subject': copy.deepcopy(request['subject']),
+                'parameterValues': copy.deepcopy(request.get('parameterValues', {})),
+                'option': copy.deepcopy(request.get('option')),
+                'declaredMeaning': copy.deepcopy(request['declaredMeaning']),
+                'basis': copy.deepcopy(self.basis)}
+
+    def item_route(self, ref, item):
+        """Only declaration paths actually leading to this excerpt, not sibling membership."""
+        if item not in self.expand(ref)[1]:
+            return set()
+        route = {ref}
+        for member in self.declarations()[ref].get('members', []):
+            if 'declaration' in member:
+                route |= self.item_route(address(member['declaration'], 'associationKey'), item)
+        return route
+
     def project(self, selection):
-        """A delivered entity projection with exact contents, qualification, and bounded notices."""
+        """Exact association uses, qualified content and question; never entity-wide exposure."""
         entity = selection['entity']
         assert entity in self.entities
-        ds, its, opts = set(), set(), {}
+        ds, its, uses, opts = set(), set(), set(), {}
         for ref in selection.get('associations', []):
             key = address(ref, 'associationKey')
             assert self.declarations()[key]['target']['entity']['entity'] == entity, 'association belongs to another entity'
             more_ds, more_items = self.expand(key)
-            ds |= more_ds; its |= more_items
-        # An explicit item excerpt must be reachable through an association with the selected entity.
+            ds |= more_ds; its |= more_items; uses |= more_ds
+        # Excerpts retain the exact association route without claiming full member delivery.
+        for ref in selection.get('items', []):
+            key = address(ref, 'contentKey')
+            via = address(ref['viaAssociation'], 'associationKey')
+            assert self.declarations()[via]['target']['entity']['entity'] == entity
+            route = self.item_route(via, key)
+            assert route, 'item is not part of the specified association use'
+            uses |= route
+            its.add(key)
         available = set()
         for ref, declaration in self.declarations().items():
             if declaration['target']['entity']['entity'] == entity:
                 available |= self.expand(ref)[1]
-        for ref in selection.get('items', []):
-            key = address(ref, 'contentKey')
-            assert key in available, 'item is not associated with context entity'
-            its.add(key)
         for ref in selection.get('options', []):
             oid, key = address(ref, 'optionKey')
             assert any(source == oid for source, _ in available), 'option owner is not part of selected entity information'
@@ -110,22 +134,36 @@ class Model:
             opts[label((oid, key))] = self.qualified(oid, found[0])
         notices = {}
         for ref, declaration in self.declarations().items():
-            if declaration['operation'] == 'addition':
-                continue
-            displaced = [address(x, 'associationKey') for x in declaration['displaces']]
-            affected_items = set().union(*(self.expand(x)[1] for x in displaced))
-            if ds.intersection(displaced) or its.intersection(affected_items):
+            if uses.intersection(address(x, 'associationKey') for x in declaration.get('displaces', [])):
                 notices[label(ref)] = self.qualified(ref[0], declaration)
+        use_records = {}
+        for ref in sorted(uses):
+            declaration = self.declarations()[ref]
+            value = {'association': {'investigram': ref[0], 'associationKey': ref[1]},
+                     'target': declaration['target']}
+            for field in ['reason', 'qualifications', 'evidence']:
+                if field in declaration: value[field] = declaration[field]
+            use_records[label(ref)] = self.qualified(ref[0], value)
+        result_entities = {self.declarations()[r]['target']['entity']['entity'] for r in uses
+                           if self.declarations()[r]['target']['role'] == 'result'}
+        if self.entities[entity]['kind'] == 'query-result' and (uses or opts):
+            result_entities.add(entity)
         return {'entity': entity,
+                'associationUses': use_records,
+                'queryMeanings': {eid: self.query_meaning(eid) for eid in sorted(result_entities)},
                 'declarations': {label(x): self.qualified(x[0], self.declarations()[x]) for x in sorted(ds)},
                 'items': {label(x): self.qualified(x[0], self.items()[x]) for x in sorted(its)},
                 'options': opts, 'notices': notices,
-                'noticeLimits': 'A notice references displaced/new members but does not deliver them. Explicit further selections are required; no complete-known-cause exemption is implemented.'}
+                'noticeLimits': 'Notices concern exact supplied association uses; their references do not deliver members. No shared-item or entity-wide displacement inference, received-cause exemption, or automatic redesignation.'}
 
     def accept(self, document, bindings, request, delivered=None):
         """Stage everything on a copy; bad declarations never partially change retained state."""
         staged = copy.deepcopy(self)
         projections = [self.project(x) for x in request['deliveries']] if delivered is None else copy.deepcopy(delivered)
+        assert len(projections) == len(request['deliveries'])
+        for projection, selection in zip(projections, request['deliveries']):
+            assert projection['associationUses'] == self.project(selection)['associationUses'], 'missing or altered association-use provenance'
+        assert request['declaredMeaning']['question'] and request['declaredMeaning']['scope'], 'missing declared question/scope'
         qid = request['id']
         subject = request['subject']
         assert set(subject) in [{'entity'}, {'entities'}]
@@ -164,6 +202,7 @@ class Model:
         new_decls = {k: v for k, v in decls.items() if k[0] in new_owners}
         supplied_ds = {k: v for p in projections for k, v in p['declarations'].items()}
         supplied_items = {k: v for p in projections for k, v in p['items'].items()}
+        supplied_meanings = {k: v for p in projections for k, v in p.get('queryMeanings', {}).items()}
         covered = set()
         for ref, sp in new_decls.items():
             assert sp['operation'] in ['addition', 'supersession', 'withdrawal']
@@ -174,6 +213,8 @@ class Model:
             is_result = staged.entities[eid]['kind'] == 'query-result'
             assert (target['role'] == 'result') == is_result, 'result role/target mismatch'
             assert target['role'] in ['result', 'identifies', 'describes'], 'unsupported bounded role'
+            if is_result and eid != rid:
+                assert supplied_meanings.get(eid) == self.query_meaning(eid), 'earlier result requires its exact declared question and scope'
             if sp['operation'] == 'withdrawal':
                 assert not sp.get('members'), 'withdrawal has replacement members'
             else:
@@ -225,7 +266,7 @@ class Model:
         for root in result['compositionRoots']: visit(owner(root))
         assert visited == new_owners
         exposure = sorted({p['entity'] for p in projections if p['items'] or p['declarations'] or p['options'] or p['notices']})
-        sources = sorted({x['queryInvocation'] for p in projections for field in ['items','declarations','options','notices'] for x in p[field].values()})
+        sources = sorted({x['queryInvocation'] for p in projections for field in ['items','declarations','associationUses','options','notices'] for x in p[field].values()})
         staged.queries[qid] = {'request':copy.deepcopy(request), 'resultEntity':rid,'initialDesignation':own_results[0], 'deliveries':projections,'exposureIndex':exposure,'sourceQueries':sources,'declarations':list(new_decls)}
         # Exact returned answer is fixed, separate from later declarations targeting the same result entity.
         initial = staged.project({'entity':rid,'associations':[{'investigram':own_results[0][0],'associationKey':own_results[0][1]}]})
@@ -296,30 +337,54 @@ class Model:
         return {'displacedBy':sorted(by),'competingDeclarations':len(by)>1}
 
     def reconsideration(self):
-        """Conservative prototype; no automatic clearance or inherited old completeness exemption."""
-        output={q['resultEntity']:set() for q in self.queries.values()}
-        evaluation={qid:set() for qid in self.queries}
-        for cause,decl in self.declarations().items():
-            if decl['operation']=='addition': continue
-            cid=label(cause);producer=self.investigrams[cause[0]]['queryInvocation']
-            displaced={address(x,'associationKey') for x in decl['displaces']}
-            changed_items=set().union(*(self.expand(x)[1] for x in displaced))
-            affected_entity=decl['target']['entity']['entity']
-            for qid,q in self.queries.items():
-                if qid==producer: continue
-                if affected_entity in q['exposureIndex']: evaluation[qid].add(cid)
-                ds,its=self.expand(q['initialDesignation'])
-                if ds & displaced or its & changed_items: output[q['resultEntity']].add(cid)
-            changed=True
+        """Warnings on exact designations; displaced standing is a separate historical fact."""
+        decls = self.declarations()
+        designations = {r: d for r, d in decls.items()
+                        if d['target']['role'] == 'result' and d['operation'] != 'withdrawal'}
+        membership = {r: self.expand(r)[0] - {r} for r in designations}
+        uses = {qid: {key for p in q['deliveries'] for key in p['associationUses']}
+                for qid, q in self.queries.items()}
+        member_causes = {r: set() for r in designations}
+        eval_causes = {qid: set() for qid in self.queries}
+        for cause, declaration in decls.items():
+            if declaration['operation'] == 'addition':
+                continue
+            cid = label(cause)
+            producer = self.investigrams[cause[0]]['queryInvocation']
+            displaced = {address(x, 'associationKey') for x in declaration['displaces']}
+            for qid in self.queries:
+                if qid != producer and uses[qid] & {label(r) for r in displaced}:
+                    eval_causes[qid].add(cid)
+            for ref in designations:
+                if self.investigrams[ref[0]]['queryInvocation'] != producer and membership[ref] & displaced:
+                    member_causes[ref].add(cid)
+            changed = True
             while changed:
-                before=copy.deepcopy((output,evaluation))
-                for qid,q in self.queries.items():
-                    if qid==producer: continue
-                    if any(cid in output.get(e,set()) for e in q['exposureIndex']) or any(cid in evaluation.get(src,set()) for src in q['sourceQueries']):
-                        evaluation[qid].add(cid)
-                    if cid in evaluation[qid]: output[q['resultEntity']].add(cid)
-                changed=before!=(output,evaluation)
-        return {'results':{k:sorted(v) for k,v in output.items()},'evaluations':{k:sorted(v) for k,v in evaluation.items()}}
+                before = copy.deepcopy(eval_causes)
+                for qid, query in self.queries.items():
+                    if qid == producer:
+                        continue
+                    received_affected_designation = any(
+                        label(ref) in uses[qid] and
+                        (cid in member_causes[ref] or
+                         cid in eval_causes.get(self.investigrams[ref[0]]['queryInvocation'], set()))
+                        for ref in designations)
+                    received_affected_producer = any(cid in eval_causes.get(src, set())
+                                                     for src in query['sourceQueries'])
+                    if received_affected_designation or received_affected_producer:
+                        eval_causes[qid].add(cid)
+                changed = before != eval_causes
+        statuses = {}
+        for ref, declaration in sorted(designations.items()):
+            qid = self.investigrams[ref[0]]['queryInvocation']
+            generated = eval_causes.get(qid, set())
+            statuses[label(ref)] = {
+                'resultEntity': declaration['target']['entity']['entity'],
+                **self.standing(ref),
+                'membershipCauses': sorted(member_causes[ref]),
+                'generatingEvaluationCauses': sorted(generated),
+                'needsReconsideration': sorted(member_causes[ref] | generated)}
+        return {'designations': statuses, 'evaluations': {k: sorted(v) for k, v in eval_causes.items()}}
 
 def initial_model(directory):
     ledger=read(directory/'context-and-bindings.json')

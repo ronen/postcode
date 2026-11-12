@@ -56,7 +56,11 @@
         "items": [],
         "options": []
       }
-    ]
+    ],
+    "declaredMeaning": {
+      "question": "Execution admission and state inspection under default recovery sampling.",
+      "scope": "Execution admission and state inspection at the pinned revision, under default one-call recovery sampling; excludes reentrant entry, non-default sampling and competing external changes."
+    }
   },
   "firstAcceptance": {
     "entityIds": {
@@ -113,6 +117,10 @@
     "navigationOrigin": {
       "capturedAnswer": "ANSWER-Q1",
       "resultEntity": "RESULT-Q1"
+    },
+    "declaredMeaning": {
+      "question": "Concurrent callers and trial outcomes under default single-trial recovery.",
+      "scope": "Concurrent trial/caller behavior under the selected option and pinned default single-trial scope; excludes reentrant entry and other interference as stated by the option source."
     }
   },
   "followupAcceptance": {
@@ -139,7 +147,7 @@
   "reconsiderationPolicy": {
     "supersessionAndWithdrawal": "causes",
     "addition": "not implemented; open decision",
-    "precision": "Entity exposure plus explicit result membership, with conservative shared-item and contributing-query provenance propagation; never proof of reliance.",
+    "precision": "Exact delivered association uses and exact designation membership; source-query exposure provenance retained. Entity and shared-item overlap alone do not trigger.",
     "exemptions": "Producing evaluation is exempt from its own declaration causes in this fixture. Complete received-cause exemption is deferred, not inherited from the old whole-investigram rule."
   }
 }

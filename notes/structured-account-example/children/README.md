@@ -39,7 +39,8 @@ the submission; references do not create owning edges.
 
 Q2 selects RESULT-Q1 and names ADMISSION-1's exact follow-up option. The request deliberately
 delivers the original result's declarations/members, including what Q2 will displace.
-S is the architectural focus. No prose question or implicit human navigation history
+S is the architectural focus. Q1's declared question/scope and parameters accompany the
+result projection before Q2 optionally redesignates that result. No prose question or implicit human navigation history
 is required. See [option invocation](../followup-options.md).
 
 ADMISSION-2 supersedes only P's admission-cases association and copies no unchanged
@@ -83,8 +84,9 @@ routes remain visible in the [report](lifecycle-report.json).
 
 The [lifecycle probes](lifecycle-probes.json) also exercise declaration-only old-content
 reuse and withdrawal. Displacing one use does not mutate the item or displace its other
-uses. The conservative shared-item warning policy may still flag those results for review;
-that does not establish wrongness. Precision and clearance remain open.
+uses. Shared-item overlap alone now causes neither a warning nor a displacement notice.
+Generating-context concerns remain possible through actual delivered associations; clearance
+and reassessment remain open. The same rules apply in both partitions.
 
 ## Files and verification
 

@@ -47,7 +47,7 @@ unique discovery, or equivalence of independently allocated entities.
 | Follow-up option | Available investigation associated with exact originating metadata; atemporal availability, not implied priority. |
 | Presentation recommendation | Judgment of usefulness, not permission to render compatible content. |
 | Context delivery | Exact material supplied, including ownership, basis, qualification and completeness. |
-| Exposure index | Entities/query results whose substantive projections were delivered. Current product `citation` indexes remain investigram-based until an adopted migration. |
+| Exposure index | Organizing entities/query results plus exact association uses actually delivered. Current product `citation` indexes remain investigram-based until an adopted migration. |
 | Support | Attributed grounds for a claim, not inferred from delivery alone. |
 
 Qualified information is a broad description, not another record kind. “Metadata” does
@@ -102,7 +102,7 @@ the original content; the new association has its own attributable grounds.
 Association standing: displacement links and competing declarations
 Entity projections: explicit selected information with qualifications and notices
 Result membership: exact declarations/items, never implicit current substitutions
-Reconsideration causes on evaluations and query results
+Reconsideration causes on evaluations and exact result designations
 Validated diagram inputs and rendered diagrams/legends
 ```
 
@@ -141,17 +141,28 @@ information. It can also need reconsideration because a constituent association 
 displaced—even when its producer created that entity and never received it as context.
 The second route is designated membership, not fabricated exposure or the fixed child tree.
 
-The executable prototype separates evaluation causes from result causes. An affected result
-can affect consumers; affected generating-context provenance can follow delivered contributions
-through architectural entities too. The current conservative rule also warns on shared-item
-membership, without displacing valid other associations. This overbreadth is explicit and
-needs review. Merely having a reference does not assert semantic dependence.
+The executable prototype tracks exact delivered association uses. Entity identity alone
+cannot expose an evaluation to information created later. Item excerpts record their route;
+sharing an item through another association is not a displacement warning. Generating-context
+provenance remains conservative across a producer's contributions, without making the entire
+entity's future information part of an old delivery.
 
-Supersession for fuller coverage can trigger reconsideration without declaring earlier
-content false. Withdrawal can also trigger it. Addition-trigger policy remains open.
-The fixture exempts producers from their own causes, but has no received-cause exemption,
-clearance or automatic reversal of a declaration. These are exposed limitations, not claims
-that the old whole-investigram exemptions already fit the new model.
+Status is keyed by designation: `displacedBy`, `membershipCauses`, and
+`generatingEvaluationCauses` remain distinct. `needsReconsideration` combines the latter two,
+not the mere fact that the designation has a successor. A new designation is not flagged by
+its own creation; unrelated later concerns still apply. Fresh status never rewrites the
+captured original answer.
+
+Redesignating an earlier result requires its declared question/scope, subjects, parameters
+and operation/option in context, captured in `queryMeanings`. It is optional. Other containing
+designations receive fresh notices/status rather than automatic redesignation. No investigation
+must maintain every result that references an affected association.
+
+Supersession for fuller coverage and withdrawal can trigger review without asserting falsehood.
+Addition policy, received-cause exemptions, clearance and reassessment remain open. The fixture
+still exempts producers from their own causes. Identifying content newly established from the
+pinned basis need not copy irrelevant source behavioral restrictions; original reused content
+retains its qualifications, while new scenario examples carry their own applicable limits.
 
 <a id="catalogue-responsibilities"></a>
 ## Catalogue responsibilities and diagrams

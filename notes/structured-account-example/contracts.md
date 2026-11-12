@@ -130,7 +130,12 @@ The example makes two explicit declarations: ADMISSION-2 supersedes the admissio
 association on P, and Q2's root supersedes Q1's result association. Neither implies
 the other. Original investigrams, child links, metadata, items and introductions persist.
 The updated answer is available through a later designation; it is not substituted
-inside old exact result membership.
+inside old exact result membership. Redesignation is optional. Other containing designations
+keep their membership and receive fresh notices/status; the investigator need not find them
+all. Before targeting an earlier query result, supply its exact declared meaning/scope,
+operation, subjects, parameters and option (if any). `queryMeanings` in the projection
+preserves this context with invocation identity and basis; the checker rejects missing
+or altered question context even when the full old answer was delivered.
 
 ## Ownership and qualification
 
@@ -190,35 +195,42 @@ Each delivered item/declaration/option preserves its own value, source investigr
 generating query, captured basis, source qualifications and evidence. A declaration's
 members from another owner retain that owner's support too.
 
-The exposure index records the entity/result projections actually delivered. A portion
-selected from Q's result records exposure to RESULT-Q; source provenance remains exact.
-Human browsing, selection without delivery, and bare IDs do not create exposure.
-A link or a reason that names content is not delivery of that content. Required
-content dependencies differ from merely informative `relatedContent` or illustrations.
-Direct-item projection currently preserves only the selected item; resolving a diagram
-or delivering an association follows its required state-model dependencies. A general
-context dependency-closure policy is still to be settled.
+The entity/result exposure index is an organizing summary, not a change subscription to
+every association with that identity. `associationUses` records exact uses actually supplied,
+with source qualification and generating provenance. Full association delivery records its
+expanded declarations; an item excerpt requires `viaAssociation` and records only paths to
+that item. These partial use records do not claim full declaration/member delivery and cannot
+establish displacement eligibility. The captured route cannot expand to later associations.
 
-Fresh projections disclose qualified supersession/withdrawal notices affecting their
-selected declarations or shared items. Notice references do not deliver the old/new
-members. Exact captured answers and deliveries retain their then-captured information.
-The prototype does not automatically substitute new associations, establish complete
-known-cause context, or exempt an informed later consumer from all warnings.
+Selecting a portion of Q's result retains its exact designation route as well as RESULT-Q.
+Human browsing, bare IDs and undelivered siblings do not create delivered association entries.
+Options alone carry their source provenance; discovering an option through a result does not
+assert receipt of every behavioral association. Required state-model dependencies, informative
+links and actual content acquisition remain distinct. Arbitrary excerpt dependency closure
+is not fully generalized by the bounded renderer.
 
-Two paths reach a result: actual generating exposure, and designated membership.
-If Q1 created S, it never received S as incoming context; a later supersession of S's
-identifying association can nevertheless affect RESULT-Q1 through its membership.
-Consumers of RESULT-Q1 can then need reconsideration. No exposure is fabricated for Q1.
-Delivered material from an exposure-affected generating evaluation can also transmit
-its cause even when accessed through another entity.
+Fresh projections disclose qualified displacement notices for exact supplied uses, not every
+other use of a shared item. Notice references do not deliver the old/new members. Original
+answer/delivery snapshots stay fixed. General warnings are inspected separately through
+`reconsideration()`, whose statuses name exact designation addresses rather than only RESULT-Q.
 
-The bounded simulator treats supersession and withdrawal as distinct causes, exempts
-the producing evaluation from its own cause, and conservatively follows affected entity
-exposure and original result membership (including shared-item overlap). This can warn
-about an unchanged use without displacing it. Additions do not trigger the prototype;
-the addition policy is **open**, not a decision that new information is harmless.
-Cause exemptions, precision, challenge, clearance and reassessment require decisions
-before drafting. No old whole-investigram complete-correction exemption is silently reused.
+The designation status has separate `displacedBy`, `membershipCauses` and
+`generatingEvaluationCauses`; only the latter two contribute to `needsReconsideration`.
+Displacing a designation records history, not a self-warning. An association displaced within
+its membership can warrant review. A new designation does not inherit the old one's causes
+by entity identity, but can independently be affected through its own members or producer.
+Consumers of an actually delivered old designation may need reconsideration when it changes.
+
+Q1's identifying membership can be affected without Q1 having received its newly introduced S.
+No incoming exposure is fabricated. A cause can then reach an actual consumer of that exact
+designation. Delivered contributions from an exposure-affected producing evaluation also
+retain that concern. This remains conservative at evaluation/designation granularity; it
+is not proof that every received excerpt relied on the affected claim.
+
+The simulator uses supersession/withdrawal as causes and exempts the producer from its own
+causes. It uses exact displaced associations, not entity equality or shared-item overlap.
+Additions, identity events, received-cause exemptions, challenge, clearance and reassessment
+remain open. Earlier whole-investigram completeness exemptions are not silently reused.
 
 <a id="retained-investigation-offer"></a>
 ## Retained follow-up option metadata

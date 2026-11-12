@@ -23,7 +23,11 @@
       ],
       "suppliedEvidence": [
         "E-admission"
-      ]
+      ],
+      "declaredMeaning": {
+        "question": "Retain the supplied admission explanation as a policy description.",
+        "scope": "Staged pre-follow-up consumer; no new behavior claim."
+      }
     },
     "bindings": {
       "entityIds": {
@@ -148,7 +152,11 @@
         "E-state",
         "E-admission",
         "E-half-open"
-      ]
+      ],
+      "declaredMeaning": {
+        "question": "Clarify Half-open as a state category distinct from execution progress.",
+        "scope": "Category identification at the pinned basis; behavioral illustration limited to the separately qualified trial scenario."
+      }
     },
     "bindings": {
       "entityIds": {
@@ -176,9 +184,7 @@
             "title": "Q-expansion",
             "qualifications": [
               "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
-              "Identifies state categories of the Circuit breaker policy kind at the pinned revision. The category designations are not restricted to default sampling and do not designate runtime occurrences.",
-              "Identifying distinctions only: this account does not specify admission outcomes, sampling limits, transition timing or interference behavior for any configuration.",
-              "Partial vocabulary: manual isolation is mentioned only to distinguish automated Open; no isolated-state subject is introduced here. Descriptions do not establish observed runtime state or application health."
+              "Identifies the state category and distinguishes it from execution progress; does not specify general admission, sampling, timing or interference rules. The linked waiting example retains its separate scenario qualifications."
             ],
             "evidence": [
               "E-state",
@@ -202,7 +208,7 @@
                   "entity": "S"
                 },
                 "name": "Half-open",
-                "description": "The recovery state category of the Circuit breaker policy kind in which sampled work informs whether the breaker closes or reopens. This identifies a state category, not a runtime occurrence or an individual execution. A particular caller can be waiting while the shared breaker is in this category; inspecting the category does not itself start that caller\u2019s work.",
+                "description": "A recovery state category of the Circuit breaker policy kind, distinct from Closed and Open at the pinned revision. It classifies the breaker rather than the progress of an individual execution, and is not evidence of application health.",
                 "classification": "state-category",
                 "relativeTo": {
                   "entity": "P"
@@ -211,6 +217,16 @@
                   "E-state",
                   "E-admission",
                   "E-half-open"
+                ],
+                "relatedContent": [
+                  {
+                    "investigram": {
+                      "investigram": "TRIAL-1"
+                    },
+                    "contentKey": "concurrent-callers",
+                    "purpose": "Illustrates a caller waiting while the shared breaker is Half-open; this is a scenario example, not a general admission rule.",
+                    "qualification": "Only the default single-trial scenario and limitations stated in TRIAL-1; the link does not deliver its behavior or broaden it."
+                  }
                 ]
               }
             ],
@@ -242,7 +258,7 @@
                     "associationKey": "half-open-description"
                   }
                 ],
-                "reason": "Expand the identifying account with the state/execution distinction illustrated by waiting; the earlier description is not asserted false. This explicit supersession can still matter to later analysis."
+                "reason": "Expand category identification with the distinction from execution progress; the earlier description is not asserted false. The new identifying claim is grounded in the pinned state declaration, without making a general admission claim. Original content keeps its source scope; the waiting example stays separately qualified by TRIAL-1. This explicit supersession can still matter to later analysis."
               },
               {
                 "key": "result",
@@ -296,7 +312,11 @@
       ],
       "suppliedEvidence": [
         "E-state"
-      ]
+      ],
+      "declaredMeaning": {
+        "question": "Associate the supplied state description with the policy it describes.",
+        "scope": "Limited organizing use; preserve original content qualification."
+      }
     },
     "bindings": {
       "entityIds": {
@@ -411,7 +431,11 @@
       ],
       "suppliedEvidence": [
         "E-state"
-      ]
+      ],
+      "declaredMeaning": {
+        "question": "Review the added policy indexing of the state description.",
+        "scope": "Withdraw only the specified policy association; no assertion that the original state identification is false."
+      }
     },
     "bindings": {
       "entityIds": {
@@ -485,6 +509,242 @@
                         "submittedInvestigram": "contribution"
                       },
                       "associationKey": "withdraw-policy-indexing"
+                    }
+                  }
+                ]
+              }
+            ],
+            "children": [],
+            "followupOptions": [],
+            "presentations": []
+          }
+        ]
+      }
+    }
+  },
+  "excerptConsumer": {
+    "request": {
+      "id": "Q-excerpt",
+      "operation": "authored-lifecycle-probe",
+      "subject": {
+        "entity": "P"
+      },
+      "resultEntity": "RESULT-excerpt",
+      "deliveries": [
+        {
+          "entity": "P",
+          "associations": [],
+          "items": [
+            {
+              "investigram": "ADMISSION-1",
+              "contentKey": "admission-cases",
+              "viaAssociation": {
+                "investigram": "ADMISSION-1",
+                "associationKey": "admission-cases"
+              }
+            }
+          ],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-admission"
+      ],
+      "declaredMeaning": {
+        "question": "Use this admission excerpt as policy information.",
+        "scope": "Staged partial-delivery consumer; no new behavior claim."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-excerpt"
+      },
+      "investigramIds": {
+        "contribution": "EXCERPT-1"
+      }
+    },
+    "submission": {
+      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "result": {
+        "queryInvocation": "Q-excerpt",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "compositionRoots": [
+          {
+            "submittedInvestigram": "contribution"
+          }
+        ],
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Q-excerpt",
+            "qualifications": [
+              "Authored qualified association probe at the pinned basis; no new runtime observation."
+            ],
+            "evidence": [
+              "E-admission"
+            ],
+            "referents": [
+              {
+                "entity": "P"
+              }
+            ],
+            "content": [],
+            "associationSpecifications": [
+              {
+                "key": "selected-result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "P"
+                  },
+                  "role": "describes"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "ADMISSION-1"
+                      },
+                      "contentKey": "admission-cases"
+                    }
+                  }
+                ],
+                "reason": "Retain the actually supplied admission content under the stated query scope; no assertion about unreceived associations."
+              },
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "associationKey": "selected-result"
+                    }
+                  }
+                ]
+              }
+            ],
+            "children": [],
+            "followupOptions": [],
+            "presentations": []
+          }
+        ]
+      }
+    }
+  },
+  "updatedConsumer": {
+    "request": {
+      "id": "Q-updated",
+      "operation": "authored-lifecycle-probe",
+      "subject": {
+        "entity": "RESULT-Q1"
+      },
+      "resultEntity": "RESULT-updated",
+      "deliveries": [
+        {
+          "entity": "RESULT-Q1",
+          "associations": [
+            {
+              "investigram": "TRIAL-RESULT-1",
+              "associationKey": "updated-admission-result"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-admission"
+      ],
+      "declaredMeaning": {
+        "question": "Use the explicitly updated answer to Q1.",
+        "scope": "Select its newer designation; do not substitute the original result designation."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-updated"
+      },
+      "investigramIds": {
+        "contribution": "UPDATED-1"
+      }
+    },
+    "submission": {
+      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "result": {
+        "queryInvocation": "Q-updated",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "compositionRoots": [
+          {
+            "submittedInvestigram": "contribution"
+          }
+        ],
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Q-updated",
+            "qualifications": [
+              "Authored qualified association probe at the pinned basis; no new runtime observation."
+            ],
+            "evidence": [
+              "E-admission"
+            ],
+            "referents": [
+              {
+                "entity": "P"
+              }
+            ],
+            "content": [],
+            "associationSpecifications": [
+              {
+                "key": "selected-result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "P"
+                  },
+                  "role": "describes"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "ADMISSION-2"
+                      },
+                      "contentKey": "admission-cases"
+                    }
+                  }
+                ],
+                "reason": "Retain the actually supplied admission content under the stated query scope; no assertion about unreceived associations."
+              },
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "associationKey": "selected-result"
                     }
                   }
                 ]
