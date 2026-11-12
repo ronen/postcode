@@ -265,6 +265,7 @@ class Model:
             assert projection['notices'] == expected['notices'], 'missing or altered known-cause disclosure at delivery'
             assert projection.get('inventory') == expected.get('inventory'), 'missing or altered inventory delivery'
             assert projection.get('selectionScope') == expected.get('selectionScope'), 'missing or altered selection-scope delivery'
+            assert projection.get('queryMeanings') == expected.get('queryMeanings'), 'missing or altered delivered query meaning'
             # Validate what the selected delivery actually contained, independently of
             # whether it was sufficient for the investigator's later displacement.
             assert projection['declarations'] == expected['declarations'] and projection['items'] == expected['items'], 'missing or altered selected content'
@@ -305,9 +306,6 @@ class Model:
         staged.validate_content(new_owners, set(request['suppliedEvidence']))
         decls = staged.declarations()
         new_decls = {k: v for k, v in decls.items() if k[0] in new_owners}
-        supplied_ds = {k: v for p in projections for k, v in p['declarations'].items()}
-        supplied_items = {k: v for p in projections for k, v in p['items'].items()}
-        supplied_meanings = {k: v for p in projections for k, v in p.get('queryMeanings', {}).items()}
         covered = set()
         for ref, sp in new_decls.items():
             assert sp['operation'] in ['addition', 'supersession', 'withdrawal']
@@ -318,8 +316,6 @@ class Model:
             is_result = staged.entities[eid]['kind'] == 'query-result'
             assert (target['role'] == 'result') == is_result, 'result role/target mismatch'
             assert target['role'] in ['result', 'identifies', 'describes'], 'unsupported bounded role'
-            if is_result and eid != rid:
-                assert supplied_meanings.get(eid) == self.query_meaning(eid), 'earlier result requires its exact declared question and scope'
             if sp['operation'] == 'withdrawal':
                 assert not sp.get('members'), 'withdrawal has replacement members'
             else:
@@ -336,14 +332,10 @@ class Model:
                     assert self.declarations()[old_ref]['target'] == target, 'use withdrawal and addition to change target'
                     # Acquiring the target's complete qualified support is an investigator
                     # instruction, not an acceptance gate in the first capability.
-            ds, its = staged.expand(ref)
+            # Expansion validates reference resolution, types and acyclic membership.
+            # Prior acquisition/understanding is investigator policy, not data validity.
+            _, its = staged.expand(ref)
             covered |= its
-            for r in its:
-                if r[0] not in new_owners:
-                    assert supplied_items.get(label(r)) == self.qualified(r[0], self.items()[r]), 'new association based on undelivered content'
-            for r in ds:
-                if r[0] not in new_owners:
-                    assert supplied_ds.get(label(r)) == self.qualified(r[0], self.declarations()[r]), 'result includes undelivered association'
         assert {(oid, x['key']) for oid in new_owners for x in staged.investigrams[oid]['content']} <= covered, 'unassociated own content'
         for oid in new_owners:
             for x in staged.investigrams[oid]['content']:

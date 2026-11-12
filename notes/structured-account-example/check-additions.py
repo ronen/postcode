@@ -35,7 +35,7 @@ def rejected(model, probe, delivered):
     except (AssertionError, KeyError, TypeError):
         rejected_count += 1
     else:
-        raise AssertionError('Malformed delivery or ineligible reuse was accepted')
+        raise AssertionError('Malformed delivery or reference was accepted')
     assert candidate.__dict__ == before
 
 
@@ -315,10 +315,20 @@ def check_inventory(directory, legacy, write=False):
     after_inventory = withdrawal.project(inventory_before_withdrawal['request']['deliveries'][0])['inventory']
     assert before_inventory['entries'] == after_inventory['entries']
 
-    # A bare inventory cannot authorize reusing or superseding its listed content.
+    # Referencing content does not fabricate prior delivery. Semantic-policy compliance
+    # is not an acceptance gate; reference resolution and original ownership still are.
     reuse = renamed(probes['awareConsumer'], 'inventory-reuse')
     reuse['request']['deliveries'] = copy.deepcopy(inv['request']['deliveries'])
-    rejected(model, reuse, [projection])
+    reuse_branch = copy.deepcopy(model)
+    accept(reuse_branch, reuse, [projection])
+    assert reuse_branch.queries['Q-inventory-reuse']['deliveries'] == [projection]
+    assert not projection['items'] and not projection['declarations']
+    assert not api['Model'].projection_sources(projection)
+    assert all(reuse_branch.investigrams[k] == v for k, v in model.investigrams.items())
+    unresolved = copy.deepcopy(reuse)
+    unresolved['submission']['result']['investigrams'][0]['associationSpecifications'][0]['members'] = [
+        {'item': {'investigram': {'investigram': 'ADMISSION-1'}, 'contentKey': 'absent'}}]
+    rejected(model, unresolved, [projection])
     malformed = []
     missing = copy.deepcopy(projection); missing.pop('inventory'); malformed.append(missing)
     wrong_scope = copy.deepcopy(projection); wrong_scope['inventory']['roles'] = ['describes']; malformed.append(wrong_scope)
@@ -393,4 +403,4 @@ if __name__ == '__main__':
     for name in ['complementary', 'behavioral']:
         for group in ['independentComparisons', 'explicitInventoryComparisons']:
             assert mixed['associationInventoryPolicy'][group][name]['counts'] == children['associationInventoryPolicy'][group][name]['counts']
-    print(f'Association/inventory scope, timing, acquisition, exact history and displacement checks pass; {rejected_count - current_start} malformed inventory/reuse cases rejected; {legacy_rejections} historical broad-policy disclosure negatives retained.')
+    print(f'Association/inventory scope, timing, acquisition, exact history and displacement checks pass; {rejected_count - current_start} malformed inventory/reference cases rejected; {legacy_rejections} historical broad-policy disclosure negatives retained.')

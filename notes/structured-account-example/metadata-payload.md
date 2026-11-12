@@ -36,7 +36,7 @@ It does not displace the other associations originally owned by ADMISSION-1.
 Q2's root separately declares `updated-admission-result` for RESULT-Q1/result,
 superseding Q1's original result association. Its members reference unchanged earlier
 declarations plus ADMISSION-2's new association. No item is copied merely to carry
-it forward. This optional redesignation requires Q1's exact question in context; other
+it forward. This optional redesignation instructs the investigator to understand Q1's exact question; other
 containing results are not automatically updated. Q2 also supplies its own initial result association for RESULT-Q2.
 
 A member is either an exact item reference or, for result designations, an exact
@@ -103,7 +103,8 @@ mutable canonical entity model.
 The [verification guide](README.md#verification) lists checks. Same-target displacement,
 one initial result designation and accurate qualified deliveries are explicit provisional choices.
 Complete target-support acquisition before displacement is an investigator instruction; mechanical
-completeness enforcement is deferred. Separate foreign-content reuse checks remain. Exact designation statuses separate displacement from membership and
+completeness enforcement is deferred. Reuse and earlier-query redesignation likewise have no prior-
+delivery gate; reference integrity and accurate records remain enforced. Exact designation statuses separate displacement from membership and
 generating-context concerns; shared entity/item identity alone is not a cause. General inventory
 coverage, required dependency delivery for arbitrary excerpts and declaration standing need
 bounded contracts. Investigator-directed propagation, targeted suppression, reassessment/clearance

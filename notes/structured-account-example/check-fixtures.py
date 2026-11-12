@@ -91,7 +91,17 @@ def check_variant(directory,write=False):
         if field=='missing':delivered[0]['queryMeanings']={}
         elif field=='scope':delivered[0]['queryMeanings']['RESULT-Q1']['declaredMeaning']['scope']='unqualified changed question'
         else:delivered[0]['queryMeanings']['RESULT-Q1'][field]={'changed':True}
-        rejected('redesignation without exact question '+field,lambda: copy.deepcopy(before_follow).accept(follow,ledger['followupAcceptance'],ledger['followupRequest'],delivered))
+        rejected('altered captured query meaning '+field,lambda: copy.deepcopy(before_follow).accept(follow,ledger['followupAcceptance'],ledger['followupRequest'],delivered))
+    # Semantic-policy enforcement is deferred: a structurally valid contribution may
+    # reuse old members and redesignate Q1 without prior acquisition being certified.
+    no_context_request=copy.deepcopy(ledger['followupRequest'])
+    no_context_request['deliveries']=[]
+    unchecked=copy.deepcopy(before_follow)
+    unchecked.accept(follow,ledger['followupAcceptance'],no_context_request)
+    assert unchecked.queries['Q2']['deliveries']==[]
+    assert unchecked.queries['Q2']['exposureIndex']==[]
+    assert all(unchecked.investigrams[k]==v for k,v in before_follow.investigrams.items())
+    assert unchecked.standing(address(ledger['initialResultAssociation'],'associationKey'))['displacedBy']
     delivered=copy.deepcopy(actual);delivered[0]['associationUses']={}
     rejected('stripped association use',lambda:copy.deepcopy(before_follow).accept(follow,ledger['followupAcceptance'],ledger['followupRequest'],delivered))
     for field in ['missing','wrong']:

@@ -112,10 +112,18 @@ is not proof of sound analysis or compliance. Missing support is an investigatio
 not something that PostCode may silently count as delivered.
 
 Recorded deliveries must accurately match the selected content, including its original qualifications,
-evidence and provenance; missing or altered selected payloads remain invalid. Foreign content/
-declarations reused by a new association still require their actual qualified delivery in this
-fixture, and redesignating an earlier result still requires its question/scope. These separate
-rules do not require all members of a displaced association to have been delivered.
+evidence and provenance; missing or altered selected payloads remain invalid. Reuse requires
+resolvable references and preservation of original ownership/qualification, not a prior-delivery
+gate. Redesignation instructions require understanding the earlier question/scope, but its prior
+acquisition is not a mechanical acceptance prerequisite. A new reference is not prior exposure.
+
+The general boundary is data integrity versus investigator reasoning policy. Representation,
+reference/type validity, ownership, valid operations and faithful retained history are enforced;
+adequate understanding, evidence assessment and instruction-following are investigator obligations.
+Mechanical enforcement of those semantic policies is deferred. No special reuse instruction is
+needed beyond understanding and qualifying information used. If semantic checks are later added,
+they may prompt further acquisition, explanation or revision within the dialog rather than merely
+reject a completed result. Final data still must be well-formed; no such dialog checker is added here.
 
 Renewed assertions use these same operations: if B superseded A, C can supersede B with
 members referencing A's original content and its own qualified grounds. A stays displaced;
@@ -159,10 +167,10 @@ the other. Original investigrams, child links, metadata, items and introductions
 The updated answer is available through a later designation; it is not substituted
 inside old exact result membership. Redesignation is optional. Other containing designations
 keep their membership and receive fresh notices/status; the investigator need not find them
-all. Before targeting an earlier query result, supply its exact declared meaning/scope,
-operation, subjects, parameters and option (if any). `queryMeanings` in the projection
-preserves this context with invocation identity and basis; the checker rejects missing
-or altered question context even when the full old answer was delivered.
+all. Redesignation instructions require understanding its exact declared meaning/scope,
+operation, subjects, parameters and option (if any). `queryMeanings` in the projection preserves
+this context with invocation identity and basis. The checker rejects an inaccurate record of
+selected question context, but does not require prior acquisition of that context for acceptance.
 
 ## Ownership and qualification
 
@@ -302,7 +310,7 @@ and association addresses/roles. Roles must be nonempty, distinct and valid for 
 This fixture covers **all retained associations in scope**, including displaced ones. It has
 no standing field, interpretive summary, reason, name or member content. Entries are not
 association uses, do not contribute producing-query exposure, and do not establish member delivery
-for reuse or fulfill the acquisition instruction for displacement. A complete empty inventory still establishes scope. Missing, altered,
+or fulfill the acquisition instruction for displacement. A complete empty inventory still establishes scope. Missing, altered,
 unsolicited or future-position inventories are rejected atomically. Content requests can be
 made separately before or after inventory acquisition; each actual delivery retains its time.
 

@@ -57,7 +57,8 @@ The returned `inventory` contains entity, roles, coverage, retained-state positi
 exact list of association addresses/roles. It includes **all retained associations in scope,
 including displaced ones**. It reports neither current standing nor substantive summaries,
 reasons, definitions, names or member content. Entries do not create exposure to the producing
-investigations, and do not authorize reuse/displacement of listed content. Content acquisition
+investigations or establish understanding of listed content. References can be reused if structurally
+valid; doing so does not fabricate content exposure or certify instruction compliance. Content acquisition
 is a separate explicit delivery. This is a small complete-list fixture; general pagination,
 ranked search and current-only inventories are not specified here.
 
@@ -209,7 +210,7 @@ runs the revised baseline, explicit inventory and cumulative branches in both pa
 It checks direct/inherited causes, exact history/standing, empty/filtered/unrelated inventories,
 separate acquisition timing, refresh, fresh inherited-cause disclosure, producer exemption,
 and preserved exact-displacement behavior. It rejects **26 malformed inventory, disclosure or
-ineligible-reuse cases**, plus four historical broad-policy disclosure negatives.
+unresolved-reference cases**, plus four historical broad-policy disclosure negatives.
 
 The existing 72-case displacement regression, guidance, composition/selector and diagram
 checks remain applicable. These validate authored mechanics, not live investigator quality,

@@ -204,9 +204,19 @@ complete designated content, qualifications and required support. For the first 
 mechanical target-support completeness enforcement is deferred: PostCode validates structural
 rules and accurate qualified deliveries, not whether the investigator understood enough to justify
 a change. Deliberately incomplete acquisitions in the probe are structurally accepted without
-fabricating exposure or certifying instruction compliance. The separate fixture checks for foreign
-content reuse and prior query meaning remain. See the
-[working agreement](structured-architectural-accounts-proposal.md#displacement-acquisition-guidance).
+fabricating exposure or certifying instruction compliance. The same boundary now applies to reuse
+and earlier-query redesignation: valid references preserve original provenance and qualifications,
+while adequate understanding is an investigator responsibility, not a prior-delivery gate.
+When query meaning is delivered its captured record must still be accurate. See the
+[working agreement](structured-architectural-accounts-proposal.md#validation-and-investigator-policy).
+
+More generally, mechanically enforce data integrity and operational contracts; put reasoning
+policies in investigator instructions and defer their mechanical enforcement pending need.
+No special reuse instruction is needed beyond understanding and qualifying the information used.
+Future policy checks could operate within the dialog, inviting acquisition, clarification or
+revision rather than only rejecting a finished submission. Final structural validity remains
+mandatory, and acknowledgement alone does not establish compliance. This is a design possibility,
+not a new checker or dialog implementation.
 
 <a id="catalogue-responsibilities"></a>
 ## Catalogue responsibilities and diagrams
@@ -274,7 +284,7 @@ The earlier broad 5/7 and 7/8 comparison remains reproducible. Both partitions a
 
 A qualified declaration reason supplied as context creates exact exposure to that declaration;
 later displacement can affect its recipient directly. Referenced members are not delivered
-by the reason; it does not fulfill the displacement acquisition instruction or establish member delivery for reuse. Fresh disclosures follow later
+by the reason; it does not fulfill the displacement acquisition instruction or establish prior member exposure. Fresh disclosures follow later
 displacement of the supplied declaration too, without implying reinstatement of its predecessor.
 
 Removing implicit entity-wide exposure and unsolicited addition reasons is a structural

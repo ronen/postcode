@@ -141,12 +141,12 @@ It must not mutate that captured answer or redirect an exact item/association re
 The historical fact that Q produced its contributions remains fixed for the supported
 lifetime; this is not a promise of indefinite cross-Session storage.
 
-Redesignation is optional, for a result whose declared question and scope the investigator
-has actually received. It requires that invocation's operation, subjects, parameters, any
-selected option, and declared meaning—not merely its old answer. The fixture captures this
-in `queryMeanings` alongside result projections and checks exact delivery before any new
-declaration targets an earlier query result. This retained request meaning is not human
-prose input or a new global operation.
+Redesignation is optional. Its operation instructions tell the investigator to understand the
+earlier invocation's question and scope, including operation, subjects, parameters and selected
+option—not merely its old answer. The fixture captures that context in `queryMeanings` alongside
+result projections. When delivered, it must be recorded accurately; prior delivery is not an
+acceptance prerequisite. This retained request meaning is not human prose input or a new global
+operation. Structural acceptance does not certify that the new designation answers that question.
 
 Superseding an architectural association does not oblige the investigator to find and
 redesignate every containing result. Other designations retain exact membership and expose
@@ -208,9 +208,27 @@ Observe instruction-following in the end-to-end investigation before deciding wh
 gate is needed. This changes the proposed replacement for the governing correction rule and needs
 explicit adoption before product implementation; qualification/evidence/provenance obligations remain.
 
-The fixture still separately checks actual delivery of foreign content used in a new association
-and the exact question/scope when redesignating an earlier query result. Those are not a restored
-requirement to deliver every member of the displaced association. No product rule is changed here.
+<a id="validation-and-investigator-policy"></a>
+**General first-capability policy:** PostCode mechanically validates data integrity and operational
+contracts: schemas, required fields, reference resolution and types, ownership, acyclicity, valid
+operation targets, atomicity and faithful history/delivery/exposure records. It checks that evidence,
+qualifications and grounds are represented where required, not that they substantively establish
+a claim. Valid data is not certification of a valid interpretation.
+
+Reasoning and investigation policies belong in investigator instructions. Mechanical checking of
+those policies is deferred until demonstrated need. In particular, reuse has no separate prior-
+exposure gate or special new instruction beyond understanding and qualifying information used;
+references must resolve and preserve source provenance/qualification without inventing prior exposure.
+Redesignation instructions require understanding the earlier question, but the checker does not
+require its prior acquisition. The fixture now exercises both boundaries as well as displacement.
+
+If policy checks are introduced later, they may participate in the dialog: identify an apparent
+omission, remind the investigator of the policy, and allow further acquisition, clarification or
+revision before a final submission. Acknowledging a reminder alone does not prove a policy was
+satisfied, and dialog recovery cannot make malformed final data acceptable. No semantic checker,
+reminder protocol or new application interaction is implemented in this capability. Existing
+structural errors could likewise be made recoverable in the dialog without weakening final validity.
+This is a proposed design policy, not a revision to adopted governing documents or product behavior.
 
 Fresh delivery discloses applicable declarations with reason, ownership and qualifications.
 A substantively supplied declaration is itself an exact exposure, so its later displacement can
@@ -627,7 +645,7 @@ The planning package would need explicit treatment of:
 | --- | --- |
 | Entity and result identity | Common reference mechanism; settle invocation/evaluation/reuse guarantees and first migration depth. No semantic deduplication. |
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
-| Support acquisition | Complete target-support acquisition is an investigator instruction; mechanical completeness enforcement is deferred. Structural validity and accurate qualified deliveries remain enforced. Set bounded acquisition/missing-support behavior; scoped current-description acquisition includes competing undisplaced associations and exact-reference acquisition remains narrower. |
+| Support acquisition | Reasoning policies are investigator instructions; their mechanical enforcement is deferred. Data integrity and faithful qualified deliveries remain enforced. Set bounded acquisition/missing-support behavior; scoped current-description acquisition includes competing undisplaced associations and exact-reference acquisition remains narrower. |
 | Reconsideration | Distinguish actual association and inventory exposure; additions trigger matching prior inventories, not every entity use or fixed result membership. Refined probe removes the earlier broad marks. Record both inventory and scope-selected content acquisition; exact delivered declaration reasons are exposure too. Set first-delivery coverage explicitly; richer selectors remain open. Investigator-directed propagation, suppression, reassessment/clearance and scheduling are deferred. |
 | Entity merge/split | Qualified correspondence and preserved old IDs; supersession/reassignment effects remain a design probe, not delivered automatically by association operations. |
 | First capability | Choose delivered relationship kinds, contextual selection depth, mechanical compatibility and which composition/diagram probes become implementation acceptance tests. |

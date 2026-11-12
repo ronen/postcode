@@ -1833,3 +1833,23 @@ The acquisition probe now accepts reason-only and no-target-content withdrawal b
 deliberate instruction-boundary test, without implying sound investigation or invented exposure.
 It still rejects unknown targets, missing grounds and malformed delivery. End-to-end investigation
 should examine instruction-following before deciding whether to add a mechanical completeness gate.
+
+## 2026-11-12 — General validation boundary and future dialog recovery
+
+The human proposes the general rule: mechanically check data integrity as good programming
+practice; encode semantic/investigation policies in agent instructions and defer their mechanical
+enforcement until needed. This extends the preceding displacement decision to prior acquisition
+for content reuse and earlier-query redesignation. Reuse needs no special instruction beyond
+understanding and qualifying information used. Redesignation instructions must explain the need
+to understand the earlier question and scope. References still resolve and preserve original
+provenance/qualification; accurate delivery records do not invent exposure to referenced content.
+
+The human also notes that future policy checks could work inside the dialog: call attention to
+an apparent omission, remind the investigator, and allow it to acquire information, clarify or
+revise. This need not be a final rejection. A mere acknowledgement is not proof of compliance;
+malformed final data remains invalid. No semantic checker or reminder protocol is implemented.
+
+The authored model removes the reuse and prior-query-acquisition gates. Positive boundary probes
+accept no-context reuse/redesignation and inventory-only reuse without fabricating deliveries.
+Captured question context, if selected, must remain accurate; unresolved references still fail.
+The adopted governing material and product code remain unchanged.

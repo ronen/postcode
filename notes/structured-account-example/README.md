@@ -69,8 +69,9 @@ historical result. Investigators are instructed to acquire the exact target and 
 members with qualifications before displacement; an option excerpt alone does not fulfill that
 instruction. Mechanical target-support completeness enforcement is deferred; structural validity
 and accurate delivery records remain mandatory.
-Redesignation also requires Q1's exact question/scope and parameters in context; it is
-optional, not a duty to update every containing result. The follow-up option stays on ADMISSION-1 and is not copied to ADMISSION-2 because this
+Redesignation instructions require understanding Q1's exact question/scope and parameters;
+prior delivery is not mechanically required. Redesignation is optional, not a duty to update
+every containing result. The follow-up option stays on ADMISSION-1 and is not copied to ADMISSION-2 because this
 submission already answers it.
 
 ## Exposure boundary and deferred extensions
@@ -161,17 +162,21 @@ python3 notes/structured-account-example/composition/check-and-render.py
 python3 notes/structured-account-example/render-overviews.py
 ```
 
-The first checks both partitions, qualified delivery, structural eligibility and reuse checks, immutable original
+The first checks both partitions, qualified delivery, structural validity and reference integrity, immutable original
 answers, exact association standing, result-membership versus exposure paths, atomic
 rejection and matching architectural state/interaction content. It rejects 72 malformed
 cases across the partitions. Use `--write` only to deliberately regenerate lifecycle
-reports after changing authored input or the bounded simulator.
+reports after changing authored input or the bounded simulator. A separate no-context branch
+checks that reuse and earlier-query redesignation are structurally accepted without inventing
+exposure or certifying adequate understanding.
 
 The addition checker compares the earlier broad mode with association/inventory exposure,
 including independent/cumulative runs, empty/filtered inventories, inherited concerns and
 separate acquisition timing in both partitions. It rejects 26 malformed inventory, disclosure
-or ineligible-reuse cases plus four historical broad-policy disclosure negatives. Its `--write`
-regenerates both comparison reports. Modes are host-selected experiments, not investigator
+or unresolved-reference cases plus four historical broad-policy disclosure negatives. Its `--write`
+regenerates both comparison reports. An inventory-only reuse branch is structurally accepted
+without treating its referenced content as previously delivered; unknown references still fail.
+Modes are host-selected experiments, not investigator
 options to suppress warnings. The revised baseline is 0/7 evaluations and 0/8 designations;
 explicit inventory branches reach 2/9 and 2/10, one direct and one inherited. These are boundary
 controls, not warning-rate estimates. The acquisition checker adds scope-selected descriptions
