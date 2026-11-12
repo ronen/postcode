@@ -57,6 +57,11 @@ in the earlier model. Its correction, delivery and reconsideration consequences 
 need resolution. The detailed synthesis and executable fixtures below have not yet
 been reconciled with this direction; their earlier correction rules are not evidence
 that the new mechanism is already specified or adopted.
+The subsequent [entity-context and query-result discussion](structured-architectural-accounts.md#entity-context-and-result-exposure)
+proposes entities and their associations as the context-facing accounts, with query-result
+entities and distinct exposure/result-composition paths into reconsideration. Q is a
+particular query invocation. These changes also remain to be reconciled with the
+previous synthesis and fixtures.
 
 ## Current exploratory checkpoint
 

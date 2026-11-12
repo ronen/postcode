@@ -1436,3 +1436,63 @@ what must be delivered before displacement, and how competing/challenged declara
 are handled. Reconcile guidance, composition, historical access and verification with
 this proposed mechanism. No governing, product, or fixture changes are made in this
 recording pass.
+
+
+<a id="entity-context-and-result-exposure"></a>
+## 2026-11-12 — Entity context, query results and reconsideration
+
+The human proposes organizing architectural accounts around entities and their
+associations. Investigrams remain immutable bundles of investigation contributions,
+with provenance and qualification, but need not be the unit normally supplied as
+context. Supplying an entity means delivering a qualified selection of associated
+information, not just an ID or a reconciled canonical definition. Preserve competing
+accounts and the exact content/qualifications actually delivered, including their
+original owners. Entity references alone are not substantive delivery.
+
+A query-result entity could unify the earlier special result target with entity-related
+associations. The human agrees that Q denotes a particular query invocation, with its
+captured subjects, parameters and context, rather than a continuing inquiry or every
+invocation of similarly worded queries. Q's result is distinct from Q. Later association
+declarations may concern that result entity without rewriting what Q originally
+returned or an earlier captured answer. Exact result designation and declaration syntax
+remain to be reconciled with the preceding proposal; this does not adopt an Entity
+schema for every existing product result.
+
+For a user selecting something within Q's result, the supplied portion records exposure
+to Q's result entity. The delivery record preserves exact selected content, qualification
+and supplied context, not a later expansion of the entity's associations. The passage
+need not itself become an entity. Human selection/browsing alone creates no investigator
+exposure. Other information supplied during the dialogue remains attributable separately.
+
+**Reconsideration principle clarified.** A fuller description can reveal edge cases,
+failure modes or additional behavior relevant to earlier analyses, even if the earlier
+description was factually correct. Supersession/withdrawal can therefore create a
+reconsideration cause without requiring a finding of factual error. Do not substitute
+proven reliance for conservative exposure. Precisely which exposure is relevant remains
+to be specified. Whether an addition should also trigger reconsideration is newly exposed
+by this model and remains open; no blanket addition trigger was agreed.
+
+**Two paths into result reconsideration.** The human agrees that needs-reconsideration
+propagation should reach query results:
+
+1. Exposure: Q receives information about S and produces result R. A relevant later
+   change concerning S can cause R to need reconsideration; investigations receiving
+   R can pass that cause to their own results.
+2. Result composition: Q may itself introduce S and designate newly created information
+   as part of R. There was no prior exposure to S. Changes affecting information
+   designated as part of R must be traceable through that designation, rather than by
+   inventing an incoming exposure record.
+
+These paths are distinct inputs to cause tracking. This proposed result-composition
+path is not the existing fixed child-investigram tree, nor does every reference or
+shared entity automatically establish propagation. Specify which content/association
+changes affect a result, especially where one item has several associations and only
+one is displaced. Downstream propagation can then use actual result exposure. Preserve
+cause identities, historical delivery and exact answers; the warning does not assert
+that a result is false or automatically clear earlier warnings.
+
+This direction remains conceptual. Entity/result exposure granularity, complete-delivery
+requirements, result designation, applicability of earlier exemptions, competing and
+challenged declarations, and migration from investigram exposure need explicit design
+and a worked example. Governing documents, product implementation and executable
+fixtures remain on the earlier model; passing those checks does not validate this one.
