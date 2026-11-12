@@ -124,6 +124,19 @@ information, associations and guidance can carry qualified interpretation.
 
 ## Result designation and immutable history
 
+<a id="recognized-request-reuse"></a>
+A repeated user request is not automatically a new investigation invocation. When PostCode
+recognizes it as the same request and reuses Q1's retained investigation, it returns the existing
+RESULT-Q1 identity. It does not create Q2, another result entity/designation, duplicate architectural
+entities or new interpretive claims. Access/reporting may be recorded separately; exact redisplay
+is likewise access, not a new investigation. This preserves the existing reuse behavior.
+
+A new Q represents a new investigation undertaken—for example because effective inputs changed,
+or a supported operation explicitly requests new investigation. Same wording alone does not
+establish equivalent inputs. This agreement does not introduce a rerun operation, specify a new
+cache key, or change mechanical qualified-answer identity. Existing exact-history and fresh-selection
+rules still determine what is returned; reuse does not silently mutate the captured answer.
+
 The first accepted contribution for Q adds a result association targeting RESULT-Q.
 The fixture represents its members as exact item references and/or declaration references.
 Referencing declarations lets a result explicitly include identifying/descriptive uses
@@ -164,8 +177,10 @@ membership are rejected.
 result entity and one initial result designation. The submitted bundle's content must be
 reachable through an association. This is a coverage check, not proof of intelligibility,
 sufficiency or valid reasoning. Result designation shape, mechanical-query coverage,
-failed/partial invocations, repeated requests and cached evaluation reuse still need
-application-level decisions; do not claim every product query has already migrated.
+failed/partial invocations and first migration depth still need application-level decisions.
+Recognized reuse returns the existing query-result identity as specified above; the authored
+simulator exercises new invocations, not the product reuse coordinator. Do not claim every
+product query has already migrated.
 
 ## Entity context and actual delivery
 
@@ -666,7 +681,7 @@ The planning package would need explicit treatment of:
 
 | Decision | Current direction / remaining choice |
 | --- | --- |
-| Entity and result identity | Common reference mechanism; settle invocation/evaluation/reuse guarantees and first migration depth. No semantic deduplication. |
+| Entity and result identity | Recognized reuse returns the existing invocation/result identity; no duplicate result for repeated access. Set first migration depth and failed/partial-result treatment. No semantic deduplication. |
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
 | Support acquisition | Reasoning policies are investigator instructions; their mechanical enforcement is deferred. Data integrity and faithful qualified deliveries remain enforced. Set bounded acquisition/missing-support behavior; scoped current-description acquisition includes competing undisplaced associations and exact-reference acquisition remains narrower. |
 | Reconsideration | Distinguish actual association and inventory exposure; additions trigger matching prior inventories, not every entity use or fixed result membership. Refined probe removes the earlier broad marks. Record both inventory and scope-selected content acquisition; exact delivered declaration reasons are exposure too. Set first-delivery coverage explicitly; richer selectors remain open. Investigator-directed propagation, suppression, reassessment/clearance and scheduling are deferred. |

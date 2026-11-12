@@ -14,7 +14,11 @@ Entities organize qualified information. Queries request information. Investigat
 contribute content and association declarations; investigrams preserve those contributions
 and their provenance. A query's result has an entity identity through which original and
 later designated answers can be organized. It is not the query, and Q identifies a particular
-invocation, not a recurring question.
+invocation, not a recurring question. A repeated user request recognized as Q1 reuses Q1's existing
+result identity; it does not create Q2 or another result designation. Exact redisplay is also
+access rather than investigation. A new Q requires new investigation, not just another user action.
+Effective-input equality still matters; matching wording alone does not establish reuse. See the
+[working agreement](structured-architectural-accounts-proposal.md#recognized-request-reuse).
 
 An investigram is never globally superseded in this proposed model. Later declarations can
 displace particular associations, including the designation of an earlier query's result.
@@ -76,7 +80,8 @@ Invocation Q and its allocated result entity RESULT-Q
 ```
 
 Acceptance resolves local IDs, validates all declarations and references, and retains
-atomically. The result entity is allocated with the invocation; architectural entities
+atomically. A new successful investigation receives a result entity; recognized reuse allocates
+none. Architectural entities
 are introduced through qualified identifying content. Existing mechanical identities
 retain provider guarantees. Own-result/earlier-result targets use the same entity mechanism.
 The `result` role applies if and only if the target is a query-result entity.

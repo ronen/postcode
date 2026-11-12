@@ -155,7 +155,10 @@ superseded flag and no implicit item correspondence based on a repeated key.
 
 ## Query results and exact history
 
-Q identifies a particular invocation; RESULT-Q identifies its result. Q1's original
+Q identifies a particular investigation invocation; RESULT-Q identifies its result. A repeated
+user request recognized as Q1 reuses RESULT-Q1, with no new invocation, result designation or
+architectural entity allocation. The authored simulator exercises new invocations; it does not
+implement the product reuse coordinator. Exact redisplay is access. Q1's original
 result association designates original qualified items/declarations. Q2 can target
 RESULT-Q1 and supersede that association with an updated designation while separately
 creating RESULT-Q2. Unchanged definitions can be referenced directly. This does not

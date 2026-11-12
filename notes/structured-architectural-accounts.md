@@ -1873,3 +1873,18 @@ new automatic C cause. Existing standing lookup and fresh disclosure expose C's 
 captured inputs and answers remain unchanged. New recipient delivery records B and C as known
 context. No model behavior or retained status field is added. A forward pointer clarifies the
 historical entry whose remaining acquisition gates were removed in the next discussion.
+
+## 2026-11-12 — Recognized request reuse preserves result identity
+
+The human corrects a conflation between a repeated user request and a new investigation
+invocation. Recognizing the same request and reusing Q1 returns its existing result entity;
+there is no Q2 or duplicate result designation. Architectural identities and claims are not
+reintroduced. Access/reporting may be separate, and exact redisplay is access rather than new
+investigation. A new Q arises only when new investigation is undertaken; effective-input changes
+or an explicitly supported new-investigation operation can distinguish it from reuse. Matching
+wording alone is not input equivalence. No new rerun operation or cache-key design is introduced.
+
+The earlier suggestion of a separate result entity for each repeated user request is withdrawn.
+The proposal preserves existing reuse behavior while leaving failed/partial-result treatment
+and the depth of mechanical-query migration to be bounded. The simulator still models new
+accepted invocations; this notes pass does not implement product request coordination.
