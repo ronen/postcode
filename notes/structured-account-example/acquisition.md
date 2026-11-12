@@ -107,19 +107,24 @@ is not warned retrospectively; a pre-withdrawal acquisition still is. The origin
 fact remains retained, and no original association is automatically reinstated. Attempting to
 withdraw ADMISSION-2 based only on its disclosed reason fails: its member content was not acquired.
 
-## Coverage dependency is still a question
+## Deferred coverage remedies
 
 ADMISSION-1 already has an explicit architectural coverage claim. A newly added waiting case
 could challenge that claim even if no retained-information inventory had been acquired. That
 case has not been fixed, hidden or assigned an automatic dependency by this pass.
 
-The unresolved choice is whether such claims should declare a standing change scope (for
-example relevant future admission information), or whether their impact should be identified
-by qualified later analysis, including the deferred investigator-directed propagation route.
-A broad P/describes subscription would be conservative but includes unrelated policy descriptions;
-a precise admission-behavior scope needs further semantics. Coverage of program behavior and
-completeness of a retained-information selection must not be conflated. Discuss this choice
-before adding any field or propagation rule to the model.
+Declared dependencies and investigator-directed propagation are both deferred beyond the first
+capability. The former could anticipate relevant changes; the latter could identify their impact
+on specific earlier results when new findings emerge. Both would supplement exposure tracking,
+and they may complement each other. Observe the frequency, circumstances and consequences of
+coverage gaps before choosing or designing either mechanism.
+
+A broad P/describes subscription includes unrelated policy descriptions; a precise admission
+scope needs further semantics. Coverage of program behavior and completeness of a retained-
+information selection must not be conflated. Keep the added-waiting-case example as a deferred
+test: without relevant scope exposure or explicit displacement, no automatic cause is guaranteed.
+That accepted limit does not establish that the earlier claim is unaffected. No dependency field
+or new propagation rule is added.
 
 ## Verification
 

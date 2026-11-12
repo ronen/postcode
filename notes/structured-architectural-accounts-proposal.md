@@ -375,7 +375,7 @@ remain available; the fixture does not select a winner by timestamp. Withdrawal 
 are not themselves associations to supersede in this bounded prototype. Reinstatement and
 challenging the standing of declarations remain design questions, not silent undo.
 
-### Architectural coverage dependency — unresolved
+### Architectural coverage dependencies — deferred
 
 ADMISSION-1's admission item already claims coverage of runtime admission cases. New waiting
 information could challenge that claim even if added without superseding it and without any
@@ -383,12 +383,18 @@ prior inventory/scope acquisition. The current repairs do not assign that claim 
 dependency on future P/describes associations. Completeness of a selection of retained
 information is distinct from completeness of an architectural account of program behavior.
 
-Decide separately whether a coverage claim should declare a standing change scope, with what
-precision and effect on result membership, or whether qualified later interpretation should
-identify that impact. Broad P/describes scope admits unrelated information; narrower admission
-semantics require design. Investigator-directed propagation remains deferred, but its relationship
-to this case deserves discussion. No new coverage field or automatic standing dependency has
-been adopted by the scope-selection/declaration-exposure fixes.
+Defer declared dependencies and investigator-directed propagation beyond the first capability.
+Declared dependencies could anticipate a relevant change scope; investigator-directed propagation
+could identify affected earlier results when a new finding emerges. Both would supplement actual
+exposure tracking, not replace it or fabricate deliveries. They may be complementary. Observe
+how often coverage gaps arise, in which circumstances and with what consequences before choosing
+between them or designing both. Broad P/describes scope admits unrelated information; narrower
+admission semantics and qualified impact assessment each need further design.
+
+Keep the added-waiting-case example as a deferred coverage test. Without prior relevant inventory/
+selection exposure or explicit displacement, no automatic reconsideration cause is guaranteed.
+This is an accepted limit, not a claim that the earlier explanation is unaffected. No dependency
+metadata, standing subscription or investigator-directed concern contract is introduced here.
 
 ### Deferred investigator-directed propagation, reassessment and scheduling
 
@@ -571,13 +577,12 @@ The planning package would need explicit treatment of:
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
 | Support and eligibility | Fixture delivers full targeted declarations/members with qualifications; settle bounded acquisition, competing definitions and missing support. |
 | Reconsideration | Distinguish actual association and inventory exposure; additions trigger matching prior inventories, not every entity use or fixed result membership. Refined probe removes the earlier broad marks. Record both inventory and scope-selected content acquisition; exact delivered declaration reasons are exposure too. Set first-delivery coverage explicitly; richer selectors remain open. Investigator-directed propagation, suppression, reassessment/clearance and scheduling are deferred. |
-| Architectural coverage dependencies | ADMISSION-1 already claims admission coverage. Decide whether such claims need a standing future-information dependency; runtime-domain completeness is not retained-inventory completeness. No automatic rule added. |
 | Declaration standing | Competing declarations are retained; challenge/reinstatement and result selection policy remain open. Do not infer revocation from a newer bundle. |
 | Entity merge/split | Qualified correspondence and preserved old IDs; supersession/reassignment effects remain a design probe, not delivered automatically by association operations. |
 | First capability | Choose delivered relationship kinds, contextual selection depth, mechanical compatibility and which composition/diagram probes become implementation acceptance tests. |
 
-Investigator-directed propagation, targeted suppression, reassessment/clearance and automatic
-scheduling are deferred beyond the first capability unless a later concrete need changes that
+Declared dependencies, investigator-directed propagation, targeted suppression, reassessment/clearance
+and automatic scheduling are deferred beyond the first capability unless a later concrete need changes that
 scope. Persistence, global discovery and broader UI remain outside this work. The plan must
 carry these boundaries explicitly, while resolving the actual first-delivery contracts.
 

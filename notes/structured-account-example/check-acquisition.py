@@ -175,7 +175,7 @@ def check(directory, write=False):
             'earlierAcquisitionCauses': notices.reconsideration()['evaluations']['Q-notice-finishes-later']},
         'limitations': ['Undisplaced means no accepted displacement at capture time, not authoritative or reconciled; all competing undisplaced descriptions are selected.',
                        'The original 0/7 and 0/8 baseline is a by-reference boundary control. Discovery branch counts are authored examples, not measured warning frequency.',
-                       'Architectural coverage of program behavior is not assigned an inventory dependency by this pass. That remains a design discussion.',
+                       'Architectural coverage of program behavior is not assigned an inventory dependency. Declared dependencies and investigator-directed propagation are deferred pending observed coverage gaps.',
                        'A supplied reason exposes its exact declaration, not every referenced member or full source bundle. No eligibility or reinstatement is inferred.']}
     path = directory / 'acquisition-report.json'
     if write: path.write_text(json.dumps(report, indent=2) + '\n')

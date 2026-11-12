@@ -269,10 +269,14 @@ past exposure. No reverse-lookup API or concern declaration is implemented. See 
 
 Before drafting: settle identity/migration depth, result designation shape, support selection,
 first-delivery inventory coverage and delivery bounds, declaration challenge/reinstatement,
-and first-delivery scope. Architectural coverage dependencies are separately unresolved:
+and first-delivery scope. Declared dependencies and investigator-directed propagation are deferred:
+observe coverage gaps before choosing anticipatory dependency declarations, qualified impact
+assessment when new findings emerge, or both. Either would supplement actual exposure tracking.
 ADMISSION-1 already claims runtime admission coverage, which is not the same as completeness
-of a retained-information selection. No standing coverage subscription is introduced by this
-pass. Carry the assessment/propagation deferrals explicitly. Entity merge/split remains a separate
+of a retained-information selection. An added waiting case may challenge that claim without an
+automatic cause when no relevant scope exposure or displacement exists. Preserve this accepted
+limit and deferred test; introduce no standing coverage subscription. Carry these deferrals explicitly.
+Entity merge/split remains a separate
 qualified identity probe; association displacement does not automatically merge IDs or
 redistribute their histories.
 

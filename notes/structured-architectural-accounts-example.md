@@ -289,4 +289,7 @@ A Q2 that actually discovers an inventory and retrieves content produces 3/7 eva
 4/8 designation causes for the tested additions. Qualified declaration reasons also create
 exact exposure to their own declaration. The zero-warning by-reference control is not a
 prediction of typical investigation behavior. ADMISSION-1's existing architectural coverage
-claim raises a separate standing-dependency question, still unresolved.
+claim illustrates an accepted limit: a newly added waiting case may matter without an automatic
+cause when there is no relevant scope exposure or displacement. Declared dependencies and
+investigator-directed propagation are deferred pending observed frequency and circumstances of
+such gaps; they could supplement exposure tracking, separately or together.

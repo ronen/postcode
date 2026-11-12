@@ -318,8 +318,10 @@ information cannot matter to an earlier interpretation.
 The [acquisition probes](acquisition.md) exercise scoped initial descriptions, discovery before
 retrieval and exact declaration-reason exposure. They do not introduce architectural coverage
 dependencies. Existing `admission-cases/0.coverage` concerns program cases, not an assertion
-that the retained association inventory was complete. Whether that content needs a standing
-change scope is an explicit unresolved question, not a hidden consequence of the inventory rule.
+that the retained association inventory was complete. Declared dependencies and investigator-directed
+propagation are deferred pending observed coverage gaps. Either would supplement exposure tracking;
+no standing change scope follows implicitly from a coverage claim. A newly added waiting case may
+challenge ADMISSION-1 without an automatic cause if no relevant scope exposure or displacement exists.
 
 ### Deferred investigator-directed concerns
 

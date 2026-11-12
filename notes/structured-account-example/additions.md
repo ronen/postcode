@@ -137,8 +137,12 @@ its marks do not guarantee that every materially affected explanation has been f
 No automatic live “all information about S” designation is modeled. A future completeness
 claim or live collection needs explicit treatment, not an implication from a fixed membership
 list. ADMISSION-1 already contains an architectural coverage claim; whether to give such claims
-a standing future-information dependency is now a separate open design question. Runtime-domain
-coverage is not the same as completeness of a scoped retained-information selection. The human accepts imperfect coverage. Investigator-directed propagation
+a standing future-information dependency is deferred alongside investigator-directed propagation.
+Observe the frequency and circumstances of missed impacts before choosing anticipatory dependencies,
+later qualified impact assessment, or both; either supplements actual exposure tracking.
+Runtime-domain coverage is not the same as completeness of a scoped retained-information selection.
+The human accepts imperfect coverage, including a newly added waiting case that may challenge
+ADMISSION-1 without a cause when there was no relevant scope exposure or explicit displacement. Investigator-directed propagation
 could later complement structural causes: find candidate prior results through the exposure
 index, inspect their question/content/support, then assert a qualified concern for an exact
 result and new finding. A candidate is not an impact judgment; a concern would not fabricate

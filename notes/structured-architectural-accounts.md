@@ -1770,3 +1770,19 @@ challenge it even without inventory exposure, but whether coverage claims requir
 future-information dependency remains unresolved. Coverage of runtime behavior is distinct
 from completeness of retained-information selection. This pass adds no coverage dependency,
 new concern operation or suppression/reassessment feature.
+
+## 2026-11-12 — Defer remedies for unobserved coverage dependencies
+
+The human agrees to defer declared dependencies, and notes that the already deferred
+investigator-directed propagation could address the same gap. Observe how often and in which
+circumstances missed impacts arise before choosing either mechanism or combining them. Declared
+dependencies would anticipate relevant changes; directed propagation would assess particular
+earlier results when new findings emerge. Both supplement actual exposure rather than replace
+it, and neither fabricates historical delivery. No metadata field or propagation operation is added.
+
+Preserve the concrete deferred test: ADMISSION-1 claims coverage of admission behavior; a newly
+added waiting case could undermine that claim without relevant prior inventory/selection exposure
+or explicit displacement. The current mechanism does not guarantee a warning in that case. This
+accepted coverage limit does not mean the earlier claim is unaffected. Runtime-domain completeness
+and completeness of a retained-information selection remain distinct. The next discussion can
+address the remaining first-capability choices rather than design these deferred remedies now.
