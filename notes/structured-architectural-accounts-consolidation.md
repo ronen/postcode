@@ -230,7 +230,11 @@ scope, an experimental completeness choice that also needs review.
 
 Targeted suppression, qualified reassessment and automatic scheduling remain unimplemented.
 The evidence supports revisiting whether first delivery needs bounded cause-specific assessment,
-or can explicitly accept coarse marks. It does not establish that every mark is unhelpful.
+or can explicitly accept coarse marks. Manual inspection subsequently found no clear required
+substantive changes for these two additions: most recipients merely retain earlier content,
+and the substantive trial result already includes both distinctions. The probe demonstrates
+redundant marking, not the typical impact of genuinely new findings; it cannot settle first-
+delivery reassessment scope alone.
 Any assessment must preserve independent paths/causes; an unchanged target does not imply
 unaffected consumers. Automatic scheduling is a further policy over that mechanism.
 

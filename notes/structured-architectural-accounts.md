@@ -1671,3 +1671,19 @@ are experimental choices requiring review, not automatically adopted completenes
 The recommendation for discussion is to revisit deferring all bounded cause-specific
 reassessment, or explicitly accept coarse new-information marks. No suppression, clearance,
 reassessment or scheduling was implemented, and no new first-delivery decision was made.
+
+## 2026-11-12 — Likely substantive impact of the addition warnings
+
+At the human's request, inspected all five flagged evaluations' outputs and all seven
+flagged designations, for each new addition separately. The [manual assessment](structured-account-example/additions.md#manual-assessment-of-likely-changes)
+finds no clear required substantive change. Q2's model already distinguishes category/instance
+and explicitly contains the recovery caveat; the other four evaluations mainly retain or
+re-associate admission/recovery content. The original and newer Q1 admission/inspection
+designations could optionally be enriched, without a required revision from either addition.
+Their existing waiting-omission issue remains a separate cause.
+
+The counts overlap, rather than measuring twelve independent outcomes. This narrows the
+earlier inference: the probe usefully shows redundancy costs, but does not establish how
+often genuinely new findings change previous answers or that first delivery needs clearance.
+An earlier explicit conclusion challenged by genuinely new information would be a stronger
+next comparison. No qualified reassessment was executed and no stored cause was cleared.

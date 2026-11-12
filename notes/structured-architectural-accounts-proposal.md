@@ -364,7 +364,12 @@ probe now shows broad propagation even for a complementary clarification, includ
 notice provenance and information some recipients already knew. Revisit whether bounded
 cause-specific reassessment is necessary for first delivery, alongside the scope/disclosure
 choices driving that breadth. Alternatively, explicitly accept a coarse new-information
-signal initially. The probe does not decide between these options or authorize implementation.
+signal initially. Subsequent manual inspection found no clear required substantive change for
+either addition in the five flagged evaluations' outputs or seven designations: most consumers
+only retain admission content, and Q2 already states both distinctions. This redundancy probe
+therefore does not establish that reassessment is necessary in first delivery. A comparison
+with genuinely new information challenging an earlier conclusion would strengthen that choice.
+The probe does not decide between these options or authorize implementation.
 
 ## Architectural content and diagrams
 

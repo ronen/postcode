@@ -90,6 +90,50 @@ causes. Four deliberately incomplete disclosures are rejected. A recipient that 
 context before an addition and refreshed after it still has the earlier cause. Earlier
 investigrams, captured answers, deliveries and association standing are unchanged.
 
+## Manual assessment of likely changes
+
+On 2026-11-12 the human asked whether the flagged outputs would actually be likely to
+change on reconsideration. This is a reading of the exact authored questions, content and
+memberships, not an executed qualified reassessment or permission to clear stored causes.
+Assess each new addition alone; the earlier missing-waiting correction remains independent.
+“Change” here means a warranted change to assertions, qualifications or designated membership,
+not arbitrary wording differences from rerunning an investigator.
+
+The five flagged evaluations are Q-observer, Q-excerpt, Q2, Q-updated and Q-role-only.
+The seven designations below overlap those outputs: these are not twelve independent findings.
+Q2 owns both its own result and the newer designation of Q1's result. Q1's original designation
+is also marked through membership, although Q1's evaluation is not marked by these S additions.
+The assessment is the same in both partitions; the table uses mixed-variant addresses.
+
+| Flagged designation / producing evaluation | Category clarification | Recovery caveat |
+| --- | --- | --- |
+| ADMISSION-1::result / Q1 (membership only) | Probably unchanged: Half-open already has `classification: state-category`; the orientation distinguishes state from caller progress. | No necessary change to the admission/inspection answer. A caveat could enrich its explanation, but it does not establish an additional admission case or contradict its state identification. The already-known waiting omission has a separate cause. |
+| OBSERVER-1::result / Q-observer | Probably unchanged: retains the original admission item, makes no new behavior claim, and does not confuse category with instance. | Probably unchanged for this cause: retains admission information, with no claim that recovery success proves application success. Its use of the old admission item still needs attention for the separate waiting correction. |
+| EXCERPT-1::result / Q-excerpt | Probably unchanged for the same admission-specific reason; the incoming path is a notice, not a new category-dependent conclusion. | Probably unchanged for this cause; neither the association's purpose nor the admission item's assertion depends on outcome classification. The waiting correction still matters independently. |
+| TRIAL-1::result / Q2 | Probably unchanged: already distinguishes S's state category, R's instance role and the participating executions in descriptions and structured relations. | Probably unchanged: `recovery.outcomeQualification` explicitly states the same caveat; the interaction explicitly classifies unmatched errors as recovery success. |
+| TRIAL-1::updated-admission-result / Q2 | Probably unchanged: retains the original qualified identification and uses per-request instance roles in the new admission item. | No necessary change to this admission/inspection designation. Adding the caveat could be useful enrichment, but membership need not grow with every relevant addition. Waiting already explicitly promises neither execution nor success. |
+| UPDATED-1::result / Q-updated | Probably unchanged: re-associates ADMISSION-2's admission item; no new conflation. | Probably unchanged: retains the admission table, not a claim about the trial caller's successful outcome. |
+| ROLE-READER-1::result / Q-role-only | Probably unchanged: retains the recovery item, whose bearer R and state-category nodes are already distinct. | Probably unchanged: retains the exact recovery item that already contains the caveat. |
+
+Sources for this assessment are [initial content](first-result.json),
+[follow-up content](followup-result.json), the three consumer questions/outputs in
+[lifecycle-probes.json](lifecycle-probes.json), and the additional controls in
+[addition-probes.json](addition-probes.json). The original and newer Q1 designations are
+admission/inspection answers, not exhaustive collections of everything known about Half-open.
+Their optional enrichment is therefore distinct from a required revision.
+
+For either addition, this reading finds **no clear required substantive change in the five
+flagged evaluations' outputs or seven flagged designations**. That is not a demonstrated
+zero-impact guarantee for their downstream consumers. No causes have been cleared, and no
+statement is made about the unrelated baseline causes.
+
+This also limits the earlier policy inference. Four of the five evaluations are intentionally
+simple retain/re-associate probes. The substantive Q2 already contains both distinctions, and
+the later additions re-express them. These are useful redundancy/organization stress tests,
+but a weak sample for deciding how often genuinely new information warrants changed answers.
+A stronger comparison would include an earlier explicit conclusion whose assumption is
+actually challenged by later information, and trace that beside an unaffected conclusion.
+
 ## Assessment and recommendation for discussion
 
 The timing and attribution rules behave coherently. The precision cost is substantial even
@@ -97,10 +141,12 @@ in this short chain. Category clarification reaches behavioral outputs; a caveat
 recipients already knew reaches them again; qualified notices add another indirect route.
 The mechanism cannot distinguish useful review from redundant review by itself.
 
-This supports revisiting the deferral of **all** cause-specific reassessment before fixing
-first-delivery scope. It does not yet justify a generic investigator assertion that an
-addition is harmless, nor automatic scheduling or a notification system. The next decision
-should consider these together:
+The manual assessment above narrows the earlier recommendation: these redundant additions
+expose a real precision cost, but do not by themselves show that reassessment must be in first
+delivery. They also do not justify a generic investigator assertion that an addition is
+harmless, automatic scheduling, or a notification system. Before choosing scope, consider a
+case where genuinely new information challenges an earlier conclusion. The policy alternatives
+remain:
 
 - Accept these conservative marks initially as a coarse signal that related information
   has grown, with explicit acknowledgement that they do not prioritize meaningful changes.
