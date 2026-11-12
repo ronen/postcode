@@ -231,16 +231,17 @@ supersession depictions reuse those types, keeping exact prior selections availa
 No new source analysis has established complete data for this inventory.
 
 <a id="entity-supersession-probe"></a>
-## Identity and supersession remain separate
+## Identity findings use existing mechanisms
 
 If later investigation discovers duplicate entities or conflation, preserve the original IDs
 and content and express qualified correspondence. Association supersession does not automatically
 merge entities, reinterpret an old ID, distribute claims among successors, or establish
-transitive equivalence. Explicit entity supersession, warning scope, competing/challenged
-identity claims and selection-origin fields remain design work. Cross-Session identity is out
-of this first scope.
+transitive equivalence. Existing introductions, qualified content and association declarations
+are sufficient for the first capability. Special entity supersession, automatic aliasing/reassignment
+and identity-specific propagation are deferred. How a UI presents these histories is later work.
+Selection-origin fields remain separate unexercised work; cross-Session identity is outside this scope.
 
-| Identity probe | Qualified finding | Organizational limit |
+| Illustrative identity case | Qualified finding | Organizational limit |
 | --- | --- | --- |
 | Separate discoveries S1/S2 | Same-thing correspondence with stated basis and limits | Preserve both IDs; matching names alone does not join them. |
 | Proposed merge into S3 or one existing identity | Explicit successor proposal | Do not silently pool every old claim or erase original associations. |
@@ -248,8 +249,9 @@ of this first scope.
 
 A warning about use of a conflated entity may be needed even when the using investigation
 never received its initial description. That is neither automatic association displacement
-nor already covered by the current two propagation paths. Entity-use cause scope, challenge
-and clearance remain unimplemented. A reconciliation investigation could examine selected
+nor already covered by association exposure or designated membership. Identity-specific propagation,
+general declaration revocation and clearance remain deferred. The examples above explain uses of
+existing mechanisms; they do not establish an executed merge/split probe. A reconciliation investigation could examine selected
 retained claims and return compatible scopes, correspondence, synthesis or unresolved
 disagreement. It need not force agreement or introduce human pushback; the latter stays
 deferred. No reconciliation Lens is delivered by the fixtures.

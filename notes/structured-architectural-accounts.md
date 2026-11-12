@@ -1888,3 +1888,15 @@ The earlier suggestion of a separate result entity for each repeated user reques
 The proposal preserves existing reuse behavior while leaving failed/partial-result treatment
 and the depth of mechanical-query migration to be bounded. The simulator still models new
 accepted invocations; this notes pass does not implement product request coordination.
+
+## 2026-11-12 — Existing mechanisms suffice for identity merge/split findings
+
+The human agrees that existing mechanisms are sufficient: preserve independent IDs, express
+qualified correspondence, introduce distinct entities when an earlier one conflates things, and
+use ordinary association declarations for specific justified changes. No automatic aliasing,
+association pooling/reassignment, entity-level supersession or identity-specific propagation is
+needed in this capability. Original content, identities and histories remain available.
+
+The human notes that choosing how to present this information may be awkward, but UI design is
+not the current concern. Record that boundary without adding organizing mechanisms to anticipate
+it. The illustrative cases are not a new executable identity probe or an adopted governing change.

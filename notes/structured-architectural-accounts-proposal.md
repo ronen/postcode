@@ -65,6 +65,21 @@ retarget the ID. Independent discovery may produce two IDs for the same architec
 thing; qualified correspondence is needed to say so. A conflation cannot be silently fixed
 by making the old ID denote whichever part seems preferable.
 
+<a id="identity-findings-with-existing-mechanisms"></a>
+For this capability, existing mechanisms are sufficient for duplicate or conflated identities.
+Retain qualified correspondence claims between independently introduced IDs. For a conflated
+entity, introduce distinct entities and explain their relationship to the original; use ordinary
+association additions, supersessions or withdrawals for specifically justified changes. Original
+IDs, content and histories remain inspectable. No dedicated merge/split operation or content type
+is required merely to express those findings.
+
+Defer automatic ID aliasing, pooling or reassignment of associations, entity-level supersession
+and propagation triggered specifically by identity changes. A correspondence claim does not
+silently make two IDs interchangeable or transfer their information. Choosing how to present
+these histories and relationships may be awkward, but that is later UI work and does not require
+more organizing machinery in this capability. These are supported uses of the proposed mechanisms,
+not a claim that a new executable merge/split probe has been completed.
+
 Mechanical and interpreted producers share identity/reference and qualified-information
 semantics without identical storage or guarantees. Mechanical provider identity must retain
 its deterministic captured-basis/Session behavior. Do not mint fresh IDs merely on repeated
@@ -383,8 +398,8 @@ not be confused with receiving the old designation of the same result entity.
 For displacement, membership and exposure operate on exact association references. Sharing a content item
 through different associations is not alone a warning path. Observer/reuse results in the
 fixture create their own associations to earlier items; their actual incoming exposure,
-not shared text, supplies any inherited concern. Entity merge/split effects remain a separate
-unimplemented identity question.
+not shared text, supplies any inherited concern. Automatic entity merge/split effects and
+identity-specific propagation are deferred; qualified identity findings use existing mechanisms.
 
 Removing acquisition gates makes one coverage limit explicit: an ordinary association can
 reference an earlier item without its producer receiving the source association. Later displacement
@@ -685,7 +700,6 @@ The planning package would need explicit treatment of:
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
 | Support acquisition | Reasoning policies are investigator instructions; their mechanical enforcement is deferred. Data integrity and faithful qualified deliveries remain enforced. Set bounded acquisition/missing-support behavior; scoped current-description acquisition includes competing undisplaced associations and exact-reference acquisition remains narrower. |
 | Reconsideration | Distinguish actual association and inventory exposure; additions trigger matching prior inventories, not every entity use or fixed result membership. Refined probe removes the earlier broad marks. Record both inventory and scope-selected content acquisition; exact delivered declaration reasons are exposure too. Set first-delivery coverage explicitly; richer selectors remain open. Investigator-directed propagation, suppression, reassessment/clearance and scheduling are deferred. |
-| Entity merge/split | Qualified correspondence and preserved old IDs; supersession/reassignment effects remain a design probe, not delivered automatically by association operations. |
 | First capability | Choose delivered relationship kinds, contextual selection depth, mechanical compatibility and which composition/diagram probes become implementation acceptance tests. |
 
 Declared dependencies, investigator-directed propagation, targeted suppression, reassessment/clearance

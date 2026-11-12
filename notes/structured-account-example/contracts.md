@@ -62,6 +62,12 @@ Relationships W and patterns C-BB/C-BH are proposed explicitly identified entiti
 this and query-result entities require governing treatment beyond interpreted identity.
 Not every architectural edge, organizing relationship or local role becomes an entity.
 
+Duplicate or conflated identity findings use existing qualified content, entity introductions
+and association declarations. Correspondence does not alias IDs, and a new identifying description
+does not redistribute old associations. Preserve original identities and history; defer special
+merge/split operations, entity-level supersession and identity-specific propagation. Presentation
+of these histories is outside this capability. No additional executable identity probe is implied.
+
 ## Association specifications
 
 Each specification has a local key, operation and `target: {entity, role}`. The role

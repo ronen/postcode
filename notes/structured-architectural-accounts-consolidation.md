@@ -328,9 +328,11 @@ ADMISSION-1 already claims runtime admission coverage, which is not the same as 
 of a retained-information selection. An added waiting case may challenge that claim without an
 automatic cause when no relevant scope exposure or displacement exists. Preserve this accepted
 limit and deferred test; introduce no standing coverage subscription. Carry these deferrals explicitly.
-Entity merge/split remains a separate
-qualified identity probe; association displacement does not automatically merge IDs or
-redistribute their histories.
+Existing entity introductions, qualified correspondence and association declarations suffice for
+merge/split findings in this capability. Preserve old identities and histories; defer automatic
+aliasing, reassignment, entity-level supersession and identity-specific propagation. Presentation
+of the resulting histories is later UI work. See the
+[working agreement](structured-architectural-accounts-proposal.md#identity-findings-with-existing-mechanisms).
 
 The [checkers](structured-account-example/README.md#verification) validate authored references,
 qualification delivery, atomicity, exact history, declaration lifecycle, conservative
