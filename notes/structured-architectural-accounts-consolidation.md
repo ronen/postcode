@@ -81,6 +81,13 @@ sharing contribution and retention contracts. The probe exercises `mechanical` a
 and guarantees remain qualifications of the contributed information. See the
 [working vocabulary](structured-architectural-accounts-proposal.md#investigation-and-execution-vocabulary).
 
+Common contribution definitions preserve real epistemological differences: some mechanical methods
+can establish verified facts for supported questions within a stated basis and scope; agentic
+interpretation does not independently supply that guarantee. If an agent uses verified information,
+verification remains attributable to the establishing method. Method contracts and claim qualifications
+express these capabilities, without defining all mechanical output as verified or encoding a closed
+mechanism taxonomy in Investigram.
+
 Qualified information is a broad description, not another record kind. “Metadata” does
 not imply mechanical truth or exemption from evidence obligations. Content associations,
 withdrawal reasons and result organization can be the substantive interpretation.

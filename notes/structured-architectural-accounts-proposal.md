@@ -130,6 +130,15 @@ kind of investigram. A hybrid label alone would not replace attribution of the a
 methods. No hybrid execution contract is specified now. Mechanical/agentic alone does not establish
 correctness, completeness or observation.
 
+The shared definitions do not erase differences in epistemological capability. For supported
+questions, a mechanical method can establish verified facts within its stated captured basis,
+assumptions and scope. Agentic interpretation does not independently provide that verification
+guarantee merely by reaching or asserting a conclusion. An agent can use or relay mechanically
+verified information; its verification remains attributable to the establishing method. These are
+capabilities and guarantees of the particular mechanisms/methods, recorded in their contracts and
+claim qualifications, not restrictions built into the definitions of investigation or investigram.
+Neither all mechanical output nor every claim in a mechanically produced bundle is thereby verified.
+
 Either kind of analysis may enhance, qualify, challenge or supersede information from the other.
 For example, mechanical analysis may establish statically resolved module dependencies while an
 interpreted investigation identifies a runtime dependency through a dynamic loader or configuration.

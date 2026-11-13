@@ -1975,3 +1975,13 @@ model, not a mandatory binary producer taxonomy. The current authored probe vali
 two supported kinds; that is a fixture scope limit. Future mechanisms retain attributable methods,
 bases and qualifications, and a hybrid label does not replace actual method provenance. No hybrid
 execution protocol or implementation is introduced now.
+
+## 2026-11-13 — Epistemological capability belongs to mechanisms and methods
+
+The human notes a real functional difference: mechanical analysis can return verified truth for
+some queries, while agentic interpretation cannot independently supply that guarantee. These are
+properties of the mechanisms/methods, not restrictions to enshrine in the common investigation or
+investigram definitions. Record verification within the method's supported scope, captured basis
+and assumptions. Agentic use of mechanically verified information retains the verifying method's
+provenance; production kind alone does not make every output verified. No schema or execution
+change follows from this clarification.
