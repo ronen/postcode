@@ -404,6 +404,12 @@ The Cockatiel thread remains a candidate validation scenario; interaction and co
 design probes rather than required implemented concepts. A second concept needs a specific mechanism
 coverage justification, not a desire to test broader interpretive ability.
 
+Include one real supported state-diagram catalogue entry, an input contract and a minimal renderer;
+planning specifies the notation and bounded semantic coverage. Catalogue injection is an optional
+test implementation technique, not a substitute for this content-to-diagram demonstration. No
+polished presentation system is required. SLICE remains free to select, refine, supplement or
+replace the diagram for the initial offering.
+
 Require a few live-agent runs to check the real integration, plus controlled dialogs for mechanism
 coverage, including optional actions such as follow-up options, presentation recommendations,
 reported inability, association operations and cross-investigation content reuse. Do not rely on

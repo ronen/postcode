@@ -53,7 +53,13 @@ otherwise valid contributions that leave the diagram requirement unmet, and prod
 inability to fulfill it. Accepted content and association effects receive normal processing even
 when the request is not fulfilled; prose alone does not silently satisfy the diagram contract.
 This exercises contract handling within the selected concept, not another architectural capability.
-The exact request packaging, rendering integration and test arrangements remain implementation choices.
+Include one real supported state-diagram catalogue entry, its input contract and a minimal renderer.
+Planning specifies the notation and bounded semantic coverage. An injected test catalogue may help
+check registration, compatibility and dispatch, but cannot substitute for demonstrating that retained
+content supplies the meaning of this real diagram. A polished presentation system is not required.
+SLICE may select, refine, supplement or replace this diagram for the initial offering. Catalogue
+injection, exact request packaging, rendering integration and test arrangements remain implementation
+choices within that requirement.
 
 “Plausibly useful” is a sanity check on the representative architectural application, not a separate
 acceptance criterion. Keep a recognizable investigative purpose rather than meaningless examples;

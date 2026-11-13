@@ -2190,3 +2190,12 @@ distinct from spontaneous presentation recommendations: successful fulfillment, 
 content with the requirement unmet, and producer-reported inability. Preserve normal processing of
 accepted contributions and separately report fulfillment. Request packaging, rendering integration
 and exact test mechanics remain implementation choices. Updated the proposal and consolidation.
+
+## 2026-11-13 — A real diagram catalogue entry in this plan
+
+The human agreed to include one real state-diagram type, its input contract and a minimal renderer,
+rather than defer all actual diagrams to SLICE. Planning specifies the notation and bounded semantic
+coverage. Injectable catalogues remain a possible test technique, but registration/dispatch tests
+alone do not establish that retained content carries the meaning needed for a recognizable diagram.
+This commits to a concrete validation artifact, not a polished presentation system or initial
+product catalogue. SLICE may select, refine, supplement or replace the diagram.
