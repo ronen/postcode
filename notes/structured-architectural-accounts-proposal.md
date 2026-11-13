@@ -32,8 +32,10 @@ stress-test that mechanism. They remain worked examples and candidate validation
 not required investigations or product offerings. In practice, implementation should include a
 small set of plausibly useful capabilities that exercise the mechanism: varied architectural
 subjects and relationships, qualification, follow-up, correction through association declarations,
-and sufficient retained content to support selected diagrams. These should be useful architectural
-inquiries, not only contrived payloads or examples chosen to pass structural checks.
+and sufficient retained content to support selected diagrams. Credible investigative purposes are
+enough; demonstrating user value is not an acceptance requirement. Avoid examples contrived only
+to fit the mechanism. The separate [SLICE step](upcoming-work.md#slice) selects the initial
+user-facing offering using the capabilities and limitations demonstrated here.
 
 Planning should identify the coverage and independently verifiable outcomes of that small repertoire;
 concrete examples may be chosen or adjusted while preserving that coverage. State and interaction

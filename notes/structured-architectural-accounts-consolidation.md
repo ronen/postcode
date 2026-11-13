@@ -402,7 +402,9 @@ varied architectural subjects/relationships, qualifications, follow-up, correcti
 selected diagrams. The worked journey and composition are candidate validation scenarios, not
 mandatory product offerings. Planning maps this coverage to independently verifiable outcomes;
 concrete examples may vary while preserving coverage. Real production/application validation is
-needed alongside authored fixtures.
+needed alongside authored fixtures. Plausible usefulness is sufficient; this plan need not prove
+user value. The separate [SLICE step](upcoming-work.md#slice) selects the initial user-facing
+offering using the demonstrated capabilities and limitations.
 
 Before drafting, resolve any remaining concrete ambiguity in information meaning or qualification;
 validation repertoire selection is planning work within the scope above. Detailed schemas, API/tool shapes, operational bounds, incidental

@@ -2144,3 +2144,11 @@ The proposal and consolidation now distinguish this validation repertoire from a
 or product catalogue. Cockatiel admission/trial and composition remain worked examples and candidate
 scenarios. Concrete validation choices are planning/implementation work preserving coverage and
 independent Session-lifetime verification. No new production behavior or fixture changes follow.
+
+## 2026-11-13 — Plausible usefulness, without proof of user value
+
+The human clarified that the validation capabilities need only be plausibly useful; proving user
+value is not required. Main's updated upcoming-work note separates ACCOUNT validation from SLICE,
+which will select the initial user-facing graphical offering. Merged that update into this branch
+and aligned the proposal and consolidation. Credible investigative purposes and mechanism coverage
+remain requirements; evidence of product value does not become an acceptance gate for this plan.
