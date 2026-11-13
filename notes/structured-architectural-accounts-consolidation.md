@@ -10,7 +10,7 @@ Governing documents still describe whole-investigram correction.
 
 ## Center of the model
 
-Entities organize qualified information. Queries request information. Mechanical and interpreted
+Entities organize qualified information. Queries request information. Mechanical and agentic
 analyses can contribute content and association declarations through the proposed common structure; investigrams preserve those contributions
 and their provenance. A query's result has an entity identity through which original and
 later designated answers can be organized. It is not the query, and Q identifies a particular
@@ -30,7 +30,7 @@ There is no single canonical definition per entity. Several descriptions, scopes
 conflicting interpretations can coexist. Identity/reuse does not establish agreement,
 unique discovery, or equivalence of independently allocated entities.
 
-Working direction: generalize investigrams to mechanical and interpreted contributions. Either
+Working direction: generalize investigrams to mechanically or agentically produced contributions. Either
 producer can enhance or supersede the other's information, preserving each claim's method and
 qualifications. Static module dependencies and interpreted runtime dependencies can coexist as
 complementary scoped information; adding runtime information need not withdraw a valid static
@@ -52,7 +52,12 @@ organizing model. Native producer integration remains unverified. See the
 | Entity | Identified thing around which qualified information is organized; the proposed kinds include architectural things and query results. |
 | Subject / referent | Roles: what an investigation concerns; what a reference denotes. |
 | Query invocation | One request with captured subjects, parameters and context. Its result identity is separate. |
-| Investigram | Proposed generalization: immutable, qualified analysis contribution bundle from a mechanical or interpreted producer. Not the default context or supersession unit. |
+| Investigation | Architectural inquiry, using mechanical analysis, agentic analysis, or both. |
+| Analysis | Work performed within an investigation. |
+| Interpretation | Explanatory judgment or inference, with explicit grounds and qualifications. |
+| Mechanical / agentic | Execution mechanisms for producing investigrams, not epistemic guarantees or different artifact kinds. |
+| Investigating agent | Agent participating in the dialog managed by an agentic analysis runner; a mechanical provider need not implement that interface. |
+| Investigram | Proposed generalization: immutable, qualified analysis contribution bundle. Not the default context or supersession unit. |
 | Account | Ordinary language for information provided by PostCode; no additional Account object. |
 | Content item | Keyed item of substantive analysis content, broadening the current interpretation-only terminology. Identity of content is not identity of the described entity. |
 | Content type | A supported kind of content item in a defined, extensible catalogue. |
@@ -69,6 +74,12 @@ organizing model. Native producer integration remains unverified. See the
 | Inventory/selection-scope exposure | Dependency on an acquired availability inventory or content selected by an explicit scope, with coverage and actual delivery position. A scope-selected delivery need not present a separate list; bare entries do not deliver listed content. |
 | Exposure index | Indexes actual content and inventory deliveries, with entity/query-result IDs organizing access. Qualified guidance and reason delivery also retain source exposure. Product `citation` indexes remain investigram-based until adoption. |
 | Support | Attributed grounds for a claim, not inferred from delivery alone. |
+
+Agentic execution and mechanical providers retain their distinct operational boundaries while
+sharing contribution and retention contracts. The probe's `producer.kind` is `mechanical` or
+`agentic`. Mechanical tool output reused by an agent keeps its original provenance; interpretation
+and guarantees remain qualifications of the contributed information. See the
+[working vocabulary](structured-architectural-accounts-proposal.md#investigation-and-execution-vocabulary).
 
 Qualified information is a broad description, not another record kind. “Metadata” does
 not imply mechanical truth or exemption from evidence obligations. Content associations,

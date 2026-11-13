@@ -300,7 +300,7 @@ class Model:
             # Host-attributed production context, not investigator-claimed authority.
             if 'provenance' in bindings:
                 production = bindings['provenance']
-                assert production['producer']['kind'] in {'mechanical', 'interpreted'}
+                assert production['producer']['kind'] in {'mechanical', 'agentic'}
                 assert production['producer']['method'] and production['basis']
                 a['provenance'] = copy.deepcopy(production)
             assert a['qualifications'] and a['evidence'], 'missing own qualification/support'

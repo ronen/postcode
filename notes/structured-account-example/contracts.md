@@ -60,7 +60,8 @@ and that live follow-up are still open work.
 
 Mechanical identities retain their provider guarantees under a proposed common reference
 mechanism. The working direction now also generalizes investigram contributions to mechanical
-and interpreted analyses, preserving distinct method guarantees. The admission/trial examples seed
+and agentic analyses, preserving distinct method guarantees. These are execution mechanisms;
+interpretation and epistemic status are separate content qualifications. The admission/trial examples seed
 mechanical references; the [unification probe](unification/README.md) now exercises authored mechanical
 contributions using four small registered types and host-attributed per-contribution provenance.
 Neither probe executes a native producer or establishes complete production content contracts.

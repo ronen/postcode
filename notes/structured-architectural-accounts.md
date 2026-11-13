@@ -1950,3 +1950,19 @@ ID does not expose mechanical producers to every interpretation of it.
 Recommendation: proceed with generalized investigrams as qualified analysis contributions. Complete
 native content/access contracts, coordinated-method attribution, migration scope and actual Session-
 lifetime verification remain planning work. No adopted or product files were changed.
+
+## 2026-11-13 — Investigation vocabulary and execution mechanisms
+
+The human agrees to broaden investigation while emphasizing the real operational distinction
+between the dialog-wrapping agent boundary and source-analysis operations. Mechanical versus
+agentic is a choice of mechanism for creating investigrams, not an artifact distinction.
+Investigation names the inquiry, analysis the work, interpretation the explanatory judgment or
+inference, and investigram the retained qualified contribution. Investigating agent names the
+dialog participant. Agentic analysis runner and mechanical analysis provider are working names
+for the distinct execution boundaries; no code rename or universal execution API is adopted here.
+
+The active proposal and consolidation now record that vocabulary. The unification probe changes
+`producer.kind` from mechanical/interpreted to mechanical/agentic; method, scope, evidence and
+guarantees remain distinct. A mechanical tool contribution keeps its provenance when invoked or
+reused by an agent. Agentic output does not imply that all its information has one epistemic status.
+Historical discussion retains earlier wording; no product or governing files are changed.

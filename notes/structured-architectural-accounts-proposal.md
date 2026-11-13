@@ -40,7 +40,7 @@ is included by implication.
   result. Later declarations may designate different information as its answer without
   rewriting what Q originally returned. This broadens the proposed Entity mechanism
   beyond things in the described program and needs explicit governing treatment.
-- **Analyses contribute content and association declarations.** Mechanical and interpreted
+- **Analyses contribute content and association declarations.** Mechanical and agentic
   analyses can use the proposed common contribution structure. An investigram is
   the immutable bundle that attributes those contributions to their producer. It remains
   important for provenance, qualification, inspection and exact addresses; it is no longer
@@ -81,7 +81,7 @@ these histories and relationships may be awkward, but that is later UI work and 
 more organizing machinery in this capability. These are supported uses of the proposed mechanisms,
 not a claim that a new executable merge/split probe has been completed.
 
-Mechanical and interpreted producers share identity/reference and qualified-information
+Mechanical and agentic producers share identity/reference and qualified-information
 semantics without identical storage or guarantees. Mechanical provider identity must retain
 its deterministic captured-basis/Session behavior. Do not mint fresh IDs merely on repeated
 encounter, or parallel architectural module IDs just to investigate a module. Mechanical
@@ -97,14 +97,31 @@ another distinct proposed kind. Both extensions require governing clarification,
 renaming fields.
 
 <a id="mechanical-and-interpreted-contributions"></a>
-## Mechanical and interpreted contributions
+## Mechanical and agentic production of contributions
 
 Working direction: generalize Investigram from an interpretation artifact to an immutable,
-qualified analysis contribution bundle. Mechanical and interpreted producers can contribute
+qualified analysis contribution bundle. Mechanical and agentic producers can contribute
 content and association declarations through common organizing machinery. Method, captured basis,
 evidence, scope and guarantees remain attributable; common packaging does not confer one producer's
 guarantees on another's claims. "Interpretation content" would need a broader governing definition
 and name (provisionally analysis content). No adopted document is changed by this recommendation.
+
+<a id="investigation-and-execution-vocabulary"></a>
+Working vocabulary: **investigation** is the architectural inquiry; **analysis** is work performed
+within it; **interpretation** is explanatory judgment or inference; an **investigram** retains a
+qualified analysis contribution. **Mechanical** and **agentic** distinguish mechanisms for creating
+investigrams, not two kinds of artifact or guarantees. Use **investigating agent** for the agent
+participating in the dialog, rather than making every provider implement an agent interface.
+
+The operational boundaries remain distinct: an **agentic analysis runner** manages agent dialog,
+tools, limits and submissions; a **mechanical analysis provider** executes source-analysis operations
+behind its provider boundary. Both feed common data-integrity/retention contracts. These component
+names are working terminology, not an adopted code rename or a requirement for one execution API.
+An investigation can use either mechanism or both. If an agent requests mechanical analysis, the
+mechanical contribution keeps its own producer attribution; reuse does not relabel it agentic.
+An agent's additional interpretation has its own attribution. In the probe, `producer.kind` now
+records `mechanical` or `agentic`; claim method, evidence, scope and guarantee remain separately
+attributable. Mechanical/agentic alone does not establish correctness, completeness or observation.
 
 Either kind of analysis may enhance, qualify, challenge or supersede information from the other.
 For example, mechanical analysis may establish statically resolved module dependencies while an
@@ -742,7 +759,7 @@ The planning package would need explicit treatment of:
 
 - Interpreted, architectural-relationship/pattern and query-result identities; preservation
   of existing mechanical identity and result guarantees.
-- Investigrams as immutable mechanical or interpreted analysis contributions, with explicit
+- Investigrams as immutable mechanically or agentically produced analysis contributions, with explicit
   method-specific guarantees; broader content terminology, item addresses, cross-owner references,
   declaration-only results and result designation separate from fixed child composition.
 - Association addition/supersession/withdrawal replacing whole-investigram correction,

@@ -843,7 +843,7 @@
         },
         "provenance": {
           "producer": {
-            "kind": "interpreted",
+            "kind": "agentic",
             "method": "authored/qualified-target-interpretation@0"
           },
           "basis": {
@@ -1016,7 +1016,7 @@
         },
         "provenance": {
           "producer": {
-            "kind": "interpreted",
+            "kind": "agentic",
             "method": "authored/qualified-selection@0"
           },
           "basis": {
@@ -1300,7 +1300,7 @@
         },
         "provenance": {
           "producer": {
-            "kind": "interpreted",
+            "kind": "agentic",
             "method": "authored/qualified-target-explanation@0"
           },
           "basis": {

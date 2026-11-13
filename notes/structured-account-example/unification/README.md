@@ -1,4 +1,4 @@
-# Mechanical and interpreted contributions: worked unification
+# Mechanical and agentic production: worked unification
 
 Updated 2026-11-13. Exploratory design work, not an adopted contract or a product migration.
 [Inputs](contributions.json), [report](report.json) and [checker](check-unification.py) exercise
@@ -9,7 +9,7 @@ was run. Source digests identify these files; they do not certify an analyzer's 
 
 ## Finding
 
-A common investigram envelope works for the tested mechanical and interpreted contributions.
+A common investigram envelope works for the tested mechanically and agentically produced contributions.
 Entity references, keyed content, association declarations, result designations, exact access,
 qualification delivery and cause propagation need no producer-specific variants. The important
 changes are a producer-neutral content catalogue, structured identifying content and attribution
@@ -89,6 +89,13 @@ claims become typed content within their producing bundle; there is no third mem
 to a separate mechanical-information universe. Native records need not be copied physically: a
 migration can make a native record accessible through the common content address while preserving
 its identity semantics. The fixture does not implement that mapping or require duplicate storage.
+
+`producer.kind` identifies the execution mechanism: `mechanical` or `agentic`. This is independent
+of whether a particular claim is an interpretation, a recorded assertion or mechanically established
+information. The existing agent-dialog runner and source-analysis provider boundary remain distinct;
+they produce the same kind of retained contribution. Invoking a mechanical tool from an agent does
+not change the tool contribution's producer. The agent's subsequent interpretation is separately
+attributed. Here the agentic stages are authored stand-ins, not actual dialogs.
 
 `provenance` in this probe materializes the existing responsibility for attributable producer
 method and captured basis. Fixture acceptance bindings supply it on behalf of the host, rather

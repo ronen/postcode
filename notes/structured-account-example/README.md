@@ -41,7 +41,7 @@ provide the investigation background.
 | [Lifecycle probes](lifecycle-probes.json) | Earlier-result consumer, fuller description, declaration-only reuse, and withdrawal. |
 | [Generated report](lifecycle-report.json) | Exact qualified projections, displacement links, exposure and distinct evaluation/designation reconsideration causes in the displacement-only regression. |
 | [Acquisition refinements](acquisition.md) | Scope-selected initial content, discovery before retrieval, and exact exposure to delivered declaration reasons; declared dependencies and investigator-directed propagation remain deferred. |
-| [Mechanical/interpreted unification](unification/README.md) | Authored discovery, exports and source dependencies; interpreted extension and supersession in both directions, with original guarantees and histories preserved. |
+| [Mechanical/agentic unification](unification/README.md) | Authored discovery, exports and source dependencies; interpreted extension and supersession in both directions, with original guarantees and histories preserved. |
 | [Addition probe](additions.md) | Association/inventory exposure comparison in both partitions: original readers no longer acquire addition causes; an explicit inventory reader and its consumer do. Earlier broad counts remain reproducible. |
 | [Children variant](children/README.md) | Same behavior with appropriately separated qualification boundaries. Its own seed/ledger/probes/reports describe a separate hypothetical Session. |
 | [Composition](composition/README.md) | Two wrapping orders, local roles/relations/situations and exact follow-up selectors. |

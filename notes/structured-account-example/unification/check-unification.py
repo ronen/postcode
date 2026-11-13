@@ -106,7 +106,7 @@ static_before = model.qualified('DEPENDENCIES-1', model.items()[('DEPENDENCIES-1
 interpreted_before = model.qualified('RUNTIME-1', model.items()[('RUNTIME-1', 'dependency')])
 assert static_before['basis'] != interpreted_before['basis']
 assert static_before['provenance']['producer']['kind'] == 'mechanical'
-assert interpreted_before['provenance']['producer']['kind'] == 'interpreted'
+assert interpreted_before['provenance']['producer']['kind'] == 'agentic'
 assert static_before['value']['relationSemantics'] != interpreted_before['value']['relationSemantics']
 # Mechanical export/dependency producers read captured source, not prior identifying prose.
 assert model.queries['Q-E']['exposureIndex'] == [] and model.queries['Q-S']['exposureIndex'] == []
@@ -139,7 +139,7 @@ accept(model, stages['Q-R'])
 interpreted_cause = 'RUNTIME-REFINED-1::runtime'
 assert model.standing(('CONSTANT-TARGET-1', 'runtime'))['displacedBy'] == [interpreted_cause]
 final = model.qualified('RUNTIME-REFINED-1', model.items()[('RUNTIME-REFINED-1', 'dependency')])
-assert final['provenance']['producer']['kind'] == 'interpreted'
+assert final['provenance']['producer']['kind'] == 'agentic'
 assert final['value']['qualification']['guarantee'] != mechanical_after['value']['qualification']['guarantee']
 assert model.qualified('CONSTANT-TARGET-1', model.items()[('CONSTANT-TARGET-1', 'dependency')]) == mechanical_after
 assert model.qualified('DEPENDENCIES-1', model.items()[('DEPENDENCIES-1', 'dependencies')]) == static_before
