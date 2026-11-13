@@ -390,7 +390,13 @@ existing association/reconsideration mechanisms, without guaranteeing error dete
 objections and investigation driven by user pushback remain explicitly deferred; the current
 research/developer feedback is not that mechanism. See [outcomes and inadequacy](structured-architectural-accounts-proposal.md#execution-outcomes-known-inadequacy-and-undetected-error).
 
-Before drafting, fit partial/unsuccessful result designation to those distinctions and settle the promised
+Accepted investigrams are retained and all their content processed normally, including ordinary
+association effects, even when the investigation did not fulfill the whole request. Known inadequacy
+and unmet requirements are reported separately; they do not invalidate what was achieved. Ordinary
+data-integrity acceptance remains required. This settles the retention question; outcome fields,
+result packaging and repair sequence are implementation choices within those distinctions.
+
+Before drafting, settle the promised
 first capability and observable verification scenarios, and any remaining ambiguity in information
 meaning or qualification. Detailed schemas, API/tool shapes, operational bounds, incidental
 ordering and implementation task breakdown need not be fixed here. The test is whether a different

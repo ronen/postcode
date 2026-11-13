@@ -893,9 +893,20 @@ substantive correctness. These distinctions apply to both mechanical and agentic
 Execution policy may retry or attempt repair through dialog. The precise reporting fields,
 carrier and repair strategy are implementation choices within these observable distinctions.
 An established empty finding is still different from failure to obtain an answer. No additional
-general semantic acceptance gate follows from undetected errors. Detailed query-result designation
-for partial or unsuccessful attempts still needs to fit the agreed outcome distinctions; this
-classification does not settle every retention/designation case or require intermediate submission.
+general semantic acceptance gate follows from undetected errors.
+
+Agreed treatment: when an investigram passes the ordinary data-integrity acceptance requirements,
+retain and process all its content normally, including its association declarations and their
+ordinary effects. Failure to achieve the whole request does not invalidate what the investigation
+did achieve. There is no special partial-result quarantine, selective suppression or separate
+retention path merely because fulfillment is incomplete. Qualifications and known unmet requirements
+remain available; normal processing does not present the request as fulfilled or certify correctness.
+Malformed data still requires repair or rejection under the ordinary integrity rules.
+
+This resolves the architectural retention question. Outcome fields, result packaging and repair
+sequence are implementation choices that must preserve the distinction between available accepted
+information and fulfillment of the request. No intermediate-submission mechanism is required by
+this agreement.
 
 User-reported suspected error is a possible future source of objections, not proof that a result
 is wrong. The human explicitly reconfirmed deferring both recording such objections for the
@@ -915,7 +926,7 @@ behavior cannot be dismissed as an implementation detail.
 
 | Area | Architectural requirement or decision | Implementation freedom within that boundary |
 | --- | --- | --- |
-| Partial, failed and empty results | Preserve their semantic distinction; decide what usable accepted contributions and the retained answer represent after partial or unsuccessful work. | Buffering, batching, internal checkpoints and error-handling structure, subject to accepted atomicity and outcome contracts. |
+| Partial, failed and empty results | Retain and process accepted investigram content normally; separately preserve fulfillment, known inadequacy and the distinction between failure and established emptiness. | Buffering, batching, internal checkpoints and error-handling structure, subject to accepted atomicity and outcome contracts. |
 | Associations and results | Membership meaning, qualification, standing and exact history; ordering only where it conveys meaning. | Serialization, collection types, indexes, incidental ordering and nesting limits that preserve the supported capability and disclose limits accurately. |
 | Context acquisition | Selection meaning, actual coverage, qualification, exposure and the representation of unavailable or incomplete support. | Dialog tool shapes, fetching strategy, pagination mechanics and operational limits that preserve those contracts. |
 | Architectural content and diagrams | Architectural meanings supported by the first capability; content must supply the meaning needed for representative diagrams. | Detailed schemas, field layout and renderer implementation consistent with those meanings. |
@@ -937,11 +948,12 @@ workflow. Neither the probes nor this boundary authorize product implementation.
 
 ## Decisions still to make in notes
 
-The remaining pre-draft discussion is narrower than the previous list of fixture details:
+Partial/unsuccessful investigation treatment is now agreed above; its packaging does not remain
+an open architectural decision. The remaining pre-draft discussion is narrower than the previous
+list of fixture details:
 
 | Question | Required resolution |
 | --- | --- |
-| Partial or unsuccessful investigation | Outcome/inadequacy distinctions are recorded above. Fit query-result designation and availability to them, preserving usable accepted information, qualified history and the distinction from established emptiness; do not conflate structural acceptance with fulfillment or correctness. |
 | First delivered capability and verification | Which architectural content meanings, representative diagrams and follow-up behaviors are promised, and which examples remain design probes? Mechanical migration scope and broad staging are already agreed. |
 | Remaining semantic ambiguities | Resolve ambiguity in membership, qualification, selection or lookup where different choices would change meaning or supported behavior. Do not require every role spelling, schema field, nested-result limit or delivery limit to be fixed before drafting. |
 

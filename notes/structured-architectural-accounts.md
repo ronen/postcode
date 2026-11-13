@@ -2117,3 +2117,16 @@ handling and propagation policy remain separate work. Existing developer/researc
 investigator-directed pushback. Notes record these distinctions without adding a reporting schema,
 new acceptance gate or fixture/product behavior. Partial-result designation details remain to fit
 the agreed distinctions.
+
+## 2026-11-13 — Process accepted contributions normally despite incomplete fulfillment
+
+The human agreed: “if we receive an investigram, we retain and process all its content normally.
+the fact that the investigation didn't achieve everything we hoped for doesn't invalidate things
+that it does achieve”. Ordinary data-integrity acceptance remains required; the agreement concerns
+accepted information, not retaining malformed data. Content and association declarations receive
+normal processing and effects, while known inadequacy and request fulfillment are reported
+separately. No special partial-result retention or suppression mechanism is introduced.
+
+The proposal and consolidation now mark this retention question resolved. Outcome fields, result
+packaging and repair sequence remain implementation choices preserving those distinctions. This
+is a notes-only agreement, not a change to governing documents, product code or fixture behavior.
