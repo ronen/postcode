@@ -71,6 +71,13 @@ explain material changes in method, scope or guarantee; guarantee-ranking select
 Native producer integration remains unverified, including mechanical consumers of retained claims. See the
 [working direction](structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
 
+An internal producer/contribution boundary enables controlled mechanism tests before real-provider
+migration, including separately attributed producers for cross-producer cases. Mechanical and agentic
+are production mechanisms, not a closed type list or a requirement for identical execution protocols.
+Verify an early vertical slice with initial mechanical integration, agentic state behavior,
+association operations, exposure/reconsideration and the diagram contract before completing migration.
+Interface details and milestone packaging remain implementation/planning choices.
+
 The agreed implementation endpoint includes all existing mechanical architectural information,
 staged through module discovery/exports, dependencies and remaining module information, organization,
 and integrated agentic verification. Mixed representation is an intermediate milestone. This does
@@ -83,11 +90,18 @@ selection. Existing immutable storage and reference bindings may be adapted; a p
 of architectural copies of mechanical entities is not the intended design. The current single
 identifying-claim pointer cannot remain an authoritative current-description path outside the
 association model. Exact IDs remain resolvable within the Session after identification withdrawal;
-name search preserves ambiguity, standing and population qualification. Physical layouts and
+name search preserves ambiguity, standing and population qualification. Support lookup of historical/
+displaced names, either by default or on request, exposing the match's standing and access to current
+identifying information. Default inclusion and continuation/selection behavior are interface policies;
+matching a name does not establish identity or a rename. Physical layouts and
 indexes remain implementation choices. See [entity storage and lookup](structured-architectural-accounts-proposal.md#entity-storage-and-lookup).
 
 <a id="working-vocabulary"></a>
 ## Working vocabulary
+
+The citation-index to exposure-index rename is included across affected governing documents, APIs
+and code alongside the semantic migration. Evidence citations and substantive support retain their
+distinct meanings; this is not a blanket replacement of every use of “citation”.
 
 | Term | Meaning |
 | --- | --- |

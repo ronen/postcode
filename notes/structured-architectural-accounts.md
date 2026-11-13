@@ -2219,3 +2219,20 @@ packaging. Replaced the generic semantic-ambiguity placeholder with the review's
 discussion points: name-search scope, meaningful result ordering/nesting, exposure-rename scope,
 and early vertical validation before completing mechanical migration. These remain discussion
 items, not newly adopted choices.
+
+## 2026-11-13 — Early producer boundary, historical names and exposure rename
+
+The human agreed to early vertical validation and suggested an internal producer interface so the
+mechanism can be tested before real-provider migration, using multiple test producers for cross-
+producer cases where needed. Recorded a producer/contribution boundary without prescribing identical
+mechanical and agentic execution protocols or concrete interface design. Real integration still
+occurs early, before completing mechanical migration.
+
+The human requires historical/displaced-name lookup, routinely or on request, so a remembered name
+can locate the entity rather than simply disappear. Preserve match standing, ambiguity, coverage and
+access to current identifying information. Presentation and continuation/confirmation are interface
+policies; name matching itself does not prove identity or a rename.
+
+The human approved exposure-index terminology throughout affected governing documents, APIs and
+code as part of the semantic migration. Distinct evidence citations/support are not renamed.
+Meaningful result ordering/nesting remains to be explained; no new decision on that was recorded.

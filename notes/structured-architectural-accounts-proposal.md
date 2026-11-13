@@ -264,7 +264,22 @@ exclusion of mechanical claims from investigrams.
 
 The human chose migration of all currently supported mechanical architectural information within
 this plan, with staged implementation and verification. A partial migration is an intermediate
-milestone, not the intended endpoint. The stages are:
+milestone, not the intended endpoint. The migration groups below are not the full milestone sequence.
+
+Define an internal producer/contribution boundary so the common mechanism can be implemented and
+verified with test producers before migrating real providers. Exercise cross-producer reuse and
+association operations with separately attributed test contributions where needed. “Producer” names
+the operational role here; mechanical and agentic remain extensible production mechanisms, not two
+closed investigator types. This boundary need not force compiler operations and agent dialogs into
+one execution protocol. Exact interfaces and harness arrangements are implementation choices.
+
+Follow that foundation with an early vertical slice combining initial mechanical integration,
+agentic state-dependent behavior, association addition/supersession/withdrawal, exposure and
+reconsideration, and the state-diagram result contract. Do not postpone real end-to-end validation
+until the remaining mechanical migration is complete. Drafting specifies milestones around this
+risk ordering; controlled producer coverage does not replace live-agent integration checks.
+
+The mechanical migration groups are:
 
 1. Module discovery/identification and exports, including later symbol introduction and actual
    mechanical consumption of retained module naming.
@@ -311,9 +326,15 @@ all associated content. It does not extend reference lifetime beyond the Session
 Name search uses qualified identifying information: matching a name does not establish identity,
 several entities may match, and multiple descriptions may concern one entity. Search results must
 preserve the standing, qualification and population coverage relevant to the lookup rather than
-silently treating a displaced description as current. The exact search scope and treatment of
-historical names remain contract details to settle; this does not introduce fuzzy search, semantic
-deduplication or a new UI. Established precise reference bindings are not mutable descriptive names.
+silently treating a displaced description as current. Lookup must support historical/displaced names,
+either routinely or through an explicit history-inclusive request, so a remembered name can still
+locate its entity. Return the historical match and its standing with access to relevant current
+identifying information; do not silently replace the match with an unqualified current-name result.
+A shared entity identity permits following that entity's information, but matching names alone does
+not establish identity or a rename, and current descriptions may conflict. Presentation, whether to
+search history initially, and whether to continue or ask the user to select are interface policies.
+Any lookup coverage must be represented accurately. No fuzzy search, semantic deduplication or new
+UI follows. Established precise reference bindings are not mutable descriptive names.
 
 Classes, maps, indexes, physical record layouts and reuse of existing lookup code are implementation
 choices. The architectural requirement is one consistent identity/information contract, including
@@ -944,8 +965,9 @@ The planning package would need explicit treatment of:
 - Exact association/content exposure, separate scoped inventory exposure, and result-membership
   reconsideration with qualified context disclosures and exact cause identities. Entity/result
   IDs organize access; they are not blanket exposure units.
-  Renaming citation index to exposure index should be considered alongside the actual semantic
-  change; it is no longer sufficient to characterize this whole migration as just a rename.
+  Rename citation index to exposure index consistently across affected governing documents, APIs
+  and code as part of this plan, alongside the semantic migration. This is not merely a rename;
+  preserve the distinction from evidence citations and substantive support, whose meanings differ.
 - Representation-independent qualification, captured basis, direct/exact application access,
   atomicity and the supported Session boundary. No foundation or governing text is changed here.
 
@@ -1026,10 +1048,10 @@ list of fixture details:
 | Question | Required resolution |
 | --- | --- |
 | Validation coverage (planning work) | The selected concept is state-dependent behavior. Map the common mechanism to observable checks using a few live-agent runs and controlled dialogs; test details remain implementation choices. Interaction/composition remain design probes, not required implemented capabilities. Initial user-facing catalogue selection is outside this task. |
-| Name-search scope | Discuss default search coverage and treatment of historical/displaced names before drafting; preserve ambiguity, qualified population coverage and exact identity access. |
+| Name-search scope (resolved) | Support historical/displaced-name lookup with qualified standing and current information access. Default history inclusion and user continuation behavior are interface policies; preserve accurate coverage and ambiguity. |
 | Result ordering and nesting | Confirm which ordering/grouping carries answer meaning before drafting; incidental serialization and bounds remain implementation choices. |
-| Exposure terminology migration | Agree the extent of the citation-to-exposure-index rename across governing documents, API and code before drafting. |
-| Early vertical validation | Review the recommendation to exercise the common mechanism, initial mechanical integration, agentic state behavior and diagram contract early. The listed mechanical migration stages are not a complete milestone sequence; detailed vertical milestones are drafting work. |
+| Exposure terminology migration (resolved) | Include the rename throughout affected governing documents, APIs and code, alongside the semantic migration; do not rename distinct evidence citations or support. |
+| Early vertical validation (resolved) | Test the common mechanism through an internal producer boundary before real-provider migration, then exercise initial mechanical integration and the agentic/diagram path early. Detailed interfaces and milestones remain implementation/planning work. |
 
 Association versus inventory/selection-scope exposure, actual reason delivery, standing and
 qualified access remain requirements. Richer selectors, exact tool shapes and operational bounds
