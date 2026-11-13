@@ -47,6 +47,14 @@ agent spontaneously choosing every action. Once an action is produced, its proce
 the contract; absence of an optional action is not itself a mechanism failure. Explicitly requested
 content remains subject to the request's fulfillment requirements.
 
+Include an explicit result-contract case requesting a state diagram, distinct from an optional
+presentation recommendation. Validate successful fulfillment from retained structured content,
+otherwise valid contributions that leave the diagram requirement unmet, and producer-reported
+inability to fulfill it. Accepted content and association effects receive normal processing even
+when the request is not fulfilled; prose alone does not silently satisfy the diagram contract.
+This exercises contract handling within the selected concept, not another architectural capability.
+The exact request packaging, rendering integration and test arrangements remain implementation choices.
+
 “Plausibly useful” is a sanity check on the representative architectural application, not a separate
 acceptance criterion. Keep a recognizable investigative purpose rather than meaningless examples;
 controlled responses may deliberately exercise unusual cases, failures and invalid submissions.
@@ -309,8 +317,11 @@ information is withdrawn, ambiguous names and lookup over incompletely establish
 
 ## Content and declarations
 
-A **content item** is a keyed portion of substantive analysis content (broadening the current
-governing "Interpretation content"). Its **content type**
+The agreed term **Analysis content** names an investigram's substantive findings and explanations,
+including mechanical contributions. It replaces "Interpretation content" in the proposed model;
+governing terminology will change only through the planning/adoption workflow.
+
+A **content item** is a keyed portion of Analysis content. Its **content type**
 identifies a supported structure. A **content-type contract** specifies required data,
 meaning, references, qualifications and partial information; a **schema** expresses its
 mechanically checkable shape. Shape validation does not establish architectural truth.
@@ -990,8 +1001,8 @@ list of fixture details:
 Association versus inventory/selection-scope exposure, actual reason delivery, standing and
 qualified access remain requirements. Richer selectors, exact tool shapes and operational bounds
 are not all architectural decisions. Detailed migration task breakdown is implementation/planning
-work within the agreed stages. The proposed formal name **Analysis content** remains a naming
-recommendation rather than an adopted governing edit.
+work within the agreed stages. The formal name **Analysis content** is agreed for the proposed model; this is not yet an
+adopted governing edit.
 
 Declared dependencies, investigator-directed propagation, targeted suppression, reassessment/clearance
 and automatic scheduling are deferred beyond the first capability unless a later concrete need changes that

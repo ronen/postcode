@@ -89,7 +89,8 @@ indexes remain implementation choices. See [entity storage and lookup](structure
 | Investigating agent | Agent participating in the dialog managed by an agentic analysis runner; a mechanical provider need not implement that interface. |
 | Investigram | Proposed generalization: immutable, qualified analysis contribution bundle. Not the default context or supersession unit. |
 | Account | Ordinary language for information provided by PostCode; no additional Account object. |
-| Content item | Keyed item of substantive analysis content, broadening the current interpretation-only terminology. Identity of content is not identity of the described entity. |
+| Analysis content | Agreed name for the substantive findings and explanations within an investigram, including mechanical contributions; proposed replacement for governing “Interpretation content”. |
+| Content item | Keyed item of Analysis content. Identity of content is not identity of the described entity. |
 | Content type | A supported kind of content item in a defined, extensible catalogue. |
 | Content-type contract / schema | Required data, semantics, qualification and reference rules / mechanically checkable shape within that contract. |
 | Architectural concept | Vocabulary for framing interpretation, not a required representation or diagram. |
@@ -406,7 +407,11 @@ coverage justification, not a desire to test broader interpretive ability.
 Require a few live-agent runs to check the real integration, plus controlled dialogs for mechanism
 coverage, including optional actions such as follow-up options, presentation recommendations,
 reported inability, association operations and cross-investigation content reuse. Do not rely on
-spontaneous agent choices for repeatable coverage. Harnesses, mocking arrangements and exact test
+spontaneous agent choices for repeatable coverage. Include an explicit state-diagram result contract:
+successful fulfillment, otherwise valid content that leaves the requirement unmet, and producer-
+reported inability. This differs from optionally recommending a diagram. Accepted contributions
+retain their normal processing and effects despite unmet requirements; prose alone does not fulfill
+the diagram contract. No additional architectural concept is needed. Harnesses, mocking arrangements and exact test
 scenarios are implementation details. “Plausibly useful” is a sanity check on the representative
 architectural application, not a separate acceptance criterion: keep a recognizable investigative
 purpose, while allowing controlled responses constructed to exercise particular cases. These

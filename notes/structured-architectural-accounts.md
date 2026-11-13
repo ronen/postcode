@@ -2177,3 +2177,16 @@ dialogs establish mechanism behavior, while a few live-agent runs check integrat
 establishes the usefulness of an initial investigation offering. SLICE selects that offering
 using the demonstrated capabilities and limitations. No update to upcoming-work.md is needed.
 The proposal and consolidation now state this distinction explicitly.
+
+## 2026-11-13 — Analysis content and explicit diagram contracts
+
+The human chose “Analysis content” over “Investigation content” for substantive investigram content,
+including mechanical findings. This is agreed terminology for the proposed model, pending governing
+adoption. The human also clarified that the additional contract-validation case is to return a
+diagram, not propose an architectural design.
+
+Use a state-diagram requirement within the selected concept to exercise explicit result contracts,
+distinct from spontaneous presentation recommendations: successful fulfillment, otherwise valid
+content with the requirement unmet, and producer-reported inability. Preserve normal processing of
+accepted contributions and separately report fulfillment. Request packaging, rendering integration
+and exact test mechanics remain implementation choices. Updated the proposal and consolidation.
