@@ -1,6 +1,6 @@
 # Investigram structure: consolidation checkpoint
 
-Updated: 2026-11-12
+Updated: 2026-11-13
 
 Current exploratory model, not an adopted schema or product behavior. The
 [proposal](structured-architectural-accounts-proposal.md) states scope, consequences and
@@ -396,9 +396,16 @@ and unmet requirements are reported separately; they do not invalidate what was 
 data-integrity acceptance remains required. This settles the retention question; outcome fields,
 result packaging and repair sequence are implementation choices within those distinctions.
 
-Before drafting, settle the promised
-first capability and observable verification scenarios, and any remaining ambiguity in information
-meaning or qualification. Detailed schemas, API/tool shapes, operational bounds, incidental
+The plan delivers the mechanism, not an initial user-facing investigation catalogue or a required
+Cockatiel journey. Include a small set of plausibly useful capabilities to exercise and validate
+varied architectural subjects/relationships, qualifications, follow-up, correction and content for
+selected diagrams. The worked journey and composition are candidate validation scenarios, not
+mandatory product offerings. Planning maps this coverage to independently verifiable outcomes;
+concrete examples may vary while preserving coverage. Real production/application validation is
+needed alongside authored fixtures.
+
+Before drafting, resolve any remaining concrete ambiguity in information meaning or qualification;
+validation repertoire selection is planning work within the scope above. Detailed schemas, API/tool shapes, operational bounds, incidental
 ordering and implementation task breakdown need not be fixed here. The test is whether a different
 choice changes retained meaning, investigator guarantees, consumer-visible information or the
 promised capability. Existing atomicity, truthful coverage and qualified-delivery requirements still

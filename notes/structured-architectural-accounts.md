@@ -2130,3 +2130,17 @@ separately. No special partial-result retention or suppression mechanism is intr
 The proposal and consolidation now mark this retention question resolved. Outcome fields, result
 packaging and repair sequence remain implementation choices preserving those distinctions. This
 is a notes-only agreement, not a change to governing documents, product code or fixture behavior.
+
+## 2026-11-13 — Mechanism delivery versus initial product offering
+
+The human corrected the proposed “required investigation” framing. The journey helped design the
+mechanism; the implementation deliverable is the mechanism itself, including the already agreed
+mechanical migration. In practice include a small set of plausibly useful capabilities that exercise
+and validate varied subjects/relationships, qualifications, follow-up, correction and enough content
+for selected diagrams. Do not choose contrived capabilities merely to fit the mechanism, but do not
+turn validation selection into choosing the initial user-facing offering either.
+
+The proposal and consolidation now distinguish this validation repertoire from a mandated journey
+or product catalogue. Cockatiel admission/trial and composition remain worked examples and candidate
+scenarios. Concrete validation choices are planning/implementation work preserving coverage and
+independent Session-lifetime verification. No new production behavior or fixture changes follow.

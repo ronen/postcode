@@ -23,13 +23,25 @@ Successive investigations should reuse, extend, challenge and reorganize qualifi
 architectural understanding. Preserve evidence, limitations, conflicts and exact earlier
 information. Organize multiple accounts rather than maintain one reconciled model.
 
-The first candidate is circuit-breaker admission → trial → correction at a pinned
-Cockatiel revision. Composition with a bulkhead probes extension across accounts. It
-need not all be implemented in the first capability. A state diagram and interaction
-diagram demonstrate that retained data supplies architectural meaning; rendering must
-not invent it. Validation must be independently possible within the supported Session.
-No persistence, GUI, general navigation, global operation catalogue or universal ontology
-is included by implication.
+The deliverable is the new mechanism, including the agreed staged migration of existing
+mechanical architectural information. This plan does not select the initial user-facing
+investigation catalogue or mandate a particular user journey.
+
+The Cockatiel admission → trial → correction thread and bulkhead composition helped design and
+stress-test that mechanism. They remain worked examples and candidate validation scenarios,
+not required investigations or product offerings. In practice, implementation should include a
+small set of plausibly useful capabilities that exercise the mechanism: varied architectural
+subjects and relationships, qualification, follow-up, correction through association declarations,
+and sufficient retained content to support selected diagrams. These should be useful architectural
+inquiries, not only contrived payloads or examples chosen to pass structural checks.
+
+Planning should identify the coverage and independently verifiable outcomes of that small repertoire;
+concrete examples may be chosen or adjusted while preserving that coverage. State and interaction
+diagrams are already worked candidates, not a commitment to a particular initial diagram catalogue.
+Rendering should demonstrate that retained content supplies architectural meaning rather than
+inventing it. Authored probes support design checks; real production and application access must
+also validate the mechanism within the supported Session. No persistence, GUI, general navigation,
+global operation catalogue or universal ontology is included by implication.
 
 ## The conceptual center
 
@@ -228,8 +240,9 @@ milestone, not the intended endpoint. The stages are:
 2. Dependencies and remaining module information, including associated documentation and module
    composition, preserving qualified targets, coverage and partial/empty distinctions.
 3. Project/repository organization: groups, containment, placement and qualified properties.
-4. Integrated use of these real contributions in the bounded agentic investigation journey, with
-   exact access, standing, provenance and exposure verification within the supported Session.
+4. Integrated use of these real contributions in a small set of plausibly useful validation
+   capabilities, with exact access, standing, provenance and exposure verification within the
+   supported Session. No particular Cockatiel journey or initial user-facing offering is required.
 
 This scopes the existing architectural outputs, not new analyzers or a rewrite of every provider
 algorithm. Provider internals and physical record storage may remain where suitable; architectural
@@ -929,7 +942,7 @@ behavior cannot be dismissed as an implementation detail.
 | Partial, failed and empty results | Retain and process accepted investigram content normally; separately preserve fulfillment, known inadequacy and the distinction between failure and established emptiness. | Buffering, batching, internal checkpoints and error-handling structure, subject to accepted atomicity and outcome contracts. |
 | Associations and results | Membership meaning, qualification, standing and exact history; ordering only where it conveys meaning. | Serialization, collection types, indexes, incidental ordering and nesting limits that preserve the supported capability and disclose limits accurately. |
 | Context acquisition | Selection meaning, actual coverage, qualification, exposure and the representation of unavailable or incomplete support. | Dialog tool shapes, fetching strategy, pagination mechanics and operational limits that preserve those contracts. |
-| Architectural content and diagrams | Architectural meanings supported by the first capability; content must supply the meaning needed for representative diagrams. | Detailed schemas, field layout and renderer implementation consistent with those meanings. |
+| Architectural content and diagrams | A small, plausibly useful validation repertoire must exercise varied architectural subjects/relationships and supply the meaning needed for selected diagrams. This is not selection of the initial user-facing catalogue. | Concrete examples, detailed schemas, field layout and renderer implementation that satisfy the agreed validation coverage. |
 | Entity lookup | Stable exact identity within the Session; qualified and potentially ambiguous name lookup; no silent identity merging or displaced-description authority. | Storage layout, lookup indexes, caching and search mechanics within the supported lookup semantics. |
 | Migration and verification | All existing mechanical architectural information joins the common model in agreed stages; define observable acceptance scenarios and retained guarantees. | Test harnesses, internal task breakdown and sequencing within those stages. |
 
@@ -954,7 +967,7 @@ list of fixture details:
 
 | Question | Required resolution |
 | --- | --- |
-| First delivered capability and verification | Which architectural content meanings, representative diagrams and follow-up behaviors are promised, and which examples remain design probes? Mechanical migration scope and broad staging are already agreed. |
+| Validation repertoire | During planning, map a small set of plausibly useful capabilities to mechanism coverage: varied subjects/relationships, qualification, follow-up, correction and selected diagrams. The journey is a design aid, not a required investigation. Initial user-facing catalogue selection is outside this task; mechanical migration scope and broad staging are already agreed. |
 | Remaining semantic ambiguities | Resolve ambiguity in membership, qualification, selection or lookup where different choices would change meaning or supported behavior. Do not require every role spelling, schema field, nested-result limit or delivery limit to be fixed before drafting. |
 
 Association versus inventory/selection-scope exposure, actual reason delivery, standing and
