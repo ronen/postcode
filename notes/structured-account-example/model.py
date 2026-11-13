@@ -300,6 +300,7 @@ class Model:
             # Host-attributed production context, not investigator-claimed authority.
             if 'provenance' in bindings:
                 production = bindings['provenance']
+                # Current fixture support, not an exhaustive taxonomy of future producers.
                 assert production['producer']['kind'] in {'mechanical', 'agentic'}
                 assert production['producer']['method'] and production['basis']
                 a['provenance'] = copy.deepcopy(production)

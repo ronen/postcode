@@ -55,7 +55,7 @@ organizing model. Native producer integration remains unverified. See the
 | Investigation | Architectural inquiry, using mechanical analysis, agentic analysis, or both. |
 | Analysis | Work performed within an investigation. |
 | Interpretation | Explanatory judgment or inference, with explicit grounds and qualifications. |
-| Mechanical / agentic | Execution mechanisms for producing investigrams, not epistemic guarantees or different artifact kinds. |
+| Production mechanism | How investigrams are produced. Mechanical and agentic are current examples; hybrid and other future mechanisms are possible. Not an epistemic guarantee or a different artifact kind. |
 | Investigating agent | Agent participating in the dialog managed by an agentic analysis runner; a mechanical provider need not implement that interface. |
 | Investigram | Proposed generalization: immutable, qualified analysis contribution bundle. Not the default context or supersession unit. |
 | Account | Ordinary language for information provided by PostCode; no additional Account object. |
@@ -76,8 +76,8 @@ organizing model. Native producer integration remains unverified. See the
 | Support | Attributed grounds for a claim, not inferred from delivery alone. |
 
 Agentic execution and mechanical providers retain their distinct operational boundaries while
-sharing contribution and retention contracts. The probe's `producer.kind` is `mechanical` or
-`agentic`. Mechanical tool output reused by an agent keeps its original provenance; interpretation
+sharing contribution and retention contracts. The probe exercises `mechanical` and
+`agentic` producer kinds; the common model does not restrict future mechanisms to this pair. Mechanical tool output reused by an agent keeps its original provenance; interpretation
 and guarantees remain qualifications of the contributed information. See the
 [working vocabulary](structured-architectural-accounts-proposal.md#investigation-and-execution-vocabulary).
 

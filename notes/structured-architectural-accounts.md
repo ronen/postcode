@@ -1966,3 +1966,12 @@ The active proposal and consolidation now record that vocabulary. The unificatio
 guarantees remain distinct. A mechanical tool contribution keeps its provenance when invoked or
 reused by an agent. Agentic output does not imply that all its information has one epistemic status.
 Historical discussion retains earlier wording; no product or governing files are changed.
+
+## 2026-11-13 — Production mechanisms are extensible
+
+The human clarifies that mechanical and agentic need not be the only mechanisms; hybrid or
+other future mechanisms could also create investigrams. Record an extensible common contribution
+model, not a mandatory binary producer taxonomy. The current authored probe validates only its
+two supported kinds; that is a fixture scope limit. Future mechanisms retain attributable methods,
+bases and qualifications, and a hybrid label does not replace actual method provenance. No hybrid
+execution protocol or implementation is introduced now.

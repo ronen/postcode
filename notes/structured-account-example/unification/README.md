@@ -90,7 +90,12 @@ to a separate mechanical-information universe. Native records need not be copied
 migration can make a native record accessible through the common content address while preserving
 its identity semantics. The fixture does not implement that mapping or require duplicate storage.
 
-`producer.kind` identifies the execution mechanism: `mechanical` or `agentic`. This is independent
+`producer.kind` identifies the execution mechanism; this bounded probe exercises `mechanical` and
+`agentic`. They are not an exhaustive taxonomy. Hybrid or other future producers should use the
+same contribution contract with appropriate method attribution; their execution integration is
+not specified here. The fixture's two-value validation is a current support limit, not a universal
+model constraint. A hybrid label would not substitute for actual contributing-method provenance.
+This is independent
 of whether a particular claim is an interpretation, a recorded assertion or mechanically established
 information. The existing agent-dialog runner and source-analysis provider boundary remain distinct;
 they produce the same kind of retained contribution. Invoking a mechanical tool from an agent does

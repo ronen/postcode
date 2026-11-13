@@ -110,7 +110,10 @@ and name (provisionally analysis content). No adopted document is changed by thi
 Working vocabulary: **investigation** is the architectural inquiry; **analysis** is work performed
 within it; **interpretation** is explanatory judgment or inference; an **investigram** retains a
 qualified analysis contribution. **Mechanical** and **agentic** distinguish mechanisms for creating
-investigrams, not two kinds of artifact or guarantees. Use **investigating agent** for the agent
+investigrams, not two kinds of artifact or guarantees. They are current examples, not an exhaustive
+taxonomy: hybrid or other future mechanisms can produce the same qualified contribution type.
+The common model must not require every producer to be classified as exactly one of these two.
+Use **investigating agent** for the agent
 participating in the dialog, rather than making every provider implement an agent interface.
 
 The operational boundaries remain distinct: an **agentic analysis runner** manages agent dialog,
@@ -121,7 +124,11 @@ An investigation can use either mechanism or both. If an agent requests mechanic
 mechanical contribution keeps its own producer attribution; reuse does not relabel it agentic.
 An agent's additional interpretation has its own attribution. In the probe, `producer.kind` now
 records `mechanical` or `agentic`; claim method, evidence, scope and guarantee remain separately
-attributable. Mechanical/agentic alone does not establish correctness, completeness or observation.
+attributable. Those two accepted values bound the current fixture, not the conceptual model.
+Supporting another mechanism requires its method attribution and execution integration, not a new
+kind of investigram. A hybrid label alone would not replace attribution of the actual contributing
+methods. No hybrid execution contract is specified now. Mechanical/agentic alone does not establish
+correctness, completeness or observation.
 
 Either kind of analysis may enhance, qualify, challenge or supersede information from the other.
 For example, mechanical analysis may establish statically resolved module dependencies while an
