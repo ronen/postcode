@@ -456,13 +456,16 @@ validation subsystem. Existing exposure, provenance and declaration records carr
 relationships; their specific reference, acceptance and propagation rules remain the requirements.
 Do not infer a generic acyclicity constraint over all investigram links from this description.
 
-The underlying relationships must remain accessible through the application layer, with their
-qualifications and exact references. Application consumers can inspect supplied-information ancestry,
-association amendments and the causes of reconsideration without reconstructing them from chronology.
-Answer-relevant information accompanies the qualified answer; further relationship information can
-be obtained through qualified application access. This does not require every Projection to embed
-the entire dependency history. The UI chooses what to display and how, preserving the distinction
-between exposure and reliance. An implicit partial order does not mean hidden relationship data.
+Application access must preserve the relevant meaning of exposure/provenance, association amendments
+and reconsideration causes, with qualifications and precise traceability. This may expose engine
+contributions directly or map their relationships onto application-level items. Neither hiding
+investigrams nor exposing them as a particular API object is required: interface representation is
+an implementation choice within the established Projection/investigram distinction and exact-access
+requirements. A mapping must not attribute dependence to an entire answer when it concerns only a
+selected contribution, or turn exposure into a claim of reliance. Consumers must not have to infer
+missing relationships from chronology. Answer-relevant information accompanies the qualified answer;
+further history can be acquired without embedding it all in every Projection. The UI chooses what
+to display and how. No additional application object model follows from this clarification.
 
 An investigram atomically captures analysis results. Position within the bundle implies no order
 of discovery, authority or architectural events. Claims have no implicit ordering from packaging

@@ -41,12 +41,14 @@ amendments do not mutate investigrams. Shared provenance or ordinary references 
 ancestry. Production/acceptance chronology remains recorded for operational semantics, including
 later-change checks, without conferring authority or last-writer precedence. This is explanatory:
 no new partial-order graph/index or generic acyclicity validator is required. Existing relationship
-records and their specific acceptance/exposure/propagation rules carry the mechanism. Those
-relationships must remain available through qualified application access with exact references,
-including exposure/provenance, amendments and reconsideration causes. Answer-relevant information
-accompanies the answer; further history can be acquired without embedding it all in each Projection.
-The UI chooses presentation, without inferring relationships from chronology or treating exposure
-as reliance. Explanatory ordering does not make the underlying relationship data inaccessible.
+records and their specific acceptance/exposure/propagation rules carry the mechanism. Application
+access must preserve relevant relationship meaning, qualification and precise traceability, whether
+through direct contribution access or mappings onto application-level items. Investigrams need not
+be hidden, but no specific API exposure is prescribed. Implementers choose representations within
+the established Projection/investigram distinction and exact-access guarantees. Do not broaden a
+contribution-specific relationship to the whole answer, infer relationships from chronology, or
+present exposure as reliance. Answer-relevant information accompanies the answer; further history
+can be acquired separately. UI presentation remains outside this scope.
 
 An investigram atomically captures analysis results; its member positions imply no claim order,
 authority or architectural chronology. Result designations may select across investigrams without

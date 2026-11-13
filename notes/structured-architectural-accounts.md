@@ -2277,3 +2277,13 @@ Answer-relevant information accompanies the answer; further history can be acqui
 without requiring every Projection to embed the whole dependency history. UI display choices
 remain outside this scope. Exposure is not reliance, and chronology is not a substitute for
 explicit relationships. No new partial-order subsystem follows.
+
+## 2026-11-13 — Relationship representation is an implementation choice
+
+The human refined application access: relevant relationships may be mapped onto application-level
+items rather than exposing raw engine records. No further decision to hide or expose investigrams
+as a specific API object is needed. Their distinction from Projections is already established;
+implementation chooses direct or mapped representations while preserving relationship meaning,
+qualification, precise traceability and exact access. Avoid attributing a contribution-specific
+relationship to the whole answer or presenting exposure as reliance. Revised the prior access
+paragraphs so they no longer prescribe exposure of underlying records or a new application model.
