@@ -2009,3 +2009,33 @@ claims (e.g. export projection acquiring module naming), exposure and later-disp
 and provider re-encounter. The authored probe does not establish any of that native integration.
 The updated checker exercises seven invocations plus two re-encounter branches and rejects sixteen
 malformed cases. No governing, product or foundation documents were changed.
+
+## 2026-11-13 — Re-encounter exposure, standing and allocation corrections
+
+The human authorized fixes from the focused re-review. Equality reuse by the host now records a
+normalization decision rather than inventing investigator deliveries. The rerun has no retained
+context exposure; its result can still include earlier associations and acquire later membership
+causes. Reuse is restricted to undisplaced identifying associations. After supersession or
+withdrawal, recomputation resolves the same entity but contributes a new identifying addition,
+leaving the original displacement and any replacement intact. Renewal does not adjudicate a
+conflict or imply the analyzer read the organizing claim. This corrects the previous probe's
+synthetic deliveries and its reuse of displaced identifications.
+
+Native keys and common IDs now differ throughout the fixture. A genuinely different provider
+identity scope allocates fresh common IDs without correspondence; it is no longer a negative
+collision example. The adapter also handles per-investigram provenance. Scope continuity remains
+provider-specific; no universal rule makes each source change a new entity.
+
+Q-M now has only the organizer's association to the mechanical item. The existing model already
+checks reachability across the whole submission, so the earlier duplicate association was
+unnecessary. Mechanical item attribution and agentic declaration attribution remain separate.
+Q-R's basis now includes the supplied/cited loader and plugin source as well as its retained
+selection. Q-C remains selection-only. The previous entry's Q-R retained-only basis is corrected.
+
+The unification probe now exercises seven main invocations and six re-encounter branches,
+including supersession/withdrawal renewal and later result-membership causes without invented
+evaluation exposure. Seventeen malformed cases are rejected. These remain authored probes;
+no product or governing files were changed and no native integration is claimed.
+
+Verification: unification, both partitions, additions, acquisition, guidance, composition/selector
+checks and diagram regeneration all pass. Working-note file links and fixture JSON also validate.

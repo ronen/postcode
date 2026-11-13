@@ -95,7 +95,7 @@
                   },
                   "providerIdentity": {
                     "provider": "typescript",
-                    "nativeEntity": "M-loader",
+                    "nativeEntity": "typescript-native:M-loader",
                     "scope": "supported Session and captured provider basis",
                     "basisScope": {
                       "session": "AUTHORED-SESSION-1",
@@ -131,7 +131,7 @@
                   },
                   "providerIdentity": {
                     "provider": "typescript",
-                    "nativeEntity": "M-plugin",
+                    "nativeEntity": "typescript-native:M-plugin",
                     "scope": "supported Session and captured provider basis",
                     "basisScope": {
                       "session": "AUTHORED-SESSION-1",
@@ -167,7 +167,7 @@
                   },
                   "providerIdentity": {
                     "provider": "typescript",
-                    "nativeEntity": "M-empty",
+                    "nativeEntity": "typescript-native:M-empty",
                     "scope": "supported Session and captured provider basis",
                     "basisScope": {
                       "session": "AUTHORED-SESSION-1",
@@ -434,7 +434,7 @@
                   },
                   "providerIdentity": {
                     "provider": "typescript",
-                    "nativeEntity": "S-load",
+                    "nativeEntity": "typescript-native:S-load",
                     "scope": "supported Session and captured provider basis",
                     "basisScope": {
                       "session": "AUTHORED-SESSION-1",
@@ -471,7 +471,7 @@
                   },
                   "providerIdentity": {
                     "provider": "typescript",
-                    "nativeEntity": "S-target",
+                    "nativeEntity": "typescript-native:S-target",
                     "scope": "supported Session and captured provider basis",
                     "basisScope": {
                       "session": "AUTHORED-SESSION-1",
@@ -1308,28 +1308,7 @@
                   ]
                 }
               ],
-              "associationSpecifications": [
-                {
-                  "key": "runtime",
-                  "operation": "addition",
-                  "target": {
-                    "entity": {
-                      "entity": "M-loader"
-                    },
-                    "role": "describes"
-                  },
-                  "members": [
-                    {
-                      "item": {
-                        "investigram": {
-                          "submittedInvestigram": "constant"
-                        },
-                        "contentKey": "dependency"
-                      }
-                    }
-                  ]
-                }
-              ],
+              "associationSpecifications": [],
               "referents": [],
               "evidence": [
                 "E-loader",
@@ -1390,14 +1369,6 @@
                     {
                       "declaration": {
                         "investigram": {
-                          "submittedInvestigram": "constant"
-                        },
-                        "associationKey": "runtime"
-                      }
-                    },
-                    {
-                      "declaration": {
-                        "investigram": {
                           "submittedInvestigram": "organization"
                         },
                         "associationKey": "runtime"
@@ -1435,7 +1406,7 @@
             "entity": "M-loader",
             "associations": [
               {
-                "investigram": "CONSTANT-TARGET-1",
+                "investigram": "TARGET-ORGANIZATION-1",
                 "associationKey": "runtime"
               }
             ],
@@ -1465,12 +1436,20 @@
             "method": "authored/qualified-target-explanation@0"
           },
           "basis": {
+            "sourceAnalysis": {
+              "programState": "AUTHORED-PINNED-SOURCE-1",
+              "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+              "sourceDigests": {
+                "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+              }
+            },
             "retainedSelections": [
               {
                 "entity": "M-loader",
                 "associations": [
                   {
-                    "investigram": "CONSTANT-TARGET-1",
+                    "investigram": "TARGET-ORGANIZATION-1",
                     "associationKey": "runtime"
                   }
                 ],

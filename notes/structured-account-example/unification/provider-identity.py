@@ -6,6 +6,7 @@ explicitly pinned. A real adapter must use the provider's actual continuity rule
 """
 import copy
 import json
+import uuid
 
 
 def identity_key(item):
@@ -22,6 +23,7 @@ def normalize(model, stage):
         if 'providerIdentity' in item:
             known.setdefault(identity_key(item), []).append((owner, key, item))
     reused = {}
+    allocated = {}
     for bundle in stage['submission']['result']['investigrams']:
         for item in bundle['content']:
             if 'providerIdentity' not in item:
@@ -34,6 +36,13 @@ def normalize(model, stage):
                 reused[local] = entities.pop()
                 del bindings['entityIds'][local]
                 item['introducesEntity'] = False
+            else:
+                # Host allocation is separate from the native key. Deterministic UUIDs
+                # make this authored probe reproducible, not a product identity algorithm.
+                common_id = 'E-' + str(uuid.uuid5(uuid.NAMESPACE_URL, 'authored-provider:' + identity_key(item)))
+                assert common_id not in model.entities, 'fresh common identity collision'
+                bindings['entityIds'][local] = common_id
+                allocated[local] = common_id
 
     def resolve(value):
         if isinstance(value, dict):
@@ -48,17 +57,26 @@ def normalize(model, stage):
     # equal qualification, evidence and method/basis. A changed method gets a new
     # qualified association on the same entity, without automatic supersession.
     redirected = {}
+    displaced_matches = set()
     for bundle in stage['submission']['result']['investigrams']:
         keep = []
+        production = (bindings['provenanceByInvestigram'][bundle['key']]
+                      if 'provenanceByInvestigram' in bindings else bindings['provenance'])
         for item in bundle['content']:
             equal = None
             if 'providerIdentity' in item and not item['introducesEntity']:
                 for owner, key, previous in known[identity_key(item)]:
                     comparison = copy.deepcopy(previous); comparison['introducesEntity'] = False
                     prior = model.investigrams[owner]
-                    if (item == comparison and bindings['provenance'] == prior.get('provenance')
+                    if (item == comparison and production == prior.get('provenance')
                             and bundle['qualifications'] == prior['qualifications']
                             and bundle['evidence'] == prior['evidence']):
+                        # This bounded provider uses same-key identifying items and
+                        # associations. Identity remains reusable after displacement;
+                        # the displaced association does not. Renew with a new addition.
+                        if model.standing((owner, key))['displacedBy']:
+                            displaced_matches.add((owner, key))
+                            continue
                         equal = (owner, key)
                         break
             if equal:
@@ -70,8 +88,7 @@ def normalize(model, stage):
                 assert model.expand(equal)[1] == {equal}
                 redirected[(bundle['key'], item['key'])] = equal
                 bundle['associationSpecifications'].remove(association)
-                selection = {'entity': item['subject']['entity'], 'associations': [{'investigram': equal[0], 'associationKey': equal[1]}], 'items': [], 'options': []}
-                stage['request']['deliveries'].append(selection)
+                # Host equality/reuse is not context delivered to the analyzer.
             else:
                 keep.append(item)
         bundle['content'] = keep
@@ -83,4 +100,7 @@ def normalize(model, stage):
                 replacement = redirected.get((local_owner, ref.get('associationKey')))
                 if replacement:
                     ref.update(investigram={'investigram': replacement[0]}, associationKey=replacement[1])
-    return stage, {'resolvedExistingEntities': reused, 'reusedIdentifications': [f'{o}::{k}' for o, k in redirected.values()]}
+    return stage, {'resolvedExistingEntities': reused, 'allocatedEntities': allocated,
+                   'reusedIdentifications': [f'{o}::{k}' for o, k in redirected.values()],
+                   'skippedDisplacedIdentifications': [f'{o}::{k}' for o, k in sorted(displaced_matches)],
+                   'decisionBasis': 'Host comparison by provider identity and qualified content equality; not analyzer delivery.'}

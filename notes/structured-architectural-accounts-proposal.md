@@ -178,22 +178,29 @@ The probe supports this direction and identifies three concrete requirements:
   description. Supported identifying content types still resolve explicit introductions and carry
   qualifications. Before acceptance, host/provider identity resolution binds repeated native
   identities within supported scope to existing entities. The analyzer need not inspect Session
-  state. Equal identifying contributions may reuse their original associations; changed method or
-  qualification can add new associations on the same entity. Fresh allocation collisions still fail.
-  The probe exercises identical rerun reuse and changed-method additions, separately from query reuse.
+  state. Native keys differ from common IDs. A genuinely different provider identity scope can
+  allocate fresh common IDs without implied correspondence; fresh common-ID collisions still fail.
+  Equal identifying contributions may reuse **undisplaced** associations without inventing analyzer
+  delivery/exposure. If displaced, recomputation can add a new identifying contribution on the same
+  entity, preserving the earlier displacement and any replacement. Renewal does not adjudicate
+  disagreement. The probe exercises both supersession and withdrawal, along with identical reuse,
+  changed methods, new identity scope and per-investigram provenance, separately from query reuse.
 - Provenance must retain the actual producing method and basis per contribution. Selecting content
   from different producers must not flatten it to one method, basis or guarantee. The shared probe
   permits host-attributed provenance per investigram within one acceptance. Computing a target
   and deciding to displace an earlier inference are separately attributed, even in one submission.
   An explicit deterministic organizing policy could also author a declaration under its own method.
-  Selection-only basis names the retained inputs actually used, not source it did not read; original
-  source bases remain with the selected items. Older fixtures retain their single fixed basis.
+  The organizer's association alone can make the mechanical item reachable across the submission;
+  a second association owned by the mechanical bundle is unnecessary. Selection-only basis names
+  retained inputs actually used, not source it did not read. When source is also supplied and cited
+  (Q-R), capture both source and retained inputs. Original source bases remain with selected items.
+  Older fixtures retain their single fixed basis.
 - Evaluation/outcome, contribution, query result and selected answer remain distinct. An established
   empty export surface is content; unavailable analysis does not manufacture that content. Reusing
   an existing answer does not allocate another result. One public request may involve several
   methods; not every internal compiler phase needs a public query-result entity.
 
-Four small content contracts, two provider re-encounter branches and seventeen malformed cases are
+Four small content contracts, six provider re-encounter branches and seventeen malformed cases are
 exercised. No native provider, live investigator or proposed constant-target method was run.
 Production content contracts, actual coordinated execution, first migration depth and full
 partial/failure result handling remain planning work. First native verification must include

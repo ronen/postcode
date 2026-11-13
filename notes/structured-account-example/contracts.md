@@ -55,8 +55,12 @@ For native providers, host/provider identity resolution precedes this allocation
 same native identity within supported scope binds to the existing entity. The normalized
 submission references that entity, rather than asserting another fresh allocation. Re-encounter
 is not name-based deduplication; provider continuity rules remain authoritative. The unification
-probe reuses identical identifying associations and adds newly qualified ones when the producing
-method changes. It does not silently reinstate displaced associations.
+probe uses native keys distinct from common IDs and allocates fresh common IDs for a genuinely
+different identity scope without asserting correspondence. Equal identifying information may
+reuse an undisplaced association; a changed method or a displaced association yields a new
+qualified identifying addition on the same entity. Renewal neither reinstates the old association
+nor adjudicates disagreement. Host equality/reuse is not analyzer delivery: no exposure is invented,
+though result membership still records the associations included.
 
 Names, descriptions and classifications are associated information, not mutable
 unqualified fields of the identity. Reuse asserts reference to the identified thing,
@@ -75,7 +79,8 @@ Neither probe executes a native producer or establishes complete production cont
 The host provenance covers producer/method and basis; claim qualifications still determine what
 is established. Attribution is per investigram, not necessarily per acceptance: a mechanical
 finding and an agentic organizing declaration can share a submission with separate method/basis.
-Selection basis identifies retained inputs actually used. Displacement grounds should explain
+Selection basis identifies retained inputs actually used; when source is also supplied and cited,
+the captured basis includes that source as well. Displacement grounds should explain
 material method/scope/guarantee changes; fuller prose alone can be an addition. These are authoring
 policies, not new semantic acceptance gates. Mechanical contributions need no invented agent identity or prose description. See the [proposal](../structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
 Relationships W and patterns C-BB/C-BH are proposed explicitly identified entities;
@@ -119,7 +124,10 @@ Result membership is distinct from child composition and actual context exposure
 
 A declaration belongs to its producing investigram. Its members may belong to another;
 reuse neither copies nor reparents content. Each source retains its qualification,
-basis and provenance. The new declaration has its own attributable grounds. Reasons
+basis and provenance. Content reachability is checked across the entire submission, not only
+within each owning investigram. Thus a mechanical item can be associated solely by a separately
+attributed organizer in the same submission; no duplicate mechanical-owner association is needed.
+The new declaration has its own attributable grounds. Reasons
 are inline in this slice; no redundant mandatory `support` list repeats the displaced
 address. Additional grounds can be supplied as new qualified content without a special
 operation for editing an earlier reason.

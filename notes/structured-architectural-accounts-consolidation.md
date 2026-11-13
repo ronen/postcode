@@ -42,9 +42,14 @@ migration effort is not a reason to retain an inferior split. The
 and symbol identification, export surfaces, complementary dependencies, provider re-encounter
 and separately attributed mechanical findings/organizing declarations in one acceptance. Fuller
 interpretation is added alongside the mechanical finding. Fresh allocation differs from resolving
-a known provider identity; equal identifying information may reuse its original association, while
-a changed method can add qualified identifying information on the same entity. Selection-only
-basis names retained inputs, preserving their original source bases. Supersession grounds should
+a known provider identity. Native keys and common IDs are distinct; a new identity scope may
+allocate a new common ID without correspondence. Equal identifying information can reuse an
+undisplaced association without inventing analyzer exposure. If displaced, recomputation adds
+a new qualified identification while preserving the old displacement and any replacement; renewal
+does not resolve disagreement. A changed method can also add qualified identification. Reachability
+is submission-wide, so the organizer alone can associate the mechanical item. Selection-only
+basis names retained inputs; a contribution also using source captures both, preserving each
+selected item's original source basis. Supersession grounds should
 explain material changes in method, scope or guarantee; guarantee-ranking selectors remain deferred.
 Native producer integration remains unverified, including mechanical consumers of retained claims. See the
 [working direction](structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).

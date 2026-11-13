@@ -63,8 +63,8 @@ implemented exports Lens already accepts that cardinality.
 | Q-S | Mechanical source-dependency analysis returns the recognized dynamic-import occurrence with `target-indeterminate` and no established target relationship | `DEPENDENCIES-1/dependencies` describes M-loader. This is a qualified mechanical result, not an empty or failed analysis. |
 | Q-I | Interpretation receives Q-S's association and the plugin's identifying association, then explains the conditional target from captured source | `RUNTIME-1/runtime` is added beside the source-request association. It does not supersede Q-S or claim runtime observation. |
 | Q-C | A qualified selection uses the delivered Q-S and Q-I associations, without reading source | Its basis names those retained selections. RESULT-Q-C keeps each original owner, source basis, method, scope and guarantee. No synthesized complete graph is asserted. |
-| Q-M | **Hypothetical** mechanical method establishes the restricted constant target; a separately attributed agentic analysis judges its use in place of the earlier inference | `CONSTANT-TARGET-1/runtime` adds the mechanical finding. `TARGET-ORGANIZATION-1/runtime` supersedes the earlier interpreted association by referencing that same mechanical item. One acceptance contains two differently attributed investigrams. Neither method was executed. |
-| Q-R | Authored interpretation uses the retained mechanical finding to explain possible invocation versus observed use | `RUNTIME-REFINED-1/runtime` is an addition. The still-valid mechanical finding remains undisplaced, with its original guarantee; the new prose carries its own interpreted guarantee. |
+| Q-M | **Hypothetical** mechanical method establishes the restricted constant target; a separately attributed agentic analysis judges its use in place of the earlier inference | `CONSTANT-TARGET-1/dependency` retains the mechanical finding. The sole association to it, `TARGET-ORGANIZATION-1/runtime`, supersedes the earlier interpreted association. Submission-wide reachability preserves separate ownership without a duplicate association. One acceptance contains two differently attributed investigrams. Neither method was executed. |
+| Q-R | Authored interpretation uses the retained mechanical finding and supplied source evidence to explain possible invocation versus observed use | `RUNTIME-REFINED-1/runtime` is an addition. The still-valid mechanical finding remains undisplaced, with its original guarantee; the new prose carries its own interpreted guarantee. |
 
 Q-M separates calculation from the judgment to displace an earlier association. The organizing
 agent compares the same conditional target, basis and assumptions and explains the change from
@@ -78,12 +78,14 @@ should explain material changes of method, scope or guarantee; no mechanical/age
 is implied. Defer a minimum-guarantee selection mechanism: guarantees are scoped contracts, not
 a universal ranked scale. Structural validation does not certify the judgment.
 
-The final undisplaced `describes` associations for M-loader include exports, the source-request
-account, the mechanical target finding, the organizing use of that same item, and the fuller
-interpreted explanation. The two uses of the mechanical item are distinct associations with
-different grounds, not duplicate calculations or transferred verification. Exact projection keeps
-the item once and preserves both association uses. Earlier interpretation and captured answers
-remain available by exact reference.
+The final undisplaced `describes` associations for M-loader are exports, the source-request
+account, the organizer's association to the mechanical finding, and the fuller interpreted
+explanation. The mechanical bundle has no association of its own: the organizer's association
+makes its item reachable across the submission. This is already supported by the common model;
+no extra association kind or replacement-reference field is needed. The item retains mechanical
+provenance and the declaration retains agentic provenance. Inventories and result membership
+contain only one association to that item. Earlier interpretation and captured answers remain
+available by exact reference.
 
 ## Content and provenance contracts exercised
 
@@ -126,8 +128,8 @@ whatever agent/method attribution their actual execution requires.
 
 The original common model assumed one fixture-wide basis. This branch carries a captured input
 selection for each contribution: file digests/configuration for source analysis, exact retained
-selections for Q-C and Q-R, and the retained comparison plus same-submission finding for the
-Q-M organizer. The invocation records their combined inputs without inventing one producer. Q-S's loader-source
+selections alone for Q-C, retained selections plus the supplied/cited loader and plugin source
+for Q-R, and the retained comparison plus same-submission finding for the Q-M organizer. The invocation records their combined inputs without inventing one producer. Q-S's loader-source
 basis is not substituted for Q-I's loader-plus-plugin basis when they are selected together.
 These are different scopes of the same authored program state, not proof of identity continuity
 across changing source states. The existing older fixtures keep their explicitly shared basis.
@@ -141,20 +143,37 @@ content and an `identifies` association. A fresh allocation cannot steal an exis
 
 The [bounded host adapter](provider-identity.py) resolves provider + native ID + supported basis
 scope before common acceptance. It takes the provider's repeated native output, binds known
-identities to existing entity IDs, and normalizes those references without requiring the analyzer
-to inspect Session state. Native identity strings here are readable stand-ins; the real provider
-retains its own identity rules. This is separate from recognized request reuse, which does no new
+identities to existing common entity IDs, and normalizes those references without requiring the
+analyzer to inspect Session state. Native IDs (`typescript-native:…`) differ from common IDs
+throughout the fixture. A genuinely different identity scope allocates fresh common IDs, with
+no implied correspondence. The adapter uses reproducible UUIDs for new allocations in the probe;
+this is not a proposed product allocation algorithm. The real provider retains its own continuity
+rules, including what constitutes an identity scope. A source change is not universally a new scope. This is separate from recognized request reuse, which does no new
 analysis and returns the existing Q/result.
 
-A Q-D2 branch reruns discovery and reuses the three existing identifying associations when content,
-method/basis, evidence and qualification match exactly. Its new result references them and its
-actual selection deliveries are recorded. No new module entity or identifying association is
-created. Exact reuse does not reinstate a displaced association; current standing must still be
-disclosed. A second branch changes the producing method: it keeps the same entity IDs but adds
-new qualified identifying items/associations. The earlier identifications remain unchanged.
-This is an explicit bounded reuse policy, not name-based deduplication or a claim that every
-native provider has the same fingerprint. A different basis scope is not automatic identity
-continuity. Fresh allocation collisions remain invalid for any producer.
+The six branches exercise distinct cases:
+
+- An identical Q-D2 rerun reuses the three **undisplaced** identifying associations when content,
+  method/basis, evidence and qualification match. Host equality/reuse is recorded separately in
+  the report; the analyzer received no old information, so deliveries, exposure and source-query
+  dependencies remain empty. Its result still includes the reused associations. A later
+  displacement creates a membership cause for that result, not an evaluation cause for Q-D2.
+- A changed method keeps the entity IDs and adds newly qualified identifying items/associations.
+- A different provider identity scope allocates three fresh common IDs for the same native keys,
+  rather than treating their spelling as common IDs and rejecting a collision.
+- Re-encounter also works with `provenanceByInvestigram`, not only one default producer.
+- After supersession of an identification, a rerun resolves the same entity but renews its own
+  identifying contribution as an addition; it does not reuse the displaced association.
+- The same renewal behavior holds after withdrawal.
+
+Renewal leaves the original displacement and any replacement association intact. It neither
+reinstates the old association nor adjudicates a disagreement; a new identifying use may coexist
+with a qualified alternative. The new output has its own provenance. These branches deliberately
+model recomputation without receiving the organizing claim, so the adapter does not invent that
+exposure or claim the analyzer considered it. Existing histories remain inspectable.
+
+This is a bounded reuse policy, not name-based deduplication or a claim that every provider has
+the same fingerprint. Fresh common-ID allocation collisions remain invalid for any producer.
 
 ## Production, selection and outcomes remain distinct
 
@@ -185,7 +204,8 @@ descriptions merely because those descriptions concern the same module. Their re
 exposure indexes are empty; source evidence and captured input attribution are still present.
 Q-I really receives the source-dependency association and the plugin identification, so those
 qualified deliveries are recorded. Q-M's organizer receives the association it replaces; Q-R
-receives the mechanical association it explains, without displacing it.
+receives the organizer's association and its mechanical item, plus the supplied source evidence,
+without displacing that association.
 The same delivery machinery works for mechanical consumers of retained contributions: actual reads
 matter, not whether the consumer happens to be an agent. Bare IDs remain distinct from claim delivery.
 
@@ -240,12 +260,13 @@ proved that every existing provider can migrate without further findings.
 
 Run `python3 notes/structured-account-example/unification/check-unification.py`.
 `--write` regenerates [the report](report.json). The checker validates seven accepted invocations
-plus two provider re-encounter branches, later symbol introduction, exact answer reuse, separate
+plus six provider re-encounter branches, later symbol introduction, exact answer reuse, separate
 production bases, mixed-method acceptance, complementary additions, qualified supersession,
 original snapshots and result/exposure causes. It rejects **17 malformed cases atomically**, including
-invalid provider references, forged producer attribution, unsupported producer/type, missing basis/scope, inconsistent target status,
+empty native identity, forged producer attribution, unsupported producer/type, missing basis/scope, inconsistent target status,
 unknown entity/displacement targets, duplicate item keys, missing grounds, incomplete/ambiguous
-per-investigram provenance and fresh-allocation collisions (including an unsupported basis scope).
+per-investigram provenance, fresh common-ID allocation collisions and an unreachable mechanical
+item. A new identity scope is now a positive allocation case, not a malformed contribution.
 
 Those checks validate representation and lifecycle. They do not establish native method execution,
 semantic truth, runtime behavior, performance, complete provider migration or end-to-end acceptance.

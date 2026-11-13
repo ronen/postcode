@@ -25,11 +25,14 @@
         "plugin": "M-plugin",
         "empty": "M-empty"
       },
+      "allocatedEntities": {},
       "reusedIdentifications": [
         "DISCOVERY-1::loader",
         "DISCOVERY-1::plugin",
         "DISCOVERY-1::empty"
-      ]
+      ],
+      "skippedDisplacedIdentifications": [],
+      "decisionBasis": "Host comparison by provider identity and qualified content equality; not analyzer delivery."
     },
     "changedMethodReencounter": {
       "resolvedExistingEntities": {
@@ -37,7 +40,101 @@
         "plugin": "M-plugin",
         "empty": "M-empty"
       },
-      "reusedIdentifications": []
+      "allocatedEntities": {},
+      "reusedIdentifications": [],
+      "skippedDisplacedIdentifications": [],
+      "decisionBasis": "Host comparison by provider identity and qualified content equality; not analyzer delivery."
+    },
+    "newIdentityScope": {
+      "resolvedExistingEntities": {},
+      "allocatedEntities": {
+        "loader": "E-5380716b-ef40-5afb-929a-c6e40b769b96",
+        "plugin": "E-cac72ffd-2cb6-5b2e-8d09-a23aac4487b7",
+        "empty": "E-c0e60fab-cf10-5e26-b5a7-5cb789dadbcb"
+      },
+      "reusedIdentifications": [],
+      "skippedDisplacedIdentifications": [],
+      "decisionBasis": "Host comparison by provider identity and qualified content equality; not analyzer delivery."
+    },
+    "perInvestigramProvenanceReencounter": {
+      "resolvedExistingEntities": {
+        "loader": "M-loader",
+        "plugin": "M-plugin",
+        "empty": "M-empty"
+      },
+      "allocatedEntities": {},
+      "reusedIdentifications": [
+        "DISCOVERY-1::loader",
+        "DISCOVERY-1::plugin",
+        "DISCOVERY-1::empty"
+      ],
+      "skippedDisplacedIdentifications": [],
+      "decisionBasis": "Host comparison by provider identity and qualified content equality; not analyzer delivery."
+    },
+    "renewalAfterDisplacement": {
+      "supersession": {
+        "normalization": {
+          "resolvedExistingEntities": {
+            "loader": "M-loader",
+            "plugin": "M-plugin",
+            "empty": "M-empty"
+          },
+          "allocatedEntities": {},
+          "reusedIdentifications": [
+            "DISCOVERY-1::plugin",
+            "DISCOVERY-1::empty"
+          ],
+          "skippedDisplacedIdentifications": [
+            "DISCOVERY-1::loader"
+          ],
+          "decisionBasis": "Host comparison by provider identity and qualified content equality; not analyzer delivery."
+        },
+        "originalStanding": {
+          "displacedBy": [
+            "STANDING-1::loader"
+          ],
+          "competingDeclarations": false
+        },
+        "currentIdentifications": [
+          "DISCOVERY-2::loader",
+          "STANDING-1::loader"
+        ],
+        "afterReuseEvaluationCauses": [],
+        "afterReuseMembershipCauses": [
+          "STANDING-1::loader"
+        ]
+      },
+      "withdrawal": {
+        "normalization": {
+          "resolvedExistingEntities": {
+            "loader": "M-loader",
+            "plugin": "M-plugin",
+            "empty": "M-empty"
+          },
+          "allocatedEntities": {},
+          "reusedIdentifications": [
+            "DISCOVERY-1::plugin",
+            "DISCOVERY-1::empty"
+          ],
+          "skippedDisplacedIdentifications": [
+            "DISCOVERY-1::loader"
+          ],
+          "decisionBasis": "Host comparison by provider identity and qualified content equality; not analyzer delivery."
+        },
+        "originalStanding": {
+          "displacedBy": [
+            "STANDING-1::loader"
+          ],
+          "competingDeclarations": false
+        },
+        "currentIdentifications": [
+          "DISCOVERY-2::loader"
+        ],
+        "afterReuseEvaluationCauses": [],
+        "afterReuseMembershipCauses": [
+          "STANDING-1::loader"
+        ]
+      }
     }
   },
   "complementary": {
@@ -363,12 +460,20 @@
       "sourceInvestigram": "RUNTIME-REFINED-1",
       "queryInvocation": "Q-R",
       "basis": {
+        "sourceAnalysis": {
+          "programState": "AUTHORED-PINNED-SOURCE-1",
+          "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+          "sourceDigests": {
+            "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+            "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+          }
+        },
         "retainedSelections": [
           {
             "entity": "M-loader",
             "associations": [
               {
-                "investigram": "CONSTANT-TARGET-1",
+                "investigram": "TARGET-ORGANIZATION-1",
                 "associationKey": "runtime"
               }
             ],
@@ -383,12 +488,20 @@
           "method": "authored/qualified-target-explanation@0"
         },
         "basis": {
+          "sourceAnalysis": {
+            "programState": "AUTHORED-PINNED-SOURCE-1",
+            "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+            "sourceDigests": {
+              "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+              "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+            }
+          },
           "retainedSelections": [
             {
               "entity": "M-loader",
               "associations": [
                 {
-                  "investigram": "CONSTANT-TARGET-1",
+                  "investigram": "TARGET-ORGANIZATION-1",
                   "associationKey": "runtime"
                 }
               ],
@@ -491,7 +604,6 @@
     }
   },
   "currentAssociations": [
-    "CONSTANT-TARGET-1::runtime",
     "DEPENDENCIES-1::dependencies",
     "EXPORTS-1::exports",
     "RUNTIME-REFINED-1::runtime",

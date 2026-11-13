@@ -21,7 +21,7 @@ def module_identity(item):
     assert isinstance(item['introducesEntity'], bool)
     scope = item['providerIdentity']['basisScope']
     assert set(scope) == {'session', 'programState', 'configuration'} and all(scope.values())
-    assert item['providerIdentity']['nativeEntity'] == item['subject']['entity']
+    assert isinstance(item['providerIdentity']['nativeEntity'], str) and item['providerIdentity']['nativeEntity']
     assert item['providerIdentity']['scope'] and item['providerIdentity']['provider']
     assert item['module']['handleStatus'] == 'generated-navigation-aid'
     assert item['module']['discoveryFacets'] and item['module']['sourcePath']
@@ -34,7 +34,7 @@ def symbol_identity(item):
     assert isinstance(item['introducesEntity'], bool)
     scope = item['providerIdentity']['basisScope']
     assert set(scope) == {'session', 'programState', 'configuration'} and all(scope.values())
-    assert item['providerIdentity']['nativeEntity'] == item['subject']['entity']
+    assert isinstance(item['providerIdentity']['nativeEntity'], str) and item['providerIdentity']['nativeEntity']
     assert item['symbol']['name'] and item['symbol']['declarationCount'] > 0
     assert set(item['symbol']['roles']) == {'type', 'value'}
     assert item['symbol']['origin']
@@ -140,7 +140,8 @@ assert all(model.investigrams[k] == v for k, v in all_old_bundles.items())
 assert model.snapshots['Q-C'] == combined_before and model.snapshots['Q-S'] == source_before
 
 accept(model, stages['Q-R'])
-assert model.standing(('CONSTANT-TARGET-1', 'runtime'))['displacedBy'] == []
+assert ('CONSTANT-TARGET-1', 'runtime') not in model.declarations()
+assert model.standing(('TARGET-ORGANIZATION-1', 'runtime'))['displacedBy'] == []
 assert model.declarations()[('RUNTIME-REFINED-1', 'runtime')]['operation'] == 'addition'
 final = model.qualified('RUNTIME-REFINED-1', model.items()[('RUNTIME-REFINED-1', 'dependency')])
 assert final['provenance']['producer']['kind'] == 'agentic'
@@ -154,7 +155,7 @@ assert mechanical_cause in fresh_combined['notices']
 assert 'RUNTIME-REFINED-1::runtime' not in fresh_combined['notices']
 assert model.reconsideration()['evaluations']['Q-C'] == [mechanical_cause]
 current = model.project({'entity': 'M-loader', 'scopeSelection': {'roles': ['describes'], 'standing': 'undisplaced'}})
-assert set(current['declarations']) == {'EXPORTS-1::exports', 'DEPENDENCIES-1::dependencies', 'CONSTANT-TARGET-1::runtime', 'TARGET-ORGANIZATION-1::runtime', 'RUNTIME-REFINED-1::runtime'}
+assert set(current['declarations']) == {'EXPORTS-1::exports', 'DEPENDENCIES-1::dependencies', 'TARGET-ORGANIZATION-1::runtime', 'RUNTIME-REFINED-1::runtime'}
 assert model.queries['Q-R']['deliveries'][0]['items']['CONSTANT-TARGET-1::dependency'] == mechanical_after
 
 negative_count = 0
@@ -174,7 +175,7 @@ def reject(state, stage, change):
 
 def first_item(stage): return stage['submission']['result']['investigrams'][0]['content'][0]
 empty = Model(fixture['seed'], fixture['basis'], 'inventory', contracts)
-reject(empty, stages['Q-D'], lambda s: first_item(s)['providerIdentity'].update(nativeEntity='wrong'))
+reject(empty, stages['Q-D'], lambda s: first_item(s)['providerIdentity'].update(nativeEntity=''))
 reject(empty, stages['Q-D'], lambda s: first_item(s)['providerIdentity'].pop('basisScope'))
 reject(empty, stages['Q-D'], lambda s: s['bindings']['provenance']['producer'].update(kind='unknown'))
 reject(empty, stages['Q-D'], lambda s: s['bindings']['provenance'].update(basis={}))
@@ -211,8 +212,9 @@ assert normalized['submission']['result']['investigrams'][0]['content'] == []
 accept(rerun_model, normalized)
 assert set(rerun_model.entities) - set(checkpoints['Q-D'].entities) == {'RESULT-Q-D2'}
 assert len([d for d in rerun_model.declarations().values() if d['target']['role'] == 'identifies']) == 3
-assert len(rerun_model.queries['Q-D2']['deliveries']) == 3
-assert rerun_model.queries['Q-D2']['sourceQueries'] == ['Q-D']
+assert rerun_model.queries['Q-D2']['deliveries'] == []
+assert rerun_model.queries['Q-D2']['sourceQueries'] == []
+assert rerun_model.queries['Q-D2']['exposureIndex'] == []
 assert rerun_model.snapshots['Q-D'] == checkpoints['Q-D'].snapshots['Q-D']
 # A different method can contribute new qualified identifications for the same entities.
 changed = copy.deepcopy(duplicate)
@@ -222,15 +224,107 @@ changed_model = copy.deepcopy(checkpoints['Q-D']); accept(changed_model, changed
 assert len(changed_report['resolvedExistingEntities']) == 3 and not changed_report['reusedIdentifications']
 assert len([d for d in changed_model.declarations().values() if d['target']['role'] == 'identifies']) == 6
 assert all(not item['introducesEntity'] for item in changed_model.investigrams['DISCOVERY-2']['content'])
-# A different basis scope is not an automatic correspondence; reusing allocated IDs still fails.
-wrong_scope = copy.deepcopy(duplicate)
-for item in wrong_scope['submission']['result']['investigrams'][0]['content']:
-    item['providerIdentity']['basisScope']['programState'] = 'DIFFERENT-STATE'
-wrong_scope, _ = normalize(checkpoints['Q-D'], wrong_scope)
-reject(checkpoints['Q-D'], wrong_scope, lambda s: None)
+# Distinct native/common identities are exercised throughout, not just in a side branch.
+assert all(item['providerIdentity']['nativeEntity'] != item['subject']['entity']
+           for item in model.items().values() if 'providerIdentity' in item)
+# A genuinely different identity scope allocates fresh common IDs, with no correspondence.
+new_scope = copy.deepcopy(duplicate)
+new_scope['bindings']['provenance']['basis']['programState'] = 'DISTINCT-IDENTITY-SCOPE'
+for item in new_scope['submission']['result']['investigrams'][0]['content']:
+    item['providerIdentity']['basisScope']['programState'] = 'DISTINCT-IDENTITY-SCOPE'
+scoped_model = copy.deepcopy(checkpoints['Q-D'])
+new_scope, scope_report = normalize(scoped_model, new_scope)
+accept(scoped_model, new_scope)
+assert len(scope_report['allocatedEntities']) == 3 and not scope_report['resolvedExistingEntities']
+assert not set(scope_report['allocatedEntities'].values()) & set(checkpoints['Q-D'].entities)
+assert {i['providerIdentity']['nativeEntity'] for i in scoped_model.investigrams['DISCOVERY-2']['content']} == {i['providerIdentity']['nativeEntity'] for i in scoped_model.investigrams['DISCOVERY-1']['content']}
+assert len(scoped_model.entities) == len(checkpoints['Q-D'].entities) + 4
+# Per-investigram attribution works on re-encounter too.
+multi = copy.deepcopy(duplicate)
+production = multi['bindings'].pop('provenance')
+multi['bindings']['provenanceByInvestigram'] = {'discovery': production}
+multi['bindings']['queryBasis'] = copy.deepcopy(production['basis'])
+multi, multi_report = normalize(checkpoints['Q-D'], multi)
+multi_model = copy.deepcopy(checkpoints['Q-D']); accept(multi_model, multi)
+assert len(multi_report['reusedIdentifications']) == 3
+assert multi_model.queries['Q-D2']['deliveries'] == []
+
+
+def displace_identification(operation):
+    """Authored organizing claim used only to test standing, not provider truth."""
+    selection = select('M-loader', 'DISCOVERY-1', 'loader')
+    declaration = {'key': 'loader', 'operation': operation,
+                   'target': {'entity': {'entity': 'M-loader'}, 'role': 'identifies'},
+                   'displaces': [{'investigram': {'investigram': 'DISCOVERY-1'}, 'associationKey': 'loader'}],
+                   'reason': 'Authored standing probe: displace this identifying use; no claim that the native provider is faulty.'}
+    # A supersession can select the same content for a differently qualified use.
+    if operation == 'supersession':
+        declaration['members'] = [{'item': {'investigram': {'investigram': 'DISCOVERY-1'}, 'contentKey': 'loader'}}]
+    return {
+        'request': {'id': 'Q-STANDING', 'operation': 'authored.displace-identification',
+                    'subject': {'entity': 'M-loader'}, 'resultEntity': 'RESULT-Q-STANDING',
+                    'deliveries': [selection], 'suppliedEvidence': ['E-standing'],
+                    'declaredMeaning': {'question': 'Exercise identification standing', 'scope': 'Authored probe only'}},
+        'bindings': {'entityIds': {'query-result': 'RESULT-Q-STANDING'},
+                     'investigramIds': {'standing': 'STANDING-1'},
+                     'provenance': {'producer': {'kind': 'agentic', 'method': 'authored/standing-probe@0'},
+                                    'basis': {'retainedSelections': [selection]}}},
+        'submission': {'result': {'queryInvocation': 'Q-STANDING',
+                       'queryResult': {'introducedEntity': 'query-result'},
+                       'compositionRoots': [{'submittedInvestigram': 'standing'}],
+                       'investigrams': [{'key': 'standing', 'title': 'Identification standing probe',
+                         'content': [], 'associationSpecifications': [declaration,
+                            {'key': 'result', 'operation': 'addition',
+                             'target': {'entity': {'introducedEntity': 'query-result'}, 'role': 'result'},
+                             'members': [{'declaration': {'investigram': {'submittedInvestigram': 'standing'}, 'associationKey': 'loader'}}]}],
+                         'referents': [], 'evidence': ['E-standing'],
+                         'qualifications': ['A lifecycle-only probe, not an adjudication of provider semantics.'],
+                         'children': [], 'followupOptions': [], 'presentations': []}]}}}
+
+
+renewals = {}
+for operation in ['supersession', 'withdrawal']:
+    # Displacement AFTER equality reuse affects result membership, not an invented delivery.
+    after_reuse = copy.deepcopy(rerun_model)
+    accept(after_reuse, displace_identification(operation))
+    status = after_reuse.reconsideration()
+    assert status['evaluations']['Q-D2'] == []
+    assert status['designations']['DISCOVERY-2::result']['membershipCauses'] == ['STANDING-1::loader']
+    # Displacement BEFORE the new run prevents redirecting to the old association.
+    renewal_model = copy.deepcopy(checkpoints['Q-D'])
+    accept(renewal_model, displace_identification(operation))
+    normalized, renewal_report = normalize(renewal_model, duplicate)
+    accept(renewal_model, normalized)
+    assert renewal_report['skippedDisplacedIdentifications'] == ['DISCOVERY-1::loader']
+    assert renewal_report['reusedIdentifications'] == ['DISCOVERY-1::plugin', 'DISCOVERY-1::empty']
+    assert renewal_model.standing(('DISCOVERY-1', 'loader'))['displacedBy'] == ['STANDING-1::loader']
+    assert renewal_model.declarations()[('DISCOVERY-2', 'loader')]['operation'] == 'addition'
+    assert renewal_model.standing(('STANDING-1', 'loader'))['displacedBy'] == []
+    assert renewal_model.investigrams['DISCOVERY-2']['provenance'] == duplicate['bindings']['provenance']
+    assert renewal_model.queries['Q-D2']['deliveries'] == []
+    assert renewal_model.queries['Q-D2']['sourceQueries'] == []
+    assert renewal_model.reconsideration()['designations']['DISCOVERY-2::result']['needsReconsideration'] == []
+    current_identifies = renewal_model.project({'entity': 'M-loader', 'scopeSelection': {'roles': ['identifies'], 'standing': 'undisplaced'}})
+    expected = {'DISCOVERY-2::loader'} | ({'STANDING-1::loader'} if operation == 'supersession' else set())
+    assert set(current_identifies['declarations']) == expected
+    renewals[operation] = {'normalization': renewal_report,
+                          'originalStanding': renewal_model.standing(('DISCOVERY-1', 'loader')),
+                          'currentIdentifications': sorted(current_identifies['declarations']),
+                          'afterReuseEvaluationCauses': status['evaluations']['Q-D2'],
+                          'afterReuseMembershipCauses': status['designations']['DISCOVERY-2::result']['membershipCauses']}
+
+# One organizer association supplies submission-wide reachability of the mechanical item.
+assert model.investigrams['CONSTANT-TARGET-1']['associationSpecifications'] == []
+assert model.expand(('TARGET-ORGANIZATION-1', 'result'))[1] == {('CONSTANT-TARGET-1', 'dependency')}
+assert len([r for r in current['declarations'] if r == 'TARGET-ORGANIZATION-1::runtime']) == 1
+assert model.snapshots['Q-M']['items']['CONSTANT-TARGET-1::dependency'] == mechanical_after
+# Removing that association's item is rejected as unassociated content; owner-local is not required.
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['submission']['result']['investigrams'][1]['associationSpecifications'][0].update(members=[{'item': {'investigram': {'investigram': 'RUNTIME-1'}, 'contentKey': 'dependency'}}]))
+assert final['basis']['sourceAnalysis'] == stages['Q-M']['bindings']['provenanceByInvestigram']['constant']['basis']
+assert final['basis']['retainedSelections'] == stages['Q-R']['request']['deliveries']
 
 report = {'status': fixture['status'], 'acceptedInvocations': list(model.queries),
-          'identities': {'architectural': ['PROJECT', 'M-loader', 'M-plugin', 'M-empty', 'S-load', 'S-target'], 'recognizedReuse': 'Q-E and RESULT-Q-E reused without allocation', 'providerReencounter': reuse_report, 'changedMethodReencounter': changed_report},
+          'identities': {'architectural': ['PROJECT', 'M-loader', 'M-plugin', 'M-empty', 'S-load', 'S-target'], 'recognizedReuse': 'Q-E and RESULT-Q-E reused without allocation', 'providerReencounter': reuse_report, 'changedMethodReencounter': changed_report, 'newIdentityScope': scope_report, 'perInvestigramProvenanceReencounter': multi_report, 'renewalAfterDisplacement': renewals},
           'complementary': {'mechanicalSourceRequest': static_before, 'interpretedConditionalTarget': interpreted_before},
           'qualifiedOrganizationAndAddition': {'laterMechanical': mechanical_after, 'organizingDeclaration': organization, 'complementaryInterpretation': final,
                                      'organizingStageCauses': mechanical_status['evaluations'],
@@ -248,5 +342,5 @@ report = {'status': fixture['status'], 'acceptedInvocations': list(model.queries
 path = BASE / 'report.json'
 if '--write' in sys.argv: path.write_text(json.dumps(report, indent=2)+'\n')
 else: assert read(path) == report, 'stale unification report'
-print(f'Common contributions: 7 accepted invocations plus 2 provider re-encounter branches; separate mechanical/organizing provenance, complementary additions, exact history and qualified basis pass; {negative_count} malformed cases rejected atomically.')
+print(f'Common contributions: 7 accepted invocations plus 6 provider re-encounter branches; separate mechanical/organizing provenance, complementary additions, exact history and qualified basis pass; {negative_count} malformed cases rejected atomically.')
 print('Authored design probe only: no native provider, new compiler method, live investigator, or runtime execution.')

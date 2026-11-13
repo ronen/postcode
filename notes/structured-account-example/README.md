@@ -196,7 +196,7 @@ rendered SVGs remain unchanged by the lifecycle conversion.
 
 The unification checker uses the same model with four additional bounded content contracts and
 per-investigram producer/basis attribution within one acceptance. It checks seven authored invocations,
-two provider re-encounter branches and seventeen malformed cases, including later symbol introduction, no invented mechanical prose, complementary dependencies,
+six provider re-encounter branches and seventeen malformed cases, including later symbol introduction, no invented mechanical prose, complementary dependencies,
 producer-neutral supersession, exact source qualification and preserved answers. It does not run
 native providers, a new compiler method or a live investigator. See its [walkthrough](unification/README.md).
 
