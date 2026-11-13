@@ -295,9 +295,10 @@ model. It also identifies concrete planning work:
   contracts are not a finished provider schema.
 - Represent producer attribution at the right analysis/contribution boundary when one request runs
   several methods. No common envelope should require an agent or assign one guarantee to all output.
-- Decide which native producers join the first capability and retain the existing outcome distinctions
-  for failed/partial work. Migration effort should not determine the conceptual split; the implementation
-  still needs a reviewable bounded scope.
+- The human chose all currently supported mechanical architectural information, in stages. Map
+  detailed migration milestones and retain failed/partial outcome distinctions. New analyzers and
+  provider-suppression policy are outside the scope; physical storage and provider algorithms need
+  not be replaced merely to expose their contributions through the common model.
 - Verify at least one actual mechanical contribution followed by an interpreting investigation in the
   supported Session lifetime, including a mechanical consumer of retained claims (for example, export
   projection reading module naming). Check that those reads create actual qualified deliveries and

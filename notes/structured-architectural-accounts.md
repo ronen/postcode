@@ -2063,3 +2063,14 @@ and product files remain unchanged; native adapter integration is still unverifi
 
 Verification: all unification, partition, additions, acquisition, guidance, composition/selector
 checks and diagram regeneration pass; working-note file links and fixture JSON validate.
+
+## 2026-11-13 — All existing mechanical information, migrated in stages
+
+The human agreed to option 3: include all currently supported mechanical architectural information
+in the plan, implemented and verified in stages. Start with module discovery/exports and actual
+mechanical reads of retained naming; continue through dependencies/remaining module information,
+organization, and integrated agentic verification. Mixed old/new representation is an intermediate
+state. This does not require rewriting provider algorithms or replacing suitable physical storage.
+The human's follow-up asks how common entities affect current storage and lookup; implementation
+layout is not settled by this scope agreement. Provider-output suppression remains a separate,
+deferred host policy; repeated contributions retain visible renewal history.

@@ -59,6 +59,13 @@ explain material changes in method, scope or guarantee; guarantee-ranking select
 Native producer integration remains unverified, including mechanical consumers of retained claims. See the
 [working direction](structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
 
+The agreed implementation endpoint includes all existing mechanical architectural information,
+staged through module discovery/exports, dependencies and remaining module information, organization,
+and integrated agentic verification. Mixed representation is an intermediate milestone. This does
+not prescribe replacing physical storage or provider algorithms. New analyzers, persistence,
+broader UI and provider-suppression policy remain deferred. See the proposal's
+[scope](structured-architectural-accounts-proposal.md#agreed-implementation-scope-existing-mechanical-information-staged).
+
 <a id="working-vocabulary"></a>
 ## Working vocabulary
 
@@ -367,7 +374,7 @@ is not an impact judgment, and a concern neither displaces earlier content nor f
 past exposure. No reverse-lookup API or concern declaration is implemented. See the
 [proposal](structured-architectural-accounts-proposal.md#deferred-investigator-directed-propagation-reassessment-and-scheduling).
 
-Before drafting: settle identity/migration depth, result designation shape, support selection,
+Before drafting: settle detailed migration stages, result designation shape, support selection,
 first-delivery inventory coverage and delivery bounds, and first-delivery scope. Declared dependencies and investigator-directed propagation are deferred:
 observe coverage gaps before choosing anticipatory dependency declarations, qualified impact
 assessment when new findings emerge, or both. Either would supplement actual exposure tracking.

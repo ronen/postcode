@@ -208,13 +208,36 @@ The probe supports this direction and identifies three concrete requirements:
 
 Four small content contracts, six provider re-encounter branches, organizing withdrawal-plus-
 addition/restoration and twenty-eight malformed cases are exercised. No native provider, live investigator or proposed constant-target method was run.
-Production content contracts, actual coordinated execution, first migration depth and full
+Production content contracts, actual coordinated execution, detailed stage boundaries and full
 partial/failure result handling remain planning work. First native verification must include
 a mechanical consumer of retained claims, such as export projection reading module naming,
 with qualified delivery/exposure and later-displacement checks, as well as identity re-encounter.
 A method-specific Lens must preserve its question and guarantee, rather than simply
 selecting the latest description of its subject. This direction withdraws the earlier blanket
 exclusion of mechanical claims from investigrams.
+
+## Agreed implementation scope: existing mechanical information, staged
+
+The human chose migration of all currently supported mechanical architectural information within
+this plan, with staged implementation and verification. A partial migration is an intermediate
+milestone, not the intended endpoint. The stages are:
+
+1. Module discovery/identification and exports, including later symbol introduction and actual
+   mechanical consumption of retained module naming.
+2. Dependencies and remaining module information, including associated documentation and module
+   composition, preserving qualified targets, coverage and partial/empty distinctions.
+3. Project/repository organization: groups, containment, placement and qualified properties.
+4. Integrated use of these real contributions in the bounded agentic investigation journey, with
+   exact access, standing, provenance and exposure verification within the supported Session.
+
+This scopes the existing architectural outputs, not new analyzers or a rewrite of every provider
+algorithm. Provider internals and physical record storage may remain where suitable; architectural
+information must participate consistently in the common contribution/association model. Preserve
+method-specific result contracts, qualification, deterministic identity guarantees and outcomes.
+Persistence, broader navigation/GUI, new mechanical capabilities (including the hypothetical
+constant-target method), automatic reassessment and suppression of repeated provider output remain
+outside this scope. Preventing a provider from reasserting withdrawn information would require an
+explicit host policy; renewal history alone does not suppress production.
 
 ## Content and declarations
 
@@ -796,9 +819,9 @@ Specific inspected constraints still matter for migration:
 
 These findings are recorded against [acceptance](../src/lib/investigation/acceptance.ts),
 [revision processing](../src/lib/investigation/revisions.ts) and the
-[application boundary](../src/lib/application/index.ts). Shared identity does not require
-migrating every mechanical producer/storage path in the first capability. Demonstrate
-interpreted use of an existing mechanical subject while preserving its provider guarantees.
+[application boundary](../src/lib/application/index.ts). The agreed endpoint brings all existing mechanical architectural information into the common
+model in stages. This does not require replacing every physical storage path or provider algorithm.
+Verify interpreted use of mechanical subjects while preserving their provider guarantees.
 
 The planning package would need explicit treatment of:
 
@@ -821,11 +844,11 @@ The planning package would need explicit treatment of:
 
 | Decision | Current direction / remaining choice |
 | --- | --- |
-| Entity and result identity | Recognized reuse returns the existing invocation/result identity; no duplicate result for repeated access. Set first migration depth and failed/partial-result treatment. No semantic deduplication. |
+| Entity and result identity | Recognized reuse returns the existing invocation/result identity; no duplicate result for repeated access. Full existing mechanical-information migration is agreed, staged; settle failed/partial-result treatment. No semantic deduplication. |
 | Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
 | Support acquisition | Reasoning policies are investigator instructions; their mechanical enforcement is deferred. Data integrity and faithful qualified deliveries remain enforced. Set bounded acquisition/missing-support behavior; scoped current-description acquisition includes competing undisplaced associations and exact-reference acquisition remains narrower. |
 | Reconsideration | Distinguish actual association and inventory exposure; additions trigger matching prior inventories, not every entity use or fixed result membership. Refined probe removes the earlier broad marks. Record both inventory and scope-selected content acquisition; exact delivered declaration reasons are exposure too. Set first-delivery coverage explicitly; richer selectors remain open. Investigator-directed propagation, suppression, reassessment/clearance and scheduling are deferred. |
-| First capability | Choose delivered relationship kinds, contextual selection depth, mechanical compatibility and which composition/diagram probes become implementation acceptance tests. |
+| First capability | Choose delivered relationship kinds, contextual selection depth, detailed migration milestones and which composition/diagram probes become implementation acceptance tests. |
 
 Declared dependencies, investigator-directed propagation, targeted suppression, reassessment/clearance
 and automatic scheduling are deferred beyond the first capability unless a later concrete need changes that
