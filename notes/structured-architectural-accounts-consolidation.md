@@ -66,6 +66,14 @@ not prescribe replacing physical storage or provider algorithms. New analyzers, 
 broader UI and provider-suppression policy remain deferred. See the proposal's
 [scope](structured-architectural-accounts-proposal.md#agreed-implementation-scope-existing-mechanical-information-staged).
 
+Entity storage/lookup migration separates exact identity resolution from qualified information
+selection. Existing immutable storage and reference bindings may be adapted; a parallel registry
+of architectural copies of mechanical entities is not the intended design. The current single
+identifying-claim pointer cannot remain an authoritative current-description path outside the
+association model. Exact IDs remain resolvable within the Session after identification withdrawal;
+name search preserves ambiguity, standing and population qualification. Physical layouts and
+indexes remain implementation choices. See [entity storage and lookup](structured-architectural-accounts-proposal.md#entity-storage-and-lookup).
+
 <a id="working-vocabulary"></a>
 ## Working vocabulary
 

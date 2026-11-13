@@ -239,6 +239,43 @@ constant-target method), automatic reassessment and suppression of repeated prov
 outside this scope. Preventing a provider from reasserting withdrawn information would require an
 explicit host policy; renewal history alone does not suppress production.
 
+## Entity storage and lookup
+
+These are architectural migration requirements and observations of current code, not a chosen
+storage implementation. Stable entity identity is separate from the qualified information
+associated with it. The common entity-facing contract replaces the existing specialized claim
+lookup paths; it must not introduce a parallel registry of architectural versions of existing
+mechanical entities. Provider identity resolution remains responsible for native continuity.
+
+| Responsibility | Current implementation observation | Proposed treatment |
+| --- | --- | --- |
+| Immutable storage and exact retrieval | `MemoryProgramRecordStore` stores records by ID, validates references and accepts atomic batches. | Preserve these guarantees; reuse or adapt the storage where suitable. A new storage engine is not required by unification. |
+| Entity identity and reference binding | Specialized module, symbol and group records coexist with Session reference bindings and provider identity rules. | Resolve to common identities without duplicating the underlying things. Provider-native identity, common identity and human-facing reference spellings remain distinct responsibilities. |
+| Identifying information | Module/symbol/group records point to one `claim`; subject resolution follows module/group claims for names. | Obtain qualified identifying information through associations. An original identifying claim may remain exactly addressable, but cannot silently act as the authoritative current description outside association standing/selection. |
+| Subject lookup | Resolution recognizes a fixed module/group/investigram vocabulary and uses qualified populations for name matching; precise bindings do not require population acquisition. | Generalize supported subject resolution while preserving applicability, ambiguity, population coverage and qualification. Entity identity and the Subject role remain distinct. |
+
+The observations are grounded in [record contracts](../src/lib/records.ts),
+[the memory store](../src/lib/memory-store.ts), [reference bindings](../src/lib/identity.ts)
+and [subject resolution](../src/lib/subject-resolution.ts).
+
+Exact ID/reference resolution and name search are different operations. An existing entity ID
+continues to identify the same entity within the supported Session even if identifying associations
+are displaced or withdrawn. Resolving that ID does not select a canonical description or deliver
+all associated content. It does not extend reference lifetime beyond the Session.
+
+Name search uses qualified identifying information: matching a name does not establish identity,
+several entities may match, and multiple descriptions may concern one entity. Search results must
+preserve the standing, qualification and population coverage relevant to the lookup rather than
+silently treating a displaced description as current. The exact search scope and treatment of
+historical names remain contract details to settle; this does not introduce fuzzy search, semantic
+deduplication or a new UI. Established precise reference bindings are not mutable descriptive names.
+
+Classes, maps, indexes, physical record layouts and reuse of existing lookup code are implementation
+choices. The architectural requirement is one consistent identity/information contract, including
+exact historical access and qualified selection, not one universal table or the removal of all
+provider-specific records. Migration verification should include exact resolution after identifying
+information is withdrawn, ambiguous names and lookup over incompletely established populations.
+
 ## Content and declarations
 
 A **content item** is a keyed portion of substantive analysis content (broadening the current

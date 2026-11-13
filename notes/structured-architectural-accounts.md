@@ -2074,3 +2074,15 @@ state. This does not require rewriting provider algorithms or replacing suitable
 The human's follow-up asks how common entities affect current storage and lookup; implementation
 layout is not settled by this scope agreement. Provider-output suppression remains a separate,
 deferred host policy; repeated contributions retain visible renewal history.
+
+## 2026-11-13 — Record entity storage and lookup boundaries
+
+At the human's request, recorded the source-inspected distinction between immutable record
+storage/exact retrieval, provider/common identity and reference bindings, and finding qualified
+information about an entity. Existing records point to single identifying claims; the proposed
+entity-facing contract obtains descriptions through associations with standing and qualification.
+Exact identity resolution remains valid within the Session after identification withdrawal, while
+name matching remains qualified and potentially ambiguous. No parallel architectural entity
+registry is intended. Physical layouts, classes and indexes remain implementation choices;
+search scope and historical-name handling need precise contracts. The proposal links the inspected
+record, store, binding and subject-resolution code. No product or governing files changed.
