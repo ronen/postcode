@@ -1,6 +1,6 @@
 # Upcoming work
 
-Last considered: 2026-11-09
+Last considered: 2026-11-13
 
 A living document for keeping track of upcoming work and deciding what order to
 do it in. Major checkpoints are useful occasions to reconsider it in strategy
@@ -74,7 +74,8 @@ Codes identify items independently of ordering.
 
 ```mermaid
 flowchart TD
-    ACCOUNT["✦ ⚠️ ACCOUNT — Structured architectural accounts"] --> PRESENT["⚠️ ✦ PRESENT — Account presentation and navigation"]
+    ACCOUNT["✦ ⚠️ ACCOUNT — Structured architectural accounts"] --> SLICE["⚠️ SLICE — First usable graphical investigation scope"]
+    SLICE --> PRESENT["⚠️ ✦ PRESENT — Account presentation and navigation"]
     PRESENT --> MINIGUI["✦ MINIGUI — Minimal graphical investigation"]
     MINIGUI -. Needs demonstrated through use .-> GUI["✦ GUI — Broader graphical investigation 🧱"]
     AGENT["✦ ⚠️ AGENT — External-agent investigation and exchange"]
@@ -87,8 +88,9 @@ flowchart TD
 
 | Position | Item | Why here / what could change it |
 | --- | --- | --- |
-| Next: plan and implement | [ACCOUNT — Structured architectural accounts](#account) | Choose a bounded slice from the connected account examples and validate its suitability for representative diagrams. Admission → trial → correction is a candidate; composition can test extension across accounts. |
-| After ACCOUNT | [PRESENT — Account presentation and navigation](#present) | Plan against implemented accounts, then build representations, qualifications, and navigation for the graphical slice. |
+| Next: plan and implement | [ACCOUNT — Structured architectural accounts](#account) | Exercise the account mechanism through representative, plausibly useful investigations and diagrams. Admission → trial → correction is a candidate; composition can test extension across accounts. |
+| After ACCOUNT | [SLICE — First usable graphical investigation scope](#slice) | Select a coherent first offering using the journey exploration and ACCOUNT's demonstrated capabilities and limitations. Identify any additional capability work needed. |
+| After SLICE | [PRESENT — Account presentation and navigation](#present) | Build representations, qualifications, and navigation for the selected experience, using implemented accounts. Any additional capability prerequisites depend on SLICE's selection. |
 | After PRESENT | [MINIGUI — Minimal graphical investigation](#minigui) | Build a small graphical surface for actual human investigation using the available account and presentation capabilities. |
 | Movable, when a concrete exchange needs it | [AGENT — External-agent investigation and exchange](#agent) | Support external design or implementation agents requesting investigations or using retained accounts. Assess reusable investigation and exchange capabilities; neither retaining the interactive CLI, structured accounts, nor a preceding human GUI journey is a prerequisite. |
 | Following experience with MINIGUI | [GUI — Broader graphical investigation](#gui) | Extend the graphical experience where sustained use identifies valuable capabilities. May become several plans. |
@@ -108,6 +110,9 @@ Alphabetical by code.
 - **Scope:** a bounded slice drawn from the completed exploration's connected
   account examples, within the current Session lifetime. Assess structured
   investigram content and existing associations, retention, and replacement.
+  Choose plausibly useful investigations and diagrams with credible investigative
+  purposes, avoiding cases contrived to fit the mechanism. Proven user value is
+  not required here; SLICE selects the initial user-facing offering separately.
   Extend the application answer-content contracts so direct and exact access
   preserve the new structure and its qualified support.
   Account design and implementation must carry the semantic content needed by
@@ -129,7 +134,8 @@ Alphabetical by code.
 - **Validation:** demonstrate within ACCOUNT that the selected diagrams can be
   generated from retained account content without reconstructing missing
   architectural meaning during rendering. Universal notation support and stored
-  layout choices are not required.
+  layout choices are not required. Success establishes faithful support for the
+  selected investigations, not their suitability for the first user-facing offering.
 - **Sources:** [journey outputs: connected account examples](initial-journey/cockatiel-account-examples.md),
   [journey findings: capability-planning inputs](initial-journey/design-findings.md#capability-planning-inputs),
   [backlog: architectural accounts through concrete journeys](../docs/backlog.md#explore-architectural-accounts-through-journeys),
@@ -178,7 +184,7 @@ Alphabetical by code.
 - **Kind:** ✦
 - **Outcome:** a usable graphical slice for investigating one project, so human-use
   evaluation can test more than typing commands and reading text results.
-- **Scope:** a few account presentations and diagrams, selection of subjects and
+- **Scope:** the experience selected by SLICE: a few account presentations and diagrams, selection of subjects and
   offered questions, following relationships, and returning to earlier or corrected
   answers with their qualifications. Build on completed ACCOUNT and PRESENT: accounts
   supply content, Presentations make it intelligible, and this item supplies the
@@ -202,8 +208,8 @@ Alphabetical by code.
 - **Kind:** ⚠️ ✦
 - **Outcome:** useful architectural representations through which the human can
   change perspective, inspect qualifications, and revisit earlier or revised accounts.
-- **Scope:** the representations and navigation needed for the selected account
-  slice, using implemented ACCOUNT capabilities and exact retained-answer presentation.
+- **Scope:** the representations and navigation needed for the experience selected
+  by SLICE, using implemented ACCOUNT capabilities and exact retained-answer presentation.
   Extend the API as needed within this task. Use
   established architectural notations where they fit. Generating a diagram
   cannot supply missing semantics or strengthen a claim. Additional perspective
@@ -238,6 +244,27 @@ Alphabetical by code.
   [backlog: additional-detail placement](../docs/backlog.md#review-more-details-information-placement),
   [backlog: navigation origins](../docs/backlog.md#assess-and-preserve-navigation-origin-lineage),
   [backlog: coordinated-View conformance](../docs/backlog.md#assess-conformance-when-extending-coordinated-views-and-state-scope).
+
+<a id="slice"></a>
+### SLICE — First usable graphical investigation scope
+
+- **Kind:** ⚠️
+- **Outcome:** a coherent, bounded investigation experience for the first GUI,
+  with concrete scope and acceptance criteria for PRESENT and MINIGUI.
+- **Scope:** choose the user scenario, starting knowledge, useful endpoint,
+  investigations, and representations that belong together. Use the completed
+  journey exploration and ACCOUNT's demonstrated capabilities and limitations;
+  this selects an initial offering rather than restarting the journey exercise.
+  ACCOUNT's capabilities may be selected, modified, supplemented, or left out.
+  Identify needed changes and missing capabilities, drawing on the backlog and
+  candidate inventories, and place that work before the work that depends on it.
+- **Boundary:** selects the offering and its acceptance criteria. Detailed
+  presentation and interface design belong to PRESENT and MINIGUI; additional
+  investigation capabilities have their own implementation scope.
+- **Sources:** [journey outputs: investigation script](initial-journey/cockatiel-investigation-script.md),
+  [journey outputs: connected account examples](initial-journey/cockatiel-account-examples.md),
+  [journey findings: capability-planning inputs](initial-journey/design-findings.md#capability-planning-inputs),
+  strategy discussion: separate mechanism validation from selection of the first offering.
 
 <a id="principles-for-choosing-the-order"></a>
 ## Principles for choosing the order
