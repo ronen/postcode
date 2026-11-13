@@ -152,6 +152,10 @@ An interpreted replacement of mechanical information retains interpreted provena
 a mechanical replacement of interpreted information retains its own method guarantees. Neither
 erases the earlier contribution or inherits its epistemic status by occupying a similar role.
 Later mechanical discovery can also extend an interpreted account without alleging an error.
+Fuller prose alone warrants addition alongside a valid mechanical finding, not its displacement.
+When supersession is justified, its qualified grounds should explain material changes to method,
+scope or guarantee; the notice delivers those grounds and preserves the exact old/new qualifications.
+Defer a minimum-guarantee selector: scoped guarantees do not form a universal ordered scale.
 
 An investigram is not necessarily the atomic acceptance boundary: a contribution submission may
 contain several investigrams. Mechanical analysis may produce reusable contributions incrementally;
@@ -163,27 +167,39 @@ The human explicitly prefers sound design over preserving the existing split to 
 work. Pre-release document and implementation changes are not a compatibility constraint. The
 [worked unification](structured-account-example/unification/README.md) now maps authored module
 discovery, later export/symbol contributions and source-dependency analysis into the common model.
-An interpreted conditional target complements the mechanical indeterminate target. Separate authored
-stages exercise mechanical supersession of interpretation and interpreted enhancement of mechanical
-information, without upgrading either claim's guarantee or clearing historical concerns.
+An interpreted conditional target complements the mechanical indeterminate target. The authored
+stages distinguish the mechanical finding from an agentic declaration selecting it in place of an
+earlier inference. A fuller interpreted explanation is an addition alongside the mechanical
+finding, preserving its current availability and guarantee.
 
 The probe supports this direction and identifies three concrete requirements:
 
 - Identifying content can be structured mechanical information rather than a mandatory prose
   description. Supported identifying content types still resolve explicit introductions and carry
-  qualifications; modules and later symbols retain provider identities without reintroduction.
+  qualifications. Before acceptance, host/provider identity resolution binds repeated native
+  identities within supported scope to existing entities. The analyzer need not inspect Session
+  state. Equal identifying contributions may reuse their original associations; changed method or
+  qualification can add new associations on the same entity. Fresh allocation collisions still fail.
+  The probe exercises identical rerun reuse and changed-method additions, separately from query reuse.
 - Provenance must retain the actual producing method and basis per contribution. Selecting content
   from different producers must not flatten it to one method, basis or guarantee. The shared probe
-  now permits host-attributed provenance; the older authored fixtures retain their single fixed basis.
+  permits host-attributed provenance per investigram within one acceptance. Computing a target
+  and deciding to displace an earlier inference are separately attributed, even in one submission.
+  An explicit deterministic organizing policy could also author a declaration under its own method.
+  Selection-only basis names the retained inputs actually used, not source it did not read; original
+  source bases remain with the selected items. Older fixtures retain their single fixed basis.
 - Evaluation/outcome, contribution, query result and selected answer remain distinct. An established
   empty export surface is content; unavailable analysis does not manufacture that content. Reusing
   an existing answer does not allocate another result. One public request may involve several
   methods; not every internal compiler phase needs a public query-result entity.
 
-Four small content contracts and twelve malformed cases are exercised. No native provider, live
-investigator or proposed constant-target method was run. Production content contracts, attribution
-across coordinated methods, first migration depth and full partial/failure result handling remain
-planning work. A method-specific Lens must preserve its question and guarantee, rather than simply
+Four small content contracts, two provider re-encounter branches and seventeen malformed cases are
+exercised. No native provider, live investigator or proposed constant-target method was run.
+Production content contracts, actual coordinated execution, first migration depth and full
+partial/failure result handling remain planning work. First native verification must include
+a mechanical consumer of retained claims, such as export projection reading module naming,
+with qualified delivery/exposure and later-displacement checks, as well as identity re-encounter.
+A method-specific Lens must preserve its question and guarantee, rather than simply
 selecting the latest description of its subject. This direction withdraws the earlier blanket
 exclusion of mechanical claims from investigrams.
 

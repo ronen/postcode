@@ -41,7 +41,7 @@ provide the investigation background.
 | [Lifecycle probes](lifecycle-probes.json) | Earlier-result consumer, fuller description, declaration-only reuse, and withdrawal. |
 | [Generated report](lifecycle-report.json) | Exact qualified projections, displacement links, exposure and distinct evaluation/designation reconsideration causes in the displacement-only regression. |
 | [Acquisition refinements](acquisition.md) | Scope-selected initial content, discovery before retrieval, and exact exposure to delivered declaration reasons; declared dependencies and investigator-directed propagation remain deferred. |
-| [Mechanical/agentic unification](unification/README.md) | Authored discovery, exports and source dependencies; interpreted extension and supersession in both directions, with original guarantees and histories preserved. |
+| [Mechanical/agentic unification](unification/README.md) | Authored discovery, exports and source dependencies; interpreted extension and separately attributed supersession, with original guarantees and histories preserved. |
 | [Addition probe](additions.md) | Association/inventory exposure comparison in both partitions: original readers no longer acquire addition causes; an explicit inventory reader and its consumer do. Earlier broad counts remain reproducible. |
 | [Children variant](children/README.md) | Same behavior with appropriately separated qualification boundaries. Its own seed/ledger/probes/reports describe a separate hypothetical Session. |
 | [Composition](composition/README.md) | Two wrapping orders, local roles/relations/situations and exact follow-up selectors. |
@@ -195,8 +195,8 @@ overview generator verifies committed Mermaid sources, legends and traceability;
 rendered SVGs remain unchanged by the lifecycle conversion.
 
 The unification checker uses the same model with four additional bounded content contracts and
-per-contribution producer/basis attribution. It checks seven authored analyses and twelve malformed
-cases, including later symbol introduction, no invented mechanical prose, complementary dependencies,
+per-investigram producer/basis attribution within one acceptance. It checks seven authored invocations,
+two provider re-encounter branches and seventeen malformed cases, including later symbol introduction, no invented mechanical prose, complementary dependencies,
 producer-neutral supersession, exact source qualification and preserved answers. It does not run
 native providers, a new compiler method or a live investigator. See its [walkthrough](unification/README.md).
 

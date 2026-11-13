@@ -1985,3 +1985,27 @@ investigram definitions. Record verification within the method's supported scope
 and assumptions. Agentic use of mechanically verified information retains the verifying method's
 provenance; production kind alone does not make every output verified. No schema or execution
 change follows from this clarification.
+
+## 2026-11-13 — Unification review corrections
+
+The human authorized the review fixes. Provider/native identity resolution now precedes common
+allocation: repeated discovery binds existing entities without analyzer Session bookkeeping.
+The bounded adapter reuses exact identifying associations when content/method/basis/qualification
+match, and adds new qualified identification on the same entity when the method changes. Fresh
+allocation collisions remain invalid. This corrects the earlier rerun-as-collision negative case.
+
+Q-M now contributes a mechanical finding and a separately attributed agentic organizing declaration
+in one acceptance. The constant-target analyzer does not author the supersession judgment. The
+organizer references the mechanical item without inheriting its verification. A defined mechanical
+organizing policy remains possible under its own method attribution. Q-R adds fuller prose alongside
+the valid mechanical finding; the earlier claim that this fixture tests supersession in both
+producer directions is withdrawn. Justified cross-mechanism displacement remains possible, with
+material method/scope/guarantee changes explained in its grounds. Minimum-guarantee selection is
+deferred; guarantees are not one universal ordered scale.
+
+Q-C and Q-R record retained selections as their actual basis. Selected source claims keep their own
+source bases and guarantees. First native verification must include mechanical reads of retained
+claims (e.g. export projection acquiring module naming), exposure and later-displacement behavior,
+and provider re-encounter. The authored probe does not establish any of that native integration.
+The updated checker exercises seven invocations plus two re-encounter branches and rejects sixteen
+malformed cases. No governing, product or foundation documents were changed.

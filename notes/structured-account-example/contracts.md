@@ -51,6 +51,13 @@ introduce entities. Query-result identity is allocated for the invocation separa
 it does not need an agent-invented architectural description. The probe requires one
 initial result designation per invocation, not one canonical answer for all time.
 
+For native providers, host/provider identity resolution precedes this allocation contract: the
+same native identity within supported scope binds to the existing entity. The normalized
+submission references that entity, rather than asserting another fresh allocation. Re-encounter
+is not name-based deduplication; provider continuity rules remain authoritative. The unification
+probe reuses identical identifying associations and adds newly qualified ones when the producing
+method changes. It does not silently reinstate displaced associations.
+
 Names, descriptions and classifications are associated information, not mutable
 unqualified fields of the identity. Reuse asserts reference to the identified thing,
 not agreement with its descriptions. Every explicit introduction receives an ID;
@@ -66,7 +73,11 @@ mechanical references; the [unification probe](unification/README.md) now exerci
 contributions using four small registered types and host-attributed per-contribution provenance.
 Neither probe executes a native producer or establishes complete production content contracts.
 The host provenance covers producer/method and basis; claim qualifications still determine what
-is established. Mechanical contributions need no invented agent identity or prose description. See the [proposal](../structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
+is established. Attribution is per investigram, not necessarily per acceptance: a mechanical
+finding and an agentic organizing declaration can share a submission with separate method/basis.
+Selection basis identifies retained inputs actually used. Displacement grounds should explain
+material method/scope/guarantee changes; fuller prose alone can be an addition. These are authoring
+policies, not new semantic acceptance gates. Mechanical contributions need no invented agent identity or prose description. See the [proposal](../structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
 Relationships W and patterns C-BB/C-BH are proposed explicitly identified entities;
 this and query-result entities require governing treatment beyond interpreted identity.
 Not every architectural edge, organizing relationship or local role becomes an entity.

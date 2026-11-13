@@ -39,9 +39,14 @@ inherit the displaced contribution's method guarantee. Multiple bundles can be a
 mechanical incremental work and evaluation outcomes remain distinct. Document/implementation
 migration effort is not a reason to retain an inferior split. The
 [worked unification](structured-account-example/unification/README.md) exercises authored module
-and symbol identification, export surfaces, complementary dependencies and supersession in both
-directions. Structured identifying content and per-contribution method/basis fit the existing
-organizing model. Native producer integration remains unverified. See the
+and symbol identification, export surfaces, complementary dependencies, provider re-encounter
+and separately attributed mechanical findings/organizing declarations in one acceptance. Fuller
+interpretation is added alongside the mechanical finding. Fresh allocation differs from resolving
+a known provider identity; equal identifying information may reuse its original association, while
+a changed method can add qualified identifying information on the same entity. Selection-only
+basis names retained inputs, preserving their original source bases. Supersession grounds should
+explain material changes in method, scope or guarantee; guarantee-ranking selectors remain deferred.
+Native producer integration remains unverified, including mechanical consumers of retained claims. See the
 [working direction](structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
 
 <a id="working-vocabulary"></a>

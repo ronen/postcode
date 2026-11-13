@@ -100,7 +100,7 @@ class Model:
                 'parameterValues': copy.deepcopy(request.get('parameterValues', {})),
                 'option': copy.deepcopy(request.get('option')),
                 'declaredMeaning': copy.deepcopy(request['declaredMeaning']),
-                'basis': copy.deepcopy(self.queries[qid].get('provenance', {}).get('basis', self.basis))}
+                'basis': copy.deepcopy(self.queries[qid].get('basis', self.queries[qid].get('provenance', {}).get('basis', self.basis)))}
 
     def item_route(self, ref, item):
         """Only declaration paths actually leading to this excerpt, not sibling membership."""
@@ -292,14 +292,19 @@ class Model:
         staged.entities[rid] = {'kind': 'query-result', 'queryInvocation': qid}
         new_owners = set()
         introductions = []
+        if 'provenanceByInvestigram' in bindings:
+            assert 'provenance' not in bindings, 'ambiguous production attribution'
+            assert set(bindings['provenanceByInvestigram']) == set(bindings['investigramIds']), 'incomplete production attribution'
+            assert bindings.get('queryBasis'), 'missing multi-method invocation basis'
         for raw in result['investigrams']:
             a = copy.deepcopy(raw)
             assert 'provenance' not in a, 'production provenance is host-attributed'
-            oid = bindings['investigramIds'][a.pop('key')]
+            local_key = a.pop('key')
+            oid = bindings['investigramIds'][local_key]
             a.update(id=oid, queryInvocation=qid, acceptedAt=self.acceptance_order + 1)
             # Host-attributed production context, not investigator-claimed authority.
-            if 'provenance' in bindings:
-                production = bindings['provenance']
+            if 'provenance' in bindings or 'provenanceByInvestigram' in bindings:
+                production = bindings['provenanceByInvestigram'][local_key] if 'provenanceByInvestigram' in bindings else bindings['provenance']
                 # Current fixture support, not an exhaustive taxonomy of future producers.
                 assert production['producer']['kind'] in {'mechanical', 'agentic'}
                 assert production['producer']['method'] and production['basis']
@@ -380,6 +385,8 @@ class Model:
         staged.queries[qid] = {'acceptedAt': staged.acceptance_order, 'request':copy.deepcopy(request), 'resultEntity':rid,'initialDesignation':own_results[0], 'deliveries':projections,'exposureIndex':exposure,'sourceQueries':sources,'declarations':list(new_decls)}
         if 'provenance' in bindings:
             staged.queries[qid]['provenance'] = copy.deepcopy(bindings['provenance'])
+        if 'queryBasis' in bindings:
+            staged.queries[qid]['basis'] = copy.deepcopy(bindings['queryBasis'])
         # Exact returned answer is fixed, separate from later declarations targeting the same result entity.
         initial = staged.project({'entity':rid,'associations':[{'investigram':own_results[0][0],'associationKey':own_results[0][1]}]})
         staged.snapshots[qid] = initial

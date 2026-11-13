@@ -96,7 +96,12 @@
                   "providerIdentity": {
                     "provider": "typescript",
                     "nativeEntity": "M-loader",
-                    "scope": "supported Session and captured provider basis"
+                    "scope": "supported Session and captured provider basis",
+                    "basisScope": {
+                      "session": "AUTHORED-SESSION-1",
+                      "programState": "AUTHORED-PINNED-SOURCE-1",
+                      "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec"
+                    }
                   },
                   "module": {
                     "name": null,
@@ -127,7 +132,12 @@
                   "providerIdentity": {
                     "provider": "typescript",
                     "nativeEntity": "M-plugin",
-                    "scope": "supported Session and captured provider basis"
+                    "scope": "supported Session and captured provider basis",
+                    "basisScope": {
+                      "session": "AUTHORED-SESSION-1",
+                      "programState": "AUTHORED-PINNED-SOURCE-1",
+                      "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec"
+                    }
                   },
                   "module": {
                     "name": null,
@@ -158,7 +168,12 @@
                   "providerIdentity": {
                     "provider": "typescript",
                     "nativeEntity": "M-empty",
-                    "scope": "supported Session and captured provider basis"
+                    "scope": "supported Session and captured provider basis",
+                    "basisScope": {
+                      "session": "AUTHORED-SESSION-1",
+                      "programState": "AUTHORED-PINNED-SOURCE-1",
+                      "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec"
+                    }
                   },
                   "module": {
                     "name": null,
@@ -420,7 +435,12 @@
                   "providerIdentity": {
                     "provider": "typescript",
                     "nativeEntity": "S-load",
-                    "scope": "supported Session and captured provider basis"
+                    "scope": "supported Session and captured provider basis",
+                    "basisScope": {
+                      "session": "AUTHORED-SESSION-1",
+                      "programState": "AUTHORED-PINNED-SOURCE-1",
+                      "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec"
+                    }
                   },
                   "symbol": {
                     "name": "loadPlugin",
@@ -452,7 +472,12 @@
                   "providerIdentity": {
                     "provider": "typescript",
                     "nativeEntity": "S-target",
-                    "scope": "supported Session and captured provider basis"
+                    "scope": "supported Session and captured provider basis",
+                    "basisScope": {
+                      "session": "AUTHORED-SESSION-1",
+                      "programState": "AUTHORED-PINNED-SOURCE-1",
+                      "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec"
+                    }
                   },
                   "symbol": {
                     "name": "pluginTarget",
@@ -1000,11 +1025,14 @@
           }
         ],
         "suppliedEvidence": [
-          "E-loader"
+          "E-retained-selection"
         ],
         "declaredMeaning": {
           "question": "Select the complementary dependency explanations",
           "scope": "Authored unification probe over the pinned source fixture, not an executed native producer or live investigator."
+        },
+        "evidenceDescriptions": {
+          "E-retained-selection": "Exact qualified deliveries of DEPENDENCIES-1/dependencies and RUNTIME-1/runtime recorded for this invocation; no source read."
         }
       },
       "bindings": {
@@ -1020,11 +1048,30 @@
             "method": "authored/qualified-selection@0"
           },
           "basis": {
-            "programState": "AUTHORED-PINNED-SOURCE-1",
-            "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
-            "sourceDigests": {
-              "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd"
-            }
+            "retainedSelections": [
+              {
+                "entity": "M-loader",
+                "associations": [
+                  {
+                    "investigram": "DEPENDENCIES-1",
+                    "associationKey": "dependencies"
+                  }
+                ],
+                "items": [],
+                "options": []
+              },
+              {
+                "entity": "M-loader",
+                "associations": [
+                  {
+                    "investigram": "RUNTIME-1",
+                    "associationKey": "runtime"
+                  }
+                ],
+                "items": [],
+                "options": []
+              }
+            ]
           }
         }
       },
@@ -1077,7 +1124,7 @@
               ],
               "referents": [],
               "evidence": [
-                "E-loader"
+                "E-retained-selection"
               ],
               "qualifications": [
                 "Selection preserves distinct source-request and inferred runtime semantics; not a synthesized complete dependency graph."
@@ -1113,11 +1160,15 @@
         ],
         "suppliedEvidence": [
           "E-loader",
-          "E-plugin"
+          "E-plugin",
+          "E-retained-target-comparison"
         ],
         "declaredMeaning": {
           "question": "Establish the constant import target with a restricted method",
           "scope": "Authored unification probe over the pinned source fixture, not an executed native producer or live investigator."
+        },
+        "evidenceDescriptions": {
+          "E-retained-target-comparison": "Qualified comparison of the delivered RUNTIME-1/runtime and same-submission CONSTANT-TARGET-1/dependency; retained in the organizing basis."
         }
       },
       "bindings": {
@@ -1125,20 +1176,81 @@
           "query-result": "RESULT-Q-M"
         },
         "investigramIds": {
-          "constant": "CONSTANT-TARGET-1"
+          "constant": "CONSTANT-TARGET-1",
+          "organization": "TARGET-ORGANIZATION-1"
         },
-        "provenance": {
-          "producer": {
-            "kind": "mechanical",
-            "method": "authored/constant-target@0"
+        "provenanceByInvestigram": {
+          "constant": {
+            "producer": {
+              "kind": "mechanical",
+              "method": "authored/constant-target@0"
+            },
+            "basis": {
+              "programState": "AUTHORED-PINNED-SOURCE-1",
+              "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+              "sourceDigests": {
+                "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+              }
+            }
           },
-          "basis": {
+          "organization": {
+            "producer": {
+              "kind": "agentic",
+              "method": "authored/qualified-target-organization@0"
+            },
+            "basis": {
+              "retainedSelections": [
+                {
+                  "entity": "M-loader",
+                  "associations": [
+                    {
+                      "investigram": "RUNTIME-1",
+                      "associationKey": "runtime"
+                    }
+                  ],
+                  "items": [],
+                  "options": []
+                }
+              ],
+              "sameSubmissionContent": [
+                {
+                  "submittedInvestigram": "constant",
+                  "contentKey": "dependency"
+                }
+              ]
+            }
+          }
+        },
+        "queryBasis": {
+          "sourceAnalysis": {
             "programState": "AUTHORED-PINNED-SOURCE-1",
             "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
             "sourceDigests": {
               "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
               "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
             }
+          },
+          "organizingAnalysis": {
+            "retainedSelections": [
+              {
+                "entity": "M-loader",
+                "associations": [
+                  {
+                    "investigram": "RUNTIME-1",
+                    "associationKey": "runtime"
+                  }
+                ],
+                "items": [],
+                "options": []
+              }
+            ],
+            "sameSubmissionContent": [
+              {
+                "submittedInvestigram": "constant",
+                "contentKey": "dependency"
+              }
+            ]
           }
         }
       },
@@ -1152,6 +1264,9 @@
           "compositionRoots": [
             {
               "submittedInvestigram": "constant"
+            },
+            {
+              "submittedInvestigram": "organization"
             }
           ],
           "investigrams": [
@@ -1182,7 +1297,7 @@
                       ]
                     }
                   ],
-                  "coverage": "one-qualified-inference",
+                  "coverage": "one-restricted-conditional-target",
                   "qualification": {
                     "guarantee": "mechanically-established-conditional-target-for-restricted-shape",
                     "scope": "Hypothetical method restricted to this immutable literal binding and import expression; not executed in this probe. Still no runtime execution or loading-success guarantee. Source-module correspondence uses the stated build/loader assumption; no deployed mapping is observed."
@@ -1193,6 +1308,45 @@
                   ]
                 }
               ],
+              "associationSpecifications": [
+                {
+                  "key": "runtime",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "entity": "M-loader"
+                    },
+                    "role": "describes"
+                  },
+                  "members": [
+                    {
+                      "item": {
+                        "investigram": {
+                          "submittedInvestigram": "constant"
+                        },
+                        "contentKey": "dependency"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "referents": [],
+              "evidence": [
+                "E-loader",
+                "E-plugin"
+              ],
+              "qualifications": [
+                "Authored expected output of an unimplemented restricted mechanical method, not a measured compiler result.",
+                "Method kind does not by itself guarantee completeness or runtime execution."
+              ],
+              "children": [],
+              "followupOptions": [],
+              "presentations": []
+            },
+            {
+              "key": "organization",
+              "title": "Qualified selection of the restricted target finding",
+              "content": [],
               "associationSpecifications": [
                 {
                   "key": "runtime",
@@ -1213,7 +1367,7 @@
                       }
                     }
                   ],
-                  "reason": "Use the later restricted mechanical target analysis for this association, retaining its explicit conditional scope; the earlier inference and source-request record remain inspectable.",
+                  "reason": "For this same conditional target and captured basis, use the restricted mechanical finding in place of the earlier source-based inference. This changes the establishing method and guarantee, not the build/loader assumption or the exclusion of observed execution and load success. This selection is an agentic organizing judgment, not a conclusion of the constant-target analyzer.",
                   "displaces": [
                     {
                       "investigram": {
@@ -1240,18 +1394,25 @@
                         },
                         "associationKey": "runtime"
                       }
+                    },
+                    {
+                      "declaration": {
+                        "investigram": {
+                          "submittedInvestigram": "organization"
+                        },
+                        "associationKey": "runtime"
+                      }
                     }
                   ]
                 }
               ],
               "referents": [],
               "evidence": [
-                "E-loader",
-                "E-plugin"
+                "E-retained-target-comparison"
               ],
               "qualifications": [
-                "Authored expected output of an unimplemented restricted mechanical method, not a measured compiler result.",
-                "Method kind does not by itself guarantee completeness or runtime execution."
+                "Authored agentic comparison of the earlier inference and the same-submission mechanical finding; not a new verification of that finding.",
+                "The method is hypothetical and unexecuted; selection retains its restricted guarantee and conditional scope."
               ],
               "children": [],
               "followupOptions": [],
@@ -1304,12 +1465,19 @@
             "method": "authored/qualified-target-explanation@0"
           },
           "basis": {
-            "programState": "AUTHORED-PINNED-SOURCE-1",
-            "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
-            "sourceDigests": {
-              "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
-              "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
-            }
+            "retainedSelections": [
+              {
+                "entity": "M-loader",
+                "associations": [
+                  {
+                    "investigram": "CONSTANT-TARGET-1",
+                    "associationKey": "runtime"
+                  }
+                ],
+                "items": [],
+                "options": []
+              }
+            ]
           }
         }
       },
@@ -1368,7 +1536,7 @@
               "associationSpecifications": [
                 {
                   "key": "runtime",
-                  "operation": "supersession",
+                  "operation": "addition",
                   "target": {
                     "entity": {
                       "entity": "M-loader"
@@ -1385,15 +1553,7 @@
                       }
                     }
                   ],
-                  "reason": "Offer this fuller interpreted explanation for the same conditional target, with explicit call-path limitation; preserve the exact earlier mechanical contribution and its own guarantee.",
-                  "displaces": [
-                    {
-                      "investigram": {
-                        "investigram": "CONSTANT-TARGET-1"
-                      },
-                      "associationKey": "runtime"
-                    }
-                  ]
+                  "reason": "Add an interpreted explanation of possible invocation versus observed use alongside the still-valid mechanical target finding; no earlier association is displaced."
                 },
                 {
                   "key": "result",

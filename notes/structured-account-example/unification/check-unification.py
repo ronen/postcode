@@ -18,7 +18,9 @@ def qualification(item):
 
 def module_identity(item):
     qualification(item)
-    assert item['introducesEntity'] is True
+    assert isinstance(item['introducesEntity'], bool)
+    scope = item['providerIdentity']['basisScope']
+    assert set(scope) == {'session', 'programState', 'configuration'} and all(scope.values())
     assert item['providerIdentity']['nativeEntity'] == item['subject']['entity']
     assert item['providerIdentity']['scope'] and item['providerIdentity']['provider']
     assert item['module']['handleStatus'] == 'generated-navigation-aid'
@@ -29,7 +31,9 @@ def module_identity(item):
 
 def symbol_identity(item):
     qualification(item)
-    assert item['introducesEntity'] is True
+    assert isinstance(item['introducesEntity'], bool)
+    scope = item['providerIdentity']['basisScope']
+    assert set(scope) == {'session', 'programState', 'configuration'} and all(scope.values())
     assert item['providerIdentity']['nativeEntity'] == item['subject']['entity']
     assert item['symbol']['name'] and item['symbol']['declarationCount'] > 0
     assert set(item['symbol']['roles']) == {'type', 'value'}
@@ -121,7 +125,7 @@ assert reused_exports == checkpoints['Q-E'].snapshots['Q-E']
 assert model.__dict__ == before_reuse
 
 accept(model, stages['Q-M'])
-mechanical_cause = 'CONSTANT-TARGET-1::runtime'
+mechanical_cause = 'TARGET-ORGANIZATION-1::runtime'
 assert model.standing(('RUNTIME-1', 'runtime'))['displacedBy'] == [mechanical_cause]
 assert model.standing(('DEPENDENCIES-1', 'dependencies'))['displacedBy'] == []
 mechanical_status = copy.deepcopy(model.reconsideration())
@@ -136,8 +140,8 @@ assert all(model.investigrams[k] == v for k, v in all_old_bundles.items())
 assert model.snapshots['Q-C'] == combined_before and model.snapshots['Q-S'] == source_before
 
 accept(model, stages['Q-R'])
-interpreted_cause = 'RUNTIME-REFINED-1::runtime'
-assert model.standing(('CONSTANT-TARGET-1', 'runtime'))['displacedBy'] == [interpreted_cause]
+assert model.standing(('CONSTANT-TARGET-1', 'runtime'))['displacedBy'] == []
+assert model.declarations()[('RUNTIME-REFINED-1', 'runtime')]['operation'] == 'addition'
 final = model.qualified('RUNTIME-REFINED-1', model.items()[('RUNTIME-REFINED-1', 'dependency')])
 assert final['provenance']['producer']['kind'] == 'agentic'
 assert final['value']['qualification']['guarantee'] != mechanical_after['value']['qualification']['guarantee']
@@ -146,10 +150,11 @@ assert model.qualified('DEPENDENCIES-1', model.items()[('DEPENDENCIES-1', 'depen
 assert model.snapshots['Q-C'] == combined_before
 assert {e for e in model.entities if not e.startswith('RESULT-')} == initial_entities - {e for e in initial_entities if e.startswith('RESULT-')}
 fresh_combined = model.project(select('RESULT-Q-C', 'COMBINED-1', 'result'))
-assert {mechanical_cause, interpreted_cause} <= set(fresh_combined['notices'])
+assert mechanical_cause in fresh_combined['notices']
+assert 'RUNTIME-REFINED-1::runtime' not in fresh_combined['notices']
 assert model.reconsideration()['evaluations']['Q-C'] == [mechanical_cause]
 current = model.project({'entity': 'M-loader', 'scopeSelection': {'roles': ['describes'], 'standing': 'undisplaced'}})
-assert set(current['declarations']) == {'EXPORTS-1::exports', 'DEPENDENCIES-1::dependencies', 'RUNTIME-REFINED-1::runtime'}
+assert set(current['declarations']) == {'EXPORTS-1::exports', 'DEPENDENCIES-1::dependencies', 'CONSTANT-TARGET-1::runtime', 'TARGET-ORGANIZATION-1::runtime', 'RUNTIME-REFINED-1::runtime'}
 assert model.queries['Q-R']['deliveries'][0]['items']['CONSTANT-TARGET-1::dependency'] == mechanical_after
 
 negative_count = 0
@@ -170,6 +175,7 @@ def reject(state, stage, change):
 def first_item(stage): return stage['submission']['result']['investigrams'][0]['content'][0]
 empty = Model(fixture['seed'], fixture['basis'], 'inventory', contracts)
 reject(empty, stages['Q-D'], lambda s: first_item(s)['providerIdentity'].update(nativeEntity='wrong'))
+reject(empty, stages['Q-D'], lambda s: first_item(s)['providerIdentity'].pop('basisScope'))
 reject(empty, stages['Q-D'], lambda s: s['bindings']['provenance']['producer'].update(kind='unknown'))
 reject(empty, stages['Q-D'], lambda s: s['bindings']['provenance'].update(basis={}))
 reject(empty, stages['Q-D'], lambda s: s['submission']['result']['investigrams'][0].update(provenance={'producer': {'kind': 'mechanical', 'method': 'forged'}, 'basis': {'forged': True}}))
@@ -178,18 +184,56 @@ reject(checkpoints['Q-D'], stages['Q-E'], lambda s: first_item(s)['qualification
 reject(checkpoints['Q-D'], stages['Q-E'], lambda s: first_item(s)['entries'].append(copy.deepcopy(first_item(s)['entries'][0])))
 reject(checkpoints['Q-E'], stages['Q-S'], lambda s: first_item(s)['requests'][0].update(target={'entity': 'M-plugin'}))
 reject(checkpoints['Q-S'], stages['Q-I'], lambda s: first_item(s)['relationships'][0].update(target={'entity': 'absent'}))
-reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['submission']['result']['investigrams'][0]['associationSpecifications'][0]['displaces'][0].update(associationKey='absent'))
-reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['submission']['result']['investigrams'][0]['associationSpecifications'][0].update(reason=''))
-# A later contribution cannot claim to introduce the already established module under a new alias.
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['submission']['result']['investigrams'][1]['associationSpecifications'][0]['displaces'][0].update(associationKey='absent'))
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['submission']['result']['investigrams'][1]['associationSpecifications'][0].update(reason=''))
+# A fresh allocation collision is invalid; provider re-encounter is resolved before acceptance.
 duplicate = copy.deepcopy(stages['Q-D']); duplicate['request'].update(id='Q-D2', resultEntity='RESULT-Q-D2')
 duplicate['submission']['result']['queryInvocation']='Q-D2'; duplicate['bindings']['entityIds']['query-result']='RESULT-Q-D2'; duplicate['bindings']['investigramIds']['discovery']='DISCOVERY-2'
 reject(checkpoints['Q-D'], duplicate, lambda s: None)
 
+# Per-bundle provenance separates the calculation from the organizing judgment.
+organization = model.qualified('TARGET-ORGANIZATION-1', model.declarations()[('TARGET-ORGANIZATION-1', 'runtime')])
+assert organization['provenance']['producer']['kind'] == 'agentic'
+assert 'provenance' not in model.queries['Q-M']
+assert model.query_meaning('RESULT-Q-M')['basis'] == stages['Q-M']['bindings']['queryBasis']
+assert model.investigrams['COMBINED-1']['provenance']['basis'] == {'retainedSelections': stages['Q-C']['request']['deliveries']}
+assert 'sourceDigests' not in model.investigrams['COMBINED-1']['provenance']['basis']
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['bindings']['provenanceByInvestigram'].pop('organization'))
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['bindings'].update(provenance=s['bindings']['provenanceByInvestigram']['constant']))
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['bindings']['provenanceByInvestigram']['organization'].update(basis={}))
+
+# Host-side provider resolution is a separate positive path from raw allocation checks.
+normalize = runpy.run_path(str(BASE / 'provider-identity.py'))['normalize']
+rerun_model = copy.deepcopy(checkpoints['Q-D'])
+normalized, reuse_report = normalize(rerun_model, duplicate)
+assert len(normalized['bindings']['entityIds']) == 1  # Only the new invocation result.
+assert normalized['submission']['result']['investigrams'][0]['content'] == []
+accept(rerun_model, normalized)
+assert set(rerun_model.entities) - set(checkpoints['Q-D'].entities) == {'RESULT-Q-D2'}
+assert len([d for d in rerun_model.declarations().values() if d['target']['role'] == 'identifies']) == 3
+assert len(rerun_model.queries['Q-D2']['deliveries']) == 3
+assert rerun_model.queries['Q-D2']['sourceQueries'] == ['Q-D']
+assert rerun_model.snapshots['Q-D'] == checkpoints['Q-D'].snapshots['Q-D']
+# A different method can contribute new qualified identifications for the same entities.
+changed = copy.deepcopy(duplicate)
+changed['bindings']['provenance']['producer']['method'] = 'authored/discovery-revised@1'
+changed, changed_report = normalize(checkpoints['Q-D'], changed)
+changed_model = copy.deepcopy(checkpoints['Q-D']); accept(changed_model, changed)
+assert len(changed_report['resolvedExistingEntities']) == 3 and not changed_report['reusedIdentifications']
+assert len([d for d in changed_model.declarations().values() if d['target']['role'] == 'identifies']) == 6
+assert all(not item['introducesEntity'] for item in changed_model.investigrams['DISCOVERY-2']['content'])
+# A different basis scope is not an automatic correspondence; reusing allocated IDs still fails.
+wrong_scope = copy.deepcopy(duplicate)
+for item in wrong_scope['submission']['result']['investigrams'][0]['content']:
+    item['providerIdentity']['basisScope']['programState'] = 'DIFFERENT-STATE'
+wrong_scope, _ = normalize(checkpoints['Q-D'], wrong_scope)
+reject(checkpoints['Q-D'], wrong_scope, lambda s: None)
+
 report = {'status': fixture['status'], 'acceptedInvocations': list(model.queries),
-          'identities': {'architectural': ['PROJECT', 'M-loader', 'M-plugin', 'M-empty', 'S-load', 'S-target'], 'recognizedReuse': 'Q-E and RESULT-Q-E reused without allocation'},
+          'identities': {'architectural': ['PROJECT', 'M-loader', 'M-plugin', 'M-empty', 'S-load', 'S-target'], 'recognizedReuse': 'Q-E and RESULT-Q-E reused without allocation', 'providerReencounter': reuse_report, 'changedMethodReencounter': changed_report},
           'complementary': {'mechanicalSourceRequest': static_before, 'interpretedConditionalTarget': interpreted_before},
-          'crossMethodSupersession': {'laterMechanical': mechanical_after, 'laterInterpretation': final,
-                                     'mechanicalStageCauses': mechanical_status['evaluations'],
+          'qualifiedOrganizationAndAddition': {'laterMechanical': mechanical_after, 'organizingDeclaration': organization, 'complementaryInterpretation': final,
+                                     'organizingStageCauses': mechanical_status['evaluations'],
                                      'finalCauses': model.reconsideration()['evaluations']},
           'emptyVersusUnavailable': {'establishedEmpty': model.qualified('EMPTY-EXPORTS-1', model.items()[('EMPTY-EXPORTS-1','exports')]),
                                     'unavailable': fixture['noContributionOutcome']},
@@ -204,5 +248,5 @@ report = {'status': fixture['status'], 'acceptedInvocations': list(model.queries
 path = BASE / 'report.json'
 if '--write' in sys.argv: path.write_text(json.dumps(report, indent=2)+'\n')
 else: assert read(path) == report, 'stale unification report'
-print(f'Common contributions: 7 accepted analyses; structured mechanical identification, complementary dependencies, supersession in both directions, exact history and qualified provenance pass; {negative_count} malformed cases rejected atomically.')
+print(f'Common contributions: 7 accepted invocations plus 2 provider re-encounter branches; separate mechanical/organizing provenance, complementary additions, exact history and qualified basis pass; {negative_count} malformed cases rejected atomically.')
 print('Authored design probe only: no native provider, new compiler method, live investigator, or runtime execution.')
