@@ -1,7 +1,8 @@
 # Mechanical and agentic production: worked unification
 
 Updated 2026-11-13. Exploratory design work, not an adopted contract or a product migration.
-[Inputs](contributions.json), [report](report.json) and [checker](check-unification.py) exercise
+[Main inputs](contributions.json), [organizing-use renewal](organization-renewal.json),
+[report](report.json) and [checker](check-unification.py) exercise
 the common association/lifecycle model over a small [source fixture](source/loader.ts).
 The producing methods and their outputs are **authored expected contributions**. No native
 PostCode provider, live investigator, hypothetical constant-target analyzer or runtime execution
@@ -170,10 +171,61 @@ Renewal leaves the original displacement and any replacement association intact.
 reinstates the old association nor adjudicates a disagreement; a new identifying use may coexist
 with a qualified alternative. The new output has its own provenance. These branches deliberately
 model recomputation without receiving the organizing claim, so the adapter does not invent that
-exposure or claim the analyzer considered it. Existing histories remain inspectable.
+exposure or claim the analyzer considered it. Fresh delivery of the renewal nevertheless discloses
+the recorded objection through the host-established history below.
 
 This is a bounded reuse policy, not name-based deduplication or a claim that every provider has
 the same fingerprint. Fresh common-ID allocation collisions remain invalid for any producer.
+
+### Renewal history and disclosure
+
+When exact qualified comparison finds only displaced matching identifications, the adapter records
+`renewalHistory` on the new association through a host acceptance binding. It lists exact
+`previousAssociations` and `establishedBy: authored/provider-qualified-equality@0`. The method
+label attributes the comparison to the host; it does not claim the mechanical analyzer read or
+answered the objection. The comparison remains bounded to the same provider identity, method,
+basis, content, evidence and qualifications (ignoring the new-versus-existing introduction marker).
+It is not inferred semantic equivalence between arbitrary accounts.
+
+Fresh scope selections, exact association deliveries, excerpts and result deliveries include this
+history and the earlier associations' qualified displacement reasons. The model follows exact
+history links through further renewals, and also discloses history when the renewal arrives as a
+substantive notice. An inventory of addresses alone does not deliver that material. A reused
+renewal retains its history; equality reuse cannot strip it on the next run.
+
+The historical references do not deliver earlier items or make the earlier associations uses of
+the new result. Displacement notices retain their own provenance. Subsequent investigators are
+exposed to the reasons they actually receive; the rerun analyzer is not retroactively exposed.
+Already accepted displacements are disclosed history, not later reconsideration causes. The
+renewal link adds no automatic propagation rule or clearance. New deliveries must preserve the
+history and notices; altered or missing disclosure is rejected.
+
+This is narrowly host-established metadata, not a new investigator assertion of equality. Common
+acceptance checks exact prior references, same target, prior displacement, addition ownership and
+attribution. The adapter establishes equality. Product adapter verification remains required.
+
+### Changing the organizing use while keeping the finding
+
+The [Q-O input](organization-renewal.json) receives the organizer's association and its mechanical
+item, then submits two declarations atomically:
+
+1. Withdraw `TARGET-ORGANIZATION-1/runtime`, with grounds rejecting its use as the preferred
+   replacement for the earlier inference.
+2. Add `TARGET-REORGANIZATION-1/retain-finding`, referencing the original
+   `CONSTANT-TARGET-1/dependency` as complementary information.
+
+The mechanical item is not copied, recalculated or requalified. Its original source owner, method,
+basis and guarantee accompany the new association. The original interpretation's association
+remains displaced, and earlier captured answers remain fixed. Results using the withdrawn
+organizing association acquire the ordinary membership concern. This is a changed organizing use,
+not clearance of earlier concerns or reversal of the old supersession.
+
+The checker also exercises an explicit optional addition referencing the earlier interpretation's
+original item. Both pieces of information then coexist under new associations with their original
+qualifications. Merely withdrawing the organizer would omit the requested "keep the finding" part;
+withdrawal-plus-addition expresses it without a new lifecycle operation. Declaring supersession
+of an independently associated replacement remains unnecessary for this case. These agentic
+reassociations do not receive the automatic provider-equality history field.
 
 ## Production, selection and outcomes remain distinct
 
@@ -260,13 +312,16 @@ proved that every existing provider can migrate without further findings.
 
 Run `python3 notes/structured-account-example/unification/check-unification.py`.
 `--write` regenerates [the report](report.json). The checker validates seven accepted invocations
-plus six provider re-encounter branches, later symbol introduction, exact answer reuse, separate
+plus six provider re-encounter branches, organizing withdrawal-plus-addition and optional explicit
+restoration of earlier content, later symbol introduction, exact answer reuse, separate
 production bases, mixed-method acceptance, complementary additions, qualified supersession,
-original snapshots and result/exposure causes. It rejects **17 malformed cases atomically**, including
+original snapshots and result/exposure causes. It rejects **28 malformed cases atomically**, including
 empty native identity, forged producer attribution, unsupported producer/type, missing basis/scope, inconsistent target status,
 unknown entity/displacement targets, duplicate item keys, missing grounds, incomplete/ambiguous
 per-investigram provenance, fresh common-ID allocation collisions and an unreachable mechanical
-item. A new identity scope is now a positive allocation case, not a malformed contribution.
+item. Renewal checks additionally reject forged/invalid host history and missing or altered
+history/displacement-reason delivery. A new identity scope is a positive allocation case, not
+a malformed contribution.
 
 Those checks validate representation and lifecycle. They do not establish native method execution,
 semantic truth, runtime behavior, performance, complete provider migration or end-to-end acceptance.

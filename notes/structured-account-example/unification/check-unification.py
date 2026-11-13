@@ -282,6 +282,34 @@ def displace_identification(operation):
                          'children': [], 'followupOptions': [], 'presentations': []}]}}}
 
 
+def selection_consumer(selection):
+    stage = displace_identification('withdrawal')
+    stage['request'].update(id='Q-RENEWAL-READER', resultEntity='RESULT-Q-RENEWAL-READER',
+                            operation='authored.read-renewed-identification', deliveries=[selection])
+    stage['bindings']['entityIds']['query-result'] = 'RESULT-Q-RENEWAL-READER'
+    stage['bindings']['investigramIds']['standing'] = 'RENEWAL-READER-1'
+    stage['bindings']['provenance']['basis'] = {'retainedSelections': [selection]}
+    result = stage['submission']['result']; result['queryInvocation'] = 'Q-RENEWAL-READER'
+    bundle = result['investigrams'][0]
+    bundle['associationSpecifications'] = [bundle['associationSpecifications'][1]]
+    bundle['associationSpecifications'][0]['members'] = [{'declaration': {'investigram': {'investigram': 'DISCOVERY-2'}, 'associationKey': 'loader'}}]
+    return stage
+
+
+def reject_delivery(state, stage, change):
+    global negative_count
+    candidate = copy.deepcopy(state); before = copy.deepcopy(candidate.__dict__)
+    delivered = [candidate.project(x) for x in stage['request']['deliveries']]
+    change(delivered[0])
+    try:
+        candidate.accept(stage['submission'], stage['bindings'], stage['request'], delivered=delivered)
+    except AssertionError:
+        negative_count += 1
+    else:
+        raise AssertionError('Incomplete renewal disclosure accepted')
+    assert candidate.__dict__ == before
+
+
 renewals = {}
 for operation in ['supersession', 'withdrawal']:
     # Displacement AFTER equality reuse affects result membership, not an invented delivery.
@@ -294,6 +322,7 @@ for operation in ['supersession', 'withdrawal']:
     renewal_model = copy.deepcopy(checkpoints['Q-D'])
     accept(renewal_model, displace_identification(operation))
     normalized, renewal_report = normalize(renewal_model, duplicate)
+    renewal_base = copy.deepcopy(renewal_model)
     accept(renewal_model, normalized)
     assert renewal_report['skippedDisplacedIdentifications'] == ['DISCOVERY-1::loader']
     assert renewal_report['reusedIdentifications'] == ['DISCOVERY-1::plugin', 'DISCOVERY-1::empty']
@@ -307,11 +336,61 @@ for operation in ['supersession', 'withdrawal']:
     current_identifies = renewal_model.project({'entity': 'M-loader', 'scopeSelection': {'roles': ['identifies'], 'standing': 'undisplaced'}})
     expected = {'DISCOVERY-2::loader'} | ({'STANDING-1::loader'} if operation == 'supersession' else set())
     assert set(current_identifies['declarations']) == expected
+    # Fresh scope, exact and excerpt deliveries carry history, never old content by implication.
+    exact = select('M-loader', 'DISCOVERY-2', 'loader')
+    fresh = renewal_model.project(exact)
+    history = fresh['renewalHistory']
+    assert set(history) == {'DISCOVERY-2::loader'}
+    assert history['DISCOVERY-2::loader']['establishedBy'] == 'authored/provider-qualified-equality@0'
+    assert history['DISCOVERY-2::loader']['previousAssociations'] == [{'investigram': {'investigram': 'DISCOVERY-1'}, 'associationKey': 'loader'}]
+    assert fresh['notices']['STANDING-1::loader']['value']['reason'] == displace_identification(operation)['submission']['result']['investigrams'][0]['associationSpecifications'][0]['reason']
+    assert 'DISCOVERY-1::loader' not in fresh['items'] and 'DISCOVERY-1::loader' not in fresh['associationUses']
+    assert 'STANDING-1::loader' in current_identifies['notices']
+    excerpt = renewal_model.project({'entity': 'M-loader', 'items': [{'investigram': 'DISCOVERY-2', 'contentKey': 'loader', 'viaAssociation': {'investigram': 'DISCOVERY-2', 'associationKey': 'loader'}}]})
+    assert excerpt['renewalHistory'] == history and excerpt['notices'] == fresh['notices']
+    assert 'renewalHistory' not in renewal_model.project({'entity': 'M-loader', 'inventory': {'roles': ['identifies']}})
+    consumer = selection_consumer(exact)
+    reject_delivery(renewal_model, consumer, lambda p: p.pop('renewalHistory'))
+    reject_delivery(renewal_model, consumer, lambda p: p['notices'].pop('STANDING-1::loader'))
+    reject_delivery(renewal_model, consumer, lambda p: p['notices']['STANDING-1::loader']['value'].update(reason='altered'))
+    reader_model = copy.deepcopy(renewal_model); accept(reader_model, consumer)
+    assert reader_model.queries['Q-RENEWAL-READER']['sourceQueries'] == ['Q-D2', 'Q-STANDING']
+    assert reader_model.reconsideration()['evaluations']['Q-RENEWAL-READER'] == []
+    # A renewal delivered as a substantive reconsideration notice discloses history too.
+    notice_model = copy.deepcopy(renewal_base)
+    inventory_reader = selection_consumer({'entity': 'M-loader', 'inventory': {'roles': ['identifies']}})
+    inventory_reader['submission']['result']['investigrams'][0]['associationSpecifications'][0]['members'] = [{'item': {'investigram': {'investigram': 'DISCOVERY-1'}, 'contentKey': 'loader'}}]
+    accept(notice_model, inventory_reader)
+    accept(notice_model, normalized)
+    notice_projection = notice_model.project(select('RESULT-Q-RENEWAL-READER', 'RENEWAL-READER-1', 'result'))
+    assert 'DISCOVERY-2::loader' in notice_projection['notices']
+    assert 'DISCOVERY-2::loader' in notice_projection['renewalHistory']
+    assert 'STANDING-1::loader' in notice_projection['notices']
+    # Reusing a renewed association retains its history on subsequent fresh delivery.
+    again = copy.deepcopy(duplicate)
+    again['request'].update(id='Q-D3', resultEntity='RESULT-Q-D3')
+    again['bindings']['entityIds']['query-result'] = 'RESULT-Q-D3'
+    again['bindings']['investigramIds']['discovery'] = 'DISCOVERY-3'
+    again['submission']['result']['queryInvocation'] = 'Q-D3'
+    again, again_report = normalize(renewal_model, again)
+    repeated_model = copy.deepcopy(renewal_model); accept(repeated_model, again)
+    repeated = repeated_model.project(select('RESULT-Q-D3', 'DISCOVERY-3', 'result'))
+    assert 'DISCOVERY-2::loader' in repeated['renewalHistory'] and 'STANDING-1::loader' in repeated['notices']
+    assert repeated_model.queries['Q-D3']['deliveries'] == []
     renewals[operation] = {'normalization': renewal_report,
                           'originalStanding': renewal_model.standing(('DISCOVERY-1', 'loader')),
+                          'freshRenewalHistory': fresh['renewalHistory'], 'freshNotices': fresh['notices'],
+                          'readerSourceQueries': reader_model.queries['Q-RENEWAL-READER']['sourceQueries'],
                           'currentIdentifications': sorted(current_identifies['declarations']),
                           'afterReuseEvaluationCauses': status['evaluations']['Q-D2'],
                           'afterReuseMembershipCauses': status['designations']['DISCOVERY-2::result']['membershipCauses']}
+
+# Malformed host history must not forge identity/equivalence authority or future links.
+reject(renewal_base, normalized, lambda s: s['bindings']['renewals'][0]['previousAssociations'][0].update(associationKey='absent'))
+reject(renewal_base, normalized, lambda s: s['bindings']['renewals'][0]['previousAssociations'][0].update(associationKey='plugin'))
+reject(renewal_base, normalized, lambda s: s['bindings']['renewals'][0].update(previousAssociations=[]))
+reject(renewal_base, normalized, lambda s: s['bindings']['renewals'][0].update(establishedBy='agent-asserted-equivalence'))
+reject(renewal_base, normalized, lambda s: s['submission']['result']['investigrams'][0]['associationSpecifications'][0].update(renewalHistory={'forged': True}))
 
 # One organizer association supplies submission-wide reachability of the mechanical item.
 assert model.investigrams['CONSTANT-TARGET-1']['associationSpecifications'] == []
@@ -323,6 +402,45 @@ reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['submission']['result']['i
 assert final['basis']['sourceAnalysis'] == stages['Q-M']['bindings']['provenanceByInvestigram']['constant']['basis']
 assert final['basis']['retainedSelections'] == stages['Q-R']['request']['deliveries']
 
+# Change the organizing use without retracting or reparenting the mechanical finding.
+reorganization_stage = read(BASE / 'organization-renewal.json')
+reorganized = copy.deepcopy(model)
+original_items = copy.deepcopy(model.items())
+original_snapshots = copy.deepcopy(model.snapshots)
+accept(reorganized, reorganization_stage)
+assert reorganized.items() == original_items
+assert all(reorganized.snapshots[q] == snapshot for q, snapshot in original_snapshots.items())
+assert reorganized.standing(('TARGET-ORGANIZATION-1', 'runtime'))['displacedBy'] == ['TARGET-REORGANIZATION-1::withdraw-organizing-use']
+assert reorganized.standing(('RUNTIME-1', 'runtime'))['displacedBy'] == ['TARGET-ORGANIZATION-1::runtime']
+selection = reorganized.project({'entity': 'M-loader', 'scopeSelection': {'roles': ['describes'], 'standing': 'undisplaced'}})
+assert set(selection['declarations']) == {'EXPORTS-1::exports', 'DEPENDENCIES-1::dependencies', 'RUNTIME-REFINED-1::runtime', 'TARGET-REORGANIZATION-1::retain-finding'}
+assert selection['items']['CONSTANT-TARGET-1::dependency'] == mechanical_after
+assert reorganized.snapshots['Q-O']['items']['CONSTANT-TARGET-1::dependency'] == mechanical_after
+assert reorganized.investigrams['TARGET-REORGANIZATION-1']['content'] == []
+assert 'TARGET-REORGANIZATION-1::withdraw-organizing-use' in reorganized.reconsideration()['designations']['TARGET-ORGANIZATION-1::result']['membershipCauses']
+# Optional restoration of the earlier interpretation is also explicit addition of old content.
+restore_stage = copy.deepcopy(reorganization_stage)
+restore_stage['request']['deliveries'].append(select('M-loader', 'RUNTIME-1', 'runtime'))
+restore_stage['bindings']['provenance']['basis']['retainedSelections'] = copy.deepcopy(restore_stage['request']['deliveries'])
+bundle = restore_stage['submission']['result']['investigrams'][0]
+restore = copy.deepcopy(bundle['associationSpecifications'][1])
+restore.update(key='restore-inference', reason='Use the earlier qualified inference alongside the mechanical finding; no earlier association is reinstated.',
+               members=[{'item': {'investigram': {'investigram': 'RUNTIME-1'}, 'contentKey': 'dependency'}}])
+bundle['associationSpecifications'].append(restore)
+bundle['associationSpecifications'][2]['members'].append({'declaration': {'investigram': {'submittedInvestigram': 'reorganization'}, 'associationKey': 'restore-inference'}})
+restored = copy.deepcopy(model); accept(restored, restore_stage)
+assert restored.standing(('RUNTIME-1', 'runtime'))['displacedBy'] == ['TARGET-ORGANIZATION-1::runtime']
+assert restored.items() == original_items
+restored_selection = restored.project({'entity': 'M-loader', 'scopeSelection': {'roles': ['describes'], 'standing': 'undisplaced'}})
+assert 'TARGET-REORGANIZATION-1::restore-inference' in restored_selection['declarations']
+assert restored_selection['items']['RUNTIME-1::dependency'] == interpreted_before
+reorganization_report = {'currentAssociations': sorted(selection['declarations']),
+                        'mechanicalItem': selection['items']['CONSTANT-TARGET-1::dependency'],
+                        'earlierInferenceStanding': reorganized.standing(('RUNTIME-1', 'runtime')),
+                        'organizingAssociationStanding': reorganized.standing(('TARGET-ORGANIZATION-1', 'runtime')),
+                        'optionalRestorationAssociations': sorted(restored_selection['declarations']),
+                        'originalItemsAndCapturedAnswersUnchanged': True}
+
 report = {'status': fixture['status'], 'acceptedInvocations': list(model.queries),
           'identities': {'architectural': ['PROJECT', 'M-loader', 'M-plugin', 'M-empty', 'S-load', 'S-target'], 'recognizedReuse': 'Q-E and RESULT-Q-E reused without allocation', 'providerReencounter': reuse_report, 'changedMethodReencounter': changed_report, 'newIdentityScope': scope_report, 'perInvestigramProvenanceReencounter': multi_report, 'renewalAfterDisplacement': renewals},
           'complementary': {'mechanicalSourceRequest': static_before, 'interpretedConditionalTarget': interpreted_before},
@@ -332,6 +450,7 @@ report = {'status': fixture['status'], 'acceptedInvocations': list(model.queries
           'emptyVersusUnavailable': {'establishedEmpty': model.qualified('EMPTY-EXPORTS-1', model.items()[('EMPTY-EXPORTS-1','exports')]),
                                     'unavailable': fixture['noContributionOutcome']},
           'currentAssociations': sorted(current['declarations']),
+          'withdrawalPlusAddition': reorganization_report,
           'freshCombinedResult': delivery_summary(fresh_combined),
           'preservedHistoricalSelections': ['Q-S', 'Q-C', 'Q-E'], 'malformedCasesRejected': negative_count,
           'limits': ['No native producer, live interpreting agent, hypothetical constant-target method or runtime execution was run.',
@@ -342,5 +461,5 @@ report = {'status': fixture['status'], 'acceptedInvocations': list(model.queries
 path = BASE / 'report.json'
 if '--write' in sys.argv: path.write_text(json.dumps(report, indent=2)+'\n')
 else: assert read(path) == report, 'stale unification report'
-print(f'Common contributions: 7 accepted invocations plus 6 provider re-encounter branches; separate mechanical/organizing provenance, complementary additions, exact history and qualified basis pass; {negative_count} malformed cases rejected atomically.')
+print(f'Common contributions: 7 accepted invocations plus 6 provider re-encounter branches and organizing-use renewal/restoration; separate mechanical/organizing provenance, complementary additions, exact history and qualified basis pass; {negative_count} malformed cases rejected atomically.')
 print('Authored design probe only: no native provider, new compiler method, live investigator, or runtime execution.')

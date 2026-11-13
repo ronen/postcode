@@ -194,16 +194,31 @@ class Model:
             found = [x for x in self.investigrams[oid]['followupOptions'] if x['key'] == key]
             assert len(found) == 1
             opts[label((oid, key))] = self.qualified(oid, found[0])
+        # Host-established equality history is neither analyzer input nor reuse of
+        # the earlier association. Follow only these exact, earlier links for disclosure.
+        renewal_history, history_refs = {}, set()
+        def disclose_history(ref):
+            history = self.declarations()[ref].get('renewalHistory')
+            if not history or label(ref) in renewal_history:
+                return
+            renewal_history[label(ref)] = copy.deepcopy(history)
+            for previous in history['previousAssociations']:
+                prior = address(previous, 'associationKey')
+                assert self.accepted_at(prior) <= as_of
+                history_refs.add(prior)
+                disclose_history(prior)
+        for ref in sorted(uses):
+            disclose_history(ref)
         notices = {}
         for ref, declaration in self.declarations().items():
-            if self.accepted_at(ref) <= as_of and uses.intersection(address(x, 'associationKey') for x in declaration.get('displaces', [])):
+            if self.accepted_at(ref) <= as_of and (uses | history_refs).intersection(address(x, 'associationKey') for x in declaration.get('displaces', [])):
                 notices[label(ref)] = self.qualified(ref[0], declaration)
         use_records = {}
         for ref in sorted(uses):
             declaration = self.declarations()[ref]
             value = {'association': {'investigram': ref[0], 'associationKey': ref[1]},
                      'target': declaration['target']}
-            for field in ['reason', 'qualifications', 'evidence']:
+            for field in ['reason', 'qualifications', 'evidence', 'renewalHistory']:
                 if field in declaration: value[field] = declaration[field]
             use_records[label(ref)] = self.qualified(ref[0], value)
         result_entities = {self.declarations()[r]['target']['entity']['entity'] for r in uses
@@ -243,9 +258,12 @@ class Model:
             # A substantive notice supplies its own declaration. Fresh access must
             # disclose later displacement of that declaration too, not just its producer.
             delivered = self.delivered_declarations(projection)
+            for cid in sorted(delivered):
+                disclose_history(by_label[cid])
+            history_labels = {label(r) for r in history_refs}
             known = {label(r) for r, d in self.declarations().items()
                      if self.accepted_at(r) <= as_of and
-                     any(label(address(x, 'associationKey')) in delivered for x in d.get('displaces', []))}
+                     any(label(address(x, 'associationKey')) in delivered | history_labels for x in d.get('displaces', []))}
             for ref in uses:
                 known.update(status['designations'].get(label(ref), {}).get('needsReconsideration', []))
             for source in self.projection_sources(projection):
@@ -256,6 +274,9 @@ class Model:
             for cid in sorted(missing):
                 ref = by_label[cid]
                 notices[cid] = self.qualified(ref[0], self.declarations()[ref])
+        if renewal_history:
+            projection['renewalHistory'] = renewal_history
+            projection['noticeLimits'] += ' Includes host-established renewal history and displacement reasons for the earlier associations; historical links do not deliver their content or reinstate them.'
         return projection
 
     def accept(self, document, bindings, request, delivered=None):
@@ -267,6 +288,7 @@ class Model:
             expected = self.project(selection, projection['asOfAcceptance'])
             assert projection['associationUses'] == expected['associationUses'], 'missing or altered association-use provenance'
             assert projection['notices'] == expected['notices'], 'missing or altered known-cause disclosure at delivery'
+            assert projection.get('renewalHistory') == expected.get('renewalHistory'), 'missing or altered renewal history'
             assert projection.get('inventory') == expected.get('inventory'), 'missing or altered inventory delivery'
             assert projection.get('selectionScope') == expected.get('selectionScope'), 'missing or altered selection-scope delivery'
             assert projection.get('queryMeanings') == expected.get('queryMeanings'), 'missing or altered delivered query meaning'
@@ -312,6 +334,7 @@ class Model:
             assert a['qualifications'] and a['evidence'], 'missing own qualification/support'
             assert len({x['key'] for x in a['content']}) == len(a['content'])
             assert len({x['key'] for x in a['associationSpecifications']}) == len(a['associationSpecifications'])
+            assert all('renewalHistory' not in x for x in a['associationSpecifications']), 'renewal history is host-attributed'
             for x in a['content']:
                 if x.get('introducesEntity'):
                     if x['contentType'] == 'entity-description/0':
@@ -326,6 +349,26 @@ class Model:
         staged.validate_content(new_owners, set(request['suppliedEvidence']))
         decls = staged.declarations()
         new_decls = {k: v for k, v in decls.items() if k[0] in new_owners}
+        # Host binding, not a producer assertion of semantic equivalence. The bounded
+        # native adapter establishes equality; common acceptance checks exact structure.
+        renewal_bindings = resolve(bindings.get('renewals', []), bindings)
+        seen_renewals = set()
+        for renewal in renewal_bindings:
+            assert set(renewal) == {'association', 'previousAssociations', 'establishedBy'}
+            ref = address(renewal['association'], 'associationKey')
+            assert ref in new_decls and ref not in seen_renewals, 'invalid or repeated renewal owner'
+            seen_renewals.add(ref)
+            sp = new_decls[ref]
+            assert sp['operation'] == 'addition', 'renewal history requires a new addition'
+            assert renewal['establishedBy'] == 'authored/provider-qualified-equality@0'
+            previous = [address(x, 'associationKey') for x in renewal['previousAssociations']]
+            assert previous and len(previous) == len(set(previous)), 'empty or repeated renewal history'
+            for prior in previous:
+                assert prior in self.declarations(), 'renewal must refer to an earlier association'
+                old = self.declarations()[prior]
+                assert old['operation'] != 'withdrawal' and old['target'] == sp['target'], 'renewal target mismatch'
+                assert self.standing(prior)['displacedBy'], 'renewal history target was not displaced'
+            sp['renewalHistory'] = {k: copy.deepcopy(renewal[k]) for k in ['previousAssociations', 'establishedBy']}
         covered = set()
         for ref, sp in new_decls.items():
             assert sp['operation'] in ['addition', 'supersession', 'withdrawal']

@@ -95,6 +95,100 @@
           ],
           "competingDeclarations": false
         },
+        "freshRenewalHistory": {
+          "DISCOVERY-2::loader": {
+            "previousAssociations": [
+              {
+                "investigram": {
+                  "investigram": "DISCOVERY-1"
+                },
+                "associationKey": "loader"
+              }
+            ],
+            "establishedBy": "authored/provider-qualified-equality@0"
+          }
+        },
+        "freshNotices": {
+          "STANDING-1::loader": {
+            "value": {
+              "key": "loader",
+              "operation": "supersession",
+              "target": {
+                "entity": {
+                  "entity": "M-loader"
+                },
+                "role": "identifies"
+              },
+              "displaces": [
+                {
+                  "investigram": {
+                    "investigram": "DISCOVERY-1"
+                  },
+                  "associationKey": "loader"
+                }
+              ],
+              "reason": "Authored standing probe: displace this identifying use; no claim that the native provider is faulty.",
+              "members": [
+                {
+                  "item": {
+                    "investigram": {
+                      "investigram": "DISCOVERY-1"
+                    },
+                    "contentKey": "loader"
+                  }
+                }
+              ]
+            },
+            "sourceInvestigram": "STANDING-1",
+            "queryInvocation": "Q-STANDING",
+            "basis": {
+              "retainedSelections": [
+                {
+                  "entity": "M-loader",
+                  "associations": [
+                    {
+                      "investigram": "DISCOVERY-1",
+                      "associationKey": "loader"
+                    }
+                  ],
+                  "items": [],
+                  "options": []
+                }
+              ]
+            },
+            "provenance": {
+              "producer": {
+                "kind": "agentic",
+                "method": "authored/standing-probe@0"
+              },
+              "basis": {
+                "retainedSelections": [
+                  {
+                    "entity": "M-loader",
+                    "associations": [
+                      {
+                        "investigram": "DISCOVERY-1",
+                        "associationKey": "loader"
+                      }
+                    ],
+                    "items": [],
+                    "options": []
+                  }
+                ]
+              }
+            },
+            "sourceQualifications": [
+              "A lifecycle-only probe, not an adjudication of provider semantics."
+            ],
+            "sourceEvidence": [
+              "E-standing"
+            ]
+          }
+        },
+        "readerSourceQueries": [
+          "Q-D2",
+          "Q-STANDING"
+        ],
         "currentIdentifications": [
           "DISCOVERY-2::loader",
           "STANDING-1::loader"
@@ -127,6 +221,90 @@
           ],
           "competingDeclarations": false
         },
+        "freshRenewalHistory": {
+          "DISCOVERY-2::loader": {
+            "previousAssociations": [
+              {
+                "investigram": {
+                  "investigram": "DISCOVERY-1"
+                },
+                "associationKey": "loader"
+              }
+            ],
+            "establishedBy": "authored/provider-qualified-equality@0"
+          }
+        },
+        "freshNotices": {
+          "STANDING-1::loader": {
+            "value": {
+              "key": "loader",
+              "operation": "withdrawal",
+              "target": {
+                "entity": {
+                  "entity": "M-loader"
+                },
+                "role": "identifies"
+              },
+              "displaces": [
+                {
+                  "investigram": {
+                    "investigram": "DISCOVERY-1"
+                  },
+                  "associationKey": "loader"
+                }
+              ],
+              "reason": "Authored standing probe: displace this identifying use; no claim that the native provider is faulty."
+            },
+            "sourceInvestigram": "STANDING-1",
+            "queryInvocation": "Q-STANDING",
+            "basis": {
+              "retainedSelections": [
+                {
+                  "entity": "M-loader",
+                  "associations": [
+                    {
+                      "investigram": "DISCOVERY-1",
+                      "associationKey": "loader"
+                    }
+                  ],
+                  "items": [],
+                  "options": []
+                }
+              ]
+            },
+            "provenance": {
+              "producer": {
+                "kind": "agentic",
+                "method": "authored/standing-probe@0"
+              },
+              "basis": {
+                "retainedSelections": [
+                  {
+                    "entity": "M-loader",
+                    "associations": [
+                      {
+                        "investigram": "DISCOVERY-1",
+                        "associationKey": "loader"
+                      }
+                    ],
+                    "items": [],
+                    "options": []
+                  }
+                ]
+              }
+            },
+            "sourceQualifications": [
+              "A lifecycle-only probe, not an adjudication of provider semantics."
+            ],
+            "sourceEvidence": [
+              "E-standing"
+            ]
+          }
+        },
+        "readerSourceQueries": [
+          "Q-D2",
+          "Q-STANDING"
+        ],
         "currentIdentifications": [
           "DISCOVERY-2::loader"
         ],
@@ -609,6 +787,101 @@
     "RUNTIME-REFINED-1::runtime",
     "TARGET-ORGANIZATION-1::runtime"
   ],
+  "withdrawalPlusAddition": {
+    "currentAssociations": [
+      "DEPENDENCIES-1::dependencies",
+      "EXPORTS-1::exports",
+      "RUNTIME-REFINED-1::runtime",
+      "TARGET-REORGANIZATION-1::retain-finding"
+    ],
+    "mechanicalItem": {
+      "value": {
+        "key": "dependency",
+        "contentType": "dependency-account/0",
+        "concept": "module dependency",
+        "subject": {
+          "entity": "M-loader"
+        },
+        "relationSemantics": "conditional-load-attempt",
+        "requests": [],
+        "relationships": [
+          {
+            "key": "default-plugin",
+            "target": {
+              "entity": "M-plugin"
+            },
+            "condition": "If loadPlugin is invoked and reaches the dynamic import with the captured constant binding, and the build/loader maps ./plugins/default.js to the captured plugins/default.ts module.",
+            "effect": "Attempts to load the module designated by ./plugins/default.js; successful resolution/loading is not established.",
+            "evidence": [
+              "E-loader",
+              "E-plugin"
+            ]
+          }
+        ],
+        "coverage": "one-restricted-conditional-target",
+        "qualification": {
+          "guarantee": "mechanically-established-conditional-target-for-restricted-shape",
+          "scope": "Hypothetical method restricted to this immutable literal binding and import expression; not executed in this probe. Still no runtime execution or loading-success guarantee. Source-module correspondence uses the stated build/loader assumption; no deployed mapping is observed."
+        },
+        "evidence": [
+          "E-loader",
+          "E-plugin"
+        ]
+      },
+      "sourceInvestigram": "CONSTANT-TARGET-1",
+      "queryInvocation": "Q-M",
+      "basis": {
+        "programState": "AUTHORED-PINNED-SOURCE-1",
+        "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+        "sourceDigests": {
+          "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+          "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+        }
+      },
+      "provenance": {
+        "producer": {
+          "kind": "mechanical",
+          "method": "authored/constant-target@0"
+        },
+        "basis": {
+          "programState": "AUTHORED-PINNED-SOURCE-1",
+          "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+          "sourceDigests": {
+            "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+            "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+          }
+        }
+      },
+      "sourceQualifications": [
+        "Authored expected output of an unimplemented restricted mechanical method, not a measured compiler result.",
+        "Method kind does not by itself guarantee completeness or runtime execution."
+      ],
+      "sourceEvidence": [
+        "E-loader",
+        "E-plugin"
+      ]
+    },
+    "earlierInferenceStanding": {
+      "displacedBy": [
+        "TARGET-ORGANIZATION-1::runtime"
+      ],
+      "competingDeclarations": false
+    },
+    "organizingAssociationStanding": {
+      "displacedBy": [
+        "TARGET-REORGANIZATION-1::withdraw-organizing-use"
+      ],
+      "competingDeclarations": false
+    },
+    "optionalRestorationAssociations": [
+      "DEPENDENCIES-1::dependencies",
+      "EXPORTS-1::exports",
+      "RUNTIME-REFINED-1::runtime",
+      "TARGET-REORGANIZATION-1::restore-inference",
+      "TARGET-REORGANIZATION-1::retain-finding"
+    ],
+    "originalItemsAndCapturedAnswersUnchanged": true
+  },
   "freshCombinedResult": {
     "entity": "RESULT-Q-C",
     "asOfAcceptance": 7,
@@ -837,7 +1110,7 @@
     "Q-C",
     "Q-E"
   ],
-  "malformedCasesRejected": 17,
+  "malformedCasesRejected": 28,
   "limits": [
     "No native producer, live interpreting agent, hypothetical constant-target method or runtime execution was run.",
     "Per-contribution provenance and four small content contracts are exercised; the general migration and partial/failure result contract are not implemented.",

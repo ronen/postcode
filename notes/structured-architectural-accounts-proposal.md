@@ -182,8 +182,11 @@ The probe supports this direction and identifies three concrete requirements:
   allocate fresh common IDs without implied correspondence; fresh common-ID collisions still fail.
   Equal identifying contributions may reuse **undisplaced** associations without inventing analyzer
   delivery/exposure. If displaced, recomputation can add a new identifying contribution on the same
-  entity, preserving the earlier displacement and any replacement. Renewal does not adjudicate
-  disagreement. The probe exercises both supersession and withdrawal, along with identical reuse,
+  entity, preserving the earlier displacement and any replacement. The host records exact equality
+  history to the displaced association; fresh delivery discloses its qualified displacement reason.
+  This does not invent analyzer exposure, deliver old content, infer semantic equivalence or clear
+  concerns. Subsequent consumers receive and expose the reasons actually delivered. Renewal does
+  not adjudicate disagreement. The probe exercises both supersession and withdrawal, along with identical reuse,
   changed methods, new identity scope and per-investigram provenance, separately from query reuse.
 - Provenance must retain the actual producing method and basis per contribution. Selecting content
   from different producers must not flatten it to one method, basis or guarantee. The shared probe
@@ -191,7 +194,10 @@ The probe supports this direction and identifies three concrete requirements:
   and deciding to displace an earlier inference are separately attributed, even in one submission.
   An explicit deterministic organizing policy could also author a declaration under its own method.
   The organizer's association alone can make the mechanical item reachable across the submission;
-  a second association owned by the mechanical bundle is unnecessary. Selection-only basis names
+  a second association owned by the mechanical bundle is unnecessary. A later investigation that
+  rejects the organizing use while keeping the finding withdraws that association and adds a new
+  association to the original item, retaining its provenance/guarantee. Restoring use of the earlier
+  interpretation likewise requires an explicit addition, not reversal of its displacement. Selection-only basis names
   retained inputs actually used, not source it did not read. When source is also supplied and cited
   (Q-R), capture both source and retained inputs. Original source bases remain with selected items.
   Older fixtures retain their single fixed basis.
@@ -200,8 +206,8 @@ The probe supports this direction and identifies three concrete requirements:
   an existing answer does not allocate another result. One public request may involve several
   methods; not every internal compiler phase needs a public query-result entity.
 
-Four small content contracts, six provider re-encounter branches and seventeen malformed cases are
-exercised. No native provider, live investigator or proposed constant-target method was run.
+Four small content contracts, six provider re-encounter branches, organizing withdrawal-plus-
+addition/restoration and twenty-eight malformed cases are exercised. No native provider, live investigator or proposed constant-target method was run.
 Production content contracts, actual coordinated execution, first migration depth and full
 partial/failure result handling remain planning work. First native verification must include
 a mechanical consumer of retained claims, such as export projection reading module naming,

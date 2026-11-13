@@ -2039,3 +2039,27 @@ no product or governing files were changed and no native integration is claimed.
 
 Verification: unification, both partitions, additions, acquisition, guidance, composition/selector
 checks and diagram regeneration all pass. Working-note file links and fixture JSON also validate.
+
+## 2026-11-13 — Disclose provider renewal history; change organizing use explicitly
+
+The human approved two follow-ups to the clean mechanical review. Exact qualified provider
+recomputation that creates a new identification after displacement now records host-established
+history to the earlier association. Fresh substantive delivery discloses that history and the
+qualified displacement reason; the objection no longer disappears from scope-selected current
+information. History does not claim the analyzer received or answered the objection, deliver old
+content, infer semantic equivalence, reinstate an association or clear concerns. Subsequent readers
+are exposed to the reasons actually delivered. Inventory-only address lists remain distinct.
+
+A new Q-O probe withdraws the organizer's association while adding a new association to the
+unchanged mechanical item. A separate variant also explicitly restores use of the earlier
+interpretation through a new addition. Original items, method guarantees, prior displacements
+and captured answers remain unchanged. This accepts the existing withdrawal/addition lifecycle;
+it does not introduce a supersession relation to an independent replacement association.
+
+The authored unification checker now exercises renewal history through exact/scope/excerpt/result
+access, notices and repeated reuse, plus organizing-use renewal/restoration. Twenty-eight malformed
+cases are rejected, including forged or incomplete history and missing/altered disclosure. Governing
+and product files remain unchanged; native adapter integration is still unverified.
+
+Verification: all unification, partition, additions, acquisition, guidance, composition/selector
+checks and diagram regeneration pass; working-note file links and fixture JSON validate.

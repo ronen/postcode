@@ -62,6 +62,24 @@ qualified identifying addition on the same entity. Renewal neither reinstates th
 nor adjudicates disagreement. Host equality/reuse is not analyzer delivery: no exposure is invented,
 though result membership still records the associations included.
 
+For a new addition equal to displaced provider identifications, the adapter supplies host binding
+`renewals`: exact new association, exact `previousAssociations`, and the equality method. Acceptance
+retains `renewalHistory` on the new association with `establishedBy` and those previous references.
+This is host-attributed metadata, separate from the analyzer's production provenance. The bounded
+method compares provider identity, content, method/basis, evidence and qualifications exactly;
+it does not assert general semantic equivalence. Raw producer-supplied history is rejected.
+Structural checks require a new addition, unique nonempty prior same-target association references,
+prior displacement and the supported host method. Equality itself is established by the adapter.
+
+Fresh substantive delivery of a renewed association includes its history and the earlier
+associations' qualified displacement reasons, including through chained history or when the
+renewal is itself a substantive notice. Excerpts retain it; inventory-only access does not supply
+it. The historical links do not deliver earlier content or assert earlier association use. Actual
+notice delivery records the notice producer's exposure, not fictional exposure of the analyzer.
+History and notices must match the delivery position; missing/altered delivery is rejected.
+No reconsideration cause, automatic equivalence, reinstatement or clearance is inferred solely
+from a renewal link. Exact reuse of a renewed association preserves its history.
+
 Names, descriptions and classifications are associated information, not mutable
 unqualified fields of the identity. Reuse asserts reference to the identified thing,
 not agreement with its descriptions. Every explicit introduction receives an ID;
@@ -127,7 +145,11 @@ reuse neither copies nor reparents content. Each source retains its qualificatio
 basis and provenance. Content reachability is checked across the entire submission, not only
 within each owning investigram. Thus a mechanical item can be associated solely by a separately
 attributed organizer in the same submission; no duplicate mechanical-owner association is needed.
-The new declaration has its own attributable grounds. Reasons
+The new declaration has its own attributable grounds. Withdrawing that association removes that
+use, not the underlying content. To retain a finding while changing the organizing use, submit
+withdrawal plus a new addition referencing the original item; optionally add the earlier alternative
+in the same way. Earlier displacements remain intact. The unification reorganization probe exercises
+this without a new operation or a second association owned by the mechanical producer. Reasons
 are inline in this slice; no redundant mandatory `support` list repeats the displaced
 address. Additional grounds can be supplied as new qualified content without a special
 operation for editing an earlier reason.

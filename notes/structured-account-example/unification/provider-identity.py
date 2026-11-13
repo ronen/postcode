@@ -64,6 +64,7 @@ def normalize(model, stage):
                       if 'provenanceByInvestigram' in bindings else bindings['provenance'])
         for item in bundle['content']:
             equal = None
+            displaced_equal = []
             if 'providerIdentity' in item and not item['introducesEntity']:
                 for owner, key, previous in known[identity_key(item)]:
                     comparison = copy.deepcopy(previous); comparison['introducesEntity'] = False
@@ -76,6 +77,7 @@ def normalize(model, stage):
                         # the displaced association does not. Renew with a new addition.
                         if model.standing((owner, key))['displacedBy']:
                             displaced_matches.add((owner, key))
+                            displaced_equal.append((owner, key))
                             continue
                         equal = (owner, key)
                         break
@@ -91,6 +93,11 @@ def normalize(model, stage):
                 # Host equality/reuse is not context delivered to the analyzer.
             else:
                 keep.append(item)
+                if displaced_equal:
+                    bindings.setdefault('renewals', []).append({
+                        'association': {'investigram': {'submittedInvestigram': bundle['key']}, 'associationKey': item['key']},
+                        'previousAssociations': [{'investigram': {'investigram': o}, 'associationKey': k} for o, k in displaced_equal],
+                        'establishedBy': 'authored/provider-qualified-equality@0'})
         bundle['content'] = keep
     for bundle in stage['submission']['result']['investigrams']:
         for association in bundle['associationSpecifications']:

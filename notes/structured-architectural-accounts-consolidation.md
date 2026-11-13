@@ -46,8 +46,13 @@ a known provider identity. Native keys and common IDs are distinct; a new identi
 allocate a new common ID without correspondence. Equal identifying information can reuse an
 undisplaced association without inventing analyzer exposure. If displaced, recomputation adds
 a new qualified identification while preserving the old displacement and any replacement; renewal
-does not resolve disagreement. A changed method can also add qualified identification. Reachability
-is submission-wide, so the organizer alone can associate the mechanical item. Selection-only
+does not resolve disagreement. Exact qualified provider renewal records host-established history;
+fresh delivery includes the earlier displacement reason without inventing analyzer input or new
+propagation rules. A changed method can also add qualified identification. Reachability
+is submission-wide, so the organizer alone can associate the mechanical item. Later withdrawal of
+that organizing use can accompany a new addition referencing the unchanged mechanical item;
+restoring use of earlier content similarly requires an explicit addition. Neither reverses old
+displacements or clears concerns. Selection-only
 basis names retained inputs; a contribution also using source captures both, preserving each
 selected item's original source basis. Supersession grounds should
 explain material changes in method, scope or guarantee; guarantee-ranking selectors remain deferred.
