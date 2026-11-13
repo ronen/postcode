@@ -47,8 +47,9 @@ agent spontaneously choosing every action. Once an action is produced, its proce
 the contract; absence of an optional action is not itself a mechanism failure. Explicitly requested
 content remains subject to the request's fulfillment requirements.
 
-Plausible usefulness constrains the capability and outer investigations, not every test response.
-Controlled responses may deliberately exercise unusual cases, failures and invalid submissions.
+“Plausibly useful” is a sanity check on the representative architectural application, not a separate
+acceptance criterion. Keep a recognizable investigative purpose rather than meaningless examples;
+controlled responses may deliberately exercise unusual cases, failures and invalid submissions.
 Neither proving user value nor evaluating broad interpretive ability is an acceptance requirement.
 Test harnesses, mocking arrangements, exact scenarios and live-run procedures are implementation
 choices. Planning identifies observable mechanism coverage without prescribing those details.
@@ -256,8 +257,8 @@ milestone, not the intended endpoint. The stages are:
 2. Dependencies and remaining module information, including associated documentation and module
    composition, preserving qualified targets, coverage and partial/empty distinctions.
 3. Project/repository organization: groups, containment, placement and qualified properties.
-4. Integrated use of these real contributions in a small set of plausibly useful validation
-   capabilities, with exact access, standing, provenance and exposure verification within the
+4. Integrated use of these real contributions in the representative architectural application,
+   with exact access, standing, provenance and exposure verification within the
    supported Session. No particular Cockatiel journey or initial user-facing offering is required.
 
 This scopes the existing architectural outputs, not new analyzers or a rewrite of every provider

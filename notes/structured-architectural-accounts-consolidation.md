@@ -407,9 +407,11 @@ Require a few live-agent runs to check the real integration, plus controlled dia
 coverage, including optional actions such as follow-up options, presentation recommendations,
 reported inability, association operations and cross-investigation content reuse. Do not rely on
 spontaneous agent choices for repeatable coverage. Harnesses, mocking arrangements and exact test
-scenarios are implementation details. Plausible usefulness applies to the capability and outer
-investigations; controlled responses may be deliberately contrived to exercise particular cases.
-Proof of user value is not required. The separate [SLICE step](upcoming-work.md#slice) selects the
+scenarios are implementation details. “Plausibly useful” is a sanity check on the representative
+architectural application, not a separate acceptance criterion: keep a recognizable investigative
+purpose, while allowing controlled responses constructed to exercise particular cases. These
+checks establish mechanism behavior, not the usefulness of an investigation experience. Proof of
+user value is not required. The separate [SLICE step](upcoming-work.md#slice) selects the
 initial user-facing offering using the demonstrated capabilities and limitations.
 
 Before drafting, resolve any remaining concrete ambiguity in information meaning or qualification;

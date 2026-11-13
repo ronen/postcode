@@ -2167,3 +2167,13 @@ reported inability, addition/supersession/withdrawal and reuse of earlier conten
 mocking details remain implementation choices. Plausible usefulness constrains the capability and
 outer queries; deliberately constructed responses are appropriate for targeted mechanism checks.
 The proposal and consolidation record this scope without prescribing a test implementation.
+
+## 2026-11-13 — Strategy agreement on the usefulness sanity check
+
+The human reports that the strategy agent agrees: “plausibly useful” serves as a sanity check on
+the representative architectural application, not a separate acceptance criterion. ACCOUNT
+implements and validates the mechanism using recognizable architectural content; controlled
+dialogs establish mechanism behavior, while a few live-agent runs check integration. Neither
+establishes the usefulness of an initial investigation offering. SLICE selects that offering
+using the demonstrated capabilities and limitations. No update to upcoming-work.md is needed.
+The proposal and consolidation now state this distinction explicitly.
