@@ -2086,3 +2086,17 @@ name matching remains qualified and potentially ambiguous. No parallel architect
 registry is intended. Physical layouts, classes and indexes remain implementation choices;
 search scope and historical-name handling need precise contracts. The proposal links the inspected
 record, store, binding and subject-resolution code. No product or governing files changed.
+
+## 2026-11-13 — Keep architectural decisions distinct from implementation choices
+
+The human asked to record the clarified boundary. The prior pre-draft checklist was too broad:
+not every nested-result bound, delivery limit, role spelling, schema field or migration subtask
+requires architectural settlement. Decide retained meaning, investigator guarantees, consumer-visible
+information and promised capabilities here. Leave implementation mechanisms free within those
+requirements; consequential changes still follow the decision workflow.
+
+The proposal and consolidation now narrow pre-draft questions to partial/unsuccessful result
+semantics, first-delivery capability/verification and remaining semantic ambiguities. The fixture
+contract guide explicitly distinguishes architectural requirements, illustrative implementation
+choices and deferred capabilities. Executability does not promote every probe detail into a
+requirement. No fixture, product or governing behavior changes in this documentation pass.

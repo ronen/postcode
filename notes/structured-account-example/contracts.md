@@ -13,6 +13,21 @@ A schema captures mechanically checkable shape, not truth or sufficient evidence
 invented type does not make it understood. Topics and concepts may extend beyond the
 recognized catalogue using supported types.
 
+## Status of these executable contracts
+
+These are concrete authored contracts used to test the design, not a requirement to reproduce the
+fixture's exact serialization, field names, constants, role spellings or operational bounds.
+Architectural meanings, qualification, reference integrity, standing, atomicity and faithful
+exposure/delivery are the requirements being exercised. Production schemas and API shapes may
+change while preserving those requirements and the promised capability. A limit that changes
+observable completeness or availability must preserve the applicable outcome/coverage contract.
+
+Use the [design/implementation boundary](../structured-architectural-accounts-proposal.md#design-requirements-implementation-choices-and-deferred-capabilities)
+when drafting: distinguish semantic requirements from illustrative choices and deferred capabilities.
+The fact that a checker rejects an example establishes conformance to this bounded probe, not by
+itself that the same rejection must be a universal product rule. No probe choice authorizes a new
+feature or silently overrides an agreed requirement.
+
 ## Shared envelope and addressing
 
 Each submission names a query invocation, its newly allocated query-result entity,

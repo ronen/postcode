@@ -1,6 +1,6 @@
 # Structured architectural accounts: working proposal
 
-Updated: 2026-11-12
+Updated: 2026-11-13
 
 Exploratory working proposal, not an adopted decision or implementation authorization.
 This version conforms the current synthesis and authored fixtures to entity-organized
@@ -12,9 +12,10 @@ later planning package. Historical discussion remains in the [discussion notes](
 Read the [consolidation](structured-architectural-accounts-consolidation.md) for the
 ownership maps, the [walkthrough](structured-architectural-accounts-example.md) for the
 worked thread, and the [fixture guide](structured-account-example/README.md) for exact
-payloads and executable checks. Decisions needed for the bounded capability should be
-settled here before drafting. Provisional fixture choices below are reviewable examples,
-not silently adopted policies.
+payloads and executable checks. Consequential architectural decisions and the promised capability
+should be settled here before drafting. Detailed schemas, API shapes and operational bounds need
+not be settled merely to make a fixture executable. Provisional fixture choices are reviewable
+examples, not silently adopted policies; see the design/implementation boundary below.
 
 ## Purpose and first scope
 
@@ -877,15 +878,52 @@ The planning package would need explicit treatment of:
 - Representation-independent qualification, captured basis, direct/exact application access,
   atomicity and the supported Session boundary. No foundation or governing text is changed here.
 
+## Design requirements, implementation choices and deferred capabilities
+
+The human clarified that these notes should not prescribe implementation choices merely because
+the authored probes required concrete ones. A choice belongs in the architectural design when
+changing it would change what retained information means, what an investigator can rely on,
+what a consumer receives, or the promised capability. Different implementations that preserve
+those guarantees need not be decided here. Observable failure, completeness or qualification
+behavior cannot be dismissed as an implementation detail.
+
+| Area | Architectural requirement or decision | Implementation freedom within that boundary |
+| --- | --- | --- |
+| Partial, failed and empty results | Preserve their semantic distinction; decide what usable accepted contributions and the retained answer represent after partial or unsuccessful work. | Buffering, batching, internal checkpoints and error-handling structure, subject to accepted atomicity and outcome contracts. |
+| Associations and results | Membership meaning, qualification, standing and exact history; ordering only where it conveys meaning. | Serialization, collection types, indexes, incidental ordering and nesting limits that preserve the supported capability and disclose limits accurately. |
+| Context acquisition | Selection meaning, actual coverage, qualification, exposure and the representation of unavailable or incomplete support. | Dialog tool shapes, fetching strategy, pagination mechanics and operational limits that preserve those contracts. |
+| Architectural content and diagrams | Architectural meanings supported by the first capability; content must supply the meaning needed for representative diagrams. | Detailed schemas, field layout and renderer implementation consistent with those meanings. |
+| Entity lookup | Stable exact identity within the Session; qualified and potentially ambiguous name lookup; no silent identity merging or displaced-description authority. | Storage layout, lookup indexes, caching and search mechanics within the supported lookup semantics. |
+| Migration and verification | All existing mechanical architectural information joins the common model in agreed stages; define observable acceptance scenarios and retained guarantees. | Test harnesses, internal task breakdown and sequencing within those stages. |
+
+An executable probe is evidence about a proposed behavior, not authority for every field, constant,
+role spelling or operational restriction in its implementation. During drafting, distinguish:
+
+- **Architectural requirements:** meaning, invariants and observable capabilities to preserve.
+- **Illustrative implementation choices:** replaceable details used to exercise those requirements.
+- **Deferred capabilities:** explicitly outside the first delivery, not commitments for implementers
+  to fill in opportunistically.
+
+Implementation may propose detailed schemas, APIs and bounds without reopening the design when
+it preserves the agreed behavior. A choice that changes that behavior, weakens a guarantee or
+exposes an unresolved architectural question requires discussion and the applicable decision
+workflow. Neither the probes nor this boundary authorize product implementation.
+
 ## Decisions still to make in notes
 
-| Decision | Current direction / remaining choice |
+The remaining pre-draft discussion is narrower than the previous list of fixture details:
+
+| Question | Required resolution |
 | --- | --- |
-| Entity and result identity | Recognized reuse returns the existing invocation/result identity; no duplicate result for repeated access. Full existing mechanical-information migration is agreed, staged; settle failed/partial-result treatment. No semantic deduplication. |
-| Association/result shape | Fixture members reference items/declarations; decide ordering, nested-result bounds, role vocabulary and result completeness. |
-| Support acquisition | Reasoning policies are investigator instructions; their mechanical enforcement is deferred. Data integrity and faithful qualified deliveries remain enforced. Set bounded acquisition/missing-support behavior; scoped current-description acquisition includes competing undisplaced associations and exact-reference acquisition remains narrower. |
-| Reconsideration | Distinguish actual association and inventory exposure; additions trigger matching prior inventories, not every entity use or fixed result membership. Refined probe removes the earlier broad marks. Record both inventory and scope-selected content acquisition; exact delivered declaration reasons are exposure too. Set first-delivery coverage explicitly; richer selectors remain open. Investigator-directed propagation, suppression, reassessment/clearance and scheduling are deferred. |
-| First capability | Choose delivered relationship kinds, contextual selection depth, detailed migration milestones and which composition/diagram probes become implementation acceptance tests. |
+| Partial or unsuccessful investigation | What remains available, and what does the retained query result mean when work stops with usable contributions or none? Preserve existing empty/partial/failure distinctions and qualified history. |
+| First delivered capability and verification | Which architectural content meanings, representative diagrams and follow-up behaviors are promised, and which examples remain design probes? Mechanical migration scope and broad staging are already agreed. |
+| Remaining semantic ambiguities | Resolve ambiguity in membership, qualification, selection or lookup where different choices would change meaning or supported behavior. Do not require every role spelling, schema field, nested-result limit or delivery limit to be fixed before drafting. |
+
+Association versus inventory/selection-scope exposure, actual reason delivery, standing and
+qualified access remain requirements. Richer selectors, exact tool shapes and operational bounds
+are not all architectural decisions. Detailed migration task breakdown is implementation/planning
+work within the agreed stages. The proposed formal name **Analysis content** remains a naming
+recommendation rather than an adopted governing edit.
 
 Declared dependencies, investigator-directed propagation, targeted suppression, reassessment/clearance
 and automatic scheduling are deferred beyond the first capability unless a later concrete need changes that

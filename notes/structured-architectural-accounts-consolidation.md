@@ -382,8 +382,20 @@ is not an impact judgment, and a concern neither displaces earlier content nor f
 past exposure. No reverse-lookup API or concern declaration is implemented. See the
 [proposal](structured-architectural-accounts-proposal.md#deferred-investigator-directed-propagation-reassessment-and-scheduling).
 
-Before drafting: settle detailed migration stages, result designation shape, support selection,
-first-delivery inventory coverage and delivery bounds, and first-delivery scope. Declared dependencies and investigator-directed propagation are deferred:
+Before drafting, settle the meaning of partial/unsuccessful investigation results, the promised
+first capability and observable verification scenarios, and any remaining ambiguity in information
+meaning or qualification. Detailed schemas, API/tool shapes, operational bounds, incidental
+ordering and implementation task breakdown need not be fixed here. The test is whether a different
+choice changes retained meaning, investigator guarantees, consumer-visible information or the
+promised capability. Existing atomicity, truthful coverage and qualified-delivery requirements still
+apply. See the [design/implementation boundary](structured-architectural-accounts-proposal.md#design-requirements-implementation-choices-and-deferred-capabilities).
+
+Executable fixtures expose contradictions; their incidental details do not automatically become
+requirements. Drafting should label architectural requirements, illustrative implementation choices
+and deliberately deferred capabilities separately. Implementation choices preserving the agreed
+behavior remain open to implementers; consequential changes follow the decision workflow.
+
+Declared dependencies and investigator-directed propagation are deferred:
 observe coverage gaps before choosing anticipatory dependency declarations, qualified impact
 assessment when new findings emerge, or both. Either would supplement actual exposure tracking.
 ADMISSION-1 already claims runtime admission coverage, which is not the same as completeness
