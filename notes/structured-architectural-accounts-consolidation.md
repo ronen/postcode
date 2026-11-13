@@ -382,7 +382,15 @@ is not an impact judgment, and a concern neither displaces earlier content nor f
 past exposure. No reverse-lookup API or concern declaration is implemented. See the
 [proposal](structured-architectural-accounts-proposal.md#deferred-investigator-directed-propagation-reassessment-and-scheduling).
 
-Before drafting, settle the meaning of partial/unsuccessful investigation results, the promised
+The outcome discussion distinguishes no accepted contribution, host-detected unmet contract,
+producer-reported inability/incompleteness, and an undetected substantive error despite acceptance
+and reported success. Failures have execution outcomes, not fabricated architectural findings;
+structural validity, request fulfillment and correctness are distinct. Later discovery uses the
+existing association/reconsideration mechanisms, without guaranteeing error detection. Human
+objections and investigation driven by user pushback remain explicitly deferred; the current
+research/developer feedback is not that mechanism. See [outcomes and inadequacy](structured-architectural-accounts-proposal.md#execution-outcomes-known-inadequacy-and-undetected-error).
+
+Before drafting, fit partial/unsuccessful result designation to those distinctions and settle the promised
 first capability and observable verification scenarios, and any remaining ambiguity in information
 meaning or qualification. Detailed schemas, API/tool shapes, operational bounds, incidental
 ordering and implementation task breakdown need not be fixed here. The test is whether a different

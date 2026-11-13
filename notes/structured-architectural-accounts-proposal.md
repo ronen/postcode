@@ -878,6 +878,32 @@ The planning package would need explicit treatment of:
 - Representation-independent qualification, captured basis, direct/exact application access,
   atomicity and the supported Session boundary. No foundation or governing text is changed here.
 
+## Execution outcomes, known inadequacy and undetected error
+
+Distinguish receipt of a contribution, acceptance for retention, fulfillment of the request and
+substantive correctness. These distinctions apply to both mechanical and agentic production.
+
+| Case | Meaning and required treatment |
+| --- | --- |
+| No accepted investigram obtained | Connectivity/authentication failure, mechanical file-read failure, or an unrepairable invalid response can prevent contribution acceptance. Record/report the execution outcome; do not manufacture architectural content to represent the failure. No response and a received-but-unacceptable response remain distinguishable. |
+| PostCode detects unmet requirements | Expected descriptions, result content or diagram-supporting data are missing when execution ends without repair. Report the specific unmet contract. Unresolved references and other invalid data cannot be accepted; structurally valid information may nevertheless fail to fulfill the requested result. |
+| The producer reports inability or incompleteness | Preserve the producer's report and its grounds/limitations, distinguishing it from PostCode's own contract checks. Relevant information can carry its own qualifications. |
+| Accepted contribution, contracts met, reported success, but substantively wrong or incomplete | No general acceptance mechanism can detect this case. Acceptance and reported success do not certify architectural correctness/completeness. Specific mechanical guarantees remain method- and scope-qualified. Later discovery can lead to challenge, supersession/withdrawal and the existing exposure-based reconsideration mechanisms; discovery is not guaranteed. |
+
+Execution policy may retry or attempt repair through dialog. The precise reporting fields,
+carrier and repair strategy are implementation choices within these observable distinctions.
+An established empty finding is still different from failure to obtain an answer. No additional
+general semantic acceptance gate follows from undetected errors. Detailed query-result designation
+for partial or unsuccessful attempts still needs to fit the agreed outcome distinctions; this
+classification does not settle every retention/designation case or require intermediate submission.
+
+User-reported suspected error is a possible future source of objections, not proof that a result
+is wrong. The human explicitly reconfirmed deferring both recording such objections for the
+investigator and investigation driven by them. No automatic withdrawal or reconsideration follows
+from hypothetical user feedback in this capability. Existing developer/research feedback is not
+this mechanism. Future objection targets, inquiry behavior and any propagation policy need their
+own design; they are not added here.
+
 ## Design requirements, implementation choices and deferred capabilities
 
 The human clarified that these notes should not prescribe implementation choices merely because
@@ -915,7 +941,7 @@ The remaining pre-draft discussion is narrower than the previous list of fixture
 
 | Question | Required resolution |
 | --- | --- |
-| Partial or unsuccessful investigation | What remains available, and what does the retained query result mean when work stops with usable contributions or none? Preserve existing empty/partial/failure distinctions and qualified history. |
+| Partial or unsuccessful investigation | Outcome/inadequacy distinctions are recorded above. Fit query-result designation and availability to them, preserving usable accepted information, qualified history and the distinction from established emptiness; do not conflate structural acceptance with fulfillment or correctness. |
 | First delivered capability and verification | Which architectural content meanings, representative diagrams and follow-up behaviors are promised, and which examples remain design probes? Mechanical migration scope and broad staging are already agreed. |
 | Remaining semantic ambiguities | Resolve ambiguity in membership, qualification, selection or lookup where different choices would change meaning or supported behavior. Do not require every role spelling, schema field, nested-result limit or delivery limit to be fixed before drafting. |
 

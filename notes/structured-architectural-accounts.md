@@ -2100,3 +2100,20 @@ semantics, first-delivery capability/verification and remaining semantic ambigui
 contract guide explicitly distinguishes architectural requirements, illustrative implementation
 choices and deferred capabilities. Executability does not promote every probe detail into a
 requirement. No fixture, product or governing behavior changes in this documentation pass.
+
+## 2026-11-13 — Levels of unsuccessful or inadequate investigation
+
+The human separated failure to obtain an investigram (including agent connectivity/authorization
+and mechanical file-read failure) from inadequacy in returned information. Known inadequacy can
+come from PostCode detecting an unrepaired unmet contract or from the producer reporting inability.
+Receipt, structural acceptance, request fulfillment and substantive correctness must remain distinct.
+A valid, contract-fulfilling, reportedly successful result can still be wrong without PostCode knowing;
+there is no general acceptance test for that. Later discovery can use existing challenge/association
+and reconsideration mechanisms, but discovery is not guaranteed.
+
+The human reconfirmed deferring user-reported objections and pushback-driven investigation.
+A suspected error would not establish incorrectness or automatically displace information; future
+handling and propagation policy remain separate work. Existing developer/research feedback is not
+investigator-directed pushback. Notes record these distinctions without adding a reporting schema,
+new acceptance gate or fixture/product behavior. Partial-result designation details remain to fit
+the agreed distinctions.
