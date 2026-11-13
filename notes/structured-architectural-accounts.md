@@ -2256,3 +2256,14 @@ claims: later production alone gives no precedence; exposure does not assert rel
 acts through associations rather than mutable investigrams. Shared provenance and ordinary content
 references do not by themselves establish ancestry. Acceptance chronology still serves delivery
 and later-change semantics, distinct from authority or architectural time described in the content.
+
+## 2026-11-13 — Re-review terminology and partial-order clarification
+
+Claude's follow-up review found the earlier discussion points resolved and the design ready for
+a planning package. Two drafting cautions were clarified now: reserve Projection for the outer
+application answer, using context selection/delivery for engine acquisition; and describe the
+investigram ancestry partial order as explanatory rather than a new structure to build. Existing
+relationship records and their particular acceptance/propagation rules remain operative. No generic
+acyclicity validator over every investigram link follows. Updated the proposal and consolidation;
+no fixture or product behavior changed. Decision supersession mappings and carrying necessary
+context into the package remain drafting work.

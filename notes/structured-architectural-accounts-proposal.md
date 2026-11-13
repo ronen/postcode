@@ -254,7 +254,7 @@ Four small content contracts, six provider re-encounter branches, organizing wit
 addition/restoration and twenty-eight malformed cases are exercised. No native provider, live investigator or proposed constant-target method was run.
 Production content contracts, actual coordinated execution, detailed stage boundaries and full
 partial/failure result handling remain planning work. First native verification must include
-a mechanical consumer of retained claims, such as export projection reading module naming,
+a mechanical consumer of retained claims, such as export Projection reading module naming,
 with qualified delivery/exposure and later-displacement checks, as well as identity re-encounter.
 A method-specific Lens must preserve its question and guarantee, rather than simply
 selecting the latest description of its subject. This direction withdraws the earlier blanket
@@ -425,7 +425,7 @@ lifetime; this is not a promise of indefinite cross-Session storage.
 Redesignation is optional. Its operation instructions tell the investigator to understand the
 earlier invocation's question and scope, including operation, subjects, parameters and selected
 option—not merely its old answer. The fixture captures that context in `queryMeanings` alongside
-result projections. When delivered, it must be recorded accurately; prior delivery is not an
+selected result context. When delivered, it must be recorded accurately; prior delivery is not an
 acceptance prerequisite. This retained request meaning is not human prose input or a new global
 operation. Structural acceptance does not certify that the new designation answers that question.
 
@@ -451,6 +451,11 @@ architectural sequences described by the claims and from recorded production/acc
 Acceptance order still supports delivery-completeness and later-change checks; it is not a ranking
 of claims or a last-writer-wins rule.
 
+This partial-order description is explanatory, not a new retained graph, index, scheduling rule or
+validation subsystem. Existing exposure, provenance and declaration records carry the relevant
+relationships; their specific reference, acceptance and propagation rules remain the requirements.
+Do not infer a generic acyclicity constraint over all investigram links from this description.
+
 An investigram atomically captures analysis results. Position within the bundle implies no order
 of discovery, authority or architectural events. Claims have no implicit ordering from packaging
 or investigation chronology; their applicability remains qualified by captured basis, scope, state
@@ -475,6 +480,9 @@ Subject, Lens, Projection, Presentation and View are the outer application conce
 investigram, entity and association mechanisms produce, retain and organize their supporting
 information. Entities can play the Subject role; the levels are not isolated systems.
 Query-result entities and designations belong to the engine and do not replace Projections.
+Use **context selection** for choosing qualified engine information and **context delivery** for
+actually supplying it to an investigator. Reserve **Projection** for the outer application answer;
+engine context selections/deliveries are not a second kind of Projection.
 
 A Lens method determines what engine information constitutes its answer. There is no required
 one-to-one mapping between Lens applications, engine invocations and investigrams: a Lens can use
@@ -507,7 +515,7 @@ material records exact association/content exposure through its designation rout
 to everything about that result entity. A separately acquired inventory records its scope and
 delivery position. Human browsing, selection or a bare reference alone creates neither kind of
 investigator exposure. The selected passage need not itself become an entity. Qualified addresses
-retain original ownership even through another entity's projection. Actual deliveries, not an
+retain original ownership even through context selected through another entity. Actual deliveries, not an
 investigator's claimed reliance, determine the structural exposure record.
 
 The fixture materializes delivered values with source investigram, query provenance, captured
@@ -583,7 +591,7 @@ A supersession can favor new information without making its acceptance a truth j
 
 Refers-to discovery remains broader than identifies/describes indexing. ADMISSION-1 lists
 S as a referent even though its admission association targets P. Investigators of S should
-be able to find that contribution without a known navigation origin. The current projection
+be able to find that contribution without a known navigation origin. The current context-selection
 simulator exercises association-backed selection, not this broader discovery/retrieval path;
 that path needs an explicit context-entity/delivery contract rather than being silently lost
 in the new model. Mention inventory, association target and evidential support are distinct.
@@ -739,7 +747,7 @@ warning. Historical designations and their existing causes remain unchanged.
 
 The fixture records host-assigned acceptance positions and the retained-state position of each
 captured delivery. An investigation may finish after a change while its inputs precede it;
-neither query start nor final acceptance substitutes for actual delivery time. Fresh projections
+neither query start nor final acceptance substitutes for actual delivery time. Fresh context deliveries
 disclose known direct and indirect causes with qualified reasons. Notice receipt establishes
 awareness, not sufficient replacement context or endorsement of the displaced association.
 Further acquisition and qualification obligations still apply.
@@ -953,7 +961,7 @@ The [current contracts](../src/lib/investigation/contracts.ts) retain prose inve
 subject associations, child trees, correction records and generating provenance with
 `citations` and delivery history. The [capability reference](../docs/capability-reference.md)
 describes retained interpretation and follow-up within the active process, not the new
-entity projection/declaration protocol. Those facilities provide qualified acquisition,
+entity context-delivery/declaration protocol. Those facilities provide qualified acquisition,
 identity, history and Session lifetime machinery; they do not already implement this proposal.
 
 Specific inspected constraints still matter for migration:

@@ -21,6 +21,8 @@ meaningful content/support/history differences can. Preserve provenance separate
 invocation context rather than answer meaning, without weakening immutable payload consistency.
 See the [mapping agreement](structured-architectural-accounts-proposal.md#outer-answers-and-the-investigation-engine).
 Drafting checks existing answer contracts and brings any concrete conflict back for discussion.
+Call choosing engine information **context selection**, and supplying it to an investigator
+**context delivery**. Reserve **Projection** for the outer qualified answer.
 
 Entities organize qualified information. Queries request information. Mechanical and agentic
 analyses can contribute content and association declarations through the proposed common structure; investigrams preserve those contributions
@@ -37,7 +39,9 @@ provenance and association-amendment relationships establish a partial order of 
 ancestry; unrelated contributions remain incomparable. Exposure does not assert reliance, and
 amendments do not mutate investigrams. Shared provenance or ordinary references alone do not create
 ancestry. Production/acceptance chronology remains recorded for operational semantics, including
-later-change checks, without conferring authority or last-writer precedence.
+later-change checks, without conferring authority or last-writer precedence. This is explanatory:
+no new partial-order graph/index or generic acyclicity validator is required. Existing relationship
+records and their specific acceptance/exposure/propagation rules carry the mechanism.
 
 An investigram atomically captures analysis results; its member positions imply no claim order,
 authority or architectural chronology. Result designations may select across investigrams without
@@ -197,7 +201,7 @@ Immutable investigrams
   Original items, declarations, qualifications, evidence, guidance, child links
 Association indexes by entity + role
 Query-result designations with explicit member references
-Captured answers and exact delivered content projections
+Captured answers and exact context deliveries
 Separately acquired inventory snapshots with scope, coverage and delivery position
 ```
 
@@ -210,7 +214,7 @@ the original content; the new association has its own attributable grounds.
 
 ```text
 Association standing: displacement links and competing declarations
-Entity projections: explicit selected information with qualifications and applicable context disclosures
+Entity context selections: explicit selected information with qualifications and applicable context disclosures
 Inventory acquisition: scoped availability, without implicit content delivery
 Result membership: exact declarations/items, never implicit current substitutions
 Reconsideration causes on evaluations and exact result designations
@@ -233,7 +237,7 @@ qualified organizing assertions are meaningful; no filler prose is required.
 | Child composition | Fixed submitted-bundle structure; not result membership, current answer selection, exposure or architectural containment. |
 | Follow-up option | Exact producing metadata remains owned by its investigram. Access through a result/entity does not retarget or transfer it. |
 | Presentation recommendation | Original usefulness judgment; selecting a different compatible diagram changes no retained record. |
-| Context projection | Captures actual delivered content, original qualification, source provenance and applicable disclosures. A subject ID or human browsing is not exposure. |
+| Context delivery | Captures actual delivered content, original qualification, source provenance and applicable disclosures. A subject ID or human browsing is not exposure. |
 | Inventory delivery | Captures availability scope/coverage and time separately. Matching later entries may affect selection; listed content is not supplied merely by appearing. |
 | Reconsideration | Derived cause-specific warning, not proof of wrongness or automatic withdrawal. |
 
@@ -243,7 +247,7 @@ they are not hidden consequences of the word association.
 
 ## Exposure and result membership
 
-Supplying entity S means supplying a selected qualified projection, not its ID or a
+Supplying entity S means supplying a qualified context selection, not its ID or a
 canonical definition. Selecting a portion of Q's result and delivering it records its exact
 association/designation route under RESULT-Q, not every association of that entity. Receiving
 an inventory is separate, with its own scope and timing. The selected text/node need not
@@ -277,7 +281,7 @@ must maintain every result that references an affected association.
 Supersession for fuller coverage and withdrawal can trigger review without asserting falsehood.
 Known causes accepted before an actual delivery are disclosed context, not later-change
 warnings. This covers direct exposure, designation concerns and inherited producer concerns.
-A fresh projection must disclose all those applicable causes; missing/altered disclosure is
+A fresh context delivery must disclose all those applicable causes; missing/altered disclosure is
 rejected. Notice receipt is awareness, not adequate replacement evidence or endorsement.
 New designation membership retains already-displaced standing without treating it as a new
 change. A prior acquisition can still affect its producer, even if the query finishes later.
@@ -366,7 +370,7 @@ necessary to obtain independent association supersession or item delivery. Entit
 exposure changes the earlier argument about smaller citation units; do not present that
 argument as unchanged. Evaluation-wide provenance can still cause conservative warnings.
 
-Composition receives selected P/S/R/B projections and returns pattern entities plus
+Composition receives selected P/S/R/B context and returns pattern entities plus
 RESULT-Q4. Exact local selectors remain valid; their context entity is RESULT-Q4. The
 same architectural diagrams and assertions remain authored content.
 
