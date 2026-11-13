@@ -1,0 +1,650 @@
+{
+  "status": "Authored unification design probe. Existing mechanical shapes are source-inspected; native providers and the hypothetical constant-target method are not run. No product implementation or live investigator.",
+  "acceptedInvocations": [
+    "Q-D",
+    "Q-E",
+    "Q-S",
+    "Q-I",
+    "Q-C",
+    "Q-M",
+    "Q-R"
+  ],
+  "identities": {
+    "architectural": [
+      "PROJECT",
+      "M-loader",
+      "M-plugin",
+      "M-empty",
+      "S-load",
+      "S-target"
+    ],
+    "recognizedReuse": "Q-E and RESULT-Q-E reused without allocation"
+  },
+  "complementary": {
+    "mechanicalSourceRequest": {
+      "value": {
+        "key": "dependencies",
+        "contentType": "dependency-account/0",
+        "concept": "module dependency",
+        "subject": {
+          "entity": "M-loader"
+        },
+        "relationSemantics": "source-request",
+        "requests": [
+          {
+            "key": "computed-import",
+            "mechanism": "dynamic-import",
+            "targetStatus": "target-indeterminate",
+            "target": null,
+            "evidence": [
+              "E-loader"
+            ]
+          }
+        ],
+        "relationships": [],
+        "coverage": "recognized-source-requests",
+        "qualification": {
+          "guarantee": "recognized-requests-with-explicit-resolution-status",
+          "scope": "Computed names not evaluated; no loader availability or execution guarantee."
+        },
+        "evidence": [
+          "E-loader"
+        ]
+      },
+      "sourceInvestigram": "DEPENDENCIES-1",
+      "queryInvocation": "Q-S",
+      "basis": {
+        "programState": "AUTHORED-PINNED-SOURCE-1",
+        "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+        "sourceDigests": {
+          "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd"
+        }
+      },
+      "provenance": {
+        "producer": {
+          "kind": "mechanical",
+          "method": "postcode/typescript-dependencies@3"
+        },
+        "basis": {
+          "programState": "AUTHORED-PINNED-SOURCE-1",
+          "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+          "sourceDigests": {
+            "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd"
+          }
+        }
+      },
+      "sourceQualifications": [
+        "Source-request recognition; computed target remains indeterminate under this method.",
+        "No absence-of-runtime-dependency inference is justified by an empty relationship list."
+      ],
+      "sourceEvidence": [
+        "E-loader"
+      ]
+    },
+    "interpretedConditionalTarget": {
+      "value": {
+        "key": "dependency",
+        "contentType": "dependency-account/0",
+        "concept": "module dependency",
+        "subject": {
+          "entity": "M-loader"
+        },
+        "relationSemantics": "conditional-load-attempt",
+        "requests": [],
+        "relationships": [
+          {
+            "key": "default-plugin",
+            "target": {
+              "entity": "M-plugin"
+            },
+            "condition": "If loadPlugin is invoked and reaches the dynamic import with the captured constant binding, and the build/loader maps ./plugins/default.js to the captured plugins/default.ts module.",
+            "effect": "Attempts to load the module designated by ./plugins/default.js; successful resolution/loading is not established.",
+            "evidence": [
+              "E-loader",
+              "E-plugin"
+            ]
+          }
+        ],
+        "coverage": "one-qualified-inference",
+        "qualification": {
+          "guarantee": "interpreted-conditional-target",
+          "scope": "Source-based inference; no observation that the function ran and no general dynamic-loader completeness. Source-module correspondence uses the stated build/loader assumption; no deployed mapping is observed."
+        },
+        "evidence": [
+          "E-loader",
+          "E-plugin"
+        ]
+      },
+      "sourceInvestigram": "RUNTIME-1",
+      "queryInvocation": "Q-I",
+      "basis": {
+        "programState": "AUTHORED-PINNED-SOURCE-1",
+        "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+        "sourceDigests": {
+          "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+          "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+        }
+      },
+      "provenance": {
+        "producer": {
+          "kind": "interpreted",
+          "method": "authored/qualified-target-interpretation@0"
+        },
+        "basis": {
+          "programState": "AUTHORED-PINNED-SOURCE-1",
+          "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+          "sourceDigests": {
+            "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+            "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+          }
+        }
+      },
+      "sourceQualifications": [
+        "Qualified inference from the captured constant binding and source module correspondence.",
+        "Does not claim actual execution or successful loading."
+      ],
+      "sourceEvidence": [
+        "E-loader",
+        "E-plugin"
+      ]
+    }
+  },
+  "crossMethodSupersession": {
+    "laterMechanical": {
+      "value": {
+        "key": "dependency",
+        "contentType": "dependency-account/0",
+        "concept": "module dependency",
+        "subject": {
+          "entity": "M-loader"
+        },
+        "relationSemantics": "conditional-load-attempt",
+        "requests": [],
+        "relationships": [
+          {
+            "key": "default-plugin",
+            "target": {
+              "entity": "M-plugin"
+            },
+            "condition": "If loadPlugin is invoked and reaches the dynamic import with the captured constant binding, and the build/loader maps ./plugins/default.js to the captured plugins/default.ts module.",
+            "effect": "Attempts to load the module designated by ./plugins/default.js; successful resolution/loading is not established.",
+            "evidence": [
+              "E-loader",
+              "E-plugin"
+            ]
+          }
+        ],
+        "coverage": "one-qualified-inference",
+        "qualification": {
+          "guarantee": "mechanically-established-conditional-target-for-restricted-shape",
+          "scope": "Hypothetical method restricted to this immutable literal binding and import expression; not executed in this probe. Still no runtime execution or loading-success guarantee. Source-module correspondence uses the stated build/loader assumption; no deployed mapping is observed."
+        },
+        "evidence": [
+          "E-loader",
+          "E-plugin"
+        ]
+      },
+      "sourceInvestigram": "CONSTANT-TARGET-1",
+      "queryInvocation": "Q-M",
+      "basis": {
+        "programState": "AUTHORED-PINNED-SOURCE-1",
+        "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+        "sourceDigests": {
+          "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+          "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+        }
+      },
+      "provenance": {
+        "producer": {
+          "kind": "mechanical",
+          "method": "authored/constant-target@0"
+        },
+        "basis": {
+          "programState": "AUTHORED-PINNED-SOURCE-1",
+          "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+          "sourceDigests": {
+            "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+            "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+          }
+        }
+      },
+      "sourceQualifications": [
+        "Authored expected output of an unimplemented restricted mechanical method, not a measured compiler result.",
+        "Method kind does not by itself guarantee completeness or runtime execution."
+      ],
+      "sourceEvidence": [
+        "E-loader",
+        "E-plugin"
+      ]
+    },
+    "laterInterpretation": {
+      "value": {
+        "key": "dependency",
+        "contentType": "dependency-account/0",
+        "concept": "module dependency",
+        "subject": {
+          "entity": "M-loader"
+        },
+        "relationSemantics": "conditional-load-attempt",
+        "requests": [],
+        "relationships": [
+          {
+            "key": "default-plugin",
+            "target": {
+              "entity": "M-plugin"
+            },
+            "condition": "If loadPlugin is invoked and reaches the dynamic import with the captured constant binding, and the build/loader maps ./plugins/default.js to the captured plugins/default.ts module.",
+            "effect": "Attempts to load the module designated by ./plugins/default.js; successful resolution/loading is not established.",
+            "evidence": [
+              "E-loader",
+              "E-plugin"
+            ]
+          }
+        ],
+        "coverage": "one-qualified-inference",
+        "qualification": {
+          "guarantee": "interpreted-explanation-supported-by-mechanical-target",
+          "scope": "Adds explicit distinction between a possible invocation and observed application use. Source-module correspondence uses the stated build/loader assumption; no deployed mapping is observed."
+        },
+        "evidence": [
+          "E-loader",
+          "E-plugin"
+        ],
+        "explanation": "The target mapping does not establish that any application path calls loadPlugin. A possible load attempt and actual runtime use are different claims."
+      },
+      "sourceInvestigram": "RUNTIME-REFINED-1",
+      "queryInvocation": "Q-R",
+      "basis": {
+        "programState": "AUTHORED-PINNED-SOURCE-1",
+        "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+        "sourceDigests": {
+          "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+          "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+        }
+      },
+      "provenance": {
+        "producer": {
+          "kind": "interpreted",
+          "method": "authored/qualified-target-explanation@0"
+        },
+        "basis": {
+          "programState": "AUTHORED-PINNED-SOURCE-1",
+          "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+          "sourceDigests": {
+            "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+            "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+          }
+        }
+      },
+      "sourceQualifications": [
+        "Authored interpretive enhancement; the mechanical target calculation remains available as evidence, not an inherited guarantee.",
+        "No call-path execution or successful loading was observed."
+      ],
+      "sourceEvidence": [
+        "E-loader",
+        "E-plugin"
+      ]
+    },
+    "mechanicalStageCauses": {
+      "Q-D": [],
+      "Q-E": [],
+      "Q-S": [],
+      "Q-I": [],
+      "Q-C": [
+        "CONSTANT-TARGET-1::runtime"
+      ],
+      "Q-M": []
+    },
+    "finalCauses": {
+      "Q-D": [],
+      "Q-E": [],
+      "Q-S": [],
+      "Q-I": [],
+      "Q-C": [
+        "CONSTANT-TARGET-1::runtime"
+      ],
+      "Q-M": [],
+      "Q-R": []
+    }
+  },
+  "emptyVersusUnavailable": {
+    "establishedEmpty": {
+      "value": {
+        "key": "exports",
+        "contentType": "export-surface/0",
+        "concept": "module interface",
+        "subject": {
+          "entity": "M-empty"
+        },
+        "entries": [],
+        "coverage": "complete-for-selected-surface",
+        "qualification": {
+          "guarantee": "compiler-export-surface",
+          "scope": "Named exports of the captured module; no claim of runtime invocation."
+        },
+        "evidence": [
+          "E-empty"
+        ]
+      },
+      "sourceInvestigram": "EMPTY-EXPORTS-1",
+      "queryInvocation": "Q-E",
+      "basis": {
+        "programState": "AUTHORED-PINNED-SOURCE-1",
+        "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+        "sourceDigests": {
+          "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+          "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+        }
+      },
+      "provenance": {
+        "producer": {
+          "kind": "mechanical",
+          "method": "postcode/typescript-expansions@3"
+        },
+        "basis": {
+          "programState": "AUTHORED-PINNED-SOURCE-1",
+          "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+          "sourceDigests": {
+            "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+            "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+          }
+        }
+      },
+      "sourceQualifications": [
+        "The selected module has an established empty export surface, not absent analysis."
+      ],
+      "sourceEvidence": [
+        "E-empty"
+      ]
+    },
+    "unavailable": {
+      "operation": "Inspect export surface under unavailable analysis",
+      "applicability": "applicable",
+      "availability": "unavailable",
+      "execution": "failed",
+      "materialization": "none",
+      "reason": "Authored unavailable-provider counterfactual",
+      "contributions": [],
+      "scope": "Not accepted as an empty export result; handling all failed query selections remains outside this probe."
+    }
+  },
+  "currentAssociations": [
+    "DEPENDENCIES-1::dependencies",
+    "EXPORTS-1::exports",
+    "RUNTIME-REFINED-1::runtime"
+  ],
+  "freshCombinedResult": {
+    "entity": "RESULT-Q-C",
+    "asOfAcceptance": 7,
+    "items": {
+      "DEPENDENCIES-1::dependencies": {
+        "value": {
+          "key": "dependencies",
+          "contentType": "dependency-account/0",
+          "concept": "module dependency",
+          "subject": {
+            "entity": "M-loader"
+          },
+          "relationSemantics": "source-request",
+          "requests": [
+            {
+              "key": "computed-import",
+              "mechanism": "dynamic-import",
+              "targetStatus": "target-indeterminate",
+              "target": null,
+              "evidence": [
+                "E-loader"
+              ]
+            }
+          ],
+          "relationships": [],
+          "coverage": "recognized-source-requests",
+          "qualification": {
+            "guarantee": "recognized-requests-with-explicit-resolution-status",
+            "scope": "Computed names not evaluated; no loader availability or execution guarantee."
+          },
+          "evidence": [
+            "E-loader"
+          ]
+        },
+        "sourceInvestigram": "DEPENDENCIES-1",
+        "queryInvocation": "Q-S",
+        "basis": {
+          "programState": "AUTHORED-PINNED-SOURCE-1",
+          "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+          "sourceDigests": {
+            "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd"
+          }
+        },
+        "provenance": {
+          "producer": {
+            "kind": "mechanical",
+            "method": "postcode/typescript-dependencies@3"
+          },
+          "basis": {
+            "programState": "AUTHORED-PINNED-SOURCE-1",
+            "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+            "sourceDigests": {
+              "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd"
+            }
+          }
+        },
+        "sourceQualifications": [
+          "Source-request recognition; computed target remains indeterminate under this method.",
+          "No absence-of-runtime-dependency inference is justified by an empty relationship list."
+        ],
+        "sourceEvidence": [
+          "E-loader"
+        ]
+      },
+      "RUNTIME-1::dependency": {
+        "value": {
+          "key": "dependency",
+          "contentType": "dependency-account/0",
+          "concept": "module dependency",
+          "subject": {
+            "entity": "M-loader"
+          },
+          "relationSemantics": "conditional-load-attempt",
+          "requests": [],
+          "relationships": [
+            {
+              "key": "default-plugin",
+              "target": {
+                "entity": "M-plugin"
+              },
+              "condition": "If loadPlugin is invoked and reaches the dynamic import with the captured constant binding, and the build/loader maps ./plugins/default.js to the captured plugins/default.ts module.",
+              "effect": "Attempts to load the module designated by ./plugins/default.js; successful resolution/loading is not established.",
+              "evidence": [
+                "E-loader",
+                "E-plugin"
+              ]
+            }
+          ],
+          "coverage": "one-qualified-inference",
+          "qualification": {
+            "guarantee": "interpreted-conditional-target",
+            "scope": "Source-based inference; no observation that the function ran and no general dynamic-loader completeness. Source-module correspondence uses the stated build/loader assumption; no deployed mapping is observed."
+          },
+          "evidence": [
+            "E-loader",
+            "E-plugin"
+          ]
+        },
+        "sourceInvestigram": "RUNTIME-1",
+        "queryInvocation": "Q-I",
+        "basis": {
+          "programState": "AUTHORED-PINNED-SOURCE-1",
+          "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+          "sourceDigests": {
+            "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+            "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+          }
+        },
+        "provenance": {
+          "producer": {
+            "kind": "interpreted",
+            "method": "authored/qualified-target-interpretation@0"
+          },
+          "basis": {
+            "programState": "AUTHORED-PINNED-SOURCE-1",
+            "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+            "sourceDigests": {
+              "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+              "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+            }
+          }
+        },
+        "sourceQualifications": [
+          "Qualified inference from the captured constant binding and source module correspondence.",
+          "Does not claim actual execution or successful loading."
+        ],
+        "sourceEvidence": [
+          "E-loader",
+          "E-plugin"
+        ]
+      }
+    },
+    "notices": {
+      "CONSTANT-TARGET-1::runtime": {
+        "value": {
+          "key": "runtime",
+          "operation": "supersession",
+          "target": {
+            "entity": {
+              "entity": "M-loader"
+            },
+            "role": "describes"
+          },
+          "members": [
+            {
+              "item": {
+                "investigram": {
+                  "investigram": "CONSTANT-TARGET-1"
+                },
+                "contentKey": "dependency"
+              }
+            }
+          ],
+          "reason": "Use the later restricted mechanical target analysis for this association, retaining its explicit conditional scope; the earlier inference and source-request record remain inspectable.",
+          "displaces": [
+            {
+              "investigram": {
+                "investigram": "RUNTIME-1"
+              },
+              "associationKey": "runtime"
+            }
+          ]
+        },
+        "sourceInvestigram": "CONSTANT-TARGET-1",
+        "queryInvocation": "Q-M",
+        "basis": {
+          "programState": "AUTHORED-PINNED-SOURCE-1",
+          "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+          "sourceDigests": {
+            "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+            "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+          }
+        },
+        "provenance": {
+          "producer": {
+            "kind": "mechanical",
+            "method": "authored/constant-target@0"
+          },
+          "basis": {
+            "programState": "AUTHORED-PINNED-SOURCE-1",
+            "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+            "sourceDigests": {
+              "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+              "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+            }
+          }
+        },
+        "sourceQualifications": [
+          "Authored expected output of an unimplemented restricted mechanical method, not a measured compiler result.",
+          "Method kind does not by itself guarantee completeness or runtime execution."
+        ],
+        "sourceEvidence": [
+          "E-loader",
+          "E-plugin"
+        ]
+      },
+      "RUNTIME-REFINED-1::runtime": {
+        "value": {
+          "key": "runtime",
+          "operation": "supersession",
+          "target": {
+            "entity": {
+              "entity": "M-loader"
+            },
+            "role": "describes"
+          },
+          "members": [
+            {
+              "item": {
+                "investigram": {
+                  "investigram": "RUNTIME-REFINED-1"
+                },
+                "contentKey": "dependency"
+              }
+            }
+          ],
+          "reason": "Offer this fuller interpreted explanation for the same conditional target, with explicit call-path limitation; preserve the exact earlier mechanical contribution and its own guarantee.",
+          "displaces": [
+            {
+              "investigram": {
+                "investigram": "CONSTANT-TARGET-1"
+              },
+              "associationKey": "runtime"
+            }
+          ]
+        },
+        "sourceInvestigram": "RUNTIME-REFINED-1",
+        "queryInvocation": "Q-R",
+        "basis": {
+          "programState": "AUTHORED-PINNED-SOURCE-1",
+          "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+          "sourceDigests": {
+            "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+            "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+          }
+        },
+        "provenance": {
+          "producer": {
+            "kind": "interpreted",
+            "method": "authored/qualified-target-explanation@0"
+          },
+          "basis": {
+            "programState": "AUTHORED-PINNED-SOURCE-1",
+            "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+            "sourceDigests": {
+              "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+              "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+            }
+          }
+        },
+        "sourceQualifications": [
+          "Authored interpretive enhancement; the mechanical target calculation remains available as evidence, not an inherited guarantee.",
+          "No call-path execution or successful loading was observed."
+        ],
+        "sourceEvidence": [
+          "E-loader",
+          "E-plugin"
+        ]
+      }
+    }
+  },
+  "preservedHistoricalSelections": [
+    "Q-S",
+    "Q-C",
+    "Q-E"
+  ],
+  "malformedCasesRejected": 12,
+  "limits": [
+    "No native producer, live interpreting agent, hypothetical constant-target method or runtime execution was run.",
+    "Per-contribution provenance and four small content contracts are exercised; the general migration and partial/failure result contract are not implemented.",
+    "Source facts/guarantees are authored and require qualified interpretation; structural checks do not certify their truth.",
+    "Recognized reuse is an exact-access demonstration, not an implementation or proof of the product cache key.",
+    "Warnings preserve cause identity; no clearance, semantic dependency inference or producer-based priority rule."
+  ]
+}

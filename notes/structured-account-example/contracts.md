@@ -42,9 +42,11 @@ The `OWNER::key` notation in checker reports is display notation for an exact ad
 Forward local references are allowed when all resolve. No partial allocation, orphan
 bundle or unresolved accepted reference is intended.
 
-Exactly one `entity-description/0` with `introducesEntity: true` declares each new
-architectural entity and supplies qualified identifying content. An `identifies`
-association must include that description. References/referents do not themselves
+Exactly one supported identifying item with `introducesEntity: true` declares each new
+architectural entity and supplies qualified identifying content. An `identifies` association
+must include that item. The admission/trial examples use `entity-description/0`; the separate
+[unification probe](unification/README.md) also registers structured mechanical module and symbol
+identification types, without mandatory prose descriptions. References/referents do not themselves
 introduce entities. Query-result identity is allocated for the invocation separately;
 it does not need an agent-invented architectural description. The probe requires one
 initial result designation per invocation, not one canonical answer for all time.
@@ -58,10 +60,12 @@ and that live follow-up are still open work.
 
 Mechanical identities retain their provider guarantees under a proposed common reference
 mechanism. The working direction now also generalizes investigram contributions to mechanical
-and interpreted analyses, preserving distinct method guarantees. These fixtures still seed
-mechanical references rather than exercising a native mechanical contribution. Their existing
-content types and agent-oriented submission examples are not yet the complete generalized
-producer contract. See the [proposal](../structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
+and interpreted analyses, preserving distinct method guarantees. The admission/trial examples seed
+mechanical references; the [unification probe](unification/README.md) now exercises authored mechanical
+contributions using four small registered types and host-attributed per-contribution provenance.
+Neither probe executes a native producer or establishes complete production content contracts.
+The host provenance covers producer/method and basis; claim qualifications still determine what
+is established. Mechanical contributions need no invented agent identity or prose description. See the [proposal](../structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
 Relationships W and patterns C-BB/C-BH are proposed explicitly identified entities;
 this and query-result entities require governing treatment beyond interpreted identity.
 Not every architectural edge, organizing relationship or local role becomes an entity.

@@ -1,0 +1,1447 @@
+{
+  "status": "Authored unification design probe. Existing mechanical shapes are source-inspected; native providers and the hypothetical constant-target method are not run. No product implementation or live investigator.",
+  "basis": {
+    "programState": "AUTHORED-PINNED-SOURCE-1",
+    "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+    "sourceDigests": {
+      "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+      "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+      "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+    }
+  },
+  "evidence": {
+    "E-loader": "source/loader.ts",
+    "E-plugin": "source/plugins/default.ts",
+    "E-empty": "source/empty.ts"
+  },
+  "seed": {
+    "entities": {
+      "PROJECT": {
+        "kind": "architectural"
+      }
+    },
+    "investigrams": []
+  },
+  "stages": [
+    {
+      "request": {
+        "id": "Q-D",
+        "operation": "authored.discover-modules",
+        "subject": {
+          "entity": "PROJECT"
+        },
+        "resultEntity": "RESULT-Q-D",
+        "deliveries": [],
+        "suppliedEvidence": [
+          "E-loader",
+          "E-plugin",
+          "E-empty"
+        ],
+        "declaredMeaning": {
+          "question": "Discover modules",
+          "scope": "Authored unification probe over the pinned source fixture, not an executed native producer or live investigator."
+        }
+      },
+      "bindings": {
+        "entityIds": {
+          "query-result": "RESULT-Q-D",
+          "loader": "M-loader",
+          "plugin": "M-plugin",
+          "empty": "M-empty"
+        },
+        "investigramIds": {
+          "discovery": "DISCOVERY-1"
+        },
+        "provenance": {
+          "producer": {
+            "kind": "mechanical",
+            "method": "postcode/typescript-modules@13"
+          },
+          "basis": {
+            "programState": "AUTHORED-PINNED-SOURCE-1",
+            "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+            "sourceDigests": {
+              "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+              "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+              "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+            }
+          }
+        }
+      },
+      "submission": {
+        "illustration": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
+        "result": {
+          "queryInvocation": "Q-D",
+          "queryResult": {
+            "introducedEntity": "query-result"
+          },
+          "compositionRoots": [
+            {
+              "submittedInvestigram": "discovery"
+            }
+          ],
+          "investigrams": [
+            {
+              "key": "discovery",
+              "title": "Mechanical module discovery",
+              "content": [
+                {
+                  "key": "loader",
+                  "contentType": "module-identification/0",
+                  "concept": "module",
+                  "introducesEntity": true,
+                  "subject": {
+                    "introducedEntity": "loader"
+                  },
+                  "providerIdentity": {
+                    "provider": "typescript",
+                    "nativeEntity": "M-loader",
+                    "scope": "supported Session and captured provider basis"
+                  },
+                  "module": {
+                    "name": null,
+                    "handle": "loader",
+                    "handleStatus": "generated-navigation-aid",
+                    "discoveryFacets": [
+                      "project",
+                      "implementation-available"
+                    ],
+                    "sourcePath": "loader.ts"
+                  },
+                  "qualification": {
+                    "guarantee": "provider-established-module",
+                    "scope": "Captured TypeScript module population; handle is not a conceptual name."
+                  },
+                  "evidence": [
+                    "E-loader"
+                  ]
+                },
+                {
+                  "key": "plugin",
+                  "contentType": "module-identification/0",
+                  "concept": "module",
+                  "introducesEntity": true,
+                  "subject": {
+                    "introducedEntity": "plugin"
+                  },
+                  "providerIdentity": {
+                    "provider": "typescript",
+                    "nativeEntity": "M-plugin",
+                    "scope": "supported Session and captured provider basis"
+                  },
+                  "module": {
+                    "name": null,
+                    "handle": "plugin",
+                    "handleStatus": "generated-navigation-aid",
+                    "discoveryFacets": [
+                      "project",
+                      "implementation-available"
+                    ],
+                    "sourcePath": "plugins/default.ts"
+                  },
+                  "qualification": {
+                    "guarantee": "provider-established-module",
+                    "scope": "Captured TypeScript module population; handle is not a conceptual name."
+                  },
+                  "evidence": [
+                    "E-plugin"
+                  ]
+                },
+                {
+                  "key": "empty",
+                  "contentType": "module-identification/0",
+                  "concept": "module",
+                  "introducesEntity": true,
+                  "subject": {
+                    "introducedEntity": "empty"
+                  },
+                  "providerIdentity": {
+                    "provider": "typescript",
+                    "nativeEntity": "M-empty",
+                    "scope": "supported Session and captured provider basis"
+                  },
+                  "module": {
+                    "name": null,
+                    "handle": "empty",
+                    "handleStatus": "generated-navigation-aid",
+                    "discoveryFacets": [
+                      "project",
+                      "implementation-available"
+                    ],
+                    "sourcePath": "empty.ts"
+                  },
+                  "qualification": {
+                    "guarantee": "provider-established-module",
+                    "scope": "Captured TypeScript module population; handle is not a conceptual name."
+                  },
+                  "evidence": [
+                    "E-empty"
+                  ]
+                }
+              ],
+              "associationSpecifications": [
+                {
+                  "key": "loader",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "introducedEntity": "loader"
+                    },
+                    "role": "identifies"
+                  },
+                  "members": [
+                    {
+                      "item": {
+                        "investigram": {
+                          "submittedInvestigram": "discovery"
+                        },
+                        "contentKey": "loader"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "key": "plugin",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "introducedEntity": "plugin"
+                    },
+                    "role": "identifies"
+                  },
+                  "members": [
+                    {
+                      "item": {
+                        "investigram": {
+                          "submittedInvestigram": "discovery"
+                        },
+                        "contentKey": "plugin"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "key": "empty",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "introducedEntity": "empty"
+                    },
+                    "role": "identifies"
+                  },
+                  "members": [
+                    {
+                      "item": {
+                        "investigram": {
+                          "submittedInvestigram": "discovery"
+                        },
+                        "contentKey": "empty"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "key": "result",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "introducedEntity": "query-result"
+                    },
+                    "role": "result"
+                  },
+                  "members": [
+                    {
+                      "declaration": {
+                        "investigram": {
+                          "submittedInvestigram": "discovery"
+                        },
+                        "associationKey": "loader"
+                      }
+                    },
+                    {
+                      "declaration": {
+                        "investigram": {
+                          "submittedInvestigram": "discovery"
+                        },
+                        "associationKey": "plugin"
+                      }
+                    },
+                    {
+                      "declaration": {
+                        "investigram": {
+                          "submittedInvestigram": "discovery"
+                        },
+                        "associationKey": "empty"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "referents": [],
+              "evidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ],
+              "qualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "children": [],
+              "followupOptions": [],
+              "presentations": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "id": "Q-E",
+        "operation": "authored.export-surfaces",
+        "subject": {
+          "entities": [
+            "M-loader",
+            "M-empty"
+          ]
+        },
+        "resultEntity": "RESULT-Q-E",
+        "deliveries": [],
+        "suppliedEvidence": [
+          "E-loader",
+          "E-empty"
+        ],
+        "declaredMeaning": {
+          "question": "Inspect export surfaces",
+          "scope": "Authored unification probe over the pinned source fixture, not an executed native producer or live investigator."
+        }
+      },
+      "bindings": {
+        "entityIds": {
+          "query-result": "RESULT-Q-E",
+          "loadPlugin": "S-load",
+          "pluginTarget": "S-target"
+        },
+        "investigramIds": {
+          "exports": "EXPORTS-1",
+          "empty": "EMPTY-EXPORTS-1"
+        },
+        "provenance": {
+          "producer": {
+            "kind": "mechanical",
+            "method": "postcode/typescript-expansions@3"
+          },
+          "basis": {
+            "programState": "AUTHORED-PINNED-SOURCE-1",
+            "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+            "sourceDigests": {
+              "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+              "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+            }
+          }
+        }
+      },
+      "submission": {
+        "illustration": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
+        "result": {
+          "queryInvocation": "Q-E",
+          "queryResult": {
+            "introducedEntity": "query-result"
+          },
+          "compositionRoots": [
+            {
+              "submittedInvestigram": "exports"
+            },
+            {
+              "submittedInvestigram": "empty"
+            }
+          ],
+          "investigrams": [
+            {
+              "key": "exports",
+              "title": "Loader exports",
+              "content": [
+                {
+                  "key": "exports",
+                  "contentType": "export-surface/0",
+                  "concept": "module interface",
+                  "subject": {
+                    "entity": "M-loader"
+                  },
+                  "entries": [
+                    {
+                      "key": "loadPlugin",
+                      "exportedName": "loadPlugin",
+                      "route": "direct",
+                      "roles": {
+                        "type": false,
+                        "value": true
+                      },
+                      "symbol": {
+                        "introducedEntity": "loadPlugin"
+                      },
+                      "origin": {
+                        "entity": "M-loader"
+                      }
+                    },
+                    {
+                      "key": "pluginTarget",
+                      "exportedName": "pluginTarget",
+                      "route": "direct",
+                      "roles": {
+                        "type": false,
+                        "value": true
+                      },
+                      "symbol": {
+                        "introducedEntity": "pluginTarget"
+                      },
+                      "origin": {
+                        "entity": "M-loader"
+                      }
+                    }
+                  ],
+                  "coverage": "complete-for-selected-surface",
+                  "qualification": {
+                    "guarantee": "compiler-export-surface",
+                    "scope": "Named exports of the captured module; no claim of runtime invocation."
+                  },
+                  "evidence": [
+                    "E-loader"
+                  ]
+                },
+                {
+                  "key": "loadPlugin",
+                  "contentType": "symbol-identification/0",
+                  "concept": "implementation symbol",
+                  "introducesEntity": true,
+                  "subject": {
+                    "introducedEntity": "loadPlugin"
+                  },
+                  "providerIdentity": {
+                    "provider": "typescript",
+                    "nativeEntity": "S-load",
+                    "scope": "supported Session and captured provider basis"
+                  },
+                  "symbol": {
+                    "name": "loadPlugin",
+                    "roles": {
+                      "type": false,
+                      "value": true
+                    },
+                    "declarationCount": 1,
+                    "origin": {
+                      "entity": "M-loader"
+                    }
+                  },
+                  "qualification": {
+                    "guarantee": "provider-established-symbol",
+                    "scope": "Captured exported implementation symbol; name is source identification, not a conceptual role or execution observation."
+                  },
+                  "evidence": [
+                    "E-loader"
+                  ]
+                },
+                {
+                  "key": "pluginTarget",
+                  "contentType": "symbol-identification/0",
+                  "concept": "implementation symbol",
+                  "introducesEntity": true,
+                  "subject": {
+                    "introducedEntity": "pluginTarget"
+                  },
+                  "providerIdentity": {
+                    "provider": "typescript",
+                    "nativeEntity": "S-target",
+                    "scope": "supported Session and captured provider basis"
+                  },
+                  "symbol": {
+                    "name": "pluginTarget",
+                    "roles": {
+                      "type": false,
+                      "value": true
+                    },
+                    "declarationCount": 1,
+                    "origin": {
+                      "entity": "M-loader"
+                    }
+                  },
+                  "qualification": {
+                    "guarantee": "provider-established-symbol",
+                    "scope": "Captured exported implementation symbol; name is source identification, not a conceptual role or execution observation."
+                  },
+                  "evidence": [
+                    "E-loader"
+                  ]
+                }
+              ],
+              "associationSpecifications": [
+                {
+                  "key": "exports",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "entity": "M-loader"
+                    },
+                    "role": "describes"
+                  },
+                  "members": [
+                    {
+                      "item": {
+                        "investigram": {
+                          "submittedInvestigram": "exports"
+                        },
+                        "contentKey": "exports"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "key": "loadPlugin",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "introducedEntity": "loadPlugin"
+                    },
+                    "role": "identifies"
+                  },
+                  "members": [
+                    {
+                      "item": {
+                        "investigram": {
+                          "submittedInvestigram": "exports"
+                        },
+                        "contentKey": "loadPlugin"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "key": "pluginTarget",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "introducedEntity": "pluginTarget"
+                    },
+                    "role": "identifies"
+                  },
+                  "members": [
+                    {
+                      "item": {
+                        "investigram": {
+                          "submittedInvestigram": "exports"
+                        },
+                        "contentKey": "pluginTarget"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "key": "result",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "introducedEntity": "query-result"
+                    },
+                    "role": "result"
+                  },
+                  "members": [
+                    {
+                      "declaration": {
+                        "investigram": {
+                          "submittedInvestigram": "exports"
+                        },
+                        "associationKey": "exports"
+                      }
+                    },
+                    {
+                      "declaration": {
+                        "investigram": {
+                          "submittedInvestigram": "empty"
+                        },
+                        "associationKey": "exports"
+                      }
+                    },
+                    {
+                      "declaration": {
+                        "investigram": {
+                          "submittedInvestigram": "exports"
+                        },
+                        "associationKey": "loadPlugin"
+                      }
+                    },
+                    {
+                      "declaration": {
+                        "investigram": {
+                          "submittedInvestigram": "exports"
+                        },
+                        "associationKey": "pluginTarget"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "referents": [],
+              "evidence": [
+                "E-loader"
+              ],
+              "qualifications": [
+                "Compiler export-surface scope; this is not a complete module inspection."
+              ],
+              "children": [],
+              "followupOptions": [],
+              "presentations": []
+            },
+            {
+              "key": "empty",
+              "title": "Established empty export surface",
+              "content": [
+                {
+                  "key": "exports",
+                  "contentType": "export-surface/0",
+                  "concept": "module interface",
+                  "subject": {
+                    "entity": "M-empty"
+                  },
+                  "entries": [],
+                  "coverage": "complete-for-selected-surface",
+                  "qualification": {
+                    "guarantee": "compiler-export-surface",
+                    "scope": "Named exports of the captured module; no claim of runtime invocation."
+                  },
+                  "evidence": [
+                    "E-empty"
+                  ]
+                }
+              ],
+              "associationSpecifications": [
+                {
+                  "key": "exports",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "entity": "M-empty"
+                    },
+                    "role": "describes"
+                  },
+                  "members": [
+                    {
+                      "item": {
+                        "investigram": {
+                          "submittedInvestigram": "empty"
+                        },
+                        "contentKey": "exports"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "referents": [],
+              "evidence": [
+                "E-empty"
+              ],
+              "qualifications": [
+                "The selected module has an established empty export surface, not absent analysis."
+              ],
+              "children": [],
+              "followupOptions": [],
+              "presentations": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "id": "Q-S",
+        "operation": "authored.source-dependencies",
+        "subject": {
+          "entity": "M-loader"
+        },
+        "resultEntity": "RESULT-Q-S",
+        "deliveries": [],
+        "suppliedEvidence": [
+          "E-loader"
+        ],
+        "declaredMeaning": {
+          "question": "Inspect source dependency requests",
+          "scope": "Authored unification probe over the pinned source fixture, not an executed native producer or live investigator."
+        }
+      },
+      "bindings": {
+        "entityIds": {
+          "query-result": "RESULT-Q-S"
+        },
+        "investigramIds": {
+          "dependencies": "DEPENDENCIES-1"
+        },
+        "provenance": {
+          "producer": {
+            "kind": "mechanical",
+            "method": "postcode/typescript-dependencies@3"
+          },
+          "basis": {
+            "programState": "AUTHORED-PINNED-SOURCE-1",
+            "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+            "sourceDigests": {
+              "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd"
+            }
+          }
+        }
+      },
+      "submission": {
+        "illustration": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
+        "result": {
+          "queryInvocation": "Q-S",
+          "queryResult": {
+            "introducedEntity": "query-result"
+          },
+          "compositionRoots": [
+            {
+              "submittedInvestigram": "dependencies"
+            }
+          ],
+          "investigrams": [
+            {
+              "key": "dependencies",
+              "title": "Mechanical dependency requests",
+              "content": [
+                {
+                  "key": "dependencies",
+                  "contentType": "dependency-account/0",
+                  "concept": "module dependency",
+                  "subject": {
+                    "entity": "M-loader"
+                  },
+                  "relationSemantics": "source-request",
+                  "requests": [
+                    {
+                      "key": "computed-import",
+                      "mechanism": "dynamic-import",
+                      "targetStatus": "target-indeterminate",
+                      "target": null,
+                      "evidence": [
+                        "E-loader"
+                      ]
+                    }
+                  ],
+                  "relationships": [],
+                  "coverage": "recognized-source-requests",
+                  "qualification": {
+                    "guarantee": "recognized-requests-with-explicit-resolution-status",
+                    "scope": "Computed names not evaluated; no loader availability or execution guarantee."
+                  },
+                  "evidence": [
+                    "E-loader"
+                  ]
+                }
+              ],
+              "associationSpecifications": [
+                {
+                  "key": "dependencies",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "entity": "M-loader"
+                    },
+                    "role": "describes"
+                  },
+                  "members": [
+                    {
+                      "item": {
+                        "investigram": {
+                          "submittedInvestigram": "dependencies"
+                        },
+                        "contentKey": "dependencies"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "key": "result",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "introducedEntity": "query-result"
+                    },
+                    "role": "result"
+                  },
+                  "members": [
+                    {
+                      "declaration": {
+                        "investigram": {
+                          "submittedInvestigram": "dependencies"
+                        },
+                        "associationKey": "dependencies"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "referents": [],
+              "evidence": [
+                "E-loader"
+              ],
+              "qualifications": [
+                "Source-request recognition; computed target remains indeterminate under this method.",
+                "No absence-of-runtime-dependency inference is justified by an empty relationship list."
+              ],
+              "children": [],
+              "followupOptions": [],
+              "presentations": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "id": "Q-I",
+        "operation": "authored.explain-computed-target",
+        "subject": {
+          "entity": "M-loader"
+        },
+        "resultEntity": "RESULT-Q-I",
+        "deliveries": [
+          {
+            "entity": "M-loader",
+            "associations": [
+              {
+                "investigram": "DEPENDENCIES-1",
+                "associationKey": "dependencies"
+              }
+            ],
+            "items": [],
+            "options": []
+          },
+          {
+            "entity": "M-plugin",
+            "associations": [
+              {
+                "investigram": "DISCOVERY-1",
+                "associationKey": "plugin"
+              }
+            ],
+            "items": [],
+            "options": []
+          }
+        ],
+        "suppliedEvidence": [
+          "E-loader",
+          "E-plugin"
+        ],
+        "declaredMeaning": {
+          "question": "Explain the computed dependency target",
+          "scope": "Authored unification probe over the pinned source fixture, not an executed native producer or live investigator."
+        }
+      },
+      "bindings": {
+        "entityIds": {
+          "query-result": "RESULT-Q-I"
+        },
+        "investigramIds": {
+          "runtime": "RUNTIME-1"
+        },
+        "provenance": {
+          "producer": {
+            "kind": "interpreted",
+            "method": "authored/qualified-target-interpretation@0"
+          },
+          "basis": {
+            "programState": "AUTHORED-PINNED-SOURCE-1",
+            "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+            "sourceDigests": {
+              "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+              "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+            }
+          }
+        }
+      },
+      "submission": {
+        "illustration": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
+        "result": {
+          "queryInvocation": "Q-I",
+          "queryResult": {
+            "introducedEntity": "query-result"
+          },
+          "compositionRoots": [
+            {
+              "submittedInvestigram": "runtime"
+            }
+          ],
+          "investigrams": [
+            {
+              "key": "runtime",
+              "title": "Interpreted conditional runtime dependency",
+              "content": [
+                {
+                  "key": "dependency",
+                  "contentType": "dependency-account/0",
+                  "concept": "module dependency",
+                  "subject": {
+                    "entity": "M-loader"
+                  },
+                  "relationSemantics": "conditional-load-attempt",
+                  "requests": [],
+                  "relationships": [
+                    {
+                      "key": "default-plugin",
+                      "target": {
+                        "entity": "M-plugin"
+                      },
+                      "condition": "If loadPlugin is invoked and reaches the dynamic import with the captured constant binding, and the build/loader maps ./plugins/default.js to the captured plugins/default.ts module.",
+                      "effect": "Attempts to load the module designated by ./plugins/default.js; successful resolution/loading is not established.",
+                      "evidence": [
+                        "E-loader",
+                        "E-plugin"
+                      ]
+                    }
+                  ],
+                  "coverage": "one-qualified-inference",
+                  "qualification": {
+                    "guarantee": "interpreted-conditional-target",
+                    "scope": "Source-based inference; no observation that the function ran and no general dynamic-loader completeness. Source-module correspondence uses the stated build/loader assumption; no deployed mapping is observed."
+                  },
+                  "evidence": [
+                    "E-loader",
+                    "E-plugin"
+                  ]
+                }
+              ],
+              "associationSpecifications": [
+                {
+                  "key": "runtime",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "entity": "M-loader"
+                    },
+                    "role": "describes"
+                  },
+                  "members": [
+                    {
+                      "item": {
+                        "investigram": {
+                          "submittedInvestigram": "runtime"
+                        },
+                        "contentKey": "dependency"
+                      }
+                    }
+                  ],
+                  "reason": "Complement recognized source requests with a conditional target interpretation; do not replace the mechanical indeterminate result."
+                },
+                {
+                  "key": "result",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "introducedEntity": "query-result"
+                    },
+                    "role": "result"
+                  },
+                  "members": [
+                    {
+                      "declaration": {
+                        "investigram": {
+                          "submittedInvestigram": "runtime"
+                        },
+                        "associationKey": "runtime"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "referents": [],
+              "evidence": [
+                "E-loader",
+                "E-plugin"
+              ],
+              "qualifications": [
+                "Qualified inference from the captured constant binding and source module correspondence.",
+                "Does not claim actual execution or successful loading."
+              ],
+              "children": [],
+              "followupOptions": [],
+              "presentations": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "id": "Q-C",
+        "operation": "authored.select-dependency-accounts",
+        "subject": {
+          "entity": "M-loader"
+        },
+        "resultEntity": "RESULT-Q-C",
+        "deliveries": [
+          {
+            "entity": "M-loader",
+            "associations": [
+              {
+                "investigram": "DEPENDENCIES-1",
+                "associationKey": "dependencies"
+              }
+            ],
+            "items": [],
+            "options": []
+          },
+          {
+            "entity": "M-loader",
+            "associations": [
+              {
+                "investigram": "RUNTIME-1",
+                "associationKey": "runtime"
+              }
+            ],
+            "items": [],
+            "options": []
+          }
+        ],
+        "suppliedEvidence": [
+          "E-loader"
+        ],
+        "declaredMeaning": {
+          "question": "Select the complementary dependency explanations",
+          "scope": "Authored unification probe over the pinned source fixture, not an executed native producer or live investigator."
+        }
+      },
+      "bindings": {
+        "entityIds": {
+          "query-result": "RESULT-Q-C"
+        },
+        "investigramIds": {
+          "combined": "COMBINED-1"
+        },
+        "provenance": {
+          "producer": {
+            "kind": "interpreted",
+            "method": "authored/qualified-selection@0"
+          },
+          "basis": {
+            "programState": "AUTHORED-PINNED-SOURCE-1",
+            "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+            "sourceDigests": {
+              "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd"
+            }
+          }
+        }
+      },
+      "submission": {
+        "illustration": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
+        "result": {
+          "queryInvocation": "Q-C",
+          "queryResult": {
+            "introducedEntity": "query-result"
+          },
+          "compositionRoots": [
+            {
+              "submittedInvestigram": "combined"
+            }
+          ],
+          "investigrams": [
+            {
+              "key": "combined",
+              "title": "Combined qualified selection",
+              "content": [],
+              "associationSpecifications": [
+                {
+                  "key": "result",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "introducedEntity": "query-result"
+                    },
+                    "role": "result"
+                  },
+                  "members": [
+                    {
+                      "declaration": {
+                        "investigram": {
+                          "investigram": "DEPENDENCIES-1"
+                        },
+                        "associationKey": "dependencies"
+                      }
+                    },
+                    {
+                      "declaration": {
+                        "investigram": {
+                          "investigram": "RUNTIME-1"
+                        },
+                        "associationKey": "runtime"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "referents": [],
+              "evidence": [
+                "E-loader"
+              ],
+              "qualifications": [
+                "Selection preserves distinct source-request and inferred runtime semantics; not a synthesized complete dependency graph."
+              ],
+              "children": [],
+              "followupOptions": [],
+              "presentations": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "id": "Q-M",
+        "operation": "authored.constant-target-analysis",
+        "subject": {
+          "entity": "M-loader"
+        },
+        "resultEntity": "RESULT-Q-M",
+        "deliveries": [
+          {
+            "entity": "M-loader",
+            "associations": [
+              {
+                "investigram": "RUNTIME-1",
+                "associationKey": "runtime"
+              }
+            ],
+            "items": [],
+            "options": []
+          }
+        ],
+        "suppliedEvidence": [
+          "E-loader",
+          "E-plugin"
+        ],
+        "declaredMeaning": {
+          "question": "Establish the constant import target with a restricted method",
+          "scope": "Authored unification probe over the pinned source fixture, not an executed native producer or live investigator."
+        }
+      },
+      "bindings": {
+        "entityIds": {
+          "query-result": "RESULT-Q-M"
+        },
+        "investigramIds": {
+          "constant": "CONSTANT-TARGET-1"
+        },
+        "provenance": {
+          "producer": {
+            "kind": "mechanical",
+            "method": "authored/constant-target@0"
+          },
+          "basis": {
+            "programState": "AUTHORED-PINNED-SOURCE-1",
+            "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+            "sourceDigests": {
+              "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+              "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+            }
+          }
+        }
+      },
+      "submission": {
+        "illustration": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
+        "result": {
+          "queryInvocation": "Q-M",
+          "queryResult": {
+            "introducedEntity": "query-result"
+          },
+          "compositionRoots": [
+            {
+              "submittedInvestigram": "constant"
+            }
+          ],
+          "investigrams": [
+            {
+              "key": "constant",
+              "title": "Later mechanical constant-target analysis",
+              "content": [
+                {
+                  "key": "dependency",
+                  "contentType": "dependency-account/0",
+                  "concept": "module dependency",
+                  "subject": {
+                    "entity": "M-loader"
+                  },
+                  "relationSemantics": "conditional-load-attempt",
+                  "requests": [],
+                  "relationships": [
+                    {
+                      "key": "default-plugin",
+                      "target": {
+                        "entity": "M-plugin"
+                      },
+                      "condition": "If loadPlugin is invoked and reaches the dynamic import with the captured constant binding, and the build/loader maps ./plugins/default.js to the captured plugins/default.ts module.",
+                      "effect": "Attempts to load the module designated by ./plugins/default.js; successful resolution/loading is not established.",
+                      "evidence": [
+                        "E-loader",
+                        "E-plugin"
+                      ]
+                    }
+                  ],
+                  "coverage": "one-qualified-inference",
+                  "qualification": {
+                    "guarantee": "mechanically-established-conditional-target-for-restricted-shape",
+                    "scope": "Hypothetical method restricted to this immutable literal binding and import expression; not executed in this probe. Still no runtime execution or loading-success guarantee. Source-module correspondence uses the stated build/loader assumption; no deployed mapping is observed."
+                  },
+                  "evidence": [
+                    "E-loader",
+                    "E-plugin"
+                  ]
+                }
+              ],
+              "associationSpecifications": [
+                {
+                  "key": "runtime",
+                  "operation": "supersession",
+                  "target": {
+                    "entity": {
+                      "entity": "M-loader"
+                    },
+                    "role": "describes"
+                  },
+                  "members": [
+                    {
+                      "item": {
+                        "investigram": {
+                          "submittedInvestigram": "constant"
+                        },
+                        "contentKey": "dependency"
+                      }
+                    }
+                  ],
+                  "reason": "Use the later restricted mechanical target analysis for this association, retaining its explicit conditional scope; the earlier inference and source-request record remain inspectable.",
+                  "displaces": [
+                    {
+                      "investigram": {
+                        "investigram": "RUNTIME-1"
+                      },
+                      "associationKey": "runtime"
+                    }
+                  ]
+                },
+                {
+                  "key": "result",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "introducedEntity": "query-result"
+                    },
+                    "role": "result"
+                  },
+                  "members": [
+                    {
+                      "declaration": {
+                        "investigram": {
+                          "submittedInvestigram": "constant"
+                        },
+                        "associationKey": "runtime"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "referents": [],
+              "evidence": [
+                "E-loader",
+                "E-plugin"
+              ],
+              "qualifications": [
+                "Authored expected output of an unimplemented restricted mechanical method, not a measured compiler result.",
+                "Method kind does not by itself guarantee completeness or runtime execution."
+              ],
+              "children": [],
+              "followupOptions": [],
+              "presentations": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "id": "Q-R",
+        "operation": "authored.refine-target-explanation",
+        "subject": {
+          "entity": "M-loader"
+        },
+        "resultEntity": "RESULT-Q-R",
+        "deliveries": [
+          {
+            "entity": "M-loader",
+            "associations": [
+              {
+                "investigram": "CONSTANT-TARGET-1",
+                "associationKey": "runtime"
+              }
+            ],
+            "items": [],
+            "options": []
+          }
+        ],
+        "suppliedEvidence": [
+          "E-loader",
+          "E-plugin"
+        ],
+        "declaredMeaning": {
+          "question": "Provide a fuller explanation of the conditional target.",
+          "scope": "Authored enhancement branch; no new execution evidence and no claim of a defect in an implemented mechanical analyzer."
+        }
+      },
+      "bindings": {
+        "entityIds": {
+          "query-result": "RESULT-Q-R"
+        },
+        "investigramIds": {
+          "constant": "RUNTIME-REFINED-1"
+        },
+        "provenance": {
+          "producer": {
+            "kind": "interpreted",
+            "method": "authored/qualified-target-explanation@0"
+          },
+          "basis": {
+            "programState": "AUTHORED-PINNED-SOURCE-1",
+            "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+            "sourceDigests": {
+              "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+              "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20"
+            }
+          }
+        }
+      },
+      "submission": {
+        "illustration": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
+        "result": {
+          "queryInvocation": "Q-R",
+          "queryResult": {
+            "introducedEntity": "query-result"
+          },
+          "compositionRoots": [
+            {
+              "submittedInvestigram": "constant"
+            }
+          ],
+          "investigrams": [
+            {
+              "key": "constant",
+              "title": "Interpreted fuller target explanation",
+              "content": [
+                {
+                  "key": "dependency",
+                  "contentType": "dependency-account/0",
+                  "concept": "module dependency",
+                  "subject": {
+                    "entity": "M-loader"
+                  },
+                  "relationSemantics": "conditional-load-attempt",
+                  "requests": [],
+                  "relationships": [
+                    {
+                      "key": "default-plugin",
+                      "target": {
+                        "entity": "M-plugin"
+                      },
+                      "condition": "If loadPlugin is invoked and reaches the dynamic import with the captured constant binding, and the build/loader maps ./plugins/default.js to the captured plugins/default.ts module.",
+                      "effect": "Attempts to load the module designated by ./plugins/default.js; successful resolution/loading is not established.",
+                      "evidence": [
+                        "E-loader",
+                        "E-plugin"
+                      ]
+                    }
+                  ],
+                  "coverage": "one-qualified-inference",
+                  "qualification": {
+                    "guarantee": "interpreted-explanation-supported-by-mechanical-target",
+                    "scope": "Adds explicit distinction between a possible invocation and observed application use. Source-module correspondence uses the stated build/loader assumption; no deployed mapping is observed."
+                  },
+                  "evidence": [
+                    "E-loader",
+                    "E-plugin"
+                  ],
+                  "explanation": "The target mapping does not establish that any application path calls loadPlugin. A possible load attempt and actual runtime use are different claims."
+                }
+              ],
+              "associationSpecifications": [
+                {
+                  "key": "runtime",
+                  "operation": "supersession",
+                  "target": {
+                    "entity": {
+                      "entity": "M-loader"
+                    },
+                    "role": "describes"
+                  },
+                  "members": [
+                    {
+                      "item": {
+                        "investigram": {
+                          "submittedInvestigram": "constant"
+                        },
+                        "contentKey": "dependency"
+                      }
+                    }
+                  ],
+                  "reason": "Offer this fuller interpreted explanation for the same conditional target, with explicit call-path limitation; preserve the exact earlier mechanical contribution and its own guarantee.",
+                  "displaces": [
+                    {
+                      "investigram": {
+                        "investigram": "CONSTANT-TARGET-1"
+                      },
+                      "associationKey": "runtime"
+                    }
+                  ]
+                },
+                {
+                  "key": "result",
+                  "operation": "addition",
+                  "target": {
+                    "entity": {
+                      "introducedEntity": "query-result"
+                    },
+                    "role": "result"
+                  },
+                  "members": [
+                    {
+                      "declaration": {
+                        "investigram": {
+                          "submittedInvestigram": "constant"
+                        },
+                        "associationKey": "runtime"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "referents": [],
+              "evidence": [
+                "E-loader",
+                "E-plugin"
+              ],
+              "qualifications": [
+                "Authored interpretive enhancement; the mechanical target calculation remains available as evidence, not an inherited guarantee.",
+                "No call-path execution or successful loading was observed."
+              ],
+              "children": [],
+              "followupOptions": [],
+              "presentations": []
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "noContributionOutcome": {
+    "operation": "Inspect export surface under unavailable analysis",
+    "applicability": "applicable",
+    "availability": "unavailable",
+    "execution": "failed",
+    "materialization": "none",
+    "reason": "Authored unavailable-provider counterfactual",
+    "contributions": [],
+    "scope": "Not accepted as an empty export result; handling all failed query selections remains outside this probe."
+  }
+}

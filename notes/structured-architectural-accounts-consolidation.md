@@ -37,8 +37,11 @@ complementary scoped information; adding runtime information need not withdraw a
 account. Inferred runtime behavior is not automatically observed behavior. A replacement does not
 inherit the displaced contribution's method guarantee. Multiple bundles can be accepted together;
 mechanical incremental work and evaluation outcomes remain distinct. Document/implementation
-migration effort is not a reason to retain an inferior split. A concrete mechanical contribution
-still needs to be worked through; current fixtures demonstrate only seeded compatibility. See the
+migration effort is not a reason to retain an inferior split. The
+[worked unification](structured-account-example/unification/README.md) exercises authored module
+and symbol identification, export surfaces, complementary dependencies and supersession in both
+directions. Structured identifying content and per-contribution method/basis fit the existing
+organizing model. Native producer integration remains unverified. See the
 [working direction](structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
 
 <a id="working-vocabulary"></a>

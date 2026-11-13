@@ -86,8 +86,9 @@ semantics without identical storage or guarantees. Mechanical provider identity 
 its deterministic captured-basis/Session behavior. Do not mint fresh IDs merely on repeated
 encounter, or parallel architectural module IDs just to investigate a module. Mechanical
 claims can be content in the proposed generalized investigram, without artificial interpretive
-prose or agent provenance. The fixture currently seeds compatible module/policy references;
-a concrete mechanical contribution and live producer integration remain to be exercised.
+prose or agent provenance. The admission/trial fixtures seed compatible module/policy references; the separate
+[unification probe](structured-account-example/unification/README.md) now exercises authored
+mechanical contributions. Live producer integration remains unverified.
 
 Architectural relationships and ordered patterns may be explicitly identified as entities.
 Not every edge becomes an entity. A relationship identity does not assert occurrence,
@@ -126,12 +127,32 @@ separate, including incomplete work, failure and established empty results. Exis
 identities and deterministic reuse must be preserved, without duplicate entity creation on access.
 
 The human explicitly prefers sound design over preserving the existing split to avoid migration
-work. Pre-release document and implementation changes are not a compatibility constraint. The next
-concrete test should map mechanical module discovery and later export information into this common
-structure, checking separate basis/qualification and reuse. Producer migration depth and exact
-mechanical content contracts remain to be worked through; the current executable fixtures do not
-establish that integration. This direction withdraws the earlier recommendation to keep mechanical
-claims outside investigrams merely because the existing definition is interpretation-specific.
+work. Pre-release document and implementation changes are not a compatibility constraint. The
+[worked unification](structured-account-example/unification/README.md) now maps authored module
+discovery, later export/symbol contributions and source-dependency analysis into the common model.
+An interpreted conditional target complements the mechanical indeterminate target. Separate authored
+stages exercise mechanical supersession of interpretation and interpreted enhancement of mechanical
+information, without upgrading either claim's guarantee or clearing historical concerns.
+
+The probe supports this direction and identifies three concrete requirements:
+
+- Identifying content can be structured mechanical information rather than a mandatory prose
+  description. Supported identifying content types still resolve explicit introductions and carry
+  qualifications; modules and later symbols retain provider identities without reintroduction.
+- Provenance must retain the actual producing method and basis per contribution. Selecting content
+  from different producers must not flatten it to one method, basis or guarantee. The shared probe
+  now permits host-attributed provenance; the older authored fixtures retain their single fixed basis.
+- Evaluation/outcome, contribution, query result and selected answer remain distinct. An established
+  empty export surface is content; unavailable analysis does not manufacture that content. Reusing
+  an existing answer does not allocate another result. One public request may involve several
+  methods; not every internal compiler phase needs a public query-result entity.
+
+Four small content contracts and twelve malformed cases are exercised. No native provider, live
+investigator or proposed constant-target method was run. Production content contracts, attribution
+across coordinated methods, first migration depth and full partial/failure result handling remain
+planning work. A method-specific Lens must preserve its question and guarantee, rather than simply
+selecting the latest description of its subject. This direction withdraws the earlier blanket
+exclusion of mechanical claims from investigrams.
 
 ## Content and declarations
 

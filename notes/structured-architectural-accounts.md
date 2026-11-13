@@ -1922,3 +1922,31 @@ guarantee. Later mechanical analysis can likewise enhance or supersede interpret
 The proposal and consolidation now express this working direction; the earlier blanket statement
 that mechanical claims do not become investigrams is withdrawn. Governing documents, product code
 and the executable fixture schema are unchanged pending the concrete mechanical example.
+
+## 2026-11-13 — Worked unification of analysis contributions
+
+The human requested a concrete pass through the common mechanical/interpreted model. The new
+[worked example](structured-account-example/unification/README.md) uses a small pinned source
+fixture and authored expected outputs: module discovery, later export surfaces and symbol
+introductions, mechanical computed-target indeterminacy, interpreted conditional target, a combined
+selection, and subsequent supersession in each producer direction. The proposed later constant-target
+mechanical method is explicitly hypothetical; no native provider or live investigator was run.
+
+The organizing model works without a separate mechanical member/reference arm or correction
+system. Mechanical module/symbol introductions need structured identifying content rather than
+mandatory prose. Per-contribution method and captured basis must accompany delivered content;
+producer kind does not confer a guarantee. Identical module references are reused across analyses,
+and later symbols can be introduced atomically. Established empty exports remain distinct from
+an unavailable analysis with no contribution. Queries, producing analyses, contribution bundles
+and selected results must retain their separate roles when several methods serve one request.
+
+The shared authored model now accepts registered content contracts and optional host-attributed
+production provenance. Older fixtures retain their fixed shared basis. The unification checker
+validates seven authored analyses and rejects twelve malformed cases, without claiming semantic
+certification or product integration. Earlier answers, source ownership and guarantees survive
+supersession. Exposure records actual retained-information acquisition; merely sharing a module
+ID does not expose mechanical producers to every interpretation of it.
+
+Recommendation: proceed with generalized investigrams as qualified analysis contributions. Complete
+native content/access contracts, coordinated-method attribution, migration scope and actual Session-
+lifetime verification remain planning work. No adopted or product files were changed.

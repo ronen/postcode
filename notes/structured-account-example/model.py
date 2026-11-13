@@ -31,11 +31,12 @@ def resolve(value, bindings):
     return value
 
 class Model:
-    def __init__(self, seed, basis, addition_policy="displacement-only"):
+    def __init__(self, seed, basis, addition_policy="displacement-only", content_contracts=None):
         # Host-side comparison modes: "conservative" reproduces the earlier broad
         # entity policy; "inventory" is the current proposed acquisition boundary.
         assert addition_policy in {"displacement-only", "conservative", "inventory"}
         self.addition_policy = addition_policy
+        self.content_contracts = content_contracts or {}
         self.entities = copy.deepcopy(seed['entities'])
         self.investigrams = {x['id']: copy.deepcopy(x) for x in seed['investigrams']}
         self.basis = copy.deepcopy(basis)
@@ -51,8 +52,11 @@ class Model:
 
     def qualified(self, oid, value):
         a = self.investigrams[oid]
+        production = a.get('provenance')
         return {'value': copy.deepcopy(value), 'sourceInvestigram': oid,
-                'queryInvocation': a['queryInvocation'], 'basis': copy.deepcopy(self.basis),
+                'queryInvocation': a['queryInvocation'],
+                'basis': copy.deepcopy(production['basis'] if production else self.basis),
+                **({'provenance': copy.deepcopy(production)} if production else {}),
                 'sourceQualifications': copy.deepcopy(a['qualifications']),
                 'sourceEvidence': copy.deepcopy(a['evidence'])}
 
@@ -96,7 +100,7 @@ class Model:
                 'parameterValues': copy.deepcopy(request.get('parameterValues', {})),
                 'option': copy.deepcopy(request.get('option')),
                 'declaredMeaning': copy.deepcopy(request['declaredMeaning']),
-                'basis': copy.deepcopy(self.basis)}
+                'basis': copy.deepcopy(self.queries[qid].get('provenance', {}).get('basis', self.basis))}
 
     def item_route(self, ref, item):
         """Only declaration paths actually leading to this excerpt, not sibling membership."""
@@ -290,14 +294,24 @@ class Model:
         introductions = []
         for raw in result['investigrams']:
             a = copy.deepcopy(raw)
+            assert 'provenance' not in a, 'production provenance is host-attributed'
             oid = bindings['investigramIds'][a.pop('key')]
             a.update(id=oid, queryInvocation=qid, acceptedAt=self.acceptance_order + 1)
+            # Host-attributed production context, not investigator-claimed authority.
+            if 'provenance' in bindings:
+                production = bindings['provenance']
+                assert production['producer']['kind'] in {'mechanical', 'interpreted'}
+                assert production['producer']['method'] and production['basis']
+                a['provenance'] = copy.deepcopy(production)
             assert a['qualifications'] and a['evidence'], 'missing own qualification/support'
             assert len({x['key'] for x in a['content']}) == len(a['content'])
             assert len({x['key'] for x in a['associationSpecifications']}) == len(a['associationSpecifications'])
             for x in a['content']:
                 if x.get('introducesEntity'):
-                    assert x['name'] and x['description']
+                    if x['contentType'] == 'entity-description/0':
+                        assert x['name'] and x['description']
+                    else:
+                        assert self.content_contracts.get(x['contentType'], {}).get('identifying'), 'unsupported identifying content'
                     introductions.append(x['subject']['entity'])
             staged.investigrams[oid] = a
             new_owners.add(oid)
@@ -363,6 +377,8 @@ class Model:
         sources = sorted({src for p in projections for src in self.projection_sources(p)})
         staged.acceptance_order = self.acceptance_order + 1
         staged.queries[qid] = {'acceptedAt': staged.acceptance_order, 'request':copy.deepcopy(request), 'resultEntity':rid,'initialDesignation':own_results[0], 'deliveries':projections,'exposureIndex':exposure,'sourceQueries':sources,'declarations':list(new_decls)}
+        if 'provenance' in bindings:
+            staged.queries[qid]['provenance'] = copy.deepcopy(bindings['provenance'])
         # Exact returned answer is fixed, separate from later declarations targeting the same result entity.
         initial = staged.project({'entity':rid,'associations':[{'investigram':own_results[0][0],'associationKey':own_results[0][1]}]})
         staged.snapshots[qid] = initial
@@ -385,7 +401,9 @@ class Model:
             a=self.investigrams[oid]; refs(a)
             GUIDANCE['presentation_plans'](a, oid)
             for item in a['content']:
-                assert item['contentType'] in {'prose/0','entity-description/0','admission-cases/0','architectural-relations/0','state-behavior/0','interaction/0'}, 'unsupported content type'
+                assert item['contentType'] in {'prose/0','entity-description/0','admission-cases/0','architectural-relations/0','state-behavior/0','interaction/0'} | self.content_contracts.keys(), 'unsupported content type'
+                if item['contentType'] in self.content_contracts:
+                    self.content_contracts[item['contentType']]['validate'](item)
                 roles={x['key'] for x in item.get('roles',[])}
                 assert len(roles)==len(item.get('roles',[]))
                 if roles: assert item['roleScope']
