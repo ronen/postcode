@@ -2199,3 +2199,23 @@ coverage. Injectable catalogues remain a possible test technique, but registrati
 alone do not establish that retained content carries the meaning needed for a recognizable diagram.
 This commits to a concrete validation artifact, not a polished presentation system or initial
 product catalogue. SLICE may select, refine, supplement or replace the diagram.
+
+## 2026-11-13 — Projection as outer answer, designations as engine information
+
+Claude's review exposed an unstated relationship between existing Projections and query-result
+entities. The human clarified that Subject/Lens/Projection/Presentation/View are outer concepts,
+while the investigation/investigram mechanism is the engine. Agreed: preserve both levels. Lens
+methods select qualified engine information into immutable Projections, with no required one-to-one
+Lens/investigation/investigram mapping. Query-result entities and designations organize engine
+information; they do not replace Projections.
+
+Exact answers remain fixed. Fresh selection may produce another Projection. Existing qualified-
+answer identity rules remain, distinguishing meaningful selected content, support and history
+without automatically importing incidental invocation identity. Preserve provenance and payload
+consistency. Drafting must check this mapping against existing contracts and raise concrete conflicts.
+
+Updated the proposal and consolidation and removed stale scope questions from fixture result
+packaging. Replaced the generic semantic-ambiguity placeholder with the review's specific remaining
+discussion points: name-search scope, meaningful result ordering/nesting, exposure-rename scope,
+and early vertical validation before completing mechanical migration. These remain discussion
+items, not newly adopted choices.

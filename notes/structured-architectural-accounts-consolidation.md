@@ -10,6 +10,18 @@ Governing documents still describe whole-investigram correction.
 
 ## Center of the model
 
+Subject, Lens, Projection, Presentation and View remain the outer application concepts; the
+investigation/contribution mechanism is the supporting engine. Query-result entities organize
+invocation-specific answer designations inside that engine. A Lens method selects its qualified
+answer, which a Projection captures immutably with answer-relevant basis, qualification and standing.
+No one-to-one Lens/investigation/investigram mapping is required. Later engine changes do not mutate
+an exact Projection; fresh selection may yield another. Existing qualified-answer identity rules
+remain: incidental engine invocation IDs do not alone distinguish equivalent answers, while
+meaningful content/support/history differences can. Preserve provenance separately where it is
+invocation context rather than answer meaning, without weakening immutable payload consistency.
+See the [mapping agreement](structured-architectural-accounts-proposal.md#outer-answers-and-the-investigation-engine).
+Drafting checks existing answer contracts and brings any concrete conflict back for discussion.
+
 Entities organize qualified information. Queries request information. Mechanical and agentic
 analyses can contribute content and association declarations through the proposed common structure; investigrams preserve those contributions
 and their provenance. A query's result has an entity identity through which original and

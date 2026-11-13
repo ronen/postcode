@@ -420,14 +420,38 @@ resolves local identities, validates references and qualification, and retains t
 contribution together. Displacement targets predate acceptance; cycles in designated
 membership are rejected.
 
-**Provisional result-contract choice:** every successful fixture invocation allocates one
-result entity and one initial result designation. The submitted bundle's content must be
-reachable through an association. This is a coverage check, not proof of intelligibility,
-sufficiency or valid reasoning. Result designation shape, mechanical-query coverage,
-failed/partial invocations and first migration depth still need application-level decisions.
-Recognized reuse returns the existing query-result identity as specified above; the authored
-simulator exercises new invocations, not the product reuse coordinator. Do not claim every
-product query has already migrated.
+**Fixture result packaging:** each successful new fixture invocation allocates one result entity
+and an initial result designation. Recognized reuse returns the existing query-result identity.
+Submitted content must be reachable through an association; this checks coverage, not intelligibility,
+sufficiency or reasoning. The authored simulator is not the product reuse coordinator. Existing
+mechanical architectural information is in migration scope, and accepted partial contributions
+receive normal processing as agreed below; those are no longer open scope questions. Detailed
+packaging must preserve the application/engine mapping and meaningful membership semantics.
+
+### Outer answers and the investigation engine
+
+Subject, Lens, Projection, Presentation and View are the outer application concepts. The investigation,
+investigram, entity and association mechanisms produce, retain and organize their supporting
+information. Entities can play the Subject role; the levels are not isolated systems.
+Query-result entities and designations belong to the engine and do not replace Projections.
+
+A Lens method determines what engine information constitutes its answer. There is no required
+one-to-one mapping between Lens applications, engine invocations and investigrams: a Lens can use
+retained information, several analyses or multiple contributions. A Projection captures the selected
+qualified answer, including its answer-relevant supporting basis, qualifications and association
+standing. Result designations can supply that selection; they are not themselves Projections.
+
+Later declarations do not mutate an existing Projection. Fresh selection may yield a different
+Projection; exact redisplay preserves the captured answer. Projection identity continues to follow
+the existing qualified-answer rules. An engine invocation ID alone does not distinguish otherwise
+equivalent answers; differences in selected content, support or meaningful association history can.
+Preserve engine provenance without automatically treating every operational identifier as part of
+answer identity. The agreed distinction between invocation-specific context and answer meaning
+must also preserve immutable payload consistency.
+
+This resolves the architectural relationship. Drafting must check the mapping against the existing
+answer contracts and expose any concrete conflict for discussion, rather than silently changing
+either model. Physical packaging and coordination remain implementation choices.
 
 ## Entity context and actual delivery
 
@@ -1002,7 +1026,10 @@ list of fixture details:
 | Question | Required resolution |
 | --- | --- |
 | Validation coverage (planning work) | The selected concept is state-dependent behavior. Map the common mechanism to observable checks using a few live-agent runs and controlled dialogs; test details remain implementation choices. Interaction/composition remain design probes, not required implemented capabilities. Initial user-facing catalogue selection is outside this task. |
-| Remaining semantic ambiguities | Resolve ambiguity in membership, qualification, selection or lookup where different choices would change meaning or supported behavior. Do not require every role spelling, schema field, nested-result limit or delivery limit to be fixed before drafting. |
+| Name-search scope | Discuss default search coverage and treatment of historical/displaced names before drafting; preserve ambiguity, qualified population coverage and exact identity access. |
+| Result ordering and nesting | Confirm which ordering/grouping carries answer meaning before drafting; incidental serialization and bounds remain implementation choices. |
+| Exposure terminology migration | Agree the extent of the citation-to-exposure-index rename across governing documents, API and code before drafting. |
+| Early vertical validation | Review the recommendation to exercise the common mechanism, initial mechanical integration, agentic state behavior and diagram contract early. The listed mechanical migration stages are not a complete milestone sequence; detailed vertical milestones are drafting work. |
 
 Association versus inventory/selection-scope exposure, actual reason delivery, standing and
 qualified access remain requirements. Richer selectors, exact tool shapes and operational bounds
