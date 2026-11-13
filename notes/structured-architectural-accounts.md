@@ -2246,3 +2246,13 @@ dependency semantics; amendments have explicit declaration relationships. A resu
 select contributions from different investigrams without ordering their claims. Recorded this
 clarification and closed the question: incidental packaging remains implementation work, with no
 additional generic ordering or nesting mechanism required.
+
+## 2026-11-13 — Partial order between investigrams
+
+The human corrected the emphasis: investigrams themselves are timeless qualified statements, not
+just bundles with unordered members. More precisely, their directed exposure/provenance/amendment
+relationships define a partial order. Recorded contribution ancestry without a total ranking of
+claims: later production alone gives no precedence; exposure does not assert reliance; amendment
+acts through associations rather than mutable investigrams. Shared provenance and ordinary content
+references do not by themselves establish ancestry. Acceptance chronology still serves delivery
+and later-change semantics, distinct from authority or architectural time described in the content.

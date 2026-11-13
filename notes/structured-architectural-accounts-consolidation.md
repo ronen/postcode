@@ -32,6 +32,13 @@ access rather than investigation. A new Q requires new investigation, not just a
 Effective-input equality still matters; matching wording alone does not establish reuse. See the
 [working agreement](structured-architectural-accounts-proposal.md#recognized-request-reuse).
 
+Investigrams themselves have no inherent total order or precedence. Directed exposure, derivation
+provenance and association-amendment relationships establish a partial order of contribution
+ancestry; unrelated contributions remain incomparable. Exposure does not assert reliance, and
+amendments do not mutate investigrams. Shared provenance or ordinary references alone do not create
+ancestry. Production/acceptance chronology remains recorded for operational semantics, including
+later-change checks, without conferring authority or last-writer precedence.
+
 An investigram atomically captures analysis results; its member positions imply no claim order,
 authority or architectural chronology. Result designations may select across investigrams without
 ordering their claims. Claims retain basis/scope/time qualifications, and explicit architectural

@@ -441,6 +441,16 @@ resolves local identities, validates references and qualification, and retains t
 contribution together. Displacement targets predate acceptance; cycles in designated
 membership are rejected.
 
+Investigrams themselves have no inherent total order or precedence: producing B after A does not
+make B more authoritative. Directed exposure, provenance/derivation and amendment relationships
+establish a partial order of contribution ancestry. Unrelated investigrams remain incomparable in
+that order. Exposure means information was supplied, not that it was relied upon; amendment means
+an explicit association declaration, not mutation of an investigram. Shared provenance and ordinary
+content references do not automatically establish ancestry. This partial order is distinct from
+architectural sequences described by the claims and from recorded production/acceptance chronology.
+Acceptance order still supports delivery-completeness and later-change checks; it is not a ranking
+of claims or a last-writer-wins rule.
+
 An investigram atomically captures analysis results. Position within the bundle implies no order
 of discovery, authority or architectural events. Claims have no implicit ordering from packaging
 or investigation chronology; their applicability remains qualified by captured basis, scope, state
