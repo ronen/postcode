@@ -396,18 +396,24 @@ and unmet requirements are reported separately; they do not invalidate what was 
 data-integrity acceptance remains required. This settles the retention question; outcome fields,
 result packaging and repair sequence are implementation choices within those distinctions.
 
-The plan delivers the mechanism, not an initial user-facing investigation catalogue or a required
-Cockatiel journey. Include a small set of plausibly useful capabilities to exercise and validate
-varied architectural subjects/relationships, qualifications, follow-up, correction and content for
-selected diagrams. The worked journey and composition are candidate validation scenarios, not
-mandatory product offerings. Planning maps this coverage to independently verifiable outcomes;
-concrete examples may vary while preserving coverage. Real production/application validation is
-needed alongside authored fixtures. Plausible usefulness is sufficient; this plan need not prove
-user value. The separate [SLICE step](upcoming-work.md#slice) selects the initial user-facing
-offering using the demonstrated capabilities and limitations.
+The plan delivers the common mechanism and one architectural concept: **state-dependent behavior**,
+with sufficient retained content for a state diagram. Entity and relationship identification and
+description are common mechanism functions, not a separately required generic explanatory capability.
+The Cockatiel thread remains a candidate validation scenario; interaction and composition remain
+design probes rather than required implemented concepts. A second concept needs a specific mechanism
+coverage justification, not a desire to test broader interpretive ability.
+
+Require a few live-agent runs to check the real integration, plus controlled dialogs for mechanism
+coverage, including optional actions such as follow-up options, presentation recommendations,
+reported inability, association operations and cross-investigation content reuse. Do not rely on
+spontaneous agent choices for repeatable coverage. Harnesses, mocking arrangements and exact test
+scenarios are implementation details. Plausible usefulness applies to the capability and outer
+investigations; controlled responses may be deliberately contrived to exercise particular cases.
+Proof of user value is not required. The separate [SLICE step](upcoming-work.md#slice) selects the
+initial user-facing offering using the demonstrated capabilities and limitations.
 
 Before drafting, resolve any remaining concrete ambiguity in information meaning or qualification;
-validation repertoire selection is planning work within the scope above. Detailed schemas, API/tool shapes, operational bounds, incidental
+mapping the agreed validation scope to observable checks is planning work. Detailed schemas, API/tool shapes, operational bounds, incidental
 ordering and implementation task breakdown need not be fixed here. The test is whether a different
 choice changes retained meaning, investigator guarantees, consumer-visible information or the
 promised capability. Existing atomicity, truthful coverage and qualified-delivery requirements still

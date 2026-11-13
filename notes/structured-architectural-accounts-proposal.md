@@ -27,23 +27,37 @@ The deliverable is the new mechanism, including the agreed staged migration of e
 mechanical architectural information. This plan does not select the initial user-facing
 investigation catalogue or mandate a particular user journey.
 
-The Cockatiel admission → trial → correction thread and bulkhead composition helped design and
-stress-test that mechanism. They remain worked examples and candidate validation scenarios,
-not required investigations or product offerings. In practice, implementation should include a
-small set of plausibly useful capabilities that exercise the mechanism: varied architectural
-subjects and relationships, qualification, follow-up, correction through association declarations,
-and sufficient retained content to support selected diagrams. Credible investigative purposes are
-enough; demonstrating user value is not an acceptance requirement. Avoid examples contrived only
-to fit the mechanism. The separate [SLICE step](upcoming-work.md#slice) selects the initial
-user-facing offering using the capabilities and limitations demonstrated here.
+The selected architectural capability is explaining **state-dependent behavior**, including
+qualified states, conditions, transitions and effects, with retained content sufficient for a state
+diagram. Entity and relationship identification/description belong to the common mechanism rather
+than a separate generic explanatory capability. This one concept supplies varied referents and
+content for exercising identity reuse, associations, qualification, follow-up and revision.
 
-Planning should identify the coverage and independently verifiable outcomes of that small repertoire;
-concrete examples may be chosen or adjusted while preserving that coverage. State and interaction
-diagrams are already worked candidates, not a commitment to a particular initial diagram catalogue.
+The Cockatiel admission → trial → correction thread remains a worked example and candidate
+validation scenario, not a required user journey. Interaction and composition remain design probes;
+they are not additional required implemented concepts or diagram types. Add another concept only
+if a specific mechanism requirement cannot be exercised by the selected one. This accepts that the
+first delivery will not demonstrate catalogue extension across substantially different concepts.
+
+Validation should combine **a few live-agent runs to check that the real integration works** with
+**controlled dialogs to provide mechanism coverage**. Cover consequential optional actions such as
+follow-up options, presentation recommendations, reported inability, association addition,
+supersession and withdrawal, and reuse of another investigation's content. Do not depend on an
+agent spontaneously choosing every action. Once an action is produced, its processing must satisfy
+the contract; absence of an optional action is not itself a mechanism failure. Explicitly requested
+content remains subject to the request's fulfillment requirements.
+
+Plausible usefulness constrains the capability and outer investigations, not every test response.
+Controlled responses may deliberately exercise unusual cases, failures and invalid submissions.
+Neither proving user value nor evaluating broad interpretive ability is an acceptance requirement.
+Test harnesses, mocking arrangements, exact scenarios and live-run procedures are implementation
+choices. Planning identifies observable mechanism coverage without prescribing those details.
+
 Rendering should demonstrate that retained content supplies architectural meaning rather than
-inventing it. Authored probes support design checks; real production and application access must
-also validate the mechanism within the supported Session. No persistence, GUI, general navigation,
-global operation catalogue or universal ontology is included by implication.
+inventing it. Real production and application access must validate the mechanism within the supported
+Session alongside controlled coverage. The separate [SLICE step](upcoming-work.md#slice) selects
+the initial user-facing offering using the demonstrated capabilities and limitations. No persistence,
+GUI, general navigation, global operation catalogue or universal ontology is included by implication.
 
 ## The conceptual center
 
@@ -944,7 +958,7 @@ behavior cannot be dismissed as an implementation detail.
 | Partial, failed and empty results | Retain and process accepted investigram content normally; separately preserve fulfillment, known inadequacy and the distinction between failure and established emptiness. | Buffering, batching, internal checkpoints and error-handling structure, subject to accepted atomicity and outcome contracts. |
 | Associations and results | Membership meaning, qualification, standing and exact history; ordering only where it conveys meaning. | Serialization, collection types, indexes, incidental ordering and nesting limits that preserve the supported capability and disclose limits accurately. |
 | Context acquisition | Selection meaning, actual coverage, qualification, exposure and the representation of unavailable or incomplete support. | Dialog tool shapes, fetching strategy, pagination mechanics and operational limits that preserve those contracts. |
-| Architectural content and diagrams | A small, plausibly useful validation repertoire must exercise varied architectural subjects/relationships and supply the meaning needed for selected diagrams. This is not selection of the initial user-facing catalogue. | Concrete examples, detailed schemas, field layout and renderer implementation that satisfy the agreed validation coverage. |
+| Architectural content and diagrams | State-dependent behavior exercises varied architectural subjects/relationships and supplies the meaning needed for a state diagram; live-agent runs check integration and controlled dialogs provide mechanism coverage. This is not selection of the initial user-facing catalogue. | Concrete examples, detailed schemas, field layout and renderer implementation that satisfy the agreed validation coverage. |
 | Entity lookup | Stable exact identity within the Session; qualified and potentially ambiguous name lookup; no silent identity merging or displaced-description authority. | Storage layout, lookup indexes, caching and search mechanics within the supported lookup semantics. |
 | Migration and verification | All existing mechanical architectural information joins the common model in agreed stages; define observable acceptance scenarios and retained guarantees. | Test harnesses, internal task breakdown and sequencing within those stages. |
 
@@ -969,7 +983,7 @@ list of fixture details:
 
 | Question | Required resolution |
 | --- | --- |
-| Validation repertoire | During planning, map a small set of plausibly useful capabilities to mechanism coverage: varied subjects/relationships, qualification, follow-up, correction and selected diagrams. The journey is a design aid, not a required investigation. Initial user-facing catalogue selection is outside this task; mechanical migration scope and broad staging are already agreed. |
+| Validation coverage (planning work) | The selected concept is state-dependent behavior. Map the common mechanism to observable checks using a few live-agent runs and controlled dialogs; test details remain implementation choices. Interaction/composition remain design probes, not required implemented capabilities. Initial user-facing catalogue selection is outside this task. |
 | Remaining semantic ambiguities | Resolve ambiguity in membership, qualification, selection or lookup where different choices would change meaning or supported behavior. Do not require every role spelling, schema field, nested-result limit or delivery limit to be fixed before drafting. |
 
 Association versus inventory/selection-scope exposure, actual reason delivery, standing and

@@ -2152,3 +2152,18 @@ value is not required. Main's updated upcoming-work note separates ACCOUNT valid
 which will select the initial user-facing graphical offering. Merged that update into this branch
 and aligned the proposal and consolidation. Credible investigative purposes and mechanism coverage
 remain requirements; evidence of product value does not become an acceptance gate for this plan.
+
+## 2026-11-13 — One concept and controlled mechanism coverage
+
+The discussion distinguished investigations from capabilities, then narrowed the selected concept
+to state-dependent behavior with state-diagram content. Entity/relationship descriptions are part
+of the common mechanism. Interaction and composition remain useful design probes, not required
+implemented concepts. We are exercising the mechanism, not testing breadth of interpretive ability.
+
+Optional agent actions cannot supply reliable test coverage through spontaneity alone. The agreed
+plan requirement is a few live-agent runs to check that the real integration works, plus controlled
+dialogs to provide mechanism coverage. This includes follow-up options, diagram recommendations,
+reported inability, addition/supersession/withdrawal and reuse of earlier content. Test harness and
+mocking details remain implementation choices. Plausible usefulness constrains the capability and
+outer queries; deliberately constructed responses are appropriate for targeted mechanism checks.
+The proposal and consolidation record this scope without prescribing a test implementation.
