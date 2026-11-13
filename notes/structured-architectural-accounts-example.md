@@ -2,14 +2,14 @@
 
 Updated: 2026-11-12. Exploratory example of the [current proposal](structured-architectural-accounts-proposal.md),
 not adopted behavior. [Complete payloads](structured-account-example/README.md) now conform
-to entity projections, query-result entities and association declarations. The Cockatiel
+to entity context deliveries, query-result entities and association declarations. The Cockatiel
 admission omission is staged, not a new live investigator discovery.
 
 ## 1. Q1 produces information, entities and a result designation
 
 Q1 is a particular invocation about policy kind P, grounded in the mechanical module M.
 P and M are distinct seeded identities with qualified identifying information; discovering
-them end to end is not claimed. Q1 receives a qualified projection of P's orientation.
+them end to end is not claimed. Q1 receives a qualified context delivery of P's orientation.
 Its exposure index records the exact supplied orientation association under P; no inventory
 is implied and the whole orientation investigram is not the context unit.
 
@@ -22,7 +22,7 @@ returns ADMISSION-1 with all the same initial items. Either way each item is ass
 explicitly. An addition specification identifies S using `half-open-description`; another
 describes P using `admission-cases`. A result association targets RESULT-Q1 and designates
 those exact declarations. The bundle tree records original composition, not entity scope
-or a promise that all descendants will accompany every later projection.
+or a promise that all descendants will accompany every later context delivery.
 
 The admission cases deliberately claim coverage while omitting waiting during an occupied
 trial. Without that coverage claim, the absence might simply be partiality. The initial
@@ -42,7 +42,7 @@ origin would not imply that the user came from ADMISSION-1 or ANSWER-Q1.
 Q2 explicitly receives RESULT-Q1's initial designated members and the qualified option. This
 is full selected-result delivery in this example, not a default to transmit every entity's
 history. The record materializes exact declarations/items with their owner, source qualifications,
-evidence references, captured basis and query provenance. The projection also supplies Q1's declared question, subjects, parameters and scope. The option excerpt alone would not
+evidence references, captured basis and query provenance. The context delivery also supplies Q1's declared question, subjects, parameters and scope. The option excerpt alone would not
 fulfill the complete-support acquisition instruction before displacing a result association. Human browsing alone is not exposure.
 
 The option promises qualified investigation, not a particular diagram. The investigator
@@ -109,7 +109,7 @@ designation; it does not inherit warnings merely because its context entity is a
 The report shows this checkpoint before subsequent independent expansion.
 
 Withdrawal of a later P association does not flag Q1 or other uses merely sharing its item.
-Actual delivery time now distinguishes known context from subsequent change. A projection
+Actual delivery time now distinguishes known context from subsequent change. A context delivery
 received after displacement carries that notice; the known cause does not newly flag its
 recipient. This also applies to indirect designation/producer concerns and new designation
 membership, without clearing the historical source's warnings. Missing required disclosure
@@ -176,7 +176,7 @@ semantic-impact assessment remains deferred. The baseline has no inventory deliv
 ## 8. Composition and subsequent selection
 
 The [composition probe](structured-account-example/composition/README.md) extends the children
-scenario. Q4 receives selected P/S/R/B projections and supplies ordered-pattern entities plus
+scenario. Q4 receives selected P/S/R/B context deliveries and supplies ordered-pattern entities plus
 RESULT-Q4. It preserves the different setups and claimed resource lifetimes for both wrapper
 orders. A later investigation can select C-BB as an entity or select a local relation/state
 assignment within RESULT-Q4. The selector does not create a new identity or assert that the

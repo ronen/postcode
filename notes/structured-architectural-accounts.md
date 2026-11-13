@@ -2287,3 +2287,11 @@ implementation chooses direct or mapped representations while preserving relatio
 qualification, precise traceability and exact access. Avoid attributing a contribution-specific
 relationship to the whole answer or presenting exposure as reliance. Revised the prior access
 paragraphs so they no longer prescribe exposure of underlying records or a new application model.
+
+## 2026-11-13 — Supporting-note terminology cleanup after clean re-review
+
+Claude's follow-up reports all checks passing and the design ready for planning. Cleaned remaining
+engine-context uses of “projection” in the walkthrough, fixture contracts, payload tour and supporting
+READMEs. Actual application Projections retain that term. Existing fixture helper/report identifiers
+are explicitly described as local context-delivery implementation names, not architectural terms or
+product API commitments; no fixture behavior or generated data changed. No planning package started.

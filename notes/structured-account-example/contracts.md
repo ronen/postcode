@@ -242,7 +242,7 @@ The updated answer is available through a later designation; it is not substitut
 inside old exact result membership. Redesignation is optional. Other containing designations
 keep their membership and receive fresh notices/status; the investigator need not find them
 all. Redesignation instructions require understanding its exact declared meaning/scope,
-operation, subjects, parameters and option (if any). `queryMeanings` in the projection preserves
+operation, subjects, parameters and option (if any). `queryMeanings` in the context delivery preserves
 this context with invocation identity and basis. The checker rejects an inaccurate record of
 selected question context, but does not require prior acquisition of that context for acceptance.
 
@@ -297,7 +297,7 @@ reassessment remain alternatives to decide, not exemptions supplied by partition
 
 ## Entity context, delivery and reconsideration
 
-Supplying an entity means supplying a selected qualified projection of its information.
+Supplying an entity means supplying a qualified context selection delivered to the investigator.
 A selection names exact associations, item excerpts or options reachable through that
 entity's information. It is not just an ID, all history, or a canonical definition.
 Each delivered item/declaration/option preserves its own value, source investigram,
@@ -318,12 +318,12 @@ assert receipt of every behavioral association. Required state-model dependencie
 links and actual content acquisition remain distinct. Arbitrary excerpt dependency closure
 is not fully generalized by the bounded renderer.
 
-Fresh projections disclose qualified displacement notices for exact supplied uses, not every
+Fresh context deliveries disclose qualified displacement notices for exact supplied uses, not every
 other use of a shared item. The notice's own substantively supplied declaration is an exact
 exposure; the fixture derives its address from the captured `notices` map alongside
 `associationUses`. Later displacement of that declaration can be a direct cause. References
 inside a notice do not deliver their targets or old/new members, nor fulfill the complete-support acquisition instruction.
-Fresh projections close over subsequent displacement of the actually supplied declarations too. Original
+Fresh context deliveries close over subsequent displacement of the actually supplied declarations too. Original
 answer/delivery snapshots stay fixed. General warnings are inspected separately through
 `reconsideration()`, whose statuses name exact designation addresses rather than only RESULT-Q.
 
@@ -347,9 +347,9 @@ shared-item overlap. The separate addition experiment below preserves this rule 
 ### Actual-delivery timing and known causes
 
 `acceptedAt` orders accepted contributions; `asOfAcceptance` records the retained-state
-position at which a projection was captured for delivery. These are host-owned fixture
+position at which a context delivery was captured for delivery. These are host-owned fixture
 provenance, not an agent's declaration that it already knew a cause. Acceptance checks
-recorded projections against their captured positions, not against the latest state.
+recorded context deliveries against their captured positions, not against the latest state.
 Default fixture requests acquire immediately before submission; separate probes retain
 an earlier delivery across an intervening change and acquire further context afterward.
 
@@ -364,7 +364,7 @@ All propagation paths compare the cause to each actual delivery. Known causes ca
 as new warnings via a source query or result designation. New designation membership compares
 against designation acceptance: already-displaced members retain their standing but do not
 create new membership causes. Its producing evaluation may still carry a cause from an earlier
-acquisition. If a query receives both an old and a refreshed projection, the refresh does not
+acquisition. If a query receives both an old and a refreshed context delivery, the refresh does not
 clear the old exposure. Query-start time and final acceptance are not delivery-time proxies.
 
 Notices preserve reasons, qualification and exact standing; they do not deliver all referenced

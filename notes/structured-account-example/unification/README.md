@@ -19,7 +19,7 @@ attribution of method/basis to each producing investigram, including several met
 qualification responsibilities, not additional accounts with a second correction mechanism.
 
 Unification does **not** mean that everything addressable becomes an investigram. Raw source,
-evidence records, evaluation outcomes, entities and selected projections keep their roles.
+evidence records, evaluation outcomes, entities and selected Projections keep their roles.
 An investigram bundles information contributed by analysis; an individual claim is content,
 not automatically another bundle. No universal "mechanical claim" text wrapper is needed.
 
@@ -237,7 +237,7 @@ An answer's selection of earlier material does not change its producer or repare
 
 Q-E demonstrates several bundles accepted together. Incremental later work is a new contribution,
 not a mutation of the discovery bundle. A generalized investigram is not the complete evaluation,
-transaction, query result or projection. Partial outcomes and prerequisites still need their own
+transaction, query result or Projection. Partial outcomes and prerequisites still need their own
 attribution. The fixture includes an unavailable/failed attempt with no contribution, kept separate
 from the established empty export surface. It does not settle every failed/partial query-result
 contract or imply that such attempts cannot have existing qualified selections.
@@ -263,7 +263,7 @@ matter, not whether the consumer happens to be an agent. Bare IDs remain distinc
 
 The zero retained-information exposure on these authored mechanical contributions is not a
 measurement of today's complete exports/dependency request pipeline. For example, the existing
-export projection also selects module naming and supporting contexts. An actual adapter must record
+export Projection also selects module naming and supporting contexts. An actual adapter must record
 qualified claims it consumes and preserve identifying information it includes in the selected result.
 The probe isolates newly produced surfaces from that larger selection; it must not be used to exempt
 mechanical reads from exposure recording merely because the method is mechanical.
@@ -301,7 +301,7 @@ model. It also identifies concrete planning work:
   not be replaced merely to expose their contributions through the common model.
 - Verify at least one actual mechanical contribution followed by an interpreting investigation in the
   supported Session lifetime, including a mechanical consumer of retained claims (for example, export
-  projection reading module naming). Check that those reads create actual qualified deliveries and
+  Projection reading module naming). Check that those reads create actual qualified deliveries and
   exposure, and that later displacement reaches the consumer. Include native identity re-encounter.
   Authored examples cannot establish adapter correctness or agent compliance.
 

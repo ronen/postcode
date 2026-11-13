@@ -40,7 +40,7 @@ the submission; references do not create owning edges.
 Q2 selects RESULT-Q1 and names ADMISSION-1's exact follow-up option. The request deliberately
 delivers the original result's declarations/members, including what Q2 will displace.
 S is the architectural focus. Q1's declared question/scope and parameters accompany the
-result projection before Q2 optionally redesignates that result. No prose question or implicit human navigation history
+result context delivery before Q2 optionally redesignates that result. No prose question or implicit human navigation history
 is required. See [option invocation](../followup-options.md).
 
 ADMISSION-2 supersedes only P's admission-cases association and copies no unchanged

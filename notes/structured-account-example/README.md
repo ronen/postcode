@@ -11,6 +11,11 @@ Start with the [proposal](../structured-architectural-accounts-proposal.md),
 The [contracts](contracts.md) distinguish agreed direction from provisional executable
 choices. [Payload tour](metadata-payload.md) connects the records to those concepts.
 
+Terminology: **Projection** means the outer application answer. These fixtures simulate engine
+**context selection/delivery**. Existing helper identifiers such as `project()` and report keys
+such as `qualifiedCurrentAdmissionProjection` are local fixture implementation names for that
+context operation, not a second architectural Projection type or prescribed product API names.
+
 ## What the example demonstrates
 
 Entities organize qualified information. Each particular invocation Q has a separate
@@ -21,7 +26,7 @@ associations; the entire source investigram does not become superseded.
 A later association may reference earlier content without copying it. A later result
 designation may retain earlier definitions while substituting a newly qualified behavioral
 association. Exact prior answers and delivered context stay fixed. Investigator context
-is a selected entity/result projection with exact source qualification and provenance.
+is a selected entity/result context delivery with exact source qualification and provenance.
 
 The first investigation deliberately omits waiting during an occupied recovery trial.
 The follow-up supplies that behavior and explicitly supersedes the admission association.
@@ -39,7 +44,7 @@ provide the investigation background.
 | [First result](first-result.json) | Q1 introduces state categories and associates definitions/admission with P/S; designates RESULT-Q1. |
 | [Follow-up](followup-result.json) | Q2 introduces scenario roles and trial behavior, supersedes P's admission association, redesignates RESULT-Q1 and designates RESULT-Q2. |
 | [Lifecycle probes](lifecycle-probes.json) | Earlier-result consumer, fuller description, declaration-only reuse, and withdrawal. |
-| [Generated report](lifecycle-report.json) | Exact qualified projections, displacement links, exposure and distinct evaluation/designation reconsideration causes in the displacement-only regression. |
+| [Generated report](lifecycle-report.json) | Exact qualified context deliveries, displacement links, exposure and distinct evaluation/designation reconsideration causes in the displacement-only regression. |
 | [Acquisition refinements](acquisition.md) | Scope-selected initial content, discovery before retrieval, and exact exposure to delivered declaration reasons; declared dependencies and investigator-directed propagation remain deferred. |
 | [Mechanical/agentic unification](unification/README.md) | Authored discovery, exports and source dependencies; interpreted extension and separately attributed supersession, with original guarantees and histories preserved. |
 | [Addition probe](additions.md) | Association/inventory exposure comparison in both partitions: original readers no longer acquire addition causes; an explicit inventory reader and its consumer do. Earlier broad counts remain reproducible. |
@@ -64,7 +69,7 @@ unchanged original associations and the new admission association. The original 
 and all original bundles remain retained, as do fixed child lists. New result membership
 is neither a patched tree nor a global replacement flag.
 
-Q2 receives a RESULT-Q1 projection including the exact declarations/members it will
+Q2 receives a RESULT-Q1 context delivery including the exact declarations/members it will
 displace. This is a deliberate completeness example, not a default to deliver every
 historical result. Investigators are instructed to acquire the exact target and designated
 members with qualifications before displacement; an option excerpt alone does not fulfill that

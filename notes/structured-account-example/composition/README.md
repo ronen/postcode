@@ -52,7 +52,7 @@ same claim. The evidence ledger distinguishes them from source inspection.
    mechanical-module availability is a fixture precondition, not demonstrated discovery.
 2. [Composition result](composition-result.json) supplies an orientation root,
    identifying child for the two patterns, and one behavioral child per order.
-3. [Context and bindings](context-and-bindings.json) records selected entity projections,
+3. [Context and bindings](context-and-bindings.json) records selected entity context deliveries,
    allocation, query/result identity and two checked follow-up designations.
    All records continue this children variant's hypothetical Session only.
 
@@ -63,7 +63,7 @@ COMPOSITION-RESULT-1       orientation, not a restatement of waiting rules
 └── COMPOSITION-BH-1        breaker outside bulkhead
 ```
 
-Earlier component items and declarations are delivered through P/S/R/B projections,
+Earlier component items and declarations are delivered through P/S/R/B context deliveries,
 with exact source provenance, **not adopted children** of the new result. Pattern definitions have no sampling/capacity exclusion;
 behavioral children carry their own applicable sampling, interference and scenario
 conditions. The general pattern does not promise that a wait occurs.
@@ -168,7 +168,7 @@ The selector checker validates addresses; it does not execute a further investig
 
 Q3 identifies B from the seeded mechanical module M-bulkhead and supplied source evidence;
 RESULT-Q3 designates its contributions. Mechanical discovery remains a precondition.
-Q4 receives these explicitly selected qualified projections without a navigation origin:
+Q4 receives these explicitly selected qualified context deliveries without a navigation origin:
 
 | Context entity | Selected information |
 | --- | --- |

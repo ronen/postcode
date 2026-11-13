@@ -1,4 +1,4 @@
-# Complete payload: immutable contributions and entity projections
+# Complete payload: immutable contributions and entity context deliveries
 
 Updated 2026-11-12. The current [consolidation](../structured-architectural-accounts-consolidation.md)
 is exercised by both partitions. This tour replaces the earlier whole-own-investigram
@@ -50,7 +50,7 @@ A request's `deliveries` select entities plus exact associations, item excerpts 
 options. The model expands chosen association members and required content dependencies,
 then captures original qualification, basis, evidence and source-query provenance.
 Association exposure records exact supplied content and association-use routes; entity/result
-IDs organize access, not blanket exposure. Result projections also preserve the invocation's
+IDs organize access, not blanket exposure. Result context deliveries also preserve the invocation's
 meaning, scope and parameters. Bare subject IDs and human browsing create no exposure.
 
 Inventory exposure is separate: an explicit availability request records scope/coverage,
@@ -68,7 +68,7 @@ three different roles. This request deliberately delivers the declarations and f
 members it will supersede. Ordinary option delivery need not do that; the historical
 owner's complete metadata is no longer an eligibility unit.
 
-Fresh projections disclose relevant qualified displacement reasons, whose references
+Fresh context deliveries disclose relevant qualified displacement reasons, whose references
 do not themselves deliver every old/new member. The supplied declaration/reason is itself an
 exact exposure for later displacement, distinct from its referenced members and the displacement acquisition instruction. Captured answers remain unchanged.
 Generated [lifecycle reports](children/lifecycle-report.json) show both fresh historical
@@ -113,7 +113,7 @@ No governing/product files were changed.
 
 
 Delivery snapshots record their retained-state position, and accepted contributions record
-acceptance order. Known direct and indirect concerns accompany fresh projections. They do
+acceptance order. Known direct and indirect concerns accompany fresh context deliveries. They do
 not become new warnings for that recipient; missing disclosure is rejected instead. Earlier
 snapshots and warnings remain unchanged, and a later refresh is not reassessment. The
 [lifecycle report](children/lifecycle-report.json) includes explicit timing probes and the
