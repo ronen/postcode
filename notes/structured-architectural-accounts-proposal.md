@@ -456,6 +456,14 @@ validation subsystem. Existing exposure, provenance and declaration records carr
 relationships; their specific reference, acceptance and propagation rules remain the requirements.
 Do not infer a generic acyclicity constraint over all investigram links from this description.
 
+The underlying relationships must remain accessible through the application layer, with their
+qualifications and exact references. Application consumers can inspect supplied-information ancestry,
+association amendments and the causes of reconsideration without reconstructing them from chronology.
+Answer-relevant information accompanies the qualified answer; further relationship information can
+be obtained through qualified application access. This does not require every Projection to embed
+the entire dependency history. The UI chooses what to display and how, preserving the distinction
+between exposure and reliance. An implicit partial order does not mean hidden relationship data.
+
 An investigram atomically captures analysis results. Position within the bundle implies no order
 of discovery, authority or architectural events. Claims have no implicit ordering from packaging
 or investigation chronology; their applicability remains qualified by captured basis, scope, state

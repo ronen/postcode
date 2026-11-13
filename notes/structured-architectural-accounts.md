@@ -2267,3 +2267,13 @@ relationship records and their particular acceptance/propagation rules remain op
 acyclicity validator over every investigram link follows. Updated the proposal and consolidation;
 no fixture or product behavior changed. Decision supersession mappings and carrying necessary
 context into the package remain drafting work.
+
+## 2026-11-13 — Application access to contribution relationships
+
+The human clarified that the implicit/explanatory partial order must not hide its underlying
+relationships from the application and UI. Recorded qualified application access to explicit
+exposure, provenance, amendment and reconsideration-cause information with exact references.
+Answer-relevant information accompanies the answer; further history can be acquired separately,
+without requiring every Projection to embed the whole dependency history. UI display choices
+remain outside this scope. Exposure is not reliance, and chronology is not a substitute for
+explicit relationships. No new partial-order subsystem follows.
