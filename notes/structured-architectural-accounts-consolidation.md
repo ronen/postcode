@@ -10,8 +10,8 @@ Governing documents still describe whole-investigram correction.
 
 ## Center of the model
 
-Entities organize qualified information. Queries request information. Investigations
-contribute content and association declarations; investigrams preserve those contributions
+Entities organize qualified information. Queries request information. Mechanical and interpreted
+analyses can contribute content and association declarations through the proposed common structure; investigrams preserve those contributions
 and their provenance. A query's result has an entity identity through which original and
 later designated answers can be organized. It is not the query, and Q identifies a particular
 invocation, not a recurring question. A repeated user request recognized as Q1 reuses Q1's existing
@@ -30,6 +30,17 @@ There is no single canonical definition per entity. Several descriptions, scopes
 conflicting interpretations can coexist. Identity/reuse does not establish agreement,
 unique discovery, or equivalence of independently allocated entities.
 
+Working direction: generalize investigrams to mechanical and interpreted contributions. Either
+producer can enhance or supersede the other's information, preserving each claim's method and
+qualifications. Static module dependencies and interpreted runtime dependencies can coexist as
+complementary scoped information; adding runtime information need not withdraw a valid static
+account. Inferred runtime behavior is not automatically observed behavior. A replacement does not
+inherit the displaced contribution's method guarantee. Multiple bundles can be accepted together;
+mechanical incremental work and evaluation outcomes remain distinct. Document/implementation
+migration effort is not a reason to retain an inferior split. A concrete mechanical contribution
+still needs to be worked through; current fixtures demonstrate only seeded compatibility. See the
+[working direction](structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
+
 <a id="working-vocabulary"></a>
 ## Working vocabulary
 
@@ -38,9 +49,9 @@ unique discovery, or equivalence of independently allocated entities.
 | Entity | Identified thing around which qualified information is organized; the proposed kinds include architectural things and query results. |
 | Subject / referent | Roles: what an investigation concerns; what a reference denotes. |
 | Query invocation | One request with captured subjects, parameters and context. Its result identity is separate. |
-| Investigram | Immutable, qualified contribution bundle from an investigation. Not the default context or supersession unit. |
+| Investigram | Proposed generalization: immutable, qualified analysis contribution bundle from a mechanical or interpreted producer. Not the default context or supersession unit. |
 | Account | Ordinary language for information provided by PostCode; no additional Account object. |
-| Content item | Keyed item within Interpretation content. Identity of content is not identity of the described entity. |
+| Content item | Keyed item of substantive analysis content, broadening the current interpretation-only terminology. Identity of content is not identity of the described entity. |
 | Content type | A supported kind of content item in a defined, extensible catalogue. |
 | Content-type contract / schema | Required data, semantics, qualification and reference rules / mechanically checkable shape within that contract. |
 | Architectural concept | Vocabulary for framing interpretation, not a required representation or diagram. |

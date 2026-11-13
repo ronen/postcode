@@ -57,7 +57,11 @@ A later investigation may introduce an entity from it, but a structured origin f
 and that live follow-up are still open work.
 
 Mechanical identities retain their provider guarantees under a proposed common reference
-mechanism. The seeds illustrate compatibility, not mechanical-producer migration.
+mechanism. The working direction now also generalizes investigram contributions to mechanical
+and interpreted analyses, preserving distinct method guarantees. These fixtures still seed
+mechanical references rather than exercising a native mechanical contribution. Their existing
+content types and agent-oriented submission examples are not yet the complete generalized
+producer contract. See the [proposal](../structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
 Relationships W and patterns C-BB/C-BH are proposed explicitly identified entities;
 this and query-result entities require governing treatment beyond interpreted identity.
 Not every architectural edge, organizing relationship or local role becomes an entity.

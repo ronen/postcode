@@ -40,7 +40,8 @@ is included by implication.
   result. Later declarations may designate different information as its answer without
   rewriting what Q originally returned. This broadens the proposed Entity mechanism
   beyond things in the described program and needs explicit governing treatment.
-- **Investigations contribute content and association declarations.** An investigram is
+- **Analyses contribute content and association declarations.** Mechanical and interpreted
+  analyses can use the proposed common contribution structure. An investigram is
   the immutable bundle that attributes those contributions to their producer. It remains
   important for provenance, qualification, inspection and exact addresses; it is no longer
   the normal context unit or the thing that is superseded.
@@ -84,8 +85,9 @@ Mechanical and interpreted producers share identity/reference and qualified-info
 semantics without identical storage or guarantees. Mechanical provider identity must retain
 its deterministic captured-basis/Session behavior. Do not mint fresh IDs merely on repeated
 encounter, or parallel architectural module IDs just to investigate a module. Mechanical
-claims do not become investigrams. The fixture seeds compatible module/policy references;
-live discovery and producer migration remain separate verification/scope choices.
+claims can be content in the proposed generalized investigram, without artificial interpretive
+prose or agent provenance. The fixture currently seeds compatible module/policy references;
+a concrete mechanical contribution and live producer integration remain to be exercised.
 
 Architectural relationships and ordered patterns may be explicitly identified as entities.
 Not every edge becomes an entity. A relationship identity does not assert occurrence,
@@ -93,9 +95,48 @@ participants or conditions; those remain qualified claims. Query-result identiti
 another distinct proposed kind. Both extensions require governing clarification, not just
 renaming fields.
 
+<a id="mechanical-and-interpreted-contributions"></a>
+## Mechanical and interpreted contributions
+
+Working direction: generalize Investigram from an interpretation artifact to an immutable,
+qualified analysis contribution bundle. Mechanical and interpreted producers can contribute
+content and association declarations through common organizing machinery. Method, captured basis,
+evidence, scope and guarantees remain attributable; common packaging does not confer one producer's
+guarantees on another's claims. "Interpretation content" would need a broader governing definition
+and name (provisionally analysis content). No adopted document is changed by this recommendation.
+
+Either kind of analysis may enhance, qualify, challenge or supersede information from the other.
+For example, mechanical analysis may establish statically resolved module dependencies while an
+interpreted investigation identifies a runtime dependency through a dynamic loader or configuration.
+That can add complementary qualified information about the same modules without displacing a valid
+static-dependency association. If an earlier contribution claimed exhaustive dependency coverage,
+the new finding may instead warrant explicit supersession of that association. Whether it does is
+a substantive analysis judgment, not a consequence of producer type. An inferred runtime dependency
+retains its conditions and evidence; it is not silently represented as an observed execution.
+
+An interpreted replacement of mechanical information retains interpreted provenance and guarantees;
+a mechanical replacement of interpreted information retains its own method guarantees. Neither
+erases the earlier contribution or inherits its epistemic status by occupying a similar role.
+Later mechanical discovery can also extend an interpreted account without alleging an error.
+
+An investigram is not necessarily the atomic acceptance boundary: a contribution submission may
+contain several investigrams. Mechanical analysis may produce reusable contributions incrementally;
+unification need not require an entire analysis to finish atomically. Evaluation outcomes remain
+separate, including incomplete work, failure and established empty results. Existing mechanical
+identities and deterministic reuse must be preserved, without duplicate entity creation on access.
+
+The human explicitly prefers sound design over preserving the existing split to avoid migration
+work. Pre-release document and implementation changes are not a compatibility constraint. The next
+concrete test should map mechanical module discovery and later export information into this common
+structure, checking separate basis/qualification and reuse. Producer migration depth and exact
+mechanical content contracts remain to be worked through; the current executable fixtures do not
+establish that integration. This direction withdraws the earlier recommendation to keep mechanical
+claims outside investigrams merely because the existing definition is interpretation-specific.
+
 ## Content and declarations
 
-A **content item** is a keyed portion of Interpretation content. Its **content type**
+A **content item** is a keyed portion of substantive analysis content (broadening the current
+governing "Interpretation content"). Its **content type**
 identifies a supported structure. A **content-type contract** specifies required data,
 meaning, references, qualifications and partial information; a **schema** expresses its
 mechanically checkable shape. Shape validation does not establish architectural truth.
@@ -680,7 +721,8 @@ The planning package would need explicit treatment of:
 
 - Interpreted, architectural-relationship/pattern and query-result identities; preservation
   of existing mechanical identity and result guarantees.
-- Investigrams as immutable contributions; item addresses, cross-owner references,
+- Investigrams as immutable mechanical or interpreted analysis contributions, with explicit
+  method-specific guarantees; broader content terminology, item addresses, cross-owner references,
   declaration-only results and result designation separate from fixed child composition.
 - Association addition/supersession/withdrawal replacing whole-investigram correction,
   including structural validation, acquisition guidance, conflict/standing and exact historical access.

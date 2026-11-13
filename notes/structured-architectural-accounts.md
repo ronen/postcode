@@ -1900,3 +1900,25 @@ needed in this capability. Original content, identities and histories remain ava
 The human notes that choosing how to present this information may be awkward, but UI design is
 not the current concern. Record that boundary without adding organizing mechanisms to anticipate
 it. The illustrative cases are not a new executable identity probe or an adopted governing change.
+
+## 2026-11-13 — Generalized analysis contributions and complementary methods
+
+The human challenges the recommendation to keep mechanical claims outside investigrams: as
+investigrams become immutable contribution bundles, mechanical analyses could produce them too.
+The working direction is to generalize the bundle while preserving method-specific evidence,
+basis, scope and guarantees. An atomic submission can contain multiple investigrams; neither
+all mechanical work nor every evaluation outcome must become one bundle. A concrete mechanical
+module-discovery/export example remains the next test, not an already demonstrated integration.
+
+The human prefers sound design over preserving an inferior split to avoid document or code
+changes; this pre-release application has no compatibility obligation that dictates the choice.
+The human also points out that mechanical and interpreted analyses can enhance as well as correct
+each other. Mechanical static dependency analysis may be supplemented by interpreted discovery of
+runtime dependencies. Valid scoped claims can coexist; only an appropriately justified declaration
+displaces an earlier association. Inferred runtime behavior retains its conditions and is not
+automatically observed execution. A replacement never inherits the displaced claim's method
+guarantee. Later mechanical analysis can likewise enhance or supersede interpreted contributions.
+
+The proposal and consolidation now express this working direction; the earlier blanket statement
+that mechanical claims do not become investigrams is withdrawn. Governing documents, product code
+and the executable fixture schema are unchanged pending the concrete mechanical example.
