@@ -32,6 +32,12 @@ access rather than investigation. A new Q requires new investigation, not just a
 Effective-input equality still matters; matching wording alone does not establish reuse. See the
 [working agreement](structured-architectural-accounts-proposal.md#recognized-request-reuse).
 
+An investigram atomically captures analysis results; its member positions imply no claim order,
+authority or architectural chronology. Result designations may select across investigrams without
+ordering their claims. Claims retain basis/scope/time qualifications, and explicit architectural
+sequences, dependencies or amendments retain their stated meanings. Incidental ordering/nesting
+is packaging, not a further design mechanism.
+
 An investigram is never globally superseded in this proposed model. Later declarations can
 displace particular associations, including the designation of an earlier query's result.
 Its original information, names, evidence and metadata remain attributable to it. An exact

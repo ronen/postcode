@@ -2236,3 +2236,13 @@ policies; name matching itself does not prove identity or a rename.
 The human approved exposure-index terminology throughout affected governing documents, APIs and
 code as part of the semantic migration. Distinct evidence citations/support are not renamed.
 Meaningful result ordering/nesting remains to be explained; no new decision on that was recorded.
+
+## 2026-11-13 — Close result-ordering question
+
+The human clarified that an investigram atomically captures claims, whose placement does not imply
+ordering. The prior discussion had inflated result-member ordering into an apparent design issue
+without a concrete requirement. Claims retain explicit qualifications and any stated temporal or
+dependency semantics; amendments have explicit declaration relationships. A result designation can
+select contributions from different investigrams without ordering their claims. Recorded this
+clarification and closed the question: incidental packaging remains implementation work, with no
+additional generic ordering or nesting mechanism required.

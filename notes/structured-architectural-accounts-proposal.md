@@ -441,6 +441,16 @@ resolves local identities, validates references and qualification, and retains t
 contribution together. Displacement targets predate acceptance; cycles in designated
 membership are rejected.
 
+An investigram atomically captures analysis results. Position within the bundle implies no order
+of discovery, authority or architectural events. Claims have no implicit ordering from packaging
+or investigation chronology; their applicability remains qualified by captured basis, scope, state
+or time where relevant. Explicit architectural sequences/dependencies and association amendments
+retain their own stated meanings. A result designation may select contributions from different
+investigrams without creating an order between their claims. Child-investigram composition does
+not itself assert architectural containment or an execution sequence. Preserve explicit contract
+semantics; incidental member ordering and packaging are implementation choices. No additional
+generic ordering/nesting mechanism is required by this capability.
+
 **Fixture result packaging:** each successful new fixture invocation allocates one result entity
 and an initial result designation. Recognized reuse returns the existing query-result identity.
 Submitted content must be reachable through an association; this checks coverage, not intelligibility,
@@ -1049,7 +1059,7 @@ list of fixture details:
 | --- | --- |
 | Validation coverage (planning work) | The selected concept is state-dependent behavior. Map the common mechanism to observable checks using a few live-agent runs and controlled dialogs; test details remain implementation choices. Interaction/composition remain design probes, not required implemented capabilities. Initial user-facing catalogue selection is outside this task. |
 | Name-search scope (resolved) | Support historical/displaced-name lookup with qualified standing and current information access. Default history inclusion and user continuation behavior are interface policies; preserve accurate coverage and ambiguity. |
-| Result ordering and nesting | Confirm which ordering/grouping carries answer meaning before drafting; incidental serialization and bounds remain implementation choices. |
+| Result ordering and nesting (resolved) | Atomic capture and result membership introduce no implicit claim order. Preserve explicit content/declaration semantics and qualifications; incidental packaging remains an implementation choice. No additional mechanism is required. |
 | Exposure terminology migration (resolved) | Include the rename throughout affected governing documents, APIs and code, alongside the semantic migration; do not rename distinct evidence citations or support. |
 | Early vertical validation (resolved) | Test the common mechanism through an internal producer boundary before real-provider migration, then exercise initial mechanical integration and the agentic/diagram path early. Detailed interfaces and milestones remain implementation/planning work. |
 
