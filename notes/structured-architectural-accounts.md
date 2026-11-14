@@ -2471,3 +2471,9 @@ could live in PostCode, in agents, or in both. The current capability retains qu
 and follow-up options without requiring that ontology or making classifications automatic eligibility
 rules. Agents may already use classifications as context for their suggestions. Recorded the deferral
 in the proposal and consolidation; no fixture or product change is needed.
+
+
+The human clarified that automatically enabling/disabling operations goes beyond suggesting
+follow-ups. Separated those concerns in the current notes: where suggestion knowledge lives is
+one future choice; using classifications as eligibility rules is another, stronger choice. Neither
+follows automatically from the other. Existing agent-authored follow-up options remain in scope.
