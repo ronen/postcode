@@ -2477,3 +2477,10 @@ The human clarified that automatically enabling/disabling operations goes beyond
 follow-ups. Separated those concerns in the current notes: where suggestion knowledge lives is
 one future choice; using classifications as eligibility rules is another, stronger choice. Neither
 follows automatically from the other. Existing agent-authored follow-up options remain in scope.
+
+
+The human refined the possible future mechanism as assessing relevance rather than necessarily
+enabling/disabling operations. UI treatment could be soft (demotion, hiding or visual de-emphasis
+with access still available). Recorded relevance judgments separately from UI policy and hard Lens
+applicability constraints. The future choice of PostCode versus agent knowledge remains deferred;
+no relevance machinery or UI behavior is added to this capability.

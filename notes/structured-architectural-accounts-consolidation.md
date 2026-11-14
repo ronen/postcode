@@ -430,11 +430,13 @@ Entity references share identity; exact qualified item references share assertio
 The supported catalogue is extensible, but an investigator cannot invent an understood
 content type just by naming it. Prose is a supported structure, not an unqualified escape.
 
-Suggesting follow-ups is separate from enabling or disabling operations. Agents can already use
-qualified classifications when proposing follow-up options. Whether concept-to-investigation knowledge
-for suggestions should also be expressed in PostCode remains future work. Classification-driven Lens
-eligibility is a further, separately deferred step; it does not follow from a suggestion mechanism.
-This adds no ontology requirement or new behavior to the current follow-up mechanism.
+Agents can already use qualified classifications when proposing follow-up options. Future
+concept-to-investigation knowledge, in PostCode, agents or both, could also assess investigations as
+more or less relevant. That judgment need not enable or disable anything: UI treatment is separate,
+and an operation deemed irrelevant could remain available on request. Relevance is distinct from
+hard Lens applicability constraints, and absence of a suggestion implies neither irrelevance nor
+inapplicability. A host ontology, systematic relevance assessments and classification-driven hard
+eligibility are deferred. This adds no required behavior to the current follow-up mechanism.
 
 TRIAL-1's state diagram binds `recovery`; the sequence binds `concurrent-callers` and
 follows its existing `stateContent`/`transition` references. No duplicate state-model

@@ -1063,14 +1063,19 @@ Concept classifications are qualified information. Multiple tags and investigato
 concepts are possible; known icons or concept-specific operations are deferred treatments.
 A small recognized vocabulary can grow without becoming an exhaustive whitelist of ideas.
 
-Suggestions and eligibility are separate concerns. Agents may use qualified classifications as
-context when authoring follow-up options without PostCode maintaining an ontology of operations.
-Future work can decide whether concept-to-investigation knowledge used for suggestions belongs in
-PostCode, in agent guidance/judgment, or in both. Automatically enabling or disabling operations
-based on classifications is a further, separate step, not an implication of suggesting follow-ups.
-Both the host ontology and classification-driven eligibility are deferred; existing Lens applicability
-contracts remain explicit. No choice among these approaches is required for this capability, and
-existing follow-up options acquire no new lifecycle semantics.
+Agents may use qualified classifications as context when authoring follow-up options without
+PostCode maintaining an ontology of operations. Future work can decide whether concept-to-investigation
+knowledge belongs in PostCode, in agent guidance/judgment, or in both. Besides generating suggestions,
+it could assess available investigations as more or less relevant. Such an assessment is advisory,
+not a hard eligibility rule: a UI might prioritize, demote, hide or visually de-emphasize an operation
+while still allowing the user to request it. Those presentation choices remain outside this remit.
+
+Relevance assessment is distinct from existing Lens applicability constraints; “deemed irrelevant”
+does not mean an operation is invalid, and missing a suggestion implies neither judgment. A host
+ontology, systematic relevance assessments and classification-driven hard eligibility are deferred;
+none is required by the current follow-up mechanism. Existing Lens applicability contracts remain
+explicit. No choice among the future approaches is required for this capability, and existing
+follow-up options acquire no new lifecycle semantics.
 
 The examples supply identifying descriptions, prose, admission cases, architectural
 relationships, a recovery state model and an interaction. Local roles are variables within
