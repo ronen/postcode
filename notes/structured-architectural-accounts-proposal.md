@@ -337,6 +337,19 @@ reconsideration, and the state-diagram result contract. Do not postpone real end
 until the remaining mechanical migration is complete. Drafting specifies milestones around this
 risk ordering; controlled producer coverage does not replace live-agent integration checks.
 
+Milestones provide review checkpoints along the way, including after the early vertical slice.
+The full migration remains in this plan; a review may expose consequential changes to discuss,
+not automatically move remaining families to a successor plan.
+
+An intermediate implementation state is not necessarily a supported mixed-mode product. Changing
+core machinery may temporarily break callers until they are conformed; alternatively, implementation
+may keep the old mechanism working until migration permits its removal. Neither strategy is required.
+Do not add a compatibility layer or a mixed-state application contract solely to keep every milestone
+fully usable. Milestone scope and verification should make clear what is complete, what remains
+unconformed and which checks demonstrate that stage; final verification covers the full agreed
+endpoint. Temporary breakage or coexistence is not authorization to omit capabilities at completion
+or to claim unfinished integration works. Detailed transition sequencing remains implementation work.
+
 The mechanical migration groups are:
 
 1. Module discovery/identification and exports, including later symbol introduction and actual

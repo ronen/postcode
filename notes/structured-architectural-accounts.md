@@ -2387,3 +2387,13 @@ still require the distinction; shared internal representation remains an impleme
 Updated the proposal, consolidation and current supporting prose. Existing fixture `entities`,
 `resultEntity` and target-field spellings remain explicitly described as shared storage encodings,
 not conceptual Entity classification or product API requirements. No executable behavior changed.
+
+## 2026-11-14 — Milestone reviews, without a mixed-mode product requirement
+
+The human confirmed review checkpoints as a primary purpose of milestones and corrected the
+assumption that migration needs a supported mixed-state behavior contract. An implementation may
+break callers temporarily while conforming them to changed core machinery, or retain old machinery
+until the replacement is ready. Those are implementation strategies, not architectural requirements.
+Keep the full migration endpoint and milestone reviews. State what each stage completes and verifies,
+without requiring a fully usable intermediate product or adding compatibility machinery merely to
+keep every stage working. Final verification must cover the agreed complete capability set.

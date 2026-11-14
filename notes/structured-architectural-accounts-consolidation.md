@@ -129,8 +129,12 @@ Interface details and milestone packaging remain implementation/planning choices
 
 The agreed implementation endpoint includes all existing mechanical architectural information,
 staged through module discovery/exports, dependencies and remaining module information, organization,
-and integrated agentic verification. Mixed representation is an intermediate milestone. This does
-not prescribe replacing physical storage or provider algorithms. New analyzers, persistence,
+and integrated agentic verification. Milestones provide review checkpoints, including the early
+vertical slice. No supported mixed-mode product or fully usable intermediate milestone is required:
+implementation may tolerate temporary breakage while conforming callers, or retain the old mechanism
+until migration is complete. Report stage-specific completion and verification accurately; final
+verification covers the full endpoint. No compatibility layer is required just to bridge unfinished
+stages. This does not prescribe replacing physical storage or provider algorithms. New analyzers, persistence,
 broader UI and provider-suppression policy remain deferred. See the proposal's
 [scope](structured-architectural-accounts-proposal.md#agreed-implementation-scope-existing-mechanical-information-staged).
 
