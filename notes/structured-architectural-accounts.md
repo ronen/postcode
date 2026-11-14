@@ -2515,3 +2515,15 @@ contracts and the fixture README, with controls for notice-only/undelivered chan
 and completed contributions. This turn records the agreement only; no executable model changes or
 claim of newly passing acceptance coverage. Sequential-investigation wording no longer excludes
 mechanical contributions accepted during an agent dialog.
+
+
+## 2026-11-14 — Live validation checks contracts, not fixed agent answers
+
+The human agreed to concrete live integration coverage, with the qualification that tests must not
+be overly rigid about exact results: agent updates may change an answer even for unchanged source.
+Recorded successful structured state-behavior production, qualified retention/retrieval and diagram
+support, plus follow-up acquisition/reference, as coverage across the live runs. Assert contracts and
+workflow properties rather than golden prose, local keys, decomposition, topology or image. Valid
+variation remains allowed within required scope; missing required data and broken references do not.
+Controlled dialogs retain precise payload/effect assertions for repeatable mechanism coverage.
+Detailed scenarios/pass criteria remain drafting and implementation work. No tests changed this turn.

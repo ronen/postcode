@@ -574,6 +574,14 @@ test implementation technique, not a substitute for this content-to-diagram demo
 polished presentation system is required. SLICE remains free to select, refine, supplement or
 replace the diagram for the initial offering.
 
+Live runs together demonstrate a successful structured state-behavior investigation, qualified
+retention/retrieval supplying the diagram, and follow-up acquisition/reference of retained information.
+Check these contract and workflow properties, not an exact agent-authored payload or diagram image.
+Agent updates may legitimately change wording, local keys, decomposition and optional content even
+when the system under study is unchanged. Preserve required semantic scope, qualification and
+reference integrity while allowing that variation. Fixed controlled-dialog responses can support
+precise mechanism assertions. Failure handling alone does not demonstrate the successful live path.
+
 Require a few live-agent runs to check the real integration, plus controlled dialogs for mechanism
 coverage, including optional actions such as follow-up options, presentation recommendations,
 reported inability, association operations and cross-investigation content reuse. Do not rely on

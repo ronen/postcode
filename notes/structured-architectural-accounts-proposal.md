@@ -47,6 +47,19 @@ agent spontaneously choosing every action. Once an action is produced, its proce
 the contract; absence of an optional action is not itself a mechanism failure. Explicitly requested
 content remains subject to the request's fulfillment requirements.
 
+Taken together, live-agent checks must demonstrate successful production of qualified structured
+state-behavior content, retention and retrieval supplying the required diagram, and a follow-up
+acquiring and referencing retained information. A failed run can exercise outcome handling but does
+not substitute for demonstrating the successful integration path.
+
+Keep live checks tolerant of agent evolution, even for an invariant system under study. Assert
+contract fulfillment, reference integrity, preserved qualification/provenance and the demonstrated
+workflow rather than an exact expected answer. Wording, investigator-chosen local keys, decomposition,
+optional content and valid diagram structure can vary within the requested semantic scope and contracts.
+Do not freeze one agent's answer as a golden payload or image. This tolerance does not excuse missing
+required data or broken references. Controlled dialogs can use fixed payloads and precise expected
+mechanism effects; detailed live scenarios and checks remain planning/implementation work.
+
 Include an explicit result-contract case requesting a state diagram, distinct from an optional
 presentation recommendation. Validate successful fulfillment from retained structured content,
 otherwise valid contributions that leave the diagram requirement unmet, and producer-reported
