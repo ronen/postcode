@@ -60,7 +60,13 @@ An investigram is never globally superseded in this proposed model. Later declar
 displace particular associations, including the designation of an earlier query's result.
 Its original information, names, evidence and metadata remain attributable to it. An exact
 captured answer remains fixed. Fresh access can disclose later declarations and select
-other information explicitly.
+other information explicitly. When a fresh result selection encounters equally standing alternative
+designations, Lens code supplies both as distinct qualified alternatives; it cannot choose by
+recency or invent a priority. Exact/explicit selection can request a particular alternative.
+An agent offered or supplied both may make a contextual choice for its own investigation, without
+silently displacing the other or establishing a global preference. Actual acquisition determines
+exposure. Interface presentation remains separate; the application boundary does not permit
+arbitrarily hiding an equally standing answer.
 
 There is no single canonical definition per entity. Several descriptions, scopes and
 conflicting interpretations can coexist. Identity/reuse does not establish agreement,

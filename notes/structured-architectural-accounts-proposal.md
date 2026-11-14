@@ -441,6 +441,21 @@ information, associations and guidance can carry qualified interpretation.
 
 ## Result designation and immutable history
 
+Fresh selection of a result with several equally standing designations supplies all of those
+alternatives, preserving their distinct membership, qualifications and provenance. For example,
+if D2 and D3 independently supersede D1 and neither displaces the other, PostCode Lens code must
+use both; it has no basis to assign priority or silently select one. Supplying both does not merge
+them into one synthesized answer or certify either as true. This rule constrains the application
+mapping, not merely engine storage. Exact-reference or explicit user selection of a particular
+alternative remains a different, narrower request.
+
+An investigating agent can be supplied or offered both alternatives and may choose what to use
+for its own investigation based on context, provenance and qualified judgment. Actual acquisition
+still determines exposure; availability alone is not content delivery. Such a choice does not
+implicitly displace the alternative or establish a universal priority for subsequent inquiries.
+Presentation arrangements remain interface choices, but leaving answer selection to application
+contracts does not authorize arbitrary preference between equally standing alternatives.
+
 <a id="recognized-request-reuse"></a>
 A repeated user request is not automatically a new investigation invocation. When PostCode
 recognizes it as the same request and reuses Q1's retained investigation, it returns the existing

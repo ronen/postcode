@@ -2352,3 +2352,13 @@ invocation exposure fails the new mechanical-isolation assertion. Reports regene
 existing set-based report iteration to keep those outputs reproducible. These are fixture checks,
 not live or product verification. The separately superseded automatic-provider-renewal branches
 remain marked pending alignment; this change addresses production exposure only.
+
+## 2026-11-14 — Equally standing result alternatives must both be supplied
+
+The human corrected the suggestion that Lens code could choose between competing designations:
+where neither has priority, PostCode should use both. Recorded the fresh-result rule: supply the
+equally standing alternatives with distinct membership, qualification and provenance, without
+choosing by recency or merging them into a synthesized claim. Exact/explicit selection is narrower.
+An agent can be supplied or offered both and choose for its own inquiry based on provenance or
+context; this does not change the alternatives' standing or invent a global priority. The rule is
+an application mapping constraint, not merely a guarantee that both are stored somewhere.
