@@ -2406,3 +2406,19 @@ a contribution referring to its subject even when the contribution's descriptive
 concerns another Entity, without a known address/navigation origin. Qualified acquisition remains
 separate from discovery; no semantic search or automatic content delivery is implied. Recorded
 the current fixture's missing coverage as a validation gap, not an unresolved inclusion decision.
+
+## 2026-11-14 — Identification vocabulary and baseline initial context
+
+The human agreed to initial context containing all non-displaced identification-role associations
+for each subject Entity. Preserve the supplied alternatives, qualifications, provenance and status;
+record selection-scope exposure. Reconsideration is not displacement, and does not silently remove
+an association. Broader topical information remains available for acquisition rather than being
+implicitly delivered. This baseline is for Entities, not a rule that recasts Query results as Entities.
+
+The preceding discussion clarified local addressing: every association has a key, including
+identifications and result designations; its exact identifier is the owning investigram plus that
+key. PostCode-understood purpose is separate. The role name is identification; it requires a readable
+name/designation plus qualified identifying information, distinguishing generated labels from
+source names. Several identifications of one Entity can coexist. Other topical information may use
+meaningful agent-chosen local keys, without adding a separately identified topic system. Recorded
+these agreements in the primary notes and marked fixture vocabulary/baseline alignment outstanding.

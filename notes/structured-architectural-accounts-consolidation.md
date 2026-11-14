@@ -176,6 +176,8 @@ distinct meanings; this is not a blanket replacement of every use of “citation
 | Architectural concept | Vocabulary for framing interpretation, not a required representation or diagram. |
 | Architectural relationship | Relationship in the described architecture. It may itself be identified as an entity, without making every edge one. |
 | Content association | Qualified use of content for an Entity and information role, or for a Query result through a result designation. |
+| Association local key | Unique within its owning investigram; together they address the exact association. Separate from its recognized purpose, and required for identification and result designations as well as topical information. |
+| Identification | PostCode-understood association role supplying a readable name/designation and qualified information distinguishing an Entity. Multiple identifications may coexist; assigned labels remain distinguishable from source-declared names. |
 | Association specification / declaration | Submitted specification expressing addition, supersession or withdrawal, attributable to its producing investigram. |
 | Investigram relationship | Qualified comparison of investigations/accounts, such as reported inconsistency. It does not silently displace associations; whole-bundle correction is replaced by declarations in this proposal. |
 | Follow-up option | Available investigation associated with exact originating metadata; atemporal availability, not implied priority. |
@@ -286,6 +288,25 @@ qualified organizing assertions are meaningful; no filler prose is required.
 The fixture provisionally requires same-target supersession, historical displacement
 targets and full delivery of the targeted declaration/members. These rules need review;
 they are not hidden consequences of the word association.
+
+## Baseline initial context and association vocabulary
+
+For each subject Entity, supply all non-displaced `identification`-role associations with content,
+qualification, provenance and required support/status disclosures. Do not select a preferred
+identification or silently remove one because it needs reconsideration. Record the actual selection
+scope and delivery position; later matching additions can trigger reconsideration. If none remain,
+report the empty selection. Broader topical information and referring contributions are available
+for further acquisition, not automatically delivered by this baseline. Query results and exact
+contextual selections are distinct inputs, not Entities by analogy.
+
+Every association has a local key, independently of its purpose; `(investigram, key)` is the exact
+address. Several differently keyed identifications may concern the same Entity. Their content and
+qualifications explain any differences; keys alone do not establish equivalence or priority. Other
+topical information can use meaningful agent-chosen local keys without a separate topic identity
+system. Identification requires a readable name/designation with sufficient qualified identifying
+information, not a complete definition or necessarily prose. Fixtures still use the earlier
+`identifies`/`describes` vocabulary as bounded examples; further recognized roles need defined
+semantics rather than inference from key spelling.
 
 ## Discovery through referents
 

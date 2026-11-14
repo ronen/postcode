@@ -142,7 +142,13 @@ role, or a Query result as a result designation. The fixture retains the shared 
 `target: {entity, role}` and uses `result` only for query-result identities; other supported roles are
 `identifies` and `describes`. Fields such as `resultEntity`, the `entities` map and its `query-result`
 discriminator are local fixture storage names, not a claim that Query results are Entities or a
-prescribed product interface. The broader role vocabulary remains to be designed.
+prescribed product interface. The agreed design now names the identifying purpose `identification`,
+requires a readable name/designation with qualified identifying information, and supplies all
+non-displaced identification associations for each subject Entity as baseline context. Existing
+`identifies`/`describes` fixtures remain bounded examples, not the final vocabulary. Local keys
+address every association independently of its purpose; meaningful agent-chosen topical keys do
+not require a separate topic-identity mechanism. The executable vocabulary/baseline remain to be
+aligned; existing scoped-identification probes exercise only part of this contract.
 Entity/role denotes a category of information, not a unique value slot.
 
 | Operation | Required contribution | Effect |

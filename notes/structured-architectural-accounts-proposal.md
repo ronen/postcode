@@ -436,13 +436,35 @@ association specifications express three **association declaration** kinds:
 | Supersession | Introduce an association in place of specified earlier associations. |
 | Withdrawal | Displace specified earlier associations without replacement members. |
 
-Associations attach information either to an Entity with an information role (such as `identifies`
-or `describes`), or to a Query result as a result designation. Own-result and other-result
+Associations attach information either to an Entity (for identification or other topical information),
+or to a Query result as a result designation. Own-result and other-result
 associations use the same mechanism. “Target” is ordinary descriptive wording, not another named
 core concept. The fixture encodes query results with the `result` role; that shared representation
 does not make a Query result an Entity. The target denotes a category of information, not a mutable slot
 or an exact earlier item. Supersession/withdrawal must additionally identify exact earlier
 associations. Matching role, name or recency is insufficient.
+
+Every association has a submission-local key, including identification and result designations.
+Its exact address is `(investigram, local key)`; no additional association identifier is needed.
+The key is separate from PostCode-understood purpose. The agreed name for the special identifying
+role is **`identification`**. One investigram can contain differently keyed identification
+associations for different Entities, or several qualified identifications of the same Entity.
+Those remain claims about one referent, not additional identities. Separate keys do not establish
+how the claims relate; their content, qualifications and declarations do. Group coherent identifying
+information when appropriate; separate contributions can preserve different grounds or qualifications.
+
+The common identification contract supplies a human-readable name or designation and enough
+qualified information to distinguish the referent. A source-declared name, a path or an assigned
+label can serve; distinguish assigned labels from names present in the system under study. A bare
+opaque ID is insufficient identifying support. Identification need not be a complete behavioral
+definition, nor mandatory prose when structured mechanical information suffices. Multiple standing
+identifications can provide different names/descriptions without a canonical winner.
+
+Other topical information can use an agent-chosen meaningful local key, such as `admission-behavior`.
+No separately identified topic system is required. Matching keys across investigrams do not merge
+claims or supersede associations. Additional PostCode-understood roles can be defined where special
+handling is justified. Existing fixtures still encode `identifies` and a coarse `describes` role;
+those bounded spellings are not a final vocabulary or evidence of a complete topical contract.
 
 New associations can reference content owned by another investigram. B owns its new
 association; A still owns the referenced content, qualifications, evidence and original
@@ -689,6 +711,17 @@ of those supplied declarations, without retroactive warnings or automatic reinst
 Further acquisition remains explicit. An exact captured answer stays unchanged.
 
 ### Identifying support, alternatives and acquisition
+
+**Agreed baseline initial context:** provide all non-displaced `identification`-role associations
+for each subject Entity, including their identifying content, provenance, qualifications and required
+support/status disclosures. Do not choose one name/description as canonical. Needs-reconsideration
+status accompanies an identification; it does not silently exclude it from this non-displaced set.
+If the set is empty, report that absence rather than inventing an identification. This selects an
+explicit scope at the actual delivery position, so later matching additions can trigger the existing
+scope-exposure reconsideration rule. It does not automatically acquire all other topical information
+or all contributions referring to the subject. Exact selected historical context remains distinct
+from this fresh baseline. This agreement concerns subject Entities; Query-result and contextual-
+selection inputs retain their own meaning rather than being treated as Entities by analogy.
 
 Substantive references need enough qualified identifying information to distinguish their
 referents, or an explicit unresolved/contextual designation with inspectable support. Do
