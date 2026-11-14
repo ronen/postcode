@@ -287,6 +287,18 @@ The fixture provisionally requires same-target supersession, historical displace
 targets and full delivery of the targeted declaration/members. These rules need review;
 they are not hidden consequences of the word association.
 
+## Discovery through referents
+
+First-delivery scope includes finding retained contributions through their explicit referents,
+independently of which Entity their identifying/descriptive associations concern. An investigation
+of Half-open can discover an admission contribution referring to Half-open even when that
+contribution's descriptive association concerns Circuit Breaker. A known address or navigation
+origin is not required. This preserves an existing purpose of referents, not a new semantic-search
+capability. Finding a reference does not automatically deliver the contribution's content; subsequent
+qualified acquisition and actual exposure remain distinct. Indexes and tool shapes are implementation
+choices. Include this path in validation; the current association-backed fixture does not yet
+exercise it, which is a coverage gap rather than deferred scope.
+
 ## Exposure and result membership
 
 Each investigram captures its own actual production/exposure history at creation. Contributions

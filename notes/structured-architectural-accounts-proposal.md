@@ -704,12 +704,20 @@ both. Difference need not be contradiction. Larger inventories require disclosed
 bounds and access to alternatives, not automatic reconciliation or hidden last-writer truth.
 A supersession can favor new information without making its acceptance a truth judgment.
 
-Refers-to discovery remains broader than identifies/describes indexing. ADMISSION-1 lists
-S as a referent even though its admission association targets P. Investigators of S should
-be able to find that contribution without a known navigation origin. The current context-selection
-simulator exercises association-backed selection, not this broader discovery/retrieval path;
-that path needs an explicit context-entity/delivery contract rather than being silently lost
-in the new model. Mention inventory, association target and evidential support are distinct.
+**Discovery through explicit referents is in first-delivery scope.** It is an important purpose
+of retaining referents, not a new optional extension. It is broader than identifies/describes
+indexing: ADMISSION-1 lists Half-open (S) as a referent even though its admission association targets
+Circuit Breaker (P). An investigator of S must be able to discover that contribution without already
+knowing its address or having a navigation origin, then acquire selected qualified information.
+
+This is lookup through retained explicit references, not inferred semantic correspondence or a
+requirement for general relevance ranking. Discovery does not automatically supply all found
+content or fabricate content exposure; normal qualification, acquisition and actual-delivery rules
+apply. Referent lookup, association targets and evidential support remain distinct. Indexes and
+interface/tool shapes are implementation choices. Planning must include this path in validation.
+The current context-selection simulator exercises association-backed selection rather than this
+path, so referent-based discovery remains an explicit fixture/product validation gap, not an open
+scope decision or a deferred capability.
 
 Specify acquisition at the investigation boundary, leaving dialog tools to implementation.
 An investigation receives its subject, question and selected initial context, and can acquire

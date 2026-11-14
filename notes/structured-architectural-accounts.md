@@ -2397,3 +2397,12 @@ until the replacement is ready. Those are implementation strategies, not archite
 Keep the full migration endpoint and milestone reviews. State what each stage completes and verifies,
 without requiring a fully usable intermediate product or adding compatibility machinery merely to
 keep every stage working. Final verification must cover the agreed complete capability set.
+
+## 2026-11-14 — Confirm referent-based discovery in first delivery
+
+The human confirmed that discovery through explicit referents was already intended and is an
+important purpose of referents. Made first-delivery scope explicit: an investigator can discover
+a contribution referring to its subject even when the contribution's descriptive association
+concerns another Entity, without a known address/navigation origin. Qualified acquisition remains
+separate from discovery; no semantic search or automatic content delivery is implied. Recorded
+the current fixture's missing coverage as a validation gap, not an unresolved inclusion decision.
