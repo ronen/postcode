@@ -1063,6 +1063,14 @@ Concept classifications are qualified information. Multiple tags and investigato
 concepts are possible; known icons or concept-specific operations are deferred treatments.
 A small recognized vocabulary can grow without becoming an exhaustive whitelist of ideas.
 
+Concept-driven Lens applicability and operation discovery are explicitly deferred. Retaining a
+classification does not by itself enable or disable an operation; existing Lens applicability
+contracts remain explicit. Agents may use qualified classifications as context when authoring
+follow-up options without PostCode maintaining an ontology of operations. Future work can decide
+whether concept-to-investigation knowledge belongs in PostCode, in agent guidance/judgment, or in
+both, and how it interacts with the existing follow-up mechanism. No choice among those approaches
+is required for this capability, and existing follow-up options acquire no new lifecycle semantics.
+
 The examples supply identifying descriptions, prose, admission cases, architectural
 relationships, a recovery state model and an interaction. Local roles are variables within
 an item with explicit scope, not automatically shared entities. Illustrations bind a general

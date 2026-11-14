@@ -430,6 +430,12 @@ Entity references share identity; exact qualified item references share assertio
 The supported catalogue is extensible, but an investigator cannot invent an understood
 content type just by naming it. Prose is a supported structure, not an unqualified escape.
 
+Concept-driven operation discovery and Lens eligibility are deferred. Classifications remain
+qualified content; they do not automatically enable or disable operations. Agents can use them
+when proposing follow-up options. Whether a future concept-to-investigation ontology is expressed
+in PostCode, left to agents, or shared between them remains open beyond this capability. This adds
+no ontology requirement or new behavior to the current follow-up mechanism.
+
 TRIAL-1's state diagram binds `recovery`; the sequence binds `concurrent-callers` and
 follows its existing `stateContent`/`transition` references. No duplicate state-model
 binding or renderer-invented dependency. Both diagrams render unchanged with recommendations

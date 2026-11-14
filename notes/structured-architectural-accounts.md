@@ -2461,3 +2461,13 @@ the original answer's diagram compatibility: check its selected content under th
 Recorded this in the proposal and consolidation, without adding a fulfillment mechanism, renderer
 placement prescription or UI design. This resolves D2's contract-boundary question and B3's related
 redesignation/diagram-compatibility case; detailed governing mappings remain drafting work.
+
+
+## 2026-11-14 — Defer concept-driven investigation availability
+
+The human agreed to defer using architectural classifications to determine Lens applicability or
+available investigations. This may connect to follow-up options: concept-to-investigation knowledge
+could live in PostCode, in agents, or in both. The current capability retains qualified classifications
+and follow-up options without requiring that ontology or making classifications automatic eligibility
+rules. Agents may already use classifications as context for their suggestions. Recorded the deferral
+in the proposal and consolidation; no fixture or product change is needed.
