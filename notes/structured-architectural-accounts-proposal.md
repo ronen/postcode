@@ -1084,6 +1084,20 @@ evidence and causal meaning; the image alone may be only an overview. The genera
 invent missing nodes, transitions, correspondence or ordering. General cross-owner diagram
 retrieval is not implemented; the current diagram content remains unchanged.
 
+Diagram requirements use the existing result/Presentation contracts; there is no separate
+fulfillment mechanism. The investigation supplies qualified content satisfying the requested
+diagram-input requirements. Missing required data is an unmet investigation requirement, while
+otherwise valid content is retained and processed normally. The application uses existing
+Presentation compatibility and failure reporting to arrange/render the content. A presentation
+failure does not invalidate the accepted investigation content. Presentation policy remains with
+clients under the governing boundary; this does not prescribe renderer packaging or a new UI.
+
+Compatibility is checked against the actual selected content. A later result designation does
+not inherit the original answer's diagram compatibility or fulfillment merely by answering the
+same query. Preserve the earlier captured answer and apply existing contracts to the newly
+selected information, including distinct alternatives. No automatic redesignation, content
+substitution or new standing rule follows.
+
 <a id="offered-followup-investigation"></a>
 ## Follow-up options and surrounding application context
 
@@ -1097,7 +1111,8 @@ This is an authoring choice, not a prohibition on reinvestigation.
 The stipulated follow-up Lens delegates its question to the selected qualified option under
 a supported method. Its default result contract is qualified information in supported types,
 not a prescribed diagram. An explicit “generate a state diagram” promise additionally requires
-compatible data and successful presentation, or an explicit partial/unmet outcome. Schemas
+compatible data under the investigation result contract and successful presentation under the
+existing application contract, with their respective unmet/failure outcomes kept distinct. Schemas
 alone cannot establish adequate interpretation. Optional specialization is a conceptual
 contract example, not exercised as a product API.
 

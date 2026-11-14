@@ -2449,3 +2449,15 @@ negatives), acquisition (26), baseline (14), unification (33), guidance (26), co
 nested selectors (nine). Diagram sources/legends still match in both partitions and composition.
 These are authored mechanism probes, not live-agent, native-provider or product acceptance. Updated
 primary notes and supporting contracts; governing and product files remain unchanged.
+
+
+## 2026-11-14 — Diagram requirements use existing contracts
+
+The human agreed that existing result/Presentation contracts cover the review's diagram concern.
+Investigation requirements concern supplying qualified diagram-compatible content; application
+presentation checks and failure outcomes concern rendering it. Valid partial content is retained
+normally, and rendering failure does not invalidate it. A later result designation cannot inherit
+the original answer's diagram compatibility: check its selected content under the existing contracts.
+Recorded this in the proposal and consolidation, without adding a fulfillment mechanism, renderer
+placement prescription or UI design. This resolves D2's contract-boundary question and B3's related
+redesignation/diagram-compatibility case; detailed governing mappings remain drafting work.

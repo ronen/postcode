@@ -436,6 +436,14 @@ binding or renderer-invented dependency. Both diagrams render unchanged with rec
 removed. Legends preserve conditions, qualifications and source mappings. Presentation
 retrieval, arrangement and UI remain outside this remit.
 
+An explicit diagram request uses existing result/Presentation contracts. The investigation must
+supply compatible qualified content; missing required data is an unmet investigation requirement.
+The application checks compatibility and reports presentation failures through its existing
+machinery. A rendering failure does not invalidate retained content. A later designation must be
+checked against its actual selected content, not inherit compatibility/fulfillment from the original
+answer. Existing captured answers remain unchanged. This adds no fulfillment mechanism or new
+Presentation policy; renderer packaging and UI details remain implementation matters.
+
 ## What the current examples show
 
 Q1 introduces state categories and an incomplete admission account. Its result designation
