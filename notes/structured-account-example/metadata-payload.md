@@ -12,7 +12,7 @@ version preserves the comparison with broader source qualifications.
 
 | Part | Responsibility |
 | --- | --- |
-| `queryInvocation` / `queryResult` | Particular invocation and separately allocated result entity. |
+| `queryInvocation` / `queryResult` | Particular invocation and separately allocated query result. |
 | `investigrams` | Immutable qualified contributions with local keys resolved on acceptance. |
 | `compositionRoots` / `children` | Forest packaging of newly submitted bundles; no special replacement tree. |
 | `content` | Keyed architectural interpretation, including explicit entity introduction. |

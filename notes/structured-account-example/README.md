@@ -15,11 +15,14 @@ Terminology: **Projection** means the outer application answer. These fixtures s
 **context selection/delivery**. Existing helper identifiers such as `project()` and report keys
 such as `qualifiedCurrentAdmissionProjection` are local fixture implementation names for that
 context operation, not a second architectural Projection type or prescribed product API names.
+Likewise, Query result and Entity are separate concepts despite shared fixture storage and field
+names such as `entities` and `resultEntity`. Shared identity/association machinery is intentional;
+these storage names do not prescribe the domain vocabulary or the product API.
 
 ## What the example demonstrates
 
 Entities organize qualified information. Each particular invocation Q has a separate
-result entity RESULT-Q. Investigrams preserve immutable contributions, including content
+query result RESULT-Q. Investigrams preserve immutable contributions, including content
 and qualified association declarations. Addition, supersession and withdrawal act on
 associations; the entire source investigram does not become superseded.
 

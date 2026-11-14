@@ -11,7 +11,7 @@ Governing documents still describe whole-investigram correction.
 ## Center of the model
 
 Subject, Lens, Projection, Presentation and View remain the outer application concepts; the
-investigation/contribution mechanism is the supporting engine. Query-result entities organize
+investigation/contribution mechanism is the supporting engine. Query results organize
 invocation-specific answer designations inside that engine. A Lens method selects its qualified
 answer, which a Projection captures immutably with answer-relevant basis, qualification and standing.
 No one-to-one Lens/investigation/investigram mapping is required. Later engine changes do not mutate
@@ -26,7 +26,7 @@ Call choosing engine information **context selection**, and supplying it to an i
 
 Entities organize qualified information. Queries request information. Mechanical and agentic
 analyses can contribute content and association declarations through the proposed common structure; investigrams preserve those contributions
-and their provenance. A query's result has an entity identity through which original and
+and their provenance. A query's result has its own organizing identity through which original and
 later designated answers can be organized. It is not the query, and Q identifies a particular
 invocation, not a recurring question. A repeated user request recognized as Q1 reuses Q1's existing
 result identity; it does not create Q2 or another result designation. Exact redisplay is also
@@ -154,7 +154,8 @@ distinct meanings; this is not a blanket replacement of every use of “citation
 
 | Term | Meaning |
 | --- | --- |
-| Entity | Identified thing around which qualified information is organized; the proposed kinds include architectural things and query results. |
+| Entity | Identified thing in the system under study, around which qualified architectural information is organized. |
+| Query result | Separately identified result of a particular invocation, organized through result designations. Not an Entity; it shares identity/reference and association machinery. |
 | Subject / referent | Roles: what an investigation concerns; what a reference denotes. |
 | Query invocation | One request with captured subjects, parameters and context. Its result identity is separate. |
 | Investigation | Architectural inquiry, using mechanical analysis, agentic analysis, or both. |
@@ -170,7 +171,7 @@ distinct meanings; this is not a blanket replacement of every use of “citation
 | Content-type contract / schema | Required data, semantics, qualification and reference rules / mechanically checkable shape within that contract. |
 | Architectural concept | Vocabulary for framing interpretation, not a required representation or diagram. |
 | Architectural relationship | Relationship in the described architecture. It may itself be identified as an entity, without making every edge one. |
-| Content association | Qualified use of content for a target entity and information role. |
+| Content association | Qualified use of content for an Entity and information role, or for a Query result through a result designation. |
 | Association specification / declaration | Submitted specification expressing addition, supersession or withdrawal, attributable to its producing investigram. |
 | Investigram relationship | Qualified comparison of investigations/accounts, such as reported inconsistency. It does not silently displace associations; whole-bundle correction is replaced by declarations in this proposal. |
 | Follow-up option | Available investigation associated with exact originating metadata; atemporal availability, not implied priority. |
@@ -203,12 +204,12 @@ withdrawal reasons and result organization can be the substantive interpretation
 ### Submitted investigation contribution
 
 ```text
-Invocation Q and its allocated result entity RESULT-Q
+Invocation Q and its allocated query result RESULT-Q
   Contribution pool of investigrams
     Content items, referents, qualifications, evidence
     Association specifications
       addition / supersession / withdrawal
-      target entity + information role
+      Entity + information role, or Query result
       exact content/declaration members where applicable
       exact earlier associations displaced
       reason and attributable grounds
@@ -218,11 +219,16 @@ Invocation Q and its allocated result entity RESULT-Q
 ```
 
 Acceptance resolves local IDs, validates all declarations and references, and retains
-atomically. A new successful investigation receives a result entity; recognized reuse allocates
+atomically. A new successful investigation receives a query result; recognized reuse allocates
 none. Architectural entities
 are introduced through qualified identifying content. Existing mechanical identities
-retain provider guarantees. Own-result/earlier-result targets use the same entity mechanism.
-The `result` role applies if and only if the target is a query-result entity.
+retain provider guarantees. Own-result/earlier-result targets use the same association mechanism.
+The fixture encodes a Query result through a `result` role; shared storage/encoding does not make it
+an Entity. No additional umbrella concept is required. An Entity concerns the system under study;
+a Query result organizes answers to the invocation's particular question, rather than all accounts
+about its architectural subjects. This distinction justifies retaining redesignation while keeping
+the two concepts separate. Broader Entity terminology with kinds was considered but would not remove
+the result-specific rules. Shared internal types remain implementation choices.
 
 ### Retained information
 
@@ -231,7 +237,7 @@ Entity identities and introduction provenance
 Query invocations and their generating/delivery history
 Immutable investigrams
   Original items, declarations, qualifications, evidence, guidance, child links
-Association indexes by entity + role
+Association indexes for Entity + role and for Query results
 Query-result designations with explicit member references
 Captured answers and exact context deliveries
 Separately acquired inventory snapshots with scope, coverage and delivery position
@@ -265,7 +271,7 @@ qualified organizing assertions are meaningful; no filler prose is required.
 | Addition | Producing investigram owns a new association. Existing associations coexist. |
 | Supersession | Producing investigram owns a new association explicitly displacing earlier associations, not their owner bundles. |
 | Withdrawal | Producing investigram records displacement without replacement members. Old content and other associations remain. |
-| Result designation | Association targeting a query-result entity. Can include exact items/declarations originating elsewhere. |
+| Result designation | Association targeting a query result. Can include exact items/declarations originating elsewhere. |
 | Child composition | Fixed submitted-bundle structure; not result membership, current answer selection, exposure or architectural containment. |
 | Follow-up option | Exact producing metadata remains owned by its investigram. Access through a result/entity does not retarget or transfer it. |
 | Presentation recommendation | Original usefulness judgment; selecting a different compatible diagram changes no retained record. |

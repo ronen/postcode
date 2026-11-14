@@ -4,7 +4,7 @@ Updated: 2026-11-13
 
 Exploratory working proposal, not an adopted decision or implementation authorization.
 This version conforms the current synthesis and authored fixtures to entity-organized
-accounts, association declarations and query-result entities. It replaces the earlier
+accounts, association declarations and query results. It replaces the earlier
 working recommendation to supersede entire investigrams. Governing documents and the
 implemented application still use their existing model; their revision requires the
 later planning package. Historical discussion remains in the [discussion notes](structured-architectural-accounts.md).
@@ -76,14 +76,14 @@ GUI, general navigation, global operation catalogue or universal ontology is inc
 
 ## The conceptual center
 
-- **Entities organize information.** An entity is an identified thing around which
-  qualified content associations accumulate. Several descriptions may coexist or conflict.
+- **Entities organize architectural information.** An Entity identifies a thing in the system
+  under study, around which qualified content associations accumulate. Several descriptions may coexist or conflict.
 - **Queries request information.** Q denotes one invocation with its selected subjects,
   parameters, basis and context, not a recurring question or a continuing inquiry.
 - **Query results also have organizing identities.** RESULT-Q identifies that invocation's
   result. Later declarations may designate different information as its answer without
-  rewriting what Q originally returned. This broadens the proposed Entity mechanism
-  beyond things in the described program and needs explicit governing treatment.
+  rewriting what Q originally returned. A Query result is distinct from an Entity; both use
+  the common identity/reference and association machinery. No umbrella concept is introduced.
 - **Analyses contribute content and association declarations.** Mechanical and agentic
   analyses can use the proposed common contribution structure. An investigram is
   the immutable bundle that attributes those contributions to their producer. It remains
@@ -136,9 +136,19 @@ mechanical contributions. Live producer integration remains unverified.
 
 Architectural relationships and ordered patterns may be explicitly identified as entities.
 Not every edge becomes an entity. A relationship identity does not assert occurrence,
-participants or conditions; those remain qualified claims. Query-result identities are
-another distinct proposed kind. Both extensions require governing clarification, not just
-renaming fields.
+participants or conditions; those remain qualified claims. This eligibility requires governing
+clarification beyond interpreted identity. Query results are separate organizing identities, not
+another Entity kind: an Entity denotes something in the system under study, whereas a Query result
+organizes answers to a particular invocation. Their shared machinery does not erase that distinction.
+
+Keeping a continuing Query result identity permits a later investigation to designate an updated
+answer to the earlier question, without replacing its investigram or inferring an answer from all
+information about its architectural subjects. For example, descriptions of a breaker collectively
+need not answer a particular question about concurrent callers. Redesignation retains that question-
+specific organization. The alternative of broadening Entity to include query results was considered;
+it would still need a structural distinction for result-designation rules. Prefer separate concepts
+with shared association behavior, without a new named umbrella type. Common internal types/storage
+remain implementation choices; an umbrella term can be introduced later if recurring usage warrants it.
 
 <a id="mechanical-and-interpreted-contributions"></a>
 ## Mechanical and agentic production of contributions
@@ -246,7 +256,7 @@ The probe supports this direction and identifies three concrete requirements:
 - Evaluation/outcome, contribution, query result and selected answer remain distinct. An established
   empty export surface is content; unavailable analysis does not manufacture that content. Reusing
   an existing answer does not allocate another result. One public request may involve several
-  methods; not every internal compiler phase needs a public query-result entity.
+  methods; not every internal compiler phase needs a public query result.
 
 Four small content contracts, six provider re-encounter branches, organizing withdrawal-plus-
 addition/restoration, independent production-exposure histories and thirty-eight malformed cases are exercised. No native provider, live investigator or proposed constant-target method was run.
@@ -413,10 +423,11 @@ association specifications express three **association declaration** kinds:
 | Supersession | Introduce an association in place of specified earlier associations. |
 | Withdrawal | Displace specified earlier associations without replacement members. |
 
-A target is an entity together with an information role. With query-result identities,
-`result` is the role for a query-result entity and only for that kind. Architectural
-entities use roles such as `identifies` or `describes`. Own-result and other-result targets
-use the same mechanism. The target denotes a category of information, not a mutable slot
+Associations attach information either to an Entity with an information role (such as `identifies`
+or `describes`), or to a Query result as a result designation. Own-result and other-result
+associations use the same mechanism. “Target” is ordinary descriptive wording, not another named
+core concept. The fixture encodes query results with the `result` role; that shared representation
+does not make a Query result an Entity. The target denotes a category of information, not a mutable slot
 or an exact earlier item. Supersession/withdrawal must additionally identify exact earlier
 associations. Matching role, name or recency is insufficient.
 
@@ -459,7 +470,7 @@ contracts does not authorize arbitrary preference between equally standing alter
 <a id="recognized-request-reuse"></a>
 A repeated user request is not automatically a new investigation invocation. When PostCode
 recognizes it as the same request and reuses Q1's retained investigation, it returns the existing
-RESULT-Q1 identity. It does not create Q2, another result entity/designation, duplicate architectural
+RESULT-Q1 identity. It does not create Q2, another query result/designation, duplicate architectural
 entities or new interpretive claims. Access/reporting may be recorded separately; exact redisplay
 is likewise access, not a new investigation. This preserves the existing reuse behavior.
 
@@ -557,7 +568,7 @@ not itself assert architectural containment or an execution sequence. Preserve e
 semantics; incidental member ordering and packaging are implementation choices. No additional
 generic ordering/nesting mechanism is required by this capability.
 
-**Fixture result packaging:** each successful new fixture invocation allocates one result entity
+**Fixture result packaging:** each successful new fixture invocation allocates one query result
 and an initial result designation. Recognized reuse returns the existing query-result identity.
 Submitted content must be reachable through an association; this checks coverage, not intelligibility,
 sufficiency or reasoning. The authored simulator is not the product reuse coordinator. Existing
@@ -570,7 +581,7 @@ packaging must preserve the application/engine mapping and meaningful membership
 Subject, Lens, Projection, Presentation and View are the outer application concepts. The investigation,
 investigram, entity and association mechanisms produce, retain and organize their supporting
 information. Entities can play the Subject role; the levels are not isolated systems.
-Query-result entities and designations belong to the engine and do not replace Projections.
+Query results and designations belong to the engine and do not replace Projections.
 Use **context selection** for choosing qualified engine information and **context delivery** for
 actually supplying it to an investigator. Reserve **Projection** for the outer application answer;
 engine context selections/deliveries are not a second kind of Projection.
@@ -603,7 +614,7 @@ separate.
 
 Selecting something in Q's result uses RESULT-Q as organizing context. Supplying the selected
 material records exact association/content exposure through its designation route, not exposure
-to everything about that result entity. A separately acquired inventory records its scope and
+to everything about that query result. A separately acquired inventory records its scope and
 delivery position. Human browsing, selection or a bare reference alone creates neither kind of
 investigator exposure. The selected passage need not itself become an entity. Qualified addresses
 retain original ownership even through context selected through another entity. Actual deliveries, not an
@@ -792,7 +803,7 @@ same designation. Consumers that received it can nevertheless need reconsiderati
 The updated designation does not acquire the cause that created it. It can still acquire
 independent concerns about its exact members or producing evaluation. Historical captured
 answers remain fixed; fresh status reports are separate. Receiving the new designation must
-not be confused with receiving the old designation of the same result entity.
+not be confused with receiving the old designation of the same query result.
 
 For displacement, membership and exposure operate on exact association references. Sharing a content item
 through different associations is not alone a warning path. Observer/reuse results in the

@@ -2373,3 +2373,17 @@ invalidating reuse. Exact description access does not subscribe to all future en
 Explicit request inputs remain distinct from engine-selected/acquired context, whose actual delivery
 is production provenance/exposure. Updated the ambiguous seed-context wording; no new cache or
 reassessment mechanism is introduced, and exact historical answers remain fixed.
+
+## 2026-11-14 — Entity and Query result remain distinct
+
+The human chose separate concepts: Entity denotes an identified thing in the system under study;
+Query result organizes answers to a particular invocation. Both use shared identity/reference and
+association machinery, without introducing a named “Association Target” umbrella. Reconsider a
+blanket term only if repeated usage makes it helpful. Redesignation remains useful for preserving
+question-specific answer organization instead of inferring it from all information about the
+architectural subjects. Broader Entity terminology with a kind property was considered but would
+still require the distinction; shared internal representation remains an implementation choice.
+
+Updated the proposal, consolidation and current supporting prose. Existing fixture `entities`,
+`resultEntity` and target-field spellings remain explicitly described as shared storage encodings,
+not conceptual Entity classification or product API requirements. No executable behavior changed.

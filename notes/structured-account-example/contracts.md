@@ -38,7 +38,7 @@ feature or silently overrides an agreed requirement.
 
 ## Shared envelope and addressing
 
-Each submission names a query invocation, its newly allocated query-result entity,
+Each submission names a query invocation, its newly allocated query result,
 a pool of investigrams and `compositionRoots`. An investigram supplies its content,
 referents, `associationSpecifications`, qualifications, evidence, fixed `children`,
 `followupOptions` and `presentations`. Empty content is possible for a meaningful,
@@ -125,7 +125,8 @@ the captured basis includes that source as well. Displacement grounds should exp
 material method/scope/guarantee changes; fuller prose alone can be an addition. These are authoring
 policies, not new semantic acceptance gates. Mechanical contributions need no invented agent identity or prose description. See the [proposal](../structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
 Relationships W and patterns C-BB/C-BH are proposed explicitly identified entities;
-this and query-result entities require governing treatment beyond interpreted identity.
+this architectural eligibility requires governing treatment beyond interpreted identity. Query results
+are separate organizing identities, not another Entity kind.
 Not every architectural edge, organizing relationship or local role becomes an entity.
 
 Duplicate or conflated identity findings use existing qualified content, entity introductions
@@ -136,9 +137,12 @@ of these histories is outside this capability. No additional executable identity
 
 ## Association specifications
 
-Each specification has a local key, operation and `target: {entity, role}`. The role
-is `result` if and only if the entity is a query-result entity. This probe also supports
-`identifies` and `describes`. The broader role vocabulary remains to be designed.
+Each specification has a local key and operation. Associations concern an Entity with an information
+role, or a Query result as a result designation. The fixture retains the shared encoding
+`target: {entity, role}` and uses `result` only for query-result identities; other supported roles are
+`identifies` and `describes`. Fields such as `resultEntity`, the `entities` map and its `query-result`
+discriminator are local fixture storage names, not a claim that Query results are Entities or a
+prescribed product interface. The broader role vocabulary remains to be designed.
 Entity/role denotes a category of information, not a unique value slot.
 
 | Operation | Required contribution | Effect |
@@ -411,7 +415,7 @@ The [revised addition probe](additions.md) makes inventory acquisition explicit.
 may add `inventory: {roles: [...]}` for its organizing entity, independently of association
 content. The returned snapshot includes entity, roles, coverage, captured `asOfAcceptance`,
 and association addresses/roles. Roles must be nonempty, distinct and valid for the entity:
-`identifies`/`describes` for architectural entities, `result` for query-result entities.
+`identifies`/`describes` for architectural entities, `result` for query results.
 
 This fixture covers **all retained associations in scope**, including displaced ones. It has
 no standing field, interpretive summary, reason, name or member content. Entries are not

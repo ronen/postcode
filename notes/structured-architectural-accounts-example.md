@@ -2,7 +2,7 @@
 
 Updated: 2026-11-12. Exploratory example of the [current proposal](structured-architectural-accounts-proposal.md),
 not adopted behavior. [Complete payloads](structured-account-example/README.md) now conform
-to entity context deliveries, query-result entities and association declarations. The Cockatiel
+to entity context deliveries, query results and association declarations. The Cockatiel
 admission omission is staged, not a new live investigator discovery.
 
 ## 1. Q1 produces information, entities and a result designation

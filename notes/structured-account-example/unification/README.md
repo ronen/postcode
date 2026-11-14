@@ -254,7 +254,7 @@ reassociations do not receive the automatic provider-equality history field.
 ## Production, selection and outcomes remain distinct
 
 The probe's invocations separate discovery, export inspection and dependency investigation for
-clarity. This is not a rule that each internal compiler phase needs a public query-result entity.
+clarity. This is not a rule that each internal compiler phase needs a public query result.
 A real request may use multiple analyses or already retained contributions. Attribute each output
 to its actual producing method and basis; do not assign the last method to every selected item.
 An answer's selection of earlier material does not change its producer or reparent its children.
