@@ -695,7 +695,7 @@
             "entity": {
               "entity": "P"
             },
-            "role": "describes"
+            "role": "topic"
           },
           "reason": "ADMISSION-1 presents its cases as covering admission in this scope, but omits waiting while the single trial is occupied. ADMISSION-2 includes that outcome and the subsequent admission recheck. This does not claim that every statement of ADMISSION-1 was wrong."
         },
@@ -732,7 +732,7 @@
             "entity": {
               "entity": "P"
             },
-            "role": "describes"
+            "role": "topic"
           },
           "members": [
             {
@@ -952,7 +952,7 @@
             "entity": {
               "entity": "P"
             },
-            "role": "describes"
+            "role": "topic"
           }
         },
         "sourceInvestigram": "ADMISSION-1",
@@ -986,7 +986,7 @@
             "entity": {
               "entity": "P"
             },
-            "role": "describes"
+            "role": "topic"
           },
           "members": [
             {
@@ -1103,7 +1103,7 @@
             "entity": {
               "entity": "P"
             },
-            "role": "describes"
+            "role": "topic"
           },
           "members": [
             {
@@ -1191,7 +1191,7 @@
             "entity": {
               "entity": "P"
             },
-            "role": "describes"
+            "role": "topic"
           },
           "reason": "Withdraw this broad policy-description indexing choice; it is only one state-category description. Its original identifying use and other associations are not withdrawn, and its text is not declared false."
         },
@@ -1275,7 +1275,7 @@
             "entity": {
               "entity": "P"
             },
-            "role": "describes"
+            "role": "topic"
           },
           "displaces": [
             {

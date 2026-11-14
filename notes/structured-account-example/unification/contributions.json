@@ -202,7 +202,7 @@
                     "entity": {
                       "introducedEntity": "loader"
                     },
-                    "role": "identifies"
+                    "role": "identification"
                   },
                   "members": [
                     {
@@ -222,7 +222,7 @@
                     "entity": {
                       "introducedEntity": "plugin"
                     },
-                    "role": "identifies"
+                    "role": "identification"
                   },
                   "members": [
                     {
@@ -242,7 +242,7 @@
                     "entity": {
                       "introducedEntity": "empty"
                     },
-                    "role": "identifies"
+                    "role": "identification"
                   },
                   "members": [
                     {
@@ -507,7 +507,7 @@
                     "entity": {
                       "entity": "M-loader"
                     },
-                    "role": "describes"
+                    "role": "topic"
                   },
                   "members": [
                     {
@@ -527,7 +527,7 @@
                     "entity": {
                       "introducedEntity": "loadPlugin"
                     },
-                    "role": "identifies"
+                    "role": "identification"
                   },
                   "members": [
                     {
@@ -547,7 +547,7 @@
                     "entity": {
                       "introducedEntity": "pluginTarget"
                     },
-                    "role": "identifies"
+                    "role": "identification"
                   },
                   "members": [
                     {
@@ -646,7 +646,7 @@
                     "entity": {
                       "entity": "M-empty"
                     },
-                    "role": "describes"
+                    "role": "topic"
                   },
                   "members": [
                     {
@@ -768,7 +768,7 @@
                     "entity": {
                       "entity": "M-loader"
                     },
-                    "role": "describes"
+                    "role": "topic"
                   },
                   "members": [
                     {
@@ -940,7 +940,7 @@
                     "entity": {
                       "entity": "M-loader"
                     },
-                    "role": "describes"
+                    "role": "topic"
                   },
                   "members": [
                     {
@@ -1355,7 +1355,7 @@
                     "entity": {
                       "entity": "M-loader"
                     },
-                    "role": "describes"
+                    "role": "topic"
                   },
                   "members": [
                     {
@@ -1541,7 +1541,7 @@
                     "entity": {
                       "entity": "M-loader"
                     },
-                    "role": "describes"
+                    "role": "topic"
                   },
                   "members": [
                     {

@@ -194,7 +194,7 @@
               "entity": {
                 "introducedEntity": "closed"
               },
-              "role": "identifies"
+              "role": "identification"
             },
             "members": [
               {
@@ -214,7 +214,7 @@
               "entity": {
                 "introducedEntity": "open"
               },
-              "role": "identifies"
+              "role": "identification"
             },
             "members": [
               {
@@ -234,7 +234,7 @@
               "entity": {
                 "introducedEntity": "half-open"
               },
-              "role": "identifies"
+              "role": "identification"
             },
             "members": [
               {
@@ -254,7 +254,7 @@
               "entity": {
                 "entity": "P"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {
@@ -274,7 +274,7 @@
               "entity": {
                 "entity": "P"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {
@@ -294,7 +294,7 @@
               "entity": {
                 "entity": "P"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {

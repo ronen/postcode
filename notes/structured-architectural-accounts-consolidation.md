@@ -97,8 +97,8 @@ qualified contribution even if its association is displaced, without changing st
 analyzer exposure. Cache misses and incidental provider execution do not authorize new associations.
 The mechanical wrapper distinguishes computing findings from organizing their use; deliberate
 reassertion requires an explicit organizing action. Changed inputs/methods/findings may warrant
-new contributions. The older automatic-renewal branches and history machinery are superseded design
-evidence pending fixture alignment. The mechanism preserves the finding's method, basis, evidence
+new contributions. The probe now exercises equivalent recomputation after supersession and
+withdrawal without automatic renewal or a new history mechanism. The mechanism preserves the finding's method, basis, evidence
 and qualifications, retains standing/history and makes both available through qualified application
 access. Lens-specific use and presentation belong to application contracts; no new mechanical-answer
 selection or warning mechanism is prescribed. Migration still preserves existing guarantees and
@@ -285,9 +285,9 @@ qualified organizing assertions are meaningful; no filler prose is required.
 | Inventory delivery | Captures availability scope/coverage and time separately. Matching later entries may affect selection; listed content is not supplied merely by appearing. |
 | Reconsideration | Derived cause-specific warning, not proof of wrongness or automatic withdrawal. |
 
-The fixture provisionally requires same-target supersession, historical displacement
-targets and full delivery of the targeted declaration/members. These rules need review;
-they are not hidden consequences of the word association.
+The fixture requires same-target supersession and displacement targets accepted earlier. Complete
+acquisition of the targeted declaration and support is an investigator instruction, not a structural
+acceptance gate. Same-target scope remains an explicit bounded choice for drafting review.
 
 ## Baseline initial context and association vocabulary
 
@@ -304,9 +304,11 @@ address. Several differently keyed identifications may concern the same Entity. 
 qualifications explain any differences; keys alone do not establish equivalence or priority. Other
 topical information can use meaningful agent-chosen local keys without a separate topic identity
 system. Identification requires a readable name/designation with sufficient qualified identifying
-information, not a complete definition or necessarily prose. Fixtures still use the earlier
-`identifies`/`describes` vocabulary as bounded examples; further recognized roles need defined
-semantics rather than inference from key spelling.
+information, not a complete definition or necessarily prose. Fixtures now use `identification`
+and generic `topic` roles. The [baseline probe](structured-account-example/check-baseline.py)
+checks the selection and its propagation in both partitions. Further recognized roles need defined
+semantics rather than inference from key spelling. The prose identifying type supplies an assigned
+readable label; mechanical types can supply a source name or path.
 
 ## Discovery through referents
 

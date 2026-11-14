@@ -2422,3 +2422,30 @@ name/designation plus qualified identifying information, distinguishing generate
 source names. Several identifications of one Entity can coexist. Other topical information may use
 meaningful agent-chosen local keys, without adding a separately identified topic system. Recorded
 these agreements in the primary notes and marked fixture vocabulary/baseline alignment outstanding.
+
+
+## 2026-11-14 — Align identification baseline and provider re-encounter probes
+
+Aligned the working fixtures and contracts with identification vocabulary: `identification` is the
+recognized identifying role; other topical associations use `topic` plus their own meaningful local
+keys. Every association keeps its exact owner/key address. Identifying content requires a readable
+designation and qualified distinguishing information. Assigned labels are not implicitly source names;
+mechanical identification can provide the source path without invented prose.
+
+The initial Circuit Breaker request now receives the all-non-displaced-identification baseline.
+A dedicated probe covers multiple subjects, coexisting identifications (including differently keyed
+ones from one producer), exclusion of displaced associations, preservation of reconsideration-marked
+ones, empty scoped selection, later identification additions and exact historical delivery. Other
+acquisition controls deliberately retain narrower inputs; they are not alternative initialization
+policies. Baseline scope exposure observes additions without subscribing to every topical association.
+
+Also completed the previously agreed no-automatic-renewal alignment: equivalent provider recomputation
+reuses the established identifying association even after displacement. Its history remains available,
+its current standing stays unchanged and no analyzer delivery is invented. Removed automatic renewal
+history machinery. Explicit investigator withdrawal-plus-addition/re-adoption remains distinct.
+
+All authored checkers pass: lifecycle (72 malformed cases), additions (26 plus four historical-policy
+negatives), acquisition (26), baseline (14), unification (33), guidance (26), composition (five) and
+nested selectors (nine). Diagram sources/legends still match in both partitions and composition.
+These are authored mechanism probes, not live-agent, native-provider or product acceptance. Updated
+primary notes and supporting contracts; governing and product files remain unchanged.

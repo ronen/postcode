@@ -31,7 +31,7 @@
         "DISCOVERY-1::plugin",
         "DISCOVERY-1::empty"
       ],
-      "skippedDisplacedIdentifications": [],
+      "reusedDisplacedIdentifications": [],
       "decisionBasis": "Host comparison by provider identity and qualified content equality; not analyzer delivery."
     },
     "changedMethodReencounter": {
@@ -42,7 +42,7 @@
       },
       "allocatedEntities": {},
       "reusedIdentifications": [],
-      "skippedDisplacedIdentifications": [],
+      "reusedDisplacedIdentifications": [],
       "decisionBasis": "Host comparison by provider identity and qualified content equality; not analyzer delivery."
     },
     "newIdentityScope": {
@@ -53,7 +53,7 @@
         "empty": "E-c0e60fab-cf10-5e26-b5a7-5cb789dadbcb"
       },
       "reusedIdentifications": [],
-      "skippedDisplacedIdentifications": [],
+      "reusedDisplacedIdentifications": [],
       "decisionBasis": "Host comparison by provider identity and qualified content equality; not analyzer delivery."
     },
     "perInvestigramProvenanceReencounter": {
@@ -68,10 +68,10 @@
         "DISCOVERY-1::plugin",
         "DISCOVERY-1::empty"
       ],
-      "skippedDisplacedIdentifications": [],
+      "reusedDisplacedIdentifications": [],
       "decisionBasis": "Host comparison by provider identity and qualified content equality; not analyzer delivery."
     },
-    "renewalAfterDisplacement": {
+    "reuseAfterDisplacement": {
       "supersession": {
         "normalization": {
           "resolvedExistingEntities": {
@@ -81,86 +81,751 @@
           },
           "allocatedEntities": {},
           "reusedIdentifications": [
+            "DISCOVERY-1::loader",
             "DISCOVERY-1::plugin",
             "DISCOVERY-1::empty"
           ],
-          "skippedDisplacedIdentifications": [
+          "reusedDisplacedIdentifications": [
             "DISCOVERY-1::loader"
           ],
           "decisionBasis": "Host comparison by provider identity and qualified content equality; not analyzer delivery."
         },
-        "originalStanding": {
+        "standingPreserved": {
           "displacedBy": [
             "STANDING-1::loader"
           ],
           "competingDeclarations": false
         },
-        "freshRenewalHistory": {
-          "DISCOVERY-2::loader": {
-            "previousAssociations": [
-              {
-                "investigram": {
-                  "investigram": "DISCOVERY-1"
+        "currentIdentifications": [
+          "STANDING-1::loader"
+        ],
+        "freshReusedResult": {
+          "entity": "RESULT-Q-D2",
+          "asOfAcceptance": 3,
+          "associationUses": {
+            "DISCOVERY-1::empty": {
+              "value": {
+                "association": {
+                  "investigram": "DISCOVERY-1",
+                  "associationKey": "empty"
                 },
-                "associationKey": "loader"
+                "target": {
+                  "entity": {
+                    "entity": "M-empty"
+                  },
+                  "role": "identification"
+                }
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-1::loader": {
+              "value": {
+                "association": {
+                  "investigram": "DISCOVERY-1",
+                  "associationKey": "loader"
+                },
+                "target": {
+                  "entity": {
+                    "entity": "M-loader"
+                  },
+                  "role": "identification"
+                }
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-1::plugin": {
+              "value": {
+                "association": {
+                  "investigram": "DISCOVERY-1",
+                  "associationKey": "plugin"
+                },
+                "target": {
+                  "entity": {
+                    "entity": "M-plugin"
+                  },
+                  "role": "identification"
+                }
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-2::result": {
+              "value": {
+                "association": {
+                  "investigram": "DISCOVERY-2",
+                  "associationKey": "result"
+                },
+                "target": {
+                  "entity": {
+                    "entity": "RESULT-Q-D2"
+                  },
+                  "role": "result"
+                }
+              },
+              "sourceInvestigram": "DISCOVERY-2",
+              "queryInvocation": "Q-D2",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            }
+          },
+          "queryMeanings": {
+            "RESULT-Q-D2": {
+              "queryInvocation": "Q-D2",
+              "resultEntity": "RESULT-Q-D2",
+              "operation": "authored.discover-modules",
+              "subject": {
+                "entity": "PROJECT"
+              },
+              "parameterValues": {},
+              "option": null,
+              "declaredMeaning": {
+                "question": "Discover modules",
+                "scope": "Authored unification probe over the pinned source fixture, not an executed native producer or live investigator."
+              },
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
               }
-            ],
-            "establishedBy": "authored/provider-qualified-equality@0"
-          }
-        },
-        "freshNotices": {
-          "STANDING-1::loader": {
-            "value": {
-              "key": "loader",
-              "operation": "supersession",
-              "target": {
-                "entity": {
+            }
+          },
+          "declarations": {
+            "DISCOVERY-1::empty": {
+              "value": {
+                "key": "empty",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "M-empty"
+                  },
+                  "role": "identification"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "DISCOVERY-1"
+                      },
+                      "contentKey": "empty"
+                    }
+                  }
+                ]
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-1::loader": {
+              "value": {
+                "key": "loader",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "M-loader"
+                  },
+                  "role": "identification"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "DISCOVERY-1"
+                      },
+                      "contentKey": "loader"
+                    }
+                  }
+                ]
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-1::plugin": {
+              "value": {
+                "key": "plugin",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "M-plugin"
+                  },
+                  "role": "identification"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "DISCOVERY-1"
+                      },
+                      "contentKey": "plugin"
+                    }
+                  }
+                ]
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-2::result": {
+              "value": {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "RESULT-Q-D2"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "investigram": "DISCOVERY-1"
+                      },
+                      "associationKey": "loader"
+                    }
+                  },
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "investigram": "DISCOVERY-1"
+                      },
+                      "associationKey": "plugin"
+                    }
+                  },
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "investigram": "DISCOVERY-1"
+                      },
+                      "associationKey": "empty"
+                    }
+                  }
+                ]
+              },
+              "sourceInvestigram": "DISCOVERY-2",
+              "queryInvocation": "Q-D2",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            }
+          },
+          "items": {
+            "DISCOVERY-1::empty": {
+              "value": {
+                "key": "empty",
+                "contentType": "module-identification/0",
+                "concept": "module",
+                "introducesEntity": true,
+                "subject": {
+                  "entity": "M-empty"
+                },
+                "providerIdentity": {
+                  "provider": "typescript",
+                  "nativeEntity": "typescript-native:M-empty",
+                  "scope": "supported Session and captured provider basis",
+                  "basisScope": {
+                    "session": "AUTHORED-SESSION-1",
+                    "programState": "AUTHORED-PINNED-SOURCE-1",
+                    "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec"
+                  }
+                },
+                "module": {
+                  "name": null,
+                  "handle": "empty",
+                  "handleStatus": "generated-navigation-aid",
+                  "discoveryFacets": [
+                    "project",
+                    "implementation-available"
+                  ],
+                  "sourcePath": "empty.ts"
+                },
+                "qualification": {
+                  "guarantee": "provider-established-module",
+                  "scope": "Captured TypeScript module population; handle is not a conceptual name."
+                },
+                "evidence": [
+                  "E-empty"
+                ]
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-1::loader": {
+              "value": {
+                "key": "loader",
+                "contentType": "module-identification/0",
+                "concept": "module",
+                "introducesEntity": true,
+                "subject": {
                   "entity": "M-loader"
                 },
-                "role": "identifies"
+                "providerIdentity": {
+                  "provider": "typescript",
+                  "nativeEntity": "typescript-native:M-loader",
+                  "scope": "supported Session and captured provider basis",
+                  "basisScope": {
+                    "session": "AUTHORED-SESSION-1",
+                    "programState": "AUTHORED-PINNED-SOURCE-1",
+                    "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec"
+                  }
+                },
+                "module": {
+                  "name": null,
+                  "handle": "loader",
+                  "handleStatus": "generated-navigation-aid",
+                  "discoveryFacets": [
+                    "project",
+                    "implementation-available"
+                  ],
+                  "sourcePath": "loader.ts"
+                },
+                "qualification": {
+                  "guarantee": "provider-established-module",
+                  "scope": "Captured TypeScript module population; handle is not a conceptual name."
+                },
+                "evidence": [
+                  "E-loader"
+                ]
               },
-              "displaces": [
-                {
-                  "investigram": {
-                    "investigram": "DISCOVERY-1"
-                  },
-                  "associationKey": "loader"
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
                 }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
               ],
-              "reason": "Authored standing probe: displace this identifying use; no claim that the native provider is faulty.",
-              "members": [
-                {
-                  "item": {
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-1::plugin": {
+              "value": {
+                "key": "plugin",
+                "contentType": "module-identification/0",
+                "concept": "module",
+                "introducesEntity": true,
+                "subject": {
+                  "entity": "M-plugin"
+                },
+                "providerIdentity": {
+                  "provider": "typescript",
+                  "nativeEntity": "typescript-native:M-plugin",
+                  "scope": "supported Session and captured provider basis",
+                  "basisScope": {
+                    "session": "AUTHORED-SESSION-1",
+                    "programState": "AUTHORED-PINNED-SOURCE-1",
+                    "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec"
+                  }
+                },
+                "module": {
+                  "name": null,
+                  "handle": "plugin",
+                  "handleStatus": "generated-navigation-aid",
+                  "discoveryFacets": [
+                    "project",
+                    "implementation-available"
+                  ],
+                  "sourcePath": "plugins/default.ts"
+                },
+                "qualification": {
+                  "guarantee": "provider-established-module",
+                  "scope": "Captured TypeScript module population; handle is not a conceptual name."
+                },
+                "evidence": [
+                  "E-plugin"
+                ]
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            }
+          },
+          "options": {},
+          "notices": {
+            "STANDING-1::loader": {
+              "value": {
+                "key": "loader",
+                "operation": "supersession",
+                "target": {
+                  "entity": {
+                    "entity": "M-loader"
+                  },
+                  "role": "identification"
+                },
+                "displaces": [
+                  {
                     "investigram": {
                       "investigram": "DISCOVERY-1"
                     },
-                    "contentKey": "loader"
+                    "associationKey": "loader"
                   }
-                }
-              ]
-            },
-            "sourceInvestigram": "STANDING-1",
-            "queryInvocation": "Q-STANDING",
-            "basis": {
-              "retainedSelections": [
-                {
-                  "entity": "M-loader",
-                  "associations": [
-                    {
-                      "investigram": "DISCOVERY-1",
-                      "associationKey": "loader"
+                ],
+                "reason": "Authored standing probe: displace this identifying use; no claim that the native provider is faulty.",
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "DISCOVERY-1"
+                      },
+                      "contentKey": "loader"
                     }
-                  ],
-                  "items": [],
-                  "options": []
-                }
-              ]
-            },
-            "provenance": {
-              "producer": {
-                "kind": "agentic",
-                "method": "authored/standing-probe@0"
+                  }
+                ]
               },
+              "sourceInvestigram": "STANDING-1",
+              "queryInvocation": "Q-STANDING",
               "basis": {
                 "retainedSelections": [
                   {
@@ -175,28 +840,40 @@
                     "options": []
                   }
                 ]
-              }
-            },
-            "sourceQualifications": [
-              "A lifecycle-only probe, not an adjudication of provider semantics."
-            ],
-            "sourceEvidence": [
-              "E-standing"
-            ]
-          }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "agentic",
+                  "method": "authored/standing-probe@0"
+                },
+                "basis": {
+                  "retainedSelections": [
+                    {
+                      "entity": "M-loader",
+                      "associations": [
+                        {
+                          "investigram": "DISCOVERY-1",
+                          "associationKey": "loader"
+                        }
+                      ],
+                      "items": [],
+                      "options": []
+                    }
+                  ]
+                }
+              },
+              "sourceQualifications": [
+                "A lifecycle-only probe, not an adjudication of provider semantics."
+              ],
+              "sourceEvidence": [
+                "E-standing"
+              ]
+            }
+          },
+          "noticeLimits": "Includes direct displacement and inherited concerns known at this delivery position. Notices preserve standing and qualified reasons, not replacement-member delivery, adequate understanding, clearance, or automatic redesignation."
         },
-        "readerSourceQueries": [
-          "Q-D2",
-          "Q-STANDING"
-        ],
-        "currentIdentifications": [
-          "DISCOVERY-2::loader",
-          "STANDING-1::loader"
-        ],
-        "afterReuseEvaluationCauses": [],
-        "afterReuseMembershipCauses": [
-          "STANDING-1::loader"
-        ]
+        "noNewFindingOrIdentificationAssociation": true,
+        "noInventedAnalyzerExposure": true
       },
       "withdrawal": {
         "normalization": {
@@ -207,76 +884,739 @@
           },
           "allocatedEntities": {},
           "reusedIdentifications": [
+            "DISCOVERY-1::loader",
             "DISCOVERY-1::plugin",
             "DISCOVERY-1::empty"
           ],
-          "skippedDisplacedIdentifications": [
+          "reusedDisplacedIdentifications": [
             "DISCOVERY-1::loader"
           ],
           "decisionBasis": "Host comparison by provider identity and qualified content equality; not analyzer delivery."
         },
-        "originalStanding": {
+        "standingPreserved": {
           "displacedBy": [
             "STANDING-1::loader"
           ],
           "competingDeclarations": false
         },
-        "freshRenewalHistory": {
-          "DISCOVERY-2::loader": {
-            "previousAssociations": [
-              {
-                "investigram": {
-                  "investigram": "DISCOVERY-1"
+        "currentIdentifications": [],
+        "freshReusedResult": {
+          "entity": "RESULT-Q-D2",
+          "asOfAcceptance": 3,
+          "associationUses": {
+            "DISCOVERY-1::empty": {
+              "value": {
+                "association": {
+                  "investigram": "DISCOVERY-1",
+                  "associationKey": "empty"
                 },
-                "associationKey": "loader"
-              }
-            ],
-            "establishedBy": "authored/provider-qualified-equality@0"
-          }
-        },
-        "freshNotices": {
-          "STANDING-1::loader": {
-            "value": {
-              "key": "loader",
-              "operation": "withdrawal",
-              "target": {
-                "entity": {
-                  "entity": "M-loader"
-                },
-                "role": "identifies"
-              },
-              "displaces": [
-                {
-                  "investigram": {
-                    "investigram": "DISCOVERY-1"
+                "target": {
+                  "entity": {
+                    "entity": "M-empty"
                   },
-                  "associationKey": "loader"
+                  "role": "identification"
                 }
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
               ],
-              "reason": "Authored standing probe: displace this identifying use; no claim that the native provider is faulty."
-            },
-            "sourceInvestigram": "STANDING-1",
-            "queryInvocation": "Q-STANDING",
-            "basis": {
-              "retainedSelections": [
-                {
-                  "entity": "M-loader",
-                  "associations": [
-                    {
-                      "investigram": "DISCOVERY-1",
-                      "associationKey": "loader"
-                    }
-                  ],
-                  "items": [],
-                  "options": []
-                }
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
               ]
             },
-            "provenance": {
-              "producer": {
-                "kind": "agentic",
-                "method": "authored/standing-probe@0"
+            "DISCOVERY-1::loader": {
+              "value": {
+                "association": {
+                  "investigram": "DISCOVERY-1",
+                  "associationKey": "loader"
+                },
+                "target": {
+                  "entity": {
+                    "entity": "M-loader"
+                  },
+                  "role": "identification"
+                }
               },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-1::plugin": {
+              "value": {
+                "association": {
+                  "investigram": "DISCOVERY-1",
+                  "associationKey": "plugin"
+                },
+                "target": {
+                  "entity": {
+                    "entity": "M-plugin"
+                  },
+                  "role": "identification"
+                }
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-2::result": {
+              "value": {
+                "association": {
+                  "investigram": "DISCOVERY-2",
+                  "associationKey": "result"
+                },
+                "target": {
+                  "entity": {
+                    "entity": "RESULT-Q-D2"
+                  },
+                  "role": "result"
+                }
+              },
+              "sourceInvestigram": "DISCOVERY-2",
+              "queryInvocation": "Q-D2",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            }
+          },
+          "queryMeanings": {
+            "RESULT-Q-D2": {
+              "queryInvocation": "Q-D2",
+              "resultEntity": "RESULT-Q-D2",
+              "operation": "authored.discover-modules",
+              "subject": {
+                "entity": "PROJECT"
+              },
+              "parameterValues": {},
+              "option": null,
+              "declaredMeaning": {
+                "question": "Discover modules",
+                "scope": "Authored unification probe over the pinned source fixture, not an executed native producer or live investigator."
+              },
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              }
+            }
+          },
+          "declarations": {
+            "DISCOVERY-1::empty": {
+              "value": {
+                "key": "empty",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "M-empty"
+                  },
+                  "role": "identification"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "DISCOVERY-1"
+                      },
+                      "contentKey": "empty"
+                    }
+                  }
+                ]
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-1::loader": {
+              "value": {
+                "key": "loader",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "M-loader"
+                  },
+                  "role": "identification"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "DISCOVERY-1"
+                      },
+                      "contentKey": "loader"
+                    }
+                  }
+                ]
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-1::plugin": {
+              "value": {
+                "key": "plugin",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "M-plugin"
+                  },
+                  "role": "identification"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "DISCOVERY-1"
+                      },
+                      "contentKey": "plugin"
+                    }
+                  }
+                ]
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-2::result": {
+              "value": {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "RESULT-Q-D2"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "investigram": "DISCOVERY-1"
+                      },
+                      "associationKey": "loader"
+                    }
+                  },
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "investigram": "DISCOVERY-1"
+                      },
+                      "associationKey": "plugin"
+                    }
+                  },
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "investigram": "DISCOVERY-1"
+                      },
+                      "associationKey": "empty"
+                    }
+                  }
+                ]
+              },
+              "sourceInvestigram": "DISCOVERY-2",
+              "queryInvocation": "Q-D2",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            }
+          },
+          "items": {
+            "DISCOVERY-1::empty": {
+              "value": {
+                "key": "empty",
+                "contentType": "module-identification/0",
+                "concept": "module",
+                "introducesEntity": true,
+                "subject": {
+                  "entity": "M-empty"
+                },
+                "providerIdentity": {
+                  "provider": "typescript",
+                  "nativeEntity": "typescript-native:M-empty",
+                  "scope": "supported Session and captured provider basis",
+                  "basisScope": {
+                    "session": "AUTHORED-SESSION-1",
+                    "programState": "AUTHORED-PINNED-SOURCE-1",
+                    "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec"
+                  }
+                },
+                "module": {
+                  "name": null,
+                  "handle": "empty",
+                  "handleStatus": "generated-navigation-aid",
+                  "discoveryFacets": [
+                    "project",
+                    "implementation-available"
+                  ],
+                  "sourcePath": "empty.ts"
+                },
+                "qualification": {
+                  "guarantee": "provider-established-module",
+                  "scope": "Captured TypeScript module population; handle is not a conceptual name."
+                },
+                "evidence": [
+                  "E-empty"
+                ]
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-1::loader": {
+              "value": {
+                "key": "loader",
+                "contentType": "module-identification/0",
+                "concept": "module",
+                "introducesEntity": true,
+                "subject": {
+                  "entity": "M-loader"
+                },
+                "providerIdentity": {
+                  "provider": "typescript",
+                  "nativeEntity": "typescript-native:M-loader",
+                  "scope": "supported Session and captured provider basis",
+                  "basisScope": {
+                    "session": "AUTHORED-SESSION-1",
+                    "programState": "AUTHORED-PINNED-SOURCE-1",
+                    "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec"
+                  }
+                },
+                "module": {
+                  "name": null,
+                  "handle": "loader",
+                  "handleStatus": "generated-navigation-aid",
+                  "discoveryFacets": [
+                    "project",
+                    "implementation-available"
+                  ],
+                  "sourcePath": "loader.ts"
+                },
+                "qualification": {
+                  "guarantee": "provider-established-module",
+                  "scope": "Captured TypeScript module population; handle is not a conceptual name."
+                },
+                "evidence": [
+                  "E-loader"
+                ]
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            },
+            "DISCOVERY-1::plugin": {
+              "value": {
+                "key": "plugin",
+                "contentType": "module-identification/0",
+                "concept": "module",
+                "introducesEntity": true,
+                "subject": {
+                  "entity": "M-plugin"
+                },
+                "providerIdentity": {
+                  "provider": "typescript",
+                  "nativeEntity": "typescript-native:M-plugin",
+                  "scope": "supported Session and captured provider basis",
+                  "basisScope": {
+                    "session": "AUTHORED-SESSION-1",
+                    "programState": "AUTHORED-PINNED-SOURCE-1",
+                    "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec"
+                  }
+                },
+                "module": {
+                  "name": null,
+                  "handle": "plugin",
+                  "handleStatus": "generated-navigation-aid",
+                  "discoveryFacets": [
+                    "project",
+                    "implementation-available"
+                  ],
+                  "sourcePath": "plugins/default.ts"
+                },
+                "qualification": {
+                  "guarantee": "provider-established-module",
+                  "scope": "Captured TypeScript module population; handle is not a conceptual name."
+                },
+                "evidence": [
+                  "E-plugin"
+                ]
+              },
+              "sourceInvestigram": "DISCOVERY-1",
+              "queryInvocation": "Q-D",
+              "basis": {
+                "programState": "AUTHORED-PINNED-SOURCE-1",
+                "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                "sourceDigests": {
+                  "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                  "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                  "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "mechanical",
+                  "method": "postcode/typescript-modules@13"
+                },
+                "basis": {
+                  "programState": "AUTHORED-PINNED-SOURCE-1",
+                  "configuration": "099018b842f2552dbdca77ab6c97dc2ba32224f87b4a7e2b0c4a46a67211caec",
+                  "sourceDigests": {
+                    "loader.ts": "9c9629eeec5861231331e580301f34a7c2b2a4c018dca2bd8b8b29f6c4bbd4dd",
+                    "plugins/default.ts": "0dc4726b82b46bd9d1a5781af33f2745ff049286ed7767a211858f3a0d372a20",
+                    "empty.ts": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+                  }
+                }
+              },
+              "sourceQualifications": [
+                "Authored mapping of native module records; provider identity guarantees must survive migration.",
+                "No architectural role or runtime behavior is asserted."
+              ],
+              "sourceEvidence": [
+                "E-loader",
+                "E-plugin",
+                "E-empty"
+              ]
+            }
+          },
+          "options": {},
+          "notices": {
+            "STANDING-1::loader": {
+              "value": {
+                "key": "loader",
+                "operation": "withdrawal",
+                "target": {
+                  "entity": {
+                    "entity": "M-loader"
+                  },
+                  "role": "identification"
+                },
+                "displaces": [
+                  {
+                    "investigram": {
+                      "investigram": "DISCOVERY-1"
+                    },
+                    "associationKey": "loader"
+                  }
+                ],
+                "reason": "Authored standing probe: displace this identifying use; no claim that the native provider is faulty."
+              },
+              "sourceInvestigram": "STANDING-1",
+              "queryInvocation": "Q-STANDING",
               "basis": {
                 "retainedSelections": [
                   {
@@ -291,27 +1631,40 @@
                     "options": []
                   }
                 ]
-              }
-            },
-            "sourceQualifications": [
-              "A lifecycle-only probe, not an adjudication of provider semantics."
-            ],
-            "sourceEvidence": [
-              "E-standing"
-            ]
-          }
+              },
+              "provenance": {
+                "producer": {
+                  "kind": "agentic",
+                  "method": "authored/standing-probe@0"
+                },
+                "basis": {
+                  "retainedSelections": [
+                    {
+                      "entity": "M-loader",
+                      "associations": [
+                        {
+                          "investigram": "DISCOVERY-1",
+                          "associationKey": "loader"
+                        }
+                      ],
+                      "items": [],
+                      "options": []
+                    }
+                  ]
+                }
+              },
+              "sourceQualifications": [
+                "A lifecycle-only probe, not an adjudication of provider semantics."
+              ],
+              "sourceEvidence": [
+                "E-standing"
+              ]
+            }
+          },
+          "noticeLimits": "Includes direct displacement and inherited concerns known at this delivery position. Notices preserve standing and qualified reasons, not replacement-member delivery, adequate understanding, clearance, or automatic redesignation."
         },
-        "readerSourceQueries": [
-          "Q-D2",
-          "Q-STANDING"
-        ],
-        "currentIdentifications": [
-          "DISCOVERY-2::loader"
-        ],
-        "afterReuseEvaluationCauses": [],
-        "afterReuseMembershipCauses": [
-          "STANDING-1::loader"
-        ]
+        "noNewFindingOrIdentificationAssociation": true,
+        "noInventedAnalyzerExposure": true
       }
     }
   },
@@ -520,7 +1873,7 @@
           "entity": {
             "entity": "M-loader"
           },
-          "role": "describes"
+          "role": "topic"
         },
         "members": [
           {
@@ -912,7 +2265,7 @@
                     "entity": {
                       "entity": "M-loader"
                     },
-                    "role": "describes"
+                    "role": "topic"
                   },
                   "reason": "Complement recognized source requests with a conditional target interpretation; do not replace the mechanical indeterminate result."
                 },
@@ -960,7 +2313,7 @@
                     "entity": {
                       "entity": "M-loader"
                     },
-                    "role": "describes"
+                    "role": "topic"
                   },
                   "members": [
                     {
@@ -1458,7 +2811,7 @@
             "entity": {
               "entity": "M-loader"
             },
-            "role": "describes"
+            "role": "topic"
           },
           "members": [
             {
@@ -1545,7 +2898,7 @@
     "Q-C",
     "Q-E"
   ],
-  "malformedCasesRejected": 38,
+  "malformedCasesRejected": 33,
   "limits": [
     "No native producer, live interpreting agent, hypothetical constant-target method or runtime execution was run.",
     "Per-contribution provenance and four small content contracts are exercised; the general migration and partial/failure result contract are not implemented.",

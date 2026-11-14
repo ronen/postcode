@@ -46,7 +46,7 @@
               "entity": {
                 "introducedEntity": "bulkhead"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {
@@ -140,7 +140,7 @@
               "entity": {
                 "introducedEntity": "bulkhead"
               },
-              "role": "identifies"
+              "role": "identification"
             },
             "members": [
               {
@@ -193,7 +193,7 @@
               "entity": {
                 "introducedEntity": "bulkhead"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {

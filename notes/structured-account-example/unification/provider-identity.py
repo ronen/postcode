@@ -57,14 +57,13 @@ def normalize(model, stage):
     # equal qualification, evidence and method/basis. A changed method gets a new
     # qualified association on the same entity, without automatic supersession.
     redirected = {}
-    displaced_matches = set()
+    reused_displaced = set()
     for bundle in stage['submission']['result']['investigrams']:
         keep = []
         production = (bindings['provenanceByInvestigram'][bundle['key']]
                       if 'provenanceByInvestigram' in bindings else bindings['provenance'])
         for item in bundle['content']:
             equal = None
-            displaced_equal = []
             if 'providerIdentity' in item and not item['introducesEntity']:
                 for owner, key, previous in known[identity_key(item)]:
                     comparison = copy.deepcopy(previous); comparison['introducesEntity'] = False
@@ -72,18 +71,15 @@ def normalize(model, stage):
                     if (item == comparison and production == prior.get('provenance')
                             and bundle['qualifications'] == prior['qualifications']
                             and bundle['evidence'] == prior['evidence']):
-                        # This bounded provider uses same-key identifying items and
-                        # associations. Identity remains reusable after displacement;
-                        # the displaced association does not. Renew with a new addition.
+                        # Equivalent recomputation reuses historical contributions too.
+                        # It does not renew their organizing association or clear standing.
                         if model.standing((owner, key))['displacedBy']:
-                            displaced_matches.add((owner, key))
-                            displaced_equal.append((owner, key))
-                            continue
+                            reused_displaced.add((owner, key))
                         equal = (owner, key)
                         break
             if equal:
                 association = next(a for a in bundle['associationSpecifications'] if a['key'] == item['key'])
-                assert association['operation'] == 'addition' and association['target']['role'] == 'identifies'
+                assert association['operation'] == 'addition' and association['target']['role'] == 'identification'
                 # This bounded provider emits one identifying item per same-key association.
                 old_association = model.declarations()[equal]
                 assert old_association['target'] == association['target']
@@ -93,11 +89,6 @@ def normalize(model, stage):
                 # Host equality/reuse is not context delivered to the analyzer.
             else:
                 keep.append(item)
-                if displaced_equal:
-                    bindings.setdefault('renewals', []).append({
-                        'association': {'investigram': {'submittedInvestigram': bundle['key']}, 'associationKey': item['key']},
-                        'previousAssociations': [{'investigram': {'investigram': o}, 'associationKey': k} for o, k in displaced_equal],
-                        'establishedBy': 'authored/provider-qualified-equality@0'})
         bundle['content'] = keep
     for bundle in stage['submission']['result']['investigrams']:
         for association in bundle['associationSpecifications']:
@@ -109,5 +100,5 @@ def normalize(model, stage):
                     ref.update(investigram={'investigram': replacement[0]}, associationKey=replacement[1])
     return stage, {'resolvedExistingEntities': reused, 'allocatedEntities': allocated,
                    'reusedIdentifications': [f'{o}::{k}' for o, k in redirected.values()],
-                   'skippedDisplacedIdentifications': [f'{o}::{k}' for o, k in sorted(displaced_matches)],
+                   'reusedDisplacedIdentifications': [f'{o}::{k}' for o, k in sorted(reused_displaced)],
                    'decisionBasis': 'Host comparison by provider identity and qualified content equality; not analyzer delivery.'}

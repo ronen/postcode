@@ -39,7 +39,7 @@ def check_variant(directory,write=False):
     assert state.snapshots['Q1']==original_answer
     assert all(state.investigrams[k]==v for k,v in original_bundles.items()), 'retained bundle mutated'
     assert state.standing(('ADMISSION-1','admission-cases'))['displacedBy']==['ADMISSION-2::admission-cases']
-    definitions=[r for r,s in state.declarations().items() if s['target']=={'entity':{'entity':'S'},'role':'identifies'}]
+    definitions=[r for r,s in state.declarations().items() if s['target']=={'entity':{'entity':'S'},'role':'identification'}]
     original_definition=definitions[0]
     assert not state.standing(original_definition)['displacedBy']
     assert state.queries['Q2']['exposureIndex']==['RESULT-Q1']
@@ -124,7 +124,7 @@ def check_variant(directory,write=False):
         'wrong target':lambda d: declaration(d,'admission-cases')['target'].update(entity={'entity':'S'}),
         'unknown old declaration':lambda d: declaration(d,'admission-cases')['displaces'][0].update(associationKey='absent'),
         'same-result displacement':lambda d: declaration(d,'admission-cases')['displaces'][0].update(investigram={'submittedInvestigram':'trial'}),
-        'result-role mismatch':lambda d: declaration(d,'updated-admission-result')['target'].update(role='describes'),
+        'result-role mismatch':lambda d: declaration(d,'updated-admission-result')['target'].update(role='topic'),
         'entity-result mismatch':lambda d: declaration(d,'admission-cases')['target'].update(role='result'),
         'withdrawal has members':lambda d: declaration(d,'admission-cases').update(operation='withdrawal'),
         'addition displaces':lambda d: declaration(d,'admission-cases').update(operation='addition'),
@@ -218,7 +218,7 @@ def check_variant(directory,write=False):
     # Inherited producer concerns must be disclosed, then must not re-enter as new warnings.
     source=consumer(probes['observer'],'informed-source')
     source['request']['subject']={'entity':'P'}
-    observer_assoc=next(sp['key'] for sp in state.investigrams['OBSERVER-1']['associationSpecifications'] if sp['target']['role']=='describes')
+    observer_assoc=next(sp['key'] for sp in state.investigrams['OBSERVER-1']['associationSpecifications'] if sp['target']['role']=='topic')
     source['request']['deliveries']=[selection('P','OBSERVER-1',observer_assoc)]
     source_delivery=state.project(source['request']['deliveries'][0])
     assert updated_designation in source_delivery['notices'], 'indirect producer concern omitted'

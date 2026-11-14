@@ -29,7 +29,7 @@ organize delivered content meaningfully.
 
 ## Two declarations replace the earlier whole-bundle correction
 
-ADMISSION-2/admission-cases supersedes ADMISSION-1/admission-cases on P/describes.
+ADMISSION-2/admission-cases supersedes ADMISSION-1/admission-cases on P/topic.
 It supplies new content, exact displaced-association address and qualified reason.
 It does not displace the other associations originally owned by ADMISSION-1.
 

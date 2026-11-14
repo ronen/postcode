@@ -1,14 +1,6 @@
 # Illustrative contribution and content contracts
 
-> **Design update, 2026-11-14:** automatic provider renewal after displacement is no longer the
-> agreed behavior. Equivalent mechanical recomputation reuses the established contribution without
-> adding an association or changing standing. The adapter, renewal-history branches and associated
-> contract details below still exercise the earlier choice and await alignment. Passing those checks
-> does not verify the new policy. Explicit investigator withdrawal/addition remains a separate case.
-> See [the wrapper agreement](../structured-architectural-accounts-proposal.md#mechanical-analysis-wrapper-and-contribution-reuse).
-
-
-Updated 2026-11-12. Exploratory contracts and executable authored probes, not adopted
+Updated 2026-11-14. Exploratory contracts and executable authored probes, not adopted
 schemas or product APIs. The [proposal](../structured-architectural-accounts-proposal.md)
 and [consolidation](../structured-architectural-accounts-consolidation.md) explain the
 change from whole-investigram correction to association declarations and entity context.
@@ -66,7 +58,7 @@ Forward local references are allowed when all resolve. No partial allocation, or
 bundle or unresolved accepted reference is intended.
 
 Exactly one supported identifying item with `introducesEntity: true` declares each new
-architectural entity and supplies qualified identifying content. An `identifies` association
+architectural entity and supplies qualified identifying content. An `identification` association
 must include that item. The admission/trial examples use `entity-description/0`; the separate
 [unification probe](unification/README.md) also registers structured mechanical module and symbol
 identification types, without mandatory prose descriptions. References/referents do not themselves
@@ -79,29 +71,13 @@ same native identity within supported scope binds to the existing entity. The no
 submission references that entity, rather than asserting another fresh allocation. Re-encounter
 is not name-based deduplication; provider continuity rules remain authoritative. The unification
 probe uses native keys distinct from common IDs and allocates fresh common IDs for a genuinely
-different identity scope without asserting correspondence. Equal identifying information may
-reuse an undisplaced association; a changed method or a displaced association yields a new
-qualified identifying addition on the same entity. Renewal neither reinstates the old association
-nor adjudicates disagreement. Host equality/reuse is not analyzer delivery: no exposure is invented,
-though result membership still records the associations included.
-
-For a new addition equal to displaced provider identifications, the adapter supplies host binding
-`renewals`: exact new association, exact `previousAssociations`, and the equality method. Acceptance
-retains `renewalHistory` on the new association with `establishedBy` and those previous references.
-This is host-attributed metadata, separate from the analyzer's production provenance. The bounded
-method compares provider identity, content, method/basis, evidence and qualifications exactly;
-it does not assert general semantic equivalence. Raw producer-supplied history is rejected.
-Structural checks require a new addition, unique nonempty prior same-target association references,
-prior displacement and the supported host method. Equality itself is established by the adapter.
-
-Fresh substantive delivery of a renewed association includes its history and the earlier
-associations' qualified displacement reasons, including through chained history or when the
-renewal is itself a substantive notice. Excerpts retain it; inventory-only access does not supply
-it. The historical links do not deliver earlier content or assert earlier association use. Actual
-notice delivery records the notice producer's exposure, not fictional exposure of the analyzer.
-History and notices must match the delivery position; missing/altered delivery is rejected.
-No reconsideration cause, automatic equivalence, reinstatement or clearance is inferred solely
-from a renewal link. Exact reuse of a renewed association preserves its history.
+different identity scope without asserting correspondence. Equal identifying information under the
+same method/basis, evidence and qualifications reuses the established association even when it has
+been displaced. Recomputing does not create an addition or change standing. Exact access and result
+membership preserve that association and disclose its existing displacement; current scope selections
+do not regain it. Host equality/reuse is not analyzer delivery and invents no exposure. Changed inputs,
+method or findings may warrant a new qualified contribution. Deliberate reassertion requires explicit
+organizing action. The probe no longer accepts automatic renewal bindings or renewal-history metadata.
 
 Names, descriptions and classifications are associated information, not mutable
 unqualified fields of the identity. Reuse asserts reference to the identified thing,
@@ -140,15 +116,25 @@ of these histories is outside this capability. No additional executable identity
 Each specification has a local key and operation. Associations concern an Entity with an information
 role, or a Query result as a result designation. The fixture retains the shared encoding
 `target: {entity, role}` and uses `result` only for query-result identities; other supported roles are
-`identifies` and `describes`. Fields such as `resultEntity`, the `entities` map and its `query-result`
+`identification` and `topic`. Fields such as `resultEntity`, the `entities` map and its `query-result`
 discriminator are local fixture storage names, not a claim that Query results are Entities or a
-prescribed product interface. The agreed design now names the identifying purpose `identification`,
-requires a readable name/designation with qualified identifying information, and supplies all
-non-displaced identification associations for each subject Entity as baseline context. Existing
-`identifies`/`describes` fixtures remain bounded examples, not the final vocabulary. Local keys
-address every association independently of its purpose; meaningful agent-chosen topical keys do
-not require a separate topic-identity mechanism. The executable vocabulary/baseline remain to be
-aligned; existing scoped-identification probes exercise only part of this contract.
+prescribed product interface. Identification requires a readable name/designation plus qualified
+identifying information. `entity-description/0.name` is a producer-assigned readable label, not by
+itself a claim about a source-declared name. Registered mechanical types can supply a source name
+or path without mandatory prose. Every association has its own local key; meaningful agent-chosen
+topical keys do not require a separate topic-identity mechanism. Key spelling is not interpreted.
+
+The baseline agent context supplies all non-displaced identification associations for each subject
+Entity, with qualification, provenance, required support and standing/cause disclosures. It does not
+filter out reconsideration-marked entries or choose between alternatives. Record this selection scope
+and delivery position, including an empty selection when none remain. Later matching additions can
+trigger reconsideration. Broader topic content and referring contributions remain available for further
+acquisition. Query results and contextual selections are distinct input cases. The
+[baseline checker](check-baseline.py) exercises this policy in both partitions. Other acquisition
+probes intentionally request exact or filtered context to isolate their respective mechanisms; they
+are not competing defaults for agent initialization. Mechanical source-only executions do not receive
+invented retained context merely because the agent baseline exists.
+
 Entity/role denotes a category of information, not a unique value slot.
 
 | Operation | Required contribution | Effect |
@@ -421,7 +407,7 @@ The [revised addition probe](additions.md) makes inventory acquisition explicit.
 may add `inventory: {roles: [...]}` for its organizing entity, independently of association
 content. The returned snapshot includes entity, roles, coverage, captured `asOfAcceptance`,
 and association addresses/roles. Roles must be nonempty, distinct and valid for the entity:
-`identifies`/`describes` for architectural entities, `result` for query results.
+`identification`/`topic` for architectural entities, `result` for query results.
 
 This fixture covers **all retained associations in scope**, including displaced ones. It has
 no standing field, interpretive summary, reason, name or member content. Entries are not

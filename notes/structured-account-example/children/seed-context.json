@@ -36,12 +36,16 @@
       "content": [
         {
           "key": "policy",
-          "contentType": "prose/0",
-          "text": "A reusable execution-governing policy whose failure and recovery rules determine admission of application-supplied work.",
+          "contentType": "entity-description/0",
           "evidence": [
             "E-admission",
             "E-state"
-          ]
+          ],
+          "subject": {
+            "entity": "P"
+          },
+          "name": "Circuit Breaker",
+          "description": "A reusable execution-governing policy whose failure and recovery rules determine admission of application-supplied work."
         }
       ],
       "children": [],
@@ -55,7 +59,7 @@
             "entity": {
               "entity": "P"
             },
-            "role": "identifies"
+            "role": "identification"
           },
           "members": [
             {

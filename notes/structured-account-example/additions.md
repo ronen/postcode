@@ -20,7 +20,7 @@ have corresponding [children inputs](children/addition-probes.json) and
 rule under `earlierEntityWidePolicy` and the current rule under `associationInventoryPolicy`.
 The old rule is a comparison, not an investigator-selectable exemption or recommendation.
 
-Both additions target Half-open (S), with role `describes`, and displace nothing:
+Both additions target Half-open (S), with role `topic`, and displace nothing:
 
 | Branch | Added associated information | Interpretation limit |
 | --- | --- | --- |
@@ -50,7 +50,7 @@ scope and actual delivery position. The fixture selection is:
 
 ```json
 {"entity":"S","associations":[],"items":[],"options":[],
- "inventory":{"roles":["identifies","describes"]}}
+ "inventory":{"roles":["identification","topic"]}}
 ```
 
 The returned `inventory` contains entity, roles, coverage, retained-state position and an
@@ -114,10 +114,10 @@ The second addition marks **3/11 evaluations and 3/12 designations**: the two ea
 plus that intervening reader. The first addition's producer did not read an inventory and
 therefore does not acquire the second cause merely because it concerns S.
 
-Role-filtered `S/identifies` and other-entity `R/describes` inventories do not react to an
-`S/describes` addition. An empty `S/describes` inventory does react. Superseding S's identifying
+Role-filtered `S/identification` and other-entity `R/describes` inventories do not react to an
+`S/topic` addition. An empty `S/topic` inventory does react. Superseding S's identifying
 association still affects its exact content recipients and containing designations; it also
-adds an entry to an earlier `S/identifies` inventory. Historical content, captured inventories,
+adds an entry to an earlier `S/identification` inventory. Historical content, captured inventories,
 answers and original association standing are unchanged by the two pure additions.
 
 ## Assessment and remaining limits

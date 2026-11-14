@@ -15,7 +15,7 @@ investigator did not explicitly request a separate inventory list.
 The bounded selector is:
 
 ```json
-{"entity":"S","scopeSelection":{"roles":["identifies"],"standing":"undisplaced"}}
+{"entity":"S","scopeSelection":{"roles":["identification"],"standing":"undisplaced"}}
 ```
 
 PostCode selects and delivers every qualifying association with its complete qualified content.
@@ -51,7 +51,7 @@ It says nothing about normal warning frequency. In this branch the same Q2 quest
 successive boundary deliveries:
 
 1. Its original selected result context and follow-up option.
-2. A mechanical S inventory, scoped to identifies/describes.
+2. A mechanical S inventory, scoped to identification/topic.
 3. The selected Half-open identifying association's qualified content.
 
 The content is already reachable in Q2's initial context; the extra acquisition makes the
@@ -59,7 +59,7 @@ agent's discovery choice explicit rather than asserting a new architectural find
 authored dialogue-shaped requests, not a live investigator choosing tools. The list itself
 contains no prose summaries and does not establish member delivery or fulfillment of the displacement acquisition instruction.
 
-With this Q2 in the same seven-query history, either subsequent S/describes addition affects:
+With this Q2 in the same seven-query history, either subsequent S/topic addition affects:
 
 | Target | Route |
 | --- | --- |
@@ -143,7 +143,7 @@ on specific earlier results when new findings emerge. Both would supplement expo
 and they may complement each other. Observe the frequency, circumstances and consequences of
 coverage gaps before choosing or designing either mechanism.
 
-A broad P/describes subscription includes unrelated policy descriptions; a precise admission
+A broad P/topic subscription includes unrelated policy descriptions; a precise admission
 scope needs further semantics. Coverage of program behavior and completeness of a retained-
 information selection must not be conflated. Keep the added-waiting-case example as a deferred
 test: without relevant scope exposure or explicit displacement, no automatic cause is guaranteed.

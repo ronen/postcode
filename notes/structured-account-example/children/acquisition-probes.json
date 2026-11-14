@@ -13,7 +13,7 @@
           "entity": "S",
           "scopeSelection": {
             "roles": [
-              "identifies"
+              "identification"
             ],
             "standing": "undisplaced"
           }
@@ -401,7 +401,7 @@
                   "entity": {
                     "entity": "S"
                   },
-                  "role": "identifies"
+                  "role": "identification"
                 },
                 "members": [
                   {
@@ -611,7 +611,7 @@
                   "entity": {
                     "entity": "P"
                   },
-                  "role": "describes"
+                  "role": "topic"
                 },
                 "displaces": [
                   {
@@ -699,8 +699,8 @@
         "options": [],
         "inventory": {
           "roles": [
-            "identifies",
-            "describes"
+            "identification",
+            "topic"
           ]
         }
       },
@@ -812,7 +812,7 @@
                   "entity": {
                     "entity": "P"
                   },
-                  "role": "describes"
+                  "role": "topic"
                 },
                 "displaces": [
                   {

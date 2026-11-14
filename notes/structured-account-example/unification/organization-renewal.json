@@ -80,7 +80,7 @@
                 "entity": {
                   "entity": "M-loader"
                 },
-                "role": "describes"
+                "role": "topic"
               },
               "displaces": [
                 {
@@ -99,7 +99,7 @@
                 "entity": {
                   "entity": "M-loader"
                 },
-                "role": "describes"
+                "role": "topic"
               },
               "members": [
                 {

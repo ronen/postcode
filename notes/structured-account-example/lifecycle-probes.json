@@ -73,7 +73,7 @@
                   "entity": {
                     "entity": "P"
                   },
-                  "role": "describes"
+                  "role": "topic"
                 },
                 "members": [
                   {
@@ -238,7 +238,7 @@
                   "entity": {
                     "entity": "S"
                   },
-                  "role": "identifies"
+                  "role": "identification"
                 },
                 "members": [
                   {
@@ -365,7 +365,7 @@
                   "entity": {
                     "entity": "P"
                   },
-                  "role": "describes"
+                  "role": "topic"
                 },
                 "members": [
                   {
@@ -481,7 +481,7 @@
                   "entity": {
                     "entity": "P"
                   },
-                  "role": "describes"
+                  "role": "topic"
                 },
                 "displaces": [
                   {
@@ -599,7 +599,7 @@
                   "entity": {
                     "entity": "P"
                   },
-                  "role": "describes"
+                  "role": "topic"
                 },
                 "members": [
                   {
@@ -715,7 +715,7 @@
                   "entity": {
                     "entity": "P"
                   },
-                  "role": "describes"
+                  "role": "topic"
                 },
                 "members": [
                   {

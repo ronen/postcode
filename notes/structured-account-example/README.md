@@ -166,6 +166,7 @@ Run from the worktree root with Python 3:
 python3 notes/structured-account-example/check-fixtures.py
 python3 notes/structured-account-example/check-guidance.py
 python3 notes/structured-account-example/check-additions.py
+python3 notes/structured-account-example/check-baseline.py
 python3 notes/structured-account-example/check-acquisition.py
 python3 notes/structured-account-example/unification/check-unification.py
 python3 notes/structured-account-example/composition/check-and-render.py
@@ -179,6 +180,13 @@ cases across the partitions. Use `--write` only to deliberately regenerate lifec
 reports after changing authored input or the bounded simulator. A separate no-context branch
 checks that reuse and earlier-query redesignation are structurally accepted without inventing
 exposure or certifying adequate understanding.
+
+The [baseline checker](check-baseline.py) verifies all non-displaced identification associations for
+subject Entities in both partitions: multiple subjects, alternative identifications, required qualified
+disclosures, empty selections, historical snapshots and addition/displacement propagation. It rejects
+14 malformed cases. Its reports ([mixed](baseline-report.json), [children](children/baseline-report.json))
+record what the scoped baseline delivered. The initial Circuit Breaker request now uses that baseline.
+Exact-acquisition probes remain deliberately narrower to isolate their behavior.
 
 The addition checker compares the earlier broad mode with association/inventory exposure,
 including independent/cumulative runs, empty/filtered inventories, inherited concerns and
@@ -205,7 +213,8 @@ rendered SVGs remain unchanged by the lifecycle conversion.
 The unification checker uses the same model with four additional bounded content contracts and
 per-investigram producer/basis attribution within one acceptance. It checks seven authored invocations,
 six provider re-encounter branches, organizing withdrawal-plus-addition/restoration, separate
-production-exposure histories and thirty-eight malformed cases, including renewal-history disclosure, later symbol introduction, no invented
+production-exposure histories and thirty-three malformed cases, including reuse without automatic
+renewal after displacement, later symbol introduction, no invented
 mechanical prose, complementary dependencies,
 producer-neutral supersession, exact source qualification and preserved answers. It does not run
 native providers, a new compiler method or a live investigator. See its [walkthrough](unification/README.md).

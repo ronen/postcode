@@ -237,8 +237,8 @@ The probe supports this direction and identifies three concrete requirements:
   Equivalent recomputation reuses the established qualified contribution even when its association
   has been displaced; recomputation alone does not add a new association or restore its standing.
   Host equality/reuse is not analyzer delivery and must not invent exposure. Changed inputs,
-  methods or findings may warrant new contributions. The older probe's automatic renewal after
-  supersession/withdrawal is superseded design evidence, pending fixture alignment with this rule.
+  methods or findings may warrant new contributions. The probe exercises reuse after both
+  supersession and withdrawal, preserving standing and disclosures without automatic renewal.
 
 - Provenance must retain the actual producing method and basis per contribution. Selecting content
   from different producers must not flatten it to one method, basis or guarantee. The shared probe
@@ -284,9 +284,9 @@ returning the method's finding is distinct from adding an association; do not in
 exposure to justify reuse. Changed inputs, methods or findings may warrant new contributions.
 Deliberate reassertion would require an explicit organizing action, not an incidental recomputation.
 
-This supersedes the automatic-renewal choice in the authored unification adapter. Its history-
-disclosure branches demonstrate the earlier choice, not conformance to this agreement; fixture
-alignment remains outstanding. No automatic provider-suppression mechanism follows.
+The authored unification adapter now exercises this rule, including displaced-identification reuse,
+unchanged current selection and disclosure through result membership. No automatic provider-
+suppression mechanism follows.
 
 The scope boundary for mechanical answers is now settled: preserve the finding's method, captured
 basis, evidence and qualifications, retain association standing/history, and make both available
@@ -463,8 +463,10 @@ identifications can provide different names/descriptions without a canonical win
 Other topical information can use an agent-chosen meaningful local key, such as `admission-behavior`.
 No separately identified topic system is required. Matching keys across investigrams do not merge
 claims or supersede associations. Additional PostCode-understood roles can be defined where special
-handling is justified. Existing fixtures still encode `identifies` and a coarse `describes` role;
-those bounded spellings are not a final vocabulary or evidence of a complete topical contract.
+handling is justified. Fixtures encode `identification` and generic `topic` roles, with independently
+keyed associations. This is not evidence of a complete catalogue of topical contracts. The
+[baseline probe](structured-account-example/check-baseline.py) exercises all standing identifications
+for each subject Entity, including alternatives, empty selections and reconsideration disclosures.
 
 New associations can reference content owned by another investigram. B owns its new
 association; A still owns the referenced content, qualifications, evidence and original
@@ -738,7 +740,7 @@ bounds and access to alternatives, not automatic reconciliation or hidden last-w
 A supersession can favor new information without making its acceptance a truth judgment.
 
 **Discovery through explicit referents is in first-delivery scope.** It is an important purpose
-of retaining referents, not a new optional extension. It is broader than identifies/describes
+of retaining referents, not a new optional extension. It is broader than identification/topic
 indexing: ADMISSION-1 lists Half-open (S) as a referent even though its admission association targets
 Circuit Breaker (P). An investigator of S must be able to discover that contribution without already
 knowing its address or having a navigation origin, then acquire selected qualified information.
@@ -978,7 +980,7 @@ choosing a winner or claiming complete coverage for a partial selection.
 ADMISSION-1's admission item already claims coverage of runtime admission cases. New waiting
 information could challenge that claim even if added without superseding it and without any
 prior inventory/scope acquisition. The current repairs do not assign that claim a standing
-dependency on future P/describes associations. Completeness of a selection of retained
+dependency on future P/topic associations. Completeness of a selection of retained
 information is distinct from completeness of an architectural account of program behavior.
 
 Defer declared dependencies and investigator-directed propagation beyond the first capability.
@@ -986,7 +988,7 @@ Declared dependencies could anticipate a relevant change scope; investigator-dir
 could identify affected earlier results when a new finding emerges. Both would supplement actual
 exposure tracking, not replace it or fabricate deliveries. They may be complementary. Observe
 how often coverage gaps arise, in which circumstances and with what consequences before choosing
-between them or designing both. Broad P/describes scope admits unrelated information; narrower
+between them or designing both. Broad P/topic scope admits unrelated information; narrower
 admission semantics and qualified impact assessment each need further design.
 
 Keep the added-waiting-case example as a deferred coverage test. Without prior relevant inventory/

@@ -17,7 +17,7 @@
       "selectionScope": {
         "entity": "S",
         "roles": [
-          "identifies"
+          "identification"
         ],
         "coverage": "all-undisplaced-in-scope",
         "asOfAcceptance": 7
@@ -65,7 +65,7 @@
       "selectionScope": {
         "entity": "S",
         "roles": [
-          "identifies"
+          "identification"
         ],
         "coverage": "all-undisplaced-in-scope",
         "asOfAcceptance": 11
@@ -186,8 +186,8 @@
         "inventory": {
           "entity": "S",
           "roles": [
-            "describes",
-            "identifies"
+            "identification",
+            "topic"
           ],
           "coverage": "all-retained-in-scope",
           "asOfAcceptance": 3,
@@ -197,7 +197,7 @@
                 "investigram": "DEFINITIONS-1",
                 "associationKey": "half-open-description"
               },
-              "role": "identifies"
+              "role": "identification"
             }
           ]
         },
@@ -426,7 +426,7 @@
               "entity": {
                 "entity": "P"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {
@@ -502,7 +502,7 @@
               "entity": {
                 "entity": "P"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {
@@ -554,7 +554,7 @@
               "entity": {
                 "entity": "P"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "displaces": [
               {
@@ -628,7 +628,7 @@
               "entity": {
                 "entity": "P"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {
@@ -701,7 +701,7 @@
               "entity": {
                 "entity": "P"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {
@@ -753,7 +753,7 @@
               "entity": {
                 "entity": "P"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "displaces": [
               {

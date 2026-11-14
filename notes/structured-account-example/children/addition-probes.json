@@ -115,7 +115,7 @@
                   "entity": {
                     "entity": "S"
                   },
-                  "role": "describes"
+                  "role": "topic"
                 },
                 "members": [
                   {
@@ -275,7 +275,7 @@
                   "entity": {
                     "entity": "S"
                   },
-                  "role": "describes"
+                  "role": "topic"
                 },
                 "members": [
                   {
@@ -623,8 +623,8 @@
           "options": [],
           "inventory": {
             "roles": [
-              "identifies",
-              "describes"
+              "identification",
+              "topic"
             ]
           }
         }

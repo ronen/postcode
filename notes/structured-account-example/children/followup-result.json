@@ -70,7 +70,7 @@
               "entity": {
                 "entity": "P"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {
@@ -389,7 +389,7 @@
               "entity": {
                 "introducedEntity": "shared-breaker"
               },
-              "role": "identifies"
+              "role": "identification"
             },
             "members": [
               {
@@ -409,7 +409,7 @@
               "entity": {
                 "introducedEntity": "trial-execution"
               },
-              "role": "identifies"
+              "role": "identification"
             },
             "members": [
               {
@@ -429,7 +429,7 @@
               "entity": {
                 "introducedEntity": "concurrent-execution"
               },
-              "role": "identifies"
+              "role": "identification"
             },
             "members": [
               {
@@ -449,7 +449,7 @@
               "entity": {
                 "introducedEntity": "waiting"
               },
-              "role": "identifies"
+              "role": "identification"
             },
             "members": [
               {
@@ -1001,7 +1001,7 @@
               "entity": {
                 "entity": "P"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {
@@ -1021,7 +1021,7 @@
               "entity": {
                 "entity": "P"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {
@@ -1041,7 +1041,7 @@
               "entity": {
                 "introducedEntity": "shared-breaker"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {
@@ -1061,7 +1061,7 @@
               "entity": {
                 "introducedEntity": "shared-breaker"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {
@@ -1261,7 +1261,7 @@
               "entity": {
                 "entity": "P"
               },
-              "role": "describes"
+              "role": "topic"
             },
             "members": [
               {

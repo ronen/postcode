@@ -828,8 +828,8 @@
             "inventory": {
               "entity": "S",
               "roles": [
-                "describes",
-                "identifies"
+                "identification",
+                "topic"
               ],
               "coverage": "all-retained-in-scope",
               "asOfAcceptance": 7,
@@ -839,7 +839,7 @@
                     "investigram": "DEFINITIONS-1",
                     "associationKey": "half-open-description"
                   },
-                  "role": "identifies"
+                  "role": "identification"
                 }
               ]
             },

@@ -47,14 +47,12 @@
     "deliveries": [
       {
         "entity": "P",
-        "associations": [
-          {
-            "investigram": "ORIENTATION-0",
-            "associationKey": "policy"
-          }
-        ],
-        "items": [],
-        "options": []
+        "scopeSelection": {
+          "roles": [
+            "identification"
+          ],
+          "standing": "undisplaced"
+        }
       }
     ],
     "declaredMeaning": {

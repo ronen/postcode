@@ -1,13 +1,5 @@
 # Mechanical and agentic production: worked unification
 
-> **Design update, 2026-11-14:** automatic provider renewal after displacement is no longer the
-> agreed behavior. Equivalent mechanical recomputation reuses the established contribution without
-> adding an association or changing standing. The adapter, renewal-history branches and associated
-> contract details below still exercise the earlier choice and await alignment. Passing those checks
-> does not verify the new policy. Explicit investigator withdrawal/addition remains a separate case.
-> See [the wrapper agreement](../../structured-architectural-accounts-proposal.md#mechanical-analysis-wrapper-and-contribution-reuse).
-
-
 Updated 2026-11-13. Exploratory design work, not an adopted contract or a product migration.
 [Main inputs](contributions.json), [organizing-use renewal](organization-renewal.json),
 [report](report.json) and [checker](check-unification.py) exercise
@@ -67,7 +59,7 @@ implemented exports Lens already accepts that cardinality.
 
 | Invocation | Producer and contribution | Associations and result |
 | --- | --- | --- |
-| Q-D | Mechanical module discovery introduces M-loader, M-plugin and M-empty through structured module identification | `DISCOVERY-1` supplies three `identifies` associations; RESULT-Q-D selects them. No invented prose or agent identity. |
+| Q-D | Mechanical module discovery introduces M-loader, M-plugin and M-empty through structured module identification | `DISCOVERY-1` supplies three `identification` associations; RESULT-Q-D selects them. No invented prose or agent identity. |
 | Q-E | Later mechanical export analysis reuses those modules, introduces S-load and S-target as symbols, and returns the loader's export surface plus an established empty surface | Two investigrams in one accepted contribution, each with its own qualification. RESULT-Q-E selects the export and symbol-identification associations. Q-D's answer is unchanged. |
 | Q-S | Mechanical source-dependency analysis returns the recognized dynamic-import occurrence with `target-indeterminate` and no established target relationship | `DEPENDENCIES-1/dependencies` describes M-loader. This is a qualified mechanical result, not an empty or failed analysis. |
 | Q-I | Interpretation receives Q-S's association and the plugin's identifying association, then explains the conditional target from captured source | `RUNTIME-1/runtime` is added beside the source-request association. It does not supersede Q-S or claim runtime observation. |
@@ -87,7 +79,7 @@ should explain material changes of method, scope or guarantee; no mechanical/age
 is implied. Defer a minimum-guarantee selection mechanism: guarantees are scoped contracts, not
 a universal ranked scale. Structural validation does not certify the judgment.
 
-The final undisplaced `describes` associations for M-loader are exports, the source-request
+The final undisplaced `topic` associations for M-loader are exports, the source-request
 account, the organizer's association to the mechanical finding, and the fuller interpreted
 explanation. The mechanical bundle has no association of its own: the organizer's association
 makes its item reachable across the submission. This is already supported by the common model;
@@ -146,7 +138,7 @@ across changing source states. The existing older fixtures keep their explicitly
 Four content contracts are registered in this checker; the shared model enforces their addressing,
 introduction and association rules. In particular, an identifying item need not be the earlier
 prose-shaped `entity-description/0`. A newly introduced entity still needs explicit identifying
-content and an `identifies` association. A fresh allocation cannot steal an existing ID.
+content and an `identification` association. A fresh allocation cannot steal an existing ID.
 
 ### Independent production exposure within one acceptance
 
@@ -178,7 +170,7 @@ analysis and returns the existing Q/result.
 
 The six branches exercise distinct cases:
 
-- An identical Q-D2 rerun reuses the three **undisplaced** identifying associations when content,
+- An identical Q-D2 rerun reuses the three identifying associations when content,
   method/basis, evidence and qualification match. Host equality/reuse is recorded separately in
   the report; the analyzer received no old information, so deliveries, exposure and source-query
   dependencies remain empty. Its result still includes the reused associations. A later
@@ -187,46 +179,21 @@ The six branches exercise distinct cases:
 - A different provider identity scope allocates three fresh common IDs for the same native keys,
   rather than treating their spelling as common IDs and rejecting a collision.
 - Re-encounter also works with `provenanceByInvestigram`, not only one default producer.
-- After supersession of an identification, a rerun resolves the same entity but renews its own
-  identifying contribution as an addition; it does not reuse the displaced association.
-- The same renewal behavior holds after withdrawal.
+- After supersession of an identification, a rerun resolves the same entity and reuses the
+  established identifying association, preserving its displaced standing and the replacement.
+- After withdrawal, the same reuse leaves the current identification selection empty rather than
+  creating a fresh addition.
 
-Renewal leaves the original displacement and any replacement association intact. It neither
-reinstates the old association nor adjudicates a disagreement; a new identifying use may coexist
-with a qualified alternative. The new output has its own provenance. These branches deliberately
-model recomputation without receiving the organizing claim, so the adapter does not invent that
-exposure or claim the analyzer considered it. Fresh delivery of the renewal nevertheless discloses
-the recorded objection through the host-established history below.
+These branches model recomputation without receiving the organizing claim. The adapter does not
+invent exposure or claim the analyzer considered it. A result can include the original association;
+its membership and fresh qualified delivery disclose existing displacement. Current scope selection
+continues to exclude it. Repeated recomputation preserves this behavior and earlier snapshots.
+No automatic renewal or renewal-history relation is needed. Unsupported renewal metadata is rejected.
+Deliberate re-adoption remains an explicit organizing action, as in Q-O below.
 
 This is a bounded reuse policy, not name-based deduplication or a claim that every provider has
 the same fingerprint. Fresh common-ID allocation collisions remain invalid for any producer.
-
-### Renewal history and disclosure
-
-When exact qualified comparison finds only displaced matching identifications, the adapter records
-`renewalHistory` on the new association through a host acceptance binding. It lists exact
-`previousAssociations` and `establishedBy: authored/provider-qualified-equality@0`. The method
-label attributes the comparison to the host; it does not claim the mechanical analyzer read or
-answered the objection. The comparison remains bounded to the same provider identity, method,
-basis, content, evidence and qualifications (ignoring the new-versus-existing introduction marker).
-It is not inferred semantic equivalence between arbitrary accounts.
-
-Fresh scope selections, exact association deliveries, excerpts and result deliveries include this
-history and the earlier associations' qualified displacement reasons. The model follows exact
-history links through further renewals, and also discloses history when the renewal arrives as a
-substantive notice. An inventory of addresses alone does not deliver that material. A reused
-renewal retains its history; equality reuse cannot strip it on the next run.
-
-The historical references do not deliver earlier items or make the earlier associations uses of
-the new result. Displacement notices retain their own provenance. Subsequent investigators are
-exposed to the reasons they actually receive; the rerun analyzer is not retroactively exposed.
-Already accepted displacements are disclosed history, not later reconsideration causes. The
-renewal link adds no automatic propagation rule or clearance. New deliveries must preserve the
-history and notices; altered or missing disclosure is rejected.
-
-This is narrowly host-established metadata, not a new investigator assertion of equality. Common
-acceptance checks exact prior references, same target, prior displacement, addition ownership and
-attribution. The adapter establishes equality. Product adapter verification remains required.
+Changed method/input/finding may warrant a new contribution; an incidental rerun does not.
 
 ### Changing the organizing use while keeping the finding
 
@@ -270,7 +237,7 @@ Recognized reuse of Q-E is demonstrated by returning the existing result and unc
 The fixture does not implement a cache matcher or specify a new effective-input identity formula.
 Later association changes do not mutate that returned mechanical answer. A fresh general selection
 can disclose changes, while a method-specific Lens must preserve its declared meaning and guarantee;
-selecting the latest `describes` association is not sufficient to satisfy an exports or mechanical
+selecting the latest `topic` association is not sufficient to satisfy an exports or mechanical
 source-dependency contract.
 
 ## Exposure and reconsideration
@@ -340,12 +307,12 @@ Run `python3 notes/structured-account-example/unification/check-unification.py`.
 plus six provider re-encounter branches, organizing withdrawal-plus-addition and optional explicit
 restoration of earlier content, later symbol introduction, exact answer reuse, separate
 production bases, mixed-method acceptance, complementary additions, qualified supersession,
-original snapshots and result/exposure causes. It rejects **38 malformed cases atomically**, including
+original snapshots and result/exposure causes. It rejects **33 malformed cases atomically**, including
 empty native identity, forged producer attribution, unsupported producer/type, missing basis/scope, inconsistent target status,
 unknown entity/displacement targets, duplicate item keys, missing grounds, incomplete/ambiguous
 per-investigram provenance, fresh common-ID allocation collisions and an unreachable mechanical
-item. Renewal checks additionally reject forged/invalid host history and missing or altered
-history/displacement-reason delivery. A new identity scope is a positive allocation case, not
+item. Re-encounter checks preserve displacement disclosure and reject the obsolete automatic-renewal
+metadata. Mechanical identification can use the source path when no source name exists. A new identity scope is a positive allocation case, not
 a malformed contribution.
 
 Those checks validate representation and lifecycle. They do not establish native method execution,

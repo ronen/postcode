@@ -232,9 +232,9 @@ def check_inventory(directory, legacy, write=False):
 
     # Scope: a different entity or role is unaffected; even an empty matching inventory counts.
     filtered = copy.deepcopy(model)
-    for suffix, entity, roles in [('identifying-inventory', 'S', ['identifies']),
-                                  ('other-inventory', 'R', ['describes']),
-                                  ('empty-inventory', 'S', ['describes'])]:
+    for suffix, entity, roles in [('identifying-inventory', 'S', ['identification']),
+                                  ('other-inventory', 'R', ['topic']),
+                                  ('empty-inventory', 'S', ['topic'])]:
         probe = renamed(inv, suffix)
         probe['request']['subject'] = {'entity': entity}
         probe['request']['deliveries'][0].update(entity=entity, inventory={'roles': roles})
@@ -279,7 +279,7 @@ def check_inventory(directory, legacy, write=False):
     # Supersession still affects exact content recipients; it also introduces an inventory entry.
     displacement = copy.deepcopy(model)
     identifying = renamed(inv, 'before-expansion')
-    identifying['request']['deliveries'][0]['inventory']['roles'] = ['identifies']
+    identifying['request']['deliveries'][0]['inventory']['roles'] = ['identification']
     accept(displacement, identifying)
     accept(displacement, read(directory / 'lifecycle-probes.json')['expansion'])
     displacement_status = displacement.reconsideration()
@@ -297,7 +297,7 @@ def check_inventory(directory, legacy, write=False):
     accept(withdrawal, lifecycle['reuse'])
     inventory_before_withdrawal = renamed(inv, 'before-withdrawal-inventory')
     inventory_before_withdrawal['request']['subject'] = {'entity': 'P'}
-    inventory_before_withdrawal['request']['deliveries'][0].update(entity='P', inventory={'roles': ['describes']})
+    inventory_before_withdrawal['request']['deliveries'][0].update(entity='P', inventory={'roles': ['topic']})
     before_inventory = withdrawal.project(inventory_before_withdrawal['request']['deliveries'][0])['inventory']
     accept(withdrawal, inventory_before_withdrawal)
     content_before_withdrawal = renamed(probes['awareConsumer'], 'before-withdrawal-content')
@@ -331,7 +331,7 @@ def check_inventory(directory, legacy, write=False):
     rejected(model, unresolved, [projection])
     malformed = []
     missing = copy.deepcopy(projection); missing.pop('inventory'); malformed.append(missing)
-    wrong_scope = copy.deepcopy(projection); wrong_scope['inventory']['roles'] = ['describes']; malformed.append(wrong_scope)
+    wrong_scope = copy.deepcopy(projection); wrong_scope['inventory']['roles'] = ['topic']; malformed.append(wrong_scope)
     omitted = copy.deepcopy(projection); omitted['inventory']['entries'].pop(); malformed.append(omitted)
     fabricated = copy.deepcopy(projection); fabricated['inventory']['entries'][0]['association']['associationKey'] = 'absent'; malformed.append(fabricated)
     altered_time = copy.deepcopy(projection); altered_time['inventory']['asOfAcceptance'] -= 1; malformed.append(altered_time)
@@ -339,7 +339,7 @@ def check_inventory(directory, legacy, write=False):
     future = copy.deepcopy(projection); future['asOfAcceptance'] = model.acceptance_order + 1; malformed.append(future)
     for payload in malformed:
         rejected(model, inv, [payload])
-    for roles in [[], ['identifies', 'identifies'], ['result']]:
+    for roles in [[], ['identification', 'identification'], ['result']]:
         invalid_scope = copy.deepcopy(inv)
         invalid_scope['request']['deliveries'][0]['inventory']['roles'] = roles
         rejected(model, invalid_scope, None)

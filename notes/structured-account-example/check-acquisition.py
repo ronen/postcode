@@ -88,7 +88,7 @@ def check(directory, write=False):
     # Malformed scope records, incomplete scoped payloads, unsupported policies and
     # inventing a scope dependency on an exact request all fail atomically.
     bad = copy.deepcopy(p); bad.pop('selectionScope'); rejected(model, probes['scopeSelected'], [bad])
-    bad = copy.deepcopy(p); bad['selectionScope']['roles'] = ['describes']; rejected(model, probes['scopeSelected'], [bad])
+    bad = copy.deepcopy(p); bad['selectionScope']['roles'] = ['topic']; rejected(model, probes['scopeSelected'], [bad])
     bad = copy.deepcopy(p); bad['selectionScope']['asOfAcceptance'] -= 1; rejected(model, probes['scopeSelected'], [bad])
     bad = copy.deepcopy(p); bad['items'].pop(next(iter(bad['items']))); rejected(model, probes['scopeSelected'], [bad])
     bad = copy.deepcopy(p); bad['declarations'].pop(next(iter(bad['declarations']))); rejected(model, probes['scopeSelected'], [bad])
@@ -134,7 +134,7 @@ def check(directory, write=False):
     accept(notices, probes['noticeReader'])
     bare = renamed(additions['inventoryConsumer'], 'notice-address-only')
     bare['request']['subject'] = {'entity': 'P'}
-    bare['request']['deliveries'][0].update(entity='P', inventory={'roles': ['describes']})
+    bare['request']['deliveries'][0].update(entity='P', inventory={'roles': ['topic']})
     bare_delivery = notices.project(bare['request']['deliveries'][0])
     assert any(x['association']['investigram'] == 'ADMISSION-2' for x in bare_delivery['inventory']['entries'])
     assert not notices.delivered_declarations(bare_delivery) and not notices.projection_sources(bare_delivery)
