@@ -441,6 +441,10 @@ mechanism. The deferred question is how qualified architectural classifications 
 or relevance, and where that knowledge lives. No host ontology or systematic classification-driven
 assessment is required by the current follow-up mechanism.
 
+Soft signatures listing recommended architectural categories are a candidate implementation of this
+same deferred relevance capability. They would be advisory rather than invocation constraints. No
+signature extension is adopted or required by this plan.
+
 TRIAL-1's state diagram binds `recovery`; the sequence binds `concurrent-callers` and
 follows its existing `stateContent`/`transition` references. No duplicate state-model
 binding or renderer-invented dependency. Both diagrams render unchanged with recommendations

@@ -2491,3 +2491,8 @@ so signatures for agentic investigations are not an architectural innovation. Co
 notes to avoid implying that agentic signatures are deferred or require an ontology. Existing Lens
 applicability contracts cover them. What remains deferred is how qualified architectural classifications
 inform applicability/relevance and whether that knowledge belongs in PostCode, agents or both.
+
+
+The human confirmed that soft signatures—recommended architectural categories alongside required
+input constraints—are merely a candidate way to implement the already-deferred relevance capability.
+Recorded the option without adopting a signature extension or creating another scope commitment.

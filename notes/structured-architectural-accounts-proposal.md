@@ -1083,6 +1083,11 @@ classification-driven assessment are deferred; none is required by the current f
 Existing Lens applicability contracts remain explicit. No choice among the future approaches is
 required for this capability, and existing follow-up options acquire no new lifecycle semantics.
 
+“Soft signatures” are one candidate implementation of that already-deferred relevance capability:
+a signature could list recommended architectural categories separately from required input constraints.
+Missing or unmatched recommendations would not prohibit invocation. This is an illustrative option,
+not an adopted signature extension, a separate capability commitment or a prerequisite for this plan.
+
 The examples supply identifying descriptions, prose, admission cases, architectural
 relationships, a recovery state model and an interaction. Local roles are variables within
 an item with explicit scope, not automatically shared entities. Illustrations bind a general
