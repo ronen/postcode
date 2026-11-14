@@ -2316,3 +2316,14 @@ findings may warrant contributions; deliberate reassertion would need an explici
 No analyzer exposure is invented by host reuse. Method-specific answer selection and standing
 disclosure remain to discuss. Marked the existing automatic-renewal adapter/branches as superseded
 design evidence pending fixture alignment; no executable behavior was changed in this notes update.
+
+## 2026-11-14 — Mechanical-answer application boundary
+
+The human distinguished Lens answers from mechanical contributions, then clarified the remit:
+this mechanism preserves findings with method, basis and qualifications, retains association
+standing/history and makes the information available to the application. Displacement does not
+rewrite findings or automatically renew associations. How a specific Lens uses and presents this
+information belongs to application contracts; no new mechanical-specific selection/warning
+mechanism is required here. Existing guarantees remain migration constraints, with concrete
+conflicts surfaced rather than silently resolved. Updated the proposal and consolidation and
+closed that discussion item; fresh-result selection remains a separate review question.

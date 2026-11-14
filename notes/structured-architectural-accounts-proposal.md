@@ -276,8 +276,15 @@ Deliberate reassertion would require an explicit organizing action, not an incid
 
 This supersedes the automatic-renewal choice in the authored unification adapter. Its history-
 disclosure branches demonstrate the earlier choice, not conformance to this agreement; fixture
-alignment remains outstanding. How method-specific answers select findings and disclose association
-standing remains the next discussion question. No automatic provider-suppression mechanism follows.
+alignment remains outstanding. No automatic provider-suppression mechanism follows.
+
+The scope boundary for mechanical answers is now settled: preserve the finding's method, captured
+basis, evidence and qualifications, retain association standing/history, and make both available
+through qualified application access. Displacement neither rewrites the original finding nor
+causes its association to renew. Lens-specific use of that information and its presentation belong
+to the application contracts; this mechanism design prescribes no additional selection or warning
+system for mechanical answers. Migration must preserve existing answer guarantees and raise concrete
+contract conflicts, rather than using this boundary to silently alter them.
 
 ## Existing agentic capability migration
 
@@ -298,8 +305,8 @@ Detailed interface packaging remains open within the established application/eng
 Drafting must name the cut-over and verify interaction between existing agentic outputs, new
 structured investigations and mechanical contributions under the common rules. Any consequential
 change to question, subject meaning or answer-selection behavior must be surfaced rather than
-hidden as an adapter detail. Fresh selection and method-specific treatment of association standing remain review discussion
-items; this scope agreement does not resolve them. No cross-Session data migration is implied.
+hidden as an adapter detail. Fresh selection remains a separate review discussion item; this
+scope agreement does not resolve it. No cross-Session data migration is implied.
 
 ## Agreed implementation scope: existing mechanical information, staged
 

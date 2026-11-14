@@ -85,9 +85,11 @@ analyzer exposure. Cache misses and incidental provider execution do not authori
 The mechanical wrapper distinguishes computing findings from organizing their use; deliberate
 reassertion requires an explicit organizing action. Changed inputs/methods/findings may warrant
 new contributions. The older automatic-renewal branches and history machinery are superseded design
-evidence pending fixture alignment. Method-specific answer selection and disclosure of standing
-remain to be discussed. Reachability
-is submission-wide, so the organizer alone can associate the mechanical item. Later withdrawal of
+evidence pending fixture alignment. The mechanism preserves the finding's method, basis, evidence
+and qualifications, retains standing/history and makes both available through qualified application
+access. Lens-specific use and presentation belong to application contracts; no new mechanical-answer
+selection or warning mechanism is prescribed. Migration still preserves existing guarantees and
+raises concrete conflicts. Reachability is submission-wide, so the organizer alone can associate the mechanical item. Later withdrawal of
 that organizing use can accompany a new addition referencing the unchanged mechanical item;
 restoring use of earlier content similarly requires an explicit addition. Neither reverses old
 displacements or clears concerns. Selection-only
@@ -102,8 +104,8 @@ The working scope also migrates existing agentic capabilities (`summarize`, `exp
 mechanism. Preserve their questions and qualified information, with no permanent legacy correction/
 exposure regime. Changes from whole-investigram correction and replacement-chain selection must be
 explicit. Drafting names the cut-over; faithful subject/input mapping and interface packaging must
-preserve the application/engine distinction. This does not settle the review's fresh-answer selection
-or method-specific standing questions. See [agentic migration](structured-architectural-accounts-proposal.md#existing-agentic-capability-migration).
+preserve the application/engine distinction. This does not settle the review's separate fresh-answer
+selection question. See [agentic migration](structured-architectural-accounts-proposal.md#existing-agentic-capability-migration).
 
 An internal producer/contribution boundary enables controlled mechanism tests before real-provider
 migration, including separately attributed producers for cross-producer cases. Mechanical and agentic
