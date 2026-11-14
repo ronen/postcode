@@ -224,14 +224,12 @@ The probe supports this direction and identifies three concrete requirements:
   identities within supported scope to existing entities. The analyzer need not inspect Session
   state. Native keys differ from common IDs. A genuinely different provider identity scope can
   allocate fresh common IDs without implied correspondence; fresh common-ID collisions still fail.
-  Equal identifying contributions may reuse **undisplaced** associations without inventing analyzer
-  delivery/exposure. If displaced, recomputation can add a new identifying contribution on the same
-  entity, preserving the earlier displacement and any replacement. The host records exact equality
-  history to the displaced association; fresh delivery discloses its qualified displacement reason.
-  This does not invent analyzer exposure, deliver old content, infer semantic equivalence or clear
-  concerns. Subsequent consumers receive and expose the reasons actually delivered. Renewal does
-  not adjudicate disagreement. The probe exercises both supersession and withdrawal, along with identical reuse,
-  changed methods, new identity scope and per-investigram provenance, separately from query reuse.
+  Equivalent recomputation reuses the established qualified contribution even when its association
+  has been displaced; recomputation alone does not add a new association or restore its standing.
+  Host equality/reuse is not analyzer delivery and must not invent exposure. Changed inputs,
+  methods or findings may warrant new contributions. The older probe's automatic renewal after
+  supersession/withdrawal is superseded design evidence, pending fixture alignment with this rule.
+
 - Provenance must retain the actual producing method and basis per contribution. Selecting content
   from different producers must not flatten it to one method, basis or guarantee. The shared probe
   permits host-attributed provenance per investigram within one acceptance. Computing a target
@@ -260,6 +258,27 @@ A method-specific Lens must preserve its question and guarantee, rather than sim
 selecting the latest description of its subject. This direction withdraws the earlier blanket
 exclusion of mechanical claims from investigrams.
 
+### Mechanical analysis wrapper and contribution reuse
+
+The mechanical wrapper resolves native identities, attributes method/basis/evidence/guarantees,
+constructs supported content and declarations, records retained input actually supplied, and uses
+the common acceptance boundary. Mechanical findings do not themselves decide their organizing use;
+that decision belongs to explicit wrapper/organizing policy. This is a responsibility boundary,
+not a prescribed class or execution interface.
+
+Agreed rule: equivalent recomputation under the same effective inputs and method reuses the
+established qualified contribution without automatically renewing a displaced or withdrawn
+association. A cache miss, provider re-encounter or unrelated operation must not by itself make
+that information current again. Preserve existing association standing and history. Retrieving or
+returning the method's finding is distinct from adding an association; do not invent prior analyzer
+exposure to justify reuse. Changed inputs, methods or findings may warrant new contributions.
+Deliberate reassertion would require an explicit organizing action, not an incidental recomputation.
+
+This supersedes the automatic-renewal choice in the authored unification adapter. Its history-
+disclosure branches demonstrate the earlier choice, not conformance to this agreement; fixture
+alignment remains outstanding. How method-specific answers select findings and disclose association
+standing remains the next discussion question. No automatic provider-suppression mechanism follows.
+
 ## Existing agentic capability migration
 
 The working scope includes migrating the existing agentic capabilities onto the common mechanism,
@@ -279,7 +298,7 @@ Detailed interface packaging remains open within the established application/eng
 Drafting must name the cut-over and verify interaction between existing agentic outputs, new
 structured investigations and mechanical contributions under the common rules. Any consequential
 change to question, subject meaning or answer-selection behavior must be surfaced rather than
-hidden as an adapter detail. Fresh selection and producer/renewal semantics remain review discussion
+hidden as an adapter detail. Fresh selection and method-specific treatment of association standing remain review discussion
 items; this scope agreement does not resolve them. No cross-Session data migration is implied.
 
 ## Agreed implementation scope: existing mechanical information, staged
@@ -319,7 +338,8 @@ method-specific result contracts, qualification, deterministic identity guarante
 Persistence, broader navigation/GUI, new mechanical capabilities (including the hypothetical
 constant-target method), automatic reassessment and suppression of repeated provider output remain
 outside this scope. Preventing a provider from reasserting withdrawn information would require an
-explicit host policy; renewal history alone does not suppress production.
+explicit host policy. Equivalent recomputation does not automatically reassert an association,
+as specified above; this does not prevent the mechanical method from returning its finding.
 
 ## Entity storage and lookup
 

@@ -2305,3 +2305,14 @@ explain, decompose and examine, prior-result investigation and inspection/status
 common contribution/association mechanism rather than a permanent legacy correction regime.
 Drafting must specify cut-over and observable selection/status changes. This does not silently
 resolve the review's separate renewal, fresh-selection or multi-producer exposure questions.
+
+## 2026-11-14 — Mechanical wrapper does not renew on incidental recomputation
+
+The human agreed to separate the mechanical method's finding from the wrapper's decision to
+contribute organizing declarations. Equivalent recomputation reuses established qualified content
+even when its association was displaced, without automatically adding a new association. A cache
+miss or unrelated provider execution must not undo organizing decisions. Changed inputs/methods/
+findings may warrant contributions; deliberate reassertion would need an explicit organizing action.
+No analyzer exposure is invented by host reuse. Method-specific answer selection and standing
+disclosure remain to discuss. Marked the existing automatic-renewal adapter/branches as superseded
+design evidence pending fixture alignment; no executable behavior was changed in this notes update.

@@ -79,12 +79,14 @@ and symbol identification, export surfaces, complementary dependencies, provider
 and separately attributed mechanical findings/organizing declarations in one acceptance. Fuller
 interpretation is added alongside the mechanical finding. Fresh allocation differs from resolving
 a known provider identity. Native keys and common IDs are distinct; a new identity scope may
-allocate a new common ID without correspondence. Equal identifying information can reuse an
-undisplaced association without inventing analyzer exposure. If displaced, recomputation adds
-a new qualified identification while preserving the old displacement and any replacement; renewal
-does not resolve disagreement. Exact qualified provider renewal records host-established history;
-fresh delivery includes the earlier displacement reason without inventing analyzer input or new
-propagation rules. A changed method can also add qualified identification. Reachability
+allocate a new common ID without correspondence. Equivalent recomputation reuses an established
+qualified contribution even if its association is displaced, without changing standing or inventing
+analyzer exposure. Cache misses and incidental provider execution do not authorize new associations.
+The mechanical wrapper distinguishes computing findings from organizing their use; deliberate
+reassertion requires an explicit organizing action. Changed inputs/methods/findings may warrant
+new contributions. The older automatic-renewal branches and history machinery are superseded design
+evidence pending fixture alignment. Method-specific answer selection and disclosure of standing
+remain to be discussed. Reachability
 is submission-wide, so the organizer alone can associate the mechanical item. Later withdrawal of
 that organizing use can accompany a new addition referencing the unchanged mechanical item;
 restoring use of earlier content similarly requires an explicit addition. Neither reverses old
@@ -101,7 +103,7 @@ mechanism. Preserve their questions and qualified information, with no permanent
 exposure regime. Changes from whole-investigram correction and replacement-chain selection must be
 explicit. Drafting names the cut-over; faithful subject/input mapping and interface packaging must
 preserve the application/engine distinction. This does not settle the review's fresh-answer selection
-or producer-renewal questions. See [agentic migration](structured-architectural-accounts-proposal.md#existing-agentic-capability-migration).
+or method-specific standing questions. See [agentic migration](structured-architectural-accounts-proposal.md#existing-agentic-capability-migration).
 
 An internal producer/contribution boundary enables controlled mechanism tests before real-provider
 migration, including separately attributed producers for cross-producer cases. Mechanical and agentic

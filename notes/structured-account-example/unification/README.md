@@ -1,5 +1,13 @@
 # Mechanical and agentic production: worked unification
 
+> **Design update, 2026-11-14:** automatic provider renewal after displacement is no longer the
+> agreed behavior. Equivalent mechanical recomputation reuses the established contribution without
+> adding an association or changing standing. The adapter, renewal-history branches and associated
+> contract details below still exercise the earlier choice and await alignment. Passing those checks
+> does not verify the new policy. Explicit investigator withdrawal/addition remains a separate case.
+> See [the wrapper agreement](../../structured-architectural-accounts-proposal.md#mechanical-analysis-wrapper-and-contribution-reuse).
+
+
 Updated 2026-11-13. Exploratory design work, not an adopted contract or a product migration.
 [Main inputs](contributions.json), [organizing-use renewal](organization-renewal.json),
 [report](report.json) and [checker](check-unification.py) exercise

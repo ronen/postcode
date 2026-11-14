@@ -1,5 +1,13 @@
 # Illustrative contribution and content contracts
 
+> **Design update, 2026-11-14:** automatic provider renewal after displacement is no longer the
+> agreed behavior. Equivalent mechanical recomputation reuses the established contribution without
+> adding an association or changing standing. The adapter, renewal-history branches and associated
+> contract details below still exercise the earlier choice and await alignment. Passing those checks
+> does not verify the new policy. Explicit investigator withdrawal/addition remains a separate case.
+> See [the wrapper agreement](../structured-architectural-accounts-proposal.md#mechanical-analysis-wrapper-and-contribution-reuse).
+
+
 Updated 2026-11-12. Exploratory contracts and executable authored probes, not adopted
 schemas or product APIs. The [proposal](../structured-architectural-accounts-proposal.md)
 and [consolidation](../structured-architectural-accounts-consolidation.md) explain the
