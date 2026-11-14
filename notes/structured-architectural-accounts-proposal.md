@@ -260,6 +260,28 @@ A method-specific Lens must preserve its question and guarantee, rather than sim
 selecting the latest description of its subject. This direction withdraws the earlier blanket
 exclusion of mechanical claims from investigrams.
 
+## Existing agentic capability migration
+
+The working scope includes migrating the existing agentic capabilities onto the common mechanism,
+not retiring them or leaving a permanent second correction/exposure regime. This includes the
+current `summarize`, `explain`, `decompose` and `examine` Lenses, their prose results, and access to
+and further investigation of earlier results. Preserve their investigative questions, qualifications,
+evidence and provenance. Existing prose is representable as supported Analysis content; adding
+structure does not require every explanation to become a diagram.
+
+The migration must cover the current inspection and revision/reconsideration access paths as well
+as production. Preserving the capability does not mean retaining whole-investigram correction or
+implicit replacement-chain selection: specify the corresponding association, result-selection and
+status behavior explicitly. The current ability to investigate a prior investigram must have a
+faithful input mapping; it is not implicitly removed or restricted to newly offered follow-ups.
+Detailed interface packaging remains open within the established application/engine boundary.
+
+Drafting must name the cut-over and verify interaction between existing agentic outputs, new
+structured investigations and mechanical contributions under the common rules. Any consequential
+change to question, subject meaning or answer-selection behavior must be surfaced rather than
+hidden as an adapter detail. Fresh selection and producer/renewal semantics remain review discussion
+items; this scope agreement does not resolve them. No cross-Session data migration is implied.
+
 ## Agreed implementation scope: existing mechanical information, staged
 
 The human chose migration of all currently supported mechanical architectural information within

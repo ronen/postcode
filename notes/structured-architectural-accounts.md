@@ -2295,3 +2295,13 @@ engine-context uses of “projection” in the walkthrough, fixture contracts, p
 READMEs. Actual application Projections retain that term. Existing fixture helper/report identifiers
 are explicitly described as local context-delivery implementation names, not architectural terms or
 product API commitments; no fixture behavior or generated data changed. No planning package started.
+
+## 2026-11-14 — Existing agentic capabilities join the migration
+
+The fresh review identified the missing treatment of existing agentic Lenses and their retained
+results. The human expressed agreement with migrating those capabilities. Recorded this working
+scope in the proposal and consolidation: preserve the questions and qualified outputs of summarize,
+explain, decompose and examine, prior-result investigation and inspection/status access, using the
+common contribution/association mechanism rather than a permanent legacy correction regime.
+Drafting must specify cut-over and observable selection/status changes. This does not silently
+resolve the review's separate renewal, fresh-selection or multi-producer exposure questions.

@@ -95,6 +95,14 @@ explain material changes in method, scope or guarantee; guarantee-ranking select
 Native producer integration remains unverified, including mechanical consumers of retained claims. See the
 [working direction](structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
 
+The working scope also migrates existing agentic capabilities (`summarize`, `explain`, `decompose`,
+`examine`), prose outputs, prior-result follow-up and inspection/status access onto the common
+mechanism. Preserve their questions and qualified information, with no permanent legacy correction/
+exposure regime. Changes from whole-investigram correction and replacement-chain selection must be
+explicit. Drafting names the cut-over; faithful subject/input mapping and interface packaging must
+preserve the application/engine distinction. This does not settle the review's fresh-answer selection
+or producer-renewal questions. See [agentic migration](structured-architectural-accounts-proposal.md#existing-agentic-capability-migration).
+
 An internal producer/contribution boundary enables controlled mechanism tests before real-provider
 migration, including separately attributed producers for cross-producer cases. Mechanical and agentic
 are production mechanisms, not a closed type list or a requirement for identical execution protocols.
