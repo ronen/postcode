@@ -469,6 +469,22 @@ establish equivalent inputs. This agreement does not introduce a rerun operation
 cache key, or change mechanical qualified-answer identity. Existing exact-history and fresh-selection
 rules still determine what is returned; reuse does not silently mutate the captured answer.
 
+Newly accumulated retained information does not by itself change request identity or force a new
+investigation. Relevant changes are handled through the existing needs-reconsideration mechanism:
+additions matching acquired inventory/selection scopes, or displacement affecting recorded exposure
+or designated membership, can produce cause-specific warnings and propagate. An exact description
+acquisition does not subscribe to every future addition about its entity. A warning does not itself
+rerun analysis, clear history or invalidate reuse; retained information remains accessible with its
+applicable status. Exact redisplay preserves the captured answer, while fresh access can disclose
+current standing and concerns under the existing access distinctions.
+
+Distinguish context explicitly selected as an input to the request from context chosen/acquired by
+the engine during execution. Changing an explicit input may change the request under existing
+application rules. Actual engine acquisitions, including automatically selected initial context,
+are recorded in production provenance/exposure; do not reselect today's context merely to force a
+new request identity for an otherwise reusable investigation. Deliberate reinvestigation or other
+changed effective inputs remain distinct. No automatic reassessment or new cache mechanism follows.
+
 The first accepted contribution for Q adds a result association targeting RESULT-Q.
 The fixture represents its members as exact item references and/or declaration references.
 Referencing declarations lets a result explicitly include identifying/descriptive uses
@@ -695,11 +711,14 @@ and fulfillment of that instruction are separate.
 Incomplete/paged inventories must disclose their actual coverage; the probe uses complete scoped
 lists and does not yet generalize those acquisition policies.
 
-Request identity captures operation, subject, parameters and selected seed context. Later
-acquisitions belong to generating provenance and cannot be known in a pre-execution request
-key. Retained-answer identity, query-invocation identity and evaluation reuse are distinct;
-no cache/freshness policy follows merely from assigning RESULT-Q. General discovery rankings
-and budgets remain surrounding application design.
+Request identity preserves operation, subject, parameters and context explicitly selected as a
+request input under existing application rules. Context selected/acquired by the engine for execution
+belongs to production provenance and exposure, including any initial scope selection; its changing
+availability does not itself force a new request identity or rerun. Relevant later changes can
+instead produce needs-reconsideration causes as described in [recognized reuse](#recognized-request-reuse).
+Retained-answer identity, query-invocation identity and evaluation reuse remain distinct. Assigning
+RESULT-Q introduces no new cache/freshness policy. General discovery rankings and budgets remain
+surrounding application design.
 
 ### Access obligations independent of presentation
 

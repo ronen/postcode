@@ -2362,3 +2362,14 @@ choosing by recency or merging them into a synthesized claim. Exact/explicit sel
 An agent can be supplied or offered both and choose for its own inquiry based on provenance or
 context; this does not change the alternatives' standing or invent a global priority. The rule is
 an application mapping constraint, not merely a guarantee that both are stored somewhere.
+
+## 2026-11-14 — New retained information flags reconsideration, not automatic reruns
+
+The human confirmed the existing reconsideration mechanism as the response to relevant new
+information. Clarified reuse: accumulation alone does not change request identity or force another
+investigation. Matching additions affect acquired inventory/selection scopes; displacement can
+affect actual exposure or designated membership. Causes propagate without automatic rerun or
+invalidating reuse. Exact description access does not subscribe to all future entity information.
+Explicit request inputs remain distinct from engine-selected/acquired context, whose actual delivery
+is production provenance/exposure. Updated the ambiguous seed-context wording; no new cache or
+reassessment mechanism is introduced, and exact historical answers remain fixed.

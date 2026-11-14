@@ -31,6 +31,13 @@ later designated answers can be organized. It is not the query, and Q identifies
 invocation, not a recurring question. A repeated user request recognized as Q1 reuses Q1's existing
 result identity; it does not create Q2 or another result designation. Exact redisplay is also
 access rather than investigation. A new Q requires new investigation, not just another user action.
+New retained information does not itself force a new request identity or rerun. Matching additions
+can flag acquired inventory/selection scopes; displacements can flag actual exposure or result
+membership, with cause-specific propagation. Such warnings do not invalidate reuse or trigger
+automatic reassessment. Exact acquisition of one description is not exposure to every future
+addition about the entity. Preserve captured answers and expose current status through the existing
+fresh-access paths. Explicitly selected request context differs from context the engine acquires
+for execution; the latter is production provenance/exposure, not an automatically changing reuse key.
 Effective-input equality still matters; matching wording alone does not establish reuse. See the
 [working agreement](structured-architectural-accounts-proposal.md#recognized-request-reuse).
 
