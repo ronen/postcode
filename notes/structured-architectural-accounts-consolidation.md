@@ -371,8 +371,19 @@ warnings. This covers direct exposure, designation concerns and inherited produc
 A fresh context delivery must disclose all those applicable causes; missing/altered disclosure is
 rejected. Notice receipt is awareness, not adequate replacement evidence or endorsement.
 New designation membership retains already-displaced standing without treating it as a new
-change. A prior acquisition can still affect its producer, even if the query finishes later.
-Later refresh does not clear that earlier warning. Historical statuses remain intact.
+change. A prior acquisition can still affect its producer if the relevant update was not delivered
+before submission. If the still-producing investigation receives the relevant updated information
+and qualified change context before submitting, that change alone should not mark its resulting
+contribution for reconsideration. Both old and new deliveries remain recorded. Trust the investigator
+to incorporate supplied context; no proof-of-understanding gate is added. A notice alone need not
+supply the update, and store acceptance alone is not delivery. Mechanical work requested during a
+dialog is one ordinary source of such updates.
+
+This is per-producing-investigation context handling, not retrospective clearance: it neither clears
+completed contributions nor transfers across producers sharing an invocation/acceptance. Undelivered
+or subsequent changes and other causes retain ordinary behavior. Displaced standing and exact result
+membership do not change. The existing timing probe lacks the substantive-update positive case and
+must be aligned; its repeated old excerpt plus notices does not establish that case.
 
 The fixture records host-assigned acceptance positions and delivery-state positions; these
 are ordering aids, not proposed public timestamps or agent-supplied exemption claims. General inventory

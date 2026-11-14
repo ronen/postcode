@@ -365,6 +365,17 @@ shared-item overlap. The separate addition experiment below preserves this rule 
 
 ### Actual-delivery timing and known causes
 
+> **Design update, 2026-11-14:** the agreed during-production rule now recognizes receipt of
+> the relevant updated information and qualified change context before the producing investigation
+> submits. That change alone should not flag its resulting contribution because an earlier delivery
+> preceded the change. Preserve both deliveries. This does not clear completed contributions,
+> alter association standing or transfer awareness between producers. The executable model below
+> still implements the earlier blanket no-refresh treatment. Its repeated old-excerpt/notice case
+> does not test substantive update delivery. Add that positive case and notice-only, undelivered,
+> separate-producer and completed-contribution controls before claiming alignment. No semantic
+> proof-of-understanding gate is required.
+
+
 `acceptedAt` orders accepted contributions; `asOfAcceptance` records the retained-state
 position at which a context delivery was captured for delivery. These are host-owned fixture
 provenance, not an agent's declaration that it already knew a cause. Acceptance checks

@@ -2496,3 +2496,22 @@ inform applicability/relevance and whether that knowledge belongs in PostCode, a
 The human confirmed that soft signatures—recommended architectural categories alongside required
 input constraints—are merely a candidate way to implement the already-deferred relevance capability.
 Recorded the option without adopting a signature extension or creating another scope commitment.
+
+
+## 2026-11-14 — Incorporate updates received during an investigation
+
+The human agreed that an agent receiving a mechanical result within its dialog can incorporate the
+updated state before submitting. Recorded the timing refinement: relevant updated information plus
+qualified change context delivered to the producing investigation before submission means that change
+alone does not flag its result merely because earlier exposure preceded it. Keep the complete delivery
+history. Undelivered/subsequent changes still follow existing rules; completed contributions are not
+cleared, producer histories are not merged, and displaced standing/exact membership do not change.
+This trusts the investigator to use context rather than requiring a proof of understanding.
+
+The old blanket no-refresh text is superseded. Store acceptance or a bare notice is not necessarily
+substantive update delivery. The executable spanning probe currently repeats an old excerpt with fresh
+notices, so it does not yet exercise this positive case. Marked model/probe alignment outstanding in
+contracts and the fixture README, with controls for notice-only/undelivered changes, separate producers
+and completed contributions. This turn records the agreement only; no executable model changes or
+claim of newly passing acceptance coverage. Sequential-investigation wording no longer excludes
+mechanical contributions accepted during an agent dialog.

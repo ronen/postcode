@@ -913,9 +913,26 @@ The producing evaluation also remains exempt from its own causes.
 
 New designation membership follows the same distinction: an association already displaced
 when the designation is accepted retains that standing, without a new membership warning.
-Its producer can still need reconsideration if it actually acquired the relevant information
-before the displacement. A later refresh does not erase an earlier exposure or clear its
-warning. Historical designations and their existing causes remain unchanged.
+Its producer can still need reconsideration if it acquired information before the displacement
+and did not receive the relevant update and change context before submitting its contribution.
+Historical designations and completed contributions retain their existing causes.
+
+**Updates during production:** atomic contribution acceptance does not require the retained state
+to remain unchanged throughout a dialog. An agent can request a mechanical analysis, receive its
+accepted result and incorporate that update before submitting. When the relevant updated information
+and qualified change context are delivered to that producing investigation before submission, that
+change alone should not mark its resulting contribution for reconsideration merely because an earlier
+delivery preceded it. Keep both deliveries in the production history; do not erase exposure or claim
+that the agent never received the earlier information. Trust the investigator to use supplied context,
+consistent with the existing semantic-instruction policy; no proof-of-understanding gate follows.
+
+This treatment is specific to the change and the still-producing investigation. Changes not delivered
+before submission, or arising afterward, retain the ordinary reconsideration behavior. A bare notice
+of a change is not necessarily delivery of the relevant updated information. Merely accepting a
+mechanical contribution into the store is not delivery to the agent. Completed investigrams are not
+cleared by a later dialog, nor do shared acceptance or invocation identities transfer this treatment
+to another producer. Displaced associations remain displaced, result memberships remain exact, and
+other causes remain independent. This is production-context handling, not retrospective reassessment.
 
 The fixture records host-assigned acceptance positions and the retained-state position of each
 captured delivery. An investigation may finish after a change while its inputs precede it;
@@ -924,12 +941,20 @@ disclose known direct and indirect causes with qualified reasons. Notice receipt
 awareness, not sufficient replacement context or endorsement of the displaced association.
 Further acquisition and qualification obligations still apply.
 
-This timing rule does not implement reassessment or clearance. Richer inventory coverage and
-partial-delivery precision and reassessment remain open. Displacement
-uses exact association exposure; additions use actual scoped inventory exposure. A newly read
-inventory includes already accepted entries without a later-change warning; a refresh does
-not erase an earlier inventory exposure. Acquiring a description before an addition and the
+This timing rule does not implement retrospective reassessment or clearance. Richer inventory
+coverage and partial-delivery precision remain open. Displacement uses exact association exposure;
+additions use actual scoped inventory exposure. A newly read inventory includes already accepted
+entries without a later-change warning. Refreshing an inventory preserves earlier exposure and does
+not by itself deliver the newly listed content. The during-production rule requires the relevant
+update and change context, not mere availability. Acquiring a description before an addition and the
 inventory only afterward does not create a pre-addition inventory dependency.
+
+The executable timing probe still checks the earlier conservative behavior. Its repeated old excerpt
+with fresh notices does not exercise receiving the substantive update during production. Align the
+probe with a positive updated-context case and controls for notice-only delivery, undelivered changes,
+separate producers and completed contributions; passing the current checks does not validate this
+new agreement. Exact recording/validation details remain implementation work, not a new semantic
+completeness gate.
 
 Causes remain distinct; no automatic transitive equivalence, last-writer truth, or disappearance
 of a cause through context trimming. A supersession can be contested. Competing declarations
@@ -966,8 +991,9 @@ PostCode does not choose by recency. Exact-reference acquisition can still reque
 association and must disclose its applicable standing; that is not a claim to have acquired all
 current descriptions. Fixed result designations are not silently expanded.
 
-The bounded discussion assumes sequential investigations, not parallel producers. When C acquires
-A after B's supersession, fresh delivery discloses B's declaration. C can acquire the required
+Parallel producers are not needed to explain this case. Contributions may nevertheless be accepted
+between deliveries within one investigation, including mechanical work requested during an agent
+dialog. When C acquires A after B's supersession, fresh delivery discloses B's declaration. C can acquire the required
 members/support and explicitly supersede B if warranted. Competition is therefore an edge case,
 not an assumed routine race: C may deliberately leave B standing while asserting a different
 account. Merely learning that B exists does not deliver all of B's content or fulfill the

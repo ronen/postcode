@@ -152,6 +152,13 @@ content, preserving provenance without undoing earlier displacement (see [contra
 <a id="verification"></a>
 ## Verification
 
+**Pending timing alignment (2026-11-14):** the notes now distinguish an update actually delivered
+within an ongoing investigation from a change not delivered before submission. The current probe's
+old excerpt plus fresh notices does not exercise receiving the substantive update; the model retains
+the earlier blanket no-refresh rule. Passing these checks does not yet validate the new production-
+context treatment. See [the contract update](contracts.md#actual-delivery-timing-and-known-causes).
+
+
 Timing branches contrast delivery before a change with informed delivery afterward,
 including an investigation finishing later, a later refresh that does not clear an old
 exposure, inherited producer concerns and knowingly designating historical membership.
