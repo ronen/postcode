@@ -2527,3 +2527,20 @@ workflow properties rather than golden prose, local keys, decomposition, topolog
 variation remains allowed within required scope; missing required data and broken references do not.
 Controlled dialogs retain precise payload/effect assertions for repeatable mechanism coverage.
 Detailed scenarios/pass criteria remain drafting and implementation work. No tests changed this turn.
+
+
+## 2026-11-14 — Consolidate agent instructions and focused live trials
+
+The human authorized an explicit design-level instruction inventory for implementation to author and
+exercise. Added the nine agreed instruction groups and representative observations to the proposal,
+with a summary/link in the consolidation. These cover result contracts, identity, qualified evidence,
+acquisition, association changes, content reuse/partition, redesignation, dialog updates and optional
+guidance. Existing governing agent instructions remain applicable; the inventory does not replace them.
+
+Focused trials use the real agent and integration, also providing smoke coverage; no separate smoke
+test suite is needed. Group instruction checks into a few trials rather than mandate one test per row.
+Use contract/property checks and limited human review, allow valid output variation, and distinguish
+instruction/protocol failures from reasoning difficulty. Controlled dialogs remain the systematic
+mechanism tests. Recorded bounded trial evidence and review rather than a compliance guarantee,
+broad evaluation infrastructure or automatic adoption of deferred semantic enforcement. Exact prompts,
+harnesses and scenarios remain implementation work. No product or executable fixture changes here.

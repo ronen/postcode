@@ -1,6 +1,6 @@
 # Investigram structure: consolidation checkpoint
 
-Updated: 2026-11-13
+Updated: 2026-11-14
 
 Current exploratory model, not an adopted schema or product behavior. The
 [proposal](structured-architectural-accounts-proposal.md) states scope, consequences and
@@ -574,6 +574,21 @@ test implementation technique, not a substitute for this content-to-diagram demo
 polished presentation system is required. SLICE remains free to select, refine, supplement or
 replace the diagram for the initial offering.
 
+The [agent instruction inventory](structured-architectural-accounts-proposal.md#agent-instructions-and-focused-live-trials)
+identifies the rules implementation should author and exercise: result contracts, deliberate identity
+reuse/introduction, evidence and qualification, acquisition before displacement, exact association
+changes, reuse/partition qualification, earlier-question understanding for redesignation, mid-dialog
+updates, and scoped optional guidance. Carry forward existing governing agent instructions too.
+Map this inventory to a few focused real-agent integration trials, not one fixed-output test per row.
+These trials supply smoke-test coverage as well; no separate smoke-test suite is required.
+
+Mechanically observable behavior can be checked automatically; a few reviewed outputs assess whether
+the instructions communicated their semantic intent. Distinguish unclear instructions or protocol
+problems from architectural reasoning difficulty, and retain useful failure cases for regression.
+This is bounded evidence of instruction usability, not proof of compliance. Controlled dialogs supply
+systematic mechanism coverage. Trial findings can inform review checkpoints without automatically
+introducing deferred semantic gates or broader evaluation infrastructure.
+
 Live runs together demonstrate a successful structured state-behavior investigation, qualified
 retention/retrieval supplying the diagram, and follow-up acquisition/reference of retained information.
 Check these contract and workflow properties, not an exact agent-authored payload or diagram image.
@@ -582,7 +597,7 @@ when the system under study is unchanged. Preserve required semantic scope, qual
 reference integrity while allowing that variation. Fixed controlled-dialog responses can support
 precise mechanism assertions. Failure handling alone does not demonstrate the successful live path.
 
-Require a few live-agent runs to check the real integration, plus controlled dialogs for mechanism
+Require a few focused live-agent integration trials, plus controlled dialogs for mechanism
 coverage, including optional actions such as follow-up options, presentation recommendations,
 reported inability, association operations and cross-investigation content reuse. Do not rely on
 spontaneous agent choices for repeatable coverage. Include an explicit state-diagram result contract:

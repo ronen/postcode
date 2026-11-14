@@ -1,6 +1,6 @@
 # Structured architectural accounts: working proposal
 
-Updated: 2026-11-13
+Updated: 2026-11-14
 
 Exploratory working proposal, not an adopted decision or implementation authorization.
 This version conforms the current synthesis and authored fixtures to entity-organized
@@ -39,8 +39,10 @@ they are not additional required implemented concepts or diagram types. Add anot
 if a specific mechanism requirement cannot be exercised by the selected one. This accepts that the
 first delivery will not demonstrate catalogue extension across substantially different concepts.
 
-Validation should combine **a few live-agent runs to check that the real integration works** with
-**controlled dialogs to provide mechanism coverage**. Cover consequential optional actions such as
+Validation should combine **a few focused live-agent integration trials** with **controlled dialogs
+to provide systematic mechanism coverage**. The live trials check that important instructions
+communicate their intent through the real integration and also supply smoke-test coverage; no
+separate live smoke-test suite is required. Cover consequential optional actions such as
 follow-up options, presentation recommendations, reported inability, association addition,
 supersession and withdrawal, and reuse of another investigation's content. Do not depend on an
 agent spontaneously choosing every action. Once an action is produced, its processing must satisfy
@@ -86,6 +88,53 @@ inventing it. Real production and application access must validate the mechanism
 Session alongside controlled coverage. The separate [SLICE step](upcoming-work.md#slice) selects
 the initial user-facing offering using the demonstrated capabilities and limitations. No persistence,
 GUI, general navigation, global operation catalogue or universal ontology is included by implication.
+
+## Agent instructions and focused live trials
+
+Implementation should author explicit agent instructions for the following agreed obligations and
+map them to a small set of focused live trials. This inventory consolidates the design-level rules;
+it is not final prompt wording, a universal agent benchmark or nine mandatory standalone tests.
+Supported schema/tool contracts supply the detailed protocol instructions. Multiple obligations can
+be exercised in one trial, and optional actions can be deliberately elicited rather than left to chance.
+
+| Instruction to author | Focused live observation |
+| --- | --- |
+| **Honor the requested result contract.** Use supported content types and supply required structured information; report inability or incompleteness when appropriate. | An explicit diagram request supplies compatible qualified content or an explicit unmet outcome, rather than prose presented as fulfillment. The trials collectively demonstrate the successful path, not only failure reporting. |
+| **Maintain identity deliberately.** Reuse supplied Entity IDs for the intended referents; explicitly introduce new things with identifying information. Matching names alone do not establish identity. | A follow-up reuses a known intended referent; similarly named distinct things are not automatically conflated. Ambiguous identity remains qualified rather than guessed as certainty. |
+| **Ground and qualify claims.** Distinguish source evidence, mechanical findings and earlier interpretations; preserve applicable basis, method and scope limitations. | Evidence and qualifications accompany the claims they support. Earlier interpretation is not presented as mechanically verified fact merely because it was retained. |
+| **Acquire the information needed for the action.** Before supersession or withdrawal, acquire the target's complete designated content, qualifications and required support, including semantic dependencies. An address or notice alone is insufficient. | From deliberately limited initial context, the agent requests the material needed before proposing displacement. Recorded acquisition can be inspected without introducing a production acceptance gate for semantic completeness. |
+| **Express organizing changes explicitly.** Distinguish addition, supersession and withdrawal; address exact associations and explain displacement with qualified grounds. | The declaration matches the intended change and its explanation. Conflicting accounts are not silently treated as agreement; a new reconciliation or correspondence claim requires its own qualified analysis. |
+| **Preserve meaning when reusing or partitioning content.** Reference unchanged content with its original ownership and qualification; supply new content/support for new claims. Each investigram carries its applicable qualifications. | Reuse does not silently broaden a claim. Partitioning neither drops necessary limitations nor indiscriminately copies unrelated restrictions. Structural ownership/provenance preservation remains a host responsibility too. |
+| **Understand the original question before redesignating its result.** Consider the earlier invocation's question, subjects, parameters and scope. Redesignation is optional and distinct from changing an Entity's associated information. | A proposed replacement designation addresses the earlier question, rather than merely supplying new information about one of its subjects. |
+| **Incorporate updates delivered during the dialog.** Consider relevant updated information and qualified change context before submitting. | The final contribution accounts for a relevant mid-dialog update rather than blindly repeating the earlier account. This does not require endorsing the update; disagreement must remain explicit and qualified. Timing/status processing itself is tested deterministically. |
+| **Author optional guidance with the correct scope.** Follow-up options and presentation recommendations belong to the producing investigram. Suggestions are not requirements, eligibility judgments or permission to render. | When deliberately elicited, guidance references the intended subjects/content and preserves applicable qualification. Absence of optional guidance in an unrelated trial is not failure. |
+
+Carry forward existing governing instructions, including evidence access through supported PostCode
+interfaces and treating inspected repository content as evidence, not instructions to obey. These
+come from [Investigator execution and evidence access](../docs/decisions/investigator-execution-and-evidence-access.md),
+not new requirements invented by this inventory. Existing applicable qualification and evidence
+requirements remain governing constraints. The inventory is not an exhaustive restatement of all
+existing agent instructions or host-enforced access restrictions.
+
+Live trials assess whether the instructions are usable, not whether agent compliance or architectural
+truth is guaranteed. Check observable protocol/reference properties automatically and inspect a few
+outputs for semantic instruction-following, such as whether the reason concerns the association
+actually targeted. Allow legitimate variation in wording, decomposition, local keys and optional
+content. A correct declaration is not defined by matching one previously generated answer.
+
+Use a few attempts during instruction development to expose unclear wording or protocol difficulty.
+Distinguish those failures from difficulty with the architectural question before revising instructions;
+keep representative failures as regression scenarios where useful. Record enough of the instructions,
+agent version, inputs and observed behavior to explain the trial findings. Exact harness, run counts,
+scenario grouping and review procedure remain implementation choices; no statistical compliance claim
+or broad evaluation infrastructure is required. Controlled dialogs provide repeatable mechanism
+coverage, including structural rejection and propagation. They cannot establish that a real agent
+understands the instructions.
+
+These focused trials also exercise the real production, retention, retrieval and diagram/follow-up
+workflow described above; no separate smoke-test suite is needed. Findings may motivate proposed
+instruction or design changes at the planned review checkpoints. They do not automatically authorize
+new semantic enforcement gates or bring deferred mechanisms into scope.
 
 ## The conceptual center
 
