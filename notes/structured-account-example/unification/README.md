@@ -148,6 +148,22 @@ introduction and association rules. In particular, an identifying item need not 
 prose-shaped `entity-description/0`. A newly introduced entity still needs explicit identifying
 content and an `identifies` association. A fresh allocation cannot steal an existing ID.
 
+### Independent production exposure within one acceptance
+
+Q-M also supplies host `exposureByInvestigram` bindings. CONSTANT-TARGET-1 has no retained-input
+exposure. TARGET-ORGANIZATION-1 receives RUNTIME-1 plus the exact mechanical item produced in the
+same submission. Their captured histories remain distinct, even though acceptance is atomic.
+Per-invocation warning totals summarize the contributions; they do not supply inherited exposure.
+
+The regression displaces the organizer's earlier input independently. The organizer and its readers
+are flagged; the mechanical item and its exact-content reader are not. Fresh direct content access
+also avoids the sibling's concern, while fresh organizing-association access discloses it. An
+informed later reader does not acquire that already-known concern as a new cause. Original snapshots
+and captured histories remain unchanged. A separate branch gives the mechanical producer actual
+retained input: its later displacement reaches the mechanical finding and then the organizer that
+received it. This tests the real dependency without inventing reverse exposure. All are authored
+execution scenarios, not a live adapter or claims of semantic reliance.
+
 ### Provider re-encounter before acceptance
 
 The [bounded host adapter](provider-identity.py) resolves provider + native ID + supported basis
@@ -324,7 +340,7 @@ Run `python3 notes/structured-account-example/unification/check-unification.py`.
 plus six provider re-encounter branches, organizing withdrawal-plus-addition and optional explicit
 restoration of earlier content, later symbol introduction, exact answer reuse, separate
 production bases, mixed-method acceptance, complementary additions, qualified supersession,
-original snapshots and result/exposure causes. It rejects **28 malformed cases atomically**, including
+original snapshots and result/exposure causes. It rejects **38 malformed cases atomically**, including
 empty native identity, forged producer attribution, unsupported producer/type, missing basis/scope, inconsistent target status,
 unknown entity/displacement targets, duplicate item keys, missing grounds, incomplete/ambiguous
 per-investigram provenance, fresh common-ID allocation collisions and an unreachable mechanical

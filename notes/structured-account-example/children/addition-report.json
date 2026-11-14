@@ -25,12 +25,12 @@
           "Q2"
         ],
         "inheritedOnlyViaProducerQueries": {
+          "Q-excerpt": [
+            "Q-observer"
+          ],
           "Q-role-only": [
             "Q-updated",
             "Q2"
-          ],
-          "Q-excerpt": [
-            "Q-observer"
           ]
         },
         "unaffectedEvaluations": [
@@ -136,12 +136,12 @@
           "Q2"
         ],
         "inheritedOnlyViaProducerQueries": {
+          "Q-excerpt": [
+            "Q-observer"
+          ],
           "Q-role-only": [
             "Q-updated",
             "Q2"
-          ],
-          "Q-excerpt": [
-            "Q-observer"
           ]
         },
         "unaffectedEvaluations": [
@@ -325,6 +325,25 @@
           "Q-updated": [],
           "Q-role-only": [],
           "Q-reference-only": []
+        },
+        "investigrams": {
+          "ADMISSION-1": [],
+          "ADMISSION-2": [],
+          "DEFINITIONS-1": [],
+          "EXCERPT-1": [
+            "ADMISSION-2::admission-cases"
+          ],
+          "INTRO-1": [],
+          "OBSERVER-1": [
+            "ADMISSION-2::admission-cases",
+            "TRIAL-RESULT-1::updated-admission-result"
+          ],
+          "REFERENCE-ONLY-1": [],
+          "ROLE-DEFINITIONS-1": [],
+          "ROLE-READER-1": [],
+          "TRIAL-1": [],
+          "TRIAL-RESULT-1": [],
+          "UPDATED-1": []
         },
         "causeKinds": {
           "ORIENTATION-0::policy": "new-information",
@@ -637,6 +656,27 @@
           "Q-reference-only": [],
           "Q-inventory": [],
           "Q-inventory-dependent": []
+        },
+        "investigrams": {
+          "ADMISSION-1": [],
+          "ADMISSION-2": [],
+          "DEFINITIONS-1": [],
+          "EXCERPT-1": [
+            "ADMISSION-2::admission-cases"
+          ],
+          "INTRO-1": [],
+          "INVENTORY-1": [],
+          "INVENTORY-DEPENDENT-1": [],
+          "OBSERVER-1": [
+            "ADMISSION-2::admission-cases",
+            "TRIAL-RESULT-1::updated-admission-result"
+          ],
+          "REFERENCE-ONLY-1": [],
+          "ROLE-DEFINITIONS-1": [],
+          "ROLE-READER-1": [],
+          "TRIAL-1": [],
+          "TRIAL-RESULT-1": [],
+          "UPDATED-1": []
         },
         "causeKinds": {
           "ORIENTATION-0::policy": "new-information",

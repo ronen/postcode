@@ -394,6 +394,50 @@
         "COMPETING-1::expanded-identification"
       ],
       "Q-competing": []
+    },
+    "investigrams": {
+      "ADMISSION-1": [],
+      "ADMISSION-2": [
+        "COMPETING-1::expanded-identification",
+        "EXPANSION-1::expanded-identification"
+      ],
+      "COMPETING-1": [],
+      "DEFINITIONS-1": [],
+      "EXCERPT-1": [
+        "ADMISSION-2::admission-cases"
+      ],
+      "EXPANSION-1": [
+        "COMPETING-1::expanded-identification"
+      ],
+      "INTRO-1": [],
+      "OBSERVER-1": [
+        "ADMISSION-2::admission-cases",
+        "COMPETING-1::expanded-identification",
+        "EXPANSION-1::expanded-identification",
+        "TRIAL-RESULT-1::updated-admission-result"
+      ],
+      "REUSE-1": [
+        "COMPETING-1::expanded-identification"
+      ],
+      "ROLE-DEFINITIONS-1": [
+        "COMPETING-1::expanded-identification",
+        "EXPANSION-1::expanded-identification"
+      ],
+      "TRIAL-1": [
+        "COMPETING-1::expanded-identification",
+        "EXPANSION-1::expanded-identification"
+      ],
+      "TRIAL-RESULT-1": [
+        "COMPETING-1::expanded-identification",
+        "EXPANSION-1::expanded-identification"
+      ],
+      "UPDATED-1": [
+        "COMPETING-1::expanded-identification",
+        "EXPANSION-1::expanded-identification"
+      ],
+      "WITHDRAW-1": [
+        "COMPETING-1::expanded-identification"
+      ]
     }
   },
   "checkpoints": {
@@ -475,6 +519,23 @@
         ],
         "Q2": [],
         "Q-updated": []
+      },
+      "investigrams": {
+        "ADMISSION-1": [],
+        "ADMISSION-2": [],
+        "DEFINITIONS-1": [],
+        "EXCERPT-1": [
+          "ADMISSION-2::admission-cases"
+        ],
+        "INTRO-1": [],
+        "OBSERVER-1": [
+          "ADMISSION-2::admission-cases",
+          "TRIAL-RESULT-1::updated-admission-result"
+        ],
+        "ROLE-DEFINITIONS-1": [],
+        "TRIAL-1": [],
+        "TRIAL-RESULT-1": [],
+        "UPDATED-1": []
       }
     },
     "afterWithdrawalBeforeCompeting": {
@@ -611,6 +672,37 @@
         "Q-expansion": [],
         "Q-reuse": [],
         "Q-withdraw": []
+      },
+      "investigrams": {
+        "ADMISSION-1": [],
+        "ADMISSION-2": [
+          "EXPANSION-1::expanded-identification"
+        ],
+        "DEFINITIONS-1": [],
+        "EXCERPT-1": [
+          "ADMISSION-2::admission-cases"
+        ],
+        "EXPANSION-1": [],
+        "INTRO-1": [],
+        "OBSERVER-1": [
+          "ADMISSION-2::admission-cases",
+          "EXPANSION-1::expanded-identification",
+          "TRIAL-RESULT-1::updated-admission-result"
+        ],
+        "REUSE-1": [],
+        "ROLE-DEFINITIONS-1": [
+          "EXPANSION-1::expanded-identification"
+        ],
+        "TRIAL-1": [
+          "EXPANSION-1::expanded-identification"
+        ],
+        "TRIAL-RESULT-1": [
+          "EXPANSION-1::expanded-identification"
+        ],
+        "UPDATED-1": [
+          "EXPANSION-1::expanded-identification"
+        ],
+        "WITHDRAW-1": []
       }
     }
   },

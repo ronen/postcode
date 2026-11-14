@@ -266,6 +266,16 @@ they are not hidden consequences of the word association.
 
 ## Exposure and result membership
 
+Each investigram captures its own actual production/exposure history at creation. Contributions
+from one production can share that history; atomic acceptance or a shared outer invocation does
+not merge independently produced contributions' inputs. The unification fixture now records the
+mechanical producer's source-only input separately from the organizing agent's retained input and
+actual receipt of the mechanical item. Propagation and fresh disclosure follow the delivered
+contribution's owner, not an invocation-wide union. Invocation totals are report summaries only.
+A mechanical input concern still propagates forward to an agent that received its finding; agent-
+only input does not propagate backward into the mechanical finding. No per-output-item reliance
+inference is introduced; contributions from a shared production retain its conservative exposure.
+
 Supplying entity S means supplying a qualified context selection, not its ID or a
 canonical definition. Selecting a portion of Q's result and delivering it records its exact
 association/designation route under RESULT-Q, not every association of that entity. Receiving

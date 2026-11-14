@@ -2327,3 +2327,28 @@ information belongs to application contracts; no new mechanical-specific selecti
 mechanism is required here. Existing guarantees remain migration constraints, with concrete
 conflicts surfaced rather than silently resolved. Updated the proposal and consolidation and
 closed that discussion item; fresh-result selection remains a separate review question.
+
+## 2026-11-14 — Fix fixture exposure attribution to investigram production
+
+The human clarified that each investigram captures its production exposure at creation; atomic
+acceptance does not merge independent producers' histories. Fixed the authored model rather than
+introducing a new per-item dependency policy. Q-M now has host-captured exposure separately for the
+source-only mechanical contribution and the agentic organizer, including actual delivery of the
+mechanical item to the latter. Shared-production contributions retain their common input history.
+Propagation, designation generating causes and fresh disclosure follow the delivered owner;
+invocation totals are report summaries, not inheritance sources.
+
+Added explicit direct-item access to isolate mechanical content from its organizing association;
+routed excerpts still require their association route. Regression checks show that an agent-only
+input displacement affects the organizer and its readers, not the mechanical finding or its
+exact-content reader. A second branch supplies retained input to the mechanical producer and
+verifies forward propagation through the finding to the organizer. Captured histories/answers
+remain unchanged, and fresh informed delivery respects the existing timing rule.
+
+All authored checkers pass: partitions/lifecycle (72 malformed cases), additions (26 plus 4
+historical cases), acquisition (26), guidance (26), composition (5 payload and 9 selector cases),
+diagram/legend checks, and unification (38). A deliberate in-memory simulation of the old shared
+invocation exposure fails the new mechanical-isolation assertion. Reports regenerated; sorted an
+existing set-based report iteration to keep those outputs reproducible. These are fixture checks,
+not live or product verification. The separately superseded automatic-provider-renewal branches
+remain marked pending alignment; this change addresses production exposure only.

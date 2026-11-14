@@ -391,6 +391,40 @@
         "COMPETING-1::expanded-identification"
       ],
       "Q-competing": []
+    },
+    "investigrams": {
+      "ADMISSION-1": [],
+      "ADMISSION-2": [
+        "COMPETING-1::expanded-identification",
+        "EXPANSION-1::expanded-identification"
+      ],
+      "COMPETING-1": [],
+      "EXCERPT-1": [
+        "ADMISSION-2::admission-cases"
+      ],
+      "EXPANSION-1": [
+        "COMPETING-1::expanded-identification"
+      ],
+      "OBSERVER-1": [
+        "ADMISSION-2::admission-cases",
+        "COMPETING-1::expanded-identification",
+        "EXPANSION-1::expanded-identification",
+        "TRIAL-1::updated-admission-result"
+      ],
+      "REUSE-1": [
+        "COMPETING-1::expanded-identification"
+      ],
+      "TRIAL-1": [
+        "COMPETING-1::expanded-identification",
+        "EXPANSION-1::expanded-identification"
+      ],
+      "UPDATED-1": [
+        "COMPETING-1::expanded-identification",
+        "EXPANSION-1::expanded-identification"
+      ],
+      "WITHDRAW-1": [
+        "COMPETING-1::expanded-identification"
+      ]
     }
   },
   "checkpoints": {
@@ -472,6 +506,19 @@
         ],
         "Q2": [],
         "Q-updated": []
+      },
+      "investigrams": {
+        "ADMISSION-1": [],
+        "ADMISSION-2": [],
+        "EXCERPT-1": [
+          "ADMISSION-2::admission-cases"
+        ],
+        "OBSERVER-1": [
+          "ADMISSION-2::admission-cases",
+          "TRIAL-1::updated-admission-result"
+        ],
+        "TRIAL-1": [],
+        "UPDATED-1": []
       }
     },
     "afterWithdrawalBeforeCompeting": {
@@ -608,6 +655,29 @@
         "Q-expansion": [],
         "Q-reuse": [],
         "Q-withdraw": []
+      },
+      "investigrams": {
+        "ADMISSION-1": [],
+        "ADMISSION-2": [
+          "EXPANSION-1::expanded-identification"
+        ],
+        "EXCERPT-1": [
+          "ADMISSION-2::admission-cases"
+        ],
+        "EXPANSION-1": [],
+        "OBSERVER-1": [
+          "ADMISSION-2::admission-cases",
+          "EXPANSION-1::expanded-identification",
+          "TRIAL-1::updated-admission-result"
+        ],
+        "REUSE-1": [],
+        "TRIAL-1": [
+          "EXPANSION-1::expanded-identification"
+        ],
+        "UPDATED-1": [
+          "EXPANSION-1::expanded-identification"
+        ],
+        "WITHDRAW-1": []
       }
     }
   },

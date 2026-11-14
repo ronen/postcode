@@ -344,9 +344,24 @@ Consumers of an actually delivered old designation may need reconsideration when
 
 Q1's identifying membership can be affected without Q1 having received its newly introduced S.
 No incoming exposure is fabricated. A cause can then reach an actual consumer of that exact
-designation. Delivered contributions from an exposure-affected producing evaluation also
-retain that concern. This remains conservative at evaluation/designation granularity; it
-is not proof that every received excerpt relied on the affected claim.
+designation. Delivered contributions from an exposure-affected producing execution also retain
+that concern. This remains conservative within that production, not across independent producers
+sharing an invocation or acceptance; it is not proof that every excerpt relied on the input.
+
+Each retained investigram has host-captured `productionExposure`. Single-production fixtures share
+the request's actual deliveries. Distinct per-investigram production contexts require complete
+`exposureByInvestigram` host bindings: an execution key, indices into the captured delivery list and
+exact same-submission items actually supplied. These record execution history, not an agent's
+claimed semantic dependence. Same-execution owners share producer attribution and input history.
+Same-submission item deliveries capture original qualification/provenance; their production-input
+links must not be self-referential or cyclic. This is not a validator for arbitrary content links.
+
+Reconsideration and fresh disclosure use the supplied owner's history. The report's `investigrams`
+map records those causes; `evaluations` is a per-invocation union retained for summary comparison,
+never a propagation source. `generatingEvaluationCauses` on a designation follows its owner's
+production history despite that legacy report-key spelling. A fixture `exactItems` selection makes
+direct content access explicit, without an invented association use; routed `items` excerpts still
+require `viaAssociation`. Both retain source qualification and actual production concerns.
 
 The displacement-only regression uses supersession/withdrawal as causes and exempts the
 producer from its own causes. It uses exact displaced associations, not entity equality or

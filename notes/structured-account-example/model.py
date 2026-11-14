@@ -121,6 +121,11 @@ class Model:
                 for x in projection[field].values()}
 
     @staticmethod
+    def delivered_owners(projection):
+        return {x['sourceInvestigram'] for field in ['items', 'declarations', 'associationUses', 'options', 'notices']
+                for x in projection[field].values()}
+
+    @staticmethod
     def projection_entities(projection):
         """Explicitly delivered association targets, not every entity mentioned in content."""
         entities = {x['value']['target']['entity']['entity'] for x in projection['associationUses'].values()}
@@ -163,7 +168,7 @@ class Model:
         if 'scopeSelection' in selection:
             scope = selection['scopeSelection']
             assert set(scope) == {'roles', 'standing'} and scope['standing'] == 'undisplaced', 'unsupported selection scope'
-            assert not association_selection and not selection.get('items') and 'inventory' not in selection, 'ambiguous acquisition mode'
+            assert not association_selection and not selection.get('items') and not selection.get('exactItems') and 'inventory' not in selection, 'ambiguous acquisition mode'
             selected = self.scoped_associations(entity, scope['roles'], as_of, undisplaced=True)
             association_selection = [{'investigram': r[0], 'associationKey': r[1]} for r in selected]
             selection_scope = {'entity': entity, 'roles': sorted(scope['roles']),
@@ -174,9 +179,16 @@ class Model:
             assert self.accepted_at(key) <= as_of, 'association did not exist at delivery'
             more_ds, more_items = self.expand(key)
             ds |= more_ds; its |= more_items; uses |= more_ds
+        # Explicit direct content access does not invent an organizing-association use.
+        for ref in selection.get('exactItems', []):
+            assert set(ref) == {'investigram', 'contentKey'}, 'invalid exact item reference'
+            key = address(ref, 'contentKey')
+            assert key in self.items() and self.accepted_at(key) <= as_of, 'item did not exist at delivery'
+            its.add(key)
         # Excerpts retain the exact association route without claiming full member delivery.
         for ref in selection.get('items', []):
             key = address(ref, 'contentKey')
+            assert key in self.items() and self.accepted_at(key) <= as_of, 'item did not exist at delivery'
             via = address(ref['viaAssociation'], 'associationKey')
             assert self.declarations()[via]['target']['entity']['entity'] == entity
             assert self.accepted_at(via) <= as_of, 'excerpt route did not exist at delivery'
@@ -266,8 +278,8 @@ class Model:
                      any(label(address(x, 'associationKey')) in delivered | history_labels for x in d.get('displaces', []))}
             for ref in uses:
                 known.update(status['designations'].get(label(ref), {}).get('needsReconsideration', []))
-            for source in self.projection_sources(projection):
-                known.update(status['evaluations'].get(source, []))
+            for source in self.delivered_owners(projection):
+                known.update(status['investigrams'].get(source, []))
             missing = known - set(notices)
             if not missing:
                 break
@@ -321,6 +333,7 @@ class Model:
         for raw in result['investigrams']:
             a = copy.deepcopy(raw)
             assert 'provenance' not in a, 'production provenance is host-attributed'
+            assert 'productionExposure' not in a, 'production exposure is host-attributed'
             local_key = a.pop('key')
             oid = bindings['investigramIds'][local_key]
             a.update(id=oid, queryInvocation=qid, acceptedAt=self.acceptance_order + 1)
@@ -422,6 +435,42 @@ class Model:
             for child in staged.investigrams[oid]['children']: visit(owner(child))
         for root in result['compositionRoots']: visit(owner(root))
         assert visited == new_owners
+        contexts = bindings.get('exposureByInvestigram')
+        productions = {json.dumps(p, sort_keys=True)
+                       for p in bindings.get('provenanceByInvestigram', {}).values()}
+        assert len(productions) <= 1 or contexts is not None, 'distinct producers require explicit exposure histories'
+        if contexts is None:
+            # Existing single-production fixtures share the dialog's actual inputs.
+            contexts = {key: {'execution': qid, 'deliveryIndices': list(range(len(projections))),
+                              'sameSubmissionItems': []} for key in bindings['investigramIds']}
+        assert set(contexts) == set(bindings['investigramIds']), 'incomplete production exposure attribution'
+        groups = {}
+        for key, oid in bindings['investigramIds'].items():
+            context = contexts[key]
+            assert set(context) == {'execution', 'deliveryIndices', 'sameSubmissionItems'}, 'invalid production exposure shape'
+            assert isinstance(context['execution'], str) and context['execution'], 'missing production execution'
+            indices = context['deliveryIndices']
+            assert isinstance(indices, list) and all(type(i) is int and 0 <= i < len(projections) for i in indices), 'invalid delivery index'
+            assert len(indices) == len(set(indices)), 'duplicate delivery index'
+            local_items = [address(resolve(ref, bindings), 'contentKey') for ref in context['sameSubmissionItems']]
+            assert len(local_items) == len(set(local_items)), 'duplicate same-submission delivery'
+            assert all(ref[0] in new_owners and ref[0] != oid and ref in staged.items() for ref in local_items), 'invalid same-submission delivery'
+            captured = {'execution': [qid, context['execution']],
+                        'deliveries': [copy.deepcopy(projections[i]) for i in indices],
+                        'sameSubmissionItems': [staged.qualified(ref[0], staged.items()[ref]) for ref in local_items]}
+            producer = staged.investigrams[oid].get('provenance', {}).get('producer')
+            signature = (producer, captured['deliveries'], captured['sameSubmissionItems'])
+            assert context['execution'] not in groups or groups[context['execution']] == signature, 'inconsistent shared production history'
+            groups[context['execution']] = signature
+            staged.investigrams[oid]['productionExposure'] = captured
+        assert set(range(len(projections))) == {i for c in contexts.values() for i in c['deliveryIndices']}, 'unattributed delivery'
+        # An actual same-submission input must have been produced first; ordinary
+        # content references and composition links do not create this dependency.
+        def check_inputs(oid, path):
+            assert oid not in path, 'cyclic production delivery'
+            for item in staged.investigrams[oid]['productionExposure']['sameSubmissionItems']:
+                check_inputs(item['sourceInvestigram'], path | {oid})
+        for oid in new_owners: check_inputs(oid, set())
         exposure = sorted({p['entity'] for p in projections if p['items'] or p['declarations'] or p['options'] or p['notices']})
         sources = sorted({src for p in projections for src in self.projection_sources(p)})
         staged.acceptance_order = self.acceptance_order + 1
@@ -509,30 +558,32 @@ class Model:
                         if d['target']['role'] == 'result' and d['operation'] != 'withdrawal'}
         membership = {r: self.expand(r)[0] - {r} for r in designations}
         member_causes = {r: set() for r in designations}
-        eval_causes = {qid: set() for qid in queries}
+        contributions = {oid: a for oid, a in self.investigrams.items()
+                         if a.get('queryInvocation') in queries}
+        contribution_causes = {oid: set() for oid in contributions}
         for cause, declaration in decls.items():
             addition = declaration['operation'] == 'addition'
             if addition and self.addition_policy == 'displacement-only':
                 continue
             cid = label(cause)
             cause_at = self.accepted_at(cause)
-            producer = self.investigrams[cause[0]]['queryInvocation']
+            producer = self.investigrams[cause[0]].get('productionExposure', {}).get('execution')
             displaced = {address(x, 'associationKey') for x in declaration.get('displaces', [])}
             target_entity = declaration['target']['entity']['entity']
-            # Old deliveries remain exposures even if the same query acquires fresh context later.
-            prior = {qid: [p for p in q['deliveries'] if p['asOfAcceptance'] < cause_at]
-                     for qid, q in queries.items()}
-            for qid in queries:
+            # Each contribution retains only its producing execution's captured input.
+            prior = {oid: [p for p in a['productionExposure']['deliveries'] if p['asOfAcceptance'] < cause_at]
+                     for oid, a in contributions.items()}
+            for oid, a in contributions.items():
                 if self.addition_policy == 'inventory':
                     direct = any(self.inventory_matches(p, declaration) or
                                  bool(self.delivered_declarations(p) & {label(r) for r in displaced})
-                                 for p in prior[qid])
+                                 for p in prior[oid])
                 else:
                     direct = any(target_entity in self.projection_entities(p) if addition else
                                  bool(self.delivered_declarations(p) & {label(r) for r in displaced})
-                                 for p in prior[qid])
-                if qid != producer and direct:
-                    eval_causes[qid].add(cid)
+                                 for p in prior[oid])
+                if a['productionExposure']['execution'] != producer and direct:
+                    contribution_causes[oid].add(cid)
             for ref in designations:
                 represented = {decls[r]['target']['entity']['entity'] for r in membership[ref] | {ref}}
                 relevant = ((self.addition_policy == 'conservative' and target_entity in represented)
@@ -541,25 +592,31 @@ class Model:
                     member_causes[ref].add(cid)
             changed = True
             while changed:
-                before = copy.deepcopy(eval_causes)
-                for qid in queries:
-                    if qid == producer:
+                before = copy.deepcopy(contribution_causes)
+                for oid, a in contributions.items():
+                    exposure = a['productionExposure']
+                    if exposure['execution'] == producer:
                         continue
-                    for projection in prior[qid]:
+                    for projection in prior[oid]:
                         received_affected_designation = any(
                             label(ref) in projection['associationUses'] and
-                            (cid in member_causes[ref] or
-                             cid in eval_causes.get(self.investigrams[ref[0]]['queryInvocation'], set()))
+                            (cid in member_causes[ref] or cid in contribution_causes.get(ref[0], set()))
                             for ref in designations)
-                        received_affected_producer = any(cid in eval_causes.get(src, set())
-                                                         for src in self.projection_sources(projection))
+                        received_affected_producer = any(cid in contribution_causes.get(src, set())
+                                                         for src in self.delivered_owners(projection))
                         if received_affected_designation or received_affected_producer:
-                            eval_causes[qid].add(cid)
-                changed = before != eval_causes
+                            contribution_causes[oid].add(cid)
+                    if a['acceptedAt'] < cause_at and any(
+                            cid in contribution_causes.get(item['sourceInvestigram'], set())
+                            for item in exposure['sameSubmissionItems']):
+                        contribution_causes[oid].add(cid)
+                changed = before != contribution_causes
+        # Invocation totals are a reporting summary, never an inheritance source.
+        eval_causes = {qid: set().union(*(contribution_causes[oid] for oid, a in contributions.items()
+                                        if a['queryInvocation'] == qid)) for qid in queries}
         statuses = {}
         for ref, declaration in sorted(designations.items()):
-            qid = self.investigrams[ref[0]]['queryInvocation']
-            generated = eval_causes.get(qid, set())
+            generated = contribution_causes.get(ref[0], set())
             statuses[label(ref)] = {
                 'resultEntity': declaration['target']['entity']['entity'],
                 'displacedBy': sorted(label(r) for r, d in decls.items()
@@ -569,7 +626,8 @@ class Model:
                 'membershipCauses': sorted(member_causes[ref]),
                 'generatingEvaluationCauses': sorted(generated),
                 'needsReconsideration': sorted(member_causes[ref] | generated)}
-        result = {'designations': statuses, 'evaluations': {k: sorted(v) for k, v in eval_causes.items()}}
+        result = {'designations': statuses, 'evaluations': {k: sorted(v) for k, v in eval_causes.items()},
+                  'investigrams': {k: sorted(v) for k, v in sorted(contribution_causes.items())}}
         if self.addition_policy != 'displacement-only':
             result['causeKinds'] = {label(r): ('new-information' if d['operation'] == 'addition' else 'displacement')
                                     for r, d in decls.items()}

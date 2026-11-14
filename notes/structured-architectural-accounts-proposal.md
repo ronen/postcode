@@ -249,7 +249,7 @@ The probe supports this direction and identifies three concrete requirements:
   methods; not every internal compiler phase needs a public query-result entity.
 
 Four small content contracts, six provider re-encounter branches, organizing withdrawal-plus-
-addition/restoration and twenty-eight malformed cases are exercised. No native provider, live investigator or proposed constant-target method was run.
+addition/restoration, independent production-exposure histories and thirty-eight malformed cases are exercised. No native provider, live investigator or proposed constant-target method was run.
 Production content contracts, actual coordinated execution, detailed stage boundaries and full
 partial/failure result handling remain planning work. First native verification must include
 a mechanical consumer of retained claims, such as export Projection reading module naming,
@@ -789,9 +789,20 @@ or reinstate A. The current standing is derived from retained declarations, not 
 The [renewal probe](structured-account-example/acquisition.md#current-standing-of-a-cause) exercises
 this through existing standing lookup and fresh result disclosure, preserving captured history.
 
-The prototype retains conservative generating-evaluation propagation: a cause affecting
-actual input can follow that producer's delivered contributions. A selected result designation
-can transmit its membership concerns; this does not establish item-level causal reliance.
+Each investigram captures its actual production/exposure history at creation. Several investigrams
+from the same production may share that history; a common acceptance or outer invocation does not
+merge distinct producers' inputs. The unification fixture now separately captures source-only
+mechanical production and the agentic organizer's retained input plus the mechanical item actually
+supplied to it. No exposure is inferred merely from an output reference or shared submission.
+
+The prototype conservatively propagates a cause through contributions whose producing execution
+received affected input. It does not infer different reliance for output items within one production.
+Exact delivery of a mechanical item follows its owner's history, not an organizing sibling's.
+Actual mechanical input concerns can pass through the finding to an agent that received it, including
+when their contributions are accepted together. Per-invocation warning totals are report summaries,
+not a source from which every contribution inherits exposure. This corrects the fixture boundary;
+it is not a new per-item exposure policy. A selected result designation can transmit its membership
+concerns; this does not establish item-level causal reliance.
 The timing boundary is each actual delivery, including later acquisitions during a dialogue.
 A displacement already accepted at that point is known context and must be disclosed; it is
 not a later change to that delivery. Missing disclosure is a delivery defect, not a substitute

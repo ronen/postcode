@@ -1252,6 +1252,27 @@
               }
             ]
           }
+        },
+        "exposureByInvestigram": {
+          "constant": {
+            "execution": "constant-analysis",
+            "deliveryIndices": [],
+            "sameSubmissionItems": []
+          },
+          "organization": {
+            "execution": "target-organization",
+            "deliveryIndices": [
+              0
+            ],
+            "sameSubmissionItems": [
+              {
+                "investigram": {
+                  "submittedInvestigram": "constant"
+                },
+                "contentKey": "dependency"
+              }
+            ]
+          }
         }
       },
       "submission": {

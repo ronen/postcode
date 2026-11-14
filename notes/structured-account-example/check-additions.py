@@ -74,7 +74,7 @@ def impact(model, cause, prior_queries, prior_designations):
             'acceptedAt': cause_at, 'directEvaluations': direct,
             'inheritedOnlyEvaluations': sorted(set(affected) - set(direct)),
             'affectedEvaluations': affected,
-            'inheritedOnlyViaProducerQueries': {qid: sorted({src for p in model.queries[qid]['deliveries'] if p['asOfAcceptance'] < cause_at for src in model.projection_sources(p) if cause in status['evaluations'].get(src, [])}) for qid in set(affected) - set(direct)},
+            'inheritedOnlyViaProducerQueries': {qid: sorted({src for p in model.queries[qid]['deliveries'] if p['asOfAcceptance'] < cause_at for src in model.projection_sources(p) if cause in status['evaluations'].get(src, [])}) for qid in sorted(set(affected) - set(direct))},
             'unaffectedEvaluations': sorted(set(prior_queries) - set(affected)),
             'affectedDesignations': designations,
             'counts': {'priorEvaluations': len(prior_queries), 'affectedEvaluations': len(affected),

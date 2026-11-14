@@ -441,6 +441,99 @@ reorganization_report = {'currentAssociations': sorted(selection['declarations']
                         'optionalRestorationAssociations': sorted(restored_selection['declarations']),
                         'originalItemsAndCapturedAnswersUnchanged': True}
 
+# Distinct producers accepted together retain distinct production exposure. In particular,
+# an exact content reader must not inherit the organizing sibling's inputs or warnings.
+constant_exposure = model.investigrams['CONSTANT-TARGET-1']['productionExposure']
+organizer_exposure = model.investigrams['TARGET-ORGANIZATION-1']['productionExposure']
+assert constant_exposure['deliveries'] == [] and constant_exposure['sameSubmissionItems'] == []
+assert len(organizer_exposure['deliveries']) == 1
+assert organizer_exposure['sameSubmissionItems'] == [mechanical_after]
+assert constant_exposure['execution'] != organizer_exposure['execution']
+
+def exposure_reader(qid, oid, selection, member):
+    stage = selection_consumer(selection)
+    stage['request'].update(id=qid, resultEntity='RESULT-' + qid, operation='authored.read-selected-contribution')
+    stage['request']['declaredMeaning'] = {'question': 'Read this qualified contribution', 'scope': 'Exposure-isolation probe only'}
+    stage['bindings']['entityIds']['query-result'] = 'RESULT-' + qid
+    stage['bindings']['investigramIds']['standing'] = oid
+    stage['submission']['result']['queryInvocation'] = qid
+    stage['submission']['result']['investigrams'][0]['associationSpecifications'][0]['members'] = [member]
+    return stage
+
+exact_finding = {'entity': 'M-loader', 'exactItems': [{'investigram': 'CONSTANT-TARGET-1', 'contentKey': 'dependency'}]}
+organizing_use = select('M-loader', 'TARGET-ORGANIZATION-1', 'runtime')
+readers = [exposure_reader('Q-FINDING-READER', 'FINDING-READER-1', exact_finding,
+                          {'item': {'investigram': {'investigram': 'CONSTANT-TARGET-1'}, 'contentKey': 'dependency'}}),
+           exposure_reader('Q-ORGANIZER-READER', 'ORGANIZER-READER-1', organizing_use,
+                          {'declaration': {'investigram': {'investigram': 'TARGET-ORGANIZATION-1'}, 'associationKey': 'runtime'}})]
+isolated = copy.deepcopy(model)
+for stage in readers: accept(isolated, stage)
+before_change = copy.deepcopy(isolated.snapshots)
+old_inputs = {oid: copy.deepcopy(a['productionExposure']) for oid, a in isolated.investigrams.items() if 'productionExposure' in a}
+# A later independent declaration displaces the original interpretation the organizer received.
+change = displace_identification('withdrawal')
+change['request']['deliveries'] = [select('M-loader', 'RUNTIME-1', 'runtime')]
+change['bindings']['provenance']['basis'] = {'retainedSelections': copy.deepcopy(change['request']['deliveries'])}
+displacement = change['submission']['result']['investigrams'][0]['associationSpecifications'][0]
+displacement['target']['role'] = 'describes'
+displacement['displaces'] = [{'investigram': {'investigram': 'RUNTIME-1'}, 'associationKey': 'runtime'}]
+accept(isolated, change)
+cause = 'STANDING-1::loader'
+isolation_status = isolated.reconsideration()
+assert isolation_status['investigrams']['CONSTANT-TARGET-1'] == []
+assert cause in isolation_status['investigrams']['TARGET-ORGANIZATION-1']
+assert isolation_status['evaluations']['Q-FINDING-READER'] == []
+assert cause in isolation_status['evaluations']['Q-ORGANIZER-READER']
+assert cause in isolation_status['designations']['TARGET-ORGANIZATION-1::result']['generatingEvaluationCauses']
+assert isolation_status['designations']['FINDING-READER-1::result']['needsReconsideration'] == []
+assert cause in isolation_status['designations']['ORGANIZER-READER-1::result']['needsReconsideration']
+assert isolated.project(exact_finding)['notices'] == {}
+assert cause in isolated.project(organizing_use)['notices']
+assert all(isolated.snapshots[qid] == snap for qid, snap in before_change.items())
+assert all(isolated.investigrams[oid]['productionExposure'] == exposure for oid, exposure in old_inputs.items())
+# Fresh, informed delivery must still honor the timing rule.
+fresh_reader = exposure_reader('Q-FRESH-ORGANIZER', 'FRESH-ORGANIZER-1', organizing_use,
+                               {'declaration': {'investigram': {'investigram': 'TARGET-ORGANIZATION-1'}, 'associationKey': 'runtime'}})
+accept(isolated, fresh_reader)
+assert isolated.reconsideration()['evaluations']['Q-FRESH-ORGANIZER'] == []
+
+# Conversely, actual retained input to the mechanical producer propagates through its finding
+# to the organizing sibling that received it, even inside the same atomic acceptance.
+with_mechanical_input = copy.deepcopy(stages['Q-M'])
+mechanical_selection = select('M-loader', 'DISCOVERY-1', 'loader')
+with_mechanical_input['request']['deliveries'].append(mechanical_selection)
+with_mechanical_input['bindings']['exposureByInvestigram']['constant']['deliveryIndices'] = [1]
+with_mechanical_input['bindings']['provenanceByInvestigram']['constant']['basis']['retainedSelections'] = [mechanical_selection]
+forward = copy.deepcopy(checkpoints['Q-C'])
+accept(forward, with_mechanical_input)
+for stage in readers: accept(forward, stage)
+accept(forward, displace_identification('withdrawal'))
+forward_status = forward.reconsideration()
+for oid in ['CONSTANT-TARGET-1', 'TARGET-ORGANIZATION-1', 'FINDING-READER-1', 'ORGANIZER-READER-1']:
+    assert cause in forward_status['investigrams'][oid], 'actual production dependency lost'
+assert cause in forward.project(exact_finding)['notices']
+# Shared single-dialog outputs still inherit that dialog's full input history.
+assert model.investigrams['EXPORTS-1']['productionExposure'] == model.investigrams['EMPTY-EXPORTS-1']['productionExposure']
+
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['bindings'].pop('exposureByInvestigram'))
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['bindings']['exposureByInvestigram'].pop('constant'))
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['bindings']['exposureByInvestigram']['organization'].update(deliveryIndices=[4]))
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['bindings']['exposureByInvestigram']['organization'].update(deliveryIndices=[0, 0]))
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['bindings']['exposureByInvestigram']['organization'].update(deliveryIndices=[]))
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['bindings']['exposureByInvestigram']['organization'].update(execution='constant-analysis'))
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['bindings']['exposureByInvestigram']['organization']['sameSubmissionItems'][0].update(contentKey='absent'))
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['bindings']['exposureByInvestigram']['constant'].update(sameSubmissionItems=[{'investigram': {'submittedInvestigram': 'constant'}, 'contentKey': 'dependency'}]))
+reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['submission']['result']['investigrams'][0].update(productionExposure={'forged': True}))
+reject_delivery(model, readers[0], lambda p: p['items'].clear())
+
+exposure_report = {'capturedProductionHistories': {
+                      oid: model.investigrams[oid]['productionExposure'] for oid in ['CONSTANT-TARGET-1', 'TARGET-ORGANIZATION-1']},
+                  'agentOnlyChange': {'cause': cause, 'investigramCauses': isolation_status['investigrams'],
+                                     'designationStatus': isolation_status['designations'],
+                                     'freshMechanicalNotices': isolated.project(exact_finding)['notices']},
+                  'mechanicalInputChange': {'cause': cause, 'investigramCauses': forward_status['investigrams']},
+                  'exactCapturedAnswersAndExposureUnchanged': True}
+
 report = {'status': fixture['status'], 'acceptedInvocations': list(model.queries),
           'identities': {'architectural': ['PROJECT', 'M-loader', 'M-plugin', 'M-empty', 'S-load', 'S-target'], 'recognizedReuse': 'Q-E and RESULT-Q-E reused without allocation', 'providerReencounter': reuse_report, 'changedMethodReencounter': changed_report, 'newIdentityScope': scope_report, 'perInvestigramProvenanceReencounter': multi_report, 'renewalAfterDisplacement': renewals},
           'complementary': {'mechanicalSourceRequest': static_before, 'interpretedConditionalTarget': interpreted_before},
@@ -451,6 +544,7 @@ report = {'status': fixture['status'], 'acceptedInvocations': list(model.queries
                                     'unavailable': fixture['noContributionOutcome']},
           'currentAssociations': sorted(current['declarations']),
           'withdrawalPlusAddition': reorganization_report,
+          'perInvestigramExposure': exposure_report,
           'freshCombinedResult': delivery_summary(fresh_combined),
           'preservedHistoricalSelections': ['Q-S', 'Q-C', 'Q-E'], 'malformedCasesRejected': negative_count,
           'limits': ['No native producer, live interpreting agent, hypothetical constant-target method or runtime execution was run.',
