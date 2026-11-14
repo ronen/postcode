@@ -1070,12 +1070,18 @@ it could assess available investigations as more or less relevant. Such an asses
 not a hard eligibility rule: a UI might prioritize, demote, hide or visually de-emphasize an operation
 while still allowing the user to request it. Those presentation choices remain outside this remit.
 
-Relevance assessment is distinct from existing Lens applicability constraints; “deemed irrelevant”
-does not mean an operation is invalid, and missing a suggestion implies neither judgment. A host
-ontology, systematic relevance assessments and classification-driven hard eligibility are deferred;
-none is required by the current follow-up mechanism. Existing Lens applicability contracts remain
-explicit. No choice among the future approaches is required for this capability, and existing
-follow-up options acquire no new lifecycle semantics.
+Subject signatures and applicability contracts are already part of the Lens model. Mechanical
+investigations have explicit subject signatures; agentic investigations can likewise have signatures
+under that existing architecture. Defining the supported agentic capability's signature is ordinary
+contract work, not a new ontology mechanism or something this deferral prohibits.
+
+Relevance assessment is distinct from those applicability constraints; “deemed irrelevant” does not
+mean an operation is invalid, and missing a suggestion implies neither judgment. The future question
+is whether and how qualified architectural classifications feed applicability or relevance judgments,
+with concept-to-investigation knowledge in PostCode, agents or both. A host ontology and systematic
+classification-driven assessment are deferred; none is required by the current follow-up mechanism.
+Existing Lens applicability contracts remain explicit. No choice among the future approaches is
+required for this capability, and existing follow-up options acquire no new lifecycle semantics.
 
 The examples supply identifying descriptions, prose, admission cases, architectural
 relationships, a recovery state model and an interaction. Local roles are variables within

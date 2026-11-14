@@ -435,8 +435,11 @@ concept-to-investigation knowledge, in PostCode, agents or both, could also asse
 more or less relevant. That judgment need not enable or disable anything: UI treatment is separate,
 and an operation deemed irrelevant could remain available on request. Relevance is distinct from
 hard Lens applicability constraints, and absence of a suggestion implies neither irrelevance nor
-inapplicability. A host ontology, systematic relevance assessments and classification-driven hard
-eligibility are deferred. This adds no required behavior to the current follow-up mechanism.
+inapplicability. Subject signatures already belong to the Lens model and can constrain agentic as
+well as mechanical investigations; defining them is ordinary contract work, not a new architectural
+mechanism. The deferred question is how qualified architectural classifications inform applicability
+or relevance, and where that knowledge lives. No host ontology or systematic classification-driven
+assessment is required by the current follow-up mechanism.
 
 TRIAL-1's state diagram binds `recovery`; the sequence binds `concurrent-callers` and
 follows its existing `stateContent`/`transition` references. No duplicate state-model
