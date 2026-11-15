@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import type { ContributionLedger } from '../src/lib/contributions/ledger.js';
 import type { AssociationAddress, EntityId, InvestigramId } from '../src/lib/contributions/model.js';
 import type { ProductionHandle } from '../src/lib/contributions/production.js';
-import { agentic, caveat, createLedger, discoverModule, explainAdmission, mechanical, derived, submit, submitted, summaryInvocation } from './contribution-helpers.js';
+import { agentic, caveat, createLedger, discoverModule, evidenceRecord, explainAdmission, mechanical, derived, submit, submitted, summaryInvocation } from './contribution-helpers.js';
 import type { Submitted } from './contribution-helpers.js';
 
 const local = (investigram: string, item: string) => ({ kind: 'item' as const, item: { investigram: { local: investigram }, item } });
@@ -338,4 +338,84 @@ test('a designation\'s recipient acquires member displacement through membership
   assert.deepEqual(ledger.production(recipient.id).deliveries.map(delivery => delivery.kind), ['association']);
   for (const index of [1, 2, 3, 4, 5]) assert.deepEqual(of(index), [], `control ${index}`);
   assert.equal(ledger.standing(d).state, 'standing');
+});
+
+test('complete and bounded delivery both carry the item\'s own qualification, attribution and support', () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  const text = 'Admission is immediate while the breaker is closed and the probe budget is unused.';
+  // One item is qualified only on the item; the other is narrower than its owner.
+  const itemOnly = submit(ledger, agentic('a'), handle => { handle.supplied([evidenceRecord]); return [{ key: 'a', items: [{ key: 'p', type: 'prose', body: { text },
+    referents: [module], evidence: [evidenceRecord], qualification: { limitations: ['Only configuration A.'] } }] }]; }).item('a', 'p');
+  const narrower = submit(ledger, agentic('b'), [{ key: 'b', qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text },
+    support: [itemOnly], qualification: { scope: 'closed state', limitations: ['Sampled with one caller.'] } }] }]).item('b', 'p');
+  const handle = ledger.begin({ producer: agentic('reader') });
+  for (const options of [{}, { excerptCharacters: 20 }]) {
+    const first = handle.item(itemOnly, options), second = handle.item(narrower, options);
+    assert.deepEqual([first.owner.qualification, first.qualification?.status, first.qualification?.limitations, first.type], [null, 'interpretation', ['Only configuration A.'], 'prose']);
+    assert.deepEqual([first.referents, first.evidence], [[module], [evidenceRecord]]);
+    assert.deepEqual([second.owner.qualification?.limitations, second.qualification?.scope, second.qualification?.limitations, second.support],
+      [caveat.limitations, 'closed state', ['Sampled with one caller.'], [itemOnly]]);
+    assert.deepEqual([first.coverage, first.item === null, first.excerpt?.text.length], 'excerptCharacters' in options ? ['excerpt', true, 20] : ['complete', false, undefined]);
+  }
+  ledger.abandon(handle, 'not-submitted');
+});
+
+test('content delivered as a member of a use arrives with that use\'s known displacement context', () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  const a = account(ledger, module, 'a'), use = a.use('a', 'u'), item = a.item('a', 'p');
+  const withdrawal = withdraw(ledger, 'w', use).use('w', 'w');
+  for (const options of [{}, { excerptCharacters: 5 }]) {
+    const after = ledger.begin({ producer: agentic('after') });
+    const delivered = after.member(use, item, options);
+    // The displaced use is disclosed with its standing and the withdrawal's grounds; it is known context, not a later change.
+    assert.deepEqual(delivered.association.status.standing, { state: 'displaced', displacedBy: [withdrawal] });
+    assert.deepEqual(delivered.association.displacements.map(change => [change.change, change.declaration.operation === 'withdraw' && change.declaration.grounds.text]),
+      [[withdrawal, 'Withdrawn by w.']]);
+    assert.equal(delivered.association.declaration.qualification ?? delivered.association.owner.qualification, delivered.association.owner.qualification);
+    assert.deepEqual([delivered.item.route, delivered.item.coverage], [use, 'excerptCharacters' in options ? 'excerpt' : 'complete']);
+    assert.deepEqual(after.deliveries.map(delivery => delivery.kind), ['association', 'declaration', 'item']);
+    assert.deepEqual(after.pending(), []);
+    ledger.abandon(after, 'not-submitted');
+  }
+  // The bare item is independent of every use: no association context and no exact-use exposure.
+  const bare = ledger.begin({ producer: agentic('bare') });
+  assert.equal(bare.item(item).route, null);
+  assert.deepEqual(bare.deliveries.map(delivery => delivery.kind), ['item']);
+  assert.throws(() => bare.member(use, { investigram: item.investigram, item: 'absent' }), /Missing content item|not a member/);
+  ledger.abandon(bare, 'not-submitted');
+  // Supersession known at delivery is likewise disclosed; a displacement after delivery is a later cause instead.
+  const b = account(ledger, module, 'b'), other = b.use('b', 'u');
+  const before = ledger.begin({ producer: agentic('before') });
+  assert.equal(before.member(other, b.item('b', 'p')).association.displacements.length, 0);
+  const change = supersede(ledger, module, 'c', other).use('c', 'u');
+  assert.deepEqual(before.pending().map(cause => [cause.change, cause.routes]), [[change, [{ kind: 'exact', association: other }]]]);
+  const known = ledger.begin({ producer: agentic('known') });
+  assert.deepEqual(known.member(other, b.item('b', 'p'), { excerptCharacters: 5 }).association.displacements.map(item => [item.change, item.standing?.state]), [[change, 'standing']]);
+  assert.deepEqual(known.pending(), []);
+});
+
+test('recorded deliveries are owned immutable captures that a caller cannot rewrite', () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  const a = account(ledger, module, 'a'), original = a.item('a', 'p'), use = a.use('a', 'u');
+  const handle = ledger.begin({ producer: agentic('reader') });
+  const address = { ...original }, route = { ...use }, scope = { kind: 'entity' as const, entity: module, role: 'topic' as const, topic: 'admission' as string | null };
+  handle.item(address);
+  handle.member(route, { ...original });
+  const listing = handle.inventory(scope, 'current-only');
+  // The caller changes its own objects and tries to change what it was handed back.
+  address.item = 'never-delivered'; route.declaration = 'never-delivered'; scope.topic = 'other';
+  assert.throws(() => { (handle.deliveries[0] as { item: { item: string } }).item.item = 'x'; }, TypeError);
+  // Changing a returned listing does not reach the record, and the record itself is immutable.
+  (listing.listed as unknown[]).push(route);
+  assert.throws(() => { (handle.deliveries.at(-1) as unknown as { listed: unknown[] }).listed.push(route); }, TypeError);
+  const reader = submitted(ledger.accept([{ production: handle, contribution: { investigrams: [{ key: 'r', qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text: 'x' } }] }] } }]), handle);
+  const recorded = ledger.production(handle.id).deliveries;
+  assert.deepEqual(recorded.map(delivery => delivery.kind), ['item', 'association', 'item', 'scope']);
+  assert.deepEqual(recorded.flatMap(delivery => delivery.kind === 'item' ? [[delivery.item, delivery.route]] : []), [[original, null], [original, use]]);
+  assert.deepEqual(recorded.flatMap(delivery => delivery.kind === 'scope' ? [[delivery.scope, delivery.listed]] : []),
+    [[{ kind: 'entity', entity: module, role: 'topic', topic: 'admission' }, [use]]]);
+  for (const delivery of recorded) if (delivery.kind === 'item') ledger.item(delivery.item);
+  // The mutation neither invented nor removed a cause: displacing the received use is still exactly one cause.
+  const change = supersede(ledger, module, 'b', use).use('b', 'u');
+  assert.deepEqual(causes(ledger, reader.investigram('r')).map(cause => [cause.change, cause.routes.map(item => item.kind)]), [[change, ['exact', 'scope', 'scope']]]);
 });

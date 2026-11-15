@@ -301,3 +301,31 @@ test('agentic reuse of mechanical content keeps the source qualification with th
     ['mechanically-derived', 'test/exports@1', 'Every listed export is real.', [contextRecord]]);
   assert.equal(ledger.association(reuse.use('r', 'surface')).owner.id, reuse.investigram('r'));
 });
+
+test('a valid pool is accepted whole in either order when a use selects content of a later investigram', () => {
+  const finding = { key: 'finding', qualification: derived, entities: [{ key: 'e', entityKind: 'module' }],
+    items: [{ key: 'name', type: 'identification', body: { name: 'timer.ts', nameOrigin: 'system-under-study', designation: 'Source module timer.ts' } }] };
+  const organizer = { key: 'organizer', declarations: [{ key: 'identify', operation: 'add',
+    qualification: { status: 'organizing-policy', limitations: ['Deterministic wrapper policy.'] },
+    target: { kind: 'entity', entity: { local: 'e' }, role: 'identification' }, members: [local('finding', 'name')] }] };
+  const observe = (ledger: ReturnType<typeof createLedger>) => {
+    const entity = ledger.entities()[0]!, match = ledger.lookupName('timer.ts').matches[0]!;
+    return { position: ledger.position, entities: ledger.entities().length, introducedBy: ledger.investigram(entity.introducedBy).key,
+      name: [match.entity === entity.id, ledger.investigram(match.association.investigram).key, ledger.investigram(match.item.investigram).key],
+      identifications: ledger.identifications(entity.id).length, investigrams: ledger.investigrams().map(item => item.key).sort(),
+      productions: ledger.productions().map(item => [item.outcome.kind, item.investigrams.length]) };
+  };
+  const expected = { position: 1, entities: 1, introducedBy: 'finding', name: [true, 'organizer', 'finding'], identifications: 1, investigrams: ['finding', 'organizer'] };
+  for (const order of [[organizer, finding], [finding, organizer]]) {
+    // One production.
+    const single = createLedger(), handle = single.begin({ producer: mechanical() });
+    single.accept([{ production: handle, contribution: { investigrams: order } }]);
+    assert.deepEqual(observe(single), { ...expected, productions: [['accepted', 2]] });
+    assert.equal(handle.closed, true);
+    // Independently attributed productions in one batch.
+    const batch = createLedger(), finder = batch.begin({ producer: mechanical('test/discovery@1') }), policy = batch.begin({ producer: mechanical('test/organizing-policy@1') });
+    batch.accept(order.map(investigram => ({ production: investigram === finding ? finder : policy, contribution: { investigrams: [investigram] } })));
+    assert.deepEqual(observe(batch), { ...expected, productions: [['accepted', 1], ['accepted', 1]] });
+    assert.notEqual(batch.investigram(batch.entities()[0]!.introducedBy).production, batch.association(batch.identifications(batch.entities()[0]!.id)[0]!.address).owner.production);
+  }
+});

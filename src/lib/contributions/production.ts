@@ -3,6 +3,7 @@ import type { ContributionLedger } from './ledger.js';
 import type { AssociationAddress, AssociationDeclaration, ContentItem, Declaration, DeclarationAddress, Delivery, EntityId, FollowUpOption,
   Illustration, InconsistencyReport, InvestigramId, InvocationId, ItemAddress, MetadataAddress, Producer, ProductionId, Qualification,
   SelectionScope } from './model.js';
+import { freezeOwned } from '../immutable.js';
 import { addressKey } from './model.js';
 import type { AssociationStatus, Cause, Standing } from './status.js';
 
@@ -20,6 +21,16 @@ export interface DeliveredItem {
   readonly owner: DeliveredOwner;
   readonly route: AssociationAddress | null;
   readonly coverage: 'complete' | 'excerpt';
+  readonly type: string;
+  /**
+   * The item's own qualification, applicable alongside the owner's. It, and the item's
+   * attribution and support, accompany every delivery; an excerpt bounds only the body.
+   */
+  readonly qualification: Qualification | null;
+  readonly referents: readonly EntityId[];
+  readonly evidence: readonly RecordId[];
+  readonly support: readonly ItemAddress[];
+  readonly dependencies: readonly ItemAddress[];
   /** Present for complete delivery. */
   readonly item: ContentItem | null;
   /** A bounded excerpt of the serialized body; not complete delivery. */
@@ -77,9 +88,10 @@ export class ProductionHandle {
   get evidence(): readonly RecordId[] { return [...this.#evidence]; }
   /** Ends acquisition. Called when the ledger accepts or abandons this production; later deliveries are refused. */
   close(): void { this.#closed = true; }
+  /** The record is an owned immutable capture of what arrived; later changes to a caller's objects cannot rewrite it. */
   #record(delivery: Delivery): void {
     if (this.#closed) throw new Error('Production has concluded');
-    this.#deliveries.push(delivery);
+    this.#deliveries.push(freezeOwned(structuredClone(delivery)));
   }
 
   /** Register program evidence actually supplied to, or acquired as the source basis of, this production. */
@@ -94,17 +106,36 @@ export class ProductionHandle {
       concerns: this.#ledger.status.investigram(investigram).producing };
   }
 
-  /** Exact content, complete or as a disclosed bounded excerpt, with its owner's qualification and provenance. */
-  item(address: ItemAddress, options: { readonly route?: AssociationAddress; readonly excerptCharacters?: number } = {}): DeliveredItem {
-    const item = this.#ledger.item(address), route = options.route ?? null;
-    if (route && !this.#ledger.association(route).declaration.members.some(member => member.kind === 'item'
-      && member.item.investigram === address.investigram && member.item.item === address.item)) throw new Error('Item is not a member of the stated association route');
+  #item(address: ItemAddress, route: AssociationAddress | null, excerptCharacters: number | undefined): DeliveredItem {
+    const item = this.#ledger.item(address);
+    address = { investigram: address.investigram, item: address.item };
     const serialized = JSON.stringify(item.body);
-    const bounded = options.excerptCharacters !== undefined && serialized.length > options.excerptCharacters;
+    const bounded = excerptCharacters !== undefined && serialized.length > excerptCharacters;
     const coverage = bounded ? 'excerpt' : 'complete';
     this.#record({ kind: 'item', position: this.#ledger.position, item: address, route, coverage });
-    return { address, owner: this.#owner(address.investigram), route, coverage, item: bounded ? null : item,
-      excerpt: bounded ? { text: serialized.slice(0, options.excerptCharacters), omittedCharacters: serialized.length - options.excerptCharacters! } : null };
+    return { address, owner: this.#owner(address.investigram), route, coverage, type: item.type, qualification: item.qualification,
+      referents: item.referents, evidence: item.evidence, support: item.support, dependencies: item.dependencies, item: bounded ? null : item,
+      excerpt: bounded ? { text: serialized.slice(0, excerptCharacters), omittedCharacters: serialized.length - excerptCharacters! } : null };
+  }
+
+  /**
+   * Exact content on its own, complete or as a disclosed bounded excerpt, with its item and
+   * owner qualification and provenance. This is not exposure to any use of the item.
+   */
+  item(address: ItemAddress, options: { readonly excerptCharacters?: number } = {}): DeliveredItem {
+    return this.#item(address, null, options.excerptCharacters);
+  }
+
+  /**
+   * One item as a member of a particular use. The use is delivered with it: its grounds,
+   * qualification, standing and every displacement already accepted. Content of an exact
+   * use never arrives without that context.
+   */
+  member(route: AssociationAddress, address: ItemAddress, options: { readonly excerptCharacters?: number } = {}):
+  { readonly association: DeliveredAssociation; readonly item: DeliveredItem } {
+    if (!this.#ledger.association(route).declaration.members.some(member => member.kind === 'item'
+      && member.item.investigram === address.investigram && member.item.item === address.item)) throw new Error('Item is not a member of the stated association');
+    return { association: this.association(route), item: this.#item(address, { investigram: route.investigram, declaration: route.declaration }, options.excerptCharacters) };
   }
 
   #change(change: DeclarationAddress): DeliveredChange {
@@ -118,11 +149,12 @@ export class ProductionHandle {
 
   /** An exact use with its grounds, standing and known displacement context; optionally its item members' content. */
   association(address: AssociationAddress, options: { readonly content?: boolean } = {}): DeliveredAssociation {
+    address = { investigram: address.investigram, declaration: address.declaration };
     const declaration = this.#ledger.association(address).declaration;
     const status = this.#ledger.status.association(address);
     this.#record({ kind: 'association', position: this.#ledger.position, association: address, disclosed: status.standing.displacedBy });
     const displacements = status.standing.displacedBy.map(change => this.#change(change));
-    const content = options.content ? declaration.members.flatMap(member => member.kind === 'item' ? [this.item(member.item, { route: address })] : []) : [];
+    const content = options.content ? declaration.members.flatMap(member => member.kind === 'item' ? [this.#item(member.item, address, undefined)] : []) : [];
     return { address, declaration, owner: this.#owner(address.investigram), status, displacements, content,
       undeliveredMembers: declaration.members.flatMap(member => member.kind === 'association' ? [member.association] : []) };
   }

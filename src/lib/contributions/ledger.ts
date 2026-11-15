@@ -539,15 +539,31 @@ export class ContributionLedger {
         answer, statement: raw.statement === undefined || raw.statement === null ? null : text(raw.statement, 'report statement') });
     }
 
-    // Commit. Nothing above has changed retained state.
+    // Prepare everything that could still fail before changing retained state: owned immutable
+    // copies, and identifying names resolved against the whole staged pool in any pool order.
+    const retained = built.map(value => freezeOwned(structuredClone(value)));
+    const stagedItems = new Map(retained.flatMap(investigram => investigram.items.map(item => [itemKey({ investigram: investigram.id, item: item.key }), item] as const)));
+    const names: (Omit<NameMatch, 'standing'>)[] = [];
+    for (const investigram of retained) for (const declaration of investigram.declarations) {
+      if (declaration.operation === 'withdraw' || declaration.target.kind !== 'entity' || declaration.target.role !== 'identification') continue;
+      for (const entry of declaration.members) {
+        if (entry.kind !== 'item') continue;
+        const item = stagedItems.get(itemKey(entry.item)) ?? this.item(entry.item);
+        for (const name of this.catalog.get(item.type)?.identifying?.(item.body) ?? []) {
+          names.push(freezeOwned(structuredClone({ entity: declaration.target.entity, association: { investigram: investigram.id, declaration: declaration.key }, item: entry.item, name })));
+        }
+      }
+    }
+
+    // Commit. Nothing above has changed retained state, and nothing below can fail.
     this.#position = position;
     for (const [id, entity] of created) {
       this.#entities.set(id, freezeOwned(entity));
       if (entity.native) this.#natives.set(canonical(entity.native), id);
     }
     const index = <K, V>(map: Map<K, V[]>, key: K, value: V) => { const values = map.get(key) ?? []; values.push(value); map.set(key, values); };
-    for (const value of built) {
-      const investigram = freezeOwned(structuredClone(value)), id = investigram.id;
+    for (const investigram of retained) {
+      const id = investigram.id;
       this.#investigrams.set(id, investigram);
       if (investigram.providerKey !== null) this.#providerKeys.set(investigram.providerKey, id);
       for (const item of investigram.items) {
@@ -555,6 +571,11 @@ export class ContributionLedger {
         this.#items.set(itemKey(address), item);
         for (const entity of new Set([...item.referents, ...investigram.referents])) index(this.#referencing, entity, address);
       }
+    }
+    for (const match of names) index(this.#names, match.name.text, match);
+    // A flat pool has no semantic order: a use can select content owned by a later investigram of the same pool.
+    for (const investigram of retained) {
+      const id = investigram.id;
       for (const declaration of investigram.declarations) {
         const address = freezeOwned({ investigram: id, declaration: declaration.key });
         const entry = { address, declaration, owner: investigram, sequence: this.#sequence++ };
@@ -565,14 +586,6 @@ export class ContributionLedger {
         index(this.#byTarget, targetKey(declaration.target), association);
         if (declaration.target.kind !== 'entity') continue;
         index(this.#byEntity, declaration.target.entity, association);
-        if (declaration.target.role !== 'identification') continue;
-        for (const entry of declaration.members) {
-          if (entry.kind !== 'item') continue;
-          const item = this.item(entry.item);
-          for (const name of this.catalog.get(item.type)?.identifying?.(item.body) ?? []) {
-            index(this.#names, name.text, { entity: declaration.target.entity, association: address, item: entry.item, name });
-          }
-        }
       }
       for (const report of investigram.inconsistencies) {
         const address: MetadataAddress = { investigram: id, metadata: 'inconsistency', key: report.key };
