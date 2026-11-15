@@ -49,15 +49,15 @@ Presentation-only actions, including paging and reformatting, preserve the selec
 
 Answer assembly selects retained qualified information without creating producer exposure. New synthesis or correspondence remains analysis with its actual inputs recorded; a new selection does not rewrite the generating investigation's history. [[Application and engine](decisions/qualified-answers-over-contributions.md#application-answers-and-captured-bases)]
 
-**Add “Structured explanations and retained follow-up” under “Requests and capability behavior”.**
+**Add “Structured explanations and follow-up options” under “Requests and capability behavior”.**
 
-### Structured explanations and retained follow-up
+### Structured explanations and follow-up options
 
 Support qualified explanations through prose and structured architectural content, with picture-plus-explanation where appropriate. Content contracts define meaning independently of rendering. An explicit request for a supported diagram requires compatible retained semantic content; prose alone does not fulfill it. Optional authored illustrations identify exact diagram types and content inputs, but compatible rendering does not require an illustration. Preserve limits and separate alternatives; a picture must not invent or strengthen architectural claims. [[Structured explanation](decisions/structured-architectural-explanation.md)]
 
 The first mechanism delivery supplies state-dependent behavior and one bounded directed state-transition diagram through supported application APIs. The contract covers named states, qualified bearer, established entry, transitions and their conditions/effects; unsupported statechart features and unknown information remain explicit. This is not a full diagram language, GUI or initial user-facing catalogue commitment.
 
-Retained follow-up options are owner-specific qualified metadata. The application can invoke an exact option with its subjects/parameters and declared result contract, preserving the originating information. Prior-result investigation targets exact selected information, not silently updated answers. Existing summary/explanation/decomposition/examination capabilities migrate to these semantics; decomposition need not create nested investigrams. API availability does not imply a new CLI command or menu. [[Guidance and scope](decisions/structured-architectural-explanation.md#validation-and-application-scope)]
+Retained follow-up options are owner-specific qualified metadata. The application can invoke an exact option with its subjects/parameters and declared result contract, preserving the originating information. Investigation of selected content targets that exact information, not silently updated answers. Existing summary/explanation/decomposition/examination capabilities migrate to these semantics; decomposition need not create nested investigrams. API availability does not imply a new CLI command or menu. [[Guidance and scope](decisions/structured-architectural-explanation.md#validation-and-application-scope)]
 
 Initial Entity context supplies all standing identifications with applicable support, qualification and concerns. Additional acquisition and explicit-referent discovery make related retained explanations available without assuming where the user obtained a subject. Delivery is qualified and bounded honestly; inaccessible information is not an established empty result. [[Acquisition](decisions/association-organization-and-exposure.md#acquisition-baseline-context-and-discovery)]
 

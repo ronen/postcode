@@ -26,7 +26,7 @@ A **Subject** is what a Lens investigates or a claim concerns. It is a role, not
 
 Subject designation does not establish a captured basis, input binding or correspondence. A question about a module across states preserves those separately identified states; a question about an identified removal preserves its change and supporting evidence. Subjects can concern implemented, hypothetical or intended architecture within the capability's supported modalities.
 
-A prior-result follow-up preserves the exact selected investigram/content/designated answer as its subject, with its originating question/result and applicable standing available separately. It does not silently follow a Query result's latest designation. A selected phrase need not be registered as an Entity. [[Exact prior information](decisions/qualified-answers-over-contributions.md#exact-prior-information-as-a-subject)]
+An investigation of selected content preserves the exact selected investigram/content/designated answer as its subject, with its originating question/result and applicable standing available separately. It does not silently follow a Query result's latest designation. A selected phrase need not be registered as an Entity. [[Exact prior information](decisions/qualified-answers-over-contributions.md#exact-prior-information-as-a-subject)]
 
 **Replace “Relationship”.**
 
@@ -131,7 +131,7 @@ A Lens is distinct from the operations supplying its information and from the Pr
 
 A Lens definition makes its question, applicability/cardinality, parameter meaning, requirements and prospective result contract explicit. The question is a conceptual information need rather than necessarily a user-supplied prose question. Subject-specific implementations can realize one Lens through different work and result contracts. The selected implementation remains attributable through its versioned method and provenance, separately from the Lens identity. Shared authoring declarations may define a Lens and its default operation conveniently; requirements and reusable operation identity remain distinct. [[Explicit Lens meaning](decisions/lens-application-and-request-outcomes.md#represent-lens-meaning-independently-of-lookup-and-implementation)]
 
-A follow-up Lens can delegate its specific question to an exact retained qualified follow-up option. The default result contract permits qualified supported content; a promised specialized form, such as a diagram, is explicit. The option's owner/key and meaning remain attributable. [[Guidance](decisions/structured-architectural-explanation.md#qualified-guidance-and-illustrations)]
+A Lens invoking a follow-up option can delegate its specific question to an exact retained qualified follow-up option. The default result contract permits qualified supported content; a promised specialized form, such as a diagram, is explicit. The option's owner/key and meaning remain attributable. [[Guidance](decisions/structured-architectural-explanation.md#qualified-guidance-and-illustrations)]
 
 **Replace “Projection”, preserving outer meaning and clarifying the engine mapping.**
 

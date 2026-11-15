@@ -62,7 +62,7 @@ Added: 2026-11-15
 Origin: [Flat contributions](decisions/common-analysis-contributions.md#immutable-analysis-contributions)
 Area: retained-information organization
 
-The common model has no investigram parent/child tree. Evaluate organizational needs before introducing nesting or other grouping, whether agent-authored, mechanically inferred, based on UI context, or combined. Keep contribution organization separate from follow-up provenance, result membership and relationships in the system under study.
+The common model has no investigram parent/child tree. Evaluate organizational needs before introducing nesting or other grouping, whether agent-authored, mechanically inferred, based on UI context, or combined. Keep contribution organization separate from the provenance of investigations of selected content, result membership and relationships in the system under study.
 
 Also examine architectural Entity organization when concrete investigations need it. Existing qualified module/group organization can inform this without being conflated with a canonical architecture or a hierarchy of explanations. No new organization mechanism is required merely because the retained information grows.
 
@@ -74,7 +74,7 @@ Area: architectural concepts and investigation guidance
 
 Qualified concept classifications and exact follow-up options permit future concept-specific behavior without an exhaustive ontology. Assess whether operation knowledge belongs in PostCode guidance, agent judgment or both. Optional icons and advisory relevance classifications can inform presentation but must not masquerade as hard applicability constraints.
 
-Soft signatures listing recommended categories are one possible design, distinct from existing required subject signatures. A missing recommendation does not establish irrelevance, and an advisory mismatch does not make an operation invalid. Global catalogue selection, ranking, UI demotion and follow-up lifecycle/result-reuse advice need their own demonstrated need.
+Soft signatures listing recommended categories are one possible design, distinct from existing required subject signatures. A missing recommendation does not establish irrelevance, and an advisory mismatch does not make an operation invalid. Global catalogue selection, ranking, UI demotion and follow-up-option lifecycle/result-reuse advice need their own demonstrated need.
 
 ## Consider participant objections and semantic-policy assistance
 

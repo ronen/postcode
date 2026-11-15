@@ -7,7 +7,7 @@ Start with [the plan](plans/structured-architectural-accounts.md), then read the
 1. [Common analysis contributions](decisions/common-analysis-contributions.md): identity, flat contributions, producer wrappers, outcomes and storage boundaries.
 2. [Association organization and exposure](decisions/association-organization-and-exposure.md): uses of content, result designations, acquisition, timing, reconsideration and inconsistency.
 3. [Qualified application answers](decisions/qualified-answers-over-contributions.md): outer/engine mapping, per-Lens migration, exact subjects, identity, fixed presentation and construction.
-4. [Structured explanation](decisions/structured-architectural-explanation.md): content contracts, metadata, follow-up execution and the bounded state-diagram capability.
+4. [Structured explanation](decisions/structured-architectural-explanation.md): content contracts, metadata, invocation of follow-up options and the bounded state-diagram capability.
 
 Review these against the complete replacement units in `core-concepts-revisions.md`, `architectural-constraints-revisions.md` and `app-specification-revisions.md`. `backlog-revisions.md` separates deferred capabilities. Capability/CLI revision files only disclose the planned transition; actual support documentation changes during implementation rather than claiming delivery at adoption.
 
