@@ -4,7 +4,8 @@ Date: 2026-11-15
 Task: [Implement structured architectural accounts](../../tasks/2026-11-15-structured-architectural-accounts.md)
 Plan: [Structured architectural accounts](../../../docs/plans/structured-architectural-accounts.md#1-common-contribution-mechanism)
 Starting revision: `8a7f2834470644726dd742a0ddaeb1455bac3b2a`
-Implementation: `84c1cc16f70f3b384a6d772aa3bcb8fda70836b5`
+Implementation: `b02c7bcdd59e4253dbe9cddb761c590bb52ca360`
+Reviewed in round 1: `84c1cc16f70f3b384a6d772aa3bcb8fda70836b5`
 Initial implementation, before the recorded follow-up: `2bc5b862d8a4acfd85463525c0abe80def0f46b2`
 
 ## Scope reached
@@ -113,6 +114,19 @@ At this checkpoint no existing test is modified, removed or expected to fail. Th
 | CLI, human output and observations | `cli`, `commands`, `human-output`, `output-boundary`, `source-disclosure`, `terminal-layout`, `observation-publication`, `feedback`, `work-attribution` | Preserved. Wording changes limited to the adopted contribution and status vocabulary. | M3, confirmed at M4 |
 | Hosted authentication and accounting | `chatgpt-auth`, `chatgpt-diagnostic`, `assessment-usage`, `inputs`, `benchmark-analysis`, `compiler-candidate-paths` | No expected effect. | Not applicable |
 
+## Corrections after review round 1
+
+The [round 1 findings](../../reviews/structured-architectural-accounts/2026-11-15-m1-mechanism-round-1-findings.md) identified four conformance defects. All four were accepted as within the authorized scope, with no change to the adopted semantics.
+
+| Finding | Correction | Regression coverage |
+| --- | --- | --- |
+| F1: a valid pool whose use selects content of a later investigram partially committed | Acceptance now prepares the owned immutable copies and the identifying names against the whole staged pool before changing retained state, and indexes declarations after every item is installed. The commit phase runs no content-contract code and no lookup that can fail. | The same identifying pool accepted in both orders, in one production and in independently attributed productions, with equal Entity, name, ownership and production resolution |
+| F2: a bounded excerpt discarded the item's qualification | Every delivered item carries its type, own qualification, referents, evidence, support and dependencies outside the body. An excerpt bounds only the body. | An item qualified only on the item and one narrower than its owner, each delivered complete and bounded |
+| F3: routed item delivery hid an already accepted displacement | Content delivered as a member of a use is acquired through one operation that first delivers the use with its grounds, standing and known displacements. Bare-item acquisition no longer accepts a route and remains independent of every use. | Complete and bounded member delivery after withdrawal and after supersession, the bare-item control, and a displacement after delivery as a later cause |
+| F4: recorded deliveries aliased caller-owned objects | Each recorded delivery is an owned immutable capture. | Caller mutation of item, route and scope values and of a returned listing; the recorded history, its resolvability and the resulting causes are unchanged |
+
+The reviewer judged the twelve implementation choices permitted or conforming and found no further consequential selection. Its remaining limits are carried forward unchanged: the qualification-context trust assumption must be checked against real record kinds, methods and scopes in M2, and the M2 obligations above are obligations, not evidence.
+
 ## Known risks carried forward
 
 - Baseline identification scopes produce an addition cause for every producer that acquired a baseline whenever any identification of that Entity is later added. The tests show the behavior on single Entities; its breadth on a real module population is unmeasured and is an explicit observation point at the M2 checkpoint.
@@ -124,14 +138,14 @@ At this checkpoint no existing test is modified, removed or expected to fail. Th
 Run by the implementing agent on the implementation's content, offline, with no credentials or inference:
 
 - `npm run check` and `git diff --check` passed.
-- The three contribution test files pass **32/32**.
-- The complete offline suite passed **700/700** with no skips in about three minutes: the 668 tests of the starting revision, none modified, and the 32 new tests.
-- The initial implementation passed 697/697 on two complete runs.
+- The three contribution test files pass **36/36**.
+- The complete offline suite passed **704/704** with no skips in about three minutes: the 668 tests of the starting revision, none modified, and the 36 new tests.
+- The initial implementation passed 697/697 on two complete runs, and the round 1 review target passed 700/700 on one.
 
 Three other complete runs had failures and are not counted as passes:
 
 - At the initial implementation, one run reported 7 failures. Its output was truncated, so the failing tests were not identified. The worktree and its Git index were being modified during that run.
-- At the current implementation, one run was stopped after two failures while the machine's load average was near 400, and one run at concurrency 2 took 70 minutes and failed 7 existing tests in five existing files. Six of those reported `Session invalidated: relevant inputs changed or could not be verified`, with individual tests taking two to seventeen minutes. No file in either failing set was changed by this task, and the contribution modules are not reachable from them.
+- At the round 1 review target, one run was stopped after two failures while the machine's load average was near 400, and one run at concurrency 2 took 70 minutes and failed 7 existing tests in five existing files. Six of those reported `Session invalidated: relevant inputs changed or could not be verified`, with individual tests taking two to seventeen minutes. No file in either failing set was changed by this task, and the contribution modules are not reachable from them.
 
 The likely cause in all three is the environment: a slow or changing checkout makes repository capture and input validation time out or detect change. That explanation is inferred from the timings and error text, not established, and the same seven tests were not shown to pass and fail deterministically. The clean runs were made with the worktree untouched and normal machine load.
 
