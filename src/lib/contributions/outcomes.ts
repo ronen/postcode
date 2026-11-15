@@ -1,0 +1,126 @@
+import type { Acceptance, ContributionLedger } from './ledger.js';
+import { InvalidContribution, addressKey, itemKey } from './model.js';
+import type { AssociationAddress, DeclarationAddress, InvocationId, ItemAddress, Producer, Production, QueryResultId } from './model.js';
+import type { ProductionHandle } from './production.js';
+
+/** A requirement of a requested result contract, checked against the actual selected answer. */
+export type Requirement =
+  | { readonly kind: 'designated-answer'; readonly description: string }
+  /** Required specialized content. `unmet` explains a shortfall in an item of the type, or returns null when it satisfies the requirement. */
+  | { readonly kind: 'content'; readonly description: string; readonly type: string; readonly unmet?: (body: unknown) => string | null };
+export interface ResultContract { readonly id: string; readonly requirements: readonly Requirement[] }
+
+export interface AlternativeFulfillment {
+  readonly designation: AssociationAddress;
+  /** Unmet requirements determined by PostCode's contract checks for this alternative's own selected content. */
+  readonly unmet: readonly { readonly requirement: string; readonly reason: string }[];
+}
+/**
+ * Request fulfillment, separate from contribution validity and from substantive
+ * correctness. A met contract does not establish that the answer is true.
+ */
+export interface Fulfillment {
+  readonly contract: string;
+  readonly result: QueryResultId;
+  /**
+   * `fulfilled` only when every alternative in scope meets every requirement.
+   * `no-current-answer` means every designation was displaced; `no-designated-answer`
+   * means none was ever supplied. Neither establishes absence of findings.
+   */
+  readonly status: 'fulfilled' | 'unfulfilled' | 'no-current-answer' | 'no-designated-answer';
+  readonly alternatives: readonly AlternativeFulfillment[];
+  /** Exact historical designations and the changes that displaced them, for qualified historical access. */
+  readonly history: readonly { readonly designation: AssociationAddress; readonly displacedBy: readonly DeclarationAddress[] }[];
+}
+
+/** Items selected by a designation, directly and through declaration membership. */
+export function designatedItems(ledger: ContributionLedger, designation: AssociationAddress): readonly ItemAddress[] {
+  const items = new Map<string, ItemAddress>();
+  for (const address of [designation, ...ledger.memberAssociations(designation)]) {
+    for (const member of ledger.association(address).declaration.members) if (member.kind === 'item') items.set(itemKey(member.item), member.item);
+  }
+  return [...items.values()];
+}
+
+/**
+ * Assess a contract against current designated answers, or against an explicit selection
+ * of particular alternatives. Read-only: assessment records no producer exposure.
+ */
+export function assessFulfillment(ledger: ContributionLedger, contract: ResultContract, result: QueryResultId,
+  selection?: readonly AssociationAddress[]): Fulfillment {
+  const all = ledger.designations(result, 'all');
+  const selected = selection ?? ledger.designations(result, 'current').map(entry => entry.address);
+  const known = new Set(all.map(entry => addressKey(entry.address)));
+  if (selected.some(address => !known.has(addressKey(address)))) throw new Error('Selected designation does not belong to this Query result');
+  const alternatives = selected.map(designation => {
+    const items = designatedItems(ledger, designation).map(address => ledger.item(address));
+    const unmet = contract.requirements.flatMap(requirement => {
+      if (requirement.kind !== 'content') return [];
+      const candidates = items.filter(item => item.type === requirement.type);
+      if (!candidates.length) return [{ requirement: requirement.description, reason: `The selected answer contains no ${requirement.type} content.` }];
+      const reasons = candidates.map(item => requirement.unmet?.(item.body) ?? null);
+      return reasons.some(reason => reason === null) ? [] : [{ requirement: requirement.description, reason: reasons[0]! }];
+    });
+    return { designation, unmet };
+  });
+  const history = all.flatMap(entry => {
+    const displacedBy = ledger.standing(entry.address).displacedBy;
+    return displacedBy.length ? [{ designation: entry.address, displacedBy }] : [];
+  });
+  const needsAnswer = contract.requirements.length > 0;
+  const status = alternatives.length ? alternatives.every(item => !item.unmet.length) ? 'fulfilled' : 'unfulfilled'
+    : !needsAnswer ? 'fulfilled' : all.length ? 'no-current-answer' : 'no-designated-answer';
+  return { contract: contract.id, result, status, alternatives, history };
+}
+
+/** What a producing attempt returned, kept distinct from whether a retained contribution fulfills its request. */
+export type ProductionOutcome =
+  /** Nothing was submitted; no unaccepted partial work is retained. */
+  | { readonly kind: 'no-contribution'; readonly reason: string; readonly production: Production }
+  /** A structurally invalid submission that bounded repair did not correct. */
+  | { readonly kind: 'invalid-submission'; readonly problems: readonly string[]; readonly production: Production }
+  /** A valid contribution, retained with all its declarations in effect whatever its fulfillment. */
+  | { readonly kind: 'accepted'; readonly acceptance: Acceptance; readonly production: Production; readonly repairs: number;
+    /** Determined by PostCode's contract checks. */
+    readonly fulfillment: Fulfillment | null;
+    /** Reported by the producer; a different observation from the contract checks. */
+    readonly reportedInability: string | null };
+
+export interface ProductionRequest {
+  readonly producer: Producer;
+  readonly invocation?: InvocationId | null;
+  readonly contract?: ResultContract | null;
+  /** Bounded structural repair attempts within the same execution. */
+  readonly repairs?: number;
+}
+/** Returns a contribution to submit, or undefined to end without submitting. */
+export type Produce = (production: ProductionHandle, repair: { readonly problem: string } | null) => unknown | Promise<unknown>;
+
+/**
+ * The common producer boundary: one producing execution acquires its inputs through its
+ * production, submits explicitly, and is accepted or concluded. Mechanical wrappers and
+ * agentic dialog coordination share this acceptance and outcome contract, not an execution protocol.
+ * Unexpected defects propagate.
+ */
+export async function produce(ledger: ContributionLedger, request: ProductionRequest, producer: Produce): Promise<ProductionOutcome> {
+  const handle = ledger.begin({ producer: request.producer, invocation: request.invocation ?? null });
+  const problems: string[] = [];
+  for (let attempt = 0; ; attempt++) {
+    const contribution = await producer(handle, attempt ? { problem: problems.at(-1)! } : null);
+    if (contribution === undefined) {
+      return problems.length ? { kind: 'invalid-submission', problems, production: ledger.abandon(handle, 'invalid-submission') }
+        : { kind: 'no-contribution', reason: 'not-submitted', production: ledger.abandon(handle, 'not-submitted') };
+    }
+    try {
+      const acceptance = ledger.accept([{ production: handle, contribution }]);
+      const production = ledger.production(handle.id);
+      const fulfillment = request.contract && request.invocation
+        ? assessFulfillment(ledger, request.contract, ledger.invocation(request.invocation).result) : null;
+      return { kind: 'accepted', acceptance, production, repairs: attempt, fulfillment, reportedInability: production.report?.inability ?? null };
+    } catch (error) {
+      if (!(error instanceof InvalidContribution)) throw error;
+      problems.push(error.message);
+      if (attempt >= (request.repairs ?? 0)) return { kind: 'invalid-submission', problems, production: ledger.abandon(handle, 'invalid-submission') };
+    }
+  }
+}

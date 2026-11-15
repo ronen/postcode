@@ -37,6 +37,7 @@ Agents may update this document only as part of authorized implementation work t
 - Include negative and incomplete-analysis cases where they test the epistemological contract.
 - Use the real compiler with small fixtures. Synthetic providers are appropriate for evaluation states that the eager first provider does not normally produce.
 - Automated tests may create ephemeral test projects through Node's operating-system temporary-directory APIs and must clean them up.
+- Test the common contribution mechanism with the controlled producers in `test/contribution-helpers.ts`. They supply uncommon declarations, invalid data and timing; they exercise acceptance, standing and exposure, not the truth of an interpretation. Assert atomic rejection by comparing retained state before and after. [[Common contributions](decisions/common-analysis-contributions.md#production-and-execution)]
 - Run `npm run check` to check types without emitting. Run `npm test` to build and execute the tests. Fresh-process tests resolve their own compiled build through `import.meta.url`, rather than assuming a shared checkout build.
 - Collect observation batches in sink callbacks and assert in the test body. Interaction-driving callbacks capture errors, finish cleanup and rethrow in the test. Use shared CLI collection and explicitly opt into expected sink warnings; register temporary-fixture cleanup immediately after acquisition.
 

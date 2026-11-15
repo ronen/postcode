@@ -19,6 +19,18 @@ governs this lifetime boundary. Other governing choices are the accepted [projec
 and [module inventory decisions](../decisions/initial-module-inventory-decisions.md).
 The governing cross-cutting terminology is maintained in [core concepts](../core-concepts.md), and binding cross-cutting rules are maintained in [architectural constraints](../architectural-constraints.md); this document describes how the current implementation realizes them. The [application specification](../app-specification.md) describes the broader intended application design; adopting it does not establish conformance or implement its future capabilities.
 
+## Common contribution mechanism
+
+The [common analysis contribution mechanism](contributions.md) is implemented under
+`src/lib/contributions/` and verified with controlled producers. It retains Session
+identities, immutable investigrams, exact association declarations, Query-result
+designations and recorded producer input, and derives standing and reconsideration
+from them. No Session, Lens, CLI or investigating-agent path uses it yet: everything
+described below still operates on the earlier retention structures under the
+[temporary migration contract](../decisions/common-analysis-contributions.md#adoption-and-migration-conformance).
+The [structured-accounts plan](../plans/structured-architectural-accounts.md) migrates
+those capabilities in its later milestones.
+
 ## Implemented subset of the product model
 
 The [architectural-investigation decision](../decisions/specialized-architectural-investigation.md) permits architectural accounts over captured bases that can include program states, observations, participant-supplied material and earlier Projections. Its successor to the [coordinated-Views decision](../decisions/coordinated-views-and-qualified-results.md#generalize-lens-results-and-view-composition) preserves multi-Projection coordination and multi-state conceptual scope. The current CLI implements a narrower shape: one configured TypeScript project under the unchanged-input Session contract, family-specific construction and a single top-level Projection descriptor per program View. Embedded module bases and associated-inspection selections are specific compositions within that implementation, not a general facility for coordinating arbitrary Projections.
