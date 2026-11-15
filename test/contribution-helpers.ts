@@ -12,6 +12,8 @@ import type { RecordId, SessionId } from '../src/lib/records.js';
 /** Controlled producers exercise the mechanism; they establish nothing about the truth of an interpretation. */
 export const session = 'session:11111111-1111-4111-8111-111111111111' as SessionId;
 export const evidenceRecord = `${session}:source-evidence:${'e'.repeat(64)}` as RecordId;
+/** Stands for a provider Claim-context record of the controlled mechanical method. */
+export const contextRecord = `${session}:claim-context:${'c'.repeat(64)}` as RecordId;
 
 /** A controlled structured type standing in for a specialized form: a list of named entries, possibly established empty. */
 export const tableContract: ContentTypeContract = {
@@ -27,7 +29,7 @@ export const tableContract: ContentTypeContract = {
 
 export function createLedger(): ContributionLedger {
   return new ContributionLedger({ session, catalog: new ContentCatalog([proseContract, identificationContract, tableContract]),
-    resolvesRecord: id => id === evidenceRecord });
+    resolvesRecord: id => id === evidenceRecord || id === contextRecord });
 }
 export const mechanical = (method = 'test/module-discovery@1'): Producer => ({ mechanism: 'mechanical', method, agent: null });
 export const agentic = (model = 'scripted-a', method = 'test/investigation@1'): Producer => ({ mechanism: 'agentic', method, agent: { model } });

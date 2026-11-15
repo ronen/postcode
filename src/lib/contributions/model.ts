@@ -32,7 +32,13 @@ export interface Qualification {
   readonly scope: string | null;
   readonly guarantee: string | null;
   readonly limitations: readonly string[];
-  /** Provider Claim-context records carrying the full method qualification, where a provider retains them. */
+  /**
+   * The qualified claim's own Claim context, where the producing method retains it as
+   * provider Claim-context records: this qualification's scope, guarantee and limitations
+   * in full. It is not a way to cite another producer's context. Source context of reused
+   * or supporting material stays with that material and is reached through content
+   * references or supplied evidence.
+   */
   readonly contexts: readonly RecordId[];
 }
 

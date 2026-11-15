@@ -25,7 +25,7 @@ Read access to the ledger — identity resolution, name lookup, association and 
 
 An Entity record carries identity only: its kind, modality, optional provider-native identity and the investigram that introduced it. Names and descriptions are content selected by identification associations, so several can coexist and displacing one does not change what the Entity ID denotes.
 
-A submitted Entity uses a submission-local key. One with a provider-native identity resolves through the combination of provider, identity rule, basis scope and native key; an existing mapping yields the retained Entity and no new identification is required. The same native key under another scope is a different Entity. One without a native identity is always new and must be identified in the same submission. Common IDs are Session-scoped digests, derived from the scoped native tuple or from the introducing investigram and local key, so they are independent of acceptance order and never equal a native key.
+A submitted Entity uses a submission-local key. One with a provider-native identity resolves through the combination of provider, identity rule, basis scope and native key; an existing mapping yields the retained Entity and no new identification is required. The same native key under another scope is a different Entity. One without a native identity is always new and must be identified in the same submission. Common IDs are Session-scoped digests, derived from the scoped native tuple or from the introducing investigram and local key. They never equal a native key and establish no equivalence across Sessions or scopes.
 
 An invocation records one request: operation, subjects with roles and order, parameters, explicitly selected context and the requested result contract. Its Query result is a separate identity. An ordinary equivalent request resolves to the existing invocation and result. An explicit fresh request records a new invocation that keeps the repeated question's Query result as its organizing target.
 
@@ -33,20 +33,24 @@ An invocation records one request: operation, subjects with roles and order, par
 
 A submission is a flat pool of investigrams, each belonging to one production; several productions can be accepted in one batch. An investigram owns keyed content items, declarations, follow-up options, illustrations and inconsistency reports. Its content, and each of those parts, needs applicable qualification of its own or from its owner. Agentic qualification always has interpretation status and cannot state a guarantee; mechanical qualification states its status explicitly. Both are attributed to the producing method.
 
+A qualification can name provider Claim-context records. These are the qualified claim's own Claim context as its producing method retains it, not a citation of someone else's. Provider Claim contexts qualify mechanically derived findings, so an agentic qualification cannot name one. Reuse does not need it: referenced content keeps its owner's qualification, a supplied context record can be cited as evidence, and neither transfers a guarantee to the claim that uses it.
+
 Content items have a type from a content catalogue. The type's contract validates shape, resolves any references in the body and reports locally addressable components and content dependencies. Only prose and identification types are built in at this stage.
 
-Declarations are addressed through their owning investigram. An addition or supersession establishes an association at its own address, targeting either an Entity with an identification or topical role, or a Query result. A supersession or withdrawal names exact earlier associations and carries qualified grounds. A supersession's displaced uses must concern the same Entity and role class, or the same Query result. Members are exact content items, and for result designations also other associations, with circular membership rejected. Declarations may reference another owner's content; ownership and qualification stay with the source.
+Declarations are addressed through their owning investigram. An addition or supersession establishes an association at its own address, targeting either an Entity with an identification or topical role, or a Query result. A supersession or withdrawal names exact earlier associations and carries qualified grounds. A supersession's displaced uses must concern the same Entity and role class, or the same Query result; topic keys may differ, and validation does not judge whether two topics mean the same thing. Members are exact content items, and for result designations also other associations, with circular membership rejected. Declarations may reference another owner's content; ownership and qualification stay with the source.
 
 ## Exposure and reconsideration
 
 A production records deliveries of exact content items (complete or as a disclosed excerpt, with the association route when delivered as a particular use), exact associations with the displacements already known, declaration grounds, qualified metadata, acquired inventory scopes (current-only or all-history, with the addresses listed), exact change notices and discovery-only referent handles. Positions are counts of accepted submissions and serve only to order deliveries against changes.
+
+The ledger enumerates associations within a scope in acceptance order. That is repeatable for the same retained information and independent of identifiers, but it depends on arrival order and is not a semantic order. Ordering the content of a mechanical answer belongs to the Lens method's own semantic keys.
 
 Each investigram inherits the deliveries of its own production. Causes are exact change declarations, reached by four routes:
 
 - later displacement of an association use that was received;
 - a later addition within an acquired scope, or a later displacement that removes a listed association from a current-only inventory;
 - a producing-context cause of the investigram that owns supplied content, declarations or metadata, when that cause was accepted after the delivery;
-- later displacement of a member association of a received or assessed designation.
+- later displacement of a member association of a designation, for the designation's own status and for a producer that received the designation. Receiving a designation is not delivery of its members or their content, and none is recorded.
 
 A change accepted at or before a delivery is known context for that delivery. A change for which an exact notice was delivered before submission is known by every route. A production never acquires a cause from its own declarations. Notices, bare references and discovery handles are not content exposure.
 

@@ -147,6 +147,9 @@ export class ContributionLedger {
   /**
    * Associations within a scope, in stable acceptance enumeration. `current` returns all
    * equally standing uses distinctly; position conveys neither preference nor chronology of claims.
+   * This enumeration depends on the order in which contributions were accepted. It is repeatable
+   * for the same retained information, but it is not a semantic order: a mechanical answer must
+   * order its content by its method's own semantic keys, never by this enumeration.
    */
   associations(scope: SelectionScope, standing: 'current' | 'all'): readonly AssociationEntry[] {
     const entries = scope.kind === 'result' ? this.#byTarget.get(targetKey({ kind: 'result', result: scope.result })) ?? []
@@ -387,7 +390,11 @@ export class ContributionLedger {
         let status: EpistemicStatus;
         if (producer.mechanism === 'agentic') {
           // An agent can caveat its claims; it cannot raise their epistemic status or assert a guarantee.
-          if (item.status !== undefined && item.status !== 'interpretation' || guarantee !== null || contexts.length) fail('Agentic qualification cannot claim a stronger epistemic status or guarantee.');
+          if (item.status !== undefined && item.status !== 'interpretation' || guarantee !== null) fail('Agentic qualification cannot claim a stronger epistemic status or guarantee.');
+          // `contexts` holds the claim's own provider Claim context. Provider Claim contexts qualify mechanically derived
+          // findings, so one cannot be an interpretation's own context. Source context is cited as supplied evidence, or
+          // stays with the referenced content, without transferring its guarantee.
+          if (contexts.length) fail('An agentic qualification cannot adopt a provider Claim context as its own; cite it as supplied evidence or reference the qualified content.');
           if (!limitations.length) fail('Agentic qualification requires stated limitations.');
           status = 'interpretation';
         } else {

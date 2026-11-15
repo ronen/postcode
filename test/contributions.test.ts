@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import type { EntityId, InvestigramId, SubmittedInvestigram } from '../src/lib/contributions/model.js';
-import { agentic, caveat, createLedger, derived, discoverModule, evidenceRecord, mechanical, rejects, snapshot, submit, submitted } from './contribution-helpers.js';
+import { agentic, caveat, contextRecord, createLedger, derived, discoverModule, evidenceRecord, mechanical, rejects, snapshot, submit, submitted } from './contribution-helpers.js';
 
 const prose = (key: string, body: string) => ({ key, type: 'prose', body: { text: body } });
 const local = (investigram: string, item: string) => ({ kind: 'item' as const, item: { investigram: { local: investigram }, item } });
@@ -55,6 +55,7 @@ test('invalid submissions are rejected atomically with no partial accepted contr
     [/requires attributable qualification/, [{ key: 'a', items: [prose('p', 'x')] }]],
     [/cannot claim a stronger epistemic status/, [{ ...valid, qualification: { status: 'mechanically-derived', limitations: ['x'] } }]],
     [/cannot claim a stronger epistemic status/, [{ ...valid, qualification: { limitations: ['x'], guarantee: 'Exact.' } }]],
+    [/cannot adopt a provider Claim context as its own/, [{ ...valid, qualification: { limitations: ['x'], contexts: [contextRecord] } }]],
     [/explicit epistemic status/, [{ ...valid, qualification: { limitations: ['x'] } }], mechanical()],
     [/Evidence must identify program material supplied/, [{ ...valid, items: [{ ...prose('p', 'x'), evidence: [evidenceRecord] }] }]],
     [/requires an identification association/, [{ ...valid, entities: [{ key: 'state', entityKind: 'state' }] }]],
@@ -260,4 +261,43 @@ test('follow-up options and illustrations are qualified metadata owned by their 
   rejects(ledger, agentic(), [{ key: 'b', qualification: caveat, illustrations: [{ key: 'i', diagramType: 'state-transition', inputs: [] }] }], /exact primary content inputs/);
   assert.throws(() => ledger.metadata({ investigram: id as InvestigramId, metadata: 'option', key: 'absent' }), /Missing option/);
   assert.equal(snapshot(ledger).includes('probe'), true);
+});
+
+test('a supersession may replace a topical use with a differently named topic; structure does not judge their equivalence', () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  const first = submit(ledger, agentic(), [{ key: 'a', qualification: caveat, items: [prose('p', 'Admission is immediate.')],
+    declarations: [{ key: 'u', operation: 'add', target: { kind: 'entity', entity: module, role: 'topic', topic: 'admission' }, members: [local('a', 'p')] }] }]);
+  const renamed = submit(ledger, agentic('b'), [{ key: 'b', qualification: caveat, items: [prose('p', 'Probe scheduling decides admission.')],
+    declarations: [{ key: 'u', operation: 'supersede', target: { kind: 'entity', entity: module, role: 'topic', topic: 'probe-scheduling' }, members: [local('b', 'p')],
+      displaces: [first.use('a', 'u')], grounds: { text: 'Admission is better described as probe scheduling.' } }] }]);
+  assert.deepEqual(ledger.standing(first.use('a', 'u')).displacedBy, [renamed.use('b', 'u')]);
+  assert.deepEqual(ledger.associations({ kind: 'entity', entity: module, role: 'topic', topic: null }, 'current').map(entry => entry.address), [renamed.use('b', 'u')]);
+  assert.deepEqual(ledger.associations({ kind: 'entity', entity: module, role: 'topic', topic: 'admission' }, 'current'), []);
+});
+
+test('agentic reuse of mechanical content keeps the source qualification with the source and inherits no guarantee', () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  // A mechanical finding whose own Claim context is retained as a provider record.
+  const finding = submit(ledger, mechanical('test/exports@1'), [{ key: 'f', items: [{ key: 'exports', type: 'test-table', body: { rows: ['open'], about: module },
+    qualification: { status: 'mechanically-derived', guarantee: 'Every listed export is real.', contexts: [contextRecord] } }] }]);
+  const source = finding.item('f', 'exports');
+  // The agent receives the finding with its qualification, is supplied the context record as evidence, and reuses both.
+  const reuse = submit(ledger, agentic(), handle => {
+    const delivered = handle.item(source);
+    assert.deepEqual([delivered.item?.qualification?.status, delivered.item?.qualification?.contexts], ['mechanically-derived', [contextRecord]]);
+    handle.supplied([contextRecord]);
+    return [{ key: 'r', qualification: caveat,
+      items: [{ ...prose('reading', 'The single export suggests a narrow public surface.'), evidence: [contextRecord], support: [source] }],
+      declarations: [{ key: 'surface', operation: 'add', target: { kind: 'entity', entity: module, role: 'topic', topic: 'surface' },
+        members: [{ kind: 'item', item: source }, local('r', 'reading')] }] }];
+  });
+  const owner = ledger.investigram(reuse.investigram('r')), reading = ledger.item(reuse.item('r', 'reading'));
+  // The agent's own claim and organizing use are interpretation with no guarantee and no adopted context.
+  assert.deepEqual([owner.qualification?.status, owner.qualification?.guarantee, owner.qualification?.contexts], ['interpretation', null, []]);
+  assert.deepEqual([reading.evidence, reading.support], [[contextRecord], [source]]);
+  // The reused finding is still owned and qualified by its mechanical producer, unchanged.
+  const reused = ledger.item(source);
+  assert.deepEqual([reused.qualification?.status, reused.qualification?.method, reused.qualification?.guarantee, reused.qualification?.contexts],
+    ['mechanically-derived', 'test/exports@1', 'Every listed export is real.', [contextRecord]]);
+  assert.equal(ledger.association(reuse.use('r', 'surface')).owner.id, reuse.investigram('r'));
 });

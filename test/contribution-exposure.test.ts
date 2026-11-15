@@ -309,3 +309,33 @@ test('explicit-referent discovery returns handles without content exposure, and 
   // The whole contribution included its association declaration: that exact use was received.
   assert.deepEqual(causes(ledger, reader.investigram('reader')).map(cause => cause.change), [change]);
 });
+
+test('a designation\'s recipient acquires member displacement through membership, without invented content delivery', () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  const { invocation, result } = summaryInvocation(ledger, module);
+  const summary = explainAdmission(ledger, module, result.id, invocation.id);
+  const d = summary.use('summary', 'answer'), a = summary.use('summary', 'admission'), content = summary.item('summary', 'admission');
+  // An unrelated use of the same content.
+  const unrelated = submit(ledger, agentic('other'), [{ key: 'o', declarations: [{ key: 'u', operation: 'add', qualification: caveat,
+    target: { kind: 'entity', entity: module, role: 'topic', topic: 'overview' }, members: [{ kind: 'item', item: content }] }] }]).use('o', 'u');
+  const open = (model: string, prepare: (handle: ProductionHandle) => void) => { const handle = ledger.begin({ producer: agentic(model) }); prepare(handle); return handle; };
+  const recipient = open('recipient', handle => { handle.association(d); });
+  const noticed = open('noticed', handle => { handle.association(d); });
+  // Controls: an address-only listing of D, a discovery handle, and the same content through the unrelated use.
+  const lister = open('lister', handle => { assert.deepEqual(handle.inventory({ kind: 'result', result: result.id }, 'all-history').listed, [d]); });
+  const finder = open('finder', handle => { assert.deepEqual(handle.discover(module), [content]); });
+  const viaOther = open('via-other', handle => { handle.association(unrelated, { content: true }); });
+  const change = supersede(ledger, module, 'b', a).use('b', 'u');
+  noticed.notify(change);
+  // Received after the displacement: D's membership concern is delivered as known context.
+  const late = open('late', handle => { assert.deepEqual(handle.association(d).status.membership.map(cause => cause.change), [change]); });
+  const handles = [recipient, noticed, lister, finder, viaOther, late];
+  const acceptance = ledger.accept(handles.map((production, index) => ({ production,
+    contribution: { investigrams: [{ key: `k${index}`, qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text: 'x' } }] }] } })));
+  const of = (index: number) => causes(ledger, submitted(acceptance, handles[index]!).investigram(`k${index}`));
+  assert.deepEqual(of(0).map(cause => [cause.change, cause.routes]), [[change, [{ kind: 'membership', association: a }]]]);
+  // Receiving the designation delivered neither its member's content nor the member use itself.
+  assert.deepEqual(ledger.production(recipient.id).deliveries.map(delivery => delivery.kind), ['association']);
+  for (const index of [1, 2, 3, 4, 5]) assert.deepEqual(of(index), [], `control ${index}`);
+  assert.equal(ledger.standing(d).state, 'standing');
+});
