@@ -1,6 +1,6 @@
 # Investigram structure: consolidation checkpoint
 
-Updated: 2026-11-14
+Updated: 2026-11-15
 
 Current exploratory model, not an adopted schema or product behavior. The
 [proposal](structured-architectural-accounts-proposal.md) states scope, consequences and
@@ -179,7 +179,7 @@ distinct meanings; this is not a blanket replacement of every use of “citation
 | Association local key | Unique within its owning investigram; together they address the exact association. Separate from its recognized purpose, and required for identification and result designations as well as topical information. |
 | Identification | PostCode-understood association role supplying a readable name/designation and qualified information distinguishing an Entity. Multiple identifications may coexist; assigned labels remain distinguishable from source-declared names. |
 | Association specification / declaration | Submitted specification expressing addition, supersession or withdrawal, attributable to its producing investigram. |
-| Investigram relationship | Qualified comparison of investigations/accounts, such as reported inconsistency. It does not silently displace associations; whole-bundle correction is replaced by declarations in this proposal. |
+| Investigram relationship | Qualified comparison contributed by an investigram. Unresolved inconsistency identifies exact content items or associations rather than implicating whole bundles. It does not displace associations; whole-bundle correction is replaced by declarations. |
 | Follow-up option | Available investigation associated with exact originating metadata; atemporal availability, not implied priority. |
 | Presentation recommendation | Judgment of usefulness, not permission to render compatible content. |
 | Context delivery | Exact material supplied, including ownership, basis, qualification and completeness. |
@@ -428,6 +428,22 @@ mandatory, and acknowledgement alone does not establish compliance. This is a de
 not a new checker or dialog implementation.
 
 <a id="catalogue-responsibilities"></a>
+## Unresolved inconsistency
+
+An inconsistency report targets exact content items when comparing substantive claims, or exact
+associations when comparing what the content is asserted about or its designated use. Owning
+investigrams supply provenance/qualification, not blanket targets covering unrelated siblings.
+The report explains qualified disagreement without replacing either side or choosing a winner.
+Its precise targets support discovery; index and API shapes remain implementation choices.
+
+Use the common validation boundary: instruct the investigator to acquire and understand sufficient
+substantive information, qualifications and relevant support; a scoped excerpt may suffice. Validate
+references, structure and required grounds mechanically, without a special prior-delivery gate or
+inventing exposure from references. This explicitly revises the existing inconsistency contract's
+whole-investigram targeting and recorded-delivery prerequisite. The package must carry that governing
+mapping; the authored fixtures do not yet test the migrated report shape. This is not an additional
+association declaration operation. See the [proposal](structured-architectural-accounts-proposal.md#unresolved-inconsistency-reports).
+
 ## Catalogue responsibilities and diagrams
 
 | Catalogue responsibility | Purpose |
@@ -577,7 +593,7 @@ replace the diagram for the initial offering.
 The [agent instruction inventory](structured-architectural-accounts-proposal.md#agent-instructions-and-focused-live-trials)
 identifies the rules implementation should author and exercise: result contracts, deliberate identity
 reuse/introduction, evidence and qualification, acquisition before displacement, exact association
-changes, reuse/partition qualification, earlier-question understanding for redesignation, mid-dialog
+changes and precise inconsistency reports, reuse/partition qualification, earlier-question understanding for redesignation, mid-dialog
 updates, and scoped optional guidance. Carry forward existing governing agent instructions too.
 Map this inventory to a few focused real-agent integration trials, not one fixed-output test per row.
 These trials supply smoke-test coverage as well; no separate smoke-test suite is required.

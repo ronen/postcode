@@ -1,6 +1,6 @@
 # Structured architectural accounts: working proposal
 
-Updated: 2026-11-14
+Updated: 2026-11-15
 
 Exploratory working proposal, not an adopted decision or implementation authorization.
 This version conforms the current synthesis and authored fixtures to entity-organized
@@ -93,7 +93,7 @@ GUI, general navigation, global operation catalogue or universal ontology is inc
 
 Implementation should author explicit agent instructions for the following agreed obligations and
 map them to a small set of focused live trials. This inventory consolidates the design-level rules;
-it is not final prompt wording, a universal agent benchmark or nine mandatory standalone tests.
+it is not final prompt wording, a universal agent benchmark or one mandatory standalone test per instruction.
 Supported schema/tool contracts supply the detailed protocol instructions. Multiple obligations can
 be exercised in one trial, and optional actions can be deliberately elicited rather than left to chance.
 
@@ -104,6 +104,7 @@ be exercised in one trial, and optional actions can be deliberately elicited rat
 | **Ground and qualify claims.** Distinguish source evidence, mechanical findings and earlier interpretations; preserve applicable basis, method and scope limitations. | Evidence and qualifications accompany the claims they support. Earlier interpretation is not presented as mechanically verified fact merely because it was retained. |
 | **Acquire the information needed for the action.** Before supersession or withdrawal, acquire the target's complete designated content, qualifications and required support, including semantic dependencies. An address or notice alone is insufficient. | From deliberately limited initial context, the agent requests the material needed before proposing displacement. Recorded acquisition can be inspected without introducing a production acceptance gate for semantic completeness. |
 | **Express organizing changes explicitly.** Distinguish addition, supersession and withdrawal; address exact associations and explain displacement with qualified grounds. | The declaration matches the intended change and its explanation. Conflicting accounts are not silently treated as agreement; a new reconciliation or correspondence claim requires its own qualified analysis. |
+| **Report unresolved inconsistency precisely.** Acquire and understand the substantive information being compared; identify exact conflicting content items or associations and explain the qualified disagreement. | A scoped comparison targets the intended items/uses rather than whole investigrams or similarly named content. A qualified excerpt may suffice; the report does not silently displace either side. |
 | **Preserve meaning when reusing or partitioning content.** Reference unchanged content with its original ownership and qualification; supply new content/support for new claims. Each investigram carries its applicable qualifications. | Reuse does not silently broaden a claim. Partitioning neither drops necessary limitations nor indiscriminately copies unrelated restrictions. Structural ownership/provenance preservation remains a host responsibility too. |
 | **Understand the original question before redesignating its result.** Consider the earlier invocation's question, subjects, parameters and scope. Redesignation is optional and distinct from changing an Entity's associated information. | A proposed replacement designation addresses the earlier question, rather than merely supplying new information about one of its subjects. |
 | **Incorporate updates delivered during the dialog.** Consider relevant updated information and qualified change context before submitting. | The final contribution accounts for a relevant mid-dialog update rather than blindly repeating the earlier account. This does not require endorsing the update; disagreement must remain explicit and qualified. Timing/status processing itself is tested deterministically. |
@@ -548,6 +549,32 @@ An investigram may rarely contain no new content items but meaningful qualified 
 The fixture demonstrates this. Mandatory filler prose would obscure the distinction.
 “Metadata” describes the organizing function, not lesser epistemic obligations. Referent
 information, associations and guidance can carry qualified interpretation.
+
+### Unresolved inconsistency reports
+
+Preserve reporting a qualified inconsistency without asserting a replacement. The report identifies
+specific content items or associations, not whole investigrams by default. Use exact item addresses
+when comparing their substantive claims; use exact association addresses when the dispute concerns
+what that content is asserted about or its designated use. The owning investigrams retain provenance
+and qualification, but unrelated sibling content is not implicated merely by sharing an owner.
+For example, conflicting admission claims can be compared directly; an association attaching a
+scenario-specific claim to a general Entity can instead be the object of the comparison.
+
+Apply the same data-integrity versus reasoning-policy boundary as other operations. Instruct the
+investigator to acquire and understand substantive content sufficient for the comparison, with its
+qualifications and relevant support. A qualified excerpt can suffice for a correspondingly limited
+comparison; this is not the complete-target acquisition instruction for displacement. Mechanically
+validate exact references, supported structure and required grounds/qualification, without a special
+prior-delivery acceptance gate. Actual deliveries still determine exposure; the report's references
+do not fabricate it. Structural acceptance does not certify the inconsistency judgment.
+
+The report preserves the disagreement without displacing either side, selecting a winner, or
+asserting that either entire investigram is invalid. Keep the report attributable and discoverable
+against its precise targets; index/API representation is implementation work. This deliberately
+revises the prior whole-investigram targets and mechanical exposure prerequisite in
+[Investigrams and progressive investigation](../docs/decisions/investigrams-and-progressive-investigation.md).
+The planning package must map that governing change explicitly. Current authored fixtures do not
+yet exercise this migrated report shape; it is not a new association declaration operation.
 
 ## Result designation and immutable history
 
@@ -1270,7 +1297,7 @@ Specific inspected constraints still matter for migration:
 | --- | --- |
 | One investigation already returns a root with recursive children and atomic allocation | Hierarchy is existing machinery; a forest, explicit entity introductions and association/result semantics are extensions. |
 | Current correction constructs a replacement and has selection/conflict/reconsideration effects | Replace those effects explicitly with declaration rules; do not merely rename the correction field. |
-| Current unresolved inconsistency indexes qualified comparisons of delivered earlier investigrams | Preserve its distinct meaning. It is neither a generic alternative link nor automatic displacement. |
+| Current unresolved inconsistency indexes comparisons of earlier investigrams and requires recorded substantive delivery | Preserve qualified disagreement without displacement, but target exact content items/associations. Acquisition becomes an investigator instruction under the common boundary; remove the special prior-delivery gate. |
 | `correctedSubjects` has a restricted existing subject vocabulary | New entities/result targets and association operations need explicit validation/migration. |
 | Investigrams/provenance require `originatingModule` | Specify attributable originating context for new subjects; interpreted implementation correspondence cannot become a mechanical guarantee. |
 | Current investigation parameters are empty; context parts are prose/referent/qualifications | Extend declared request meaning and structured partial/full delivery deliberately. Future dialogue acquisitions are provenance, not pre-request parameters. |

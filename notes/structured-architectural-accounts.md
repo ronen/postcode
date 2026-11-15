@@ -2544,3 +2544,19 @@ instruction/protocol failures from reasoning difficulty. Controlled dialogs rema
 mechanism tests. Recorded bounded trial evidence and review rather than a compliance guarantee,
 broad evaluation infrastructure or automatic adoption of deferred semantic enforcement. Exact prompts,
 harnesses and scenarios remain implementation work. No product or executable fixture changes here.
+
+
+## 2026-11-15 — Precise inconsistency reports under the common validation boundary
+
+The human agreed that inconsistency reporting follows the same acquisition-instruction versus
+structural-validation boundary as other operations, and targets specific content or associations
+rather than entire investigrams. Recorded item targets for conflicting substantive claims and
+association targets for disputes about the use/target of content. Reports carry qualified grounds,
+preserve provenance and disagreement, and do not displace either side or imply sibling-wide error.
+
+Acquire sufficient substantive material and support to make the comparison; a qualified excerpt can
+suffice for a limited claim. Remove the special mechanical prior-delivery gate while preserving
+accurate exposure. This explicitly changes the existing governing inconsistency contract and must
+be mapped during drafting. Added the obligation to the agent instruction inventory. Marked the
+migrated report representation/coverage as absent from the current authored fixtures; no executable
+or governing changes made this turn.

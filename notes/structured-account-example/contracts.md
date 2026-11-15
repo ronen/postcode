@@ -228,6 +228,18 @@ error. Different context alone is not grounds to withdraw a still-valid scoped u
 Other associations to the same item remain intact. There is no whole-investigram
 superseded flag and no implicit item correspondence based on a repeated key.
 
+## Unresolved inconsistency — migration agreement, not yet exercised
+
+The agreed report identifies exact content items or associations, with attributable grounds and
+qualification. Item targets compare substantive claims; association targets identify disputed uses
+of content. It does not automatically displace either side or implicate unrelated content in the
+owning investigram. Acquisition of sufficient substantive information and support is an investigator
+instruction, not a special prior-delivery acceptance gate; qualified partial content can support a
+limited comparison. References do not create exposure. See the
+[working agreement](../structured-architectural-accounts-proposal.md#unresolved-inconsistency-reports).
+The current fixture/model has no migrated inconsistency-report payload or acceptance probe. Passing
+its declaration checks does not demonstrate this migration; no additional declaration kind is implied.
+
 ## Query results and exact history
 
 Q identifies a particular investigation invocation; RESULT-Q identifies its result. A repeated
