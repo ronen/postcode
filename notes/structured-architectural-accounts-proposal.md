@@ -676,6 +676,15 @@ that capability did not make the investigram tree itself a claim of architectura
 Drafting must map this governing change explicitly. A replacement organization mechanism is not a
 prerequisite for this plan or an implementation task hidden in migration.
 
+**Entity organization is a separate future exploration, if a need arises.** Consider how entities
+might be grouped or arranged architecturally, and how existing mechanical groupings, module
+hierarchies, containment and placement information might contribute. Organization might be mechanical,
+agent-proposed or combined, and different qualified organizations may coexist. An arrangement for
+navigation need not assert architectural containment; preserve the meaning and basis of each.
+This is a candidate topic, not a general entity-organization mechanism required by this plan.
+Migration of existing mechanical organization information remains in scope, as does representing
+supported architectural relationships in qualified content. Neither is deferred by this note.
+
 Investigrams themselves have no inherent total order or precedence: producing B after A does not
 make B more authoritative. Directed exposure, provenance/derivation and amendment relationships
 establish a partial order of contribution ancestry. Unrelated investigrams remain incomparable in

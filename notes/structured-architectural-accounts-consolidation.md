@@ -282,6 +282,13 @@ organization system is required by this plan. Migration removes the old composit
 contract while preserving existing investigative questions and qualified findings. The package must
 explicitly supersede that governing behavior. Authored fixtures now use a pool without hierarchy.
 
+Entity organization is a distinct candidate for future exploration if needed. Existing mechanical
+groupings, module hierarchies, containment and placement may contribute, alongside agent-proposed
+organizations or combinations. Preserve qualified alternative organizations and distinguish navigation
+arrangements from architectural claims. This adds no general organization mechanism to the current
+plan; migration of existing mechanical organization information and supported architectural
+relationships remains in scope.
+
 ## Ownership and effect audit
 
 | Responsibility | Owner / effect |

@@ -2599,3 +2599,14 @@ selector and diagram checks pass; architectural diagram sources/legends remain u
 remain bounded authored validation. Previously recorded timing-update and migrated inconsistency-report
 coverage gaps remain outstanding; this change does not claim to exercise them. No product or governing
 files changed.
+
+
+## 2026-11-15 — Note entity organization as a future exploration
+
+The human suggested noting organization of entities, distinct from organization of investigrams,
+as something to explore if a need arises. Existing mechanical groupings and module hierarchies may
+contribute. Recorded mechanical, agent-proposed or combined organization as possible approaches,
+without choosing a mechanism or requiring a single reconciled hierarchy. Keep architectural claims
+and navigation arrangements distinguishable. Existing mechanical organization migration and supported
+qualified architectural relationships remain in scope; this candidate does not defer them or create
+a new implementation commitment.
