@@ -317,6 +317,8 @@ class Model:
         assert set(subject.get('entities', [subject.get('entity')])) <= set(self.entities), 'unknown query subject'
         assert qid not in self.queries
         result = resolve(document['result'], bindings)
+        assert 'compositionRoots' not in result, 'investigram organization is deferred'
+        assert all('children' not in a for a in result['investigrams']), 'investigram nesting is deferred'
         assert result['queryInvocation'] == qid
         rid = result['queryResult']['entity']
         assert rid == request['resultEntity'] and rid not in self.entities
@@ -407,22 +409,6 @@ class Model:
                     assert any(s['target'] == {'entity': x['subject'], 'role': 'identification'} and (oid, x['key']) in staged.expand(r)[1] for r, s in new_decls.items()), 'introduction lacks identifying association'
         own_results = [r for r, s in new_decls.items() if s['target'] == {'entity': {'entity': rid}, 'role': 'result'} and s['operation'] == 'addition']
         assert len(own_results) == 1, 'one initial designation per query result'
-        parents = {oid: 0 for oid in new_owners}
-        for r in result['compositionRoots']:
-            assert owner(r) in new_owners
-            parents[owner(r)] += 1
-        for oid in new_owners:
-            for r in staged.investigrams[oid]['children']:
-                assert owner(r) in new_owners, 'old bundle cannot be adopted as child'
-                parents[owner(r)] += 1
-        assert all(v == 1 for v in parents.values()), 'composition forest ownership'
-        visited = set()
-        def visit(oid):
-            assert oid not in visited, 'composition cycle'
-            visited.add(oid)
-            for child in staged.investigrams[oid]['children']: visit(owner(child))
-        for root in result['compositionRoots']: visit(owner(root))
-        assert visited == new_owners
         contexts = bindings.get('exposureByInvestigram')
         productions = {json.dumps(p, sort_keys=True)
                        for p in bindings.get('provenanceByInvestigram', {}).values()}

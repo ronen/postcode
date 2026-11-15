@@ -22,7 +22,7 @@
         "qualifications": [
           "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
           "Orientation distinguishing policy state categories from individual execution progress at the pinned revision; this distinction is not restricted to default sampling and does not establish observed runtime state or application success.",
-          "The identifying and behavioral children state their own applicable qualifications. This root locates those accounts without specifying admission outcomes, sampling limits or transition rules."
+          "The identifying and behavioral investigrams state their own applicable qualifications. This orientation locates those accounts without specifying admission outcomes, sampling limits or transition rules."
         ],
         "evidence": [
           "E-state",
@@ -38,14 +38,6 @@
               "E-state",
               "E-admission"
             ]
-          }
-        ],
-        "children": [
-          {
-            "submittedInvestigram": "state-definitions"
-          },
-          {
-            "submittedInvestigram": "admission"
           }
         ],
         "followupOptions": [],
@@ -223,7 +215,6 @@
             "introducesEntity": true
           }
         ],
-        "children": [],
         "followupOptions": [],
         "presentations": [],
         "associationSpecifications": [
@@ -390,7 +381,6 @@
             ]
           }
         ],
-        "children": [],
         "followupOptions": [
           {
             "key": "concurrent-callers-option",
@@ -483,11 +473,6 @@
     "queryInvocation": "Q1",
     "queryResult": {
       "introducedEntity": "query-result"
-    },
-    "compositionRoots": [
-      {
-        "submittedInvestigram": "introduction"
-      }
-    ]
+    }
   }
 }

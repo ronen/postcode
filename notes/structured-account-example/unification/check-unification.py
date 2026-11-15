@@ -275,7 +275,6 @@ def displace_identification(operation):
                                     'basis': {'retainedSelections': [selection]}}},
         'submission': {'result': {'queryInvocation': 'Q-STANDING',
                        'queryResult': {'introducedEntity': 'query-result'},
-                       'compositionRoots': [{'submittedInvestigram': 'standing'}],
                        'investigrams': [{'key': 'standing', 'title': 'Identification standing probe',
                          'content': [], 'associationSpecifications': [declaration,
                             {'key': 'result', 'operation': 'addition',
@@ -283,7 +282,7 @@ def displace_identification(operation):
                              'members': [{'declaration': {'investigram': {'submittedInvestigram': 'standing'}, 'associationKey': 'loader'}}]}],
                          'referents': [], 'evidence': ['E-standing'],
                          'qualifications': ['A lifecycle-only probe, not an adjudication of provider semantics.'],
-                         'children': [], 'followupOptions': [], 'presentations': []}]}}}
+                         'followupOptions': [], 'presentations': []}]}}}
 
 
 def selection_consumer(selection):

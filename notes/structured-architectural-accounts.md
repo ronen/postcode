@@ -2574,3 +2574,28 @@ No menu, ranking, global operation catalogue, ontology or prescribed public Lens
 Existing prior-result investigation remains available independently. Updated the proposal,
 consolidation and fixture guidance to distinguish agreed implementation scope from the authored
 fixture's current limits. No application or fixture behavior changed this turn.
+
+
+## 2026-11-15 — Remove investigram nesting; defer organization until needed
+
+The human chose to remove parent/child investigram composition and explicitly defer broader
+organization. A future need may call for nesting or another arrangement, agent-organized,
+mechanically derived (for example from follow-ups or UI context), or both. No such mechanism is
+required now. Explicit content relationships, result-designation membership, per-investigram
+qualification/provenance and architectural structures inside content retain their existing meanings.
+None automatically becomes an organization edge between investigrams.
+
+Removed child links and composition roots from all authored payloads, the common model's forest
+validation and the supporting ownership maps/contracts. The historical `children/` path is retained
+for link continuity but now holds the partitioned variant: independent investigrams with distinct
+qualification boundaries. Updated examples and orientation prose to avoid implying ownership trees.
+The plan must explicitly remove the old governing composition/navigation contract while preserving
+existing investigation questions and findings; no replacement organization system is hidden in migration.
+
+All authored checkers pass. The lifecycle checker now rejects 74 malformed cases, including obsolete
+nesting fields, and verifies that reversing the submitted pool leaves the designated answer and
+reconsideration status unchanged. Addition, acquisition, baseline, unification, guidance, composition,
+selector and diagram checks pass; architectural diagram sources/legends remain unchanged. These checks
+remain bounded authored validation. Previously recorded timing-update and migrated inconsistency-report
+coverage gaps remain outstanding; this change does not claim to exercise them. No product or governing
+files changed.

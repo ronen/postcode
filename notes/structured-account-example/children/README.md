@@ -1,15 +1,17 @@
-# Children variant: scoped qualification and association declarations
+# Partitioned variant: scoped qualification and association declarations
 
-Updated 2026-11-12. Authored hypothetical Session using the [shared contracts](../contracts.md),
+Updated 2026-11-15. Authored hypothetical Session using the [shared contracts](../contracts.md),
 not a live investigation or adopted schema. It preserves the same behavioral models as
 the [mixed comparison](../README.md), with separate qualification boundaries.
+
+The `children/` path is historical and retained for link continuity; no investigram nesting remains.
 
 ## Initial contribution
 
 ```text
 INTRO-1                  orientation: state and execution progress differ
-├── DEFINITIONS-1        identifies Closed, Open and Half-open S
-└── ADMISSION-1          admission cases and inspection behavior for P
+DEFINITIONS-1        identifies Closed, Open and Half-open S
+ADMISSION-1          admission cases and inspection behavior for P
 ```
 
 Q1 designates RESULT-Q1 using exact associations to those items. DEFINITIONS-1 carries
@@ -27,15 +29,15 @@ limitation keywords mechanically.
 
 ```text
 TRIAL-RESULT-1           orientation and result designations
-├── ROLE-DEFINITIONS-1   identifies R, E-trial, E-caller and W
-└── TRIAL-1              relations, prose, state model and interaction
+ROLE-DEFINITIONS-1   identifies R, E-trial, E-caller and W
+TRIAL-1              relations, prose, state model and interaction
 
 ADMISSION-2             new admission item and supersession declaration
 ```
 
-These are two roots of one submitted forest, not a result tree plus a special replacement
-tree. All original bundles/children remain unchanged. Local references resolve across
-the submission; references do not create owning edges.
+These are independent investigrams accepted in one submission. All original bundles remain
+unchanged. Local references resolve across the submission without creating parent/child edges.
+Result designations identify answer members; no organization tree is required.
 
 Q2 selects RESULT-Q1 and names ADMISSION-1's exact follow-up option. The request deliberately
 delivers the original result's declarations/members, including what Q2 will displace.
@@ -44,7 +46,7 @@ result context delivery before Q2 optionally redesignates that result. No prose 
 is required. See [option invocation](../followup-options.md).
 
 ADMISSION-2 supersedes only P's admission-cases association and copies no unchanged
-content. Q2's root separately supersedes RESULT-Q1's initial designation, reusing the
+content. TRIAL-RESULT-1 separately supersedes RESULT-Q1's initial designation, reusing the
 original descriptions and inspection associations by exact address. RESULT-Q2 records
 Q2's own contributed answer. Historical result captures do not substitute either update.
 There is no K record and no global source status on ADMISSION-1.
@@ -52,8 +54,8 @@ There is no K record and no global source status on ADMISSION-1.
 TRIAL-RESULT-1 orients without restating release behavior. ROLE-DEFINITIONS-1 preserves
 scenario context needed to identify roles without restricting Half-open's category identity.
 W minimally identifies who waits for whose decision; its `relatedContent` address locates
-TRIAL-1's explanation without delivering it. Each child supplies its own qualification
-and evidence. The parent does not supply them by inheritance.
+TRIAL-1's explanation without delivering it. Each investigram supplies its own qualification
+and evidence. No other bundle supplies them by inheritance.
 
 ## Architectural meaning remains unchanged
 
@@ -108,7 +110,7 @@ The separate [addition probe](../additions.md) runs against both partitions. Its
 [inputs](addition-probes.json) and [report](addition-report.json) show the same refined result:
 0/7 original evaluations and 0/8 designations acquire either addition cause, since they had
 no inventory exposure. An explicit inventory reader and its downstream recipient are affected.
-Child qualification boundaries do not remove those actual generating-evaluation exposures.
+Separate qualification boundaries do not remove those actual generating-evaluation exposures.
 
 The [acquisition refinements](../acquisition.md), with local [inputs](acquisition-probes.json)
 and [report](acquisition-report.json), exercise initial content selected by scope, a Q2 that

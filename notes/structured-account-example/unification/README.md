@@ -224,7 +224,7 @@ The probe's invocations separate discovery, export inspection and dependency inv
 clarity. This is not a rule that each internal compiler phase needs a public query result.
 A real request may use multiple analyses or already retained contributions. Attribute each output
 to its actual producing method and basis; do not assign the last method to every selected item.
-An answer's selection of earlier material does not change its producer or reparent its children.
+An answer's selection of earlier material does not change its producer or establish investigram organization.
 
 Q-E demonstrates several bundles accepted together. Incremental later work is a new contribution,
 not a mutation of the discovery bundle. A generalized investigram is not the complete evaluation,

@@ -34,7 +34,7 @@
         "qualifications": [
           "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
           "Orientation for an inquiry into a shared breaker and two execution roles under default single-trial recovery. This inquiry scope does not restrict the identities of the state categories.",
-          "The identifying and behavioral children state their own applicable qualifications. This root locates those accounts without asserting admission or release rules."
+          "The identifying and behavioral investigrams state their own applicable qualifications. This orientation locates those accounts without asserting admission or release rules."
         ],
         "evidence": [
           "E-state",
@@ -45,19 +45,11 @@
             "key": "orientation",
             "contentType": "prose/0",
             "concept": "interaction",
-            "text": "This investigation distinguishes shared breaker state, participating execution roles and the relationship under examination. The identifying child describes the scenario referents; the behavioral child supplies conditions and ordered behavior. Each child states its own scope and support.",
+            "text": "This investigation distinguishes shared breaker state, participating execution roles and the relationship under examination. The identifying investigram describes the scenario referents; the behavioral investigram supplies conditions and ordered behavior. Each investigram states its own scope and support.",
             "evidence": [
               "E-state",
               "E-half-open"
             ]
-          }
-        ],
-        "children": [
-          {
-            "submittedInvestigram": "role-definitions"
-          },
-          {
-            "submittedInvestigram": "trial"
           }
         ],
         "followupOptions": [],
@@ -378,7 +370,6 @@
             ]
           }
         ],
-        "children": [],
         "followupOptions": [],
         "presentations": [],
         "associationSpecifications": [
@@ -947,7 +938,6 @@
             "overviewScope": "Possible ordering; default single trial"
           }
         ],
-        "children": [],
         "followupOptions": [],
         "presentations": [
           {
@@ -1250,7 +1240,6 @@
             ]
           }
         ],
-        "children": [],
         "followupOptions": [],
         "presentations": [],
         "associationSpecifications": [
@@ -1289,14 +1278,6 @@
     "queryInvocation": "Q2",
     "queryResult": {
       "introducedEntity": "query-result"
-    },
-    "compositionRoots": [
-      {
-        "submittedInvestigram": "trial-result"
-      },
-      {
-        "submittedInvestigram": "admission-update"
-      }
-    ]
+    }
   }
 }

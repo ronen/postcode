@@ -31,8 +31,8 @@ feature or silently overrides an agreed requirement.
 ## Shared envelope and addressing
 
 Each submission names a query invocation, its newly allocated query result,
-a pool of investigrams and `compositionRoots`. An investigram supplies its content,
-referents, `associationSpecifications`, qualifications, evidence, fixed `children`,
+a pool of independent investigrams. An investigram supplies its content,
+referents, `associationSpecifications`, qualifications, evidence,
 `followupOptions` and `presentations`. Empty content is possible for a meaningful,
 qualified declaration-only contribution. Metadata can carry substantive interpretation.
 
@@ -157,7 +157,7 @@ The first designates content. The second is permitted for a result designation s
 an answer can include exact association assertions, including withdrawal. Recursive
 membership is acyclic. Required content dependencies, such as an interaction's state
 model, accompany the designated content; informative links do not silently expand it.
-Result membership is distinct from child composition and actual context exposure.
+Result membership selects answer content and is distinct from actual context exposure; no child composition is supplied.
 
 A declaration belongs to its producing investigram. Its members may belong to another;
 reuse neither copies nor reparents content. Each source retains its qualification,
@@ -252,8 +252,8 @@ creating RESULT-Q2. Unchanged definitions can be referenced directly. This does 
 rewrite Q1's original returned answer, what Q1 produced, or an earlier delivery snapshot.
 
 The example makes two explicit declarations: ADMISSION-2 supersedes the admission
-association on P, and Q2's root supersedes Q1's result association. Neither implies
-the other. Original investigrams, child links, metadata, items and introductions persist.
+association on P, and Q2's result-designating investigram supersedes Q1's result association. Neither implies
+the other. Original investigrams, metadata, items and introductions persist.
 The updated answer is available through a later designation; it is not substituted
 inside old exact result membership. Redesignation is optional. Other containing designations
 keep their membership and receive fresh notices/status; the investigator need not find them
@@ -264,16 +264,16 @@ selected question context, but does not require prior acquisition of that contex
 
 ## Ownership and qualification
 
-`compositionRoots` and ordered `children` form a forest of newly submitted bundles.
-Every bundle has exactly one owning position, with no cycles, shared subtrees, old
-adopted children or disconnected bundles. A content reference does not establish
-ownership. There are no special replacement trees. This retained packaging is distinct
-from the result's association membership and need not define its later organization.
+The submitted pool has no root, parent/child relation or tree-position requirement. The checker
+rejects obsolete `compositionRoots` and `children` fields instead of silently retaining them as an
+organization mechanism. Local reference resolution, item reachability through associations, exact
+result membership and atomic acceptance remain required. Reordering the pool leaves answers and
+status unchanged; content-specific sequences still retain their declared semantics.
 
-Every bundle carries its own qualifications and evidence. Nothing inherits from a
-parent by omission. Roots can orient and delimit the contributions without restating
-behavioral children. Repetition adds another substantive claim that may later need its
-own declaration. A declaration-only contribution need not invent summary prose.
+Each investigram carries its own qualifications, evidence and production provenance. Orientation
+content may locate other contributions without asserting a parent relation or repeating their
+behavioral claims. A declaration-only contribution need not invent summary prose. Broader organization
+is deferred, whether agent-authored, host-derived from follow-ups/UI context, or a combination.
 
 When partitioning qualifications:
 
@@ -299,17 +299,11 @@ that minimal identification is unintelligible without it.
 <a id="provisional-partition-default"></a>
 ## Provisional partition default
 
-Prefer coherent qualification boundaries. Identifying children remain useful when
-an investigation mixes general identities and narrower behavior, as in this example.
-Independent association supersession and item delivery now work in both partitions;
-children are no longer necessary merely to get those affordances. The previous claim
-that each child supplies a smaller citation/correction unit must not be carried over
-unchanged to association/content and separately acquired inventory exposure.
-
-Actual generating-context provenance can still conservatively affect later consumers
-of a small definition. Separate evaluations can bound that context at an orchestration
-cost; evidence must not be withheld to avoid warnings. Per-output exposure and qualified
-reassessment remain alternatives to decide, not exemptions supplied by partitioning.
+Prefer coherent qualification boundaries. Separate identifying investigrams remain useful when
+an investigation mixes general identities and narrower behavior. This does not require nesting:
+independent association supersession and item delivery work in both mixed and partitioned variants.
+Separate bundles do not remove their actual production exposure. The historical `children/` fixture
+path remains for link continuity; its payloads now contain no child links or composition roots.
 
 ## Entity context, delivery and reconsideration
 
@@ -681,7 +675,7 @@ meaning-bearing delivery when the overview depends on it, not optional decoratio
 An isolated image remains explicitly an overview. Moving detail into a legend must
 not shed its limitations or establish delivery of unrelated declarations: investigator delivery records the selected context entity, exact items and original source provenance. A diagram/legend alone need not supply the association declaration that designates those items. Exact qualified access remains available.
 
-The mixed and children variants can share a picture because their behavioral data
+The mixed and partitioned variants can share a picture because their behavioral data
 match; their legend pages and source mappings remain variant-specific. A short label
 change is an authored-content change in these fixtures; a mechanically assigned
 legend-key change is presentational. This exploration adopts neither a universal

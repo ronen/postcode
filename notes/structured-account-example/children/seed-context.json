@@ -48,7 +48,6 @@
           "description": "A reusable execution-governing policy whose failure and recovery rules determine admission of application-supplied work."
         }
       ],
-      "children": [],
       "followupOptions": [],
       "presentations": [],
       "associationSpecifications": [

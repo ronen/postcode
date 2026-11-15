@@ -15,8 +15,8 @@ producer provenance. Both partitions give the same counts.
 ## What is being compared
 
 [Authored inputs](addition-probes.json) and the [generated report](addition-report.json)
-have corresponding [children inputs](children/addition-probes.json) and
-[children report](children/addition-report.json). Each report reproduces the earlier broad
+have corresponding [partitioned inputs](children/addition-probes.json) and
+[partitioned report](children/addition-report.json). Each report reproduces the earlier broad
 rule under `earlierEntityWidePolicy` and the current rule under `associationInventoryPolicy`.
 The old rule is a comparison, not an investigator-selectable exemption or recommendation.
 

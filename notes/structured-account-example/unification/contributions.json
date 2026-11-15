@@ -75,11 +75,6 @@
           "queryResult": {
             "introducedEntity": "query-result"
           },
-          "compositionRoots": [
-            {
-              "submittedInvestigram": "discovery"
-            }
-          ],
           "investigrams": [
             {
               "key": "discovery",
@@ -302,7 +297,6 @@
                 "Authored mapping of native module records; provider identity guarantees must survive migration.",
                 "No architectural role or runtime behavior is asserted."
               ],
-              "children": [],
               "followupOptions": [],
               "presentations": []
             }
@@ -363,14 +357,6 @@
           "queryResult": {
             "introducedEntity": "query-result"
           },
-          "compositionRoots": [
-            {
-              "submittedInvestigram": "exports"
-            },
-            {
-              "submittedInvestigram": "empty"
-            }
-          ],
           "investigrams": [
             {
               "key": "exports",
@@ -612,7 +598,6 @@
               "qualifications": [
                 "Compiler export-surface scope; this is not a complete module inspection."
               ],
-              "children": [],
               "followupOptions": [],
               "presentations": []
             },
@@ -667,7 +652,6 @@
               "qualifications": [
                 "The selected module has an established empty export surface, not absent analysis."
               ],
-              "children": [],
               "followupOptions": [],
               "presentations": []
             }
@@ -720,11 +704,6 @@
           "queryResult": {
             "introducedEntity": "query-result"
           },
-          "compositionRoots": [
-            {
-              "submittedInvestigram": "dependencies"
-            }
-          ],
           "investigrams": [
             {
               "key": "dependencies",
@@ -810,7 +789,6 @@
                 "Source-request recognition; computed target remains indeterminate under this method.",
                 "No absence-of-runtime-dependency inference is justified by an empty relationship list."
               ],
-              "children": [],
               "followupOptions": [],
               "presentations": []
             }
@@ -888,11 +866,6 @@
           "queryResult": {
             "introducedEntity": "query-result"
           },
-          "compositionRoots": [
-            {
-              "submittedInvestigram": "runtime"
-            }
-          ],
           "investigrams": [
             {
               "key": "runtime",
@@ -984,7 +957,6 @@
                 "Qualified inference from the captured constant binding and source module correspondence.",
                 "Does not claim actual execution or successful loading."
               ],
-              "children": [],
               "followupOptions": [],
               "presentations": []
             }
@@ -1082,11 +1054,6 @@
           "queryResult": {
             "introducedEntity": "query-result"
           },
-          "compositionRoots": [
-            {
-              "submittedInvestigram": "combined"
-            }
-          ],
           "investigrams": [
             {
               "key": "combined",
@@ -1129,7 +1096,6 @@
               "qualifications": [
                 "Selection preserves distinct source-request and inferred runtime semantics; not a synthesized complete dependency graph."
               ],
-              "children": [],
               "followupOptions": [],
               "presentations": []
             }
@@ -1282,14 +1248,6 @@
           "queryResult": {
             "introducedEntity": "query-result"
           },
-          "compositionRoots": [
-            {
-              "submittedInvestigram": "constant"
-            },
-            {
-              "submittedInvestigram": "organization"
-            }
-          ],
           "investigrams": [
             {
               "key": "constant",
@@ -1339,7 +1297,6 @@
                 "Authored expected output of an unimplemented restricted mechanical method, not a measured compiler result.",
                 "Method kind does not by itself guarantee completeness or runtime execution."
               ],
-              "children": [],
               "followupOptions": [],
               "presentations": []
             },
@@ -1406,7 +1363,6 @@
                 "Authored agentic comparison of the earlier inference and the same-submission mechanical finding; not a new verification of that finding.",
                 "The method is hypothetical and unexecuted; selection retains its restricted guarantee and conditional scope."
               ],
-              "children": [],
               "followupOptions": [],
               "presentations": []
             }
@@ -1488,11 +1444,6 @@
           "queryResult": {
             "introducedEntity": "query-result"
           },
-          "compositionRoots": [
-            {
-              "submittedInvestigram": "constant"
-            }
-          ],
           "investigrams": [
             {
               "key": "constant",
@@ -1585,7 +1536,6 @@
                 "Authored interpretive enhancement; the mechanical target calculation remains available as evidence, not an inherited guarantee.",
                 "No call-path execution or successful loading was observed."
               ],
-              "children": [],
               "followupOptions": [],
               "presentations": []
             }

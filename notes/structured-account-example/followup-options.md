@@ -31,7 +31,7 @@ After allocation the relevant request fields are:
 }
 ```
 
-The actual [mixed ledger](context-and-bindings.json) and [children ledger](children/context-and-bindings.json)
+The actual [mixed ledger](context-and-bindings.json) and [partitioned ledger](children/context-and-bindings.json)
 also capture basis/evidence, deliveries, architectural focus and explicit navigation
 origin. The request is selected structurally; `informationNeed` is documentary wording,
 not a human-authored query parameter. The option's purpose/scope supplies the delegated
@@ -40,7 +40,7 @@ by naming an unsupported method.
 
 RESULT-Q1 is the request subject/context, ADMISSION-1 is the metadata owner, and S is
 the architectural focus. Receiving the option preserves all three. The original result
-and its fixed bundle structure gain no children from Q2. Q2 contributes independently,
+and its bundles are not extended or reorganized by Q2. Q2 contributes independently,
 including its new designation for RESULT-Q1. An exact option address alone does not
 establish human navigation history.
 
@@ -80,7 +80,7 @@ work; the JSON option and checkers retain their original general result contract
 
 ## Delivery and later association changes
 
-The [mixed access probe](followup-option-access.json) and [children access probe](children/followup-option-access.json)
+The [mixed access probe](followup-option-access.json) and [partitioned access probe](children/followup-option-access.json)
 record these boundaries:
 
 - An exact option excerpt with qualification/basis/provenance is substantive guidance

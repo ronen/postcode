@@ -51,7 +51,7 @@ provide the investigation background.
 | [Acquisition refinements](acquisition.md) | Scope-selected initial content, discovery before retrieval, and exact exposure to delivered declaration reasons; declared dependencies and investigator-directed propagation remain deferred. |
 | [Mechanical/agentic unification](unification/README.md) | Authored discovery, exports and source dependencies; interpreted extension and separately attributed supersession, with original guarantees and histories preserved. |
 | [Addition probe](additions.md) | Association/inventory exposure comparison in both partitions: original readers no longer acquire addition causes; an explicit inventory reader and its consumer do. Earlier broad counts remain reproducible. |
-| [Children variant](children/README.md) | Same behavior with appropriately separated qualification boundaries. Its own seed/ledger/probes/reports describe a separate hypothetical Session. |
+| [Partitioned variant](children/README.md) | Same behavior with appropriately separated qualification boundaries. Its own seed/ledger/probes/reports describe a separate hypothetical Session. |
 | [Composition](composition/README.md) | Two wrapping orders, local roles/relations/situations and exact follow-up selectors. |
 | [Follow-up options](followup-options.md) | RESULT-Q1 as context/subject, exact originating metadata as option address. |
 | [Diagram overview guide](diagrams.md) | Four compact diagrams with full keyed legends and source mappings. |
@@ -59,18 +59,22 @@ provide the investigation background.
 Readable IDs are aliases, not a production UUID format. Each variant resolves its own
 submission-local IDs. Identical aliases across variants do not join their Sessions.
 
+The historical `children/` directory is kept for link continuity. It now holds the partitioned
+variant with independent investigrams, not a hierarchy. Both variants omit composition roots and
+child links; qualification boundaries, result designations and content references remain explicit.
+
 ## Admission, trial and revised designation
 
 In the mixed variant ADMISSION-1 contains descriptions and admission claims together.
-In the children variant INTRO-1 owns DEFINITIONS-1 and ADMISSION-1. Both have exact item
-associations, so ADMISSION-1/admission-cases can be displaced independently. Q2's
+In the partitioned variant INTRO-1, DEFINITIONS-1 and ADMISSION-1 are independent investigrams.
+They have exact item associations, so ADMISSION-1/admission-cases can be displaced independently. Q2's
 ADMISSION-2 contains only the new admission item and its supersession declaration;
-it copies no unchanged definitions, inspection guidance or root prose.
+it copies no unchanged definitions, inspection guidance or orientation prose.
 
 Q2 also explicitly supersedes Q1's result designation. Its new members reference the
 unchanged original associations and the new admission association. The original result
-and all original bundles remain retained, as do fixed child lists. New result membership
-is neither a patched tree nor a global replacement flag.
+and all original bundles remain retained. New result membership does not patch bundles or create
+a global replacement flag. Investigram organization is deferred; no parent/child links are submitted.
 
 Q2 receives a RESULT-Q1 context delivery including the exact declarations/members it will
 displace. This is a deliberate completeness example, not a default to deliver every
@@ -105,7 +109,7 @@ also deferred. None is added to the submitted payloads or implemented by these f
 
 Mixed descriptions still carry their original investigram-level default-sampling scope.
 Moving their associations or projecting only one item cannot shed that limitation.
-The children variant separately qualifies state identity and behavior, so category
+The partitioned variant separately qualifies state identity and behavior, so category
 identification is not restricted by unrelated behavioral assumptions. That is a real
 reason to separate content; it is no longer necessary simply to obtain independently
 supersedable associations or exact item access.
@@ -182,8 +186,9 @@ python3 notes/structured-account-example/render-overviews.py
 
 The first checks both partitions, qualified delivery, structural validity and reference integrity, immutable original
 answers, exact association standing, result-membership versus exposure paths, atomic
-rejection and matching architectural state/interaction content. It rejects 72 malformed
-cases across the partitions. Use `--write` only to deliberately regenerate lifecycle
+rejection and matching architectural state/interaction content. It rejects 74 malformed
+cases across the partitions, including rejection of obsolete nesting fields. Reordering the
+submitted pool preserves the designated answer and reconsideration status. Use `--write` only to deliberately regenerate lifecycle
 reports after changing authored input or the bounded simulator. A separate no-context branch
 checks that reuse and earlier-query redesignation are structurally accepted without inventing
 exposure or certifying adequate understanding.
@@ -191,7 +196,7 @@ exposure or certifying adequate understanding.
 The [baseline checker](check-baseline.py) verifies all non-displaced identification associations for
 subject Entities in both partitions: multiple subjects, alternative identifications, required qualified
 disclosures, empty selections, historical snapshots and addition/displacement propagation. It rejects
-14 malformed cases. Its reports ([mixed](baseline-report.json), [children](children/baseline-report.json))
+14 malformed cases. Its reports ([mixed](baseline-report.json), [partitioned](children/baseline-report.json))
 record what the scoped baseline delivered. The initial Circuit Breaker request now uses that baseline.
 Exact-acquisition probes remain deliberately narrower to isolate their behavior.
 

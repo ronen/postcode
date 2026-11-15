@@ -160,7 +160,6 @@
             ]
           }
         ],
-        "children": [],
         "followupOptions": [
           {
             "key": "concurrent-callers-option",
@@ -373,11 +372,6 @@
     "queryInvocation": "Q1",
     "queryResult": {
       "introducedEntity": "query-result"
-    },
-    "compositionRoots": [
-      {
-        "submittedInvestigram": "admission"
-      }
-    ]
+    }
   }
 }

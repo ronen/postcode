@@ -21,7 +21,7 @@
         ],
         "qualifications": [
           "Authored static interpretation at revision f48bea55022ab15ab07eb52a79bfc1e661300fd4; possible usage patterns, not observed application objects or an executed PostCode investigation.",
-          "Orientation to two possible patterns, not a combined runtime model or a ranking of their desirability. Children supply their own identification and behavior scope."
+          "Orientation to two possible patterns, not a combined runtime model or a ranking of their desirability. Separate investigrams supply their own identification and behavior scope."
         ],
         "evidence": [
           "E-policy"
@@ -31,21 +31,10 @@
             "key": "orientation",
             "contentType": "prose/0",
             "concept": "interaction",
-            "text": "Policy kinds, policy-instance roles and execution roles remain distinct. The children identify two ordered patterns and examine a bounded execution prefix for each.",
+            "text": "Policy kinds, policy-instance roles and execution roles remain distinct. Separate investigrams identify two ordered patterns and examine a bounded execution prefix for each.",
             "evidence": [
               "E-policy"
             ]
-          }
-        ],
-        "children": [
-          {
-            "submittedInvestigram": "pattern-definitions"
-          },
-          {
-            "submittedInvestigram": "bulkhead-outside-case"
-          },
-          {
-            "submittedInvestigram": "breaker-outside-case"
           }
         ],
         "followupOptions": [],
@@ -197,7 +186,6 @@
             ]
           }
         ],
-        "children": [],
         "followupOptions": [],
         "presentations": [],
         "associationSpecifications": [
@@ -612,7 +600,6 @@
             ]
           }
         ],
-        "children": [],
         "followupOptions": [],
         "presentations": [],
         "associationSpecifications": [
@@ -1020,7 +1007,6 @@
             ]
           }
         ],
-        "children": [],
         "followupOptions": [],
         "presentations": [],
         "associationSpecifications": [
@@ -1070,11 +1056,6 @@
     "queryInvocation": "Q4",
     "queryResult": {
       "introducedEntity": "query-result"
-    },
-    "compositionRoots": [
-      {
-        "submittedInvestigram": "composition-result"
-      }
-    ]
+    }
   }
 }

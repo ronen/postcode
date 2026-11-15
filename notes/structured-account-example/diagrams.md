@@ -11,7 +11,7 @@ conditions, qualifications and evidence. The compact image is not the complete q
 | Bulkhead outside breaker | [Capacity held during recovery](composition/bulkhead-outside.md) | One waiting-point summary S1; its legend states each resource occupancy. |
 | Breaker outside bulkhead | [A trial queued for capacity](composition/breaker-outside.md) | Trial reservation remains distinct from starting application work. |
 
-The first two use the children partition with separately scoped qualifications. The mixed partition has its
+The first two use the partitioned variant with separately scoped qualifications. The mixed partition has its
 own [state legend](recovery-state.md) and [interaction legend](concurrent-callers.md)
 for the same pictures, preserving that variant's exact investigram context.
 

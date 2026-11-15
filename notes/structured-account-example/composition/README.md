@@ -1,7 +1,7 @@
 # Composition probe: where a wrapped execution waits
 
 Exploratory working notes, updated 2026-11-12. This is a first authored continuation of the
-[children variant](../children/README.md), not an adopted design or an executed
+[partitioned variant](../children/README.md), not an adopted design or an executed
 investigation. It tests the [proposal's composition question](../../structured-architectural-accounts-proposal.md#composition-as-a-design-probe).
 It does not change product code or broaden the first implementation scope.
 
@@ -58,14 +58,15 @@ same claim. The evidence ledger distinguishes them from source inspection.
 
 ```text
 COMPOSITION-RESULT-1       orientation, not a restatement of waiting rules
-├── COMPOSITION-DEFINITIONS-1  C-BB and C-BH: ordered patterns only
-├── COMPOSITION-BB-1        bulkhead outside breaker
-└── COMPOSITION-BH-1        breaker outside bulkhead
+COMPOSITION-DEFINITIONS-1  C-BB and C-BH: ordered patterns only
+COMPOSITION-BB-1        bulkhead outside breaker
+COMPOSITION-BH-1        breaker outside bulkhead
 ```
 
 Earlier component items and declarations are delivered through P/S/R/B context deliveries,
-with exact source provenance, **not adopted children** of the new result. Pattern definitions have no sampling/capacity exclusion;
-behavioral children carry their own applicable sampling, interference and scenario
+with exact source provenance and no parent/child adoption. The listed contributions are independent
+investigrams, not a tree. Pattern definitions have no sampling/capacity exclusion;
+behavioral investigrams carry their own applicable sampling, interference and scenario
 conditions. The general pattern does not promise that a wait occurs.
 
 ## What identity means here

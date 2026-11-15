@@ -568,7 +568,6 @@
             "overviewScope": "Possible ordering; default single trial"
           }
         ],
-        "children": [],
         "followupOptions": [],
         "presentations": [
           {
@@ -1112,7 +1111,6 @@
             ]
           }
         ],
-        "children": [],
         "followupOptions": [],
         "presentations": [],
         "associationSpecifications": [
@@ -1151,14 +1149,6 @@
     "queryInvocation": "Q2",
     "queryResult": {
       "introducedEntity": "query-result"
-    },
-    "compositionRoots": [
-      {
-        "submittedInvestigram": "trial"
-      },
-      {
-        "submittedInvestigram": "admission-update"
-      }
-    ]
+    }
   }
 }

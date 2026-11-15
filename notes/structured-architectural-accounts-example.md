@@ -1,6 +1,6 @@
 # Admission, follow-up and association supersession: walkthrough
 
-Updated: 2026-11-12. Exploratory example of the [current proposal](structured-architectural-accounts-proposal.md),
+Updated: 2026-11-15. Exploratory example of the [current proposal](structured-architectural-accounts-proposal.md),
 not adopted behavior. [Complete payloads](structured-account-example/README.md) now conform
 to entity context deliveries, query results and association declarations. The Cockatiel
 admission omission is staged, not a new live investigator discovery.
@@ -17,12 +17,12 @@ PostCode allocates RESULT-Q1 and resolves Q1's explicit introductions of Closed,
 Half-open S. No registration/promotion threshold or matching by name. S's category identity
 is distinct from a particular breaker role, execution or hypothetical failure mode.
 
-The children partition returns INTRO-1, DEFINITIONS-1 and ADMISSION-1. The mixed partition
+The partitioned variant returns INTRO-1, DEFINITIONS-1 and ADMISSION-1. The mixed partition
 returns ADMISSION-1 with all the same initial items. Either way each item is associated
 explicitly. An addition specification identifies S using `half-open-description`; another
 describes P using `admission-cases`. A result association targets RESULT-Q1 and designates
-those exact declarations. The bundle tree records original composition, not entity scope
-or a promise that all descendants will accompany every later context delivery.
+those exact declarations. There is no bundle tree; qualified result membership and explicit
+content references supply their own meanings without investigram organization.
 
 The admission cases deliberately claim coverage while omitting waiting during an occupied
 trial. Without that coverage claim, the absence might simply be partiality. The initial
@@ -55,7 +55,7 @@ or replacing Q1's original bundle.
 
 ## 3. Q2 contributes trial content and two explicit supersessions
 
-Q2 introduces scenario roles R, E-trial, E-caller and waiting relationship W. In the children
+Q2 introduces scenario roles R, E-trial, E-caller and waiting relationship W. In the partitioned
 partition ROLE-DEFINITIONS-1 identifies these and TRIAL-1 describes the behavior. The mixed
 partition keeps them together. Their scope remains explicit; the trial is not a real observed
 execution, and this recovery model is scenario-bound, not silently a model of every P instance.
@@ -72,7 +72,7 @@ It does not duplicate unchanged definitions or inspection prose. It declares:
 > Supersede ADMISSION-1's `admission-cases` association for P/describes with this new item,
 > because the earlier coverage claim omitted waiting and its subsequent admission recheck.
 
-Separately, Q2's root declares a new association for RESULT-Q1, superseding its earlier
+Separately, TRIAL-RESULT-1 declares a new association for RESULT-Q1, superseding its earlier
 result designation. It includes the original definitions/orientation/inspection associations
 and the new admission association. Existing items keep their owners and qualification.
 RESULT-Q2's own initial association designates Q2's contributions, including the redesignation.
@@ -159,11 +159,11 @@ certify. Reasons normally remain inline; additional exact evidence/content refer
 supply grounds. No special “revise the reason” operation is needed. Later findings have their
 own provenance rather than retroactively becoming the earlier investigation's evidence.
 
-## 7. Why keep the children comparison?
+## 7. Why keep the partitioned comparison?
 
-Independent association targeting and item delivery now work in both partitions. We should
-not retain the old argument that a child is required to avoid whole-investigram replacement.
-Children can still provide appropriate shared qualification and readable organization. State
+Independent association targeting and item delivery work in both variants. Separate investigrams
+provide appropriate qualification boundaries without a parent/child relationship. The `children/`
+directory is a historical path for this now-flat partitioned variant. State
 category identity need not inherit a behavioral default-sampling limitation merely because the
 initial behavior and identification were returned together. Original qualification is not
 silently removed when an item is associated elsewhere.
@@ -175,7 +175,7 @@ semantic-impact assessment remains deferred. The baseline has no inventory deliv
 
 ## 8. Composition and subsequent selection
 
-The [composition probe](structured-account-example/composition/README.md) extends the children
+The [composition probe](structured-account-example/composition/README.md) extends the partitioned
 scenario. Q4 receives selected P/S/R/B context deliveries and supplies ordered-pattern entities plus
 RESULT-Q4. It preserves the different setups and claimed resource lifetimes for both wrapper
 orders. A later investigation can select C-BB as an entity or select a local relation/state

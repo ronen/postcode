@@ -44,11 +44,6 @@
         "queryResult": {
           "introducedEntity": "query-result"
         },
-        "compositionRoots": [
-          {
-            "submittedInvestigram": "contribution"
-          }
-        ],
         "investigrams": [
           {
             "key": "contribution",
@@ -108,7 +103,6 @@
                 ]
               }
             ],
-            "children": [],
             "followupOptions": [],
             "presentations": []
           }
@@ -173,11 +167,6 @@
         "queryResult": {
           "introducedEntity": "query-result"
         },
-        "compositionRoots": [
-          {
-            "submittedInvestigram": "contribution"
-          }
-        ],
         "investigrams": [
           {
             "key": "contribution",
@@ -281,7 +270,6 @@
                 ]
               }
             ],
-            "children": [],
             "followupOptions": [],
             "presentations": []
           }
@@ -333,11 +321,6 @@
         "queryResult": {
           "introducedEntity": "query-result"
         },
-        "compositionRoots": [
-          {
-            "submittedInvestigram": "contribution"
-          }
-        ],
         "investigrams": [
           {
             "key": "contribution",
@@ -400,7 +383,6 @@
                 ]
               }
             ],
-            "children": [],
             "followupOptions": [],
             "presentations": []
           }
@@ -452,11 +434,6 @@
         "queryResult": {
           "introducedEntity": "query-result"
         },
-        "compositionRoots": [
-          {
-            "submittedInvestigram": "contribution"
-          }
-        ],
         "investigrams": [
           {
             "key": "contribution",
@@ -514,7 +491,6 @@
                 ]
               }
             ],
-            "children": [],
             "followupOptions": [],
             "presentations": []
           }
@@ -570,11 +546,6 @@
         "queryResult": {
           "introducedEntity": "query-result"
         },
-        "compositionRoots": [
-          {
-            "submittedInvestigram": "contribution"
-          }
-        ],
         "investigrams": [
           {
             "key": "contribution",
@@ -634,7 +605,6 @@
                 ]
               }
             ],
-            "children": [],
             "followupOptions": [],
             "presentations": []
           }
@@ -686,11 +656,6 @@
         "queryResult": {
           "introducedEntity": "query-result"
         },
-        "compositionRoots": [
-          {
-            "submittedInvestigram": "contribution"
-          }
-        ],
         "investigrams": [
           {
             "key": "contribution",
@@ -750,7 +715,6 @@
                 ]
               }
             ],
-            "children": [],
             "followupOptions": [],
             "presentations": []
           }

@@ -6,7 +6,7 @@ correction/delivery description; it is not a product schema.
 
 ## Submission and retained ownership
 
-Read [children first result](children/first-result.json), [follow-up](children/followup-result.json)
+Read [partitioned first result](children/first-result.json), [follow-up](children/followup-result.json)
 and their [ledger](children/context-and-bindings.json). The [mixed](first-result.json)
 version preserves the comparison with broader source qualifications.
 
@@ -14,7 +14,7 @@ version preserves the comparison with broader source qualifications.
 | --- | --- |
 | `queryInvocation` / `queryResult` | Particular invocation and separately allocated query result. |
 | `investigrams` | Immutable qualified contributions with local keys resolved on acceptance. |
-| `compositionRoots` / `children` | Forest packaging of newly submitted bundles; no special replacement tree. |
+| No `compositionRoots` / `children` | Investigrams form a submitted pool; broader organization is deferred. |
 | `content` | Keyed architectural interpretation, including explicit entity introduction. |
 | `referents` | Things referred to; not necessarily targets of an identifying/describing claim. |
 | `associationSpecifications` | Qualified additions, supersessions and withdrawals targeting entity/role categories. |
@@ -33,7 +33,7 @@ ADMISSION-2/admission-cases supersedes ADMISSION-1/admission-cases on P/topic.
 It supplies new content, exact displaced-association address and qualified reason.
 It does not displace the other associations originally owned by ADMISSION-1.
 
-Q2's root separately declares `updated-admission-result` for RESULT-Q1/result,
+Q2's result-designating investigram separately declares `updated-admission-result` for RESULT-Q1/result,
 superseding Q1's original result association. Its members reference unchanged earlier
 declarations plus ADMISSION-2's new association. No item is copied merely to carry
 it forward. This optional redesignation instructs the investigator to understand Q1's exact question; other

@@ -22,18 +22,10 @@
             "key": "orientation",
             "contentType": "prose/0",
             "concept": "interaction",
-            "text": "Distinguish the reusable policy kind from its execution and queue resources. The children identify the kind and describe a bounded admission contract.",
+            "text": "Distinguish the reusable policy kind from its execution and queue resources. Separate investigrams identify the kind and describe a bounded admission contract.",
             "evidence": [
               "E-bulkhead"
             ]
-          }
-        ],
-        "children": [
-          {
-            "submittedInvestigram": "bulkhead-definition"
-          },
-          {
-            "submittedInvestigram": "bulkhead-admission"
           }
         ],
         "followupOptions": [],
@@ -129,7 +121,6 @@
             ]
           }
         ],
-        "children": [],
         "followupOptions": [],
         "presentations": [],
         "associationSpecifications": [
@@ -182,7 +173,6 @@
             ]
           }
         ],
-        "children": [],
         "followupOptions": [],
         "presentations": [],
         "associationSpecifications": [
@@ -212,11 +202,6 @@
     "queryInvocation": "Q3",
     "queryResult": {
       "introducedEntity": "query-result"
-    },
-    "compositionRoots": [
-      {
-        "submittedInvestigram": "bulkhead-result"
-      }
-    ]
+    }
   }
 }

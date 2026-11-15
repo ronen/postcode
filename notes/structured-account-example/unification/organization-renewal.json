@@ -62,11 +62,6 @@
       "queryResult": {
         "introducedEntity": "query-result"
       },
-      "compositionRoots": [
-        {
-          "submittedInvestigram": "reorganization"
-        }
-      ],
       "investigrams": [
         {
           "key": "reorganization",
@@ -150,7 +145,6 @@
             "The organizing judgment changes; the referenced mechanical finding keeps its own method, basis and restricted guarantee.",
             "Withdrawal affects the exact association and does not undo its earlier displacement."
           ],
-          "children": [],
           "followupOptions": [],
           "presentations": []
         }

@@ -2,7 +2,7 @@
 
 2026-11-12. Exploratory authored boundary probes, not product implementation, an agent
 transcript or a semantic coverage-dependency mechanism. The [inputs](acquisition-probes.json)
-and [report](acquisition-report.json) have corresponding [children inputs](children/acquisition-probes.json)
+and [report](acquisition-report.json) have corresponding [partitioned inputs](children/acquisition-probes.json)
 and [report](children/acquisition-report.json). Both partitions pass the same checks.
 
 ## Exact selection versus scope-selected initial context

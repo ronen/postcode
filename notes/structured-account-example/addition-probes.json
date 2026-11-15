@@ -61,11 +61,6 @@
         "queryResult": {
           "introducedEntity": "query-result"
         },
-        "compositionRoots": [
-          {
-            "submittedInvestigram": "contribution"
-          }
-        ],
         "investigrams": [
           {
             "key": "contribution",
@@ -104,7 +99,6 @@
                 ]
               }
             ],
-            "children": [],
             "followupOptions": [],
             "presentations": [],
             "associationSpecifications": [
@@ -213,11 +207,6 @@
         "queryResult": {
           "introducedEntity": "query-result"
         },
-        "compositionRoots": [
-          {
-            "submittedInvestigram": "contribution"
-          }
-        ],
         "investigrams": [
           {
             "key": "contribution",
@@ -264,7 +253,6 @@
                 ]
               }
             ],
-            "children": [],
             "followupOptions": [],
             "presentations": [],
             "associationSpecifications": [
@@ -362,11 +350,6 @@
         "queryResult": {
           "introducedEntity": "query-result"
         },
-        "compositionRoots": [
-          {
-            "submittedInvestigram": "contribution"
-          }
-        ],
         "investigrams": [
           {
             "key": "contribution",
@@ -387,7 +370,6 @@
               }
             ],
             "content": [],
-            "children": [],
             "followupOptions": [],
             "presentations": [],
             "associationSpecifications": [
@@ -449,11 +431,6 @@
         "queryResult": {
           "introducedEntity": "query-result"
         },
-        "compositionRoots": [
-          {
-            "submittedInvestigram": "contribution"
-          }
-        ],
         "investigrams": [
           {
             "key": "contribution",
@@ -481,7 +458,6 @@
                 ]
               }
             ],
-            "children": [],
             "followupOptions": [],
             "presentations": [],
             "associationSpecifications": [
@@ -555,11 +531,6 @@
         "queryResult": {
           "introducedEntity": "query-result"
         },
-        "compositionRoots": [
-          {
-            "submittedInvestigram": "contribution"
-          }
-        ],
         "investigrams": [
           {
             "key": "contribution",
@@ -577,7 +548,6 @@
               }
             ],
             "content": [],
-            "children": [],
             "followupOptions": [],
             "presentations": [],
             "associationSpecifications": [
@@ -652,11 +622,6 @@
         "queryResult": {
           "introducedEntity": "query-result"
         },
-        "compositionRoots": [
-          {
-            "submittedInvestigram": "contribution"
-          }
-        ],
         "investigrams": [
           {
             "key": "contribution",
@@ -684,7 +649,6 @@
                 ]
               }
             ],
-            "children": [],
             "followupOptions": [],
             "presentations": [],
             "associationSpecifications": [
@@ -761,11 +725,6 @@
         "queryResult": {
           "introducedEntity": "query-result"
         },
-        "compositionRoots": [
-          {
-            "submittedInvestigram": "contribution"
-          }
-        ],
         "investigrams": [
           {
             "key": "contribution",
@@ -786,7 +745,6 @@
               }
             ],
             "content": [],
-            "children": [],
             "followupOptions": [],
             "presentations": [],
             "associationSpecifications": [

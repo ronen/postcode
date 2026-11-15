@@ -627,7 +627,7 @@ The first accepted contribution for Q adds a result association targeting RESULT
 The fixture represents its members as exact item references and/or declaration references.
 Referencing declarations lets a result explicitly include identifying/descriptive uses
 and, in a declaration-only result, the organizing assertions themselves. Result membership
-is qualified content organization; it is not the investigram's child tree.
+selects qualified answer content; it does not organize investigrams into a hierarchy.
 
 B can supersede A's result association while leaving A's other associations untouched,
 and independently supersede an identifying or behavioral association. Unchanged content
@@ -652,12 +652,29 @@ redesignate every containing result. Other designations retain exact membership 
 fresh displacement/membership concerns. Redesignation is never performed by the index or
 renderer just to keep two organizing structures synchronized.
 
-The fixture retains fixed, single-parent child trees as provenance/composition of submitted
-bundles. A contribution pool may have several roots; no special replacement tree is needed.
-Cross-investigram content references do not adopt old children. Atomic acceptance still
-resolves local identities, validates references and qualification, and retains the whole
-contribution together. Displacement targets predate acceptance; cycles in designated
-membership are rejected.
+The contribution protocol has no parent/child investigram links or composition roots. Atomic
+acceptance still resolves local identities, validates references and qualification, and retains the
+submitted pool together. Each investigram retains its own content and production provenance.
+Displacement targets predate acceptance; cycles in designated membership are still rejected.
+
+**Investigram organization is explicitly deferred.** Future need may justify nesting or another
+organization, authored by agents, derived mechanically (for example from follow-up relationships or
+UI context), or combining those approaches. None is implied by the current mechanism. References,
+shared production and follow-up provenance do not automatically become organization edges.
+
+Result designations still select exact answer members; content references still express their stated
+relationships; separate investigrams still provide qualification/provenance boundaries. Architectural
+hierarchies, state nesting and other supported structures within Analysis content remain meaningful
+claims about the system under study. Removing investigram organization does not remove those forms.
+The fixture directory named `children/` is retained for link continuity, but now contains the
+**partitioned variant**, with independent investigrams and no parent/child relationships.
+
+Migration deliberately removes the old fixed composition-tree contract and its parent/child
+navigation, rather than rebuilding it under another name. Preserve the questions and findings of
+existing capabilities such as decomposition through qualified content and result designations;
+that capability did not make the investigram tree itself a claim of architectural decomposition.
+Drafting must map this governing change explicitly. A replacement organization mechanism is not a
+prerequisite for this plan or an implementation task hidden in migration.
 
 Investigrams themselves have no inherent total order or precedence: producing B after A does not
 make B more authoritative. Directed exposure, provenance/derivation and amendment relationships
@@ -758,7 +775,7 @@ behavior still need a bounded contract; presentation retrieval/navigation remain
 **Displacement acquisition is an investigator instruction.** Before superseding or withdrawing
 an association, acquire its complete designated content, qualifications and required support,
 including semantic dependencies. Result targets include their designated declarations/items;
-this does not require entire owner bundles or unrelated children. Acquisition may proceed over
+this does not require entire owner bundles or unrelated items. Acquisition may proceed over
 successive dialog requests. Investigators are expected to follow this instruction and supply
 qualified grounds; PostCode does not attempt to verify understanding.
 
@@ -1312,7 +1329,7 @@ Specific inspected constraints still matter for migration:
 
 | Existing machinery | Consequence for this design |
 | --- | --- |
-| One investigation already returns a root with recursive children and atomic allocation | Hierarchy is existing machinery; a forest, explicit entity introductions and association/result semantics are extensions. |
+| One investigation already returns a root with recursive children and atomic allocation | Retain atomic allocation with an unordered contribution pool; remove investigram nesting and defer organization. Introductions, content references and result associations carry their own meanings. |
 | Current correction constructs a replacement and has selection/conflict/reconsideration effects | Replace those effects explicitly with declaration rules; do not merely rename the correction field. |
 | Current unresolved inconsistency indexes comparisons of earlier investigrams and requires recorded substantive delivery | Preserve qualified disagreement without displacement, but target exact content items/associations. Acquisition becomes an investigator instruction under the common boundary; remove the special prior-delivery gate. |
 | `correctedSubjects` has a restricted existing subject vocabulary | New entities/result targets and association operations need explicit validation/migration. |
@@ -1331,7 +1348,7 @@ The planning package would need explicit treatment of:
   of existing mechanical identity and result guarantees.
 - Investigrams as immutable mechanically or agentically produced analysis contributions, with explicit
   method-specific guarantees; broader content terminology, item addresses, cross-owner references,
-  declaration-only results and result designation separate from fixed child composition.
+  declaration-only results and result designation, with fixed child composition removed and investigram organization deferred.
 - Association addition/supersession/withdrawal replacing whole-investigram correction,
   including structural validation, acquisition guidance, conflict/standing and exact historical access.
 - Exact association/content exposure, separate scoped inventory exposure, and result-membership
@@ -1392,7 +1409,7 @@ behavior cannot be dismissed as an implementation detail.
 | Area | Architectural requirement or decision | Implementation freedom within that boundary |
 | --- | --- | --- |
 | Partial, failed and empty results | Retain and process accepted investigram content normally; separately preserve fulfillment, known inadequacy and the distinction between failure and established emptiness. | Buffering, batching, internal checkpoints and error-handling structure, subject to accepted atomicity and outcome contracts. |
-| Associations and results | Membership meaning, qualification, standing and exact history; ordering only where it conveys meaning. | Serialization, collection types, indexes, incidental ordering and nesting limits that preserve the supported capability and disclose limits accurately. |
+| Associations and results | Membership meaning, qualification, standing and exact history; ordering only where it conveys meaning. | Serialization, collection types, indexes and incidental ordering that preserve the supported capability and disclose limits accurately. Investigram organization is deferred, not an implementation choice to add here. |
 | Context acquisition | Selection meaning, actual coverage, qualification, exposure and the representation of unavailable or incomplete support. | Dialog tool shapes, fetching strategy, pagination mechanics and operational limits that preserve those contracts. |
 | Architectural content and diagrams | State-dependent behavior exercises varied architectural subjects/relationships and supplies the meaning needed for a state diagram; live-agent runs check integration and controlled dialogs provide mechanism coverage. This is not selection of the initial user-facing catalogue. | Concrete examples, detailed schemas, field layout and renderer implementation that satisfy the agreed validation coverage. |
 | Entity lookup | Stable exact identity within the Session; qualified and potentially ambiguous name lookup; no silent identity merging or displaced-description authority. | Storage layout, lookup indexes, caching and search mechanics within the supported lookup semantics. |
@@ -1421,7 +1438,7 @@ list of fixture details:
 | --- | --- |
 | Validation coverage (planning work) | The selected concept is state-dependent behavior. Map the common mechanism to observable checks using a few live-agent runs and controlled dialogs; test details remain implementation choices. Interaction/composition remain design probes, not required implemented capabilities. Initial user-facing catalogue selection is outside this task. |
 | Name-search scope (resolved) | Support historical/displaced-name lookup with qualified standing and current information access. Default history inclusion and user continuation behavior are interface policies; preserve accurate coverage and ambiguity. |
-| Result ordering and nesting (resolved) | Atomic capture and result membership introduce no implicit claim order. Preserve explicit content/declaration semantics and qualifications; incidental packaging remains an implementation choice. No additional mechanism is required. |
+| Result ordering and investigram organization (resolved) | Atomic capture and result membership introduce no implicit claim order. Remove investigram parent/child organization and defer agentic, mechanical or combined organization until needed. Preserve explicit content/declaration semantics and qualifications. |
 | Exposure terminology migration (resolved) | Include the rename throughout affected governing documents, APIs and code, alongside the semantic migration; do not rename distinct evidence citations or support. |
 | Early vertical validation (resolved) | Test the common mechanism through an internal producer boundary before real-provider migration, then exercise initial mechanical integration and the agentic/diagram path early. Detailed interfaces and milestones remain implementation/planning work. |
 

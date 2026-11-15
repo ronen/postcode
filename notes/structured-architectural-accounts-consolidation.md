@@ -220,7 +220,6 @@ Invocation Q and its allocated query result RESULT-Q
       exact earlier associations displaced
       reason and attributable grounds
     Follow-up options and presentation recommendations
-    Fixed local child links, arranged as a forest
   Local entity introductions and references to existing identities
 ```
 
@@ -242,7 +241,7 @@ the result-specific rules. Shared internal types remain implementation choices.
 Entity identities and introduction provenance
 Query invocations and their generating/delivery history
 Immutable investigrams
-  Original items, declarations, qualifications, evidence, guidance, child links
+  Original items, declarations, qualifications, evidence, guidance
 Association indexes for Entity + role and for Query results
 Query-result designations with explicit member references
 Captured answers and exact context deliveries
@@ -269,6 +268,20 @@ No global investigram superseded flag is derived. A new declaration can referenc
 content without copying it. A rare declaration-only investigram is meaningful when its
 qualified organizing assertions are meaningful; no filler prose is required.
 
+## Investigram organization — deferred
+
+The common contribution protocol has no parent/child investigram structure or composition roots.
+Independent investigrams preserve their qualification and production provenance; result designations
+select exact answer members and content references retain their explicit meanings. Atomic submission
+and follow-up provenance do not imply organization. Supported architectural nesting within Analysis
+content remains distinct and is unaffected.
+
+Defer investigram organization until there is a demonstrated need: nesting or another arrangement,
+agent-authored, mechanically derived (including follow-ups or UI context), or both. No replacement
+organization system is required by this plan. Migration removes the old composition-tree/navigation
+contract while preserving existing investigative questions and qualified findings. The package must
+explicitly supersede that governing behavior. Authored fixtures now use a pool without hierarchy.
+
 ## Ownership and effect audit
 
 | Responsibility | Owner / effect |
@@ -278,7 +291,7 @@ qualified organizing assertions are meaningful; no filler prose is required.
 | Supersession | Producing investigram owns a new association explicitly displacing earlier associations, not their owner bundles. |
 | Withdrawal | Producing investigram records displacement without replacement members. Old content and other associations remain. |
 | Result designation | Association targeting a query result. Can include exact items/declarations originating elsewhere. |
-| Child composition | Fixed submitted-bundle structure; not result membership, current answer selection, exposure or architectural containment. |
+| Investigram organization | Deferred: no parent/child links or composition roots. Neither follow-up provenance nor UI context automatically organizes investigrams. |
 | Follow-up option | Exact producing metadata remains owned by its investigram. Access through a result/entity does not retarget or transfer it. |
 | Presentation recommendation | Original usefulness judgment; selecting a different compatible diagram changes no retained record. |
 | Context delivery | Captures actual delivered content, original qualification, source provenance and applicable disclosures. A subject ID or human browsing is not exposure. |
@@ -343,7 +356,7 @@ become another entity.
 A result can need reconsideration because its producer received subsequently displaced
 information. It can also need reconsideration because a constituent association was later
 displaced—even when its producer created that entity and never received it as context.
-The second route is designated membership, not fabricated exposure or the fixed child tree.
+The second route is designated membership, not fabricated exposure or investigram nesting.
 A third route is availability/selection scope: a later matching entry could have changed an
 acquired inventory or the content selected by an explicit scope. A description acquired by
 exact reference or fixed result membership does not establish that scope dependency.
@@ -515,11 +528,11 @@ reuse an earlier item in a declaration-only result and withdraw that new associa
 without changing the original item or its other association standings. Competing
 supersessions remain available.
 
-The mixed and children partitions preserve the same behavioral models. Children can
-still give descriptions appropriate qualification boundaries, but they are no longer
-necessary to obtain independent association supersession or item delivery. Entity/result
-exposure changes the earlier argument about smaller citation units; do not present that
-argument as unchanged. Evaluation-wide provenance can still cause conservative warnings.
+The mixed and partitioned variants preserve the same behavioral models. Independent investigrams
+provide appropriate qualification boundaries without parent/child organization. Item delivery and
+association supersession work in either partition. Actual production exposure can still cause
+conservative warnings; partitioning alone does not remove them. The existing `children/` path now
+names the partitioned variant for link continuity, not a retained nesting mechanism.
 
 Composition receives selected P/S/R/B context and returns pattern entities plus
 RESULT-Q4. Exact local selectors remain valid; their context entity is RESULT-Q4. The

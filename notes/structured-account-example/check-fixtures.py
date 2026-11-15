@@ -36,6 +36,14 @@ def check_variant(directory,write=False):
     excerpt=probes['excerptConsumer'];state.accept(excerpt['submission'],excerpt['bindings'],excerpt['request'])
     before_follow=copy.deepcopy(state)
     state.accept(follow,ledger['followupAcceptance'],ledger['followupRequest'])
+    # Contribution packaging order conveys no parent/child organization or precedence.
+    reordered=copy.deepcopy(follow)
+    reordered['result']['investigrams'].reverse()
+    flat=copy.deepcopy(before_follow)
+    flat.accept(reordered,ledger['followupAcceptance'],ledger['followupRequest'])
+    assert flat.snapshots['Q2']==state.snapshots['Q2'], 'pool order changed designated answer'
+    assert flat.reconsideration()==state.reconsideration(), 'pool order changed standing/causes'
+    assert all('children' not in a for a in state.investigrams.values())
     assert state.snapshots['Q1']==original_answer
     assert all(state.investigrams[k]==v for k,v in original_bundles.items()), 'retained bundle mutated'
     assert state.standing(('ADMISSION-1','admission-cases'))['displacedBy']==['ADMISSION-2::admission-cases']
@@ -136,7 +144,8 @@ def check_variant(directory,write=False):
         'unknown local role':lambda d: item(d,'admission-cases').update(stateBearer={'localRole':'absent'}),
         'bare new unassociated content':lambda d: d['result']['investigrams'][0]['content'].append({'key':'uncovered','contentType':'prose/0','text':'not selected','evidence':[]}),
         'cyclic result designation':lambda d: declaration(d,'result')['members'].append({'declaration':{'investigram':{'submittedInvestigram':d['result']['investigrams'][0]['key']},'associationKey':'result'}}),
-        'old child adoption':lambda d: d['result']['investigrams'][0]['children'].append({'investigram':'ADMISSION-1'}),
+        'obsolete child nesting':lambda d: d['result']['investigrams'][0].update(children=[{'investigram':'ADMISSION-1'}]),
+        'obsolete composition roots':lambda d: d['result'].update(compositionRoots=[]),
         'unknown type':lambda d: item(d,'recovery').update(contentType='invented/0'),
     }
     for name,mutate in mutations.items():
