@@ -104,9 +104,14 @@ reassertion requires an explicit organizing action. Changed inputs/methods/findi
 new contributions. The probe now exercises equivalent recomputation after supersession and
 withdrawal without automatic renewal or a new history mechanism. The mechanism preserves the finding's method, basis, evidence
 and qualifications, retains standing/history and makes both available through qualified application
-access. Lens-specific use and presentation belong to application contracts; no new mechanical-answer
-selection or warning mechanism is prescribed. Migration still preserves existing guarantees and
-raises concrete conflicts. Reachability is submission-wide, so the organizer alone can associate the mechanical item. Later withdrawal of
+access. A Lens returns what its declared question and method ask for: subsequent organizing
+judgments do not substitute different claims for method-specific findings. Complete applicable
+standing, displacements, reconsideration causes and qualified history remain available to the
+application with exact access; presentation chooses how to communicate them. Selection through
+current designations applies when that is the Lens's question, with all equally standing alternatives.
+This distinction follows the question, not producer kind, and introduces no new warning system or
+clearance. See the [R1 resolution](structured-architectural-accounts-proposal.md#lens-answer-and-standing).
+Migration still preserves existing guarantees and raises concrete conflicts. Reachability is submission-wide, so the organizer alone can associate the mechanical item. Later withdrawal of
 that organizing use can accompany a new addition referencing the unchanged mechanical item;
 restoring use of earlier content similarly requires an explicit addition. Neither reverses old
 displacements or clears concerns. Selection-only

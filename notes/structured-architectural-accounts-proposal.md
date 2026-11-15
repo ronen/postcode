@@ -375,13 +375,32 @@ The authored unification adapter now exercises this rule, including displaced-id
 unchanged current selection and disclosure through result membership. No automatic provider-
 suppression mechanism follows.
 
-The scope boundary for mechanical answers is now settled: preserve the finding's method, captured
-basis, evidence and qualifications, retain association standing/history, and make both available
-through qualified application access. Displacement neither rewrites the original finding nor
-causes its association to renew. Lens-specific use of that information and its presentation belong
-to the application contracts; this mechanism design prescribes no additional selection or warning
-system for mechanical answers. Migration must preserve existing answer guarantees and raise concrete
-contract conflicts, rather than using this boundary to silently alter them.
+<a id="lens-answer-and-standing"></a>
+### Lens answers and available standing
+
+A Lens returns what its declared question and method ask for. A method-specific question returns
+that method's findings, preserving their captured basis, evidence and guarantees. Subsequent
+association displacement or result redesignation does not silently substitute another method's
+claims. For example, statically established dependencies remain the answer to a static-dependency
+question even when an agent contributes a different runtime-dependency account.
+
+The returned information always has complete applicable displacement, standing, reconsideration
+and qualified history available to the application, with exact references and access to the
+associated grounds. This is required information availability, not an optional disclosure based on
+producer kind. Presentation decides how to communicate it; no new warning system or particular UI
+is prescribed. Availability may use linked access rather than embedding all historical content in
+every payload. Exact captured answers remain immutable; fresh status is distinguishable from their
+captured qualification and standing.
+
+A Lens whose question asks for currently designated retained answers selects through designations,
+including all equally standing alternatives. That rule does not override a method-specific question.
+Engine Query results and redesignations can organize information without determining every Lens's
+answer selection. This distinction follows the question, not a mechanical-versus-agentic division.
+
+Displacement does not rewrite a finding, renew its association, erase its method guarantee or by
+itself establish a new reconsideration cause. Cause-specific exposure and timing rules still apply;
+existing concerns remain available without claiming reassessment or clearance. Migration preserves
+existing answer guarantees and explicitly maps these distinctions into the application contracts.
 
 ## Existing agentic capability migration
 
@@ -610,7 +629,8 @@ an acquisition gate. This is not a new association declaration operation.
 
 ## Result designation and immutable history
 
-Fresh selection of a result with several equally standing designations supplies all of those
+When the Lens question calls for selection through current result designations, fresh selection
+of a result with several equally standing designations supplies all of those
 alternatives, preserving their distinct membership, qualifications and provenance. For example,
 if D2 and D3 independently supersede D1 and neither displaces the other, PostCode Lens code must
 use both; it has no basis to assign priority or silently select one. Supplying both does not merge
@@ -1497,9 +1517,10 @@ workflow. Neither the probes nor this boundary authorize product implementation.
 <a id="decisions-still-to-make-in-notes"></a>
 ## Settled decisions and remaining drafting work
 
-The identified review questions have been discussed and resolved below; no known consequential
-decision is intentionally left for the drafter to make implicitly. Re-review may reveal further
-conflicts. The [review alignment summary](structured-account-example/review-alignment.md#review-resolutions)
+The original review questions were resolved below. Re-review subsequently identified three
+application-boundary consequences: R1 is resolved by the [Lens-answer rule](#lens-answer-and-standing);
+R2 (redesignation instructions for investigations of earlier answers) and R3 (prior-result Subject
+meaning) remain for discussion before drafting. Do not decide those implicitly in the package. The [review alignment summary](structured-account-example/review-alignment.md#review-resolutions)
 locates the resolutions, authored validation and explicit deferrals. Remaining work is to express
 these agreements in the planning package and map their governing changes:
 

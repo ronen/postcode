@@ -8,6 +8,17 @@ and vocabulary. This note locates the resolutions from the independent pre-plann
 three previously missing authored checks. The review itself and historical discussion remain unchanged.
 No product or governing files were changed by this alignment pass.
 
+## Re-review follow-up
+
+The re-review at `69df12f` confirms the earlier decisions and raises three application-boundary
+consequences. **R1 is resolved:** a Lens returns its declared question/method's answer, with complete
+applicable displacement, standing, reconsideration and qualified history available for application
+presentation. Current-designation selection does not substitute different claims for a method-specific
+answer. See the [inline agreement](../structured-architectural-accounts-proposal.md#lens-answer-and-standing).
+R2 (redesignation instructions when investigating an earlier answer) and R3 (the exact meaning of a
+prior-result Subject) remain for discussion. The earlier resolution table below records the first
+review, not a claim that these new questions are already settled.
+
 <a id="review-resolutions"></a>
 ## Review resolutions
 

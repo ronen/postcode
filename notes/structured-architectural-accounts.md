@@ -2676,3 +2676,15 @@ and selectors nine; review alignment 44. Diagram/legend sources regenerate uncha
 links and whitespace checks pass. These are authored simulation checks, not product integration,
 semantic truth, instruction-compliance or performance evidence. No product, governing or foundation
 files were changed, and no planning package was started. The human will arrange re-review.
+
+
+## 2026-11-15 — Re-review R1: answer the Lens question, preserve available history
+
+The human agreed that the Lens should return what was asked for, while the returned data always
+has complete applicable displacements and related information available for the application to
+consider in presentation. Recorded the rule inline in the proposal and consolidation. Method-specific
+findings are not silently substituted by subsequent organizing judgments; current-designation
+selection applies to questions defined that way. This follows the question rather than producer kind.
+Qualified standing, causes and history remain available through exact access, without prescribing a
+UI, mutating captured answers, reinstating associations or introducing clearance. The re-review's
+R2 and R3 remain for discussion. No product, governing or fixture changes.
