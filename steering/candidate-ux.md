@@ -45,7 +45,7 @@ Context could be enabled for selected Workspaces, offered automatically when use
 
 **Experience to evaluate.** Follow several dependency branches, return to the original question, and rearrange the results. Observe whether people can recover their route without mistaking adjacency for a program or evidence relationship.
 
-**Related exploration.** The earlier [Workspace prototype](gui/design-kickoff.md#design-canvas) explores inline inspection, opening beside, tiling, and branching into tabs or windows.
+**Related exploration.** The earlier [Workspace prototype](../notes/gui/design-kickoff.md#design-canvas) explores inline inspection, opening beside, tiling, and branching into tabs or windows.
 
 <a id="orientation-that-remains-in-view"></a>
 ## Orientation that remains in view
@@ -69,7 +69,7 @@ Context could be enabled for selected Workspaces, offered automatically when use
 
 **Experience to evaluate.** Ask people to find an investigation, predict its answer, and change a consequential parameter using menus and prose. Check whether wording such as “used by” obscures direct versus transitive relationships or whether reformatting is mistaken for new analysis.
 
-**Related exploration.** The [discussion of Lens vocabulary](gui/design-kickoff.md#open-question-is-lens-a-user-facing-notion) explores questions, captions, and editable parameters as user-facing concepts.
+**Related exploration.** The [discussion of Lens vocabulary](../notes/gui/design-kickoff.md#open-question-is-lens-a-user-facing-notion) explores questions, captions, and editable parameters as user-facing concepts.
 
 <a id="resolving-an-unclear-request"></a>
 ## Resolving an unclear request
@@ -126,7 +126,7 @@ Context could be enabled for selected Workspaces, offered automatically when use
 
 **Experience to evaluate.** Use actual partial, conflicting, and corrected results. Ask people what they can conclude, what changed, and how to recover the earlier account. Compare plain prose with layered disclosure and visual cues, including keyboard and non-colour access.
 
-**Related exploration.** The [qualification layers](gui/visual-language.md#qualification-in-layers) and [cue vocabulary](gui/visual-language.md#cues) give concrete presentation treatments to evaluate.
+**Related exploration.** The [qualification layers](../notes/gui/visual-language.md#qualification-in-layers) and [cue vocabulary](../notes/gui/visual-language.md#cues) give concrete presentation treatments to evaluate.
 
 <a id="sharing-investigation-context-with-an-agent"></a>
 ## Sharing investigation context with an agent

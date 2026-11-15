@@ -22,9 +22,9 @@ Follow the human-maintained guidance in [`dev/engineering-guidelines.md`](dev/en
 
 Follow the conventions in [`dev/process-conventions.md`](dev/process-conventions.md) and [`docs/implementation-conventions.md`](docs/implementation-conventions.md).
 
-## Durable Notes
+## Steering and Notes
 
-Material under [`notes/`](notes/README.md) is durable but non-permanent and non-governing. Use it only as exploratory context, not as authority. Do not add, materially revise, move, or delete notes without explicit human direction.
+Material under [`steering/`](steering/README.md) and [`notes/`](notes/README.md) is durable but non-permanent and non-governing. Steering contains maintained material for considering future directions, selecting work, and revisiting priorities; notes contains exploratory material. Use both as context, not as authority. Do not add, materially revise, move, or delete either without explicit human direction. Steering is maintained separately from plan drafting and implementation; report implications rather than including steering revisions in a planning package. Follow any more specific editing restrictions in the individual documents.
 
 ## Application Specification
 

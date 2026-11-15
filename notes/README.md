@@ -8,8 +8,6 @@ Notes may link to canonical documents and to other notes. Drafts may link to not
 
 A document whose lifecycle prevents later editorial repair must not link to notes. This includes accepted decision records, concluded task records, preserved review findings, review handoffs after review begins, and other records required to remain unchanged as historical evidence.
 
-Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root underscore directory for disposable checkout-local work, and the [backlog](../docs/backlog.md) for candidate work awaiting human evaluation.
-
 ## Current notes
 
 - Review consolidation: [resolution map and aligned probes](structured-account-example/review-alignment.md) records the fresh review discussions, production-update timing, precise inconsistency reports and referent discovery.
@@ -24,9 +22,6 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 - Diagram readability examples: [compact overviews and keyed legends](structured-account-example/diagrams.md), with concise authored labels and full qualified meaning kept alongside.
 - Complete metadata payload: [guided tour](structured-account-example/metadata-payload.md) exercises investigram-owned follow-up options and illustrations, exact addresses, qualified delivery and explicit trial diagram inputs.
 - Retained follow-up option: [bounded admission-to-trial invocation](structured-account-example/followup-options.md), with exact originating option references, Query-result context and historical access in both partitions.
-- [Upcoming work](upcoming-work.md)
-- [Candidate capabilities](candidate-capabilities.md)
-- [Candidate UX](candidate-ux.md)
 - [Human understanding and agency](human-understanding-and-agency.md)
 - [Dependency landscape](dependency-landscape.md)
 - [Explorative capabilities](explorative-capabilities.md)

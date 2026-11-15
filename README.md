@@ -20,6 +20,17 @@ For the current project state, see [`STATUS.md`](STATUS.md). For plans, architec
 
 Coding agents should begin with [`AGENTS.md`](AGENTS.md). The detailed development process is described in [`dev/workflow.md`](dev/workflow.md).
 
+<a id="documentation-map"></a>
+## Documentation map
+
+- [`dev/`](dev/workflow.md): human-maintained development workflow and engineering guidance.
+- [`docs/`](docs/README.md): application specification, governing architecture, approved plans and decisions, capability references, implemented architecture, and backlog.
+- [`drafts/`](drafts/README.md): proposed canonical documents and revisions being prepared for approval and promotion.
+- [`foundation/`](foundation/README.md): adopted research concepts and task-record requirements.
+- [`notes/`](notes/README.md): non-governing exploration, supporting research, and retained design results.
+- `records/`: durable [task records](records/tasks/), [independent implementation reviews](records/reviews/README.md), and [audits](records/audits/README.md) with their supporting evidence.
+- [`steering/`](steering/README.md): human-maintained material for considering future directions, selecting work, and revisiting priorities.
+
 ## Development CLI
 
 The CLI opens one configured TypeScript project for an interactive investigation
