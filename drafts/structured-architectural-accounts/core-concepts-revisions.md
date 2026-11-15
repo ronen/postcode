@@ -46,7 +46,7 @@ A relationship may be deliberately identified as an Entity for continued referen
 
 *[decision: [Result designation](decisions/association-organization-and-exposure.md#result-designation-and-historical-selection)]*
 
-A **Query result** is the organizing identity for the answer to one particular engine investigation invocation. It is neither an Entity in the system under study nor a Projection. Its designated answers remain traceable to the invocation's question, subjects and parameters so their meaning can be understood.
+A **Query result** is the organizing identity for the answer to one particular engine investigation invocation. It is neither an Entity in the system under study nor a Projection. Its designated answers remain traceable to the invocation's question, subjects, parameters, explicitly selected context and requested result contract so their meaning can be understood. Required analysis content participates in request equivalence; sharing useful supporting information does not make different requests the same.
 
 The invocation is the particular request; the Query result is a distinct identity organizing its answers. Keeping access to invocation context does not make the two the same object or concept.
 
