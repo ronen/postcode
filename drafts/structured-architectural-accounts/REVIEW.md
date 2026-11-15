@@ -28,7 +28,7 @@ Each predecessor revision file changes only its opening metadata; historical bod
 
 Check for lost governing obligations or accidental scope changes during consolidation, especially at the production/assembly boundary, per-producer exposure, provider recomputation after displacement, exact subjects versus current designated answers, partial fulfillment, and mechanical method-specific results. Check that delegated implementation details do not weaken those semantics.
 
-One fidelity-review question awaits human resolution before promotion: withdrawal-sensitive current-only inventories. It is marked locally in the association decision and in the plan. Across-submission content-to-association reachability is required. The bounded diagram notation is made concrete here for review. New semantic conflicts found during review or implementation require human resolution; observations about warning breadth or instruction usability do not implicitly authorize deferred mechanisms.
+The fidelity-review questions are resolved: withdrawal from a delivered current-only inventory triggers reconsideration even without delivery of the removed content, and across-submission content-to-association reachability is required. The bounded diagram notation is made concrete here for review. New semantic conflicts found during review or implementation require human resolution; observations about warning breadth or instruction usability do not implicitly authorize deferred mechanisms.
 
 ## Promotion boundary
 
