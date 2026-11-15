@@ -69,7 +69,7 @@
         }
       },
       "submission": {
-        "illustration": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
+        "fixtureNote": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
         "result": {
           "queryInvocation": "Q-D",
           "queryResult": {
@@ -298,7 +298,7 @@
                 "No architectural role or runtime behavior is asserted."
               ],
               "followupOptions": [],
-              "presentations": []
+              "illustrations": []
             }
           ]
         }
@@ -351,7 +351,7 @@
         }
       },
       "submission": {
-        "illustration": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
+        "fixtureNote": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
         "result": {
           "queryInvocation": "Q-E",
           "queryResult": {
@@ -599,7 +599,7 @@
                 "Compiler export-surface scope; this is not a complete module inspection."
               ],
               "followupOptions": [],
-              "presentations": []
+              "illustrations": []
             },
             {
               "key": "empty",
@@ -653,7 +653,7 @@
                 "The selected module has an established empty export surface, not absent analysis."
               ],
               "followupOptions": [],
-              "presentations": []
+              "illustrations": []
             }
           ]
         }
@@ -698,7 +698,7 @@
         }
       },
       "submission": {
-        "illustration": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
+        "fixtureNote": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
         "result": {
           "queryInvocation": "Q-S",
           "queryResult": {
@@ -790,7 +790,7 @@
                 "No absence-of-runtime-dependency inference is justified by an empty relationship list."
               ],
               "followupOptions": [],
-              "presentations": []
+              "illustrations": []
             }
           ]
         }
@@ -860,7 +860,7 @@
         }
       },
       "submission": {
-        "illustration": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
+        "fixtureNote": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
         "result": {
           "queryInvocation": "Q-I",
           "queryResult": {
@@ -958,7 +958,7 @@
                 "Does not claim actual execution or successful loading."
               ],
               "followupOptions": [],
-              "presentations": []
+              "illustrations": []
             }
           ]
         }
@@ -1048,7 +1048,7 @@
         }
       },
       "submission": {
-        "illustration": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
+        "fixtureNote": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
         "result": {
           "queryInvocation": "Q-C",
           "queryResult": {
@@ -1097,7 +1097,7 @@
                 "Selection preserves distinct source-request and inferred runtime semantics; not a synthesized complete dependency graph."
               ],
               "followupOptions": [],
-              "presentations": []
+              "illustrations": []
             }
           ]
         }
@@ -1242,7 +1242,7 @@
         }
       },
       "submission": {
-        "illustration": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
+        "fixtureNote": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
         "result": {
           "queryInvocation": "Q-M",
           "queryResult": {
@@ -1298,7 +1298,7 @@
                 "Method kind does not by itself guarantee completeness or runtime execution."
               ],
               "followupOptions": [],
-              "presentations": []
+              "illustrations": []
             },
             {
               "key": "organization",
@@ -1364,7 +1364,7 @@
                 "The method is hypothetical and unexecuted; selection retains its restricted guarantee and conditional scope."
               ],
               "followupOptions": [],
-              "presentations": []
+              "illustrations": []
             }
           ]
         }
@@ -1438,7 +1438,7 @@
         }
       },
       "submission": {
-        "illustration": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
+        "fixtureNote": "Authored expected contributions; no native mechanical adapter, new compiler method, or live agent executed.",
         "result": {
           "queryInvocation": "Q-R",
           "queryResult": {
@@ -1537,7 +1537,7 @@
                 "No call-path execution or successful loading was observed."
               ],
               "followupOptions": [],
-              "presentations": []
+              "illustrations": []
             }
           ]
         }

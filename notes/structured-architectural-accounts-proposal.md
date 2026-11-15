@@ -43,7 +43,7 @@ Validation should combine **a few focused live-agent integration trials** with *
 to provide systematic mechanism coverage**. The live trials check that important instructions
 communicate their intent through the real integration and also supply smoke-test coverage; no
 separate live smoke-test suite is required. Cover consequential optional actions such as
-follow-up options, presentation recommendations, reported inability, association addition,
+follow-up options, illustrations, reported inability, association addition,
 supersession and withdrawal, and reuse of another investigation's content. Do not depend on an
 agent spontaneously choosing every action. Once an action is produced, its processing must satisfy
 the contract; absence of an optional action is not itself a mechanism failure. Explicitly requested
@@ -64,7 +64,7 @@ required data or broken references. Controlled dialogs can use fixed payloads an
 mechanism effects; detailed live scenarios and checks remain planning/implementation work.
 
 Include an explicit result-contract case requesting a state diagram, distinct from an optional
-presentation recommendation. Validate successful fulfillment from retained structured content,
+illustration. Validate successful fulfillment from retained structured content,
 otherwise valid contributions that leave the diagram requirement unmet, and producer-reported
 inability to fulfill it. Accepted content and association effects receive normal processing even
 when the request is not fulfilled; prose alone does not silently satisfy the diagram contract.
@@ -109,7 +109,7 @@ be exercised in one trial, and optional actions can be deliberately elicited rat
 | **Preserve meaning when reusing or partitioning content.** Reference unchanged content with its original ownership and qualification; supply new content/support for new claims. Each investigram carries its applicable qualifications. | Reuse does not silently broaden a claim. Partitioning neither drops necessary limitations nor indiscriminately copies unrelated restrictions. Structural ownership/provenance preservation remains a host responsibility too. |
 | **Understand the original question before redesignating its result.** Consider the earlier invocation's question, subjects, parameters and scope. Redesignation is optional and distinct from changing an Entity's associated information. | A proposed replacement designation addresses the earlier question, rather than merely supplying new information about one of its subjects. |
 | **Incorporate updates delivered during the dialog.** Consider relevant updated information and qualified change context before submitting. | The final contribution accounts for a relevant mid-dialog update rather than blindly repeating the earlier account. This does not require endorsing the update; disagreement must remain explicit and qualified. Timing/status processing itself is tested deterministically. |
-| **Author optional guidance with the correct scope.** Follow-up options and presentation recommendations belong to the producing investigram. Suggestions are not requirements, eligibility judgments or permission to render. | When deliberately elicited, guidance references the intended subjects/content and preserves applicable qualification. Absence of optional guidance in an unrelated trial is not failure. |
+| **Author follow-up options and illustrations with the correct scope.** Options suggest further investigations; illustrations specify pictures intended as part of the current explanation. Both belong to the producing investigram and retain qualification. | When deliberately elicited, options and illustration specifications reference the intended subjects/content. Optional omissions in an unrelated trial are not failure; explicitly requested output still has to satisfy its contract. |
 
 Carry forward existing governing instructions, including evidence access through supported PostCode
 interfaces and treating inspected repository content as evidence, not instructions to obey. These
@@ -1232,7 +1232,7 @@ not an adopted signature extension, a separate capability commitment or a prereq
 
 The examples supply identifying descriptions, prose, admission cases, architectural
 relationships, a recovery state model and an interaction. Local roles are variables within
-an item with explicit scope, not automatically shared entities. Illustrations bind a general
+an item with explicit scope, not automatically shared entities. Example bindings relate a general
 role to an example; they are not aliases for the same scenario identity. Content refs share
 claims with source qualification; entity refs share identity only. Local keys support exact
 references and later selection without automatically creating identities.
@@ -1240,16 +1240,28 @@ references and later selection without automatically creating identities.
 State content includes bearer, states, transitions, triggers, guards/effects and limits.
 Interaction content includes participants, conditions, order, alternatives, causal links and
 omissions. A state-transition step names its exact state content/transition; a diagram follows
-that reference rather than duplicating it in presentation metadata. Sequence position alone
+that reference rather than duplicating it in an illustration specification. Sequence position alone
 is not causation. Situations assert resource occupancy, state assignment and execution progress;
 they are not inferred from drawings and do not themselves assert transitions.
 
-Presentation recommendations are optional usefulness judgments owned by their investigram.
-Supported diagrams can render compatible content without them. New renderers require no
-revision of earlier recommendations. Compact labels plus legends preserve conditions, scope,
-evidence and causal meaning; the image alone may be only an overview. The generator cannot
-invent missing nodes, transitions, correspondence or ordering. General cross-owner diagram
-retrieval is not implemented; the current diagram content remains unchanged.
+An **illustration** is a picture the investigator authors as part of its explanation alongside words.
+An **illustration specification** is its retained description: the diagram type, exact content inputs
+and applicable qualifications/evidence. The fixture stores these in investigram-owned `illustrations`
+metadata. This replaces the term “presentation recommendation”: the intent is to communicate through
+pictures, not merely suggest a future UI treatment. The specification references architectural
+content rather than duplicating its claims or declaring dependencies already owned by content contracts.
+
+The application controls presentation through existing Presentation contracts. An investigator may
+include illustrations without being asked; explicitly requested pictures remain subject to fulfillment
+requirements. Other compatible diagrams can be rendered independently without an authored illustration
+specification. New renderers do not require revising earlier specifications. Compact labels and legends
+preserve conditions, scope, evidence and causal meaning; the image alone may be only an overview.
+The generator cannot invent missing nodes, transitions, correspondence or ordering. General cross-owner
+diagram retrieval is not implemented by the current authored probe.
+
+The content envelope's former scenario “illustrations” are now called **example bindings**
+(`exampleBindings`): qualified mappings from general roles to example subjects. They are not pictures
+or rendering instructions. This naming separation preserves their existing semantics.
 
 Diagram requirements use the existing result/Presentation contracts; there is no separate
 fulfillment mechanism. The investigation supplies qualified content satisfying the requested

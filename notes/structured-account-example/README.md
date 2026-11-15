@@ -217,7 +217,7 @@ incomplete target-support branches to demonstrate the instruction/enforcement bo
 analysis. `--write` regenerates its condensed reports in both partitions.
 
 The guidance checker rejects 26 malformed metadata/address/request cases and verifies
-both trial diagrams resolve identically without recommendations. Composition checks
+both trial diagrams resolve identically without authored illustration specifications. Composition checks
 five malformed structural cases and nine malformed/ambiguous nested selections. The
 overview generator verifies committed Mermaid sources, legends and traceability; existing
 rendered SVGs remain unchanged by the lifecycle conversion.

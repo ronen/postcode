@@ -181,7 +181,7 @@ distinct meanings; this is not a blanket replacement of every use of “citation
 | Association specification / declaration | Submitted specification expressing addition, supersession or withdrawal, attributable to its producing investigram. |
 | Investigram relationship | Qualified comparison contributed by an investigram. Unresolved inconsistency identifies exact content items or associations rather than implicating whole bundles. It does not displace associations; whole-bundle correction is replaced by declarations. |
 | Follow-up option | Available investigation associated with exact originating metadata; atemporal availability, not implied priority. |
-| Presentation recommendation | Judgment of usefulness, not permission to render compatible content. |
+| Illustration / illustration specification | Picture authored as part of an explanation / its retained diagram type, exact content inputs and qualifications. Distinct from the application-level Presentation. |
 | Context delivery | Exact material supplied, including ownership, basis, qualification and completeness. |
 | Association exposure | Exact association uses/content actually delivered, retaining route, source qualification and generating provenance. |
 | Inventory/selection-scope exposure | Dependency on an acquired availability inventory or content selected by an explicit scope, with coverage and actual delivery position. A scope-selected delivery need not present a separate list; bare entries do not deliver listed content. |
@@ -219,7 +219,7 @@ Invocation Q and its allocated query result RESULT-Q
       exact content/declaration members where applicable
       exact earlier associations displaced
       reason and attributable grounds
-    Follow-up options and presentation recommendations
+    Follow-up options and illustrations
   Local entity introductions and references to existing identities
 ```
 
@@ -300,7 +300,7 @@ relationships remains in scope.
 | Result designation | Association targeting a query result. Can include exact items/declarations originating elsewhere. |
 | Investigram organization | Deferred: no parent/child links or composition roots. Neither follow-up provenance nor UI context automatically organizes investigrams. |
 | Follow-up option | Exact producing metadata remains owned by its investigram. Access through a result/entity does not retarget or transfer it. |
-| Presentation recommendation | Original usefulness judgment; selecting a different compatible diagram changes no retained record. |
+| Illustration specification | Owned by the producing investigram; references the architectural content used to explain through a picture. Application rendering and independent compatible diagrams do not change it. |
 | Context delivery | Captures actual delivered content, original qualification, source provenance and applicable disclosures. A subject ID or human browsing is not exposure. |
 | Inventory delivery | Captures availability scope/coverage and time separately. Matching later entries may affect selection; listed content is not supplied merely by appearing. |
 | Reconsideration | Derived cause-specific warning, not proof of wrongness or automatic withdrawal. |
@@ -480,6 +480,15 @@ independently of follow-up options. See the [scope agreement](structured-archite
 
 ## Catalogue responsibilities and diagrams
 
+Illustrations are pictures authored by the investigator as part of its explanation alongside prose.
+Their retained illustration specifications identify the diagram type, exact content inputs and
+qualification/evidence; they remain investigram-owned metadata. This replaces “presentation
+recommendation” without making the specification a prerequisite for every compatible rendering.
+Existing application Presentation contracts control arrangement/rendering. No architectural claims
+or content dependencies are duplicated in the specification. General-to-example role mappings use
+the distinct name `exampleBindings`; they are not graphical illustrations.
+
+
 | Catalogue responsibility | Purpose |
 | --- | --- |
 | Architectural concept guidance | Meanings, investigative distinctions, examples and references. |
@@ -508,8 +517,8 @@ signature extension is adopted or required by this plan.
 
 TRIAL-1's state diagram binds `recovery`; the sequence binds `concurrent-callers` and
 follows its existing `stateContent`/`transition` references. No duplicate state-model
-binding or renderer-invented dependency. Both diagrams render unchanged with recommendations
-removed. Legends preserve conditions, qualifications and source mappings. Presentation
+binding or renderer-invented dependency. Both diagrams render unchanged through direct compatible selections when authored illustration
+specifications are omitted. Legends preserve conditions, qualifications and source mappings. Presentation
 retrieval, arrangement and UI remain outside this remit.
 
 An explicit diagram request uses existing result/Presentation contracts. The investigation must
@@ -649,7 +658,7 @@ reference integrity while allowing that variation. Fixed controlled-dialog respo
 precise mechanism assertions. Failure handling alone does not demonstrate the successful live path.
 
 Require a few focused live-agent integration trials, plus controlled dialogs for mechanism
-coverage, including optional actions such as follow-up options, presentation recommendations,
+coverage, including optional actions such as follow-up options, illustrations,
 reported inability, association operations and cross-investigation content reuse. Do not rely on
 spontaneous agent choices for repeatable coverage. Include an explicit state-diagram result contract:
 successful fulfillment, otherwise valid content that leaves the requirement unmet, and producer-

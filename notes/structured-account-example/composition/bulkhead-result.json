@@ -1,5 +1,5 @@
 {
-  "illustration": "Authored proposed contribution bundle, not product input or a live investigator. Investigrams retain provenance; association declarations organize entity and query-result information. The initial admission omission remains deliberate.",
+  "fixtureNote": "Authored proposed contribution bundle, not product input or a live investigator. Investigrams retain provenance; association declarations organize entity and query-result information. The initial admission omission remains deliberate.",
   "result": {
     "investigrams": [
       {
@@ -29,7 +29,7 @@
           }
         ],
         "followupOptions": [],
-        "presentations": [],
+        "illustrations": [],
         "associationSpecifications": [
           {
             "key": "orientation",
@@ -122,7 +122,7 @@
           }
         ],
         "followupOptions": [],
-        "presentations": [],
+        "illustrations": [],
         "associationSpecifications": [
           {
             "key": "bulkhead-description",
@@ -174,7 +174,7 @@
           }
         ],
         "followupOptions": [],
-        "presentations": [],
+        "illustrations": [],
         "associationSpecifications": [
           {
             "key": "capacity-and-queue",

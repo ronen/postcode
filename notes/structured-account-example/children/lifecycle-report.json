@@ -903,7 +903,7 @@
           "execution": {
             "localRole": "requested-execution"
           },
-          "illustrations": [
+          "exampleBindings": [
             {
               "case": "waiting",
               "investigram": {
@@ -927,7 +927,7 @@
               "relationshipSubject": {
                 "entity": "W"
               },
-              "qualification": "TRIAL-1 illustrates this case under its own scenario conditions. These bindings map the general local roles to that illustration only; they do not restrict the general admission claim to those subjects or generalize the entire scenario to all requests.",
+              "qualification": "TRIAL-1 illustrates this case under its own scenario conditions. These bindings map the general local roles to that example scenario only; they do not restrict the general admission claim to those subjects or generalize the entire scenario to all requests.",
               "evidence": [
                 "E-admission",
                 "E-half-open",

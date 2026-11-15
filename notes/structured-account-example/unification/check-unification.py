@@ -282,7 +282,7 @@ def displace_identification(operation):
                              'members': [{'declaration': {'investigram': {'submittedInvestigram': 'standing'}, 'associationKey': 'loader'}}]}],
                          'referents': [], 'evidence': ['E-standing'],
                          'qualifications': ['A lifecycle-only probe, not an adjudication of provider semantics.'],
-                         'followupOptions': [], 'presentations': []}]}}}
+                         'followupOptions': [], 'illustrations': []}]}}}
 
 
 def selection_consumer(selection):

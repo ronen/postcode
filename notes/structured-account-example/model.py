@@ -473,7 +473,7 @@ class Model:
                 for x in v.values(): refs(x)
         for oid in owners:
             a=self.investigrams[oid]; refs(a)
-            GUIDANCE['presentation_plans'](a, oid)
+            GUIDANCE['illustration_plans'](a, oid)
             for item in a['content']:
                 assert item['contentType'] in {'prose/0','entity-description/0','admission-cases/0','architectural-relations/0','state-behavior/0','interaction/0'} | self.content_contracts.keys(), 'unsupported content type'
                 if item['contentType'] in self.content_contracts:
@@ -488,7 +488,7 @@ class Model:
                         if set(v)=={'localRole'}: assert v['localRole'] in roles
                         for x in v.values(): local(x)
                 local(item)
-                for link in item.get('relatedContent',[])+item.get('illustrations',[]):
+                for link in item.get('relatedContent',[])+item.get('exampleBindings',[]):
                     assert address(link,'contentKey') in all_items
                     if 'roleBindings' in link:
                         assert link['qualification'] and link['evidence']

@@ -4,7 +4,7 @@
     "investigram": "TRIAL-1",
     "contentKey": "concurrent-callers"
   },
-  "source": "ADMISSION-2/admission-cases illustration",
+  "source": "ADMISSION-2/admission-cases example binding",
   "projectionRoute": {
     "entity": "RESULT-Q2"
   },

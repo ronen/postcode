@@ -102,7 +102,7 @@ general” would be a new abstraction with its own qualified investigram, not a 
 <a id="small-experimental-additions-to-the-content-contract"></a>
 ## Small experimental additions to the content contract
 
-The existing [shared envelope](../contracts.md#shared-roles-and-illustrations) is used
+The existing [shared envelope](../contracts.md#shared-roles-and-example-bindings) is used
 for `roles` and `roleScope` on interaction items. This is a second type using the same
 role mechanism, without introducing an identity-binding illustration. Participants
 may designate a local role instead of an entity. No illustration is needed:

@@ -55,7 +55,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
       "result": {
         "queryInvocation": "Q-category-detail",
         "queryResult": {
@@ -100,7 +100,7 @@
               }
             ],
             "followupOptions": [],
-            "presentations": [],
+            "illustrations": [],
             "associationSpecifications": [
               {
                 "key": "addition",
@@ -201,7 +201,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
       "result": {
         "queryInvocation": "Q-recovery-caveat",
         "queryResult": {
@@ -254,7 +254,7 @@
               }
             ],
             "followupOptions": [],
-            "presentations": [],
+            "illustrations": [],
             "associationSpecifications": [
               {
                 "key": "addition",
@@ -344,7 +344,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
       "result": {
         "queryInvocation": "Q-role-only",
         "queryResult": {
@@ -371,7 +371,7 @@
             ],
             "content": [],
             "followupOptions": [],
-            "presentations": [],
+            "illustrations": [],
             "associationSpecifications": [
               {
                 "key": "result",
@@ -425,7 +425,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
       "result": {
         "queryInvocation": "Q-reference-only",
         "queryResult": {
@@ -459,7 +459,7 @@
               }
             ],
             "followupOptions": [],
-            "presentations": [],
+            "illustrations": [],
             "associationSpecifications": [
               {
                 "key": "result",
@@ -525,7 +525,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
       "result": {
         "queryInvocation": "Q-aware",
         "queryResult": {
@@ -549,7 +549,7 @@
             ],
             "content": [],
             "followupOptions": [],
-            "presentations": [],
+            "illustrations": [],
             "associationSpecifications": [
               {
                 "key": "result",
@@ -616,7 +616,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
       "result": {
         "queryInvocation": "Q-inventory",
         "queryResult": {
@@ -650,7 +650,7 @@
               }
             ],
             "followupOptions": [],
-            "presentations": [],
+            "illustrations": [],
             "associationSpecifications": [
               {
                 "key": "result",
@@ -719,7 +719,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
       "result": {
         "queryInvocation": "Q-inventory-dependent",
         "queryResult": {
@@ -746,7 +746,7 @@
             ],
             "content": [],
             "followupOptions": [],
-            "presentations": [],
+            "illustrations": [],
             "associationSpecifications": [
               {
                 "key": "result",

@@ -48,19 +48,19 @@ def diagram_plan(investigram, diagram_type, bindings, owner_id=None):
     return {'diagramType': diagram_type, 'inputs': inputs, 'dependencies': dependencies}
 
 
-def presentation_plans(investigram, owner_id=None):
-    """Recommendations select primary inputs; content contracts own dependencies."""
-    assert 'followupOptions' in investigram and 'presentations' in investigram, 'metadata arrays must be explicit'
-    for name in ['followupOptions', 'presentations']:
+def illustration_plans(investigram, owner_id=None):
+    """Illustration specifications select primary inputs; content contracts own dependencies."""
+    assert 'followupOptions' in investigram and 'illustrations' in investigram, 'metadata arrays must be explicit'
+    for name in ['followupOptions', 'illustrations']:
         assert len({x['key'] for x in investigram[name]}) == len(investigram[name]), 'duplicate metadata key'
     for followupOption in investigram['followupOptions']:
         validate_option(followupOption)
     assert all(i['contentType'] != 'investigation-option/0' for i in investigram['content']), 'option in interpretation content'
     plans = []
-    for rec in investigram['presentations']:
-        assert set(rec) == {'key', 'diagramType', 'inputs', 'qualifications', 'evidence'}, 'invalid presentation metadata fields'
-        assert rec['key'] and rec['qualifications'] and rec['evidence'], 'unqualified recommendation'
-        plan = diagram_plan(investigram, rec['diagramType'], rec['inputs'], owner_id)
-        plan['recommendation'] = rec
+    for spec in investigram['illustrations']:
+        assert set(spec) == {'key', 'diagramType', 'inputs', 'qualifications', 'evidence'}, 'invalid illustration specification fields'
+        assert spec['key'] and spec['qualifications'] and spec['evidence'], 'unqualified illustration'
+        plan = diagram_plan(investigram, spec['diagramType'], spec['inputs'], owner_id)
+        plan['illustration'] = spec
         plans.append(plan)
     return plans

@@ -18,7 +18,7 @@ version preserves the comparison with broader source qualifications.
 | `content` | Keyed architectural interpretation, including explicit entity introduction. |
 | `referents` | Things referred to; not necessarily targets of an identifying/describing claim. |
 | `associationSpecifications` | Qualified additions, supersessions and withdrawals targeting entity/role categories. |
-| `followupOptions` / `presentations` | Exact-owner qualified guidance, separate from architectural content. |
+| `followupOptions` / `illustrations` | Exact-owner qualified options and picture specifications; architectural claims remain in referenced Analysis content. |
 | `qualifications` / `evidence` | Own scope and support across content/metadata; narrower entries can add limits. |
 
 Basis and request/generating provenance remain in the ledger and qualified delivered
@@ -80,17 +80,16 @@ and inherited-cause disclosures remain; unrelated addition reasons are not autom
 
 ## Diagrams and guidance
 
-TRIAL-1 recommends `state-diagram/0` with primary input `recovery`, and
+TRIAL-1 includes illustration specifications for `state-diagram/0` with primary input `recovery`, and
 `sequence-diagram/0` with `concurrent-callers`. The latter follows the interaction's
-own `stateContent`/`transition` references. The recommendation does not duplicate
-that dependency or authorize the meaning. Both diagrams resolve with recommendations
-removed; their qualified legends and source mappings remain unchanged.
+own `stateContent`/`transition` references. The illustration specification does not duplicate
+that dependency or authorize the meaning. Both diagrams resolve through direct selections without authored specifications; their qualified legends and source mappings remain unchanged.
 
 The exact source continues to own its guidance. ADMISSION-2 does not repeat the option
 its submission already answers. Superseding a content association does not move or
 reissue that option. Later suitability and discovery policy are not implemented here.
-A recommendation excerpt does not deliver its model. A compatible direct selection
-can render without any recommendation. Composition retains its fixed-entry rendering
+An illustration-specification excerpt does not deliver its model. A compatible direct selection
+can render without an authored illustration specification. Composition retains its fixed-entry rendering
 probe, not a general cross-investigram presentation system.
 
 ## Assessment and limits

@@ -111,7 +111,7 @@ guidance child, mutable option registry or automatic rerun.
 The [guidance checker](check-guidance.py) resolves the exact owner/key and supported method,
 preserves source qualification/provenance, rejects wrong namespaces, undeclared parameters
 and owner fallback, and verifies exact qualified option delivery through its result context. It also checks direct diagram
-selection independently of recommendations. See [all checks](README.md#verification).
+selection independently of authored illustration specifications. See [all checks](README.md#verification).
 
 This exercises one structured invocation chain. Overview/Explain and structural listings
 remain surrounding application examples. It does not design global entry routes, test a

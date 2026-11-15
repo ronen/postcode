@@ -36,7 +36,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
       "result": {
         "queryInvocation": "Q-scope-selected",
         "queryResult": {
@@ -60,7 +60,7 @@
             ],
             "content": [],
             "followupOptions": [],
-            "presentations": [],
+            "illustrations": [],
             "associationSpecifications": [
               {
                 "key": "result",
@@ -126,7 +126,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
       "result": {
         "queryInvocation": "Q-exact-selected",
         "queryResult": {
@@ -150,7 +150,7 @@
             ],
             "content": [],
             "followupOptions": [],
-            "presentations": [],
+            "illustrations": [],
             "associationSpecifications": [
               {
                 "key": "result",
@@ -219,7 +219,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
       "result": {
         "queryInvocation": "Q-scope-dependent",
         "queryResult": {
@@ -245,7 +245,7 @@
             ],
             "content": [],
             "followupOptions": [],
-            "presentations": [],
+            "illustrations": [],
             "associationSpecifications": [
               {
                 "key": "result",
@@ -323,7 +323,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
       "result": {
         "queryInvocation": "Q-additional-identification",
         "queryResult": {
@@ -368,7 +368,7 @@
               }
             ],
             "followupOptions": [],
-            "presentations": [],
+            "illustrations": [],
             "associationSpecifications": [
               {
                 "key": "addition",
@@ -455,7 +455,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
       "result": {
         "queryInvocation": "Q-notice-reader",
         "queryResult": {
@@ -479,7 +479,7 @@
             ],
             "content": [],
             "followupOptions": [],
-            "presentations": [],
+            "illustrations": [],
             "associationSpecifications": [
               {
                 "key": "result",
@@ -545,7 +545,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "fixtureNote": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
       "result": {
         "queryInvocation": "Q-withdraw-admission-update",
         "queryResult": {
@@ -610,7 +610,7 @@
               }
             ],
             "followupOptions": [],
-            "presentations": []
+            "illustrations": []
           }
         ]
       }
@@ -739,7 +739,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "fixtureNote": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
       "result": {
         "queryInvocation": "Q-renew-admission",
         "queryResult": {
@@ -815,7 +815,7 @@
               }
             ],
             "followupOptions": [],
-            "presentations": []
+            "illustrations": []
           }
         ]
       }

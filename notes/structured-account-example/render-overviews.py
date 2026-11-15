@@ -242,19 +242,19 @@ def render_composition(document, write=False):
     emit(directory / 'diagram-traceability.json', json.dumps(trace, indent=2) + '\n', write)
 
 
-def render_trial(directory, write=False, without_recommendations=False):
+def render_trial(directory, write=False, without_illustrations=False):
     document = read(directory / 'followup-result.json')
     ledger = read(directory / 'context-and-bindings.json')
     candidates = [(n, a) for n, a in enumerate(document['result']['investigrams']) if a['key'] == 'trial']
     assert len(candidates) == 1, 'bounded fixture expects one trial investigram'
     index, owner = candidates[0]
     owner_id = ledger['followupAcceptance']['investigramIds'][owner['key']]
-    if without_recommendations:
-        owner = copy.deepcopy(owner); owner['presentations'] = []
+    if without_illustrations:
+        owner = copy.deepcopy(owner); owner['illustrations'] = []
         selections = read(directory / 'guidance-access.json')['directDiagramSelections']
         plans = [guidance['diagram_plan'](owner, x['diagramType'], x['inputs'], owner_id) for x in selections]
     else:
-        plans = guidance['presentation_plans'](owner)
+        plans = guidance['illustration_plans'](owner)
     trace = []
     for plan in plans:
         inputs = {role: (item, f'/result/investigrams/{index}/content/{n}') for role, (item, n) in plan['inputs'].items()}
@@ -278,10 +278,10 @@ def render_all(write=False):
     # Both entry routes use the same diagram/content contracts. Direct rendering does not need metadata.
     for directory in [BASE, BASE / 'children']:
         render_trial(directory, write)
-        render_trial(directory, without_recommendations=True)
-    # Composition remains the earlier fixed-entry probe; it has no recommendation metadata.
+        render_trial(directory, without_illustrations=True)
+    # Composition remains the earlier fixed-entry probe; it has no authored illustration specifications.
     render_composition(read(BASE / 'composition/composition-result.json'), write)
-    print('Trial diagrams/legends match with recommendations and without them in both partitions; fixed-entry composition diagrams also match.')
+    print('Trial diagrams/legends match from illustration specifications and from direct selections in both partitions; fixed-entry composition diagrams also match.')
 
 
 if __name__ == '__main__':

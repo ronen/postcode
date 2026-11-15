@@ -96,7 +96,7 @@ directed propagation, suppression, clearance and reassessment remain deferred. T
 Read [first result](first-result.json), [follow-up](followup-result.json),
 [context/bindings](context-and-bindings.json), then [lifecycle report](lifecycle-report.json).
 [Guidance access](guidance-access.json), [option access](followup-option-access.json) and
-[illustration access](illustration-access.json) record exact addressing boundaries.
+[example-binding access](illustration-access.json) record exact addressing boundaries.
 
 The [shared verification commands](../README.md#verification) exercise both partitions,
 immutable history, source qualification, atomic declaration acceptance, result membership,

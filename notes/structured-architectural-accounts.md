@@ -2610,3 +2610,25 @@ without choosing a mechanism or requiring a single reconciled hierarchy. Keep ar
 and navigation arrangements distinguishable. Existing mechanical organization migration and supported
 qualified architectural relationships remain in scope; this candidate does not defer them or create
 a new implementation commitment.
+
+
+## 2026-11-15 — Illustrations communicate the explanation through pictures
+
+The human chose “illustration” in place of “presentation recommendation.” An investigator authors
+an explanation through words and pictures; its illustration specification retains the diagram type,
+exact content inputs and qualification/evidence. Updated the vocabulary, ownership descriptions,
+instruction inventory, authored payloads and checkers. Specifications remain owned by the producing
+investigram, reference rather than duplicate architectural claims, and use existing application
+Presentation contracts. Other compatible diagrams may still be generated independently; explicit
+requests retain their fulfillment obligations.
+
+Resolved the naming collision with the content envelope's earlier scenario “illustrations”: those
+qualified general-to-example mappings are now `exampleBindings`, with unchanged semantics. The
+historical illustration-access filename and old section anchor remain for link continuity. Fixture
+wrapper descriptions use `fixtureNote` to avoid confusing authored example status with a picture.
+
+All authored checkers pass: lifecycle (74 malformed cases), additions (26 plus four historical-policy
+controls), acquisition (26), baseline (14), unification (33), guidance (26), composition (five), and
+selectors (nine). Illustration specifications and direct compatible selections produce the same
+unchanged diagrams/legends. No new mutable lifecycle, ontology, UI policy, product or governing edits.
+The previously recorded timing and inconsistency-report coverage gaps remain outstanding.

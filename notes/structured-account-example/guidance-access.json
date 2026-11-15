@@ -1,10 +1,10 @@
 {
   "status": "Diagram inputs and direct rendering remain unchanged. Metadata is delivered through a selected entity/result projection with source qualification; no whole-investigram eligibility test.",
-  "presentationInputs": [
+  "illustrationInputs": [
     {
       "address": {
         "investigram": "TRIAL-1",
-        "presentationKey": "recovery-state"
+        "illustrationKey": "recovery-state"
       },
       "diagramType": "state-diagram/0",
       "bindings": {
@@ -20,7 +20,7 @@
     {
       "address": {
         "investigram": "TRIAL-1",
-        "presentationKey": "concurrent-callers"
+        "illustrationKey": "concurrent-callers"
       },
       "diagramType": "sequence-diagram/0",
       "bindings": {

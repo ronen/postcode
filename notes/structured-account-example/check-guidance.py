@@ -1,4 +1,4 @@
-"""Follow-up options and diagram hints through entity/result context, not bundle exposure."""
+"""Follow-up options and authored illustrations through entity/result context, not bundle exposure."""
 import copy
 from pathlib import Path
 import runpy
@@ -49,20 +49,20 @@ for directory in [BASE,BASE/'children']:
         'entity mistaken for originating result':lambda r:r.update(subject={'entity':'S'}),
     }.items():
         bad=copy.deepcopy(request);change(bad);reject(label,lambda:resolve_option(model,bad))
-    owner=model.investigrams['TRIAL-1'];plans=g['presentation_plans'](owner,'TRIAL-1')
-    access=read(directory/'guidance-access.json');without=copy.deepcopy(owner);without['presentations']=[]
+    owner=model.investigrams['TRIAL-1'];plans=g['illustration_plans'](owner,'TRIAL-1')
+    access=read(directory/'guidance-access.json');without=copy.deepcopy(owner);without['illustrations']=[]
     direct=[g['diagram_plan'](without,x['diagramType'],x['inputs'],'TRIAL-1') for x in access['directDiagramSelections']]
-    assert direct==[{k:v for k,v in p.items() if k!='recommendation'} for p in plans]
-    for plan,expected in zip(plans,access['presentationInputs']):
+    assert direct==[{k:v for k,v in p.items() if k!='illustration'} for p in plans]
+    for plan,expected in zip(plans,access['illustrationInputs']):
         assert {i['key'] for i,_ in list(plan['inputs'].values())+list(plan['dependencies'].values())}==set(expected['availableForBoundedRender'])
     for label,change in {
         'missing model':lambda a:a['content'].__setitem__(slice(None),[i for i in a['content'] if i['key']!='recovery']),
         'wrong dependency type':lambda a:next(i for i in a['content'] if i['key']=='recovery').update(contentType='prose/0'),
         'unknown transition':lambda a:next(i for i in a['content'] if i['key']=='recovery').update(transitions=[]),
-        'unknown diagram':lambda a:a['presentations'][0].update(diagramType='invented/0'),
-        'duplicate dependency binding':lambda a:a['presentations'][1]['inputs'].update(stateModel={'investigram':{'investigram':'TRIAL-1'},'contentKey':'recovery'}),
-        'wrong owner':lambda a:a['presentations'][0]['inputs']['model'].update(investigram={'investigram':'ADMISSION-2'}),
-        'missing qualification':lambda a:a['presentations'][0].update(qualifications=[]),
+        'unknown diagram':lambda a:a['illustrations'][0].update(diagramType='invented/0'),
+        'duplicate dependency binding':lambda a:a['illustrations'][1]['inputs'].update(stateModel={'investigram':{'investigram':'TRIAL-1'},'contentKey':'recovery'}),
+        'wrong owner':lambda a:a['illustrations'][0]['inputs']['model'].update(investigram={'investigram':'ADMISSION-2'}),
+        'missing qualification':lambda a:a['illustrations'][0].update(qualifications=[]),
     }.items():
-        bad=copy.deepcopy(owner);change(bad);reject(label,lambda:g['presentation_plans'](bad,'TRIAL-1'))
-print(f'Follow-up options retain exact provenance and result-entity exposure; direct/recommended diagrams agree; {count} malformed guidance cases rejected.')
+        bad=copy.deepcopy(owner);change(bad);reject(label,lambda:g['illustration_plans'](bad,'TRIAL-1'))
+print(f'Follow-up options retain exact provenance and result-entity exposure; direct and authored illustrations agree; {count} malformed guidance cases rejected.')

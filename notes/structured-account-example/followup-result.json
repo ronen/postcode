@@ -1,5 +1,5 @@
 {
-  "illustration": "Authored proposed contribution bundle, not product input or a live investigator. Investigrams retain provenance; association declarations organize entity and query-result information. The initial admission omission remains deliberate.",
+  "fixtureNote": "Authored proposed contribution bundle, not product input or a live investigator. Investigrams retain provenance; association declarations organize entity and query-result information. The initial admission omission remains deliberate.",
   "result": {
     "investigrams": [
       {
@@ -569,7 +569,7 @@
           }
         ],
         "followupOptions": [],
-        "presentations": [
+        "illustrations": [
           {
             "key": "recovery-state",
             "diagramType": "state-diagram/0",
@@ -1077,7 +1077,7 @@
             "execution": {
               "localRole": "requested-execution"
             },
-            "illustrations": [
+            "exampleBindings": [
               {
                 "case": "waiting",
                 "investigram": {
@@ -1101,7 +1101,7 @@
                 "relationshipSubject": {
                   "introducedEntity": "waiting"
                 },
-                "qualification": "TRIAL-1 illustrates this case under its own scenario conditions. These bindings map the general local roles to that illustration only; they do not restrict the general admission claim to those subjects or generalize the entire scenario to all requests.",
+                "qualification": "TRIAL-1 illustrates this case under its own scenario conditions. These bindings map the general local roles to that example scenario only; they do not restrict the general admission claim to those subjects or generalize the entire scenario to all requests.",
                 "evidence": [
                   "E-admission",
                   "E-half-open",
@@ -1112,7 +1112,7 @@
           }
         ],
         "followupOptions": [],
-        "presentations": [],
+        "illustrations": [],
         "associationSpecifications": [
           {
             "key": "admission-cases",

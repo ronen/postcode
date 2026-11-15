@@ -33,11 +33,11 @@ feature or silently overrides an agreed requirement.
 Each submission names a query invocation, its newly allocated query result,
 a pool of independent investigrams. An investigram supplies its content,
 referents, `associationSpecifications`, qualifications, evidence,
-`followupOptions` and `presentations`. Empty content is possible for a meaningful,
+`followupOptions` and `illustrations`. Empty content is possible for a meaningful,
 qualified declaration-only contribution. Metadata can carry substantive interpretation.
 
 Each content item has a local `key`, `concept`, `contentType` and type-specific data.
-Declaration, content, option and presentation keys have separate namespaces. Nested
+Declaration, content, option and illustration keys have separate namespaces. Nested
 state, role, relation and step keys are local to their item. Matching names/keys do
 not establish correspondence. Submission-local investigram and entity references use
 separate namespaces and resolve atomically:
@@ -528,26 +528,30 @@ This is an authoring choice, not a ban on reinvestigation. Historical exact acce
 An option excerpt is substantive investigator context but does not establish full delivery
 of the declaration/members one might later supersede.
 
-## Presentation recommendation metadata and delivery
+## Illustration specifications and delivery
 
-`presentations` entries have key, diagramType, named inputs, qualifications and evidence;
-address them by exact investigram/presentationKey. Recommendations express usefulness,
-not permission. A diagram can render compatible content directly with no recommendation.
-Missing a recommendation for a newly available renderer is not an error. No independent
-mutable recommendation lifecycle is introduced.
+An illustration is a picture authored as part of the investigator's explanation. Its retained
+specification is investigram-owned metadata in `illustrations`, with key, diagramType, named inputs,
+qualifications and evidence. Address it by exact investigram/illustrationKey. It communicates the
+investigator's chosen picture; the application renders it through existing Presentation contracts.
+This replaces the earlier “presentation recommendation” terminology without changing ownership.
 
-[Diagram contracts](diagram-contracts.json) define primary inputs: a state diagram takes
-a state-behavior model; a sequence diagram takes an interaction. Follow the interaction's
-`stateContent`/`transition` references for its state-model dependency. Do not repeat a
-`stateModel` binding in recommendation metadata, infer alignment, or require a recommendation
-for these dependencies to exist. The probe tests both diagrams with recommendations absent.
-Only same-investigram state dependencies are exercised; general cross-owner retrieval
-remains design work.
+Compatible content can also be rendered directly without an authored illustration specification.
+A newly available renderer does not make earlier specifications incomplete. There is no independent
+mutable illustration lifecycle. Explicitly requested diagram output remains subject to its contract.
 
-Metadata carries source qualification/basis/provenance like other delivered interpretation.
-A recommendation does not deliver its referenced model or unrelated source content.
-Presentation access is a limited probe; full UI arrangement, navigation, delivery selection
-and export behavior remain outside this work.
+[Diagram contracts](diagram-contracts.json) define primary inputs: a state diagram takes a state-behavior
+model; a sequence diagram takes an interaction. Follow the interaction's `stateContent`/`transition`
+references for state-model dependencies. Do not duplicate a `stateModel` binding in the illustration
+specification, infer alignment or require an illustration for those content dependencies to exist.
+The probe checks that direct selections render the same diagrams without authored specifications.
+Only same-investigram state dependencies are exercised; general cross-owner retrieval remains design work.
+
+Illustration specifications carry source qualification/basis/provenance like other delivered
+interpretation. Receiving a specification alone does not deliver its referenced model or unrelated
+source content. Illustration access is a limited probe; full UI arrangement, navigation, delivery
+selection and export behavior remain outside this work. The common content field `exampleBindings`
+records scenario mappings, not graphical illustrations; it replaces that field's earlier ambiguous name.
 
 ## Types in this example
 
@@ -555,7 +559,7 @@ and export behavior remain outside this work.
 | --- | --- | --- |
 | `entity-description/0` | Entity reference, name, identifying description, classification, relevant context (`relativeTo`), evidence; explicit introduction flag when introducing a new entity | Unique discovery, canonical definition, or automatic standing of its associated information |
 | `prose/0` | Keyed explanatory text under the appropriate concept, with support and qualifications | Missing graph or interaction structure can be invented from the text |
-| `admission-cases/0` | Explicit coverage claim; optional item-local roles and their scope; keyed cases with state, condition, outcome, optional resulting state/relationship, and evidence; separately qualified scenario illustrations | A complete state machine, universal interface model, or general claim bound to an illustrative subject |
+| `admission-cases/0` | Explicit coverage claim; optional item-local roles and their scope; keyed cases with state, condition, outcome, optional resulting state/relationship, and evidence; separately qualified example bindings | A complete state machine, universal interface model, or general claim bound to an illustrative subject |
 | `architectural-relations/0` | Keyed, typed relations with role-named endpoints and applicable conditions; optional entity for a relation | Association displacement, global graph consistency, or mandatory relation identities |
 | `state-behavior/0` | State bearer; coverage and omissions; keyed labelled states; keyed directed transitions with trigger, guard, effect and evidence; outcome qualifications | Initial state, completeness, hierarchy or concurrency when not supplied |
 | `interaction/0` | Scenario meaning/conditions; keyed participants tied to subjects; ordered prefix; alternatives with conditions and keyed steps; omissions and evidence | Observed trace, all possible interleavings, or application-level success |
@@ -582,9 +586,10 @@ the transition that releases it; ordinary work or refusal names that recheck. Th
 admission without claiming that release guarantees work will run.
 
 <a id="shared-roles-and-illustrations"></a>
-### Shared roles and illustrations
+<a id="shared-roles-and-example-bindings"></a>
+### Shared roles and example bindings
 
-`roles`, `roleScope` and `illustrations` are optional fields of the common structured
+`roles`, `roleScope` and `exampleBindings` are optional fields of the common structured
 content-item envelope, usable by admission, state, interaction and structural types.
 They are not separate mechanisms per type and are not investigram-global variables.
 `{localRole: key}` resolves within the owning item's `roles` only. Keys are unique
@@ -599,16 +604,16 @@ directly to R. It needs no variable plus binding merely to rename that same part
 The common mechanism remains available to other types when variables add meaning;
 the fixture no longer forces a second use just to exercise the syntax. A broadly
 applicable state model would require qualified analysis before its instances could
-serve as illustrations.
+serve as examples.
 
-An `illustrations` entry identifies a target investigram/content item, binds owner-local
+An `exampleBindings` entry identifies a target investigram/content item, binds owner-local
 roles to scenario subjects, and supplies qualification and evidence for that mapping.
-An illustration is a general-to-example relationship here, not an alternate encoding
+An example binding is a general-to-example relationship, not an alternate encoding
 of identity between two names for the same scenario participant. Use a direct subject
 reference for the latter; no separate identity-binding mechanism is introduced.
-In this probe every declared role is bound once in each illustration. A content-type-specific
+In this probe every declared role is bound once in each example binding. A content-type-specific
 selector may narrow what is illustrated: `case` selects an admission-case key; without
-one, the illustration concerns the owning item. Mapping does not establish global
+one, the example binding concerns the owning item. Mapping does not establish global
 identity or change the general claim's scope. Its substantive subject references need
 identifying support when supplied. Bindings remain qualified authored claims, never
 correspondences invented by a renderer.
@@ -683,17 +688,17 @@ label vocabulary nor a full export/navigation system.
 
 ## Exact item addressing and linked information
 
-Cross-investigram illustrations and `relatedContent` use exact investigram/contentKey
+Cross-investigram example bindings and `relatedContent` use exact investigram/contentKey
 addresses, including `{submittedInvestigram: key}` for same-submission targets.
 `stateContent` is a same-owner key shorthand. Different link kinds have different
-contracts: an illustration asserts a qualified mapping; related content locates an
+contracts: an example binding asserts a qualified mapping; related content locates an
 explanation; stateContent supplies a required semantic dependency. None adopts ownership.
 
 Fresh access can show displacement declarations affecting a linked item's associations.
 It cannot report the entire source investigram as superseded or infer that this particular
 use is invalid. Repeated content keys do not authorize retargeting. Same-result references
 are not incoming exposure; result membership and actual later deliveries are explicit
-paths in the current reconsideration probe. See [illustration access](illustration-access.json).
+paths in the current reconsideration probe. See [example-binding access](illustration-access.json); the filename is historical.
 
 The architectural relation kinds here are `state-category-of`, `instance-role-of`,
 `execution-uses-instance` and `waits-for-decision`; only selected things such as W get

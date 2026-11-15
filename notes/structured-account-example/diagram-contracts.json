@@ -19,7 +19,7 @@
         }
       },
       "referenceScope": "own-investigram",
-      "mapping": "Participants, declared order, alternatives and authored event labels map to the sequence. Resolve each state-transition step through its interaction/0 stateContent and transition references; these content dependencies require no duplicate presentation binding. Order alone does not imply causation."
+      "mapping": "Participants, declared order, alternatives and authored event labels map to the sequence. Resolve each state-transition step through its interaction/0 stateContent and transition references; these content dependencies require no duplicate illustration binding. Order alone does not imply causation."
     }
   }
 }

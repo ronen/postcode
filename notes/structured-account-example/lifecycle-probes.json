@@ -38,7 +38,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "fixtureNote": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
       "result": {
         "queryInvocation": "Q-observer",
         "queryResult": {
@@ -104,7 +104,7 @@
               }
             ],
             "followupOptions": [],
-            "presentations": []
+            "illustrations": []
           }
         ]
       }
@@ -161,7 +161,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "fixtureNote": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
       "result": {
         "queryInvocation": "Q-expansion",
         "queryResult": {
@@ -271,7 +271,7 @@
               }
             ],
             "followupOptions": [],
-            "presentations": []
+            "illustrations": []
           }
         ]
       }
@@ -315,7 +315,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "fixtureNote": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
       "result": {
         "queryInvocation": "Q-reuse",
         "queryResult": {
@@ -384,7 +384,7 @@
               }
             ],
             "followupOptions": [],
-            "presentations": []
+            "illustrations": []
           }
         ]
       }
@@ -428,7 +428,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "fixtureNote": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
       "result": {
         "queryInvocation": "Q-withdraw",
         "queryResult": {
@@ -492,7 +492,7 @@
               }
             ],
             "followupOptions": [],
-            "presentations": []
+            "illustrations": []
           }
         ]
       }
@@ -540,7 +540,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "fixtureNote": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
       "result": {
         "queryInvocation": "Q-excerpt",
         "queryResult": {
@@ -606,7 +606,7 @@
               }
             ],
             "followupOptions": [],
-            "presentations": []
+            "illustrations": []
           }
         ]
       }
@@ -650,7 +650,7 @@
       }
     },
     "submission": {
-      "illustration": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "fixtureNote": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
       "result": {
         "queryInvocation": "Q-updated",
         "queryResult": {
@@ -716,7 +716,7 @@
               }
             ],
             "followupOptions": [],
-            "presentations": []
+            "illustrations": []
           }
         ]
       }
