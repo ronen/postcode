@@ -2712,3 +2712,37 @@ about smaller aspects without rebuilding an investigram tree. Reference packagin
 remain implementation choices; no new follow-current operation is required. Updated the proposal,
 consolidation, review-resolution note and fixture terminology clarification. R1–R3 are now recorded;
 the review's remaining drafting details and cleanup remain. No product or governing changes.
+
+
+## 2026-11-15 — Complete re-review drafting details and cleanup
+
+The human authorized the remaining re-review details and cleanups after R1–R3 were recorded.
+Updated the working proposal and consolidation inline, and added a D1–D6 resolution table:
+
+- Missing support has an explicit qualified outcome, including available grounds, omissions and
+  unmet requirements; it does not authorize fabricated support or malformed exact references.
+- Alternatives have stable repeatable enumeration without priority. Diagram fulfillment covers each
+  alternative in the requested selection; one renderable alternative does not fulfill an unsupported
+  one. Separate diagrams suffice; retained content and outcome reporting stay qualified.
+- Representative state-behavior and follow-up-option capabilities use the supported application API
+  with declared subject/result contracts. No new CLI entry or initial product catalogue is required;
+  existing CLI migration remains in scope and documentation must describe actual supported routes.
+- The early slice uses module identification and an export/naming path from migration group 1;
+  remaining migration follows; final integration covers every migrated family. Checkpoints record
+  expected unmigrated-test failures separately from regressions, with restoration milestones.
+- Implementers record acquisition-policy, warning and coverage observations; the human reviews them
+  after the early slice and at final integration when new evidence appears. Deferred gates,
+  suppression, reassessment and broader dependency mechanisms do not become implicit work.
+- A governing-migration preparation inventory identifies headed decisions, live successor chains,
+  unchanged guarantees and canonical/backlog revision targets. Actual revision documents and full
+  forward/backward supersession mappings remain planning-package work, not adopted changes.
+
+Removed stale child-composition wording, corrected the unification rejection count to 33, replaced
+result-entity wording, repaired the catalogue section anchor and anchored the addition rationale.
+Reduced changelog wording in current synthesis while retaining the historical log.
+
+All nine authored checkers/renderers pass, with unchanged diagrams and generated reports. Relative
+file/section links across 21 current note files and whitespace checks pass. The only checker change
+is its user-facing terminology, not fixture behavior. These checks do not establish the future
+application-level alternative/diagram behavior, API migration or live-agent integration. No product,
+governing, foundation or process files changed; no formal planning package was started.

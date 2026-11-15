@@ -65,4 +65,4 @@ for directory in [BASE,BASE/'children']:
         'missing qualification':lambda a:a['illustrations'][0].update(qualifications=[]),
     }.items():
         bad=copy.deepcopy(owner);change(bad);reject(label,lambda:g['illustration_plans'](bad,'TRIAL-1'))
-print(f'Follow-up options retain exact provenance and result-entity exposure; direct and authored illustrations agree; {count} malformed guidance cases rejected.')
+print(f'Follow-up options preserve exact provenance, Query-result context and actual exposure; direct and authored illustrations agree; {count} malformed guidance cases rejected.')

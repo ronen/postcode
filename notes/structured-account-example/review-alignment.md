@@ -24,9 +24,26 @@ an exact designated answer spanning several contributions. Preserve the originat
 and applicable displacement context without silently switching to current designations. This preserves
 existing exact-investigram subjects and does not require nesting. See the
 [subject agreement](../structured-architectural-accounts-proposal.md#prior-result-subject).
-All three re-review discussion items are recorded; the remaining drafting details and documentation
-cleanup identified in that review still need to be carried into the package. The table below records
+All three re-review discussion items are recorded. The remaining details have been clarified in
+the notes below; drafting must carry them and the governing migration inventory into the package. The table below records
 the original review resolutions.
+
+<a id="re-review-drafting-details"></a>
+## Re-review drafting details and cleanup
+
+| Re-review item | Recorded treatment |
+| --- | --- |
+| D1 — missing support | [Explicit outcome](../structured-architectural-accounts-proposal.md#missing-support-outcome): preserve available qualified grounds/context, identify the gap and omissions, and report unmet requirements where applicable. Do not invent support or accept unresolved required references. Retrieval bounds are implementation choices. |
+| D2 — alternatives | [Stable enumeration](../structured-architectural-accounts-proposal.md#alternative-enumeration) confers no priority. [Diagram coverage](../structured-architectural-accounts-proposal.md#diagram-alternative-coverage) is assessed for every selected alternative within the request's scope. A diagram for one does not fulfill an unsupported second alternative; preserve its explicit unmet outcome. |
+| D3 — capability access | [Supported application API](../structured-architectural-accounts-proposal.md#representative-capability-access) with explicit subject/result contracts and normal resolution/retention. No required new CLI entry or initial catalogue. Specification/capability references describe actual routes; existing CLI capabilities still migrate. |
+| D4 — milestones and observations | Early slice uses module identification plus the export/naming path from group 1; remaining migration follows; final integration covers all families. Checkpoints document expected/unexpected failures and restoration milestones. [Implementer/human ownership](../structured-architectural-accounts-proposal.md#observation-review-checkpoints) applies to acquisition, warning and coverage observations without silently enabling deferred features. |
+| D5 — governing mapping | [Preparation inventory](../structured-architectural-accounts-proposal.md#governing-migration-inventory) names affected headed units, successor chains, preservation duties and canonical/backlog targets. Formal forward/backward supersession mappings and revision text are the package-writing task. |
+| D6 — stale text | Removed the child-composition claim, corrected the unification count to 33, replaced result-entity wording, moved the catalogue anchor to its proper section and anchored the addition rationale. Reduced changelog wording in the current synthesis; historical discussion remains untouched. |
+
+These refinements specify what the planned implementation must preserve and what its verification
+must show. The authored fixtures do not implement application-level alternative/diagram fulfillment,
+new API registrations or the migration checkpoints; their existing checks cannot establish those
+future product properties. No product or governing documents have been edited.
 
 <a id="review-resolutions"></a>
 ## Review resolutions
@@ -46,7 +63,7 @@ the original review resolutions.
 | D5 — acquisition policy | Mechanically enforce well-formed data and faithful delivery. Instruct agents on semantic acquisition obligations; defer additional semantic gates unless practical evidence warrants them. Dialog repair is permitted. | [Acquisition guidance](../structured-architectural-accounts-proposal.md#displacement-acquisition-guidance) |
 | D6–D7 — consistency and self-containment | Remove stale pending-decision/coverage text, define standing/designation/guidance and fixture evaluation terminology, distinguish engine captures from Projections, and state migration alternatives/rationale. Preserve the historical discussion separately. | [Reading conventions](../structured-architectural-accounts-proposal.md#reading-conventions), [ownership maps](../structured-architectural-accounts-consolidation.md#three-ownership-maps) |
 | Optional: investigrams organized as trees | Remove nesting from first delivery; defer investigram organization until needed. Entity organization is a separate future exploration, without removing existing mechanical organization migration. | [Organization boundary](../structured-architectural-accounts-consolidation.md#investigram-organization--deferred) |
-| Optional: pictures, options and addition warnings | Keep illustrations for explanations through words and pictures; execute retained follow-up options in scope; retain scoped addition warnings rather than hide possible limitations before observing their usefulness. | [Follow-up execution](../structured-architectural-accounts-consolidation.md#retained-follow-up-execution-in-scope), [addition rationale](../structured-architectural-accounts-proposal.md) |
+| Optional: pictures, options and addition warnings | Keep illustrations for explanations through words and pictures; execute retained follow-up options in scope; retain scoped addition warnings rather than hide possible limitations before observing their usefulness. | [Follow-up execution](../structured-architectural-accounts-consolidation.md#retained-follow-up-execution-in-scope), [addition rationale](../structured-architectural-accounts-proposal.md#scoped-addition-warning-rationale) |
 
 No identified design question is deliberately left to be decided implicitly during drafting. A new
 review can still find conflicts. Drafting remains substantive work: exact decision supersession

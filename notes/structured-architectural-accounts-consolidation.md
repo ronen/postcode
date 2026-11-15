@@ -101,7 +101,7 @@ qualified contribution even if its association is displaced, without changing st
 analyzer exposure. Cache misses and incidental provider execution do not authorize new associations.
 The mechanical wrapper distinguishes computing findings from organizing their use; deliberate
 reassertion requires an explicit organizing action. Changed inputs/methods/findings may warrant
-new contributions. The probe now exercises equivalent recomputation after supersession and
+new contributions. The probe exercises equivalent recomputation after supersession and
 withdrawal without automatic renewal or a new history mechanism. The mechanism preserves the finding's method, basis, evidence
 and qualifications, retains standing/history and makes both available through qualified application
 access. A Lens returns what its declared question and method ask for: subsequent organizing
@@ -306,7 +306,7 @@ Defer investigram organization until there is a demonstrated need: nesting or an
 agent-authored, mechanically derived (including follow-ups or UI context), or both. No replacement
 organization system is required by this plan. Migration removes the old composition-tree/navigation
 contract while preserving existing investigative questions and qualified findings. The package must
-explicitly supersede that governing behavior. Authored fixtures now use a pool without hierarchy.
+explicitly supersede that governing behavior. Authored fixtures use a pool without hierarchy.
 
 Entity organization is a distinct candidate for future exploration if needed. Existing mechanical
 groupings, module hierarchies, containment and placement may contribute, alongside agent-proposed
@@ -337,6 +337,33 @@ acquisition of the targeted declaration and support is an investigator instructi
 acceptance gate. Same-target supersession versus explicit withdrawal/addition is a bounded
 operation shape; product encoding may differ while preserving exact displacement and target meaning.
 
+<a id="drafting-detail-resolutions"></a>
+## Additional drafting clarifications
+
+- Missing support is an explicit qualified outcome: retain the identifying/contextual information
+  and inspectable grounds available, name the gap, disclose acquisition bounds, and report unmet
+  requirements where necessary. Never fabricate correspondence or accept unresolved required exact
+  references. Retrieval strategy and operational limits remain implementation choices.
+- Alternatives have stable repeatable enumeration, without implied priority or claim order. A diagram
+  request covering several alternatives requires coverage for each; one supported alternative does
+  not make the whole request fulfilled when another lacks the necessary data. Preserve the unsupported
+  alternative and its unmet outcome. Separate diagrams suffice; no composite renderer is required.
+- Representative state-behavior and follow-up-option capabilities are supported through the normal
+  application API with explicit subject/result contracts. No new CLI entry or initial user-facing
+  catalogue is required. Existing CLI migration remains in scope; specification/capability docs must
+  describe the actual supported routes.
+- The early slice uses module identification and an export/naming path from migration group 1. Finish
+  remaining group-1 cases and groups 2–3 afterward; final integration spans all families. Checkpoints
+  distinguish expected unmigrated-test failures from regressions and identify when they must pass.
+- The implementing agent records acquisition-policy, warning and coverage observations; the human
+  reviews them after the early slice and, for new evidence, final integration. Current policies remain
+  until explicitly changed; deferred mechanisms are not implicit implementation tasks.
+
+The proposal states the [missing-support rule](structured-architectural-accounts-proposal.md#missing-support-outcome),
+[alternative diagram coverage](structured-architectural-accounts-proposal.md#diagram-alternative-coverage),
+[API scope](structured-architectural-accounts-proposal.md#representative-capability-access) and
+[observation ownership](structured-architectural-accounts-proposal.md#observation-review-checkpoints) inline.
+
 ## Baseline initial context and association vocabulary
 
 For each subject Entity, supply all non-displaced `identification`-role associations with content,
@@ -352,7 +379,7 @@ address. Several differently keyed identifications may concern the same Entity. 
 qualifications explain any differences; keys alone do not establish equivalence or priority. Other
 topical information can use meaningful agent-chosen local keys without a separate topic identity
 system. Identification requires a readable name/designation with sufficient qualified identifying
-information, not a complete definition or necessarily prose. Fixtures now use `identification`
+information, not a complete definition or necessarily prose. Fixtures use `identification`
 and generic `topic` roles. The [baseline probe](structured-account-example/check-baseline.py)
 checks the selection and its propagation in both partitions. Further recognized roles need defined
 semantics rather than inference from key spelling. The prose identifying type supplies an assigned
@@ -367,7 +394,7 @@ contribution's descriptive association concerns Circuit Breaker. A known address
 origin is not required. This preserves an existing purpose of referents, not a new semantic-search
 capability. Finding a reference does not automatically deliver the contribution's content; subsequent
 qualified acquisition and actual exposure remain distinct. Indexes and tool shapes are implementation
-choices. The [alignment probe](structured-account-example/review-alignment.md) now checks this path:
+choices. The [alignment probe](structured-account-example/review-alignment.md) checks this path:
 reference-only lookup, historical coverage and separate qualified item acquisition. Native application
 integration remains required validation, not demonstrated by this authored simulation.
 
@@ -375,7 +402,7 @@ integration remains required validation, not demonstrated by this authored simul
 
 Each investigram captures its own actual production/exposure history at creation. Contributions
 from one production can share that history; atomic acceptance or a shared outer invocation does
-not merge independently produced contributions' inputs. The unification fixture now records the
+not merge independently produced contributions' inputs. The unification fixture records the
 mechanical producer's source-only input separately from the organizing agent's retained input and
 actual receipt of the mechanical item. Propagation and fresh disclosure follow the delivered
 contribution's owner, not an invocation-wide union. Invocation totals are report summaries only.
@@ -473,7 +500,7 @@ complete designated content, qualifications and required support. For the first 
 mechanical target-support completeness enforcement is deferred: PostCode validates structural
 rules and accurate qualified deliveries, not whether the investigator understood enough to justify
 a change. Deliberately incomplete acquisitions in the probe are structurally accepted without
-fabricating exposure or certifying instruction compliance. The same boundary now applies to reuse
+fabricating exposure or certifying instruction compliance. The same boundary applies to reuse
 and earlier-query redesignation: valid references preserve original provenance and qualifications,
 while adequate understanding is an investigator responsibility, not a prior-delivery gate.
 When query meaning is delivered its captured record must still be accurate. See the
@@ -487,7 +514,6 @@ revision rather than only rejecting a finished submission. Final structural vali
 mandatory, and acknowledgement alone does not establish compliance. This is a design possibility,
 not a new checker or dialog implementation.
 
-<a id="catalogue-responsibilities"></a>
 ## Unresolved inconsistency
 
 An inconsistency report targets exact content items when comparing substantive claims, or exact
@@ -519,6 +545,7 @@ Implementation chooses interface packaging while preserving exact reference, qua
 delivery and result-contract meanings. Existing prior-result investigations remain available
 independently of follow-up options. See the [scope agreement](structured-architectural-accounts-proposal.md#offered-followup-investigation).
 
+<a id="catalogue-responsibilities"></a>
 ## Catalogue responsibilities and diagrams
 
 Illustrations are pictures authored by the investigator as part of its explanation alongside prose.
@@ -588,12 +615,17 @@ supersessions remain available.
 The mixed and partitioned variants preserve the same behavioral models. Independent investigrams
 provide appropriate qualification boundaries without parent/child organization. Item delivery and
 association supersession work in either partition. Actual production exposure can still cause
-conservative warnings; partitioning alone does not remove them. The existing `children/` path now
+conservative warnings; partitioning alone does not remove them. The existing `children/` path
 names the partitioned variant for link continuity, not a retained nesting mechanism.
 
 Composition receives selected P/S/R/B context and returns pattern entities plus
 RESULT-Q4. Exact local selectors remain valid; their context identity is Query result RESULT-Q4. The
 same architectural diagrams and assertions remain authored content.
+
+The [governing migration inventory](structured-architectural-accounts-proposal.md#governing-migration-inventory)
+identifies the decision units and live successor chains the planning package must reconcile, together
+with core-concept, constraint, specification, capability/CLI and backlog revision targets. Formal
+forward/backward supersession mappings remain package work; no governing changes are adopted here.
 
 ## Settled scope and verification limits
 
@@ -625,7 +657,7 @@ unrequested new information may matter even when no inventory dependency was est
 The human accepts that coverage limitation. Baseline initial selection is settled: all standing
 identifications for each subject Entity. More detailed inventory coverage and retrieval bounds remain
 implementation choices with explicit completeness guarantees. The contract is at the investigation boundary; dialog
-tools and storage sharing are implementation choices. The broad earlier counts no longer
+tools and storage sharing are implementation choices. The broad earlier comparison does not
 establish a first-delivery need for reassessment.
 
 Reuse without acquisition can lack an exposure path from a later displacement of the source

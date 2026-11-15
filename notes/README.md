@@ -23,7 +23,7 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 - Composition design probe: [two wrapping orders](structured-account-example/composition/README.md), with separate component accounts, local scenario roles and relationships, explicit resource/state snapshots, and generated sequence diagrams.
 - Diagram readability examples: [compact overviews and keyed legends](structured-account-example/diagrams.md), with concise authored labels and full qualified meaning kept alongside.
 - Complete metadata payload: [guided tour](structured-account-example/metadata-payload.md) exercises investigram-owned follow-up options and illustrations, exact addresses, qualified delivery and explicit trial diagram inputs.
-- Retained follow-up option: [bounded admission-to-trial invocation](structured-account-example/followup-options.md), with exact originating option references, result-entity context and historical access in both partitions.
+- Retained follow-up option: [bounded admission-to-trial invocation](structured-account-example/followup-options.md), with exact originating option references, Query-result context and historical access in both partitions.
 - [Upcoming work](upcoming-work.md)
 - [Candidate capabilities](candidate-capabilities.md)
 - [Candidate UX](candidate-ux.md)
