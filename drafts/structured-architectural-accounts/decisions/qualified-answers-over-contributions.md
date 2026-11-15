@@ -53,7 +53,9 @@ When the last standing designation has been withdrawn, ordinary retrieval of the
 | `organization` | The specified organization method's findings and scheme qualification. |
 | `dependency-structure`, `dependency-children`, `dependency-parents` | The specified dependency method's findings, scope and coverage. |
 | `inspect` | Its mechanical inspection plus explicit subject-associated retained information; exact-investigram inspection preserves that contribution and applicable history. No single rule replaces this mixed contract. |
-| Effective export information | The export method's qualified findings and selected naming/support, not a newly invented public Lens. |
+| Effective export information | The export method's qualified findings and method-selected naming/support under the naming rule below, not a newly invented public Lens. |
+
+Naming follows the same question/method boundary. A method-specific module, export or dependency answer uses the identifying information selected by that method and captured basis; an interpreted identification does not silently rename its findings or change deterministic lookup handles. For example, a mechanical module named `breaker.ts` can also have an interpreted identification “Recovery controller.” General access to current identification returns all standing qualified identifications, and inspection can expose the associated alternatives. If an association carrying the mechanical identification is withdrawn, a query requesting that method's findings can still return the original identification with applicable withdrawal context. Presentation can label or distinguish supplied alternatives, but must preserve their qualified meaning. No preferred-name or canonical-name mechanism is introduced.
 
 For example, a summary's properly redesignated answer can be selected without rerunning its original producer. A module inventory does not replace its captured population with whichever agentic account is newest. A display selection must not silently drop a competing designated answer. Stable enumeration does not imply ordering or authority among claims; mechanical semantic determinism remains binding.
 
