@@ -50,7 +50,7 @@ A **Query result** is the organizing identity for the answer to one particular e
 
 The invocation is the particular request; the Query result is a distinct identity organizing its answers. Keeping access to invocation context does not make the two the same object or concept.
 
-A **result designation** is an immutable content association selecting exact items or declarations for that answer, possibly across investigrams. Later designations can add alternatives, supersede exact earlier designations or withdraw them. Membership never silently substitutes current content. Recognized reuse of an existing request reuses its result identity; a new user action does not alone create another invocation. An application Lens may select designated information into a Projection under its own question/method contract.
+A **result designation** is an immutable content association selecting exact items or declarations for that answer, possibly across investigrams. Later designations can add alternatives, supersede exact earlier designations or withdraw them. Membership never silently substitutes current content. Recognized ordinary reuse of an existing request reuses its result identity; a new user action does not alone create another invocation. Explicitly requesting a fresh investigation starts a new producing attempt and preserves earlier history, without automatically displacing earlier answers. An application Lens may select designated information into a Projection under its own question/method contract.
 
 **Replace “Captured bases, program inputs and Projection requests”, preserving its explicit anchors.**
 

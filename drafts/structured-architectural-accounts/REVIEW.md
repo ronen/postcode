@@ -28,7 +28,7 @@ Each predecessor revision file changes only its opening metadata; historical bod
 
 Check for lost governing obligations or accidental scope changes during consolidation, especially at the production/assembly boundary, per-producer exposure, provider recomputation after displacement, exact subjects versus current designated answers, partial fulfillment, and mechanical method-specific results. Check that delegated implementation details do not weaken those semantics.
 
-The fidelity-review questions are resolved: withdrawal from a delivered current-only inventory triggers reconsideration even without delivery of the removed content, and across-submission content-to-association reachability is required. The bounded diagram notation is made concrete here for review. New semantic conflicts found during review or implementation require human resolution; observations about warning breadth or instruction usability do not implicitly authorize deferred mechanisms.
+The fidelity-review questions are resolved: withdrawal from a delivered current-only inventory triggers reconsideration even without delivery of the removed content, and across-submission content-to-association reachability is required. The bounded diagram notation is made concrete here for review. Fresh independent review has reopened contract clarifications, listed in the plan; ordinary reuse after an explicit fresh investigation is also marked locally for resolution before promotion. New semantic conflicts found during review or implementation require human resolution; observations about warning breadth or instruction usability do not implicitly authorize deferred mechanisms.
 
 ## Promotion boundary
 
@@ -38,4 +38,4 @@ No foundation or development-process files are changed. The main-branch director
 
 ## Draft verification
 
-Checked all 370 local links against intended canonical destinations and the draft's new/replacement units. All 18 backward headed supersession mappings have corresponding predecessor revisions and forward links. Confirmed no substantive package links depend on notes, steering or review scratch files. These are document checks, not implementation or live-agent verification; the plan specifies that later work.
+Checked all 371 local links against intended canonical destinations and the draft's new/replacement units. All 18 backward headed supersession mappings have corresponding predecessor revisions and forward links. Confirmed no substantive package links depend on notes, steering or review scratch files. These are document checks, not implementation or live-agent verification; the plan specifies that later work.

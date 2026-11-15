@@ -26,7 +26,7 @@ Area: retained analysis and qualification
 
 The first mechanism derives cause-bearing concerns from exact exposure, acquired inventory/selection scopes and designated membership. It does not clear them. Assess practical burden using representative causes, baseline identification scopes and no-change outcomes; authored propagation counts are not estimates of user warning rates.
 
-Design qualified reassessment for a specific target and cause, including a finding that the earlier information remains appropriate. Preserve original content, inputs and independent causes. Specify effects on downstream concerns without asserting that downstream content itself was reassessed. Clearing one path must not clear unrelated paths or reinstate displaced associations. Keep current standing of the historical cause inspectable.
+Explicit user-requested fresh investigation is in scope of the structured-accounts plan, but does not itself clear earlier concerns. Design qualified reassessment for a specific target and cause, including a finding that the earlier information remains appropriate. Preserve original content, inputs and independent causes. Specify effects on downstream concerns without asserting that downstream content itself was reassessed. Clearing one path must not clear unrelated paths or reinstate displaced associations. Keep current standing of the historical cause inspectable.
 
 Automatic reassessment of immediate dependents or currently/recently viewed information is a possible later policy, with explicit resource and initiation authority. It is not implied by warnings, human browsing or hosted-service enablement. Consider targeted producer suppression or directed propagation only with accountable qualified grounds and retained history.
 
