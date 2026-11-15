@@ -495,6 +495,55 @@ assert cause in forward.project(exact_finding)['notices']
 # Shared single-dialog outputs still inherit that dialog's full input history.
 assert model.investigrams['EXPORTS-1']['productionExposure'] == model.investigrams['EMPTY-EXPORTS-1']['productionExposure']
 
+# Answer assembly is a read-only selection, not a producing execution. These
+# qualified captures stand in for assembly; they do not implement a product Lens.
+def export_answer_selection(state):
+    return {'module': delivery_summary(state.project(select('M-loader', 'DISCOVERY-1', 'loader'))),
+            'exports': delivery_summary(state.project(select('M-loader', 'EXPORTS-1', 'exports'))),
+            'namingStanding': state.standing(('DISCOVERY-1', 'loader'))}
+
+
+assembly_state = copy.deepcopy(checkpoints['Q-E'])
+before_assembly = copy.deepcopy(assembly_state.__dict__)
+captured_selection = export_answer_selection(assembly_state)
+original_capture = copy.deepcopy(captured_selection)
+assert assembly_state.__dict__ == before_assembly, 'answer assembly fabricated production or exposure'
+assert export_answer_selection(assembly_state) == captured_selection
+
+# In contrast, this actual authored production receives the naming and contributes
+# a new qualified use. Its exposure is recorded with that investigram on acceptance.
+naming_consumer = exposure_reader('Q-NAMING-CONSUMER', 'NAMING-CONSUMER-1',
+                                 select('M-loader', 'DISCOVERY-1', 'loader'),
+                                 {'item': {'investigram': {'investigram': 'DISCOVERY-1'}, 'contentKey': 'loader'}})
+accept(assembly_state, naming_consumer)
+inputs_before_change = {oid: copy.deepcopy(a.get('productionExposure')) for oid, a in assembly_state.investigrams.items()}
+assert 'DISCOVERY-1::loader' in assembly_state.investigrams['NAMING-CONSUMER-1']['productionExposure']['deliveries'][0]['associationUses']
+accept(assembly_state, displace_identification('withdrawal'))
+before_fresh_assembly = copy.deepcopy(assembly_state.__dict__)
+fresh_selection = export_answer_selection(assembly_state)
+assert assembly_state.__dict__ == before_fresh_assembly, 'fresh status access fabricated exposure'
+assert captured_selection == original_capture, 'fresh standing rewrote an earlier capture'
+assert fresh_selection['module']['items'] == captured_selection['module']['items']
+assert fresh_selection['exports']['items'] == captured_selection['exports']['items']
+assert captured_selection['namingStanding']['displacedBy'] == []
+assert fresh_selection['namingStanding']['displacedBy'] == ['STANDING-1::loader']
+assert fresh_selection['module']['notices']['STANDING-1::loader']['value']['reason']
+assert all(assembly_state.investigrams[oid].get('productionExposure') == history for oid, history in inputs_before_change.items())
+assembly_status = assembly_state.reconsideration()
+assert assembly_status['investigrams']['EXPORTS-1'] == []
+assert assembly_status['evaluations']['Q-E'] == []
+assert assembly_status['investigrams']['NAMING-CONSUMER-1'] == ['STANDING-1::loader']
+assert assembly_status['designations']['NAMING-CONSUMER-1::result']['membershipCauses'] == []
+assert assembly_status['designations']['NAMING-CONSUMER-1::result']['generatingEvaluationCauses'] == ['STANDING-1::loader']
+assembly_report = {'originalQualifiedSelection': captured_selection,
+                   'freshQualifiedSelection': fresh_selection,
+                   'assemblyLeavesRetainedStateAndExposureUnchanged': True,
+                   'originalCaptureUnchanged': True,
+                   'actualProducingConsumer': {
+                       'productionExposure': assembly_state.investigrams['NAMING-CONSUMER-1']['productionExposure'],
+                       'causes': assembly_status['investigrams']['NAMING-CONSUMER-1']},
+                   'exportProducerCauses': assembly_status['investigrams']['EXPORTS-1']}
+
 reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['bindings'].pop('exposureByInvestigram'))
 reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['bindings']['exposureByInvestigram'].pop('constant'))
 reject(checkpoints['Q-C'], stages['Q-M'], lambda s: s['bindings']['exposureByInvestigram']['organization'].update(deliveryIndices=[4]))
@@ -525,6 +574,7 @@ report = {'status': fixture['status'], 'acceptedInvocations': list(model.queries
           'currentAssociations': sorted(current['declarations']),
           'withdrawalPlusAddition': reorganization_report,
           'perInvestigramExposure': exposure_report,
+          'answerAssemblyVersusProduction': assembly_report,
           'freshCombinedResult': delivery_summary(fresh_combined),
           'preservedHistoricalSelections': ['Q-S', 'Q-C', 'Q-E'], 'malformedCasesRejected': negative_count,
           'limits': ['No native producer, live interpreting agent, hypothetical constant-target method or runtime execution was run.',

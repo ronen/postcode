@@ -118,7 +118,8 @@ displacements or clears concerns. Selection-only
 basis names retained inputs; a contribution also using source captures both, preserving each
 selected item's original source basis. Supersession grounds should
 explain material changes in method, scope or guarantee; guarantee-ranking selectors remain deferred.
-Native producer integration remains unverified, including mechanical consumers of retained claims. See the
+Native integration remains unverified: test qualified answer assembly without new exposure separately
+from actual retained-input production and its exposure. See the
 [working direction](structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
 
 The working scope also migrates existing agentic capabilities (`summarize`, `explain`, `decompose`,
@@ -405,6 +406,21 @@ reference-only lookup, historical coverage and separate qualified item acquisiti
 integration remains required validation, not demonstrated by this authored simulation.
 
 ## Exposure and result membership
+
+<a id="assembly-is-not-production"></a>
+Answer assembly, retrieval and presentation do not create production exposure. They preserve exact
+selected content, qualification and captured standing, with later displacements/concerns available
+through fresh access. Reading module naming to assemble an export Projection does not make the
+assembler a producer or add that read to an earlier investigram's history. Only actual input to a
+producing execution is captured as that investigram's exposure. Existing contribution and membership
+concerns remain available; they are not invented or cleared by assembly.
+
+Native verification must distinguish export-answer assembly from an agentic investigation receiving
+mechanical module information and producing a contribution. A mechanical producer actually consuming
+retained claims follows the same exposure rules; the mistaken Projection example establishes no such
+production. The [authored comparison](structured-account-example/unification/README.md#answer-assembly-versus-production)
+checks both paths without claiming product/API integration.
+
 
 Each investigram captures its own actual production/exposure history at creation. Contributions
 from one production can share that history; atomic acceptance or a shared outer invocation does

@@ -365,9 +365,12 @@ The probe supports this direction and identifies three concrete requirements:
 Four small content contracts, six provider re-encounter branches, organizing withdrawal-plus-
 addition/restoration, independent production-exposure histories and thirty-three malformed cases are exercised. No native provider, live investigator or proposed constant-target method was run.
 Production content contracts, actual coordinated execution, detailed stage boundaries and full
-partial/failure result handling remain planning work. First native verification must include
-a mechanical consumer of retained claims, such as export Projection reading module naming,
-with qualified delivery/exposure and later-displacement checks, as well as identity re-encounter.
+partial/failure result handling remain planning work. First native verification separates two paths:
+assembling an export answer from retained findings and module naming must preserve qualification,
+exact selection and available standing without creating production exposure; an actual producer
+receiving retained information and contributing an investigram must record its qualified input and
+respond to later applicable displacement. Use an agentic investigation receiving mechanical module
+information for the latter integration case. Include native identity re-encounter separately.
 A method-specific Lens must preserve its question and guarantee, rather than simply
 selecting the latest description of its subject. Both mechanical and agentic contributions use
 the common investigram structure without flattening their different guarantees.
@@ -418,6 +421,35 @@ Displacement does not rewrite a finding, renew its association, erase its method
 itself establish a new reconsideration cause. Cause-specific exposure and timing rules still apply;
 existing concerns remain available without claiming reassessment or clearance. Migration preserves
 existing answer guarantees and explicitly maps these distinctions into the application contracts.
+
+<a id="answer-assembly-and-production-exposure"></a>
+### Answer assembly does not create production exposure
+
+Exposure is captured with each investigram's actual producing execution. Lens answer assembly,
+exact retrieval and presentation select or arrange already retained information; those actions do
+not by themselves produce an investigram or add to any investigram's exposure history. Reading a
+retained module name to construct an export Projection is answer assembly, not an example of a
+mechanical producer consuming that claim to produce a new finding.
+
+Answer assembly captures the selected information, qualification and standing under the Projection
+contract. Applicable later displacements and concerns remain available through fresh qualified access,
+separate from an immutable earlier capture. Neither assembly nor status inspection manufactures a
+production cause or transfers the assembler's reads to the original source producer. Existing
+result-membership causes and concerns of the selected contributions remain available; this distinction
+does not suppress them.
+
+When an agentic or mechanical producer actually receives retained information as analysis input and
+contributes an investigram, that production records the actual exposure. A single application request
+can coordinate both production and assembly, but their responsibilities remain distinct. Determining
+new claims, qualified correspondence or organizing declarations is production even when deterministic;
+it must not be hidden as mere assembly. This restates the settled engine/application boundary rather
+than adding a new exposure policy.
+
+The [unification verification example](structured-account-example/unification/README.md#answer-assembly-versus-production)
+contrasts read-only qualified export-answer selection with an authored producing consumer of the same
+module identification. It checks immutable captures, fresh displacement disclosures, unchanged source
+production histories, and a cause only for the consumer that actually received the input. This is a
+bounded stand-in for answer assembly, not an implementation of the application Projection API.
 
 <a id="existing-lens-selection"></a>
 ### Selection behavior of existing Lenses
@@ -519,7 +551,7 @@ until the remaining mechanical migration is complete. Drafting specifies milesto
 risk ordering; controlled producer coverage does not replace live-agent integration checks.
 
 The early slice takes the portion of migration group 1 needed for real module identification and
-an export answer consuming retained module naming, alongside the agentic state-behavior and diagram
+an export answer assembled from retained module naming, alongside the agentic state-behavior and diagram
 path. It need not finish every group-1 variant or caller first. Complete the remaining group-1 work
 and migrate groups 2–3 after reviewing that slice. Group 4 is final integration across **all** migrated
 families and existing agentic capabilities; it is not postponement or repetition of the initial
@@ -548,7 +580,7 @@ or to claim unfinished integration works. Detailed transition sequencing remains
 The mechanical migration groups are:
 
 1. Module discovery/identification and exports, including later symbol introduction and actual
-   mechanical consumption of retained module naming.
+   qualified answer assembly from retained module naming, without fabricating production exposure.
 2. Dependencies and remaining module information, including associated documentation and module
    composition, preserving qualified targets, coverage and partial/empty distinctions.
 3. Project/repository organization: groups, containment, placement and qualified properties.
@@ -1718,11 +1750,11 @@ answer being revised, without a duty to update every containing result. R3 is re
 [exact-selection subject rule](#prior-result-subject), with originating question and displacement
 context preserved. The [review alignment summary](structured-account-example/review-alignment.md#review-resolutions)
 locates the resolutions, authored validation and explicit deferrals. Remaining work is to express
-these agreements in the planning package and map their governing changes. A subsequent incremental
-review confirms no regression but raises one native-validation ambiguity for clarification: Lens
-answer assembly capturing retained naming/standing must be distinguished from a producer consuming
-retained claims to create contributions. The [review note](structured-account-example/review-alignment.md#second-re-review-and-incremental-history-check)
-records this issue and the concrete baseline-identification warning-volume risk.
+these agreements in the planning package and map their governing changes. The incremental review
+confirmed no regression; its misleading native-verification example is corrected by the
+[assembly/production distinction](#answer-assembly-and-production-exposure), without changing exposure
+semantics. The [review note](structured-account-example/review-alignment.md#second-re-review-and-incremental-history-check)
+records that correction and the concrete baseline-identification warning-volume risk.
 
 | Question | Required resolution |
 | --- | --- |

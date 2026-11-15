@@ -1,6 +1,6 @@
 # Mechanical and agentic production: worked unification
 
-Updated 2026-11-13. Exploratory design work, not an adopted contract or a product migration.
+Updated 2026-11-15. Exploratory design work, not an adopted contract or a product migration.
 [Main inputs](contributions.json), [organizing-use renewal](organization-renewal.json),
 [report](report.json) and [checker](check-unification.py) exercise
 the common association/lifecycle model over a small [source fixture](source/loader.ts).
@@ -249,15 +249,16 @@ Q-I really receives the source-dependency association and the plugin identificat
 qualified deliveries are recorded. Q-M's organizer receives the association it replaces; Q-R
 receives the organizer's association and its mechanical item, plus the supplied source evidence,
 without displacing that association.
-The same delivery machinery works for mechanical consumers of retained contributions: actual reads
-matter, not whether the consumer happens to be an agent. Bare IDs remain distinct from claim delivery.
+The same delivery machinery applies when a mechanical producer receives retained information as
+input to analysis producing a contribution. Bare IDs remain distinct from claim delivery. A read
+performed only to assemble a Lens answer is not such an input: selecting module naming/supporting
+contexts into an export Projection creates no producing-execution exposure. Preserve their qualified
+selection and standing without attributing the assembler's reads to earlier producers.
 
-The zero retained-information exposure on these authored mechanical contributions is not a
-measurement of today's complete exports/dependency request pipeline. For example, the existing
-export Projection also selects module naming and supporting contexts. An actual adapter must record
-qualified claims it consumes and preserve identifying information it includes in the selected result.
-The probe isolates newly produced surfaces from that larger selection; it must not be used to exempt
-mechanical reads from exposure recording merely because the method is mechanical.
+Zero retained-information exposure on these authored mechanical contributions describes those
+productions, not every access performed by the wider application request. Actual producer inputs
+must be recorded regardless of mechanism; assembly/access activity must not be invented as producer
+input. The following comparison makes the distinction observable.
 
 When Q-M's organizing declaration supersedes the runtime association, Q-C is flagged through
 its actual delivery and result membership. Q-D/Q-E/Q-S are not flagged through shared entity
@@ -270,6 +271,31 @@ A warning does not revoke a mechanical method guarantee over its original basis.
 retained-information concern under the specified propagation rules. Determining whether an existing
 answer needs changing remains qualified analysis. No new cross-basis invalidation rule, semantic
 dependency mechanism, policy gate or priority by producer kind is introduced.
+
+<a id="answer-assembly-versus-production"></a>
+## Answer assembly versus production
+
+The checker adds a separate read-only export-answer selection alongside a producing consumer:
+
+1. Select the original qualified module naming and export surface, including their source method,
+   basis, evidence and qualification. Capturing or repeating that selection leaves the entire retained
+   model unchanged: no new investigram, invocation, declaration, delivery history or exposure index.
+2. An authored agentic producer actually receives the same module-identification association and
+   contributes a new qualified use. Its investigram records the delivered input. This is production,
+   even though it reuses content rather than asserting a new export finding.
+3. Withdraw the original identifying association. The earlier answer capture stays unchanged. Fresh
+   selection of that method-specific information keeps its content and supplies the qualified
+   displacement reason/standing. Reading the fresh status again changes no retained production data.
+4. The export producer has no new exposure cause; it never received the identifying association as
+   analysis input. The actual consuming producer receives the exact displacement cause. Its result
+   carries that generating-production concern, without an invented membership route to the original
+   association. Previously captured production histories remain immutable.
+
+The generated report's `answerAssemblyVersusProduction` section shows both captures and the actual
+consumer history/cause. This is an authored read-only selection stand-in, not a native Lens or
+Projection implementation. Existing separately tested result-membership causes still apply; selecting
+affected information does not erase its own standing or concerns. The counterfactual mechanical-input
+branch above independently shows that genuine mechanical production input is tracked too.
 
 ## Recommendation and remaining decisions
 
@@ -290,11 +316,15 @@ model. It also identifies concrete planning work:
   detailed migration milestones and retain failed/partial outcome distinctions. New analyzers and
   provider-suppression policy are outside the scope; physical storage and provider algorithms need
   not be replaced merely to expose their contributions through the common model.
-- Verify at least one actual mechanical contribution followed by an interpreting investigation in the
-  supported Session lifetime, including a mechanical consumer of retained claims (for example, export
-  Projection reading module naming). Check that those reads create actual qualified deliveries and
-  exposure, and that later displacement reaches the consumer. Include native identity re-encounter.
-  Authored examples cannot establish adapter correctness or agent compliance.
+- Verify qualified export-answer assembly from retained findings and module naming: preserve exact
+  selection, original qualification and available standing without creating production exposure.
+- Separately verify a real producer consuming retained information—for example, an agentic
+  investigation receiving mechanical module information and contributing an investigram within the
+  supported Session. Check actual qualified input recording and later applicable displacement of
+  that input. A native mechanical producer that genuinely consumes retained claims follows the
+  same rule, but answer assembly is not evidence of such a producer.
+- Include native identity re-encounter. Authored examples cannot establish adapter correctness,
+  application Projection behavior or agent compliance.
 
 There is no new foundational choice needed to describe complementary static/runtime information.
 The remaining choices concern the complete contracts and first implementation boundary. We have not
@@ -307,7 +337,8 @@ Run `python3 notes/structured-account-example/unification/check-unification.py`.
 plus six provider re-encounter branches, organizing withdrawal-plus-addition and optional explicit
 restoration of earlier content, later symbol introduction, exact answer reuse, separate
 production bases, mixed-method acceptance, complementary additions, qualified supersession,
-original snapshots and result/exposure causes. It rejects **33 malformed cases atomically**, including
+original snapshots and result/exposure causes. It also contrasts read-only answer assembly with
+actual retained-input production, before and after identification withdrawal. It rejects **33 malformed cases atomically**, including
 empty native identity, forged producer attribution, unsupported producer/type, missing basis/scope, inconsistent target status,
 unknown entity/displacement targets, duplicate item keys, missing grounds, incomplete/ambiguous
 per-investigram provenance, fresh common-ID allocation collisions and an unreachable mechanical

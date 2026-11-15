@@ -36,12 +36,13 @@ and deliberate displacement targets when an investigation starts from an already
 in the [redesignation instructions](../structured-architectural-accounts-proposal.md#redesignation-instructions).
 
 The incremental reviewer reports no regression or lost earlier agreement, and confirms the deliberate
-change from automatic renewal with history to reuse without reassertion. It also identifies a remaining
-wording ambiguity to resolve: reading retained naming while assembling an export Projection is not by
-itself an example of a producer consuming retained claims to make new contributions. Distinguish
-answer-selection standing/snapshots from actual production exposure before carrying that native
-verification example into the package. This issue is recorded for discussion, not silently resolved
-by reclassifying Lens assembly as investigation.
+change from automatic renewal with history to reuse without reassertion. Its answer-assembly concern
+was a misleading verification example, not an unresolved architectural choice. The human reconfirmed
+that exposure is settled in producing investigrams; Lens assembly does not create it. The
+[corrected rule](../structured-architectural-accounts-proposal.md#answer-assembly-and-production-exposure)
+and [verification example](unification/README.md#answer-assembly-versus-production) separately exercise
+qualified answer assembly and an actual producing consumer, including later displacement. No new
+exposure or clearance mechanism follows.
 
 The reviewer also identifies scoped baseline identification as a likely warning-volume risk: additions
 can affect every earlier producing investigation that acquired the matching identification scope and

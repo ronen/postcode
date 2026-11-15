@@ -2764,3 +2764,29 @@ Recorded its newly identified ambiguity between answer assembly and producing-ex
 discussion; did not silently change that boundary. Its concrete baseline-identification warning-volume
 scenario should be carried into the existing risk/checkpoint rather than changing policy. No product,
 governing or fixture behavior changed.
+
+
+## 2026-11-15 — Correct answer-assembly/exposure verification
+
+The human reconfirmed that exposure is already settled in investigrams: assembling an answer cannot
+create production exposure, and authorized correcting the notes and verification example. Replaced
+the misleading export-Projection-as-producer example with two separate native verification paths:
+qualified export-answer assembly with exact selection/standing, and an actual producer (for example,
+an agentic investigation receiving mechanical module information) contributing an investigram with
+its real input exposure. A mechanical producer that actually consumes retained claims follows the
+same exposure rule; producer kind does not turn assembly into production.
+
+Updated the proposal, consolidation, incremental-review resolution and unification guide. Removed
+the claim that this was an open architectural decision. The early mechanical slice still includes
+module identification and export-answer assembly; the agentic path exercises actual cross-producer
+input. Existing result-membership concerns and selected contributions' causes remain available;
+assembly neither invents nor clears them.
+
+The unification checker now contrasts read-only qualified export selection with an authored producer
+receiving the same naming association. Capturing/refreshing the selection changes no retained state
+or production exposure. After withdrawal, the historical capture stays fixed and fresh access exposes
+the qualified reason; the source export producer remains unflagged while the actual consuming producer
+receives the cause. Its result's cause comes from production, not an invented membership route.
+Regenerated the report and reran the unification checker successfully; its 33 malformed cases still
+fail atomically. Relative note links and whitespace checks pass. Shared model/product code is unchanged;
+this authored stand-in does not establish the native application Projection integration.
