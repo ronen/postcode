@@ -19,6 +19,12 @@ Likewise, Query result and Entity are separate concepts despite shared fixture s
 names such as `entities` and `resultEntity`. Shared identity/association machinery is intentional;
 these storage names do not prescribe the domain vocabulary or the product API.
 
+The prior-answer fixture uses a Query result handle plus explicitly selected designation references
+and captured deliveries. The handle alone does not define a moving follow-up subject: the proposed
+application contract targets the exact selected information and retains its originating question.
+These fixtures do not implement application request identity or UI selection. See the
+[prior-result subject agreement](../structured-architectural-accounts-proposal.md#prior-result-subject).
+
 ## What the example demonstrates
 
 Entities organize qualified information. Each particular invocation Q has a separate

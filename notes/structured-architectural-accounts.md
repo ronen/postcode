@@ -2699,3 +2699,16 @@ find and update every containing result, not neglecting the answer being revised
 other information need not replace that answer. This is an instruction under the existing semantic-
 policy boundary, not a new operation or acceptance gate. Updated the proposal, consolidation and
 supporting contract/guide consistently. R3 remains for discussion; no product or governing changes.
+
+
+## 2026-11-15 — Re-review R3: exact selected information as the follow-up subject
+
+The human agreed that a follow-up targets the exact selected information, whether one investigram
+or an exact designated answer spanning several contributions. Later designation changes do not
+silently retarget it; applicable displacement and related context remain available separately.
+Preserve the originating Query result and question for understanding and explicit redesignation.
+Existing exact-investigram subjects remain supported, and decomposition returns qualified claims
+about smaller aspects without rebuilding an investigram tree. Reference packaging and selection UI
+remain implementation choices; no new follow-current operation is required. Updated the proposal,
+consolidation, review-resolution note and fixture terminology clarification. R1–R3 are now recorded;
+the review's remaining drafting details and cleanup remain. No product or governing changes.

@@ -19,8 +19,14 @@ answer. See the [inline agreement](../structured-architectural-accounts-proposal
 to explicitly redesignate that result. This uses the existing result-target mechanism; it introduces
 neither a duty to update every containing result nor a mechanical semantic gate. See the
 [inline instruction](../structured-architectural-accounts-proposal.md#redesignation-instructions).
-R3 (the exact meaning of a prior-result Subject) remains for discussion. The earlier resolution
-table below records the first review, not a claim that all re-review questions are settled.
+**R3 is resolved:** follow-up subjects denote exact selected information, whether an investigram or
+an exact designated answer spanning several contributions. Preserve the originating question/result
+and applicable displacement context without silently switching to current designations. This preserves
+existing exact-investigram subjects and does not require nesting. See the
+[subject agreement](../structured-architectural-accounts-proposal.md#prior-result-subject).
+All three re-review discussion items are recorded; the remaining drafting details and documentation
+cleanup identified in that review still need to be carried into the package. The table below records
+the original review resolutions.
 
 <a id="review-resolutions"></a>
 ## Review resolutions

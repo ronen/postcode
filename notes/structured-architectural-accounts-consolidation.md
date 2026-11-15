@@ -129,6 +129,15 @@ explicit. Drafting names the cut-over; faithful subject/input mapping and interf
 preserve the application/engine distinction. The fresh-answer rule above supplies all equally
 standing alternatives without a hidden priority. See [agentic migration](structured-architectural-accounts-proposal.md#existing-agentic-capability-migration).
 
+Prior-result follow-up targets the exact selected information: an immutable investigram or an exact
+designated answer spanning several contributions. The originating Query result/question remains
+identifiable; its later designations do not silently change the selected subject. Applicable standing,
+displacement and reconsideration context stays available separately. Choosing current information can
+produce another exact selection, but cannot retarget an existing request. Request reuse must preserve
+that explicit subject meaning. Decomposition returns qualified content about smaller aspects without
+requiring an investigram tree. Reference packaging and UI remain implementation choices. See the
+[subject agreement](structured-architectural-accounts-proposal.md#prior-result-subject).
+
 An internal producer/contribution boundary enables controlled mechanism tests before real-provider
 migration, including separately attributed producers for cross-producer cases. Mechanical and agentic
 are production mechanisms, not a closed type list or a requirement for identical execution protocols.

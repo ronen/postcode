@@ -416,13 +416,38 @@ as production. Preserving the capability does not mean retaining whole-investigr
 implicit replacement-chain selection: specify the corresponding association, result-selection and
 status behavior explicitly. The current ability to investigate a prior investigram must have a
 faithful input mapping; it is not implicitly removed or restricted to newly offered follow-ups.
-Detailed interface packaging remains open within the established application/engine boundary.
+The exact-selection rule below settles subject meaning; reference packaging and interface selection
+remain implementation choices within the established application/engine boundary.
 
 Drafting must name the cut-over and verify interaction between existing agentic outputs, new
 structured investigations and mechanical contributions under the common rules. Any consequential
 change to question, subject meaning or answer-selection behavior must be surfaced rather than
 hidden as an adapter detail. The fresh-selection rule below preserves all equally standing
 alternatives; exact captures remain immutable. No cross-Session data migration is implied.
+
+<a id="prior-result-subject"></a>
+### Subject of a prior-result investigation
+
+A follow-up targets the exact information selected by the user. That selection may be one immutable
+investigram or an exact designated answer spanning several investigrams. Preserve the selected
+membership, content and qualifications; do not silently resolve the subject again through whatever
+currently designates the Query result's answer. The originating Query result and invocation remain
+identifiable so the investigator can understand the earlier question and redesignate its answer
+when appropriate.
+
+For example, Q1 returns designated answer D1 and a later investigation supplies D2, superseding D1's
+designation. Selecting D1 for explanation still targets D1, with applicable displacement and related
+context available separately. D2 does not silently become the subject. Selecting current information
+can produce a different exact selection for a new request; it does not retroactively change an
+existing follow-up's explicit input. Request reuse preserves this exact subject meaning under the
+existing effective-input rules, rather than treating a Query result ID alone as the complete subject.
+
+Existing investigations of a specific investigram retain that exact subject. Investigations of a
+selected answer can address several contributions without forcing them into a new root investigram.
+Decomposition examines the selected information and returns qualified claims about its smaller
+aspects through content, associations and result designations; it does not construct an investigram
+tree. No new follow-current operation or general selection UI is required here. The choice of exact
+references, application types and selection controls remains implementation work within these rules.
 
 ## Agreed implementation scope: existing mechanical information, staged
 
@@ -1526,8 +1551,9 @@ workflow. Neither the probes nor this boundary authorize product implementation.
 The original review questions were resolved below. Re-review subsequently identified three
 application-boundary consequences: R1 is resolved by the [Lens-answer rule](#lens-answer-and-standing);
 R2 is clarified by the [redesignation instruction](#redesignation-instructions): update the earlier
-answer being revised, without a duty to update every containing result. R3 (prior-result Subject
-meaning) remains for discussion before drafting; do not decide it implicitly in the package. The [review alignment summary](structured-account-example/review-alignment.md#review-resolutions)
+answer being revised, without a duty to update every containing result. R3 is resolved by the
+[exact-selection subject rule](#prior-result-subject), with originating question and displacement
+context preserved. The [review alignment summary](structured-account-example/review-alignment.md#review-resolutions)
 locates the resolutions, authored validation and explicit deferrals. Remaining work is to express
 these agreements in the planning package and map their governing changes:
 
