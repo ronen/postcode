@@ -1,8 +1,8 @@
 # Separate application functionality from its interfaces
 
-Status: approved
+Status: completed
 Created: 2026-11-08
-Updated: 2026-11-08
+Updated: 2026-11-15
 Superseded by:
 
 ## Problem and outcome

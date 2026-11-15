@@ -1,0 +1,66 @@
+{
+  "status": "Diagram inputs and direct rendering remain unchanged. Metadata is delivered through a selected entity/result projection with source qualification; no whole-investigram eligibility test.",
+  "illustrationInputs": [
+    {
+      "address": {
+        "investigram": "TRIAL-1",
+        "illustrationKey": "recovery-state"
+      },
+      "diagramType": "state-diagram/0",
+      "bindings": {
+        "model": {
+          "investigram": "TRIAL-1",
+          "contentKey": "recovery"
+        }
+      },
+      "availableForBoundedRender": [
+        "recovery"
+      ]
+    },
+    {
+      "address": {
+        "investigram": "TRIAL-1",
+        "illustrationKey": "concurrent-callers"
+      },
+      "diagramType": "sequence-diagram/0",
+      "bindings": {
+        "interaction": {
+          "investigram": "TRIAL-1",
+          "contentKey": "concurrent-callers"
+        }
+      },
+      "availableForBoundedRender": [
+        "concurrent-callers",
+        "recovery"
+      ]
+    }
+  ],
+  "directDiagramSelections": [
+    {
+      "diagramType": "state-diagram/0",
+      "inputs": {
+        "model": {
+          "investigram": {
+            "investigram": "TRIAL-1"
+          },
+          "contentKey": "recovery"
+        }
+      }
+    },
+    {
+      "diagramType": "sequence-diagram/0",
+      "inputs": {
+        "interaction": {
+          "investigram": {
+            "investigram": "TRIAL-1"
+          },
+          "contentKey": "concurrent-callers"
+        }
+      }
+    }
+  ],
+  "optionSelection": {
+    "investigram": "ADMISSION-1",
+    "optionKey": "concurrent-callers-option"
+  }
+}

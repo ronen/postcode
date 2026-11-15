@@ -1,0 +1,730 @@
+# Illustrative contribution and content contracts
+
+Updated 2026-11-15. Exploratory contracts and executable authored probes, not adopted
+schemas or product APIs. The [proposal](../structured-architectural-accounts-proposal.md)
+and [consolidation](../structured-architectural-accounts-consolidation.md) explain the
+change from whole-investigram correction to association declarations and entity context.
+The [payload tour](metadata-payload.md) follows the exact serialized examples.
+
+An architectural concept frames interpretation. A content type identifies a supported
+kind of item; its contract defines data, semantics, references and qualifications.
+A schema captures mechanically checkable shape, not truth or sufficient evidence.
+`/0` marks illustrative versions. The catalogue is defined and extensible; naming an
+invented type does not make it understood. Topics and concepts may extend beyond the
+recognized catalogue using supported types.
+
+## Status of these executable contracts
+
+These are concrete authored contracts used to test the design, not a requirement to reproduce the
+fixture's exact serialization, field names, constants, role spellings or operational bounds.
+Architectural meanings, qualification, reference integrity, standing, atomicity and faithful
+exposure/delivery are the requirements being exercised. Production schemas and API shapes may
+change while preserving those requirements and the promised capability. A limit that changes
+observable completeness or availability must preserve the applicable outcome/coverage contract.
+
+Use the [design/implementation boundary](../structured-architectural-accounts-proposal.md#design-requirements-implementation-choices-and-deferred-capabilities)
+when drafting: distinguish semantic requirements from illustrative choices and deferred capabilities.
+The fact that a checker rejects an example establishes conformance to this bounded probe, not by
+itself that the same rejection must be a universal product rule. No probe choice authorizes a new
+feature or silently overrides an agreed requirement.
+
+## Shared envelope and addressing
+
+Each submission names a query invocation, its newly allocated query result,
+a pool of independent investigrams. An investigram supplies its content,
+referents, `associationSpecifications`, qualifications, evidence,
+`followupOptions` and `illustrations`. Empty content is possible for a meaningful,
+qualified declaration-only contribution. Metadata can carry substantive interpretation.
+
+Each content item has a local `key`, `concept`, `contentType` and type-specific data.
+Declaration, content, option and illustration keys have separate namespaces. Nested
+state, role, relation and step keys are local to their item. Matching names/keys do
+not establish correspondence. Submission-local investigram and entity references use
+separate namespaces and resolve atomically:
+
+| Reference | Meaning |
+| --- | --- |
+| `{entity: ID}` | Existing architectural or query-result identity. |
+| `{introducedEntity: key}` | New identity allocated by PostCode on acceptance. |
+| `{investigram: ID}` | Exact retained contribution bundle. |
+| `{submittedInvestigram: key}` | Exact bundle in this submission. |
+| `{investigram: reference, contentKey: key}` | Content item; source ownership does not change when reused. |
+| `{investigram: reference, associationKey: key}` | Exact association declaration, not an entity/role category. |
+| `{investigram: ID, optionKey: key}` | Exact originating follow-up option. |
+
+Readable P/S/R and RESULT-Q1 aliases stand for opaque IDs, not a naming convention.
+The `OWNER::key` notation in checker reports is display notation for an exact address.
+Forward local references are allowed when all resolve. No partial allocation, orphan
+bundle or unresolved accepted reference is intended.
+
+Exactly one supported identifying item with `introducesEntity: true` declares each new
+architectural entity and supplies qualified identifying content. An `identification` association
+must include that item. The admission/trial examples use `entity-description/0`; the separate
+[unification probe](unification/README.md) also registers structured mechanical module and symbol
+identification types, without mandatory prose descriptions. References/referents do not themselves
+introduce entities. Query-result identity is allocated for the invocation separately;
+it does not need an agent-invented architectural description. The probe requires one
+initial result designation per invocation, not one canonical answer for all time.
+
+For native providers, host/provider identity resolution precedes this allocation contract: the
+same native identity within supported scope binds to the existing entity. The normalized
+submission references that entity, rather than asserting another fresh allocation. Re-encounter
+is not name-based deduplication; provider continuity rules remain authoritative. The unification
+probe uses native keys distinct from common IDs and allocates fresh common IDs for a genuinely
+different identity scope without asserting correspondence. Equal identifying information under the
+same method/basis, evidence and qualifications reuses the established association even when it has
+been displaced. Recomputing does not create an addition or change standing. Exact access and result
+membership preserve that association and disclose its existing displacement; current scope selections
+do not regain it. Host equality/reuse is not analyzer delivery and invents no exposure. Changed inputs,
+method or findings may warrant a new qualified contribution. Deliberate reassertion requires explicit
+organizing action. The probe no longer accepts automatic renewal bindings or renewal-history metadata.
+
+Names, descriptions and classifications are associated information, not mutable
+unqualified fields of the identity. Reuse asserts reference to the identified thing,
+not agreement with its descriptions. Every explicit introduction receives an ID;
+there is no promotion threshold. Local selection can remain an addressed occurrence.
+A later investigation may introduce an entity from it, but a structured origin field
+and that live follow-up are still open work.
+
+Mechanical identities retain their provider guarantees under a proposed common reference
+mechanism. The working direction now also generalizes investigram contributions to mechanical
+and agentic analyses, preserving distinct method guarantees. These are execution mechanisms;
+interpretation and epistemic status are separate content qualifications. The admission/trial examples seed
+mechanical references; the [unification probe](unification/README.md) now exercises authored mechanical
+contributions using four small registered types and host-attributed per-contribution provenance.
+Neither probe executes a native producer or establishes complete production content contracts.
+The host provenance covers producer/method and basis; claim qualifications still determine what
+is established. Attribution is per investigram, not necessarily per acceptance: a mechanical
+finding and an agentic organizing declaration can share a submission with separate method/basis.
+Selection basis identifies retained inputs actually used; when source is also supplied and cited,
+the captured basis includes that source as well. Displacement grounds should explain
+material method/scope/guarantee changes; fuller prose alone can be an addition. These are authoring
+policies, not new semantic acceptance gates. Mechanical contributions need no invented agent identity or prose description. See the [proposal](../structured-architectural-accounts-proposal.md#mechanical-and-interpreted-contributions).
+Relationships W and patterns C-BB/C-BH are proposed explicitly identified entities;
+this architectural eligibility requires governing treatment beyond interpreted identity. Query results
+are separate organizing identities, not another Entity kind.
+Not every architectural edge, organizing relationship or local role becomes an entity.
+
+Duplicate or conflated identity findings use existing qualified content, entity introductions
+and association declarations. Correspondence does not alias IDs, and a new identifying description
+does not redistribute old associations. Preserve original identities and history; defer special
+merge/split operations, entity-level supersession and identity-specific propagation. Presentation
+of these histories is outside this capability. No additional executable identity probe is implied.
+
+## Association specifications
+
+Each specification has a local key and operation. Associations concern an Entity with an information
+role, or a Query result as a result designation. The fixture retains the shared encoding
+`target: {entity, role}` and uses `result` only for query-result identities; other supported roles are
+`identification` and `topic`. Fields such as `resultEntity`, the `entities` map and its `query-result`
+discriminator are local fixture storage names, not a claim that Query results are Entities or a
+prescribed product interface. Identification requires a readable name/designation plus qualified
+identifying information. `entity-description/0.name` is a producer-assigned readable label, not by
+itself a claim about a source-declared name. Registered mechanical types can supply a source name
+or path without mandatory prose. Every association has its own local key; meaningful agent-chosen
+topical keys do not require a separate topic-identity mechanism. Key spelling is not interpreted.
+
+The baseline agent context supplies all non-displaced identification associations for each subject
+Entity, with qualification, provenance, required support and standing/cause disclosures. It does not
+filter out reconsideration-marked entries or choose between alternatives. Record this selection scope
+and delivery position, including an empty selection when none remain. Later matching additions can
+trigger reconsideration. Broader topic content and referring contributions remain available for further
+acquisition. Query results and contextual selections are distinct input cases. The
+[baseline checker](check-baseline.py) exercises this policy in both partitions. Other acquisition
+probes intentionally request exact or filtered context to isolate their respective mechanisms; they
+are not competing defaults for agent initialization. Mechanical source-only executions do not receive
+invented retained context merely because the agent baseline exists.
+
+Entity/role denotes a category of information, not a unique value slot.
+
+| Operation | Required contribution | Effect |
+| --- | --- | --- |
+| `addition` | Nonempty `members`; no `displaces` | Adds an association; other associations coexist. |
+| `supersession` | Nonempty `members`, exact earlier `displaces`, qualified `reason` | Adds an association and explicitly displaces those earlier associations. |
+| `withdrawal` | Exact earlier `displaces`, qualified `reason`; no replacement members | Displaces those associations without replacing their information. |
+
+Members are a typed union:
+
+```json
+{"item": {"investigram": {"submittedInvestigram": "trial"}, "contentKey": "recovery"}}
+```
+
+```json
+{"declaration": {"investigram": {"investigram": "DEFINITIONS-1"}, "associationKey": "half-open-description"}}
+```
+
+The first designates content. The second is permitted for a result designation so
+an answer can include exact association assertions, including withdrawal. Recursive
+membership is acyclic. Required content dependencies, such as an interaction's state
+model, accompany the designated content; informative links do not silently expand it.
+Result membership selects answer content and is distinct from actual context exposure; no child composition is supplied.
+
+A declaration belongs to its producing investigram. Its members may belong to another;
+reuse neither copies nor reparents content. Each source retains its qualification,
+basis and provenance. Content reachability is checked across the entire submission, not only
+within each owning investigram. Thus a mechanical item can be associated solely by a separately
+attributed organizer in the same submission; no duplicate mechanical-owner association is needed.
+The new declaration has its own attributable grounds. Withdrawing that association removes that
+use, not the underlying content. To retain a finding while changing the organizing use, submit
+withdrawal plus a new addition referencing the original item; optionally add the earlier alternative
+in the same way. Earlier displacements remain intact. The unification reorganization probe exercises
+this without a new operation or a second association owned by the mechanical producer. Reasons
+are inline in this slice; no redundant mandatory `support` list repeats the displaced
+address. Additional grounds can be supplied as new qualified content without a special
+operation for editing an earlier reason.
+
+**Structural acceptance rules exercised here:** displaced declarations must predate the
+submission, share the new declaration's target and be additions/supersessions, not withdrawals.
+Changing the target uses withdrawal plus addition. A displacement requires exact targets and
+nonempty qualified grounds; mechanical checks verify required fields, not justification quality.
+
+**Investigator instruction:** before superseding or withdrawing an association, acquire its
+complete designated content, qualifications and required support/dependencies. A reason alone,
+an ID or an option excerpt does not fulfill that instruction. Acquisition may happen over multiple
+dialog requests. Mechanical enforcement of target-support completeness is deferred for the first
+capability. Structurally valid declarations can be accepted without complete prior support; this
+is not proof of sound analysis or compliance. Missing support is an investigation obligation,
+not something that PostCode may silently count as delivered.
+
+Recorded deliveries must accurately match the selected content, including its original qualifications,
+evidence and provenance; missing or altered selected payloads remain invalid. Reuse requires
+resolvable references and preservation of original ownership/qualification, not a prior-delivery
+gate. Redesignation instructions require understanding the earlier question/scope, but its prior
+acquisition is not a mechanical acceptance prerequisite. A new reference is not prior exposure.
+
+The general boundary is data integrity versus investigator reasoning policy. Representation,
+reference/type validity, ownership, valid operations and faithful retained history are enforced;
+adequate understanding, evidence assessment and instruction-following are investigator obligations.
+Mechanical enforcement of those semantic policies is deferred. No special reuse instruction is
+needed beyond understanding and qualifying information used. If semantic checks are later added,
+they may prompt further acquisition, explanation or revision within the dialog rather than merely
+reject a completed result. Final data still must be well-formed; no such dialog checker is added here.
+
+Renewed assertions use these same operations: if B superseded A, C can supersede B with
+members referencing A's original content and its own qualified grounds. A stays displaced;
+source ownership, evidence, qualifications and provenance stay with the reused content.
+After a withdrawal, C can add an association referencing that content without revoking the
+withdrawal. D can later supersede or withdraw C. The acquisition instruction and structural rules apply;
+none of these operations clears earlier causes or reinstates old result designations.
+General declaration revocation/reinstatement is deferred. This agreement does not add an
+operation or claim an executed A → B → C → D fixture.
+
+Every newly submitted content item is covered by at least one association in this
+prototype. Coverage does not prove semantic adequacy, nor require every association
+to be included in the query's result. Result-only content is allowed. Competing
+supersessions can both be retained; timestamps do not choose truth. Scoped current-description
+acquisition includes all competing undisplaced associations with qualifications, grounds and
+required support; exact-reference requests need not claim that complete scope. Fixed result
+memberships do not automatically expand. The checker reports displacement links and competition,
+not a universal active-winner algorithm.
+
+Sequential investigation does not prevent deliberate competition. Acquiring A after B superseded
+it discloses B; acquiring B's required membership/support then permits explicitly superseding B.
+C can instead leave B standing. Disclosure alone does not fulfill the complete-support acquisition instruction.
+The authored competing probe exercises this edge case, not parallel producers or typical frequency.
+
+A fuller description can supersede an earlier association without alleging factual
+error. Different context alone is not grounds to withdraw a still-valid scoped use.
+Other associations to the same item remain intact. There is no whole-investigram
+superseded flag and no implicit item correspondence based on a repeated key.
+
+## Unresolved inconsistency — exact claims and uses
+
+The agreed report identifies exact content items or associations, with attributable grounds and
+qualification. Item targets compare substantive claims; association targets identify disputed uses
+of content. It does not automatically displace either side or implicate unrelated content in the
+owning investigram. Acquisition of sufficient substantive information and support is an investigator
+instruction, not a special prior-delivery acceptance gate; qualified partial content can support a
+limited comparison. References do not create exposure. See the
+[working agreement](../structured-architectural-accounts-proposal.md#unresolved-inconsistency-reports).
+The [alignment probe](review-alignment.md) uses optional investigram metadata `inconsistencies`.
+Each report has a unique local `key`, at least two distinct `targets`, `reason`, `qualifications`
+and `evidence`. Each target is either `{item: {investigram, contentKey}}` or
+`{association: {investigram, associationKey}}`. Target lookup returns exact report handles;
+separate report acquisition supplies its qualified grounds and records the reporting producer's
+exposure, without delivering either endpoint merely by reference. Missing targets or grounds and
+altered qualified deliveries are rejected atomically. Both an acquired comparison and an intentionally
+no-delivery structural control pass; the latter does not demonstrate compliance with the acquisition
+instruction. This local encoding is replaceable and is not an additional association declaration kind.
+
+## Query results and exact history
+
+Q identifies a particular investigation invocation; RESULT-Q identifies its result. A repeated
+user request recognized as Q1 reuses RESULT-Q1, with no new invocation, result designation or
+architectural entity allocation. The authored simulator exercises new invocations; it does not
+implement the product reuse coordinator. Exact redisplay is access. Q1's original
+result association designates original qualified items/declarations. Q2 can target
+RESULT-Q1 and supersede that association with an updated designation while separately
+creating RESULT-Q2. Unchanged definitions can be referenced directly. This does not
+rewrite Q1's original returned answer, what Q1 produced, or an earlier delivery snapshot.
+
+The example makes two explicit declarations: ADMISSION-2 supersedes the admission
+association on P, and Q2's result-designating investigram supersedes Q1's result association. Neither implies
+the other. Original investigrams, metadata, items and introductions persist.
+The updated answer is available through a later designation; it is not substituted
+inside old exact result membership. An investigator addressing an earlier result is instructed to
+redesignate it when its conclusions change that answer. This is not a mechanical acceptance gate.
+Other containing designations keep their membership and receive fresh notices/status; the investigator
+need not find and update them all. Redesignation instructions require understanding its exact declared meaning/scope,
+operation, subjects, parameters and option (if any). `queryMeanings` in the context delivery preserves
+this context with invocation identity and basis. The checker rejects an inaccurate record of
+selected question context, but does not require prior acquisition of that context for acceptance.
+
+## Ownership and qualification
+
+The submitted pool has no root, parent/child relation or tree-position requirement. The checker
+rejects obsolete `compositionRoots` and `children` fields instead of silently retaining them as an
+organization mechanism. Local reference resolution, item reachability through associations, exact
+result membership and atomic acceptance remain required. Reordering the pool leaves answers and
+status unchanged; content-specific sequences still retain their declared semantics.
+
+Each investigram carries its own qualifications, evidence and production provenance. Orientation
+content may locate other contributions without asserting a parent relation or repeating their
+behavioral claims. A declaration-only contribution need not invent summary prose. Broader organization
+is deferred, whether agent-authored, host-derived from follow-ups/UI context, or a combination.
+
+When partitioning qualifications:
+
+1. Identify each bundle's claims and the scenario context needed to distinguish referents;
+   retain applicable source-basis and method limitations.
+2. Retain every condition needed for those claims. Put narrower restrictions on the
+   relevant item, or separate the content when the condition does not apply throughout.
+3. Do not copy unrelated exclusions or remove necessary ones as an editorial shortcut
+   to broader applicability. Verify broader identification, narrow the claim, or state
+   what remains unestablished.
+
+DEFINITIONS-1 identifies categories without default-sampling/reentrancy restrictions;
+it does not assert general admission rules. ROLE-DEFINITIONS-1 retains context needed
+to distinguish scenario roles. The mixed source descriptions retain their original
+broader bundle qualification even when associated separately later. The new mechanism
+does not retroactively broaden them.
+
+Minimal identification need not supply full behavioral explanation. W identifies its
+participants and what is awaited; `relatedContent` locates the separately qualified
+occurrence/release explanation. That link neither delivers the content nor asserts
+that minimal identification is unintelligible without it.
+
+<a id="provisional-partition-default"></a>
+## Qualification-based partition guidance
+
+Prefer coherent qualification boundaries. Separate identifying investigrams remain useful when
+an investigation mixes general identities and narrower behavior. This does not require nesting:
+independent association supersession and item delivery work in both mixed and partitioned variants.
+Separate bundles do not remove their actual production exposure. The historical `children/` fixture
+path remains for link continuity; its payloads now contain no child links or composition roots.
+
+## Entity context, delivery and reconsideration
+
+Supplying information about an Entity means supplying a qualified context selection to the investigator.
+A selection names exact associations, item excerpts or options reachable through that
+entity's information. It is not just an ID, all history, or a canonical definition.
+Each delivered item/declaration/option preserves its own value, source investigram,
+generating query, captured basis, source qualifications and evidence. A declaration's
+members from another owner retain that owner's support too.
+
+Entity/result IDs organize the exposure index; they are not change subscriptions to every
+association with that identity. Content and inventory exposure are recorded separately. `associationUses` records exact uses actually supplied,
+with source qualification and generating provenance. Full association delivery records its
+expanded declarations; an item excerpt requires `viaAssociation` and records only paths to
+that item. These partial use records do not claim full declaration/member delivery or fulfillment
+of the complete-support acquisition instruction. The captured route cannot expand to later associations.
+
+Selecting a portion of Q's result retains its exact designation route as well as RESULT-Q.
+Human browsing, bare IDs and undelivered siblings do not create delivered association entries.
+Options alone carry their source provenance; discovering an option through a result does not
+assert receipt of every behavioral association. Required state-model dependencies, informative
+links and actual content acquisition remain distinct. Arbitrary excerpt dependency closure
+is not fully generalized by the bounded renderer.
+
+Fresh context deliveries disclose qualified displacement notices for exact supplied uses, not every
+other use of a shared item. The notice's own substantively supplied declaration is an exact
+exposure; the fixture derives its address from the captured `notices` map alongside
+`associationUses`. Later displacement of that declaration can be a direct cause. References
+inside a notice do not deliver their targets or old/new members, nor fulfill the complete-support acquisition instruction.
+Fresh context deliveries close over subsequent displacement of the actually supplied declarations too. Original
+answer/delivery snapshots stay fixed. General warnings are inspected separately through
+`reconsideration()`, whose statuses name exact designation addresses rather than only RESULT-Q.
+
+The designation status has separate `displacedBy`, `membershipCauses` and
+`generatingEvaluationCauses`; only the latter two contribute to `needsReconsideration`.
+Displacing a designation records history, not a self-warning. An association displaced within
+its membership can warrant review. A new designation does not inherit the old one's causes
+by entity identity, but can independently be affected through its own members or producer.
+Consumers of an actually delivered old designation may need reconsideration when it changes.
+
+Q1's identifying membership can be affected without Q1 having received its newly introduced S.
+No incoming exposure is fabricated. A cause can then reach an actual consumer of that exact
+designation. Delivered contributions from an exposure-affected producing execution also retain
+that concern. This remains conservative within that production, not across independent producers
+sharing an invocation or acceptance; it is not proof that every excerpt relied on the input.
+
+Each retained investigram has host-captured `productionExposure`. Single-production fixtures share
+the request's actual deliveries. Distinct per-investigram production contexts require complete
+`exposureByInvestigram` host bindings: an execution key, indices into the captured delivery list and
+exact same-submission items actually supplied. These record execution history, not an agent's
+claimed semantic dependence. Same-execution owners share producer attribution and input history.
+Same-submission item deliveries capture original qualification/provenance; their production-input
+links must not be self-referential or cyclic. This is not a validator for arbitrary content links.
+
+Reconsideration and fresh disclosure use the supplied owner's history. The report's `investigrams`
+map records those causes; `evaluations` is a per-invocation union retained for summary comparison,
+never a propagation source. `generatingEvaluationCauses` on a designation follows its owner's
+production history despite that legacy report-key spelling. A fixture `exactItems` selection makes
+direct content access explicit, without an invented association use; routed `items` excerpts still
+require `viaAssociation`. Both retain source qualification and actual production concerns.
+
+The displacement-only regression uses supersession/withdrawal as causes and exempts the
+producer from its own causes. It uses exact displaced associations, not entity equality or
+shared-item overlap. The separate addition experiment below preserves this rule for displacement.
+
+### Actual-delivery timing and known causes
+
+A still-producing investigation can receive an intervening update before submission. Keep the
+old and new deliveries; do not mark its contribution for that change merely because an earlier
+input preceded it. The bounded [alignment probe](review-alignment.md) recognizes a sufficient
+case: actual delivery of the full qualified cause declaration and its complete replacement/addition
+members before submission. For withdrawal there are no replacement members. This is per producing
+investigram, not per shared invocation or acceptance, and does not clear completed contributions.
+No semantic proof-of-understanding or producer-asserted exemption is introduced.
+
+`acceptedAt` orders accepted contributions; `asOfAcceptance` records the retained-state
+position at which a context delivery was captured for delivery. These are host-owned fixture
+provenance, not an agent's declaration that it already knew a cause. Acceptance checks
+recorded context deliveries against their captured positions, not against the latest state.
+Default fixture requests acquire immediately before submission; separate probes retain
+an earlier delivery across an intervening change and acquire further context afterward.
+
+A cause accepted before a delivery is already part of its context. Fresh delivery must
+include qualified notices for direct displacement, affected designation membership and
+inherited generating-context concerns, including concerns attached to substantive notice
+sources. The checker rejects omitted/altered required notices. An old captured delivery
+that predates a cause is valid without that notice; it remains an exposure to later change.
+A future position or references unavailable at the recorded position are invalid.
+
+All propagation paths compare the cause to each actual delivery. Known causes cannot re-enter
+as new warnings via a source query or result designation. New designation membership compares
+against designation acceptance: already-displaced members retain their standing but do not
+create new membership causes. Its producing evaluation may still carry a cause from an earlier
+acquisition unless its producing investigation receives the relevant qualified update before
+submission. Receiving the old excerpt again with notices alone does not supply replacement content.
+Query-start time and final acceptance are not delivery-time proxies.
+
+Notices preserve reasons, qualification and exact standing; they do not deliver all referenced
+replacement members or establish sufficient understanding. Those acquisition obligations remain.
+No historical warning is cleared. Identity events, general declaration revocation/reinstatement,
+clearance and reassessment remain deferred; no general whole-investigram completeness exemption
+is imported.
+
+### Current standing of a historical cause
+
+If a recipient received A before B superseded it, later supersession of B by C does not by itself
+expose that recipient to B or C, clear historical cause B, or reinstate A. Fresh inspection can
+resolve B's current standing and deliver qualified C context through the existing disclosure
+closure. A new investigator receiving that context records its actual delivery at that time;
+the original recipient's captured input and answer remain fixed. No extra retained cause-status
+field or propagation rule is needed for this lookup. The counterfactual renewal probe exercises it.
+
+### Association versus inventory exposure
+
+The [revised addition probe](additions.md) makes inventory acquisition explicit. A selection
+may add `inventory: {roles: [...]}` for its organizing entity, independently of association
+content. The returned snapshot includes entity, roles, coverage, captured `asOfAcceptance`,
+and association addresses/roles. Roles must be nonempty, distinct and valid for the entity:
+`identification`/`topic` for architectural entities, `result` for query results.
+
+This fixture covers **all retained associations in scope**, including displaced ones. It has
+no standing field, interpretive summary, reason, name or member content. Entries are not
+association uses, do not contribute producing-query exposure, and do not establish member delivery
+or fulfill the acquisition instruction for displacement. A complete empty inventory still establishes scope. Missing, altered,
+unsolicited or future-position inventories are rejected atomically. Content requests can be
+made separately before or after inventory acquisition; each actual delivery retains its time.
+
+Content can instead be selected by scope: the bounded `scopeSelection` specifies roles and
+`standing: undisplaced`. The host selects all qualifying associations at the captured position,
+delivers their qualified declarations/members, and records `selectionScope` (entity, roles,
+all-undisplaced-in-scope coverage and time). All competing undisplaced associations are selected;
+this is not authority or recency reconciliation. The scope guarantee accompanies the content,
+without fabricating a separate inventory list. Missing/altered scope, incomplete scoped content,
+unsupported policies or mixing scoped and exact-reference acquisition are rejected. Exact
+reference requests cannot silently acquire a scope dependency. Historical selection uses its
+captured state, not current standing. An empty selection still depends on its declared scope.
+
+A later addition creates an exact `new-information` cause for matching prior inventory or
+scope-selected content recipients. A supersession also introduces an association entry, so its exact declaration can
+be a cause via either inventory scope or displaced-association use. Withdrawal leaves this
+historical inventory's entries unchanged; its ordinary content-displacement effects remain.
+Current-only/status-bearing inventories would need removal/status rules; pagination, ranked
+search and partially disclosed scope are not generalized by this probe.
+
+No addition cause follows solely from a description delivered by exact reference or fixed
+result membership; a declared scope used to select descriptions is a distinct dependency.
+An included exact association's displacement still creates membership concerns; an inventory-
+affected generating evaluation still passes its concern to its results and actual consumers.
+The same cause/timing rules and producer exemption apply. A fresh matching inventory contains
+already accepted entries without treating them as later changes. Refreshing only the list does not
+supply the added content; the production-update rule requires that substantive update too. Inventory
+receipt does not imply member-content receipt or comprehension.
+
+Do not automatically disclose every other addition about the entity. Qualified displacement
+and inherited-cause disclosures for actually supplied material remain required; their substantive
+reasons still carry exposure. The new inventory-only representation does not exempt delivered
+interpretive explanations or summaries. General context selection and the dialog protocol
+remain implementation work under these boundary requirements.
+
+The earlier entity-wide mode is retained only to reproduce the prior comparison. No semantic
+novelty test, targeted suppression or clearance is implemented in either mode. Actual inventory or content-selection
+scope is the boundary for additions; the model does not guarantee that unrequested new
+information cannot matter to an earlier interpretation.
+
+The [acquisition probes](acquisition.md) exercise scoped initial descriptions, discovery before
+retrieval and exact declaration-reason exposure. They do not introduce architectural coverage
+dependencies. Existing `admission-cases/0.coverage` concerns program cases, not an assertion
+that the retained association inventory was complete. Declared dependencies and investigator-directed
+propagation are deferred pending observed coverage gaps. Either would supplement exposure tracking;
+no standing change scope follows implicitly from a coverage claim. A newly added waiting case may
+challenge ADMISSION-1 without an automatic cause if no relevant scope exposure or displacement exists.
+
+Reuse without acquisition may have no exposure path to later displacement of an association
+whose content it references. Result membership supplies a separate path only for the exact
+association included, not direct item membership alone. No association is a privileged owner of
+all uses of an item. Auditing references without prior delivery is derivable from declarations
+and captured deliveries; a retained audit flag and a new propagation rule are deferred.
+
+### Deferred investigator-directed concerns
+
+The human accepts the limits of automatic exposure-based coverage. An investigator could
+later supplement it by identifying an exact earlier result that may need updating because of
+a qualified new finding. Exposure-index lookup could locate candidate investigations that
+received other associations about an entity; the lookup itself would not assert impact or
+supply their content. Relevant question/result/support acquisition would precede the assessment.
+A retained concern would need exact target, cause/finding and qualified grounds and could then
+propagate with its cause identity. It would not retroactively create exposure, withdraw an
+association or establish a replacement. No concern schema, reverse-lookup API, new declaration
+operation or automatic search duty is added here. Investigator-directed propagation, targeted
+suppression, reassessment/clearance and scheduling remain deferred beyond this capability.
+
+<a id="retained-investigation-offer"></a>
+## Retained follow-up option metadata
+
+The planned capability includes retrieving and executing retained options by exact reference through
+the supported application boundary, with focused live validation of that chain. The fixture's Lens
+name/request shape is illustrative and its checker does not establish product integration. Menus,
+ranking and a global catalogue remain outside scope. See the
+[scope agreement](../structured-architectural-accounts-proposal.md#offered-followup-investigation).
+
+
+[Follow-up options](followup-options.md) belong to the exact producing investigram,
+not a transferable guidance child. Each has a key, label, purpose, architectural targets,
+supported method, declared parameters, qualifications and evidence. No content type is
+needed for this metadata. The source address and request subject are separate: Q2
+selects RESULT-Q1 and names ADMISSION-1's exact option. Knowing that address does not
+establish human navigation origin or delivery of the owner's other information.
+
+An ordinary option requests qualified interpretation using valid supported content.
+It need not predict the answer's diagram types. A specialized promise such as generating
+a state diagram requires sufficient qualified content and successful compatible
+presentation, or an explicit unmet/partial outcome. Keyed prose cannot silently fulfill
+a specialized diagram promise. The general option is exercised; specialization remains
+illustrative, not an implemented schema field or Lens catalogue.
+
+Options retain their original scope and provenance. Superseding a behavioral association
+does not transfer its source option or assert that the option is wrong. Fresh access
+must preserve relevant context; suitability after association changes remains a selection
+judgment. ADMISSION-2 has no repeated option because its submission already answers it.
+This is an authoring choice, not a ban on reinvestigation. Historical exact access remains.
+An option excerpt is substantive investigator context but does not establish full delivery
+of the declaration/members one might later supersede.
+
+## Illustration specifications and delivery
+
+An illustration is a picture authored as part of the investigator's explanation. Its retained
+specification is investigram-owned metadata in `illustrations`, with key, diagramType, named inputs,
+qualifications and evidence. Address it by exact investigram/illustrationKey. It communicates the
+investigator's chosen picture; the application renders it through existing Presentation contracts.
+This replaces the earlier “presentation recommendation” terminology without changing ownership.
+
+Compatible content can also be rendered directly without an authored illustration specification.
+A newly available renderer does not make earlier specifications incomplete. There is no independent
+mutable illustration lifecycle. Explicitly requested diagram output remains subject to its contract.
+
+[Diagram contracts](diagram-contracts.json) define primary inputs: a state diagram takes a state-behavior
+model; a sequence diagram takes an interaction. Follow the interaction's `stateContent`/`transition`
+references for state-model dependencies. Do not duplicate a `stateModel` binding in the illustration
+specification, infer alignment or require an illustration for those content dependencies to exist.
+The probe checks that direct selections render the same diagrams without authored specifications.
+Only same-investigram state dependencies are exercised; general cross-owner retrieval remains design work.
+
+Illustration specifications carry source qualification/basis/provenance like other delivered
+interpretation. Receiving a specification alone does not deliver its referenced model or unrelated
+source content. Illustration access is a limited probe; full UI arrangement, navigation, delivery
+selection and export behavior remain outside this work. The common content field `exampleBindings`
+records scenario mappings, not graphical illustrations; it replaces that field's earlier ambiguous name.
+
+## Types in this example
+
+| Type | Information to supply | What it does not imply |
+| --- | --- | --- |
+| `entity-description/0` | Entity reference, name, identifying description, classification, relevant context (`relativeTo`), evidence; explicit introduction flag when introducing a new entity | Unique discovery, canonical definition, or automatic standing of its associated information |
+| `prose/0` | Keyed explanatory text under the appropriate concept, with support and qualifications | Missing graph or interaction structure can be invented from the text |
+| `admission-cases/0` | Explicit coverage claim; optional item-local roles and their scope; keyed cases with state, condition, outcome, optional resulting state/relationship, and evidence; separately qualified example bindings | A complete state machine, universal interface model, or general claim bound to an illustrative subject |
+| `architectural-relations/0` | Keyed, typed relations with role-named endpoints and applicable conditions; optional entity for a relation | Association displacement, global graph consistency, or mandatory relation identities |
+| `state-behavior/0` | State bearer; coverage and omissions; keyed labelled states; keyed directed transitions with trigger, guard, effect and evidence; outcome qualifications | Initial state, completeness, hierarchy or concurrency when not supplied |
+| `interaction/0` | Scenario meaning/conditions; keyed participants tied to subjects; ordered prefix; alternatives with conditions and keyed steps; omissions and evidence | Observed trace, all possible interleavings, or application-level success |
+
+The `interaction/0` step vocabulary in this probe is `request`, `response`, `action`,
+`wait`, `resume`, and `state-transition`. Requests/responses supply endpoints and text;
+actions supply an actor and text; wait/resume supply participant, decision holder,
+architectural relationship and text. A state-transition step names a state-content
+item and one of its transitions. That link reuses an explicit claim; it does not
+authorize an interpreter to derive arbitrary cross-investigram correspondences.
+
+An optional `causedBy` lists earlier step keys on the same possible path. It asserts
+causal support, not just diagram ordering. Cross-branch or forward references are
+invalid here. A cause need not be sufficient or exclusive: branch conditions, guards
+and investigram qualifications still apply. Missing links are not inferred from ordering
+or transition-effect prose. Completion, outcome availability and classification use existing action
+and response types; each outcome transition explicitly names classification as its
+cause. Structural validation checks that these links resolve in order, not that the
+asserted causality is true. The trial participant denotes the execution including its
+work, so the outcome response is distinct from final delivery to its initiating caller.
+The wait step names the caller request and trial entry, with an explicit condition
+that the reserved slot remains occupied on arrival. Each resume/recheck step names
+the transition that releases it; ordinary work or refusal names that recheck. This explicitly connects release of W to subsequent
+admission without claiming that release guarantees work will run.
+
+<a id="shared-roles-and-illustrations"></a>
+<a id="shared-roles-and-example-bindings"></a>
+### Shared roles and example bindings
+
+`roles`, `roleScope` and `exampleBindings` are optional fields of the common structured
+content-item envelope, usable by admission, state, interaction and structural types.
+They are not separate mechanisms per type and are not investigram-global variables.
+`{localRole: key}` resolves within the owning item's `roles` only. Keys are unique
+there, all references resolve, and `roleScope` states how the variables are bound.
+Identical role names in different items do not assert correspondence. The role's full
+context is its exact investigram, content key and local role key; allocating it does not
+introduce an entity or a general architectural fact.
+
+The admission item binds execution/instance variables separately per request, then
+illustrates them with the named scenario. The scenario state item instead refers
+directly to R. It needs no variable plus binding merely to rename that same participant.
+The common mechanism remains available to other types when variables add meaning;
+the fixture no longer forces a second use just to exercise the syntax. A broadly
+applicable state model would require qualified analysis before its instances could
+serve as examples.
+
+An `exampleBindings` entry identifies a target investigram/content item, binds owner-local
+roles to scenario subjects, and supplies qualification and evidence for that mapping.
+An example binding is a general-to-example relationship, not an alternate encoding
+of identity between two names for the same scenario participant. Use a direct subject
+reference for the latter; no separate identity-binding mechanism is introduced.
+In this probe every declared role is bound once in each example binding. A content-type-specific
+selector may narrow what is illustrated: `case` selects an admission-case key; without
+one, the example binding concerns the owning item. Mapping does not establish global
+identity or change the general claim's scope. Its substantive subject references need
+identifying support when supplied. Bindings remain qualified authored claims, never
+correspondences invented by a renderer.
+
+## Architectural guidance and diagrams
+
+**State behavior.** Distinguish the thing whose state changes from the state categories
+and from participating executions. State what causes a transition, what must hold,
+and what it does. Declare partial coverage. A partial statechart may omit an initial
+marker; it must not manufacture one. The present type is a flat subset: richer
+statecharts would require explicit containment, entry/exit and concurrency semantics.
+In this sample the bearer is a direct reference to scenario subject R. The explicit
+applicability field connects the investigram to P without broadening it to all instances/configurations of P.
+The shared role mechanism also permits a type-level model, but establishing that
+broader applicability remains an open extension, not a mechanical reinterpretation.
+The recovery-outcome guard means the completing trial still belongs to the current Half-open state; stale results do not
+perform these transitions.
+
+**Interaction.** Identify participants and their roles before giving ordering. Explain
+whether a sequence is observed, possible or required. Make branch conditions and
+omitted interleavings explicit. A shared component's state and an execution's progress
+are different dimensions; waiting need not be a new component state.
+
+The established reference is the SEI's
+[Documenting Software Architectures: Documenting Behavior](https://www.sei.cmu.edu/documents/1986/2002_004_001_13934.pdf),
+statecharts §6.1.1 and sequence diagrams §6.2.3. The agent may consult it for deeper
+guidance; it is not evidence about Cockatiel. The local contract must still be
+sufficient to submit supported content without mandatory external reading.
+
+`architectural-identification`, `interface`, and `structure` are working catalogue
+labels here, not claims that the references standardize these exact payloads.
+Keyed prose is a valid type under any relevant concept. The catalogue need not force
+each concept into one diagram, nor require a diagram for every explanation.
+
+<a id="concise-overviews-and-legends"></a>
+## Concise overviews and keyed legends
+
+The [readability examples](diagrams.md) add two optional authored fields to the
+provisional contract: `displayLabel` is a short, meaningful label on a content item
+or a named element (participant, transition, step, branch or situation), and
+`overviewScope` is a concise statement of an item's scope for an overview. These are
+qualified architectural wording, not an invitation for a renderer to invent summaries.
+Existing detailed descriptions, guards, effects, causes, evidence and qualifications
+remain attached to the same elements. The examples require these fields where the
+compact generator uses them; other content types need not acquire them by default.
+
+A renderer can assign display-local keys such as T1, I4 or S1 mechanically and map
+them to exact content in a separate legend. These keys are not entity identities,
+stable content keys, cross-investigram correspondences or correction units. Their scope
+is the particular diagram/legend pair; retain the mapping with exact presentation
+artifacts rather than resolving an old key against a later regenerated figure.
+Keep meaningful names where they fit; do not replace every name with a code.
+
+The overview must signal its partial scope and where full conditions are available.
+Shortening must not present a conditional transition as unconditional: the statechart
+retains terse guard cues on edges, while the legend supplies the exact trigger, guard
+and effect. A state-change action, after-state snapshot and structured transition
+remain different kinds of content even if their labels are similar. Preserve stated
+causal links in the legend; proximity and sequence position do not add causes.
+
+The legend carries element-level detail, relevant investigram/item qualification and
+support, and an exact mapping to the source investigram content. It is part of the
+meaning-bearing delivery when the overview depends on it, not optional decoration.
+An isolated image remains explicitly an overview. Moving detail into a legend must
+not shed its limitations or establish delivery of unrelated declarations: investigator delivery records the selected context entity, exact items and original source provenance. A diagram/legend alone need not supply the association declaration that designates those items. Exact qualified access remains available.
+
+The mixed and partitioned variants can share a picture because their behavioral data
+match; their legend pages and source mappings remain variant-specific. A short label
+change is an authored-content change in these fixtures; a mechanically assigned
+legend-key change is presentational. This exploration adopts neither a universal
+label vocabulary nor a full export/navigation system.
+
+## Exact item addressing and linked information
+
+Cross-investigram example bindings and `relatedContent` use exact investigram/contentKey
+addresses, including `{submittedInvestigram: key}` for same-submission targets.
+`stateContent` is a same-owner key shorthand. Different link kinds have different
+contracts: an example binding asserts a qualified mapping; related content locates an
+explanation; stateContent supplies a required semantic dependency. None adopts ownership.
+
+Fresh access can show displacement declarations affecting a linked item's associations.
+It cannot report the entire source investigram as superseded or infer that this particular
+use is invalid. Repeated content keys do not authorize retargeting. Same-result references
+are not incoming exposure; result membership and actual later deliveries are explicit
+paths in the current reconsideration probe. See [example-binding access](illustration-access.json); the filename is historical.
+
+The architectural relation kinds here are `state-category-of`, `instance-role-of`,
+`execution-uses-instance` and `waits-for-decision`; only selected things such as W get
+an independent entity identity. These are architectural assertions, not organizing
+supersession declarations. Other investigram comparison relationships, such as alternative
+or inconsistent-with, confer no displacement effect by their label alone.
+
+## Composition probe extensions — not yet generalized
+
+The [composition probe](composition/README.md#small-experimental-additions-to-the-content-contract)
+uses shared local roles plus item-local relations and explicit situations. It supplies
+resource occupancy and execution progress as qualified assertions, not renderer simulation.
+Its [selector grammar](composition/README.md#nested-selector-grammar-for-this-probe) supports
+exact relation and situated state-assignment selection, not arbitrary paths. Follow-up
+context is RESULT-Q4; selected occurrences need not become entities.
+
+The origin-free request selects P/S/R/B information, including ADMISSION-2's admission
+association, without delivering old admission content by default. Actual deliveries and
+source provenance are recorded. A separate architectural state model for composition,
+resource-lifetime content type and structured selection-origin field remain later probe work.
+Live execution of retained follow-up options is required within the selected state-behavior
+capability; this does not require live execution of the composition scenario. See the [verification guide](README.md#verification) for exercised boundaries.

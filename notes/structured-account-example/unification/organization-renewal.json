@@ -1,0 +1,154 @@
+{
+  "request": {
+    "id": "Q-O",
+    "operation": "authored.reorganize-target-finding",
+    "subject": {
+      "entity": "M-loader"
+    },
+    "resultEntity": "RESULT-Q-O",
+    "deliveries": [
+      {
+        "entity": "M-loader",
+        "associations": [
+          {
+            "investigram": "TARGET-ORGANIZATION-1",
+            "associationKey": "runtime"
+          }
+        ],
+        "items": [],
+        "options": []
+      }
+    ],
+    "suppliedEvidence": [
+      "E-organizing-review"
+    ],
+    "declaredMeaning": {
+      "question": "Keep the mechanical finding while changing its organizing use",
+      "scope": "Authored organization-only probe; no new source analysis or adjudication of the earlier inference."
+    }
+  },
+  "bindings": {
+    "entityIds": {
+      "query-result": "RESULT-Q-O"
+    },
+    "investigramIds": {
+      "reorganization": "TARGET-REORGANIZATION-1"
+    },
+    "provenance": {
+      "producer": {
+        "kind": "agentic",
+        "method": "authored/qualified-reorganization@0"
+      },
+      "basis": {
+        "retainedSelections": [
+          {
+            "entity": "M-loader",
+            "associations": [
+              {
+                "investigram": "TARGET-ORGANIZATION-1",
+                "associationKey": "runtime"
+              }
+            ],
+            "items": [],
+            "options": []
+          }
+        ]
+      }
+    }
+  },
+  "submission": {
+    "result": {
+      "queryInvocation": "Q-O",
+      "queryResult": {
+        "introducedEntity": "query-result"
+      },
+      "investigrams": [
+        {
+          "key": "reorganization",
+          "title": "Retain the finding with a different organizing use",
+          "content": [],
+          "associationSpecifications": [
+            {
+              "key": "withdraw-organizing-use",
+              "operation": "withdrawal",
+              "target": {
+                "entity": {
+                  "entity": "M-loader"
+                },
+                "role": "topic"
+              },
+              "displaces": [
+                {
+                  "investigram": {
+                    "investigram": "TARGET-ORGANIZATION-1"
+                  },
+                  "associationKey": "runtime"
+                }
+              ],
+              "reason": "Retain the mechanical finding as complementary information, but withdraw this use of it as the preferred replacement for the earlier inference. This does not reinstate the earlier association or challenge the mechanical calculation."
+            },
+            {
+              "key": "retain-finding",
+              "operation": "addition",
+              "target": {
+                "entity": {
+                  "entity": "M-loader"
+                },
+                "role": "topic"
+              },
+              "members": [
+                {
+                  "item": {
+                    "investigram": {
+                      "investigram": "CONSTANT-TARGET-1"
+                    },
+                    "contentKey": "dependency"
+                  }
+                }
+              ],
+              "reason": "Use the original mechanically qualified item as complementary information, retaining its original provenance, basis and guarantee."
+            },
+            {
+              "key": "result",
+              "operation": "addition",
+              "target": {
+                "entity": {
+                  "introducedEntity": "query-result"
+                },
+                "role": "result"
+              },
+              "members": [
+                {
+                  "declaration": {
+                    "investigram": {
+                      "submittedInvestigram": "reorganization"
+                    },
+                    "associationKey": "withdraw-organizing-use"
+                  }
+                },
+                {
+                  "declaration": {
+                    "investigram": {
+                      "submittedInvestigram": "reorganization"
+                    },
+                    "associationKey": "retain-finding"
+                  }
+                }
+              ]
+            }
+          ],
+          "referents": [],
+          "evidence": [
+            "E-organizing-review"
+          ],
+          "qualifications": [
+            "The organizing judgment changes; the referenced mechanical finding keeps its own method, basis and restricted guarantee.",
+            "Withdrawal affects the exact association and does not undo its earlier displacement."
+          ],
+          "followupOptions": [],
+          "illustrations": []
+        }
+      ]
+    }
+  }
+}

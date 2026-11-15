@@ -1,0 +1,777 @@
+{
+  "status": "Authored association/inventory exposure comparison. Original seven-query baseline has no inventories. Two additions run independently, then cumulatively. An extended branch explicitly requests an S inventory and passes its result to a downstream consumer. The earlier entity-wide policy is reproduced only as a historical comparison.",
+  "policy": {
+    "scope": "Addition triggers require an actually delivered inventory whose entity and role scope includes the new association. Association content delivery alone is not inventory exposure. Inventories list mechanical addresses/roles of all retained associations in scope, including displaced ones; no content, reasons or status judgments.",
+    "timing": "Each inventory and content delivery has a captured retained-state position. Only later matching events trigger; later refresh does not erase an earlier acquisition. Producer exemption remains.",
+    "status": "Exact addition declaration remains the new-information cause. Fixed designation membership does not imply inventory exposure; producer concerns still propagate. Exact association supersession/withdrawal rules remain unchanged."
+  },
+  "complementary": {
+    "request": {
+      "id": "Q-category-detail",
+      "operation": "authored-addition-probe",
+      "subject": {
+        "entity": "S"
+      },
+      "resultEntity": "RESULT-category-detail",
+      "deliveries": [
+        {
+          "entity": "S",
+          "associations": [
+            {
+              "investigram": "DEFINITIONS-1",
+              "associationKey": "half-open-description"
+            }
+          ],
+          "items": [],
+          "options": []
+        },
+        {
+          "entity": "R",
+          "associations": [
+            {
+              "investigram": "ROLE-DEFINITIONS-1",
+              "associationKey": "shared-breaker-description"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state",
+        "E-half-open"
+      ],
+      "declaredMeaning": {
+        "question": "Add an explicit category-versus-instance clarification for Half-open.",
+        "scope": "Identification clarification only; no new admission, outcome, timing or sampling rule. Re-expresses the retained category/instance distinction as additional S information."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-category-detail"
+      },
+      "investigramIds": {
+        "contribution": "CATEGORY-DETAIL-1"
+      }
+    },
+    "submission": {
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "result": {
+        "queryInvocation": "Q-category-detail",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Add an explicit category-versus-instance clarification for Half-open.",
+            "qualifications": [
+              "Authored static fixture at the pinned Cockatiel revision; no live investigator or newly verified source discovery.",
+              "Identification clarification only; no new admission, outcome, timing or sampling rule. Re-expresses the retained category/instance distinction as additional S information."
+            ],
+            "evidence": [
+              "E-state",
+              "E-half-open"
+            ],
+            "referents": [
+              {
+                "entity": "S"
+              }
+            ],
+            "content": [
+              {
+                "key": "detail",
+                "contentType": "prose/0",
+                "concept": "architectural-identification",
+                "text": "Half-open is a category of breaker state, not the identity of a particular breaker instance. A category and a scenario instance play different roles in the retained explanation.",
+                "evidence": [
+                  "E-state",
+                  "E-half-open"
+                ],
+                "relatedContent": [
+                  {
+                    "investigram": {
+                      "investigram": "DEFINITIONS-1"
+                    },
+                    "contentKey": "half-open-description",
+                    "purpose": "Retained qualified interpretation grounding this addition; not independent repository corroboration."
+                  }
+                ]
+              }
+            ],
+            "followupOptions": [],
+            "illustrations": [],
+            "associationSpecifications": [
+              {
+                "key": "addition",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "S"
+                  },
+                  "role": "topic"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "contentKey": "detail"
+                    }
+                  }
+                ],
+                "reason": "Add this separately qualified information alongside existing descriptions. No earlier association is displaced or certified complete."
+              },
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "associationKey": "addition"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "behavioral": {
+    "request": {
+      "id": "Q-recovery-caveat",
+      "operation": "authored-addition-probe",
+      "subject": {
+        "entity": "S"
+      },
+      "resultEntity": "RESULT-recovery-caveat",
+      "deliveries": [
+        {
+          "entity": "S",
+          "associations": [
+            {
+              "investigram": "DEFINITIONS-1",
+              "associationKey": "half-open-description"
+            }
+          ],
+          "items": [],
+          "options": []
+        },
+        {
+          "entity": "R",
+          "associations": [
+            {
+              "investigram": "TRIAL-1",
+              "associationKey": "recovery"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state",
+        "E-half-open",
+        "E-outcomes",
+        "E-default"
+      ],
+      "declaredMeaning": {
+        "question": "Add the recovery-classification caveat as information about Half-open.",
+        "scope": "Only the default single-trial scenario and interference limits of TRIAL-1. This adds a qualified behavioral caveat, not an exhaustive replacement for the category description or a general model of every configuration."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-recovery-caveat"
+      },
+      "investigramIds": {
+        "contribution": "RECOVERY-CAVEAT-1"
+      }
+    },
+    "submission": {
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "result": {
+        "queryInvocation": "Q-recovery-caveat",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Add the recovery-classification caveat as information about Half-open.",
+            "qualifications": [
+              "Authored static fixture at the pinned Cockatiel revision; no live investigator or newly verified source discovery.",
+              "Only the default single-trial scenario and interference limits of TRIAL-1. This adds a qualified behavioral caveat, not an exhaustive replacement for the category description or a general model of every configuration.",
+              "Default one-call recovery sampling with zero permitted counted failures.",
+              "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+              "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+              "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+            ],
+            "evidence": [
+              "E-state",
+              "E-half-open",
+              "E-outcomes",
+              "E-default"
+            ],
+            "referents": [
+              {
+                "entity": "S"
+              }
+            ],
+            "content": [
+              {
+                "key": "detail",
+                "contentType": "prose/0",
+                "concept": "state-behavior",
+                "text": "In the retained default single-trial scenario, an error not matched by the failure policy is recorded as recovery success and still delivered to the caller. Recovery classification therefore does not establish successful application work.",
+                "evidence": [
+                  "E-state",
+                  "E-half-open",
+                  "E-outcomes",
+                  "E-default"
+                ],
+                "relatedContent": [
+                  {
+                    "investigram": {
+                      "investigram": "TRIAL-1"
+                    },
+                    "contentKey": "recovery",
+                    "purpose": "Retained qualified interpretation grounding this addition; not independent repository corroboration."
+                  }
+                ]
+              }
+            ],
+            "followupOptions": [],
+            "illustrations": [],
+            "associationSpecifications": [
+              {
+                "key": "addition",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "S"
+                  },
+                  "role": "topic"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "contentKey": "detail"
+                    }
+                  }
+                ],
+                "reason": "Add this separately qualified information alongside existing descriptions. No earlier association is displaced or certified complete."
+              },
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "associationKey": "addition"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "roleConsumer": {
+    "request": {
+      "id": "Q-role-only",
+      "operation": "authored-addition-probe",
+      "subject": {
+        "entity": "R"
+      },
+      "resultEntity": "RESULT-role-only",
+      "deliveries": [
+        {
+          "entity": "R",
+          "associations": [
+            {
+              "investigram": "TRIAL-1",
+              "associationKey": "recovery"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state",
+        "E-half-open",
+        "E-outcomes",
+        "E-default"
+      ],
+      "declaredMeaning": {
+        "question": "Retain the scenario recovery model through R.",
+        "scope": "Uses only R-associated recovery content; S occurs in that model as a referent, not a supplied S identifying association."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-role-only"
+      },
+      "investigramIds": {
+        "contribution": "ROLE-READER-1"
+      }
+    },
+    "submission": {
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "result": {
+        "queryInvocation": "Q-role-only",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Retain the scenario recovery model through R.",
+            "qualifications": [
+              "Authored static fixture at the pinned Cockatiel revision; no live investigator or newly verified source discovery.",
+              "Uses only R-associated recovery content; S occurs in that model as a referent, not a supplied S identifying association."
+            ],
+            "evidence": [
+              "E-state",
+              "E-half-open",
+              "E-outcomes",
+              "E-default"
+            ],
+            "referents": [
+              {
+                "entity": "R"
+              }
+            ],
+            "content": [],
+            "followupOptions": [],
+            "illustrations": [],
+            "associationSpecifications": [
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "TRIAL-1"
+                      },
+                      "contentKey": "recovery"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "referenceControl": {
+    "request": {
+      "id": "Q-reference-only",
+      "operation": "authored-addition-probe",
+      "subject": {
+        "entity": "S"
+      },
+      "resultEntity": "RESULT-reference-only",
+      "deliveries": [],
+      "suppliedEvidence": [
+        "E-state"
+      ],
+      "declaredMeaning": {
+        "question": "Retain an explicit no-finding control with S as a bare subject.",
+        "scope": "No retained interpretation delivered; selected identity and referents alone do not establish exposure."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-reference-only"
+      },
+      "investigramIds": {
+        "contribution": "REFERENCE-ONLY-1"
+      }
+    },
+    "submission": {
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "result": {
+        "queryInvocation": "Q-reference-only",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Retain an explicit no-finding control with S as a bare subject.",
+            "qualifications": [
+              "Authored static fixture at the pinned Cockatiel revision; no live investigator or newly verified source discovery.",
+              "No retained interpretation delivered; selected identity and referents alone do not establish exposure."
+            ],
+            "evidence": [
+              "E-state"
+            ],
+            "referents": [
+              {
+                "entity": "S"
+              }
+            ],
+            "content": [
+              {
+                "key": "no-finding",
+                "contentType": "prose/0",
+                "concept": "architectural-identification",
+                "text": "No architectural conclusion about the selected entity is asserted by this reference-only control.",
+                "evidence": [
+                  "E-state"
+                ]
+              }
+            ],
+            "followupOptions": [],
+            "illustrations": [],
+            "associationSpecifications": [
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "contentKey": "no-finding"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "awareConsumer": {
+    "request": {
+      "id": "Q-aware",
+      "operation": "authored-addition-probe",
+      "subject": {
+        "entity": "S"
+      },
+      "resultEntity": "RESULT-aware",
+      "deliveries": [
+        {
+          "entity": "S",
+          "associations": [
+            {
+              "investigram": "DEFINITIONS-1",
+              "associationKey": "half-open-description"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state"
+      ],
+      "declaredMeaning": {
+        "question": "Inspect the original category identification with current change context.",
+        "scope": "Deliberately retains the exact identifying association. Applicable context follows the selected boundary policy; other association members are not presumed acquired."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-aware"
+      },
+      "investigramIds": {
+        "contribution": "AWARE-1"
+      }
+    },
+    "submission": {
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "result": {
+        "queryInvocation": "Q-aware",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Inspect the original category identification with current change context.",
+            "qualifications": [
+              "Authored static fixture at the pinned Cockatiel revision; no live investigator or newly verified source discovery.",
+              "Deliberately retains the exact identifying association. Applicable context follows the selected boundary policy; other association members are not presumed acquired."
+            ],
+            "evidence": [
+              "E-state"
+            ],
+            "referents": [
+              {
+                "entity": "S"
+              }
+            ],
+            "content": [],
+            "followupOptions": [],
+            "illustrations": [],
+            "associationSpecifications": [
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "investigram": "DEFINITIONS-1"
+                      },
+                      "associationKey": "half-open-description"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "inventoryConsumer": {
+    "request": {
+      "id": "Q-inventory",
+      "operation": "authored-addition-probe",
+      "subject": {
+        "entity": "S"
+      },
+      "resultEntity": "RESULT-inventory",
+      "deliveries": [
+        {
+          "entity": "S",
+          "associations": [],
+          "items": [],
+          "options": [],
+          "inventory": {
+            "roles": [
+              "identification",
+              "topic"
+            ]
+          }
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state"
+      ],
+      "declaredMeaning": {
+        "question": "What other retained associations are available about Half-open?",
+        "scope": "Inspect the complete retained association inventory in the stated roles; do not retrieve or interpret listed content."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-inventory"
+      },
+      "investigramIds": {
+        "contribution": "INVENTORY-1"
+      }
+    },
+    "submission": {
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "result": {
+        "queryInvocation": "Q-inventory",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Inventory-only availability control",
+            "qualifications": [
+              "Authored inventory-only control at the pinned basis; no live investigation.",
+              "The inventory supplies association addresses and roles only. No listed architectural content or interpretive reason was supplied."
+            ],
+            "evidence": [
+              "E-state"
+            ],
+            "referents": [
+              {
+                "entity": "S"
+              }
+            ],
+            "content": [
+              {
+                "key": "no-finding",
+                "contentType": "prose/0",
+                "concept": "architectural-identification",
+                "text": "No architectural conclusion about the selected entity is asserted by this inventory-only control.",
+                "evidence": [
+                  "E-state"
+                ]
+              }
+            ],
+            "followupOptions": [],
+            "illustrations": [],
+            "associationSpecifications": [
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "contentKey": "no-finding"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "inventoryDependent": {
+    "request": {
+      "id": "Q-inventory-dependent",
+      "operation": "authored-addition-probe",
+      "subject": {
+        "entity": "RESULT-inventory"
+      },
+      "resultEntity": "RESULT-inventory-dependent",
+      "deliveries": [
+        {
+          "entity": "RESULT-inventory",
+          "associations": [
+            {
+              "investigram": "INVENTORY-1",
+              "associationKey": "result"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state",
+        "E-half-open",
+        "E-outcomes",
+        "E-default"
+      ],
+      "declaredMeaning": {
+        "question": "Retain the inventory-reading investigation result.",
+        "scope": "Receive that result, not its original inventory or the contents of listed associations. Exercise inherited producer concerns."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-inventory-dependent"
+      },
+      "investigramIds": {
+        "contribution": "INVENTORY-DEPENDENT-1"
+      }
+    },
+    "submission": {
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "result": {
+        "queryInvocation": "Q-inventory-dependent",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Downstream inventory-result control",
+            "qualifications": [
+              "Authored reuse control; no new architectural conclusion or source finding.",
+              "Receives the inventory-reading result and its provenance, not the inventory or listed architectural content."
+            ],
+            "evidence": [
+              "E-state",
+              "E-half-open",
+              "E-outcomes",
+              "E-default"
+            ],
+            "referents": [
+              {
+                "entity": "RESULT-inventory"
+              }
+            ],
+            "content": [],
+            "followupOptions": [],
+            "illustrations": [],
+            "associationSpecifications": [
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "INVENTORY-1"
+                      },
+                      "contentKey": "no-finding"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+sequenceDiagram
+  title Bulkhead outside breaker
+  participant p0 as Bulkhead
+  participant p1 as Breaker
+  participant p2 as Trial
+  participant p3 as Caller
+  Note over p0,p3: Possible prefix#59; two bulkhead slots#59; one trial<br/>Q: scope and conditions
+  p2->>p0: I1 · Request trial
+  Note over p0: I2 · Take first slot
+  p0->>p1: I3 · Invoke breaker
+  Note over p1: I4 · Start trial work
+  p3->>p0: I5 · Request later execution
+  Note over p0: I6 · Take second slot
+  p0->>p1: I7 · Invoke breaker
+  Note over p1,p3: I8 · Await recovery
+  Note over p0,p3: S1 · Caller holds bulkhead slot while waiting

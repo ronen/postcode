@@ -1,0 +1,253 @@
+[
+  {
+    "diagram": "recovery-state.mmd",
+    "legend": "recovery-state.md",
+    "legendKey": "Closed",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/6/states/0"
+    ]
+  },
+  {
+    "diagram": "recovery-state.mmd",
+    "legend": "recovery-state.md",
+    "legendKey": "Open",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/6/states/1"
+    ]
+  },
+  {
+    "diagram": "recovery-state.mmd",
+    "legend": "recovery-state.md",
+    "legendKey": "Half-open",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/6/states/2"
+    ]
+  },
+  {
+    "diagram": "recovery-state.mmd",
+    "legend": "recovery-state.md",
+    "legendKey": "T1",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/6/transitions/0"
+    ]
+  },
+  {
+    "diagram": "recovery-state.mmd",
+    "legend": "recovery-state.md",
+    "legendKey": "T2",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/6/transitions/1"
+    ]
+  },
+  {
+    "diagram": "recovery-state.mmd",
+    "legend": "recovery-state.md",
+    "legendKey": "T3",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/6/transitions/2"
+    ]
+  },
+  {
+    "diagram": "recovery-state.mmd",
+    "legend": "recovery-state.md",
+    "legendKey": "Q",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/6/displayLabel",
+      "/result/investigrams/0/content/6/overviewScope",
+      "/result/investigrams/0/content/6/coverage",
+      "/result/investigrams/0/content/6/applicability",
+      "/result/investigrams/0/content/6/outcomeQualification",
+      "/result/investigrams/0/content/6/stateBearer",
+      "/result/investigrams/0/qualifications",
+      "/result/investigrams/0/evidence"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "Trial",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/participants/0"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "Breaker",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/participants/1"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "Caller",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/participants/2"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "I1",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/prefix/0"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "I2",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/prefix/1",
+      "/result/investigrams/0/content/6/transitions/0"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "I3",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/prefix/2"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "I4",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/prefix/3"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "I5",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/prefix/4"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "I6",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/prefix/5"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "I7",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/prefix/6"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "B1",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/alternatives/0"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "I8",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/alternatives/0/steps/0",
+      "/result/investigrams/0/content/6/transitions/1"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "I9",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/alternatives/0/steps/1"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "I10",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/alternatives/0/steps/2"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "B2",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/alternatives/1"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "I11",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/alternatives/1/steps/0",
+      "/result/investigrams/0/content/6/transitions/2"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "I12",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/alternatives/1/steps/1"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "I13",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/content/7/alternatives/1/steps/2"
+    ]
+  },
+  {
+    "diagram": "concurrent-callers.mmd",
+    "legend": "concurrent-callers.md",
+    "legendKey": "Q",
+    "investigram": "TRIAL-1",
+    "pointers": [
+      "/result/investigrams/0/qualifications",
+      "/result/investigrams/0/evidence",
+      "/result/investigrams/0/content/7/displayLabel",
+      "/result/investigrams/0/content/7/overviewScope",
+      "/result/investigrams/0/content/7/semantics",
+      "/result/investigrams/0/content/7/conditions",
+      "/result/investigrams/0/content/7/notShown",
+      "/result/investigrams/0/content/7/evidence"
+    ]
+  }
+]

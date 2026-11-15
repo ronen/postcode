@@ -1,0 +1,478 @@
+{
+  "fixtureNote": "Authored proposed contribution bundle, not product input or a live investigator. Investigrams retain provenance; association declarations organize entity and query-result information. The initial admission omission remains deliberate.",
+  "result": {
+    "investigrams": [
+      {
+        "key": "introduction",
+        "title": "Circuit breaker state categories and execution admission",
+        "referents": [
+          {
+            "entity": "P"
+          },
+          {
+            "introducedEntity": "closed"
+          },
+          {
+            "introducedEntity": "open"
+          },
+          {
+            "introducedEntity": "half-open"
+          }
+        ],
+        "qualifications": [
+          "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+          "Orientation distinguishing policy state categories from individual execution progress at the pinned revision; this distinction is not restricted to default sampling and does not establish observed runtime state or application success.",
+          "The identifying and behavioral investigrams state their own applicable qualifications. This orientation locates those accounts without specifying admission outcomes, sampling limits or transition rules."
+        ],
+        "evidence": [
+          "E-state",
+          "E-admission"
+        ],
+        "content": [
+          {
+            "key": "orientation",
+            "contentType": "prose/0",
+            "concept": "interface",
+            "text": "The policy governs admission of application-supplied work. Stored state categories and the progress of an individual execution are distinct. The identifying descriptions and admission account below address these two aspects, each under its own stated scope.",
+            "evidence": [
+              "E-state",
+              "E-admission"
+            ]
+          }
+        ],
+        "followupOptions": [],
+        "illustrations": [],
+        "associationSpecifications": [
+          {
+            "key": "orientation",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "topic"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "introduction"
+                  },
+                  "contentKey": "orientation"
+                }
+              }
+            ]
+          },
+          {
+            "key": "result",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "query-result"
+              },
+              "role": "result"
+            },
+            "members": [
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "introduction"
+                  },
+                  "associationKey": "orientation"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "state-definitions"
+                  },
+                  "associationKey": "closed-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "state-definitions"
+                  },
+                  "associationKey": "open-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "state-definitions"
+                  },
+                  "associationKey": "half-open-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "associationKey": "orientation"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "associationKey": "admission-cases"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "associationKey": "inspection"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "state-definitions",
+        "title": "State categories used by the admission explanation",
+        "referents": [
+          {
+            "entity": "P"
+          },
+          {
+            "introducedEntity": "closed"
+          },
+          {
+            "introducedEntity": "open"
+          },
+          {
+            "introducedEntity": "half-open"
+          }
+        ],
+        "qualifications": [
+          "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+          "Identifies state categories of the Circuit breaker policy kind at the pinned revision. The category designations are not restricted to default sampling and do not designate runtime occurrences.",
+          "Identifying distinctions only: this account does not specify admission outcomes, sampling limits, transition timing or interference behavior for any configuration.",
+          "Partial vocabulary: manual isolation is mentioned only to distinguish automated Open; no isolated-state subject is introduced here. Descriptions do not establish observed runtime state or application health."
+        ],
+        "evidence": [
+          "E-state"
+        ],
+        "content": [
+          {
+            "key": "closed-description",
+            "contentType": "entity-description/0",
+            "concept": "architectural-identification",
+            "subject": {
+              "introducedEntity": "closed"
+            },
+            "name": "Closed",
+            "description": "The ordinary-operation state category of the Circuit breaker policy kind, distinct from automated Open, Half-open recovery and manual isolation.",
+            "classification": "state-category",
+            "relativeTo": {
+              "entity": "P"
+            },
+            "evidence": [
+              "E-state"
+            ],
+            "introducesEntity": true
+          },
+          {
+            "key": "open-description",
+            "contentType": "entity-description/0",
+            "concept": "architectural-identification",
+            "subject": {
+              "introducedEntity": "open"
+            },
+            "name": "Open",
+            "description": "The automated-open state category of the Circuit breaker policy kind, distinct from manual isolation and Half-open recovery.",
+            "classification": "state-category",
+            "relativeTo": {
+              "entity": "P"
+            },
+            "evidence": [
+              "E-state"
+            ],
+            "introducesEntity": true
+          },
+          {
+            "key": "half-open-description",
+            "contentType": "entity-description/0",
+            "concept": "architectural-identification",
+            "subject": {
+              "introducedEntity": "half-open"
+            },
+            "name": "Half-open",
+            "description": "The recovery state category of the Circuit breaker policy kind in which sampled work informs whether the breaker closes or reopens. This identifies a state category, not a runtime occurrence or an individual execution.",
+            "classification": "state-category",
+            "relativeTo": {
+              "entity": "P"
+            },
+            "evidence": [
+              "E-state"
+            ],
+            "introducesEntity": true
+          }
+        ],
+        "followupOptions": [],
+        "illustrations": [],
+        "associationSpecifications": [
+          {
+            "key": "closed-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "closed"
+              },
+              "role": "identification"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "state-definitions"
+                  },
+                  "contentKey": "closed-description"
+                }
+              }
+            ]
+          },
+          {
+            "key": "open-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "open"
+              },
+              "role": "identification"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "state-definitions"
+                  },
+                  "contentKey": "open-description"
+                }
+              }
+            ]
+          },
+          {
+            "key": "half-open-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "half-open"
+              },
+              "role": "identification"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "state-definitions"
+                  },
+                  "contentKey": "half-open-description"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "admission",
+        "title": "Circuit breaker admission and state inspection",
+        "referents": [
+          {
+            "entity": "P"
+          },
+          {
+            "introducedEntity": "closed"
+          },
+          {
+            "introducedEntity": "open"
+          },
+          {
+            "introducedEntity": "half-open"
+          }
+        ],
+        "qualifications": [
+          "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+          "Default one-call recovery sampling with zero permitted counted failures.",
+          "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+          "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+          "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+        ],
+        "evidence": [
+          "E-state",
+          "E-admission",
+          "E-default"
+        ],
+        "content": [
+          {
+            "key": "orientation",
+            "contentType": "prose/0",
+            "concept": "interface",
+            "text": "The application supplies work. The breaker controls admission and records outcomes according to its failure policy. State categories describe the policy, not the progress of a particular caller.",
+            "evidence": [
+              "E-admission",
+              "E-state"
+            ]
+          },
+          {
+            "key": "admission-cases",
+            "contentType": "admission-cases/0",
+            "concept": "interface",
+            "coverage": "The cases below cover the admission outcomes for the stated recovery scope.",
+            "cases": [
+              {
+                "key": "ordinary",
+                "when": {
+                  "state": {
+                    "introducedEntity": "closed"
+                  },
+                  "condition": "An execution is requested."
+                },
+                "outcome": "Run the application-supplied operation as ordinary work.",
+                "evidence": [
+                  "E-admission"
+                ]
+              },
+              {
+                "key": "trial",
+                "when": {
+                  "state": {
+                    "introducedEntity": "open"
+                  },
+                  "condition": "An execution is requested after the recovery delay."
+                },
+                "outcome": "Enter Half-open and start recovery-trial work.",
+                "resultingState": {
+                  "introducedEntity": "half-open"
+                },
+                "evidence": [
+                  "E-admission"
+                ]
+              },
+              {
+                "key": "refused",
+                "when": {
+                  "state": {
+                    "introducedEntity": "open"
+                  },
+                  "condition": "An execution is requested before the recovery delay has elapsed."
+                },
+                "outcome": "Refuse execution without running the supplied operation.",
+                "evidence": [
+                  "E-admission"
+                ]
+              }
+            ]
+          },
+          {
+            "key": "inspection",
+            "contentType": "prose/0",
+            "concept": "interface",
+            "text": "State inspection reports the stored state. It neither reserves trial capacity nor initiates work; a later execution can encounter different conditions.",
+            "evidence": [
+              "E-state",
+              "E-admission"
+            ]
+          }
+        ],
+        "followupOptions": [
+          {
+            "key": "concurrent-callers-option",
+            "label": "Concurrent callers and trial outcomes",
+            "purpose": "Concurrent callers and trial outcomes under default single-trial recovery.",
+            "targets": [
+              {
+                "role": "focus",
+                "subject": {
+                  "introducedEntity": "half-open"
+                }
+              }
+            ],
+            "method": "qualified-architectural-interpretation",
+            "parameterDefinitions": [],
+            "qualifications": [
+              "A question under this account\u2019s default-recovery scope, not a claim that its admission coverage is correct or that a particular concurrent-caller outcome has been established."
+            ],
+            "evidence": [
+              "E-admission",
+              "E-default"
+            ]
+          }
+        ],
+        "illustrations": [],
+        "associationSpecifications": [
+          {
+            "key": "orientation",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "topic"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "contentKey": "orientation"
+                }
+              }
+            ]
+          },
+          {
+            "key": "admission-cases",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "topic"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "contentKey": "admission-cases"
+                }
+              }
+            ]
+          },
+          {
+            "key": "inspection",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "topic"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "admission"
+                  },
+                  "contentKey": "inspection"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "queryInvocation": "Q1",
+    "queryResult": {
+      "introducedEntity": "query-result"
+    }
+  }
+}

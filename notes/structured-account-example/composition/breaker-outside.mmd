@@ -1,0 +1,15 @@
+sequenceDiagram
+  title Breaker outside bulkhead
+  participant p0 as Breaker
+  participant p1 as Bulkhead
+  participant p2 as Other work
+  participant p3 as Trial
+  Note over p0,p3: Possible prefix#59; one bulkhead slot + one queue place#59; one trial<br/>Q: scope and conditions
+  p2->>p1: I1 · Request independent work
+  Note over p1: I2 · Occupy execution slot
+  p3->>p0: I3 · Request trial
+  Note over p0: I4 · Reserve trial slot
+  p0->>p1: I5 · Invoke bulkhead
+  Note over p1: I6 · Queue trial request
+  Note over p1,p3: I7 · Await capacity
+  Note over p0,p3: S1 · Trial holds trial slot while queued

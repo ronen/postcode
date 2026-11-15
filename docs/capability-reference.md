@@ -14,6 +14,12 @@ PostCode currently provides a development CLI for investigating implemented arch
 
 The interactive shell retains an investigation within one process. There is no implemented GUI Workspace, general multi-Projection View composition, multi-state analysis or save/resume facility. The default command is `modules`; `summarize` is an explicit request for interpretation. An external agent may invoke documented CLI capabilities subject to their ordinary output and reference-lifetime contracts; this is not a shared-Workspace synchronization or general contribution interface.
 
+## Contribution-model migration
+
+The [structured architectural accounts plan](plans/structured-architectural-accounts.md) defines migration of existing mechanical and agentic information to common qualified contributions, exact association declarations and exposure-based reconsideration. It also requires state-dependent-behavior investigation, one bounded state diagram and execution of retained follow-up options through supported application APIs. Plan adoption does not establish that these capabilities are implemented.
+
+Until that migration is delivered, the current capability and CLI descriptions below describe the existing implementation, including its retained-interpretation and correction behavior. The implementing task updates this reference with the actual API routes, contracts and limitations as each capability becomes supported, and removes this transitional notice at completion. API availability alone must not be described as a new CLI command, GUI or public transport. The initial user-facing catalogue remains separate from this mechanism delivery.
+
 <a id="mechanical-exploration"></a>
 ## Mechanical exploration
 

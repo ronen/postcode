@@ -6,9 +6,11 @@ Use descriptive, unnumbered filenames, such as `initial-product-slice.md` or `ag
 
 ## Approved work
 
-- [Application/interface boundary](application-interface-boundary.md) — approved; establish an internal application API, adapt the CLI, and separate application and Presentation-method identity. Implementation is not yet authorized.
+- [Structured architectural accounts](structured-architectural-accounts.md) — approved; common contributions, association/exposure semantics, all existing producer migration and a bounded state-diagram capability. Implementation requires separate authorization.
 
 ## Completed work
+
+- [Application/interface boundary](application-interface-boundary.md) — implemented; the [completed task](../../records/tasks/2026-11-08-application-interface-boundary.md) closed on 2026-11-09.
 
 - [Product-design reconciliation](product-design-reconciliation.md) — implemented and accepted after integrated and Copilot review; the [completed task](../../records/tasks/2026-11-03-product-design-reconciliation.md) closed on 2026-11-03. Account design remains separate.
 

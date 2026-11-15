@@ -1,0 +1,824 @@
+{
+  "status": "Authored acquisition and disclosure branches. Scope-selected initial content, a discovery-before-retrieval Q2, and later displacement of a delivered reason. No architectural coverage dependency is added.",
+  "scopeSelected": {
+    "request": {
+      "id": "Q-scope-selected",
+      "operation": "authored-addition-probe",
+      "subject": {
+        "entity": "S"
+      },
+      "resultEntity": "RESULT-scope-selected",
+      "deliveries": [
+        {
+          "entity": "S",
+          "scopeSelection": {
+            "roles": [
+              "identification"
+            ],
+            "standing": "undisplaced"
+          }
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state"
+      ],
+      "declaredMeaning": {
+        "question": "Explain Half-open using all its undisplaced identifying descriptions.",
+        "scope": "Initial qualified identifying content is selected by declared entity/role scope, not by exact caller-supplied association IDs. No architectural coverage claim is added."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-scope-selected"
+      },
+      "investigramIds": {
+        "contribution": "SCOPE-SELECTED-1"
+      }
+    },
+    "submission": {
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "result": {
+        "queryInvocation": "Q-scope-selected",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Scope-selected identification",
+            "qualifications": [
+              "Authored scope-selection control; no new source interpretation.",
+              "Retains the supplied identifying association; does not assert architectural completeness."
+            ],
+            "evidence": [
+              "E-state"
+            ],
+            "referents": [
+              {
+                "entity": "S"
+              }
+            ],
+            "content": [],
+            "followupOptions": [],
+            "illustrations": [],
+            "associationSpecifications": [
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "investigram": "ADMISSION-1"
+                      },
+                      "associationKey": "half-open-description"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "exactSelected": {
+    "request": {
+      "id": "Q-exact-selected",
+      "operation": "authored-addition-probe",
+      "subject": {
+        "entity": "S"
+      },
+      "resultEntity": "RESULT-exact-selected",
+      "deliveries": [
+        {
+          "entity": "S",
+          "associations": [
+            {
+              "investigram": "ADMISSION-1",
+              "associationKey": "half-open-description"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state"
+      ],
+      "declaredMeaning": {
+        "question": "Inspect this exact retained Half-open identification.",
+        "scope": "Exact association selection only, with no inventory or scope-selection guarantee."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-exact-selected"
+      },
+      "investigramIds": {
+        "contribution": "EXACT-SELECTED-1"
+      }
+    },
+    "submission": {
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "result": {
+        "queryInvocation": "Q-exact-selected",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Inspect the original category identification with current change context.",
+            "qualifications": [
+              "Authored static fixture at the pinned Cockatiel revision; no live investigator or newly verified source discovery.",
+              "Deliberately retains the exact identifying association. Applicable context follows the selected boundary policy; other association members are not presumed acquired."
+            ],
+            "evidence": [
+              "E-state"
+            ],
+            "referents": [
+              {
+                "entity": "S"
+              }
+            ],
+            "content": [],
+            "followupOptions": [],
+            "illustrations": [],
+            "associationSpecifications": [
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "investigram": "ADMISSION-1"
+                      },
+                      "associationKey": "half-open-description"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "scopeDependent": {
+    "request": {
+      "id": "Q-scope-dependent",
+      "operation": "authored-addition-probe",
+      "subject": {
+        "entity": "RESULT-scope-selected"
+      },
+      "resultEntity": "RESULT-scope-dependent",
+      "deliveries": [
+        {
+          "entity": "RESULT-scope-selected",
+          "associations": [
+            {
+              "investigram": "SCOPE-SELECTED-1",
+              "associationKey": "result"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state",
+        "E-half-open",
+        "E-outcomes",
+        "E-default"
+      ],
+      "declaredMeaning": {
+        "question": "Retain the selected identification result.",
+        "scope": "Consumes the scope-selected result, without inheriting its acquisition as a new direct inventory exposure."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-scope-dependent"
+      },
+      "investigramIds": {
+        "contribution": "SCOPE-DEPENDENT-1"
+      }
+    },
+    "submission": {
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "result": {
+        "queryInvocation": "Q-scope-dependent",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Scope-result consumer",
+            "qualifications": [
+              "Authored result-consumer control; original qualification and generating provenance remain."
+            ],
+            "evidence": [
+              "E-state",
+              "E-half-open",
+              "E-outcomes",
+              "E-default"
+            ],
+            "referents": [
+              {
+                "entity": "S"
+              }
+            ],
+            "content": [],
+            "followupOptions": [],
+            "illustrations": [],
+            "associationSpecifications": [
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "investigram": "ADMISSION-1"
+                      },
+                      "associationKey": "half-open-description"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "additionalIdentification": {
+    "request": {
+      "id": "Q-additional-identification",
+      "operation": "authored-addition-probe",
+      "subject": {
+        "entity": "S"
+      },
+      "resultEntity": "RESULT-additional-identification",
+      "deliveries": [
+        {
+          "entity": "S",
+          "associations": [
+            {
+              "investigram": "ADMISSION-1",
+              "associationKey": "half-open-description"
+            }
+          ],
+          "items": [],
+          "options": []
+        },
+        {
+          "entity": "R",
+          "associations": [
+            {
+              "investigram": "TRIAL-1",
+              "associationKey": "shared-breaker-description"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state",
+        "E-half-open"
+      ],
+      "declaredMeaning": {
+        "question": "Add a separately qualified identification of Half-open.",
+        "scope": "Adds another identifying description without superseding or reconciling existing descriptions; tests scope acquisition, not semantic novelty."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-additional-identification"
+      },
+      "investigramIds": {
+        "contribution": "ADDITIONAL-ID-1"
+      }
+    },
+    "submission": {
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "result": {
+        "queryInvocation": "Q-additional-identification",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Additional Half-open identification",
+            "qualifications": [
+              "Authored static fixture at the pinned Cockatiel revision; no live investigator or newly verified source discovery.",
+              "Identification clarification only; no new admission, outcome, timing or sampling rule. Re-expresses the retained category/instance distinction as additional S information."
+            ],
+            "evidence": [
+              "E-state",
+              "E-half-open"
+            ],
+            "referents": [
+              {
+                "entity": "S"
+              }
+            ],
+            "content": [
+              {
+                "key": "detail",
+                "contentType": "entity-description/0",
+                "concept": "architectural-identification",
+                "subject": {
+                  "entity": "S"
+                },
+                "name": "Half-open",
+                "description": "A breaker recovery state category, distinct from a particular breaker instance; sampled work informs whether the breaker closes or reopens.",
+                "classification": "state-category",
+                "relativeTo": {
+                  "entity": "P"
+                },
+                "evidence": [
+                  "E-state",
+                  "E-half-open"
+                ],
+                "introducesEntity": false
+              }
+            ],
+            "followupOptions": [],
+            "illustrations": [],
+            "associationSpecifications": [
+              {
+                "key": "addition",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "entity": "S"
+                  },
+                  "role": "identification"
+                },
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "contentKey": "detail"
+                    }
+                  }
+                ],
+                "reason": "Add this separately qualified information alongside existing descriptions. No earlier association is displaced or certified complete."
+              },
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "associationKey": "addition"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "noticeReader": {
+    "request": {
+      "id": "Q-notice-reader",
+      "operation": "authored-addition-probe",
+      "subject": {
+        "entity": "P"
+      },
+      "resultEntity": "RESULT-notice-reader",
+      "deliveries": [
+        {
+          "entity": "P",
+          "associations": [
+            {
+              "investigram": "ADMISSION-1",
+              "associationKey": "admission-cases"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state"
+      ],
+      "declaredMeaning": {
+        "question": "Inspect the original admission explanation with its applicable displacement context.",
+        "scope": "Receives the qualified ADMISSION-2 declaration reason but not its new admission member content. Retains exact historical content, without reinstating it."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-notice-reader"
+      },
+      "investigramIds": {
+        "contribution": "NOTICE-READER-1"
+      }
+    },
+    "submission": {
+      "fixtureNote": "Authored addition-policy probe. New associated information, not a new live source finding. No suppression field.",
+      "result": {
+        "queryInvocation": "Q-notice-reader",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Historical admission and reason",
+            "qualifications": [
+              "Authored historical-access probe; no claim that the old admission account is now sufficient.",
+              "The supplied displacement declaration is content; referenced replacement members are not thereby delivered."
+            ],
+            "evidence": [
+              "E-state"
+            ],
+            "referents": [
+              {
+                "entity": "P"
+              }
+            ],
+            "content": [],
+            "followupOptions": [],
+            "illustrations": [],
+            "associationSpecifications": [
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "investigram": "ADMISSION-1"
+                      },
+                      "associationKey": "admission-cases"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "withdrawAdmissionUpdate": {
+    "request": {
+      "id": "Q-withdraw-admission-update",
+      "operation": "authored-lifecycle-probe",
+      "subject": {
+        "entity": "P"
+      },
+      "resultEntity": "RESULT-withdraw-admission-update",
+      "deliveries": [
+        {
+          "entity": "P",
+          "associations": [
+            {
+              "investigram": "ADMISSION-2",
+              "associationKey": "admission-cases"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state"
+      ],
+      "declaredMeaning": {
+        "question": "Withdraw the revised admission association in a lifecycle-only branch.",
+        "scope": "Tests exposure to the earlier declaration reason; no new Cockatiel finding or reinstatement of the original admission association is asserted."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-withdraw-admission-update"
+      },
+      "investigramIds": {
+        "contribution": "WITHDRAW-UPDATE-1"
+      }
+    },
+    "submission": {
+      "fixtureNote": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "result": {
+        "queryInvocation": "Q-withdraw-admission-update",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Withdraw updated admission association",
+            "qualifications": [
+              "Authored lifecycle counterfactual only, not a new repository finding.",
+              "Withdrawing the replacement association neither erases its history nor reinstates the original."
+            ],
+            "evidence": [
+              "E-state"
+            ],
+            "referents": [
+              {
+                "entity": "P"
+              }
+            ],
+            "content": [],
+            "associationSpecifications": [
+              {
+                "key": "withdraw-admission-update",
+                "operation": "withdrawal",
+                "target": {
+                  "entity": {
+                    "entity": "P"
+                  },
+                  "role": "topic"
+                },
+                "displaces": [
+                  {
+                    "investigram": {
+                      "investigram": "ADMISSION-2"
+                    },
+                    "associationKey": "admission-cases"
+                  }
+                ],
+                "reason": "Withdraw this use in the authored lifecycle branch to test consumers of its qualified declaration reason; the old admission coverage is not certified."
+              },
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "associationKey": "withdraw-admission-update"
+                    }
+                  }
+                ]
+              }
+            ],
+            "followupOptions": [],
+            "illustrations": []
+          }
+        ]
+      }
+    }
+  },
+  "discoveryFollowupRequest": {
+    "id": "Q2",
+    "operation": "follow-up-investigation",
+    "subject": {
+      "entity": "RESULT-Q1"
+    },
+    "resultEntity": "RESULT-Q2",
+    "option": {
+      "investigram": "ADMISSION-1",
+      "optionKey": "concurrent-callers-option"
+    },
+    "parameterValues": {},
+    "architecturalFocus": {
+      "entity": "S"
+    },
+    "informationNeed": "Concurrent callers and trial outcomes under default single-trial recovery.",
+    "suppliedEvidence": [
+      "E-state",
+      "E-admission",
+      "E-half-open",
+      "E-outcomes",
+      "E-default"
+    ],
+    "deliveries": [
+      {
+        "entity": "RESULT-Q1",
+        "associations": [
+          {
+            "investigram": "ADMISSION-1",
+            "associationKey": "result"
+          }
+        ],
+        "items": [],
+        "options": [
+          {
+            "investigram": "ADMISSION-1",
+            "optionKey": "concurrent-callers-option"
+          }
+        ]
+      },
+      {
+        "entity": "S",
+        "associations": [],
+        "items": [],
+        "options": [],
+        "inventory": {
+          "roles": [
+            "identification",
+            "topic"
+          ]
+        }
+      },
+      {
+        "entity": "S",
+        "associations": [
+          {
+            "investigram": "ADMISSION-1",
+            "associationKey": "half-open-description"
+          }
+        ],
+        "items": [],
+        "options": []
+      }
+    ],
+    "navigationOrigin": {
+      "capturedAnswer": "ANSWER-Q1",
+      "resultEntity": "RESULT-Q1"
+    },
+    "declaredMeaning": {
+      "question": "Concurrent callers and trial outcomes under default single-trial recovery.",
+      "scope": "Concurrent trial/caller behavior under the selected option and pinned default single-trial scope; excludes reentrant entry and other interference as stated by the option source."
+    }
+  },
+  "renewAdmission": {
+    "request": {
+      "id": "Q-renew-admission",
+      "operation": "authored-lifecycle-probe",
+      "subject": {
+        "entity": "P"
+      },
+      "resultEntity": "RESULT-renew-admission",
+      "deliveries": [
+        {
+          "entity": "P",
+          "associations": [
+            {
+              "investigram": "ADMISSION-1",
+              "associationKey": "admission-cases"
+            }
+          ],
+          "items": [],
+          "options": []
+        },
+        {
+          "entity": "P",
+          "associations": [
+            {
+              "investigram": "ADMISSION-2",
+              "associationKey": "admission-cases"
+            }
+          ],
+          "items": [],
+          "options": []
+        }
+      ],
+      "suppliedEvidence": [
+        "E-state",
+        "E-admission"
+      ],
+      "declaredMeaning": {
+        "question": "Reassert the original admission content in a lifecycle-only renewal branch.",
+        "scope": "Counterfactual test of a displaced cause, not a new Cockatiel finding or certification of the original admission claim."
+      }
+    },
+    "bindings": {
+      "entityIds": {
+        "query-result": "RESULT-renew-admission"
+      },
+      "investigramIds": {
+        "contribution": "RENEW-ADMISSION-1"
+      }
+    },
+    "submission": {
+      "fixtureNote": "Authored organizational/lifecycle probe, not a live investigation or new verified Cockatiel finding.",
+      "result": {
+        "queryInvocation": "Q-renew-admission",
+        "queryResult": {
+          "introducedEntity": "query-result"
+        },
+        "investigrams": [
+          {
+            "key": "contribution",
+            "title": "Renew the original admission use in a counterfactual branch",
+            "qualifications": [
+              "Authored lifecycle counterfactual only; no new repository finding or claim that the original admission content is correct.",
+              "Superseding the later admission association does not reinstate the original association or clear historical reconsideration causes."
+            ],
+            "evidence": [
+              "E-state",
+              "E-admission"
+            ],
+            "referents": [
+              {
+                "entity": "P"
+              }
+            ],
+            "content": [],
+            "associationSpecifications": [
+              {
+                "key": "renew-admission",
+                "operation": "supersession",
+                "target": {
+                  "entity": {
+                    "entity": "P"
+                  },
+                  "role": "topic"
+                },
+                "displaces": [
+                  {
+                    "investigram": {
+                      "investigram": "ADMISSION-2"
+                    },
+                    "associationKey": "admission-cases"
+                  }
+                ],
+                "reason": "Reassert the exact earlier content solely to exercise current standing of a historical cause; source qualifications remain and earlier concerns are not cleared.",
+                "members": [
+                  {
+                    "item": {
+                      "investigram": {
+                        "investigram": "ADMISSION-1"
+                      },
+                      "contentKey": "admission-cases"
+                    }
+                  }
+                ]
+              },
+              {
+                "key": "result",
+                "operation": "addition",
+                "target": {
+                  "entity": {
+                    "introducedEntity": "query-result"
+                  },
+                  "role": "result"
+                },
+                "members": [
+                  {
+                    "declaration": {
+                      "investigram": {
+                        "submittedInvestigram": "contribution"
+                      },
+                      "associationKey": "renew-admission"
+                    }
+                  }
+                ]
+              }
+            ],
+            "followupOptions": [],
+            "illustrations": []
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,1154 @@
+{
+  "fixtureNote": "Authored proposed contribution bundle, not product input or a live investigator. Investigrams retain provenance; association declarations organize entity and query-result information. The initial admission omission remains deliberate.",
+  "result": {
+    "investigrams": [
+      {
+        "key": "trial",
+        "title": "Half-open recovery with a concurrent caller",
+        "referents": [
+          {
+            "entity": "P"
+          },
+          {
+            "entity": "S"
+          },
+          {
+            "entity": "S-open"
+          },
+          {
+            "entity": "S-closed"
+          },
+          {
+            "introducedEntity": "shared-breaker"
+          },
+          {
+            "introducedEntity": "trial-execution"
+          },
+          {
+            "introducedEntity": "concurrent-execution"
+          },
+          {
+            "introducedEntity": "waiting"
+          }
+        ],
+        "qualifications": [
+          "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+          "Default one-call recovery sampling with zero permitted counted failures.",
+          "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+          "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+          "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+        ],
+        "evidence": [
+          "E-state",
+          "E-admission",
+          "E-half-open",
+          "E-outcomes",
+          "E-default"
+        ],
+        "content": [
+          {
+            "key": "shared-breaker-description",
+            "contentType": "entity-description/0",
+            "concept": "architectural-identification",
+            "subject": {
+              "introducedEntity": "shared-breaker"
+            },
+            "name": "Shared breaker instance",
+            "description": "The role of one Circuit breaker instance used by both executions in this scenario; its recovery state and decision are shared across those calls. No actual running instance is identified.",
+            "classification": "instance-role",
+            "relativeTo": {
+              "entity": "P"
+            },
+            "evidence": [
+              "E-state",
+              "E-half-open"
+            ],
+            "introducesEntity": true
+          },
+          {
+            "key": "trial-description",
+            "contentType": "entity-description/0",
+            "concept": "architectural-identification",
+            "subject": {
+              "introducedEntity": "trial-execution"
+            },
+            "name": "Trial execution",
+            "description": "An execution occupying the single recovery-trial slot in this scenario. The work is supplied by the application. The interaction lifeline represents this execution including its supplied work; work completion is distinct from delivery of the final result to its caller.",
+            "classification": "execution-role",
+            "relativeTo": {
+              "introducedEntity": "shared-breaker"
+            },
+            "evidence": [
+              "E-half-open",
+              "E-default"
+            ],
+            "introducesEntity": true
+          },
+          {
+            "key": "caller-description",
+            "contentType": "entity-description/0",
+            "concept": "architectural-identification",
+            "subject": {
+              "introducedEntity": "concurrent-execution"
+            },
+            "name": "Concurrent execution",
+            "description": "A second execution using the same breaker while the trial is occupied. Its pending progress is distinct from the breaker state.",
+            "classification": "execution-role",
+            "relativeTo": {
+              "introducedEntity": "shared-breaker"
+            },
+            "evidence": [
+              "E-half-open"
+            ],
+            "introducesEntity": true
+          },
+          {
+            "key": "waiting-description",
+            "contentType": "entity-description/0",
+            "concept": "architectural-identification",
+            "subject": {
+              "introducedEntity": "waiting"
+            },
+            "name": "Waiting for the recovery decision",
+            "description": "The scenario-specific relationship of the concurrent execution awaiting the shared breaker recovery decision. This identifies the participants and what is awaited; occurrence and release conditions are not specified by this description.",
+            "classification": "architectural-relationship",
+            "relativeTo": {
+              "introducedEntity": "shared-breaker"
+            },
+            "evidence": [
+              "E-half-open"
+            ],
+            "introducesEntity": true,
+            "relatedContent": [
+              {
+                "investigram": {
+                  "submittedInvestigram": "trial"
+                },
+                "contentKey": "concurrent-callers",
+                "purpose": "Behavioral conditions and ordering for this scenario; further explanation, not part of the identifying description."
+              }
+            ]
+          },
+          {
+            "key": "state-of",
+            "contentType": "architectural-relations/0",
+            "concept": "structure",
+            "relations": [
+              {
+                "key": "half-open-of",
+                "kind": "state-category-of",
+                "state": {
+                  "entity": "S"
+                },
+                "policyKind": {
+                  "entity": "P"
+                }
+              },
+              {
+                "key": "instance-kind",
+                "kind": "instance-role-of",
+                "instanceRole": {
+                  "introducedEntity": "shared-breaker"
+                },
+                "policyKind": {
+                  "entity": "P"
+                }
+              },
+              {
+                "key": "trial-uses",
+                "kind": "execution-uses-instance",
+                "execution": {
+                  "introducedEntity": "trial-execution"
+                },
+                "instance": {
+                  "introducedEntity": "shared-breaker"
+                }
+              },
+              {
+                "key": "caller-uses",
+                "kind": "execution-uses-instance",
+                "execution": {
+                  "introducedEntity": "concurrent-execution"
+                },
+                "instance": {
+                  "introducedEntity": "shared-breaker"
+                }
+              },
+              {
+                "key": "waits-on",
+                "kind": "waits-for-decision",
+                "subject": {
+                  "introducedEntity": "waiting"
+                },
+                "waiter": {
+                  "introducedEntity": "concurrent-execution"
+                },
+                "decisionHolder": {
+                  "introducedEntity": "shared-breaker"
+                },
+                "when": "Single trial occupied",
+                "release": "Shared recovery decision becomes available; admission is rechecked"
+              }
+            ],
+            "evidence": [
+              "E-half-open",
+              "E-admission",
+              "E-outcomes"
+            ]
+          },
+          {
+            "key": "explanation",
+            "contentType": "prose/0",
+            "concept": "interaction",
+            "text": "The breaker state is shared, while each execution has its own progress. Waiting consumes no additional trial slot. Completion of the recovery decision releases the waiting execution to recheck admission; it does not guarantee that execution will run.",
+            "evidence": [
+              "E-half-open",
+              "E-outcomes"
+            ]
+          },
+          {
+            "key": "recovery",
+            "contentType": "state-behavior/0",
+            "concept": "state-behavior",
+            "title": "Partial recovery statechart",
+            "stateBearer": {
+              "introducedEntity": "shared-breaker"
+            },
+            "coverage": {
+              "status": "partial",
+              "initialState": "not-specified",
+              "omitted": [
+                "Initial construction",
+                "Closed-to-Open failure-policy behavior",
+                "Manual isolation",
+                "Restored-state behavior",
+                "Non-default sampling",
+                "Reentrant event-listener execution requests during Half-open entry"
+              ],
+              "note": "Shared breaker role; default single trial, no reentrant entry calls. Static partial account; not all configurations of P."
+            },
+            "states": [
+              {
+                "key": "closed",
+                "subject": {
+                  "entity": "S-closed"
+                },
+                "label": "Closed"
+              },
+              {
+                "key": "open",
+                "subject": {
+                  "entity": "S-open"
+                },
+                "label": "Open"
+              },
+              {
+                "key": "half-open",
+                "subject": {
+                  "entity": "S"
+                },
+                "label": "Half-open"
+              }
+            ],
+            "transitions": [
+              {
+                "key": "enter-trial",
+                "source": "open",
+                "target": "half-open",
+                "trigger": "Execution requested",
+                "guard": "Recovery delay elapsed",
+                "effect": "Reserve trial slot and start supplied work",
+                "evidence": [
+                  "E-admission",
+                  "E-half-open"
+                ],
+                "displayLabel": "Request [delay elapsed]"
+              },
+              {
+                "key": "close-after-trial",
+                "source": "half-open",
+                "target": "closed",
+                "trigger": "Trial counted successful",
+                "guard": "Completing trial belongs to the current Half-open state",
+                "effect": "Close and release waiting executions",
+                "evidence": [
+                  "E-half-open",
+                  "E-outcomes",
+                  "E-default"
+                ],
+                "displayLabel": "Counted success [current trial]"
+              },
+              {
+                "key": "reopen-after-trial",
+                "source": "half-open",
+                "target": "open",
+                "trigger": "Trial counted failed",
+                "guard": "Completing trial belongs to the current Half-open state",
+                "effect": "Restart backoff and release waiting executions",
+                "evidence": [
+                  "E-half-open",
+                  "E-outcomes",
+                  "E-default"
+                ],
+                "displayLabel": "Counted failure [current trial]"
+              }
+            ],
+            "outcomeQualification": "Success and failure here are breaker classifications. An error not matched by the failure policy is recorded as recovery success and still delivered to its caller.",
+            "evidence": [
+              "E-admission",
+              "E-half-open",
+              "E-outcomes",
+              "E-default"
+            ],
+            "applicability": {
+              "policyKind": {
+                "entity": "P"
+              },
+              "scope": "Recovery of the shared breaker scenario role under the account qualifications. Discoverable as an account about P, not an assertion covering every instance or configuration of P."
+            },
+            "displayLabel": "Recovery states",
+            "overviewScope": "Partial model; default single trial"
+          },
+          {
+            "key": "concurrent-callers",
+            "contentType": "interaction/0",
+            "concept": "interaction",
+            "title": "One trial and one concurrent caller: two possible outcomes",
+            "semantics": "Possible scenario ordering, not an observed execution or a complete interleaving model.",
+            "conditions": [
+              "One shared breaker instance; default single-trial sampling.",
+              "The first request finds Open with elapsed backoff.",
+              "The second request arrives while the first trial remains in flight.",
+              "No isolation, cancellation, restored state or third caller interferes.",
+              "On the failure branch, the new backoff is positive and has not elapsed when the waiting execution rechecks admission.",
+              "No event listener reenters execution during entry to Half-open."
+            ],
+            "participants": [
+              {
+                "key": "trial",
+                "subject": {
+                  "introducedEntity": "trial-execution"
+                },
+                "label": "Trial execution",
+                "displayLabel": "Trial"
+              },
+              {
+                "key": "breaker",
+                "subject": {
+                  "introducedEntity": "shared-breaker"
+                },
+                "label": "Shared breaker",
+                "displayLabel": "Breaker"
+              },
+              {
+                "key": "caller",
+                "subject": {
+                  "introducedEntity": "concurrent-execution"
+                },
+                "label": "Concurrent execution",
+                "displayLabel": "Caller"
+              }
+            ],
+            "prefix": [
+              {
+                "key": "trial-request",
+                "kind": "request",
+                "from": "trial",
+                "to": "breaker",
+                "text": "Request execution after recovery delay",
+                "evidence": [
+                  "E-admission"
+                ],
+                "displayLabel": "Request trial"
+              },
+              {
+                "key": "enter",
+                "kind": "state-transition",
+                "actor": "breaker",
+                "stateContent": "recovery",
+                "transition": "enter-trial",
+                "evidence": [
+                  "E-admission",
+                  "E-half-open"
+                ],
+                "causedBy": [
+                  "trial-request"
+                ],
+                "displayLabel": "Start trial"
+              },
+              {
+                "key": "caller-request",
+                "kind": "request",
+                "from": "caller",
+                "to": "breaker",
+                "text": "Request execution while trial is in flight",
+                "evidence": [
+                  "E-half-open"
+                ],
+                "displayLabel": "Request while trial pending"
+              },
+              {
+                "key": "wait",
+                "kind": "wait",
+                "participant": "caller",
+                "on": "breaker",
+                "relationship": {
+                  "introducedEntity": "waiting"
+                },
+                "text": "Because the sole trial slot remains occupied, wait for its recovery decision; supplied work has not started",
+                "evidence": [
+                  "E-half-open"
+                ],
+                "causedBy": [
+                  "caller-request",
+                  "enter"
+                ],
+                "condition": "The sole trial slot reserved on entry remains occupied when the concurrent request arrives.",
+                "displayLabel": "Await recovery"
+              },
+              {
+                "key": "trial-work-completes",
+                "kind": "action",
+                "actor": "trial",
+                "text": "Supplied trial work completes with a result or error",
+                "evidence": [
+                  "E-half-open"
+                ],
+                "displayLabel": "Work completes"
+              },
+              {
+                "key": "trial-outcome",
+                "kind": "response",
+                "from": "trial",
+                "to": "breaker",
+                "text": "Work outcome becomes available for classification; not final delivery to the trial caller",
+                "causedBy": [
+                  "trial-work-completes"
+                ],
+                "evidence": [
+                  "E-half-open"
+                ],
+                "displayLabel": "Report outcome"
+              },
+              {
+                "key": "classify-trial-outcome",
+                "kind": "action",
+                "actor": "breaker",
+                "text": "Classify the completed work under the configured failure policy. An error not matched by that policy is recorded as recovery success.",
+                "causedBy": [
+                  "trial-outcome"
+                ],
+                "evidence": [
+                  "E-half-open"
+                ],
+                "displayLabel": "Classify outcome"
+              }
+            ],
+            "alternatives": [
+              {
+                "key": "success",
+                "condition": "Trial is counted successful by the breaker",
+                "steps": [
+                  {
+                    "key": "close",
+                    "kind": "state-transition",
+                    "actor": "breaker",
+                    "stateContent": "recovery",
+                    "transition": "close-after-trial",
+                    "evidence": [
+                      "E-outcomes"
+                    ],
+                    "causedBy": [
+                      "classify-trial-outcome"
+                    ],
+                    "displayLabel": "Close; release waiter"
+                  },
+                  {
+                    "key": "success-release",
+                    "kind": "resume",
+                    "participant": "caller",
+                    "on": "breaker",
+                    "relationship": {
+                      "introducedEntity": "waiting"
+                    },
+                    "text": "Waiting execution resumes and rechecks admission",
+                    "evidence": [
+                      "E-half-open",
+                      "E-outcomes"
+                    ],
+                    "causedBy": [
+                      "close"
+                    ],
+                    "displayLabel": "Recheck admission"
+                  },
+                  {
+                    "key": "ordinary-work",
+                    "kind": "action",
+                    "actor": "breaker",
+                    "text": "With Closed still current, invoke the waiting caller\u2019s supplied work",
+                    "evidence": [
+                      "E-admission",
+                      "E-half-open"
+                    ],
+                    "causedBy": [
+                      "success-release"
+                    ],
+                    "displayLabel": "Run work [still Closed]"
+                  }
+                ],
+                "displayLabel": "Counted success"
+              },
+              {
+                "key": "failure",
+                "condition": "Trial is counted failed by the breaker",
+                "steps": [
+                  {
+                    "key": "reopen",
+                    "kind": "state-transition",
+                    "actor": "breaker",
+                    "stateContent": "recovery",
+                    "transition": "reopen-after-trial",
+                    "evidence": [
+                      "E-outcomes",
+                      "E-default"
+                    ],
+                    "causedBy": [
+                      "classify-trial-outcome"
+                    ],
+                    "displayLabel": "Reopen; release waiter"
+                  },
+                  {
+                    "key": "failure-release",
+                    "kind": "resume",
+                    "participant": "caller",
+                    "on": "breaker",
+                    "relationship": {
+                      "introducedEntity": "waiting"
+                    },
+                    "text": "Waiting execution resumes and rechecks admission",
+                    "evidence": [
+                      "E-half-open",
+                      "E-outcomes"
+                    ],
+                    "causedBy": [
+                      "reopen"
+                    ],
+                    "displayLabel": "Recheck admission"
+                  },
+                  {
+                    "key": "refusal",
+                    "kind": "response",
+                    "from": "breaker",
+                    "to": "caller",
+                    "text": "Refuse execution while new backoff remains unelapsed; work is not run",
+                    "evidence": [
+                      "E-admission"
+                    ],
+                    "causedBy": [
+                      "failure-release"
+                    ],
+                    "displayLabel": "Refuse [delay unelapsed]"
+                  }
+                ],
+                "displayLabel": "Counted failure"
+              }
+            ],
+            "notShown": [
+              "Delivery order of results to the trial caller",
+              "Completion or result of the concurrent caller\u2019s work on the success branch",
+              "Other scheduling interleavings"
+            ],
+            "evidence": [
+              "E-admission",
+              "E-half-open",
+              "E-outcomes",
+              "E-default"
+            ],
+            "displayLabel": "One trial, one waiting caller",
+            "overviewScope": "Possible ordering; default single trial"
+          }
+        ],
+        "followupOptions": [],
+        "illustrations": [
+          {
+            "key": "recovery-state",
+            "diagramType": "state-diagram/0",
+            "inputs": {
+              "model": {
+                "investigram": {
+                  "submittedInvestigram": "trial"
+                },
+                "contentKey": "recovery"
+              }
+            },
+            "qualifications": [
+              "Optional overview of the qualified scenario in these exact items; does not promise a general recovery model or replace their scope and conditions."
+            ],
+            "evidence": [
+              "E-admission",
+              "E-half-open",
+              "E-outcomes",
+              "E-default"
+            ]
+          },
+          {
+            "key": "concurrent-callers",
+            "diagramType": "sequence-diagram/0",
+            "inputs": {
+              "interaction": {
+                "investigram": {
+                  "submittedInvestigram": "trial"
+                },
+                "contentKey": "concurrent-callers"
+              }
+            },
+            "qualifications": [
+              "Optional overview of the qualified scenario in these exact items; does not promise a general recovery model or replace their scope and conditions."
+            ],
+            "evidence": [
+              "E-admission",
+              "E-half-open",
+              "E-outcomes",
+              "E-default"
+            ]
+          }
+        ],
+        "associationSpecifications": [
+          {
+            "key": "shared-breaker-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "shared-breaker"
+              },
+              "role": "identification"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "contentKey": "shared-breaker-description"
+                }
+              }
+            ]
+          },
+          {
+            "key": "trial-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "trial-execution"
+              },
+              "role": "identification"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "contentKey": "trial-description"
+                }
+              }
+            ]
+          },
+          {
+            "key": "caller-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "concurrent-execution"
+              },
+              "role": "identification"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "contentKey": "caller-description"
+                }
+              }
+            ]
+          },
+          {
+            "key": "waiting-description",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "waiting"
+              },
+              "role": "identification"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "contentKey": "waiting-description"
+                }
+              }
+            ]
+          },
+          {
+            "key": "state-of",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "topic"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "contentKey": "state-of"
+                }
+              }
+            ]
+          },
+          {
+            "key": "explanation",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "topic"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "contentKey": "explanation"
+                }
+              }
+            ]
+          },
+          {
+            "key": "recovery",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "shared-breaker"
+              },
+              "role": "topic"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "contentKey": "recovery"
+                }
+              }
+            ]
+          },
+          {
+            "key": "concurrent-callers",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "shared-breaker"
+              },
+              "role": "topic"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "contentKey": "concurrent-callers"
+                }
+              }
+            ]
+          },
+          {
+            "key": "updated-admission-result",
+            "operation": "supersession",
+            "target": {
+              "entity": {
+                "entity": "RESULT-Q1"
+              },
+              "role": "result"
+            },
+            "members": [
+              {
+                "declaration": {
+                  "investigram": {
+                    "investigram": "ADMISSION-1"
+                  },
+                  "associationKey": "closed-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "investigram": "ADMISSION-1"
+                  },
+                  "associationKey": "open-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "investigram": "ADMISSION-1"
+                  },
+                  "associationKey": "half-open-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "investigram": "ADMISSION-1"
+                  },
+                  "associationKey": "orientation"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "investigram": "ADMISSION-1"
+                  },
+                  "associationKey": "inspection"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "admission-update"
+                  },
+                  "associationKey": "admission-cases"
+                }
+              }
+            ],
+            "displaces": [
+              {
+                "investigram": {
+                  "investigram": "ADMISSION-1"
+                },
+                "associationKey": "result"
+              }
+            ],
+            "reason": "The original result omits waiting from its claimed admission coverage. This result association retains its identifying and inspection information by exact reference and designates the expanded admission account. No investigram is replaced."
+          },
+          {
+            "key": "result",
+            "operation": "addition",
+            "target": {
+              "entity": {
+                "introducedEntity": "query-result"
+              },
+              "role": "result"
+            },
+            "members": [
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "associationKey": "shared-breaker-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "associationKey": "trial-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "associationKey": "caller-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "associationKey": "waiting-description"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "associationKey": "state-of"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "associationKey": "explanation"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "associationKey": "recovery"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "associationKey": "concurrent-callers"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "admission-update"
+                  },
+                  "associationKey": "admission-cases"
+                }
+              },
+              {
+                "declaration": {
+                  "investigram": {
+                    "submittedInvestigram": "trial"
+                  },
+                  "associationKey": "updated-admission-result"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "admission-update",
+        "title": "Additional admission account including waiting",
+        "referents": [
+          {
+            "entity": "P"
+          },
+          {
+            "entity": "S-closed"
+          },
+          {
+            "entity": "S-open"
+          },
+          {
+            "entity": "S"
+          },
+          {
+            "introducedEntity": "shared-breaker"
+          },
+          {
+            "introducedEntity": "waiting"
+          },
+          {
+            "introducedEntity": "concurrent-execution"
+          }
+        ],
+        "qualifications": [
+          "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+          "Default one-call recovery sampling with zero permitted counted failures.",
+          "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+          "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+          "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+        ],
+        "evidence": [
+          "E-state",
+          "E-admission",
+          "E-default",
+          "E-half-open",
+          "E-outcomes"
+        ],
+        "content": [
+          {
+            "key": "admission-cases",
+            "contentType": "admission-cases/0",
+            "concept": "interface",
+            "coverage": "Admission cases in the stated scope, excluding reentrant entry calls: the request finding Open after its delay enters Half-open and reserves the sole trial slot; subsequent callers during the occupied trial wait. An admitted operation can later succeed or fail.",
+            "cases": [
+              {
+                "key": "ordinary",
+                "when": {
+                  "state": {
+                    "entity": "S-closed"
+                  },
+                  "condition": "An execution is requested."
+                },
+                "outcome": "Run the application-supplied operation as ordinary work.",
+                "evidence": [
+                  "E-admission"
+                ]
+              },
+              {
+                "key": "trial",
+                "when": {
+                  "state": {
+                    "entity": "S-open"
+                  },
+                  "condition": "An execution is requested after the recovery delay."
+                },
+                "outcome": "Enter Half-open and start recovery-trial work.",
+                "resultingState": {
+                  "entity": "S"
+                },
+                "evidence": [
+                  "E-admission"
+                ]
+              },
+              {
+                "key": "refused",
+                "when": {
+                  "state": {
+                    "entity": "S-open"
+                  },
+                  "condition": "An execution is requested before the recovery delay has elapsed."
+                },
+                "outcome": "Refuse execution without running the supplied operation.",
+                "evidence": [
+                  "E-admission"
+                ]
+              },
+              {
+                "key": "waiting",
+                "when": {
+                  "state": {
+                    "entity": "S"
+                  },
+                  "condition": "The single trial slot is occupied."
+                },
+                "outcome": "Wait for the shared recovery decision, then re-enter admission against the current state. Waiting does not promise execution or success.",
+                "relationship": {
+                  "kind": "waits-for-decision",
+                  "waiter": {
+                    "localRole": "requested-execution"
+                  },
+                  "decisionHolder": {
+                    "localRole": "breaker"
+                  },
+                  "release": "Recovery decision becomes available; the execution rechecks admission against the current breaker state."
+                },
+                "stateBearer": {
+                  "localRole": "breaker"
+                },
+                "evidence": [
+                  "E-half-open",
+                  "E-outcomes"
+                ]
+              }
+            ],
+            "roles": [
+              {
+                "key": "breaker",
+                "description": "The breaker instance receiving this execution request.",
+                "instanceOf": {
+                  "entity": "P"
+                }
+              },
+              {
+                "key": "requested-execution",
+                "description": "The execution requesting admission through that breaker instance.",
+                "uses": {
+                  "localRole": "breaker"
+                }
+              }
+            ],
+            "roleScope": "Bind these local roles independently for each request covered by the table, under the account qualifications. They do not designate particular scenario subjects or allocate retained identities.",
+            "stateBearer": {
+              "localRole": "breaker"
+            },
+            "execution": {
+              "localRole": "requested-execution"
+            },
+            "exampleBindings": [
+              {
+                "case": "waiting",
+                "investigram": {
+                  "submittedInvestigram": "trial"
+                },
+                "contentKey": "concurrent-callers",
+                "roleBindings": [
+                  {
+                    "role": "breaker",
+                    "subject": {
+                      "introducedEntity": "shared-breaker"
+                    }
+                  },
+                  {
+                    "role": "requested-execution",
+                    "subject": {
+                      "introducedEntity": "concurrent-execution"
+                    }
+                  }
+                ],
+                "relationshipSubject": {
+                  "introducedEntity": "waiting"
+                },
+                "qualification": "TRIAL-1 illustrates this case under its own scenario conditions. These bindings map the general local roles to that example scenario only; they do not restrict the general admission claim to those subjects or generalize the entire scenario to all requests.",
+                "evidence": [
+                  "E-admission",
+                  "E-half-open",
+                  "E-outcomes"
+                ]
+              }
+            ]
+          }
+        ],
+        "followupOptions": [],
+        "illustrations": [],
+        "associationSpecifications": [
+          {
+            "key": "admission-cases",
+            "operation": "supersession",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "topic"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "submittedInvestigram": "admission-update"
+                  },
+                  "contentKey": "admission-cases"
+                }
+              }
+            ],
+            "displaces": [
+              {
+                "investigram": {
+                  "investigram": "ADMISSION-1"
+                },
+                "associationKey": "admission-cases"
+              }
+            ],
+            "reason": "ADMISSION-1 presents its cases as covering admission in this scope, but omits waiting while the single trial is occupied. ADMISSION-2 includes that outcome and the subsequent admission recheck. This does not claim that every statement of ADMISSION-1 was wrong."
+          }
+        ]
+      }
+    ],
+    "queryInvocation": "Q2",
+    "queryResult": {
+      "introducedEntity": "query-result"
+    }
+  }
+}

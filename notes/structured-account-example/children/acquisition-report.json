@@ -1,0 +1,807 @@
+{
+  "status": "Authored acquisition/disclosure refinement; no architectural coverage dependency, live dialogue or semantic impact proof.",
+  "scopeSelectedInitialContext": {
+    "before": {
+      "entity": "S",
+      "asOfAcceptance": 7,
+      "associationUses": [
+        "DEFINITIONS-1::half-open-description"
+      ],
+      "fullDeclarations": [
+        "DEFINITIONS-1::half-open-description"
+      ],
+      "items": [
+        "DEFINITIONS-1::half-open-description"
+      ],
+      "inventory": null,
+      "selectionScope": {
+        "entity": "S",
+        "roles": [
+          "identification"
+        ],
+        "coverage": "all-undisplaced-in-scope",
+        "asOfAcceptance": 7
+      },
+      "qualifiedDeclarationDisclosures": {},
+      "sourceQueries": [
+        "Q1"
+      ]
+    },
+    "exactReferenceContrast": {
+      "entity": "S",
+      "asOfAcceptance": 7,
+      "associationUses": [
+        "DEFINITIONS-1::half-open-description"
+      ],
+      "fullDeclarations": [
+        "DEFINITIONS-1::half-open-description"
+      ],
+      "items": [
+        "DEFINITIONS-1::half-open-description"
+      ],
+      "inventory": null,
+      "selectionScope": null,
+      "qualifiedDeclarationDisclosures": {},
+      "sourceQueries": [
+        "Q1"
+      ]
+    },
+    "after": {
+      "entity": "S",
+      "asOfAcceptance": 11,
+      "associationUses": [
+        "ADDITIONAL-ID-1::addition",
+        "DEFINITIONS-1::half-open-description"
+      ],
+      "fullDeclarations": [
+        "ADDITIONAL-ID-1::addition",
+        "DEFINITIONS-1::half-open-description"
+      ],
+      "items": [
+        "ADDITIONAL-ID-1::detail",
+        "DEFINITIONS-1::half-open-description"
+      ],
+      "inventory": null,
+      "selectionScope": {
+        "entity": "S",
+        "roles": [
+          "identification"
+        ],
+        "coverage": "all-undisplaced-in-scope",
+        "asOfAcceptance": 11
+      },
+      "qualifiedDeclarationDisclosures": {},
+      "sourceQueries": [
+        "Q-additional-identification",
+        "Q1"
+      ]
+    },
+    "impact": {
+      "cause": "ADDITIONAL-ID-1::addition",
+      "causeKind": "new-information",
+      "targetEntity": "S",
+      "acceptedAt": 11,
+      "directEvaluations": [
+        "Q-scope-selected"
+      ],
+      "inheritedOnlyEvaluations": [
+        "Q-scope-dependent"
+      ],
+      "affectedEvaluations": [
+        "Q-scope-dependent",
+        "Q-scope-selected"
+      ],
+      "inheritedOnlyViaProducerQueries": {
+        "Q-scope-dependent": [
+          "Q-scope-selected"
+        ]
+      },
+      "unaffectedEvaluations": [
+        "Q-exact-selected",
+        "Q-excerpt",
+        "Q-observer",
+        "Q-reference-only",
+        "Q-role-only",
+        "Q-updated",
+        "Q1",
+        "Q2"
+      ],
+      "affectedDesignations": {
+        "SCOPE-DEPENDENT-1::result": {
+          "resultEntity": "RESULT-scope-dependent",
+          "displacedBy": [],
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [
+            "ADDITIONAL-ID-1::addition"
+          ]
+        },
+        "SCOPE-SELECTED-1::result": {
+          "resultEntity": "RESULT-scope-selected",
+          "displacedBy": [],
+          "membershipCauses": [],
+          "generatingEvaluationCauses": [
+            "ADDITIONAL-ID-1::addition"
+          ]
+        }
+      },
+      "counts": {
+        "priorEvaluations": 10,
+        "affectedEvaluations": 2,
+        "priorDesignations": 11,
+        "affectedDesignations": 2
+      }
+    },
+    "freshRecipientCauses": [],
+    "earlierAcquisitionCauses": [
+      "ADDITIONAL-ID-1::addition"
+    ]
+  },
+  "discoveryFollowup": {
+    "q2Deliveries": [
+      {
+        "entity": "RESULT-Q1",
+        "asOfAcceptance": 3,
+        "associationUses": [
+          "ADMISSION-1::admission-cases",
+          "ADMISSION-1::inspection",
+          "ADMISSION-1::orientation",
+          "DEFINITIONS-1::closed-description",
+          "DEFINITIONS-1::half-open-description",
+          "DEFINITIONS-1::open-description",
+          "INTRO-1::orientation",
+          "INTRO-1::result"
+        ],
+        "fullDeclarations": [
+          "ADMISSION-1::admission-cases",
+          "ADMISSION-1::inspection",
+          "ADMISSION-1::orientation",
+          "DEFINITIONS-1::closed-description",
+          "DEFINITIONS-1::half-open-description",
+          "DEFINITIONS-1::open-description",
+          "INTRO-1::orientation",
+          "INTRO-1::result"
+        ],
+        "items": [
+          "ADMISSION-1::admission-cases",
+          "ADMISSION-1::inspection",
+          "ADMISSION-1::orientation",
+          "DEFINITIONS-1::closed-description",
+          "DEFINITIONS-1::half-open-description",
+          "DEFINITIONS-1::open-description",
+          "INTRO-1::orientation"
+        ],
+        "inventory": null,
+        "selectionScope": null,
+        "qualifiedDeclarationDisclosures": {},
+        "sourceQueries": [
+          "Q1"
+        ]
+      },
+      {
+        "entity": "S",
+        "asOfAcceptance": 3,
+        "associationUses": [],
+        "fullDeclarations": [],
+        "items": [],
+        "inventory": {
+          "entity": "S",
+          "roles": [
+            "identification",
+            "topic"
+          ],
+          "coverage": "all-retained-in-scope",
+          "asOfAcceptance": 3,
+          "entries": [
+            {
+              "association": {
+                "investigram": "DEFINITIONS-1",
+                "associationKey": "half-open-description"
+              },
+              "role": "identification"
+            }
+          ]
+        },
+        "selectionScope": null,
+        "qualifiedDeclarationDisclosures": {},
+        "sourceQueries": []
+      },
+      {
+        "entity": "S",
+        "asOfAcceptance": 3,
+        "associationUses": [
+          "DEFINITIONS-1::half-open-description"
+        ],
+        "fullDeclarations": [
+          "DEFINITIONS-1::half-open-description"
+        ],
+        "items": [
+          "DEFINITIONS-1::half-open-description"
+        ],
+        "inventory": null,
+        "selectionScope": null,
+        "qualifiedDeclarationDisclosures": {},
+        "sourceQueries": [
+          "Q1"
+        ]
+      }
+    ],
+    "independentComparisons": {
+      "complementary": {
+        "cause": "CATEGORY-DETAIL-1::addition",
+        "causeKind": "new-information",
+        "targetEntity": "S",
+        "acceptedAt": 8,
+        "directEvaluations": [
+          "Q2"
+        ],
+        "inheritedOnlyEvaluations": [
+          "Q-role-only",
+          "Q-updated"
+        ],
+        "affectedEvaluations": [
+          "Q-role-only",
+          "Q-updated",
+          "Q2"
+        ],
+        "inheritedOnlyViaProducerQueries": {
+          "Q-role-only": [
+            "Q2"
+          ],
+          "Q-updated": [
+            "Q2"
+          ]
+        },
+        "unaffectedEvaluations": [
+          "Q-excerpt",
+          "Q-observer",
+          "Q-reference-only",
+          "Q1"
+        ],
+        "affectedDesignations": {
+          "ROLE-READER-1::result": {
+            "resultEntity": "RESULT-role-only",
+            "displacedBy": [],
+            "membershipCauses": [],
+            "generatingEvaluationCauses": [
+              "CATEGORY-DETAIL-1::addition"
+            ]
+          },
+          "TRIAL-RESULT-1::result": {
+            "resultEntity": "RESULT-Q2",
+            "displacedBy": [],
+            "membershipCauses": [],
+            "generatingEvaluationCauses": [
+              "CATEGORY-DETAIL-1::addition"
+            ]
+          },
+          "TRIAL-RESULT-1::updated-admission-result": {
+            "resultEntity": "RESULT-Q1",
+            "displacedBy": [],
+            "membershipCauses": [],
+            "generatingEvaluationCauses": [
+              "CATEGORY-DETAIL-1::addition"
+            ]
+          },
+          "UPDATED-1::result": {
+            "resultEntity": "RESULT-updated",
+            "displacedBy": [],
+            "membershipCauses": [],
+            "generatingEvaluationCauses": [
+              "CATEGORY-DETAIL-1::addition"
+            ]
+          }
+        },
+        "counts": {
+          "priorEvaluations": 7,
+          "affectedEvaluations": 3,
+          "priorDesignations": 8,
+          "affectedDesignations": 4
+        }
+      },
+      "behavioral": {
+        "cause": "RECOVERY-CAVEAT-1::addition",
+        "causeKind": "new-information",
+        "targetEntity": "S",
+        "acceptedAt": 8,
+        "directEvaluations": [
+          "Q2"
+        ],
+        "inheritedOnlyEvaluations": [
+          "Q-role-only",
+          "Q-updated"
+        ],
+        "affectedEvaluations": [
+          "Q-role-only",
+          "Q-updated",
+          "Q2"
+        ],
+        "inheritedOnlyViaProducerQueries": {
+          "Q-role-only": [
+            "Q2"
+          ],
+          "Q-updated": [
+            "Q2"
+          ]
+        },
+        "unaffectedEvaluations": [
+          "Q-excerpt",
+          "Q-observer",
+          "Q-reference-only",
+          "Q1"
+        ],
+        "affectedDesignations": {
+          "ROLE-READER-1::result": {
+            "resultEntity": "RESULT-role-only",
+            "displacedBy": [],
+            "membershipCauses": [],
+            "generatingEvaluationCauses": [
+              "RECOVERY-CAVEAT-1::addition"
+            ]
+          },
+          "TRIAL-RESULT-1::result": {
+            "resultEntity": "RESULT-Q2",
+            "displacedBy": [],
+            "membershipCauses": [],
+            "generatingEvaluationCauses": [
+              "RECOVERY-CAVEAT-1::addition"
+            ]
+          },
+          "TRIAL-RESULT-1::updated-admission-result": {
+            "resultEntity": "RESULT-Q1",
+            "displacedBy": [],
+            "membershipCauses": [],
+            "generatingEvaluationCauses": [
+              "RECOVERY-CAVEAT-1::addition"
+            ]
+          },
+          "UPDATED-1::result": {
+            "resultEntity": "RESULT-updated",
+            "displacedBy": [],
+            "membershipCauses": [],
+            "generatingEvaluationCauses": [
+              "RECOVERY-CAVEAT-1::addition"
+            ]
+          }
+        },
+        "counts": {
+          "priorEvaluations": 7,
+          "affectedEvaluations": 3,
+          "priorDesignations": 8,
+          "affectedDesignations": 4
+        }
+      }
+    }
+  },
+  "displacementInstructionBoundary": {
+    "reason-only": {
+      "structurallyAccepted": true,
+      "deliveryCount": 1,
+      "completeTargetSupportDelivered": false,
+      "interpretiveAdequacyEstablished": false
+    },
+    "no-target-content": {
+      "structurallyAccepted": true,
+      "deliveryCount": 0,
+      "completeTargetSupportDelivered": false,
+      "interpretiveAdequacyEstablished": false
+    }
+  },
+  "displacedCauseAccess": {
+    "recipient": "Q-excerpt",
+    "historicalCauses": [
+      "ADMISSION-2::admission-cases"
+    ],
+    "causesAfterRenewal": [
+      "ADMISSION-2::admission-cases"
+    ],
+    "cause": "ADMISSION-2::admission-cases",
+    "causeCurrentStanding": {
+      "displacedBy": [
+        "RENEW-ADMISSION-1::renew-admission"
+      ],
+      "competingDeclarations": false
+    },
+    "before": {
+      "entity": "RESULT-excerpt",
+      "asOfAcceptance": 7,
+      "associationUses": [
+        "EXCERPT-1::result",
+        "EXCERPT-1::selected-result"
+      ],
+      "fullDeclarations": [
+        "EXCERPT-1::result",
+        "EXCERPT-1::selected-result"
+      ],
+      "items": [
+        "ADMISSION-1::admission-cases"
+      ],
+      "inventory": null,
+      "selectionScope": null,
+      "qualifiedDeclarationDisclosures": {
+        "ADMISSION-2::admission-cases": {
+          "value": {
+            "key": "admission-cases",
+            "operation": "supersession",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "topic"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "investigram": "ADMISSION-2"
+                  },
+                  "contentKey": "admission-cases"
+                }
+              }
+            ],
+            "displaces": [
+              {
+                "investigram": {
+                  "investigram": "ADMISSION-1"
+                },
+                "associationKey": "admission-cases"
+              }
+            ],
+            "reason": "ADMISSION-1 presents its cases as covering admission in this scope, but omits waiting while the single trial is occupied. ADMISSION-2 includes that outcome and the subsequent admission recheck. This does not claim that every statement of ADMISSION-1 was wrong."
+          },
+          "sourceInvestigram": "ADMISSION-2",
+          "queryInvocation": "Q2",
+          "basis": {
+            "id": "cockatiel-pinned",
+            "revision": "f48bea55022ab15ab07eb52a79bfc1e661300fd4",
+            "method": "Static source inspection plus the prior exploratory accounts; no runtime execution."
+          },
+          "sourceQualifications": [
+            "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+            "Default one-call recovery sampling with zero permitted counted failures.",
+            "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+            "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+            "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+          ],
+          "sourceEvidence": [
+            "E-state",
+            "E-admission",
+            "E-default",
+            "E-half-open",
+            "E-outcomes"
+          ]
+        }
+      },
+      "sourceQueries": [
+        "Q-excerpt",
+        "Q1",
+        "Q2"
+      ]
+    },
+    "freshResult": {
+      "entity": "RESULT-excerpt",
+      "asOfAcceptance": 8,
+      "associationUses": [
+        "EXCERPT-1::result",
+        "EXCERPT-1::selected-result"
+      ],
+      "fullDeclarations": [
+        "EXCERPT-1::result",
+        "EXCERPT-1::selected-result"
+      ],
+      "items": [
+        "ADMISSION-1::admission-cases"
+      ],
+      "inventory": null,
+      "selectionScope": null,
+      "qualifiedDeclarationDisclosures": {
+        "ADMISSION-2::admission-cases": {
+          "value": {
+            "key": "admission-cases",
+            "operation": "supersession",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "topic"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "investigram": "ADMISSION-2"
+                  },
+                  "contentKey": "admission-cases"
+                }
+              }
+            ],
+            "displaces": [
+              {
+                "investigram": {
+                  "investigram": "ADMISSION-1"
+                },
+                "associationKey": "admission-cases"
+              }
+            ],
+            "reason": "ADMISSION-1 presents its cases as covering admission in this scope, but omits waiting while the single trial is occupied. ADMISSION-2 includes that outcome and the subsequent admission recheck. This does not claim that every statement of ADMISSION-1 was wrong."
+          },
+          "sourceInvestigram": "ADMISSION-2",
+          "queryInvocation": "Q2",
+          "basis": {
+            "id": "cockatiel-pinned",
+            "revision": "f48bea55022ab15ab07eb52a79bfc1e661300fd4",
+            "method": "Static source inspection plus the prior exploratory accounts; no runtime execution."
+          },
+          "sourceQualifications": [
+            "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+            "Default one-call recovery sampling with zero permitted counted failures.",
+            "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+            "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+            "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+          ],
+          "sourceEvidence": [
+            "E-state",
+            "E-admission",
+            "E-default",
+            "E-half-open",
+            "E-outcomes"
+          ]
+        },
+        "RENEW-ADMISSION-1::renew-admission": {
+          "value": {
+            "key": "renew-admission",
+            "operation": "supersession",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "topic"
+            },
+            "displaces": [
+              {
+                "investigram": {
+                  "investigram": "ADMISSION-2"
+                },
+                "associationKey": "admission-cases"
+              }
+            ],
+            "reason": "Reassert the exact earlier content solely to exercise current standing of a historical cause; source qualifications remain and earlier concerns are not cleared.",
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "investigram": "ADMISSION-1"
+                  },
+                  "contentKey": "admission-cases"
+                }
+              }
+            ]
+          },
+          "sourceInvestigram": "RENEW-ADMISSION-1",
+          "queryInvocation": "Q-renew-admission",
+          "basis": {
+            "id": "cockatiel-pinned",
+            "revision": "f48bea55022ab15ab07eb52a79bfc1e661300fd4",
+            "method": "Static source inspection plus the prior exploratory accounts; no runtime execution."
+          },
+          "sourceQualifications": [
+            "Authored lifecycle counterfactual only; no new repository finding or claim that the original admission content is correct.",
+            "Superseding the later admission association does not reinstate the original association or clear historical reconsideration causes."
+          ],
+          "sourceEvidence": [
+            "E-state",
+            "E-admission"
+          ]
+        }
+      },
+      "sourceQueries": [
+        "Q-excerpt",
+        "Q-renew-admission",
+        "Q1",
+        "Q2"
+      ]
+    },
+    "originalInputAndSnapshotUnchanged": true,
+    "freshRecipientCauses": [],
+    "qualification": "Counterfactual renewal; no original association reinstatement, clearance, or new Cockatiel claim."
+  },
+  "substantiveDeclarationDisclosure": {
+    "before": {
+      "entity": "P",
+      "asOfAcceptance": 7,
+      "associationUses": [
+        "ADMISSION-1::admission-cases"
+      ],
+      "fullDeclarations": [
+        "ADMISSION-1::admission-cases"
+      ],
+      "items": [
+        "ADMISSION-1::admission-cases"
+      ],
+      "inventory": null,
+      "selectionScope": null,
+      "qualifiedDeclarationDisclosures": {
+        "ADMISSION-2::admission-cases": {
+          "value": {
+            "key": "admission-cases",
+            "operation": "supersession",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "topic"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "investigram": "ADMISSION-2"
+                  },
+                  "contentKey": "admission-cases"
+                }
+              }
+            ],
+            "displaces": [
+              {
+                "investigram": {
+                  "investigram": "ADMISSION-1"
+                },
+                "associationKey": "admission-cases"
+              }
+            ],
+            "reason": "ADMISSION-1 presents its cases as covering admission in this scope, but omits waiting while the single trial is occupied. ADMISSION-2 includes that outcome and the subsequent admission recheck. This does not claim that every statement of ADMISSION-1 was wrong."
+          },
+          "sourceInvestigram": "ADMISSION-2",
+          "queryInvocation": "Q2",
+          "basis": {
+            "id": "cockatiel-pinned",
+            "revision": "f48bea55022ab15ab07eb52a79bfc1e661300fd4",
+            "method": "Static source inspection plus the prior exploratory accounts; no runtime execution."
+          },
+          "sourceQualifications": [
+            "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+            "Default one-call recovery sampling with zero permitted counted failures.",
+            "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+            "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+            "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+          ],
+          "sourceEvidence": [
+            "E-state",
+            "E-admission",
+            "E-default",
+            "E-half-open",
+            "E-outcomes"
+          ]
+        }
+      },
+      "sourceQueries": [
+        "Q1",
+        "Q2"
+      ]
+    },
+    "after": {
+      "entity": "P",
+      "asOfAcceptance": 10,
+      "associationUses": [
+        "ADMISSION-1::admission-cases"
+      ],
+      "fullDeclarations": [
+        "ADMISSION-1::admission-cases"
+      ],
+      "items": [
+        "ADMISSION-1::admission-cases"
+      ],
+      "inventory": null,
+      "selectionScope": null,
+      "qualifiedDeclarationDisclosures": {
+        "ADMISSION-2::admission-cases": {
+          "value": {
+            "key": "admission-cases",
+            "operation": "supersession",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "topic"
+            },
+            "members": [
+              {
+                "item": {
+                  "investigram": {
+                    "investigram": "ADMISSION-2"
+                  },
+                  "contentKey": "admission-cases"
+                }
+              }
+            ],
+            "displaces": [
+              {
+                "investigram": {
+                  "investigram": "ADMISSION-1"
+                },
+                "associationKey": "admission-cases"
+              }
+            ],
+            "reason": "ADMISSION-1 presents its cases as covering admission in this scope, but omits waiting while the single trial is occupied. ADMISSION-2 includes that outcome and the subsequent admission recheck. This does not claim that every statement of ADMISSION-1 was wrong."
+          },
+          "sourceInvestigram": "ADMISSION-2",
+          "queryInvocation": "Q2",
+          "basis": {
+            "id": "cockatiel-pinned",
+            "revision": "f48bea55022ab15ab07eb52a79bfc1e661300fd4",
+            "method": "Static source inspection plus the prior exploratory accounts; no runtime execution."
+          },
+          "sourceQualifications": [
+            "Authored illustrative static interpretation at the pinned revision; not an observed execution or a result from the implemented PostCode investigator.",
+            "Default one-call recovery sampling with zero permitted counted failures.",
+            "Manual isolation, restored state, cancellation, competing external state changes and non-default sampling are outside this account.",
+            "Application-specific usage and business success are not established. Failure classification follows the configured policy.",
+            "Reentrant execution requests from event listeners during entry to Half-open are excluded; entry and slot reservation are treated as one admission step."
+          ],
+          "sourceEvidence": [
+            "E-state",
+            "E-admission",
+            "E-default",
+            "E-half-open",
+            "E-outcomes"
+          ]
+        },
+        "WITHDRAW-UPDATE-1::withdraw-admission-update": {
+          "value": {
+            "key": "withdraw-admission-update",
+            "operation": "withdrawal",
+            "target": {
+              "entity": {
+                "entity": "P"
+              },
+              "role": "topic"
+            },
+            "displaces": [
+              {
+                "investigram": {
+                  "investigram": "ADMISSION-2"
+                },
+                "associationKey": "admission-cases"
+              }
+            ],
+            "reason": "Withdraw this use in the authored lifecycle branch to test consumers of its qualified declaration reason; the old admission coverage is not certified."
+          },
+          "sourceInvestigram": "WITHDRAW-UPDATE-1",
+          "queryInvocation": "Q-withdraw-admission-update",
+          "basis": {
+            "id": "cockatiel-pinned",
+            "revision": "f48bea55022ab15ab07eb52a79bfc1e661300fd4",
+            "method": "Static source inspection plus the prior exploratory accounts; no runtime execution."
+          },
+          "sourceQualifications": [
+            "Authored lifecycle counterfactual only, not a new repository finding.",
+            "Withdrawing the replacement association neither erases its history nor reinstates the original."
+          ],
+          "sourceEvidence": [
+            "E-state"
+          ]
+        }
+      },
+      "sourceQueries": [
+        "Q-withdraw-admission-update",
+        "Q1",
+        "Q2"
+      ]
+    },
+    "withdrawalCause": "WITHDRAW-UPDATE-1::withdraw-admission-update",
+    "directRecipientCauses": [
+      "WITHDRAW-UPDATE-1::withdraw-admission-update"
+    ],
+    "replacementProducerCauses": [],
+    "bareAddressRecipientCauses": [],
+    "freshRecipientCauses": [],
+    "earlierAcquisitionCauses": [
+      "WITHDRAW-UPDATE-1::withdraw-admission-update"
+    ]
+  },
+  "limitations": [
+    "Undisplaced means no accepted displacement at capture time, not authoritative or reconciled; all competing undisplaced descriptions are selected.",
+    "The original 0/7 and 0/8 baseline is a by-reference boundary control. Discovery branch counts are authored examples, not measured warning frequency.",
+    "Architectural coverage of program behavior is not assigned an inventory dependency. Declared dependencies and investigator-directed propagation are deferred pending observed coverage gaps.",
+    "A supplied reason exposes its exact declaration, not referenced members or full source bundles. Complete target-support acquisition is an investigator instruction; structural acceptance does not establish compliance, adequacy or reinstatement."
+  ]
+}

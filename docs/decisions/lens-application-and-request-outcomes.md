@@ -8,6 +8,7 @@ Supersedes: [Separate qualified Projection construction from presentation shapin
 Superseded in part:
 
 - [Report actual requests and outcomes](#report-actual-requests-and-outcomes) is replaced in full by [request reporting](research-question-driven-observation.md#request-reporting).
+- [Give equivalent qualified answers repeatable identity](#give-equivalent-qualified-answers-repeatable-identity) is replaced in full by [qualified answers over contributions](qualified-answers-over-contributions.md#answer-identity-and-request-reuse).
 
 ## Context
 
