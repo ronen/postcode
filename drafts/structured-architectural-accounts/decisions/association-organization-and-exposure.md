@@ -1,0 +1,111 @@
+# Organize retained information through associations and actual exposure
+
+Status: in review
+Decided: pending adoption
+Arising from: [Structured architectural accounts](../plans/structured-architectural-accounts.md)
+Scope: qualified uses of retained content, Query-result designations, acquisition and cause-bearing reconsideration
+Supersedes:
+
+- [Generalize interpretation contracts without changing their other obligations](structured-investigram-content.md#generalize-interpretation-contracts), in full, by the decisions below together with [common contribution production and execution](common-analysis-contributions.md#production-and-execution), [access and outcomes](common-analysis-contributions.md#access-and-outcomes), [qualified answers](qualified-answers-over-contributions.md) and [structured explanation](structured-architectural-explanation.md). This is the live successor of the earlier referent, subject-association, correction, citation-exposure and bounded-dialog decisions; it replaces those inherited contracts rather than adding a second regime.
+
+## Context
+
+An immutable account can remain useful even when one use of one item is withdrawn. A fuller description can change understanding without proving the earlier description false. One content item may serve several uses, and a later inquiry may use it without copying it. Whole-investigram correction conflates these cases and makes independent reuse difficult.
+
+The organizing mechanism must preserve multiple qualified accounts, historical exact access and known limitations. It must not infer dependence from a name, a shared acceptance batch or an application merely arranging retained information.
+
+## Decisions
+
+### Qualified declarations and exact uses
+
+An association identifies a qualified use of content. Its target is either an Entity plus information role, or a Query result. The recognized Entity roles are identification and topic; topical keys are meaningful investigator-chosen labels, not global identity. A result designation targets a Query result, never an Entity with an arbitrary result role. Each association has an independent local key, globally addressed with its owning investigram. Matching topic keys in different contributions does not merge or amend anything.
+
+An **addition** establishes a new association. A **supersession** establishes a new association and explicitly displaces specified earlier associations. A **withdrawal** displaces specified associations without a replacement. The exact target uses, compatible roles and new use must be unambiguous; a change to another target can be expressed as withdrawal plus addition. Required earlier targets predate acceptance. New declarations and references resolve within the atomic submission or to eligible retained information; invalid references, ownership, operation shapes and circular designated membership are rejected.
+
+Supersession/withdrawal include attributable qualified grounds, normally inline, with supporting content/evidence references where needed. Repeating already available target references in a mandatory redundant support list is unnecessary. Ordinary additions preserve attributable grounds without mandatory filler prose. There is no special operation solely for amending a reason. A later contribution can give additional grounds as new qualified information.
+
+Neither an investigram nor its content item is globally superseded. Content, names, evidence and provenance remain immutable. Derived standing belongs to the association's designated use. A replacement need not reproduce every earlier association; unspecified uses remain as they were. Withdrawal is explicit, never inferred from omission. Reusing Entity identity is not agreement with all associated claims.
+
+A declaration can reference another investigram's content. The source retains ownership, original qualification and evidence; the new declarer owns the new use and its grounds. Changing wording or claim meaning requires new content. Withdrawing an organizing association does not delete its referenced finding. A later withdrawal plus addition can preserve a different use of the unchanged finding, without reinstating any old use or clearing concerns.
+
+Displacing a replacement does not restore its predecessor. Explicit re-adoption is a new addition referencing the earlier content with current grounds. Competing supersessions remain distinct; production time confers no priority. A later investigator can deliberately supersede the standing association or another historical one, preserving the resulting alternatives and their reasons. Do not infer a globally correct winner.
+
+**Rationale and alternatives.** Item-wide displacement would wrongly affect independent uses. A mutable association would erase what an earlier producer asserted. Result associations and Entity associations share declaration semantics without forcing Query results into the system-under-study ontology. Explicit re-adoption is sufficient for the first capability; a reversible declaration calculus is deferred.
+
+### Result designation and historical selection
+
+A result designation is an association selecting exact content items or declaration members as an answer to a particular Query result. Selected membership is immutable and can span investigrams. Members can refer to other designated declarations where supported, with finite resolvable membership; reference nesting is not investigram organization. Incidental enumeration implies neither claim chronology nor priority. Explicit architectural order and roles retain their meaning.
+
+A new designation can add an alternative, supersede exact earlier designations, or withdraw one without replacement. Updating Entity information does not automatically redesignate every result containing it. When an investigation changes the earlier answer it is investigating, instruct it to explicitly redesignate that result after understanding its question, subjects, parameters and scope. This is semantic guidance, not a prior-acquisition acceptance gate or a duty to update all other containing answers.
+
+If the selected historical designation is already displaced, the producer deliberately chooses whether to supersede its standing successor or create a competing alternative by superseding the historical designation again. Explain that choice; the host does not guess. The follow-up subject remains the exact selected historical information regardless of which designation is amended.
+
+Fresh designated-answer selection supplies all equally standing alternatives as distinct qualified answers. Do not select by recency or silently synthesize their union. Explicit selection of a particular alternative remains possible. A producer supplied several alternatives can make a qualified contextual choice without thereby withdrawing the others. Method-specific Lens answers remain governed by their question, as specified in [qualified answers](qualified-answers-over-contributions.md#lens-answers-and-engine-selection).
+
+**Example.** Q1's D1 selects an admission association A. Q2 supplies fuller admission content through B and explicitly supersedes D1 with D2. D1 still selects A; it does not silently contain B. A consumer of D1 can acquire concerns about A or D1's displacement. D2 is not flagged by the declaration that created D2, but independent later changes to its inputs or members can affect it. An exact Projection that captured D1 and its then-status does not change.
+
+### Acquisition, baseline context and discovery
+
+Supplying an Entity means delivering a qualified selection of associated information, not an unqualified canonical definition. Initial context for each subject Entity includes all non-displaced identification-role associations, their content, applicable provenance, qualification, required support and current concerns. Several descriptions coexist; needs-reconsideration does not silently exclude one. An empty identification selection is explicit. Selection by the declared identification scope is recorded as such, even if the API delivers only content rather than an inventory listing.
+
+A Query-result or contextual-selection subject has its own exact selection semantics; do not pretend it is an Entity needing a definition. Supplied navigation origin is separate context. Absence of an origin does not mean there is none, nor license guessing which explanation a human followed.
+
+The dialog can request inventories, particular associations, exact items/excerpts, evidence, result designations and qualified history. Inventories record actual scope, coverage and timing; they do not imply delivery of all listed content. Explicit referents enable discovery of a contribution even when its associations target another Entity. For example, an admission explanation associated with Circuit Breaker can be found through its explicit Half-open referent. This does not require semantic search or a navigation origin. Discovery-only exact handles create no content exposure; substantive descriptions or reasons do.
+
+Deliver referenced content with its original owner, provenance, basis and applicable qualifications, including narrower item/declaration qualifications. Follow dependencies required by the content/input contract; do not recursively fetch every informative link or all descriptions of each mentioned Entity. An excerpt retains applicable source qualification and its exact association route when delivered as a particular use. A link records an address, not proof of delivery, identity equivalence or support.
+
+For displaced information, deliver the exact requested information and applicable displacement, alternative, reason and qualification context. Distinguish delivered replacement content from merely available references and bounded omissions; do not claim a reason/reference delivers its members. Known cause information includes current standing of the cause. Missing or altered required disclosure is a delivery-completeness defect, not a substitute reconsideration warning. Qualified access may be bounded if it states its coverage and permits supported further acquisition.
+
+If support is missing or unresolved, supply available qualified identification/context and inspectable grounds, disclose the missing support and limits, and permit further supported acquisition. Unavailable information is not an established empty result. Do not invent a definition, correspondence or missing evidence. Required structural references must still resolve; this policy does not accept dangling records.
+
+Before superseding or withdrawing a use, instruct the agent to acquire its complete designated content, qualifications and required semantic support, including content dependencies. Result targets include their members; unrelated items in an owning investigram are not required. Several dialog acquisitions can supply this. Retain accurate records of what actually arrived; a notice or address is not sufficient content. Reuse requires preserving the source's meaning and qualification, without a special new prior-exposure gate.
+
+The host validates structural integrity, required grounds/qualification, truthful delivery and operational boundaries. It does not mechanically certify understanding or adequate grounds, or gate displacement/redesignation/reuse on a semantic completeness proof. Reasoning-policy checks and reminder-based recovery can be designed later if experience warrants them; valid structure is not a certificate of correct interpretation.
+
+**Rationale and departures.** This replaces whole-target investigram acquisition and mechanical correction-eligibility gates with precise use-oriented instructions. It retains honest coverage and required qualification while avoiding a premature semantic verifier. Initial identification gives a sound starting point; adaptive dialog supplies more without a rigid universal context cutoff.
+
+### Exposure and reconsideration
+
+An exposure index records substantive information actually supplied to the producing investigation, not investigator-reported reliance. The retained history identifies exact content, association use, metadata/reasons and any acquired inventory or selection scope, with actual delivery position and coverage. Index entries may share detailed delivery records; no particular physical index layout is prescribed.
+
+Each investigram inherits its own producer's actual input history. Independently produced investigrams accepted together do not share exposure merely because of the batch or outer invocation. Several outputs of one producing execution can conservatively share its inputs; the mechanism does not infer per-item reliance. A report can summarize causes across an invocation, but that union is not a propagation source for every output.
+
+No exposure arises merely from a reference, human browsing, provider identity/equality resolution, result membership, or answer assembly/retrieval/presentation. A producer that actually consumes retained information to establish new content or organizing claims does record it, whether mechanical or agentic. Source findings and an organizer's judgment preserve separate attribution. A consumer of the finding follows its producing history, not a sibling organizer's inputs.
+
+Keep three concern paths distinct:
+
+| Path | Cause and boundary |
+| --- | --- |
+| Exact acquisition | Later displacement of an exact received association/use or designation; propagate generating-investigram concerns through actually supplied information. Sharing content via a different association is not alone a path. |
+| Acquired inventory/selection scope | A later addition within the actually acquired scope could have changed availability or selection. The exact new declaration is the cause; it was not supplied earlier. |
+| Designated membership | Later displacement of an exact association included directly or through declaration membership affects that designation, even when its producer had no incoming exposure to its own output. A bare item reference alone does not confer association-membership protection. |
+
+Scope contracts state what changes affect their meaning. An all-history address inventory changes when an addition/supersession adds an entry; withdrawal leaves that inventory's membership intact. A current-only/status-bearing selection can be affected by withdrawal as well. Partial, ranked or bounded coverage must be explicit; receiving one exact description or fixed result is not exposure to all future information about that Entity. Baseline all-standing-identification selection has a scope dependency and can receive addition concerns.
+
+Preserve exact cause identities through direct and transitive propagation. Distinguish displaced standing, membership concerns and producing-context concerns for each designation. A designation's own displacement is standing, not a warning on itself; consumers of it can need reconsideration. New designation membership does not acquire the cause that created it. Independent later causes remain applicable.
+
+Delivery timing matters. A displacement already accepted when content is delivered is known context and must be disclosed; it is not a later change to that delivery. Apply this boundary to direct, membership and inherited concerns, so a known cause cannot re-enter by another route. Membership uses the designation's acceptance position in the same way: already-displaced members retain their standing without a newly invented later-change warning. A producing investigation does not acquire a reconsideration cause solely from its own declarations.
+
+During an ongoing production, relevant substantive updated information and qualified change context received before submission can account for a change that occurred after an earlier delivery. Keep both deliveries. That specific change alone need not flag the resulting contribution; this is not proof of agreement or understanding. A bare notice or store acceptance is not necessarily such delivery. A sufficient test case supplies the qualified change declaration and its required new members (withdrawal has no replacement), but no universal all-payload acquisition rule is imposed. Other producers, undelivered changes, later changes and independent causes remain unaffected. Completed investigrams are not retrospectively cleared.
+
+Fresh cause inspection discloses the cause's current standing. If B displaced A and C later displaces B, an earlier recipient of A retains historical cause B. C does not automatically become a second exposure cause without a relevant acquisition path; access can show both relationships. This neither reinstates A nor clears B.
+
+Reconsideration means that acquired context or selected membership changed in a relevant recorded way. It does not prove error, reliance, endorsement or understanding, invalidate a Session, suppress an answer, or trigger regeneration. It is derived status, leaving original content, delivery history and exact Projection captures unchanged. There is no separate notification system requirement.
+
+**Rationale and limits.** Conservatively flag matching inventory additions as well as displacements: richer information can matter without contradicting an old claim. Entity-wide flags would be broader than actual acquisition. Exact tracking still misses semantic dependence on unknown/unrequested future material. For example, a later waiting case may matter to an earlier conclusion that acquired only a specific description. Do not invent exposure to close that gap. Baseline identification scopes can be broad, especially after changed-method batches; observe practical burden at plan checkpoints. Reassessment, clearance, targeted suppression/propagation, declared dependencies and automatic scheduling remain deferred.
+
+The term exposure index replaces citation index for supplied input. Evidence citations and support remain distinct. This does not rename human-output exposure in observation contracts or conflate it with producer delivery.
+
+### Qualified inconsistency without displacement
+
+Retain an attributable inconsistency report comparing exact content items or association uses, with qualified grounds and relevant evidence. Item endpoints concern substantive claims; association endpoints concern what a claim is used to describe or designate. Whole investigrams are not the default endpoints. Make the report discoverable from its targets without displacing either, selecting a winner or flagging unrelated siblings as invalid.
+
+Instruct the agent to acquire sufficient substantive qualified information for its comparison; a scoped excerpt can suffice. Validate exact targets and required report structure, not a special prior-delivery eligibility gate. Actual deliveries determine exposure; report references do not invent it. This explicitly replaces the inherited 2026-10-02 unresolved-inconsistency clarification's prior-citation prerequisite and whole-investigram comparison targets. The report itself remains a qualified judgment, not an association displacement operation.
+
+## Alternatives and consequences
+
+Whole-investigram replacement, mutable canonical definitions and universal relationship inference were rejected because they conflate history, identity and current use. Displacing content globally would erase valid independent uses; association declarations preserve them. Keeping every detail immutable requires fresh qualified access to derived status rather than rewriting old answers.
+
+The first capability trusts semantic instructions while mechanically enforcing data integrity. This can retain an inadequately reasoned yet structurally valid declaration. Such limitations are explicit; later evidence can justify an enforcement or reassessment mechanism without weakening the current provenance record. No automatic reinstatement, declaration challenge calculus or policy-based suppression is included.
+
+Adopt with the common contribution model, qualified-answer integration, structured explanation and coordinated governing revisions. The plan implements and tests these contracts before the remaining producer migration; current whole-investigram behavior is not claimed conformant at adoption.
