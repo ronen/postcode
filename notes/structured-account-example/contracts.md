@@ -505,6 +505,13 @@ suppression, reassessment/clearance and scheduling remain deferred beyond this c
 <a id="retained-investigation-offer"></a>
 ## Retained follow-up option metadata
 
+The planned capability includes retrieving and executing retained options by exact reference through
+the supported application boundary, with focused live validation of that chain. The fixture's Lens
+name/request shape is illustrative and its checker does not establish product integration. Menus,
+ranking and a global catalogue remain outside scope. See the
+[scope agreement](../structured-architectural-accounts-proposal.md#offered-followup-investigation).
+
+
 [Follow-up options](followup-options.md) belong to the exact producing investigram,
 not a transferable guidance child. Each has a key, label, purpose, architectural targets,
 supported method, declared parameters, qualifications and evidence. No content type is

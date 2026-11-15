@@ -50,8 +50,9 @@ the contract; absence of an optional action is not itself a mechanism failure. E
 content remains subject to the request's fulfillment requirements.
 
 Taken together, live-agent checks must demonstrate successful production of qualified structured
-state-behavior content, retention and retrieval supplying the required diagram, and a follow-up
-acquiring and referencing retained information. A failed run can exercise outcome handling but does
+state-behavior content, retention and retrieval supplying the required diagram, and execution of a
+retained follow-up option through the supported application boundary, acquiring and referencing
+retained information. A failed run can exercise outcome handling but does
 not substitute for demonstrating the successful integration path.
 
 Keep live checks tolerant of agent evolution, even for an invariant system under study. Assert
@@ -1248,13 +1249,29 @@ The fixture follows an option made available within Q1's result while keeping it
 owner explicit. Q2's expanded admission bundle does not repeat a question Q2 already answered.
 This is an authoring choice, not a prohibition on reinvestigation.
 
-The stipulated follow-up Lens delegates its question to the selected qualified option under
-a supported method. Its default result contract is qualified information in supported types,
+Execution of retained follow-up options is in scope, not merely their production and storage.
+An investigation can return an option; the application can retrieve it and request its execution
+by exact owner/option reference. The resulting investigation receives the option's meaning, targets,
+parameters and relevant qualified context under a supported method. Preserve actual delivery,
+provenance and result contracts through the common mechanism; naming an unsupported method does
+not make an option executable.
+
+The focused live trials must include this option-specific invocation path through the supported
+application boundary. General investigation of an earlier result alone does not cover it. Controlled
+dialogs provide deterministic protocol and lifecycle coverage. The authored fixture already illustrates
+the chain, but does not establish product integration. No menu, ranking, global operation catalogue,
+ontology or particular public Lens name is required; exact API packaging remains an implementation
+choice. This scope does not replace the existing ability to investigate a prior result independently
+of any offered option.
+
+The follow-up operation delegates its question to the selected qualified option under a supported
+method. Its default result contract is qualified information in supported types,
 not a prescribed diagram. An explicit “generate a state diagram” promise additionally requires
 compatible data under the investigation result contract and successful presentation under the
 existing application contract, with their respective unmet/failure outcomes kept distinct. Schemas
 alone cannot establish adequate interpretation. Optional specialization is a conceptual
-contract example, not exercised as a product API.
+contract example not yet exercised as a product API; existing result/Presentation contracts govern
+the implementation.
 
 <a id="global-investigation-entry"></a>
 Overview, Explain, structural listings, option discovery and user selection are surrounding

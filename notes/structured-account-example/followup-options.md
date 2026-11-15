@@ -1,8 +1,9 @@
 # One retained follow-up option and its invocation
 
-Updated 2026-11-12. The Follow-up investigation Lens is stipulated for this probe,
-not a product API or a global discovery/menu design. The initial investigation is
-an authored precondition. [Payload tour](metadata-payload.md) shows current ownership.
+Updated 2026-11-15. Executing retained follow-up options through the supported application boundary
+is in scope for the planned capability, including focused live validation. The Follow-up investigation
+Lens name and request serialization here remain illustrative; this probe is not an implemented
+product API or a global discovery/menu design. The initial investigation is an authored precondition. [Payload tour](metadata-payload.md) shows current ownership.
 
 Options are qualified metadata owned by exact investigrams. Their address differs
 from the entity/result through which they are made available and supplied as context.

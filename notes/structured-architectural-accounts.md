@@ -2560,3 +2560,17 @@ accurate exposure. This explicitly changes the existing governing inconsistency 
 be mapped during drafting. Added the obligation to the agent instruction inventory. Marked the
 migrated report representation/coverage as absent from the current authored fixtures; no executable
 or governing changes made this turn.
+
+
+## 2026-11-15 — Retained follow-up options are executable in the first delivery
+
+The human confirmed that the capability includes the complete option path: an investigation produces
+qualified follow-up metadata, the application retrieves it and requests execution by exact reference,
+and the resulting investigation receives the option's meaning, targets and relevant context. Include
+that option-specific chain in focused live integration trials. A generic follow-up on prior retained
+information is not equivalent coverage. Controlled dialogs continue to cover protocol/lifecycle cases.
+
+No menu, ranking, global operation catalogue, ontology or prescribed public Lens name is implied.
+Existing prior-result investigation remains available independently. Updated the proposal,
+consolidation and fixture guidance to distinguish agreed implementation scope from the authored
+fixture's current limits. No application or fixture behavior changed this turn.

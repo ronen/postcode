@@ -444,6 +444,20 @@ whole-investigram targeting and recorded-delivery prerequisite. The package must
 mapping; the authored fixtures do not yet test the migrated report shape. This is not an additional
 association declaration operation. See the [proposal](structured-architectural-accounts-proposal.md#unresolved-inconsistency-reports).
 
+## Retained follow-up execution in scope
+
+The first delivery includes producing, retaining and retrieving qualified follow-up options, and
+requesting their execution by exact owner/option reference through the supported application boundary.
+The resulting investigation receives the option's meaning, targets, parameters and relevant qualified
+context under a supported method. Include this option-specific chain in focused live trials; merely
+investigating a prior result does not test it. Controlled dialogs provide systematic lifecycle coverage.
+Current authored fixtures demonstrate the proposed protocol, not an implemented application API.
+
+No particular public Lens name, menu, option ranking, global catalogue or ontology is required.
+Implementation chooses interface packaging while preserving exact reference, qualification, actual
+delivery and result-contract meanings. Existing prior-result investigations remain available
+independently of follow-up options. See the [scope agreement](structured-architectural-accounts-proposal.md#offered-followup-investigation).
+
 ## Catalogue responsibilities and diagrams
 
 | Catalogue responsibility | Purpose |
@@ -606,7 +620,8 @@ systematic mechanism coverage. Trial findings can inform review checkpoints with
 introducing deferred semantic gates or broader evaluation infrastructure.
 
 Live runs together demonstrate a successful structured state-behavior investigation, qualified
-retention/retrieval supplying the diagram, and follow-up acquisition/reference of retained information.
+retention/retrieval supplying the diagram, and execution of a retained follow-up option through the
+supported application boundary with acquisition/reference of retained information.
 Check these contract and workflow properties, not an exact agent-authored payload or diagram image.
 Agent updates may legitimately change wording, local keys, decomposition and optional content even
 when the system under study is unchanged. Preserve required semantic scope, qualification and
