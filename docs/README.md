@@ -1,22 +1,10 @@
 # Project Documentation
 
-This is the human-readable map of PostCode's canonical project knowledge. It also helps coding agents locate the context governing their work, but the documentation should remain understandable without access to an agent conversation.
-
-Adopted research concepts and task-record requirements live under [`foundation/`](../foundation/). Development instructions live under [`dev/`](../dev/). This directory contains the human-maintained application specification, governing core concepts and architectural constraints, plans, accepted decisions, supported-capability documentation, and descriptions of the application built from that foundation.
-
-Coding agents begin with [`AGENTS.md`](../AGENTS.md), which directs them to the applicable task protocol, development workflow, conventions, and project documentation.
+This directory contains the human-maintained application specification, governing core concepts and architectural constraints, plans, accepted decisions, supported-capability documentation, and descriptions of the implemented application. See the [repository documentation map](../README.md#documentation-map) for material elsewhere in the repository.
 
 For supported questions and actions, begin with the [capability reference](capability-reference.md); for command syntax and detailed behavior, use the [CLI reference](cli-reference.md). Optional hosted inference has a separate [setup and transmission disclosure](hosted-investigation.md).
 
 ## Documentation Types
-
-### Drafts
-
-[`drafts/`](../drafts/) contains canonical-shaped proposals being prepared for approval and promotion.
-
-### Durable notes
-
-[`notes/`](../notes/) contains committed, human-curated exploratory material—including durable planning notes, alternatives, unresolved questions, and investigation results—that is useful across sessions but is neither governing nor necessarily permanent. Notes may be revised, consolidated, incorporated elsewhere, or deleted; canonical documents must not depend on them, and immutable historical records must not link to them.
 
 ### Plans
 
@@ -57,18 +45,6 @@ Architecture documentation is a selective, descriptive map of how the current sy
 ### Decisions
 
 [`decisions/`](decisions/) preserves consequential choices explicitly accepted by the human, together with their context, rationale, and consequences. Accepted decisions are prescriptive and binding within their stated scope unless superseded; they authorize and explain substantive changes to the governing application specification, core concepts, and architectural constraints, while architecture documentation describes the resulting implemented shape.
-
-### Task records
-
-[`records/tasks/`](../records/tasks/) contains the durable record of each authorized implementation task, including its request, material follow-ups, outcome, and verification. The [task protocol](../dev/task-protocol.md) governs how these records are created and maintained.
-
-### Review records
-
-[`records/reviews/`](../records/reviews/) preserves durable handoffs, returned findings, and dispositions for independent implementation reviews required by approved plans or authorized tasks. New review series are grouped by their governing plan, or by task when no plan applies; filenames identify each record's role.
-
-### Audit records
-
-[`records/audits/`](../records/audits/README.md) preserves exploratory audits and selected supporting evidence against stated baselines. Plans may cite these durable findings; the audits do not themselves authorize implementation or establish review-gate acceptance. Each collection identifies its reports, retained evidence, and archival limits.
 
 ### Backlog
 

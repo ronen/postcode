@@ -136,8 +136,8 @@ Alphabetical by code.
   architectural meaning during rendering. Universal notation support and stored
   layout choices are not required. Success establishes faithful support for the
   selected investigations, not their suitability for the first user-facing offering.
-- **Sources:** [journey outputs: connected account examples](initial-journey/cockatiel-account-examples.md),
-  [journey findings: capability-planning inputs](initial-journey/design-findings.md#capability-planning-inputs),
+- **Sources:** [journey outputs: connected account examples](../notes/initial-journey/cockatiel-account-examples.md),
+  [journey findings: capability-planning inputs](../notes/initial-journey/design-findings.md#capability-planning-inputs),
   [backlog: architectural accounts through concrete journeys](../docs/backlog.md#explore-architectural-accounts-through-journeys),
   [candidate capabilities: responsibility-focused investigation](candidate-capabilities.md#responsibility-focused-investigation),
   [backlog: navigation origins](../docs/backlog.md#assess-and-preserve-navigation-origin-lineage),
@@ -199,8 +199,8 @@ Alphabetical by code.
   establish the usefulness of the human experience. Once usable, trigger the
   [CLI retirement checkpoint](#cli-retirement-checkpoint).
 - **Sources:** strategy discussion: a graphical surface for first practical human use;
-  [journey outputs: investigation script](initial-journey/cockatiel-investigation-script.md),
-  [journey findings: implementation-validation checks](initial-journey/design-findings.md#implementation-validation).
+  [journey outputs: investigation script](../notes/initial-journey/cockatiel-investigation-script.md),
+  [journey findings: implementation-validation checks](../notes/initial-journey/design-findings.md#implementation-validation).
 
 <a id="present"></a>
 ### PRESENT — Account presentation and navigation
@@ -234,9 +234,9 @@ Alphabetical by code.
   lineage and architectural relationships remain distinct.
   Use structured qualification where it serves the selected interactions, without
   requiring a general visual taxonomy or a project-wide overview.
-- **Sources:** [journey outputs: investigation script](initial-journey/cockatiel-investigation-script.md),
-  [journey outputs: connected account examples](initial-journey/cockatiel-account-examples.md),
-  [journey findings: implementation-validation checks](initial-journey/design-findings.md#implementation-validation),
+- **Sources:** [journey outputs: investigation script](../notes/initial-journey/cockatiel-investigation-script.md),
+  [journey outputs: connected account examples](../notes/initial-journey/cockatiel-account-examples.md),
+  [journey findings: implementation-validation checks](../notes/initial-journey/design-findings.md#implementation-validation),
   [candidate UX: discoverable questions](candidate-ux.md#discoverable-questions-and-named-actions),
   [candidate UX: qualification and changing accounts](candidate-ux.md#qualification-and-changing-accounts),
   [candidate UX: available orientation](candidate-ux.md#orientation-that-remains-in-view),
@@ -261,9 +261,9 @@ Alphabetical by code.
 - **Boundary:** selects the offering and its acceptance criteria. Detailed
   presentation and interface design belong to PRESENT and MINIGUI; additional
   investigation capabilities have their own implementation scope.
-- **Sources:** [journey outputs: investigation script](initial-journey/cockatiel-investigation-script.md),
-  [journey outputs: connected account examples](initial-journey/cockatiel-account-examples.md),
-  [journey findings: capability-planning inputs](initial-journey/design-findings.md#capability-planning-inputs),
+- **Sources:** [journey outputs: investigation script](../notes/initial-journey/cockatiel-investigation-script.md),
+  [journey outputs: connected account examples](../notes/initial-journey/cockatiel-account-examples.md),
+  [journey findings: capability-planning inputs](../notes/initial-journey/design-findings.md#capability-planning-inputs),
   strategy discussion: separate mechanism validation from selection of the first offering.
 
 <a id="principles-for-choosing-the-order"></a>

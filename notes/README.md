@@ -8,13 +8,8 @@ Notes may link to canonical documents and to other notes. Drafts may link to not
 
 A document whose lifecycle prevents later editorial repair must not link to notes. This includes accepted decision records, concluded task records, preserved review findings, review handoffs after review begins, and other records required to remain unchanged as historical evidence.
 
-Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root underscore directory for disposable checkout-local work, and the [backlog](../docs/backlog.md) for candidate work awaiting human evaluation.
-
 ## Current notes
 
-- [Upcoming work](upcoming-work.md)
-- [Candidate capabilities](candidate-capabilities.md)
-- [Candidate UX](candidate-ux.md)
 - [Human understanding and agency](human-understanding-and-agency.md)
 - [Dependency landscape](dependency-landscape.md)
 - [Explorative capabilities](explorative-capabilities.md)

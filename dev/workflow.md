@@ -122,6 +122,7 @@ Avoid implementation mechanics, usage instructions already covered elsewhere, ta
 
 Update the summary when externally meaningful capabilities or significant limitations change. Prefer revising the existing account over appending a description of the latest work.
 
+<a id="backlog"></a>
 ### Backlog
 
 When useful work or a concern arises outside the current scope, add it to [`docs/backlog.md`](../docs/backlog.md) rather than silently expanding the plan or task. A backlog entry records an open candidate, not an implementation commitment. The human evaluates and curates the backlog during planning; an agent must not prioritize, promote, implement, or remove an entry without human direction.

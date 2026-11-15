@@ -6,7 +6,7 @@ Except for this directory guide, material here is non-governing. A draft does no
 
 Group each planning package under a descriptive subdirectory. Treat the package root as the counterpart of canonical `docs/`, and mirror relevant directory paths from there; the planning workflow defines filenames for complete documents and revision files. Keep durable exploratory planning notes, alternatives, unresolved questions, and investigation results under human-curated [`notes/`](../notes/). Keep ephemeral, bulky, generated, or checkout-local investigation material in a descriptively named ignored root underscore directory.
 
-Drafts may link to human-curated [`notes/`](../notes/) as planning context. Promoted material must remove or replace those links and carry any context required for its durable role. Never carry a note link into a historical record that cannot later be edited.
+Drafts may link to human-curated [`notes/`](../notes/) and [`steering/`](../steering/README.md) as planning context. Promoted material must remove or replace those links and carry any context required for its durable role. Never carry such a link into a historical record that cannot later be edited.
 
 The [planning workflow](../dev/planning.md#suggested-planning-sequence) describes a suggested planning-package layout and format for revisions to existing canonical documents.
 

@@ -18,7 +18,7 @@ review feedback and the state of the design exploration. Non-governing; see
   going out and
   [agent-supplied context](../../foundation/product-design.md#372-agent-supplied-context)
   coming back.
-- [Visual and structured qualification](../candidate-capabilities.md#visual-and-structured-qualification)
+- [Visual and structured qualification](../../steering/candidate-capabilities.md#visual-and-structured-qualification)
   is exploratory input, not committed design.
 
 ## Design principles from review

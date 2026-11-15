@@ -263,7 +263,7 @@ while its value is being tested, without weakening the epistemological guarantee
 of its mechanically derived claims.
 
 The detailed derivations, alternatives, difficult cases, and open questions are
-preserved in the [dependency-landscape notes](dependency-landscape.md).
+preserved in the [dependency-landscape notes](../notes/dependency-landscape.md).
 
 ## Explorative 5WH summary
 
