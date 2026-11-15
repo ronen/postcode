@@ -1,6 +1,6 @@
 # Proposed revisions to docs/backlog.md
 
-These are complete replacement and addition entries. The conformance-tracking entry records required implementation-plan work; the other entries are future candidates, not additions to that plan's acceptance requirements.
+These are complete replacement and addition entries. The conformance-tracking entry records required implementation-plan work. The retry/rerun entries distinguish capability covered by that plan from deferred interface work. The other entries are future candidates, not additions to the plan's acceptance requirements.
 
 **Replace “Explore architectural accounts through concrete journeys”, preserving its explicit anchor.**
 
@@ -98,3 +98,31 @@ Area: architecture conformance and migration
 Adoption precedes implementation of common contributions, association declarations, result designations and exposure semantics. Existing mechanical retention, agentic trees/corrections/citations and application selection/construction therefore have known target-conformance gaps; new diagram and option capabilities are not available merely through adoption. Until each capability is migrated, the decision's limited transitional provision preserves its pre-adoption behavioral contracts and requires honest migration status.
 
 This is required work in the [structured-accounts plan](plans/structured-architectural-accounts.md), not an optional future enhancement. Urgency: track from adoption; verify the early vertical slice, complete the remaining migration and close this entry at final integration. The implementing agent records capability status and restoration milestones; the human reviews checkpoints and authorizes any scope change. Do not finish the plan while retaining a permanent legacy regime. After verified full conformance, the temporary exceptions cease to apply; update current conformance notices and resolve this entry together with the implementation's final documentation updates, preserving historical decision text. Implementation authorization remains separate from adoption.
+
+**Replace “Retry failed or incomplete interpretation without restarting the session”.**
+
+## Retry failed or incomplete interpretation without restarting the session
+
+Added: 2026-09-24
+Origin: module investigation planning discussion; [fresh-investigation contract](decisions/qualified-answers-over-contributions.md#answer-identity-and-request-reuse)
+Area: investigation execution and recovery
+
+The application capability is required by the [structured-accounts plan](plans/structured-architectural-accounts.md#scope): explicitly request a fresh investigation of the same question within the supported Session, including after a failed or incomplete attempt. This is no longer contingent on establishing product value. Adoption does not establish delivery; track implementation through [migration conformance](#complete-structured-account-migration-conformance).
+
+Ordinary requests continue to reuse compatible retained outcomes. Communication/service failures without a reusable outcome remain subject to ordinary selection and existing retry rules. An explicit fresh attempt preserves earlier accepted information and actual attempt provenance; it does not automatically displace earlier uses, reinstate withdrawn designations or clear reconsideration. Existing Session validity, execution authorization and resource limits still apply. This does not change mechanical-analysis retry policy.
+
+The residual candidate is a dedicated CLI or other interface interaction for requesting and navigating the new attempt. New command names or GUI controls are not required by the mechanism plan. Assess that interaction in later interface work, keeping fresh execution distinct from redisplaying a retained outcome and showing the selected answer's qualification. Coordinate it with the successful-rerun interaction below; no separate retry engine is implied.
+
+**Replace “Explicitly rerun a successful interpretation”.**
+
+## Explicitly rerun a successful interpretation
+
+Added: 2026-09-24
+Origin: module investigation planning discussion; [fresh-investigation contract](decisions/qualified-answers-over-contributions.md#answer-identity-and-request-reuse)
+Area: investigation execution and retained results
+
+Explicit fresh investigation after a successful attempt is also required by the [structured-accounts plan](plans/structured-architectural-accounts.md#scope), not an undecided regeneration capability. The user need not supply a reason or wait for a displacement or reconsideration flag; a changed agent model is one possible external motivation. Adoption does not establish that the capability is implemented; its delivery is part of [migration conformance](#complete-structured-account-migration-conformance).
+
+A fresh attempt performs new production while preserving earlier attempts and results. Ordinary requests still reuse compatible work. New answers are organized through explicit designation declarations, without production recency implying priority or automatic clearance. A successful attempt may find no organizing change necessary; it still must satisfy the requested result contract.
+
+The residual candidate is the user-facing interaction, coordinated with retry of failed or incomplete attempts. Distinguish new production from exact retained presentation, investigation of selected content and invocation of a follow-up option. Expose execution cost and qualified answer history under the existing application contracts. Dedicated CLI syntax, GUI controls and model-configuration UI remain outside the mechanism plan.
