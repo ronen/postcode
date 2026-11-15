@@ -48,6 +48,8 @@ A relationship may be deliberately identified as an Entity for continued referen
 
 A **Query result** is the organizing identity for the answer to one particular engine investigation invocation. It is neither an Entity in the system under study nor a Projection. It retains the question, subject and parameter context needed to interpret its designated answers.
 
+The invocation is the particular request; the Query result is a distinct identity organizing its answers. Keeping access to invocation context does not make the two the same object or concept.
+
 A **result designation** is an immutable content association selecting exact items or declarations for that answer, possibly across investigrams. Later designations can add alternatives, supersede exact earlier designations or withdraw them. Membership never silently substitutes current content. Recognized reuse of an existing request reuses its result identity; a new user action does not alone create another invocation. An application Lens may select designated information into a Projection under its own question/method contract.
 
 **Replace “Captured bases, program inputs and Projection requests”, preserving its explicit anchors.**
@@ -174,7 +176,7 @@ An investigram is not globally replaced. Later declarations can displace particu
 
 *[decision: [Content contracts](decisions/structured-architectural-explanation.md#content-and-catalogue-responsibilities)]*
 
-**Analysis content** is an investigram's substantive information, replacing the earlier term Interpretation content. A **content item** is an addressable keyed portion of it. Its **content type** identifies a supported structure; its **content-type contract** specifies meaning, required information, references, qualifications, dependencies and partiality. A **schema** describes mechanically checkable shape. Neither structure nor schema validation establishes truth.
+**Analysis content** is an investigram's substantive information. A **content item** is an addressable keyed portion of it. Its **content type** identifies a supported structure; its **content-type contract** specifies meaning, required information, references, qualifications, dependencies and partiality. A **schema** describes mechanically checkable shape. Neither structure nor schema validation establishes truth.
 
 Items can contain several related claims; not every sentence is an independent proposition record. Local component keys enable exact references without introducing global Entities. A qualified prose item remains valid, but does not silently satisfy a requested specialized form. Architectural concepts guide interpretation; diagram types map compatible supplied information to pictures without adding architectural claims.
 
@@ -182,7 +184,7 @@ Items can contain several related claims; not every sentence is an independent p
 
 *[decision: [Qualified declarations](decisions/association-organization-and-exposure.md#qualified-declarations-and-exact-uses)]*
 
-A **content association** is a qualified designated use of content for an Entity and information role, or for a Query result. Identification and topic are the initial Entity roles; a result designation targets a Query result. Topic labels are local meaningful keys, not global identities. Every association has its own address within its owning investigram.
+A **content association** is a qualified designated use of content for an Entity and information role, or for a Query result. Identification is a recognized Entity role; other topical information uses meaningful local keys, and further understood roles can be added when justified. The protocol may encode generic topical associations without making `topic` a fixed governing role. A result designation targets a Query result. Topic labels are not global identities. Every association has its own address within its owning investigram.
 
 **Association declarations** add a use, supersede exact earlier uses with a new one, or withdraw uses without replacement. They are qualified immutable organizing metadata. They may reference another investigram's content without transferring ownership, evidence or provenance. Displacing one use does not globally invalidate its content or other associations. Derived standing, qualifications and reconsideration are distinct; no last-writer priority or automatic reinstatement is implied.
 
@@ -195,3 +197,5 @@ A **content association** is a qualified designated use of content for an Entity
 An **exposure index** records qualified information actually supplied to a producing investigation, including exact association/content deliveries and explicitly acquired inventory or selection scopes. It does not assert reliance, endorsement or comprehension. Per-investigram attribution follows its actual production history, not a shared acceptance batch. Bare references, host equality reuse, human browsing and answer assembly create no production exposure. Evidence citations are different from this index.
 
 **Needs reconsideration** is derived cause-bearing status from relevant later changes to acquired information/scopes or exact designated membership, including transitive exposure paths. Known context and substantive updates received during production follow the timing rules. Fixed result membership is not exposure, and an exact description is not a blanket inventory dependency. A warning does not prove error, suppress reuse, clear other causes or initiate investigation. Exact captured answers remain unchanged; fresh access can disclose current standing and causes.
+
+Status is derived for each exact designation, not one warning set on the Query result. Its own displacement is standing; the designation does not acquire the cause that created it. Independent membership and producing-context concerns remain applicable.

@@ -42,6 +42,8 @@ Exact acquisition and scoped inventories do not establish complete semantic depe
 
 Collect concrete examples from use before choosing among declared dependencies, investigator-directed propagation, targeted suppression or improved acquisition. An eager producer might inspect earlier exposed results and identify particular affected ones; that requires a separately designed access and qualified-declaration contract. Compare this with explicit dependencies on content/use coverage. None replaces truthful actual-delivery provenance. Fix defects in promised propagation independently of this broader candidate.
 
+Also preserve the accepted reuse-without-acquisition limit: a new association can reference an old item without delivery of its source association, leaving no exposure path from later displacement of that use. Existing references/deliveries can support an audit if useful. Defer a dedicated retained “used without delivery” field and any propagation dependency derived from it; neither is required by structural acceptance.
+
 ## Investigate identity correspondence and organizing declaration challenge
 
 Added: 2026-11-15
@@ -51,6 +53,8 @@ Area: identity and retained information
 Investigate needs for explicit Entity supersession, merge/split correspondence, and any resulting lookup or reconsideration effects. Presently, independently identified things remain distinct; qualified correspondence does not redirect IDs or merge histories. New Entities and explicit associations can describe conflation without pretending earlier references meant something else.
 
 Consider challenging, reinstating or withdrawing declarations as judgments distinct from displacing their designated uses. Current re-adoption uses a new addition and leaves earlier displacement intact. Define authority, exact targets, causes and competing interpretations before adding a reversal calculus. A policy preventing deliberate producer reassertion, if needed, belongs here or in a separately scoped host policy; equivalent recomputation already does not renew associations automatically.
+
+A minimum-guarantee or guarantee-ranking selector is also deferred. Scoped epistemic guarantees do not form a universal ordered scale. Preserve explicit method/scope/guarantee changes in supersession grounds without introducing a numeric or total-order preference by default.
 
 ## Explore organization of contributions and architectural entities
 

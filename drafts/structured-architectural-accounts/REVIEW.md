@@ -28,7 +28,7 @@ Each predecessor revision file changes only its opening metadata; historical bod
 
 Check for lost governing obligations or accidental scope changes during consolidation, especially at the production/assembly boundary, per-producer exposure, provider recomputation after displacement, exact subjects versus current designated answers, partial fulfillment, and mechanical method-specific results. Check that delegated implementation details do not weaken those semantics.
 
-The package does not intentionally leave a consequential design choice unresolved. The bounded diagram notation is made concrete here for review. New semantic conflicts found during review or implementation require human resolution; observations about warning breadth or instruction usability do not implicitly authorize deferred mechanisms.
+One fidelity-review question awaits human resolution before promotion: withdrawal-sensitive current-only inventories. It is marked locally in the association decision and in the plan. Across-submission content-to-association reachability is required. The bounded diagram notation is made concrete here for review. New semantic conflicts found during review or implementation require human resolution; observations about warning breadth or instruction usability do not implicitly authorize deferred mechanisms.
 
 ## Promotion boundary
 
@@ -38,4 +38,4 @@ No foundation or development-process files are changed. The main-branch director
 
 ## Draft verification
 
-Checked all 359 local links against intended canonical destinations and the draft's new/replacement units. All 18 backward headed supersession mappings have corresponding predecessor revisions and forward links. Confirmed no substantive package links depend on notes, steering or review scratch files. These are document checks, not implementation or live-agent verification; the plan specifies that later work.
+Checked all 370 local links against intended canonical destinations and the draft's new/replacement units. All 18 backward headed supersession mappings have corresponding predecessor revisions and forward links. Confirmed no substantive package links depend on notes, steering or review scratch files. These are document checks, not implementation or live-agent verification; the plan specifies that later work.
