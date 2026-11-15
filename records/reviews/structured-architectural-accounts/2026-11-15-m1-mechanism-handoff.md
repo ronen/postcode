@@ -4,8 +4,8 @@ Record type: handoff
 Prepared: 2026-11-15
 Task: [Implement structured architectural accounts](../../tasks/2026-11-15-structured-architectural-accounts.md)
 Review gate: Milestone 1 checkpoint — review mechanism semantics before expanding native integration
-Review target: `2bc5b862d8a4acfd85463525c0abe80def0f46b2`
-Baseline or diff range: `8a7f2834470644726dd742a0ddaeb1455bac3b2a..2bc5b862d8a4acfd85463525c0abe80def0f46b2`
+Review target: `84c1cc16f70f3b384a6d772aa3bcb8fda70836b5`
+Baseline or diff range: `8a7f2834470644726dd742a0ddaeb1455bac3b2a..84c1cc16f70f3b384a6d772aa3bcb8fda70836b5`
 Branch: `claude/structured-architectural-accounts`
 Worktree: `../app-worktrees/structured-architectural-accounts-impl` relative to the primary checkout
 Pull request: [#14](https://github.com/ronen/postcode/pull/14)
@@ -41,6 +41,8 @@ Three test files and one helper exercise it with controlled producers. `docs/arc
 
 Nothing existing was migrated. No Session, Lens, CLI or investigating-agent path uses the mechanism, and no existing test was changed. This milestone does not demonstrate the real application path; that is Milestone 2.
 
+The target includes changes made in response to human feedback on the implementation choices, recorded verbatim in the task follow-ups. That feedback prepared the work for this review; it is not checkpoint acceptance and does not narrow the review.
+
 The [M1 checkpoint record](../../validation/structured-architectural-accounts/m1-checkpoint.md) gives the concrete schema, twelve implementation choices offered for review, the mapping of contract tests to the plan's verification areas, capability migration status, and the legacy check families with the milestone by which each must be restored.
 
 ## Verification already performed
@@ -48,16 +50,16 @@ The [M1 checkpoint record](../../validation/structured-architectural-accounts/m1
 By the implementing agent, at the review target, without live credentials or inference:
 
 - `npm run check` and `git diff --check` passed.
-- The three contribution test files pass 29/29.
-- `npm test` passed 697/697 with no skips: the 668 unmodified tests of the starting revision and the 29 new tests. A second complete run of the built suite also passed 697/697.
-- One earlier complete run reported 7 failures that were not identified because its output was truncated. The worktree and its Git index were being modified during that run. The cause is inferred, not established; the checkpoint record states this.
+- The three contribution test files pass 32/32.
+- The complete offline suite passed 700/700 with no skips: the 668 unmodified tests of the starting revision and the 32 new tests.
+- Three other complete runs had failures in existing tests, under a modified worktree or heavy machine load. They are described in the checkpoint record, which treats the environmental explanation as inferred, not established. A reviewer who sees `Session invalidated` failures should check machine load and whether the checkout changed during the run.
 
 ## Review focus and reproduction
 
 1. **Conformance of acceptance.** Does `ContributionLedger.accept` enforce what the decisions require and nothing they retire? In particular: identity resolution before allocation, atomic rejection, no association-reachability requirement, no prior-delivery gate on reuse, displacement or inconsistency endpoints, and grounds required for supersession and withdrawal.
 2. **Exposure and timing.** Does `ContributionStatus` implement the three concern paths, the known-versus-later boundary, the exact-notice rule across direct and inherited routes, and the own-declaration exclusion as specified? Look for a route by which a known cause re-enters, or by which exposure is invented without a delivery.
 3. **Status bearers.** Are standing, membership concerns, producing-context concerns and content-owner concerns kept on the right bearers, without a merged Query-result status or a global status on an item?
-4. **The implementation choices in the checkpoint record.** Choices 1, 2, 6 and 12 have the widest consequences for Milestone 2. Say whether each is a permitted implementation choice or a consequential semantic selection that needs human resolution.
+4. **The implementation choices in the checkpoint record.** Choices 1, 2, 6, 9 and 12 have the widest consequences for Milestone 2, and choice 5 with its qualification-contexts explanation restricts what an agentic qualification may reference. Say whether each is a permitted implementation choice or a consequential semantic selection that needs human resolution, and whether the obligations carried into Milestone 2 are sufficient.
 5. **Test independence.** Do the contract tests derive expectations from the decisions, or do they restate the implementation? Identify required Milestone 1 observations that are missing.
 6. **Fit for migration.** Is anything in the schema likely to force a weaker rule when real module identification, exports and an agentic dialog are integrated?
 
