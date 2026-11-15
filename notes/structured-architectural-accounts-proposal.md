@@ -107,7 +107,7 @@ be exercised in one trial, and optional actions can be deliberately elicited rat
 | **Express organizing changes explicitly.** Distinguish addition, supersession and withdrawal; address exact associations and explain displacement with qualified grounds. | The declaration matches the intended change and its explanation. Conflicting accounts are not silently treated as agreement; a new reconciliation or correspondence claim requires its own qualified analysis. |
 | **Report unresolved inconsistency precisely.** Acquire and understand the substantive information being compared; identify exact conflicting content items or associations and explain the qualified disagreement. | A scoped comparison targets the intended items/uses rather than whole investigrams or similarly named content. A qualified excerpt may suffice; the report does not silently displace either side. |
 | **Preserve meaning when reusing or partitioning content.** Reference unchanged content with its original ownership and qualification; supply new content/support for new claims. Each investigram carries its applicable qualifications. | Reuse does not silently broaden a claim. Partitioning neither drops necessary limitations nor indiscriminately copies unrelated restrictions. Structural ownership/provenance preservation remains a host responsibility too. |
-| **Understand the original question before redesignating its result.** Consider the earlier invocation's question, subjects, parameters and scope. Redesignation is optional and distinct from changing an Entity's associated information. | A proposed replacement designation addresses the earlier question, rather than merely supplying new information about one of its subjects. |
+| **Update the earlier answer being revised.** When investigating an earlier result and changing its answer, explicitly redesignate that result. Understand its question, subjects, parameters and scope. This is distinct from changing an Entity's associated information and does not require updating every containing result. | A proposed replacement designation addresses the earlier question, rather than merely supplying new information about one of its subjects. |
 | **Incorporate updates delivered during the dialog.** Consider relevant updated information and qualified change context before submitting. | The final contribution accounts for a relevant mid-dialog update rather than blindly repeating the earlier account. This does not require endorsing the update; disagreement must remain explicit and qualified. Timing/status processing itself is tested deterministically. |
 | **Author follow-up options and illustrations with the correct scope.** Options suggest further investigations; illustrations specify pictures intended as part of the current explanation. Both belong to the producing investigram and retain qualification. | When deliberately elicited, options and illustration specifications reference the intended subjects/content. Optional omissions in an unrelated trial are not failure; explicitly requested output still has to satisfy its contract. |
 
@@ -691,9 +691,15 @@ It must not mutate that captured answer or redirect an exact item/association re
 The historical fact that Q produced its contributions remains fixed for the supported
 lifetime; this is not a promise of indefinite cross-Session storage.
 
-Redesignation is optional. Its operation instructions tell the investigator to understand the
-earlier invocation's question and scope, including operation, subjects, parameters and selected
-option—not merely its old answer. The fixture captures that context in `queryMeanings` alongside
+<a id="redesignation-instructions"></a>
+When an investigation addresses an earlier result and its conclusions change that answer, instruct
+the investigator to explicitly redesignate that result. This is why Query results are targets of
+the displacement mechanism: changing an Entity association alone does not update a designated answer.
+The instruction is conditional on changing the answer; a follow-up that merely adds other information
+need not replace it. It is a semantic authoring instruction, not a new mechanical acceptance gate.
+
+Understand the earlier invocation's question and scope, including operation, subjects, parameters
+and selected option—not merely its old answer. The fixture captures that context in `queryMeanings` alongside
 selected result context. When delivered, it must be recorded accurately; prior delivery is not an
 acceptance prerequisite. This retained request meaning is not human prose input or a new global
 operation. Structural acceptance does not certify that the new designation answers that question.
@@ -1519,8 +1525,9 @@ workflow. Neither the probes nor this boundary authorize product implementation.
 
 The original review questions were resolved below. Re-review subsequently identified three
 application-boundary consequences: R1 is resolved by the [Lens-answer rule](#lens-answer-and-standing);
-R2 (redesignation instructions for investigations of earlier answers) and R3 (prior-result Subject
-meaning) remain for discussion before drafting. Do not decide those implicitly in the package. The [review alignment summary](structured-account-example/review-alignment.md#review-resolutions)
+R2 is clarified by the [redesignation instruction](#redesignation-instructions): update the earlier
+answer being revised, without a duty to update every containing result. R3 (prior-result Subject
+meaning) remains for discussion before drafting; do not decide it implicitly in the package. The [review alignment summary](structured-account-example/review-alignment.md#review-resolutions)
 locates the resolutions, authored validation and explicit deferrals. Remaining work is to express
 these agreements in the planning package and map their governing changes:
 

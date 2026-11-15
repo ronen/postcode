@@ -407,9 +407,12 @@ its own creation; unrelated later concerns still apply. Fresh status never rewri
 captured original answer.
 
 Redesignating an earlier result requires its declared question/scope, subjects, parameters
-and operation/option in context, captured in `queryMeanings`. It is optional. Other containing
-designations receive fresh notices/status rather than automatic redesignation. No investigation
-must maintain every result that references an affected association.
+and operation/option in context, captured in `queryMeanings`. When investigating an earlier result,
+if the conclusions change that answer, instruct the investigator to explicitly redesignate it.
+That is the purpose of making Query results displacement targets. “Optional” means no duty to update
+every containing result, not neglecting the answer being revised. The instruction is conditional on
+changing that answer and is not a mechanical acceptance gate. Other containing designations receive
+fresh notices/status rather than automatic redesignation. See the [R2 clarification](structured-architectural-accounts-proposal.md#redesignation-instructions).
 
 Supersession for fuller coverage and withdrawal can trigger review without asserting falsehood.
 Known causes accepted before an actual delivery are disclosed context, not later-change

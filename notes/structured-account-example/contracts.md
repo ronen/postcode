@@ -262,9 +262,10 @@ The example makes two explicit declarations: ADMISSION-2 supersedes the admissio
 association on P, and Q2's result-designating investigram supersedes Q1's result association. Neither implies
 the other. Original investigrams, metadata, items and introductions persist.
 The updated answer is available through a later designation; it is not substituted
-inside old exact result membership. Redesignation is optional. Other containing designations
-keep their membership and receive fresh notices/status; the investigator need not find them
-all. Redesignation instructions require understanding its exact declared meaning/scope,
+inside old exact result membership. An investigator addressing an earlier result is instructed to
+redesignate it when its conclusions change that answer. This is not a mechanical acceptance gate.
+Other containing designations keep their membership and receive fresh notices/status; the investigator
+need not find and update them all. Redesignation instructions require understanding its exact declared meaning/scope,
 operation, subjects, parameters and option (if any). `queryMeanings` in the context delivery preserves
 this context with invocation identity and basis. The checker rejects an inaccurate record of
 selected question context, but does not require prior acquisition of that context for acceptance.

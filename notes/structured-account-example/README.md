@@ -83,7 +83,8 @@ members with qualifications before displacement; an option excerpt alone does no
 instruction. Mechanical target-support completeness enforcement is deferred; structural validity
 and accurate delivery records remain mandatory.
 Redesignation instructions require understanding Q1's exact question/scope and parameters;
-prior delivery is not mechanically required. Redesignation is optional, not a duty to update
+prior delivery is not mechanically required. When changing the earlier answer it is investigating,
+the investigator is instructed to redesignate it. This is not a mechanical gate or a duty to update
 every containing result. The follow-up option stays on ADMISSION-1 and is not copied to ADMISSION-2 because this
 submission already answers it.
 

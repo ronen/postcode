@@ -2688,3 +2688,14 @@ selection applies to questions defined that way. This follows the question rathe
 Qualified standing, causes and history remain available through exact access, without prescribing a
 UI, mutating captured answers, reinstating associations or introducing clearance. The re-review's
 R2 and R3 remain for discussion. No product, governing or fixture changes.
+
+
+## 2026-11-15 — Re-review R2: redesignate the answer being revised
+
+The human confirmed that updating an earlier answer was precisely why Query results became targets
+of the displacement mechanism. Clarified the agent instruction: when investigating an earlier result,
+if the conclusions change that answer, explicitly redesignate it. “Optional” meant no obligation to
+find and update every containing result, not neglecting the answer being revised. A follow-up adding
+other information need not replace that answer. This is an instruction under the existing semantic-
+policy boundary, not a new operation or acceptance gate. Updated the proposal, consolidation and
+supporting contract/guide consistently. R3 remains for discussion; no product or governing changes.

@@ -15,9 +15,12 @@ consequences. **R1 is resolved:** a Lens returns its declared question/method's 
 applicable displacement, standing, reconsideration and qualified history available for application
 presentation. Current-designation selection does not substitute different claims for a method-specific
 answer. See the [inline agreement](../structured-architectural-accounts-proposal.md#lens-answer-and-standing).
-R2 (redesignation instructions when investigating an earlier answer) and R3 (the exact meaning of a
-prior-result Subject) remain for discussion. The earlier resolution table below records the first
-review, not a claim that these new questions are already settled.
+**R2 is clarified:** when an investigation changes the earlier answer it is addressing, instruct it
+to explicitly redesignate that result. This uses the existing result-target mechanism; it introduces
+neither a duty to update every containing result nor a mechanical semantic gate. See the
+[inline instruction](../structured-architectural-accounts-proposal.md#redesignation-instructions).
+R3 (the exact meaning of a prior-result Subject) remains for discussion. The earlier resolution
+table below records the first review, not a claim that all re-review questions are settled.
 
 <a id="review-resolutions"></a>
 ## Review resolutions
