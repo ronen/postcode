@@ -158,7 +158,7 @@ Otherwise identical qualified answers have repeatable logical identity within th
 An **Investigram** is an immutable, addressable analysis contribution produced mechanically, agentically or by another supported mechanism. It contains or resolves to:
 
 - **Analysis content:** keyed content items containing findings and explanations, including prose and specialized structured information.
-- **Referent information:** explicitly identified things the contribution concerns, separately from its selected subject and evidence. A prose mention alone is not a referent reference.
+- **Referent information:** explicitly identified things the contribution concerns, separately from its selected subject and evidence. A prose mention alone is not a referent reference. A separate free-form description of the investigation subject is not required; exact selected content and its recorded context identify a selected-content subject.
 - **Evidence context:** supporting material and its claimed relationship to the information.
 - **Provenance:** producing operation, selected subject/context, method, basis and actual input deliveries.
 - **Qualifications:** attributable Claim context for content and organizing judgments, including narrower scope and limitations.

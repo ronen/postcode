@@ -40,4 +40,4 @@ No foundation or development-process files are changed. The main-branch director
 
 ## Draft verification
 
-Checked all 371 local links against intended canonical destinations and the draft's new/replacement units. All 18 backward headed supersession mappings have corresponding predecessor revisions and forward links. Confirmed no substantive package links depend on notes, steering or review scratch files. These are document checks, not implementation or live-agent verification; the plan specifies that later work.
+Checked all 372 local links against intended canonical destinations and the draft's new/replacement units. All 18 backward headed supersession mappings have corresponding predecessor revisions and forward links. Confirmed no substantive package links depend on notes, steering or review scratch files. These are document checks, not implementation or live-agent verification; the plan specifies that later work.

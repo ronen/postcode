@@ -61,6 +61,8 @@ An investigation of selected content targets the exact information selected: an 
 
 If D1 was selected and D2 later displaces it, the subject is still D1. Choosing current information can produce another exact selection but cannot retarget an existing request. An arbitrary selected phrase need not create an Entity; the resulting investigation can explicitly identify a thing when justified. References to local graph components similarly identify an occurrence before any new Entity is introduced.
 
+Initial delivery follows the [selected-content acquisition baseline](association-organization-and-exposure.md#acquisition-baseline-context-and-discovery), including the enclosing item for a selection within an item. The investigator can acquire other content and associations from the owning investigram when useful. No separately generated prose subject description is required.
+
 This describes the semantics of supported contextual selections, not a requirement to implement arbitrary diagram-component selection or a third universal input type in this delivery.
 
 This expands supported input meaning without making every Projection ID a valid subject in every interface. Typed application requests and exact reference mappings preserve subject kind/applicability. Existing CLI answer aliases continue to denote Projections for `present`; they are not silently reinterpreted as Entity or investigram handles. No follow-current operation or new CLI syntax is required here.
