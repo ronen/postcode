@@ -20,6 +20,35 @@ Describe the need, why it matters, and relevant constraints without designing th
 
 ## Candidates
 
+<a id="complete-and-expose-generation-provenance"></a>
+## Complete and expose generation provenance
+
+Added: 2026-11-15
+Origin: strategy discussion of agent attribution for logging, audits and historical accounting
+Area: agent execution, investigram provenance and retrieval
+
+Make the agent, subscription/account, model and relevant configuration used to
+produce an investigram identifiable for later logging, auditing and historical
+attribution. This is useful with a single configured agent, independently of
+multiple-agent selection or change tracking.
+
+Existing investigation provenance already captures configured agent identity,
+instructions and configuration, including authentication/billing route and
+reasoning settings. Call usage separately captures provider-reported model and
+service tier. Assess gaps in capture and retrieval, particularly meaningful
+subscription/account identification and connecting configured identity with
+reported execution details. Preserve production-time information and disclose
+unavailable or uncertain details rather than reconstructing them from current
+configuration; account identification must not expose credentials. Reused content
+keeps its original producer attribution.
+
+Build on the common provenance ownership established by the approved
+[structured-accounts plan](plans/structured-architectural-accounts.md), without
+duplicating that migration. Scope the remaining capture and retrieval work from
+the implementation available when this item is selected. A graphical display,
+multi-agent support, freshness/reconsideration policies and automatic
+reinvestigation are separate capabilities, not prerequisites or implied scope.
+
 <a id="separate-optional-research-recording-from-feedback-context"></a>
 ## Separate optional research recording from feedback context
 

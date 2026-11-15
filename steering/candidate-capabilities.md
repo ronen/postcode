@@ -49,6 +49,56 @@ treatment of edited, missing, or conflicting records are open questions. This
 evidence could support the [historical summary](#historical-summary) as well as
 questions about the current program.
 
+<a id="multiple-agents-and-generation-provenance"></a>
+<a id="multiple-agent-selection"></a>
+## Multiple-agent selection
+
+PostCode could support several agents or agent configurations simultaneously,
+allowing the human to choose one for a particular investigation. Choices might
+include different providers, subscriptions/accounts, models, or configurations
+of the same model. Whether investigations also execute concurrently, and how
+defaults and follow-up choices work, remain design questions.
+
+Capturing and retrieving the producing agent, subscription/account, model and
+configuration is independently useful and is tracked in
+[backlog: generation provenance](../docs/backlog.md#complete-and-expose-generation-provenance).
+It does not require multiple agents or a selection UI. Agent selection would
+build on that attribution, preserving the distinction between requested and
+actual configuration and the original attribution of reused content. Open
+questions here include how selection affects defaults, follow-ups, request
+reuse, deliberate reinvestigation and comparison.
+
+<a id="agent-changes-and-investigation-currency"></a>
+## Agent changes and investigation currency
+
+PostCode could detect changes to an agent, model, subscription or configuration,
+or let the human report a change that cannot be detected automatically. It could
+then show which investigations were produced under the relevant configuration,
+which predate a change, and where that relationship is unknown. Reports would
+retain their origin and uncertainty; a user-reported change need not establish
+the exact time or nature of a provider's update.
+
+This builds on [captured generation provenance](../docs/backlog.md#complete-and-expose-generation-provenance);
+recording what produced an investigram does not by itself define a freshness policy.
+
+“Current” needs a reference point: the configuration selected for an investigation,
+a preferred default, or another explicitly chosen comparison. An earlier result
+can remain a valid interpretation even when it was produced by an older or
+different agent. A configuration change does not itself establish an error or
+supersede an account. The needs-reconsideration mechanism might help communicate
+possible reasons to revisit results, with distinct causes and suitable scope;
+whether and how concerns propagate through reused content needs design.
+
+With [multiple agents](#multiple-agent-selection), different
+configurations may remain intentionally available. Changing one should not
+automatically make every other agent's results out of date. Agent selection,
+captured production identity, reuse and reinvestigation policy would need to
+work together. Questions include silent provider updates, reported versus
+confirmed changes, which settings warrant a freshness distinction, and how to
+compare new investigations while preserving exact earlier results. This is
+separate from [changes to the investigated repository](#changing-repository-states).
+
+<a id="changing-repository-states"></a>
 ## Investigation across changing repository states
 
 PostCode could continue an investigation as the repository or worktree changes,

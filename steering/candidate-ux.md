@@ -93,6 +93,32 @@ Context could be enabled for selected Workspaces, offered automatically when use
 
 **Experience to evaluate.** Follow a slow investigation with prerequisite work, usable partial information, cancellation, and a failed attempt. Ask people what is running, what they can conclude so far, and what stopping or retrying will do. Observe whether disclosure supports timely decisions or mainly distracts, whether progress is mistaken for confidence, and whether recovery avoids unnecessary repetition without promising unsupported resumption.
 
+<a id="agent-choice-and-investigation-currency"></a>
+## Agent choice and investigation currency
+
+**Human need and value.** Someone may want to choose which agent performs an
+investigation, understand who produced an earlier account, and decide whether
+an agent or configuration change is a reason to investigate again.
+
+**Proposed experience.** Choose among available agents for an investigation and
+inspect the producing agent, subscription, model and relevant configuration on
+retained results. Detectable changes or human-reported changes could appear
+alongside affected investigations, with an explanation of what “current” means
+and what remains unknown. Earlier results remain accessible for comparison.
+
+**Dependencies and uncertainties.** This draws on [agent choice](candidate-capabilities.md#multiple-agent-selection),
+[generation provenance](../docs/backlog.md#complete-and-expose-generation-provenance)
+and [agent-change tracking](candidate-capabilities.md#agent-changes-and-investigation-currency).
+Provenance capture and retrieval are independently useful without this interface.
+How should defaults and follow-ups inherit agent choice? How can configuration
+differences, possible need for reconsideration, and actual correction remain
+distinguishable without crowding the investigation view?
+
+**Experience to evaluate.** Investigate with two agents, change one configuration,
+and revisit results that reuse information from both. Can the human identify
+what changed, who produced each account, and whether a new request will reuse
+earlier work or perform another investigation?
+
 <a id="context-sensitive-suggestions"></a>
 ## Context-sensitive suggestions
 
