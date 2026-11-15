@@ -28,6 +28,27 @@ All three re-review discussion items are recorded. The remaining details have be
 the notes below; drafting must carry them and the governing migration inventory into the package. The table below records
 the original review resolutions.
 
+## Second re-review and incremental-history check
+
+The second re-review at `781850f` found the notes ready for drafting. Its two remaining clarifications
+are recorded inline: [per-Lens selection](../structured-architectural-accounts-proposal.md#existing-lens-selection),
+and deliberate displacement targets when an investigation starts from an already displaced designation
+in the [redesignation instructions](../structured-architectural-accounts-proposal.md#redesignation-instructions).
+
+The incremental reviewer reports no regression or lost earlier agreement, and confirms the deliberate
+change from automatic renewal with history to reuse without reassertion. It also identifies a remaining
+wording ambiguity to resolve: reading retained naming while assembling an export Projection is not by
+itself an example of a producer consuming retained claims to make new contributions. Distinguish
+answer-selection standing/snapshots from actual production exposure before carrying that native
+verification example into the package. This issue is recorded for discussion, not silently resolved
+by reclassifying Lens assembly as investigation.
+
+The reviewer also identifies scoped baseline identification as a likely warning-volume risk: additions
+can affect every earlier producing investigation that acquired the matching identification scope and
+then propagate to its consumers. Changed-method production adding identifications for many existing Entity IDs could therefore
+affect many modules; a fresh identity in a different scope is not automatically the old target. Carry this concrete scenario into the existing warning-usefulness checkpoint; it does not
+justify silently changing the agreed baseline or propagation rule.
+
 <a id="re-review-drafting-details"></a>
 ## Re-review drafting details and cleanup
 

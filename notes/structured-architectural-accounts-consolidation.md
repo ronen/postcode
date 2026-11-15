@@ -129,6 +129,12 @@ explicit. Drafting names the cut-over; faithful subject/input mapping and interf
 preserve the application/engine distinction. The fresh-answer rule above supplies all equally
 standing alternatives without a hidden priority. See [agentic migration](structured-architectural-accounts-proposal.md#existing-agentic-capability-migration).
 
+The [per-Lens migration table](structured-architectural-accounts-proposal.md#existing-lens-selection)
+classifies `summarize`, `explain`, `decompose` and `examine` as selecting their answer's current standing
+designations while preserving exact subjects and exact historical access. Module, organization and
+dependency Lenses retain their declared methods' findings. `inspect` preserves its mixed mechanical
+and explicit subject-association contract rather than receiving one blanket classification.
+
 Prior-result follow-up targets the exact selected information: an immutable investigram or an exact
 designated answer spanning several contributions. The originating Query result/question remains
 identifiable; its later designations do not silently change the selected subject. Applicable standing,
@@ -449,6 +455,11 @@ That is the purpose of making Query results displacement targets. “Optional”
 every containing result, not neglecting the answer being revised. The instruction is conditional on
 changing that answer and is not a mechanical acceptance gate. Other containing designations receive
 fresh notices/status rather than automatic redesignation. See the [R2 clarification](structured-architectural-accounts-proposal.md#redesignation-instructions).
+
+Starting from an already displaced designation does not dictate the new displacement target.
+The investigator deliberately chooses whether to supersede the standing successor or leave it standing
+beside a new alternative, and explains that choice. The historical selected subject remains exact.
+Controlled-dialog coverage should exercise both valid choices; no implicit last-writer winner follows.
 
 Supersession for fuller coverage and withdrawal can trigger review without asserting falsehood.
 Known causes accepted before an actual delivery are disclosed context, not later-change

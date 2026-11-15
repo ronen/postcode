@@ -2746,3 +2746,21 @@ file/section links across 21 current note files and whitespace checks pass. The 
 is its user-facing terminology, not fixture behavior. These checks do not establish the future
 application-level alternative/diagram behavior, API migration or live-agent integration. No product,
 governing, foundation or process files changed; no formal planning package was started.
+
+
+## 2026-11-15 — Record Lens classification and deliberate redesignation targets
+
+The human authorized recording the second re-review's clarifications. Added a per-Lens migration
+table: summarize/explain/decompose/examine select their result's current designations; exact subjects
+and historical Projections stay exact. Modules, organization and dependency Lenses preserve their
+method-specific findings. Inspect keeps its mixed mechanical/subject-associated contract. Added the
+conditional instruction and controlled-dialog coverage for deliberately superseding a standing successor
+versus creating an alternative from an already displaced historical designation, preserving the
+original selected subject and explaining the target choice.
+
+Read the original incremental reviewer's history/regression check. It reports no lost agreement or
+regression, supports reuse without automatic renewal, and confirms the major fresh-review resolutions.
+Recorded its newly identified ambiguity between answer assembly and producing-execution exposure for
+discussion; did not silently change that boundary. Its concrete baseline-identification warning-volume
+scenario should be carried into the existing risk/checkpoint rather than changing policy. No product,
+governing or fixture behavior changed.

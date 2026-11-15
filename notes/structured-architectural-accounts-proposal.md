@@ -124,7 +124,7 @@ be exercised in one trial, and optional actions can be deliberately elicited rat
 | **Express organizing changes explicitly.** Distinguish addition, supersession and withdrawal; address exact associations and explain displacement with qualified grounds. | The declaration matches the intended change and its explanation. Conflicting accounts are not silently treated as agreement; a new reconciliation or correspondence claim requires its own qualified analysis. |
 | **Report unresolved inconsistency precisely.** Acquire and understand the substantive information being compared; identify exact conflicting content items or associations and explain the qualified disagreement. | A scoped comparison targets the intended items/uses rather than whole investigrams or similarly named content. A qualified excerpt may suffice; the report does not silently displace either side. |
 | **Preserve meaning when reusing or partitioning content.** Reference unchanged content with its original ownership and qualification; supply new content/support for new claims. Each investigram carries its applicable qualifications. | Reuse does not silently broaden a claim. Partitioning neither drops necessary limitations nor indiscriminately copies unrelated restrictions. Structural ownership/provenance preservation remains a host responsibility too. |
-| **Update the earlier answer being revised.** When investigating an earlier result and changing its answer, explicitly redesignate that result. Understand its question, subjects, parameters and scope. This is distinct from changing an Entity's associated information and does not require updating every containing result. | A proposed replacement designation addresses the earlier question, rather than merely supplying new information about one of its subjects. |
+| **Update the earlier answer being revised.** When investigating an earlier result and changing its answer, explicitly redesignate that result. Understand its question, subjects, parameters and scope. This is distinct from changing an Entity's associated information and does not require updating every containing result. | A proposed replacement designation addresses the earlier question. From an already displaced selected answer, the investigator deliberately targets the standing successor or creates a qualified alternative, explaining which. |
 | **Incorporate updates delivered during the dialog.** Consider relevant updated information and qualified change context before submitting. | The final contribution accounts for a relevant mid-dialog update rather than blindly repeating the earlier account. This does not require endorsing the update; disagreement must remain explicit and qualified. Timing/status processing itself is tested deterministically. |
 | **Author follow-up options and illustrations with the correct scope.** Options suggest further investigations; illustrations specify pictures intended as part of the current explanation. Both belong to the producing investigram and retain qualification. | When deliberately elicited, options and illustration specifications reference the intended subjects/content. Optional omissions in an unrelated trial are not failure; explicitly requested output still has to satisfy its contract. |
 
@@ -419,6 +419,34 @@ itself establish a new reconsideration cause. Cause-specific exposure and timing
 existing concerns remain available without claiming reassessment or clearance. Migration preserves
 existing answer guarantees and explicitly maps these distinctions into the application contracts.
 
+<a id="existing-lens-selection"></a>
+### Selection behavior of existing Lenses
+
+The migration makes selection explicit per Lens; producer kind alone is not a selection policy.
+The current definitions are in [the Lens registry](../src/lib/application/lenses.ts).
+
+| Existing Lens | Answer-selection commitment |
+| --- | --- |
+| `summarize` | Select the current standing designations of the retained result answering the module-summary request, including distinct alternatives. |
+| `explain` | Preserve the exact selected prior information as subject; select current standing designations of the result answering this explanation request. |
+| `decompose` | Preserve the exact selected prior information as subject; select current standing designations of its decomposition answer, expressed through qualified content and associations, not an investigram tree. |
+| `examine` | Preserve the exact selected prior information as subject; select current standing designations of the result answering this further-investigation request. |
+| `modules` | Return the designated discovery method's qualified module population over its captured basis. Organizing changes do not substitute a different population. |
+| `organization` | Return the designated organization method's qualified findings over its captured basis, with organizing history available rather than substituted claims. |
+| `dependency-structure` | Return the designated dependency method's structure over the captured project basis. |
+| `dependency-children` | Return that method's qualified direct dependencies for the selected module. |
+| `dependency-parents` | Return that method's qualified direct dependents for the selected module. |
+| `inspect` | Preserve its mixed contract: method-specific mechanical information and qualified retained information selected through explicit subject associations. Exact-investigram inspection retains that exact contribution and exposes applicable history. Do not classify the whole Lens as either a mechanical-only answer or one inquiry's current designation. |
+
+All rows retain complete applicable standing/displacement/cause access under the Lens-answer rule.
+Exact retained-Projection access preserves the captured answer rather than selecting a fresh one.
+For the four existing agentic Lenses, a recognized repeated request can therefore show an explicitly
+redesignated answer without rerunning its investigation; that does not change the exact subject of an
+existing follow-up. Acceptance coverage must include `summarize M`, an investigation that redesignates
+its result, and a repeated request selecting the revised answer while the original remains exactly
+accessible. The mechanical export-answer path retains its declared method's findings too; it is not
+an additional public Lens invented by this table.
+
 ## Existing agentic capability migration
 
 The working scope includes migrating the existing agentic capabilities onto the common mechanism,
@@ -549,7 +577,7 @@ sufficient practical evidence leaves the current policy and deferral in place.
 | Observation | Evidence and checkpoint | Default and decision authority |
 | --- | --- | --- |
 | Acquisition-instruction effectiveness | Implementer records instruction/protocol problems in focused live trials; review after the early vertical slice and again at final integration if new evidence appears. | Keep semantic acquisition as an instruction, with structural validation. The human decides whether evidence warrants a separately designed completeness gate; it is not automatically added to this scope. |
-| Usefulness of scoped addition warnings | Implementer preserves representative causes and inputs, with any obviously irrelevant/missed concerns observed during the slice and final integration. Authored counts do not estimate user warning rates. | Keep scoped addition causes. The human can commission later suppression/reassessment work if practical evidence warrants it; no demand to prove usefulness or clear warnings before completion. |
+| Usefulness of scoped addition warnings | Implementer preserves representative causes and inputs at the slice and final integration. In particular, additions to subject identification scopes can reach many baseline recipients and their consumers; changed-method production adding identifications for many existing Entity IDs is a likely volume scenario. Authored counts do not estimate user warning rates. | Keep scoped addition causes. The human can commission later suppression/reassessment work if practical evidence warrants it; no demand to prove usefulness or clear warnings before completion. |
 | Architectural coverage gaps | Implementer records concrete cases at the same checkpoints, distinguishing missing scope exposure from broken propagation. Preserve the added-waiting-case counterexample as a known limitation. | Fix violations of the agreed propagation contract in this plan. The human decides whether broader gaps justify future declared dependencies or investigator-directed propagation; neither is silently implemented. |
 
 After delivery, the same topics can be reconsidered through backlog prioritization when actual use
@@ -780,6 +808,15 @@ the investigator to explicitly redesignate that result. This is why Query result
 the displacement mechanism: changing an Entity association alone does not update a designated answer.
 The instruction is conditional on changing the answer; a follow-up that merely adds other information
 need not replace it. It is a semantic authoring instruction, not a new mechanical acceptance gate.
+
+If the investigation starts from a designation D1 already displaced by D2, choose the displacement
+target deliberately after considering the available qualified history. Superseding D2 updates that
+standing answer; superseding D1 again leaves the new designation alongside D2 unless D2 is also
+explicitly displaced. Both are structurally valid. Explain the chosen relationship in the declaration's
+grounds rather than accidentally creating alternatives by copying the originally selected address.
+The exact selected subject remains D1 in either case. Include controlled-dialog coverage of both
+choices, checking the resulting standing and preserved historical subject; no default winner or new
+acceptance gate is introduced.
 
 Understand the earlier invocation's question and scope, including operation, subjects, parameters
 and selected option—not merely its old answer. The fixture captures that context in `queryMeanings` alongside
@@ -1681,7 +1718,11 @@ answer being revised, without a duty to update every containing result. R3 is re
 [exact-selection subject rule](#prior-result-subject), with originating question and displacement
 context preserved. The [review alignment summary](structured-account-example/review-alignment.md#review-resolutions)
 locates the resolutions, authored validation and explicit deferrals. Remaining work is to express
-these agreements in the planning package and map their governing changes:
+these agreements in the planning package and map their governing changes. A subsequent incremental
+review confirms no regression but raises one native-validation ambiguity for clarification: Lens
+answer assembly capturing retained naming/standing must be distinguished from a producer consuming
+retained claims to create contributions. The [review note](structured-account-example/review-alignment.md#second-re-review-and-incremental-history-check)
+records this issue and the concrete baseline-identification warning-volume risk.
 
 | Question | Required resolution |
 | --- | --- |
