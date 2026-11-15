@@ -1,6 +1,6 @@
 # Proposed revisions to docs/backlog.md
 
-These are complete replacement and addition entries. They are candidates, not additions to the implementation plan's acceptance requirements.
+These are complete replacement and addition entries. The conformance-tracking entry records required implementation-plan work; the other entries are future candidates, not additions to that plan's acceptance requirements.
 
 **Replace “Explore architectural accounts through concrete journeys”, preserving its explicit anchor.**
 
@@ -85,3 +85,16 @@ Area: investigator interaction and validation
 Current inadequacy feedback goes to developers/researchers; it does not challenge retained information or instruct an investigating agent. A user-facing objection/reconciliation mechanism would need an explicit qualified input and resource contract rather than reusing observational feedback silently.
 
 If live experience shows instruction-following problems, consider semantic-policy assistance in the dialog: point out a suspected omission, permit further acquisition or explanation, and then validate the final submission. Decide any completeness or prior-acquisition gates separately. Acknowledging a reminder does not establish understanding. Structural integrity and honest delivery remain mandatory regardless of assistance.
+
+**Add “Complete structured-account migration conformance”.**
+
+<a id="complete-structured-account-migration-conformance"></a>
+## Complete structured-account migration conformance
+
+Added: 2026-11-15
+Origin: [Adoption and migration conformance](decisions/common-analysis-contributions.md#adoption-and-migration-conformance)
+Area: architecture conformance and migration
+
+Adoption precedes implementation of common contributions, association declarations, result designations and exposure semantics. Existing mechanical retention, agentic trees/corrections/citations and application selection/construction therefore have known target-conformance gaps; new diagram and option capabilities are not available merely through adoption. Until each capability is migrated, the decision's limited transitional provision preserves its pre-adoption behavioral contracts and requires honest migration status.
+
+This is required work in the [structured-accounts plan](plans/structured-architectural-accounts.md), not an optional future enhancement. Urgency: track from adoption; verify the early vertical slice, complete the remaining migration and close this entry at final integration. The implementing agent records capability status and restoration milestones; the human reviews checkpoints and authorizes any scope change. Do not finish the plan while retaining a permanent legacy regime. After verified full conformance, the temporary exceptions cease to apply; update current conformance notices and resolve this entry together with the implementation's final documentation updates, preserving historical decision text. Implementation authorization remains separate from adoption.

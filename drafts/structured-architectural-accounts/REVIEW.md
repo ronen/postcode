@@ -13,7 +13,7 @@ Vocabulary: reserve “follow-up” for the retained **follow-up option** compon
 
 Review these against the complete replacement units in `core-concepts-revisions.md`, `architectural-constraints-revisions.md` and `app-specification-revisions.md`. `backlog-revisions.md` separates deferred capabilities. Capability/CLI revision files only disclose the planned transition; actual support documentation changes during implementation rather than claiming delivery at adoption.
 
-The decisions carry the ownership distinctions, alternatives, scope and verification obligations inline. The plan's milestones put controlled producer coverage first, then a real mechanical/agentic/diagram slice, then complete migration and integrated review. Temporary migration gaps are recorded at checkpoints; final conformance is not optional. The real diagram is a bounded directed state-transition diagram, without a full statechart language or interaction/composition requirement.
+The decisions carry the ownership distinctions, alternatives, scope and verification obligations inline. The plan's milestones put controlled producer coverage first, then a real mechanical/agentic/diagram slice, then complete migration and integrated review. A temporary adoption contract preserves pre-adoption behavior for unmigrated capabilities; gaps and applicable contracts are recorded at checkpoints and tracked explicitly. Final conformance is not optional. The real diagram is a bounded directed state-transition diagram, without a full statechart language or interaction/composition requirement.
 
 ## Supersession and preservation
 
@@ -40,4 +40,4 @@ No foundation or development-process files are changed. The main-branch director
 
 ## Draft verification
 
-Checked all 372 local links against intended canonical destinations and the draft's new/replacement units. All 18 backward headed supersession mappings have corresponding predecessor revisions and forward links. Confirmed no substantive package links depend on notes, steering or review scratch files. These are document checks, not implementation or live-agent verification; the plan specifies that later work.
+Checked all 383 local links against intended canonical destinations and the draft's new/replacement units. All 18 backward headed supersession mappings have corresponding predecessor revisions and forward links. Confirmed no substantive package links depend on notes, steering or review scratch files. These are document checks, not implementation or live-agent verification; the plan specifies that later work.

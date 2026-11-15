@@ -2,6 +2,12 @@
 
 These are complete replacement or addition units. Unlisted content is unchanged.
 
+**Add “Structured-account migration conformance”.**
+
+## Structured-account migration conformance
+
+The common-contribution, association and exposure rules establish the target architecture. Apply the [temporary adoption and migration contract](decisions/common-analysis-contributions.md#adoption-and-migration-conformance) to unmigrated capabilities: their pre-adoption behavioral contracts remain applicable within its limited scope. Record migration status and expected gaps; do not claim target conformance before implementation. Migrated capabilities follow the new contracts, and plan completion requires removal of the temporary exceptions. Foundation, method guarantees and unaffected protections remain binding throughout.
+
 **Replace “Architectural accounts and captured bases”.**
 
 <a id="architectural-accounts-and-captured-bases"></a>
