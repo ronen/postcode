@@ -2632,3 +2632,13 @@ controls), acquisition (26), baseline (14), unification (33), guidance (26), com
 selectors (nine). Illustration specifications and direct compatible selections produce the same
 unchanged diagrams/legends. No new mutable lifecycle, ontology, UI policy, product or governing edits.
 The previously recorded timing and inconsistency-report coverage gaps remain outstanding.
+
+
+## 2026-11-15 — Reconfirm scoped addition-triggered reconsideration
+
+The human declined the review's suggestion to defer addition-triggered causes: information that
+exposes possible limitations of the architectural account should remain visible. Retain the agreed
+actual-inventory/content-selection-scope rule, without reverting to blanket entity exposure. Warnings
+remain possible concerns rather than proof of error. If practical use shows too many warnings, address
+that based on observed cases; targeted suppression, reassessment and clearance remain deferred. Added
+the rationale to the proposal and consolidation. No behavior or fixture changes were needed.

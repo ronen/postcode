@@ -921,6 +921,17 @@ work is deferred. Neither a saved Account collection nor a special assembly Lens
 
 ## Reconsideration
 
+**Retain addition-triggered reconsideration in the first capability.** The human reconfirmed this
+scope after review: later additions matching an actually acquired inventory or content-selection
+scope can expose a possible limitation in the earlier account, even without displacement. Do not
+hide that possibility by deferring the cause mechanism merely because warning usefulness is not
+yet measured. A warning indicates possible need for reconsideration, not established error.
+
+This preserves the scoped rule, not blanket entity-wide exposure. If practical use reveals excessive
+warnings, assess their causes and consider targeted refinements then. Suppression, reassessment and
+clearance remain deferred; no warning-rate claim or new mechanism follows from this rationale.
+
+
 A fuller description can reveal important behavior or edge cases without showing the earlier
 one false. Explicit supersession or withdrawal can therefore create a reconsideration cause.
 The reason explains it; factual-error classification is not required to trigger review.

@@ -368,6 +368,12 @@ A third route is availability/selection scope: a later matching entry could have
 acquired inventory or the content selected by an explicit scope. A description acquired by
 exact reference or fixed result membership does not establish that scope dependency.
 
+Keep addition-triggered reconsideration in the first capability. The human reconfirmed that exposing
+possible limitations is preferable to suppressing this signal in advance. It remains bounded by actual
+inventory/selection-scope exposure and does not certify an error. If practice shows excessive warnings,
+consider refinements on that evidence; suppression, reassessment and clearance remain deferred.
+
+
 The executable prototype tracks exact delivered association uses. Entity identity alone
 cannot expose an evaluation to information created later. Item excerpts record their route;
 sharing an item through another association is not a displacement warning. Generating-context
