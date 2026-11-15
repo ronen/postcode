@@ -88,6 +88,12 @@ The product may suggest a summary View when the human has not expressed a more s
 
 Each produced Projection retains its selected information and qualification. Repeating a Lens command makes a fresh selection: retained interpretation, correction and association changes can yield a different answer. Those supporting selections are distinct from captured program states. Input changes follow the separate [session invalidation contract](#input-stability-and-retained-work).
 
+### Contribution-model migration
+
+The [structured architectural accounts plan](plans/structured-architectural-accounts.md) changes retained analysis organization and migrates existing CLI capabilities, including inspection and investigations of selected content. Adoption of that plan does not by itself change the commands documented here. Current descriptions of investigram composition and whole-investigram correction remain implementation descriptions until the migration replaces them.
+
+The task updates affected command behavior, exact-answer/history guidance, terminology and supported input/output descriptions as implementation proceeds. No new state-diagram or follow-up-option command is promised solely because those capabilities are provided through the internal application API. At completion, remove this notice and document the actual supported routes and limitations. Exact retained presentation and reference-lifetime guarantees remain in force throughout supported operation.
+
 ### Present an exact retained answer
 
 Within the active shell, use the answer reference displayed by a program View:

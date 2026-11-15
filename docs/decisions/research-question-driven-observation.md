@@ -1,6 +1,6 @@
 # Research-question-driven observation
 
-Status: accepted
+Status: partially superseded
 Decided: 2026-11-06
 Arising from: Human-directed reconciliation of the research-observation revision adopted in foundation/product-design.md at `60f11e2`, November 2026; human clarification on 2026-11-06 that study instructions or configuration establish research purpose and destination without per-session declarations, new application fields or a mandatory research-mode workflow
 Scope: Research capture and delivery, their separation from architectural provenance, and unchanged current recording support
@@ -21,6 +21,11 @@ Supersedes:
 - [Retain unaffected domain and storage commitments](coordinated-views-and-qualified-results.md#retain-unaffected-domain-and-storage-commitments), the whole headed decision, replaced by [domain and storage](#domain-and-storage).
 - [Attribute usage to execution independently of interpretation retention](investigator-execution-and-evidence-access.md#attribute-usage-to-execution-independently-of-interpretation-retention), the whole headed decision, replaced by [execution usage](#execution-usage).
 - [Compact interface attribution and complete operational results](compact-attribution-and-complete-results.md), the complete record, replaced by [compact attribution](#compact-attribution).
+
+Superseded in part:
+
+- [Preserve qualified construction and exposure coverage](#qualified-construction) is replaced in full by [qualified answers over contributions](qualified-answers-over-contributions.md#qualified-construction-and-retained-support).
+- [Preserve domain and storage boundaries with selected research capture](#domain-and-storage) is replaced in full by [common analysis contributions](common-analysis-contributions.md#retained-domain-and-storage).
 
 ## Context
 

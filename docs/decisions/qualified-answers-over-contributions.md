@@ -1,7 +1,7 @@
 # Qualified application answers over retained contributions
 
-Status: in review
-Decided: pending adoption
+Status: accepted
+Decided: 2026-11-15
 Arising from: [Structured architectural accounts](../plans/structured-architectural-accounts.md)
 Scope: application/engine mapping, captured bases, exact subjects, answer selection, identity and retained presentation
 Supersedes:

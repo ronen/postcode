@@ -1,8 +1,9 @@
 # Structured architectural accounts
 
-Status: in review
+Status: approved
 Created: 2026-11-15
 Updated: 2026-11-15
+Superseded by:
 
 ## Problem and intended outcome
 
@@ -65,7 +66,7 @@ Interaction/composition diagrams remain later probes. The state diagram is a mec
 
 ## Decisions and governing changes
 
-Review and adopt together with:
+This plan is governed by:
 
 - [Common analysis contributions](../decisions/common-analysis-contributions.md): identity, producer boundary, retention and execution.
 - [Association organization and exposure](../decisions/association-organization-and-exposure.md): declarations, results, acquisition, timing and reconsideration.

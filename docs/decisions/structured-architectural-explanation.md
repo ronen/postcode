@@ -1,7 +1,7 @@
 # Structured architectural explanation and illustrations
 
-Status: in review
-Decided: pending adoption
+Status: accepted
+Decided: 2026-11-15
 Arising from: [Structured architectural accounts](../plans/structured-architectural-accounts.md)
 Scope: content meaning, qualified guidance, one representative architectural concept and diagram capability
 Supersedes:

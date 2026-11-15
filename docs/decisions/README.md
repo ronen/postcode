@@ -59,24 +59,23 @@ When the last remaining accepted decision in a partially superseded record is la
 
 This directory's `README.md` is also the entry point for decisions. Once decision records exist, maintain a concise list of currently accepted decisions here, linking to their records without duplicating their contents.
 
-<a id="accepted-decisions"></a>
 ## Accepted decisions
 
-- [Internal application API independent of interfaces](internal-application-api.md)
+- [Common qualified analysis contributions](common-analysis-contributions.md)
+- [Association organization and actual exposure](association-organization-and-exposure.md)
+- [Qualified application answers over retained contributions](qualified-answers-over-contributions.md)
+- [Structured architectural explanation and illustrations](structured-architectural-explanation.md)
 
-- [Research-question-driven observation](research-question-driven-observation.md)
+- [Internal application API independent of interfaces](internal-application-api.md) — partially superseded; see the record’s heading mappings.
+
+- [Research-question-driven observation](research-question-driven-observation.md) — partially superseded; see the record’s heading mappings.
 - [Specialize in architectural investigation and retained understanding](specialized-architectural-investigation.md) — partially superseded; see the record’s heading mappings.
 - [Human-facing architectural representations](human-facing-architectural-representations.md) — partially superseded; see the record’s heading mappings.
-- [Allow structured investigram content](structured-investigram-content.md) — partially superseded; its accumulation requirement and representation-independent interpretation contracts remain accepted.
-- [Present exact retained answers independently of fresh selection](exact-retained-answer-presentation.md) — partially superseded; see the record’s heading mappings.
 - [Separate research concepts from application specification](application-specification-boundaries.md) — partially superseded; see the record’s heading mappings.
 - [Coordinate Views while preserving qualified results](coordinated-views-and-qualified-results.md) — partially superseded; see the record’s heading mappings.
 - [Hosted authentication and billing routes](hosted-authentication-and-billing.md)
 - [Private investigator reference transport](investigator-reference-transport.md)
-- [Investigation operations and lenses](investigation-operations-and-lenses.md)
-- [Investigrams and progressive investigation](investigrams-and-progressive-investigation.md) — partially superseded; see the record’s heading mappings.
 - [Investigator execution and evidence access](investigator-execution-and-evidence-access.md) — partially superseded; see the record’s heading mappings.
-- [Facets for subjects](facets-for-subjects.md)
 - [Reference lifetime disclosure](reference-lifetime-disclosure.md)
 - [Transient analysis sessions](transient-analysis-sessions.md) — partially superseded; see the record’s heading mappings.
 - [Initial core-concepts decisions](initial-core-concepts-decisions.md) — partially superseded; see the record’s heading mappings.

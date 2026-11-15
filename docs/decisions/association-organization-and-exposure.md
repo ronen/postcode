@@ -1,7 +1,7 @@
 # Organize retained information through associations and actual exposure
 
-Status: in review
-Decided: pending adoption
+Status: accepted
+Decided: 2026-11-15
 Arising from: [Structured architectural accounts](../plans/structured-architectural-accounts.md)
 Scope: qualified uses of retained content, Query-result designations, acquisition and cause-bearing reconsideration
 Supersedes:

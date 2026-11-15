@@ -14,6 +14,9 @@ Superseded in part:
 
 - [Results over captured bases](#results-over-captured-bases) is replaced in full by [results over captured bases](research-question-driven-observation.md#results-over-captured-bases).
 - [Retained understanding and local investigation context](#retained-understanding-and-context) is replaced in full by [retained understanding and context](research-question-driven-observation.md#retained-understanding-and-context).
+- [Architectural subjects](#architectural-subjects) is replaced in full by [common analysis contributions](common-analysis-contributions.md#identified-things-and-inquiry-results).
+- [Inputs and captured bases](#inputs-and-captured-bases) is replaced in full by [qualified answers over contributions](qualified-answers-over-contributions.md#application-answers-and-captured-bases).
+- [Architectural interpretation](#architectural-interpretation) is replaced in full by [common analysis contributions](common-analysis-contributions.md#immutable-analysis-contributions).
 
 ## Context
 

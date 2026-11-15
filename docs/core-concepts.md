@@ -10,27 +10,39 @@ Semantic changes require explicit human agreement and a corresponding accepted d
 
 ### Entity
 
-*[decision: [Architectural subjects](decisions/specialized-architectural-investigation.md#architectural-subjects)]*
+*[decision: [Identified things and inquiry results](decisions/common-analysis-contributions.md#identified-things-and-inquiry-results)]*
 
-An **Entity** is a distinguishable architectural subject represented by PostCode. Implemented examples include a module, symbol, function or test; what can be established about them depends on the applicable language or analysis. An entity can also be introduced by a hypothetical or intended account, inheriting the identity and provenance supplied by that account. Correspondence with other accounts remains qualified rather than inferred from matching names. An entity is distinct from the claims made about it and the evidence for those claims.
+An **Entity** is an explicitly identified thing in the system under study, distinct from claims made about it. Modules, symbols, groups, states, instance roles and deliberately identified architectural relationships or patterns can be Entities. Not every relationship claim, edge, content item or addressable record is an Entity. Identification of a relationship does not establish its occurrence or behavioral conditions.
 
-Addressability alone does not make something an entity. Claims, evidence, evaluation outcomes, and projections can also be addressable. An entity's identity, its implementation name, and a displayed label or navigation handle are different concepts. Continuity of a human's attention to a subject is also distinct from semantic continuity of that subject across program states.
+A common identity preserves explicit reference within the supported Session. A later analysis reusing it refers to the previously identified thing without endorsing its descriptions. Names and descriptions are qualified information associated with the identity; several can coexist. A readable name/designation and sufficient distinguishing context constitute identifying support, not a complete behavioral definition. Assigned labels are distinguishable from names in the system under study.
+
+Provider-native identity is resolved under its method and scope before common identity allocation. Existing mechanical identity guarantees remain method-specific; interpreted identity is an explicit qualified identification, not a guarantee of unique discovery. Hypothetical and intended Entities inherit the account's modality and provenance. Correspondence across independent accounts or program states requires qualified analysis; matching names alone does not establish it.
+
+Exact reference, native identity, implementation identifier, displayed label and continuity of human attention are distinct. Displacing identifying information does not change what an exact Entity ID denotes. Historical-name lookup preserves qualification and ambiguity rather than silently turning a remembered name into an authoritative current description.
 
 ### Subject
 
-*[decision: [Architectural subjects](decisions/specialized-architectural-investigation.md#architectural-subjects)]*
+*[decision: [Identified things and inquiry results](decisions/common-analysis-contributions.md#identified-things-and-inquiry-results)]*
 
-A **subject** is what a lens investigates or a claim concerns. This is a role, not another entity kind. Possible subjects are open-ended; examples include an entity, a collection of entities, a relationship, an identified qualified change, or an investigram. [[Investigrams as subjects](decisions/investigrams-and-progressive-investigation.md#separate-program-referents-from-interpretive-focus)]
+A **Subject** is what a Lens investigates or a claim concerns. It is a role, not another Entity kind. Entities, collections, architectural relationships, qualified changes, investigrams and exact selected information can be subjects where the method supports them. A configured project can be an inventory subject without denoting an executable entry point or a Workspace.
 
-“What changed in this module between A and B?” investigates the module across separately identified captured states A and B. “Why was this dependency removed?” can investigate an identified, qualified change, with its relevant states and evidence still explicit. Subject designation does not replace program-input designation or captured-state attribution. This distinction permits further investigation of a change without introducing a new entity kind. [[Subjects and states](decisions/coordinated-views-and-qualified-results.md#keep-subject-open-ended-and-state-designation-explicit)]
+Subject designation does not establish a captured basis, input binding or correspondence. A question about a module across states preserves those separately identified states; a question about an identified removal preserves its change and supporting evidence. Subjects can concern implemented, hypothetical or intended architecture within the capability's supported modalities. [[Open-ended subjects](decisions/coordinated-views-and-qualified-results.md#keep-subject-open-ended-and-state-designation-explicit)]
 
-A configured project can provide the subject for a module inventory without denoting an executable entry point or the human's current workspace.
+An investigation of selected content preserves the exact selected investigram/content/designated answer as its subject, with its originating question/result and applicable standing available separately. It does not silently follow a Query result's latest designation. A selected phrase need not be registered as an Entity. [[Exact prior information](decisions/qualified-answers-over-contributions.md#exact-prior-information-as-a-subject)]
 
-Subjects may concern implemented, hypothetical or intended architecture. Subject designation does not itself identify the captured basis or establish correspondence across accounts.
+### Query result
+
+*[decision: [Identified things and inquiry results](decisions/common-analysis-contributions.md#identified-things-and-inquiry-results)]*
+
+A **Query result** is the organizing identity for the answer to one particular engine investigation invocation. It is neither an Entity in the system under study nor a Projection. Its designated answers remain traceable to the invocation's question, subjects, parameters, explicitly selected context and requested result contract so their meaning can be understood. Required analysis content participates in request equivalence; sharing useful supporting information does not make different requests the same.
+
+The invocation is the particular request; the Query result is a distinct identity organizing its answers. Keeping access to invocation context does not make the two the same object or concept.
+
+A **result designation** is an immutable content association selecting exact items or declarations for that answer, possibly across investigrams. Later designations can add alternatives, supersede exact earlier designations or withdraw them. Membership never silently substitutes current content. Recognized ordinary reuse of an existing request reuses its result identity; a new user action does not alone create another invocation. Explicitly requesting a fresh investigation starts a new producing attempt and preserves earlier history, without automatically displacing earlier answers. Its answer can be designated for the repeated question's earlier Query result; ordinary retrieval follows the standing of those designations. An application Lens may select designated information into a Projection under its own question/method contract.
 
 ### Claim
 
-*[decision: [Architectural subjects](decisions/specialized-architectural-investigation.md#architectural-subjects)]*
+*[decision: [Architectural subjects](decisions/common-analysis-contributions.md#identified-things-and-inquiry-results)]*
 
 A **Claim** is the information asserted by an analysis result. Its content is distinct from the Claim context that qualifies it and the evaluation outcome describing the attempt to produce it. Information about an entity and an assertion of a relationship are examples of claim content.
 
@@ -38,7 +50,7 @@ Claim does not mean proven fact. PostCode's qualified information distinguishes 
 
 ### Property
 
-*[decision: [Subject facets](decisions/facets-for-subjects.md#apply-facets-to-subjects-including-investigrams)]*
+*[decision: [Subject facets](decisions/association-organization-and-exposure.md#properties-facets-and-derived-status)]*
 
 A **Property** is a characteristic of a subject about which information can be requested or asserted. A claim supplies information about such a characteristic in a particular context; naming the property alone does not establish its value or whether it holds. For example, rejection of duplicate identifiers may be investigated as a behavioral property, while test evidence and interpretation support different claims about it.
 
@@ -46,15 +58,17 @@ Property is descriptive vocabulary here. It does not imply a source-language fie
 
 ### Relationship
 
-*[decision: [Architectural subjects](decisions/specialized-architectural-investigation.md#architectural-subjects)]*
+*[decision: [Identified things and inquiry results](decisions/common-analysis-contributions.md#identified-things-and-inquiry-results)]*
 
-A **Relationship** is a connection such as containment, dependency, a call, or an association between documentation and its subject. A **relationship claim** asserts such a connection and has Claim context of its own. For example, an exported symbol is an entity, while a module's export of that symbol is a relationship claim.
+An **architectural relationship** is a connection in the system under study, such as containment, dependency, a call or documentation about a subject. A relationship claim asserts a connection with its own Claim context; participants need not all be Entities. Its meaning is distinct from depiction as an edge.
 
-Participants are not necessarily all entities: a documentation association can connect an addressable recorded assertion to its subject. A relationship's meaning is distinct from its depiction as a graph edge or tree link. References between records do not, merely by being references, constitute asserted architectural relationships.
+A relationship may be deliberately identified as an Entity for continued reference, while claims about its occurrence, participants and conditions remain qualified content. A mechanical edge does not automatically receive that identity. References between records alone assert no architectural relationship.
+
+**Investigram relationships** organize retained contributions through provenance, exposure and amendment information. **Content associations** assert qualified uses of information for Entities or Query results. These are different from relationships in the described architecture; shared representation does not merge their meanings.
 
 ### Facet
 
-*[decision: [Subject facets](decisions/facets-for-subjects.md#apply-facets-to-subjects-including-investigrams)]*
+*[decision: [Subject facets](decisions/association-organization-and-exposure.md#properties-facets-and-derived-status)]*
 
 A **Facet** is a property used as a compact classification dimension for describing, filtering, grouping, or comparing subjects, including entities and investigrams. A claim supplies its value, and Claim context supplies its qualification. Different facets may overlap and need not share one representation or value type. For example, a module may be both external and declaration-only.
 
@@ -99,9 +113,9 @@ Lens applicability depends on method. A transition from proposal to intention pr
 <a id="captured-basis"></a>
 ### Captured bases, program inputs and Projection requests
 
-*[decision: [Inputs and captured bases](decisions/specialized-architectural-investigation.md#inputs-and-captured-bases)]*
+*[decision: [Inputs and captured bases](decisions/qualified-answers-over-contributions.md#application-answers-and-captured-bases)]*
 
-A **captured basis** identifies the specific input material used for a Lens application. It may contain one or more program states, observations, participant-supplied architectural material or earlier Projections. Preserve the contributions' provenance, scope and limitations, their associations with the information they support, and meaningful roles or order. Including material does not establish its truth or agreement with other material. Earlier PostCode output remains a qualified artifact, not independent repository evidence.
+A **captured basis** identifies the specific input material used for a Lens application. It may contain one or more program states, observations, participant-supplied architectural material, earlier Projections or other retained qualified contributions. Preserve the contributions' provenance, scope and limitations, their associations with the information they support, and meaningful roles or order. Including material does not establish its truth or agreement with other material. Earlier PostCode output remains a qualified artifact, not independent repository evidence.
 
 A **program input** is a designated source of program information, such as a repository revision, working tree, index, execution or observation stream. Its **binding policy** determines which state is used when a request is performed. For revision-oriented inputs, following resolves a changing input again and pinned continues to use the same captured program state.
 
@@ -109,7 +123,7 @@ A **captured program state** is program information captured from a designated i
 
 A **Projection request** designates applicable inputs, a subject, a Lens and Lens parameter values. Execution identifies the material actually used as the result's captured basis. Binding policies apply where the input supports them; participant material and earlier Projections do not acquire following or pinned policies by analogy. Repeating a request is distinct from presenting an exact retained Projection. A Session supplies analysis and reference context, not an input binding.
 
-Retained interpretation supplied to an investigation contributes to its captured basis with the supplied content, provenance, qualifications and limitations. Supplied input is distinct from demonstrated reliance or claimed evidential support; a reference alone does not imply that the referenced content was supplied. An answer's selection of retained accounts and correction/association snapshots is also a basis contribution, distinct from the inputs to their generating investigations and from captured program states. [[Retained contributions](decisions/specialized-architectural-investigation.md#inputs-and-captured-bases)]
+Retained content supplied to a producer contributes to its basis with the actual delivered content, provenance, qualifications and limitations. Delivery is not reliance, agreement or evidential support; a reference alone is not content delivery. A Projection's selected content, associations/designations and status snapshots also contribute to its captured basis, separately from the inputs to their generating producers and from captured program states. Answer assembly and retrieval do not create production exposure. [[Production and selection](decisions/qualified-answers-over-contributions.md#application-answers-and-captured-bases)]
 
 ### Request resolution
 
@@ -130,11 +144,13 @@ These definitions do not prescribe materialized planning stages, a general plann
 
 Requirements can also arise from system-initiated investigation serving an explicit parent request or authorized autonomous work. [[Investigation initiation](decisions/research-question-driven-observation.md#investigation-attribution)]
 
-Applicable analyses include interpretation, which produces investigrams and their supporting context. [[Interpretation and evaluation](decisions/investigator-execution-and-evidence-access.md#integrate-interpretation-with-evaluation-and-qualified-evidence-access)]
+Applicable analyses include mechanical and agentic production of qualified investigrams through a shared contribution boundary. Operational protocols can differ; acceptance does not flatten their method guarantees. [[Production and execution](decisions/common-analysis-contributions.md#production-and-execution)]
 
 An **evaluation outcome** describes what occurred in that attempt: applicability and availability, execution state, result materialization, relevant cost, and reasons for failure or stopping. **Materialization** is how much of the requested information has been produced. These dimensions are distinct from the epistemological status of any produced claim.
 
 An outcome can exist without a produced claim or entity, and an incomplete attempt can have usable qualified results. An established empty result is therefore different from the absence of a result. Evaluation outcome and Claim context describe different things even when an outcome helps explain a projection's coverage or limitations.
+
+Contribution validity, request fulfillment and substantive correctness are distinct. Valid submitted contributions are retained and all their declarations processed normally even if the requested information remains incomplete or the producer reports inability. No accepted contribution, malformed submission and accepted-but-unfulfilled work remain distinct outcomes. [[Access and outcomes](decisions/common-analysis-contributions.md#access-and-outcomes)]
 
 <a id="investigation-initiation"></a>
 ### Investigation initiation
@@ -145,11 +161,14 @@ An outcome can exist without a produced claim or entity, and an incomplete attem
 
 Request-scoped work serves its parent; work outside that purpose or continuing after the parent’s satisfaction or cancellation is autonomous. Resource governance and attribution obligations are in the [architectural constraints](architectural-constraints.md#investigation-initiation-and-request-attribution). These meanings do not prescribe a scheduler or separate visible View.
 
-### Investigator
+<a id="investigator"></a>
+### Investigation and producer
 
-*[decision: [Investigator execution and evidence access](decisions/investigator-execution-and-evidence-access.md#integrate-interpretation-with-evaluation-and-qualified-evidence-access)]*
+*[decision: [Production and execution](decisions/common-analysis-contributions.md#production-and-execution)]*
 
-An **Investigator** is an AI agent that investigates a subject through a dialogue with PostCode, using supplied context and requesting additional evidence as needed, and submits an interpretation for validation.
+An **investigation** is an inquiry whose analysis can produce qualified information. A **producer** is the operational role that supplies analysis contributions for validation and retention. Mechanical and agentic mechanisms are current examples, not an exhaustive taxonomy or mandatory shared execution protocol.
+
+An **investigating agent** conducts a dialog with PostCode, uses supplied context, requests supported evidence and submits contributions. Interpretation describes the epistemic character of explanatory judgment, not every investigation's result. The agent boundary retains its restricted evidence access, resource and credential contracts; a mechanical producer retains its own analysis and failure contracts. The common mechanism accepts immutable investigrams with truthful method provenance and qualification.
 
 <a id="session"></a>
 ### Session
@@ -160,7 +179,7 @@ A **Session** is a continuing context for investigation, retaining subject-refer
 
 Within a session, a reference once bound to an entity cannot be rebound. Evidence and published results retain their content, supporting context, and qualifications when later work adds information. Session membership alone does not establish a claim's evidence, completeness, or guarantee.
 
-References bound to investigrams likewise retain their original targets throughout the session, including after correction. [[Investigram references](decisions/investigrams-and-progressive-investigation.md#record-explicit-corrections-without-rewriting-earlier-interpretation)]
+References bound to investigrams, items, associations, Query results and result designations retain their exact meanings. Later declarations change derived use/standing, not identity or captured content. [[Immutable contributions](decisions/common-analysis-contributions.md#immutable-analysis-contributions)]
 
 The initial session opens one configured project and assumes its relevant inputs remain unchanged. Detection of a relevant change invalidates the session for further investigation; detection is best-effort and capture remains non-atomic. This does not establish earlier contents of an input first observed later.
 
@@ -180,6 +199,8 @@ A Lens is distinct from the operations supplying its information and from the Pr
 
 A Lens definition makes its question, applicability/cardinality, parameter meaning, requirements and prospective result contract explicit. The question is a conceptual information need rather than necessarily a user-supplied prose question. Subject-specific implementations can realize one Lens through different work and result contracts. The selected implementation remains attributable through its versioned method and provenance, separately from the Lens identity. Shared authoring declarations may define a Lens and its default operation conveniently; requirements and reusable operation identity remain distinct. [[Explicit Lens meaning](decisions/lens-application-and-request-outcomes.md#represent-lens-meaning-independently-of-lookup-and-implementation)]
 
+A Lens invoking a follow-up option can delegate its specific question to an exact retained qualified follow-up option. The default result contract permits qualified supported content; a promised specialized form, such as a diagram, is explicit. The option's owner/key and meaning remain attributable. [[Guidance](decisions/structured-architectural-explanation.md#qualified-guidance-and-illustrations)]
+
 ### Projection
 
 *[decision: [Results over captured bases](decisions/research-question-driven-observation.md#results-over-captured-bases)]*
@@ -190,31 +211,58 @@ A Projection is an architectural-domain object, addressable within its Session, 
 
 A produced Projection retains the information selected for that result. Later accumulation or input changes do not mutate its captured basis, selected content or qualification. For revision-oriented inputs, a following binding resolves a changing input again on subsequent requests; a pinned binding continues to use the same captured program state. A result from newly captured input identifies that new basis without changing earlier results. Pinning the input does not mean redisplaying an exact retained Projection. Reusing or rendering a retained Projection need not establish a different answer. For mechanical analyses, equivalent inputs, methods, requirements and completed evaluation preserve deterministic semantic content. Later evaluation may add information missing from incomplete work without changing the earlier Projection or outcome. Presentation choices describe how supplied information is shown and do not redefine the Lens question. [[Immutable information](decisions/transient-analysis-sessions.md#immutable-information-within-an-accumulating-session)] [[Bindings and refresh](decisions/coordinated-views-and-qualified-results.md#preserve-immutable-results-under-bindings-and-refresh)]
 
-A fresh request for investigation results can select retained investigrams and explicit replacements into a new Projection while preserving earlier Projections. The selected retained interpretations and correction/association snapshots contribute to the answer’s broader captured basis, while remaining distinct from its captured program-state support and from the input deliveries to their generating investigations. Interpretation history is not thereby a captured program state and does not acquire following or pinned policies. Presenting an exact retained Projection preserves these contributions and its selected answer. [[Retained contributions](decisions/specialized-architectural-investigation.md#inputs-and-captured-bases)] [[Retained interpretation selection](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)] [[Presentation continuity](decisions/coordinated-views-and-qualified-results.md#preserve-the-selected-answer-during-presentation-changes)]
+A Lens selects engine information according to its question/method contract. It can select Query-result designations, but these are not Projections and there is no required one-to-one Lens/invocation/investigram mapping. Preserve exact content, associations/designations, qualification and status selected for the answer. Current designated answers retain equally standing alternatives; method-specific answers retain that method's findings with applicable history available. An exact Projection does not acquire later changes. [[Lens selection](decisions/qualified-answers-over-contributions.md#lens-answers-and-engine-selection)]
 
-Otherwise identical qualified answers have repeatable logical identity within the supported Session, independently of subject designation or lookup route. Equality uses the decision’s [canonical effective-input set](decisions/lens-application-and-request-outcomes.md#give-equivalent-qualified-answers-repeatable-identity), including Session context, method version and meaningful subject order/roles. Invocation-specific resolution information has a separate owner; answer-relevant qualification remains in the Projection. This preserves full immutable payload consistency without requiring physical memoization or cross-session identity. [[Qualified answer identity](decisions/lens-application-and-request-outcomes.md#give-equivalent-qualified-answers-repeatable-identity)]
+Otherwise identical qualified answers have repeatable logical identity within the supported Session, independently of subject designation or lookup route. Equality uses the decision’s [canonical effective-input set](decisions/qualified-answers-over-contributions.md#answer-identity-and-request-reuse), including Session context, method version and meaningful subject order/roles. Invocation-specific resolution information has a separate owner; answer-relevant qualification remains in the Projection. This preserves full immutable payload consistency without requiring physical memoization or cross-session identity. [[Qualified answer identity](decisions/qualified-answers-over-contributions.md#answer-identity-and-request-reuse)]
 
 ### Investigram
 
-*[decision: [Architectural interpretation](decisions/specialized-architectural-investigation.md#architectural-interpretation)]*
+*[decision: [Immutable analysis contributions](decisions/common-analysis-contributions.md#immutable-analysis-contributions)]*
 
-An **Investigram** is an immutable, addressable artifact of architectural investigation containing a qualified interpretation. It includes the following information:
+An **Investigram** is an immutable, addressable analysis contribution produced mechanically, agentically or by another supported mechanism. It contains or resolves to:
 
-- <a id="interpretation-content"></a>**Interpretation content** — the substantive content of the interpretation. It may contain multiple related [claims](#claim), expressed in prose, structured content, or a combination, including prose within a structure.
-- **Referent information** — what the interpretation concerns in its architectural context. It may include references to specific [subjects](#subject); a referent may span entities or identify captured source.
-- **Evidence context** — the supporting [evidence](#evidence) and its relationship to the interpretation's claims.
-- **Provenance** — the operation and selected subject that produced the investigram, together with its originating architectural context and supporting method.
-- **Qualifications** — the claims' [Claim context](#claim-context), including evidence attribution, provenance and method, scope, epistemological status or guarantee, and limitations. Qualifications remain attributable to the claims or portions they qualify; they need not apply uniformly to all content.
+- **Analysis content:** keyed content items containing findings and explanations, including prose and specialized structured information.
+- **Referent information:** explicitly identified things the contribution concerns, separately from its selected subject and evidence. A prose mention alone is not a referent reference. A separate free-form description of the investigation subject is not required; exact selected content and its recorded context identify a selected-content subject.
+- **Evidence context:** supporting material and its claimed relationship to the information.
+- **Provenance:** producing operation, selected subject/context, method, basis and actual input deliveries.
+- **Qualifications:** attributable Claim context for content and organizing judgments, including narrower scope and limitations.
+- **Organizing metadata:** where supplied, content-association declarations, qualified follow-up options, illustrations and inconsistency reports.
 
-Investigrams can be associated with the subjects they describe for subsequent inspection and investigation. [[Subject associations](decisions/investigrams-and-progressive-investigation.md#associate-investigrams-with-subjects-and-select-retained-results)]
+A submitted pool of investigrams is accepted atomically without parent/child nesting. Different producers in one pool retain separate provenance/exposure. Content can be referenced across owners without copying or strengthening it. A declaration-only contribution is possible; no artificial substantive root is required. Conversely, a contribution can contain qualified addressable items without any association or result designation. Its items remain discoverable through the owning investigram and available for later acquisition and association; lack of an organizing use is not structural invalidity.
 
-An investigram and its subordinate investigrams form a fixed composition tree, which may have multiple levels. A subsequent investigation produces a separate root whose provenance identifies the investigram selected as its subject. Composition describes the parts of one result; investigation provenance connects separate results through their subjects. Neither describes the program's structure by itself. [[Composition and investigation provenance](decisions/investigrams-and-progressive-investigation.md#distinguish-fixed-composition-from-investigation-provenance)]
+An investigram is not globally replaced. Later declarations can displace particular uses, leaving original items, metadata, qualifications and identity intact. The contribution is not a Query result, a Projection, a program Entity merely by being addressable, or an accepted architectural intention merely because it was retained. Arbitrary participant-supplied documents are not automatically investigrams; their intake and use remain separately qualified. Analysis content retains the actual epistemic guarantees of its method.
 
-An investigram may carry accompanying corrections identifying earlier targets, replacement investigrams, reasons, and evidence context, as well as unresolved inconsistencies. Each replacement is constructed through its correction with a composition tree disjoint from the reporting tree. Replacements may themselves carry corrections; correction targets predate acceptance of the new result. [[Corrections](decisions/investigrams-and-progressive-investigation.md#record-explicit-corrections-without-rewriting-earlier-interpretation)]
+<a id="interpretation-content"></a>
+<a id="analysis-content"></a>
+### Analysis content and content items
 
-An investigram's citation index records prior investigrams supplied to the investigator during its generating evaluation, without asserting reliance or endorsement. "Needs reconsideration" is a session-derived property indicating corrected context reached through those citations; the investigram and its index remain immutable. [[Citation exposure and reconsideration](decisions/investigrams-and-progressive-investigation.md#record-citation-exposure-and-derive-reconsideration-status)]
+*[decision: [Content contracts](decisions/structured-architectural-explanation.md#content-and-catalogue-responsibilities)]*
 
-An Investigram is an interpretation result, not every architectural account or participant-supplied document. Retaining a validated investigation result is distinct from accepting a design proposal as intended architecture.
+**Analysis content** is an investigram's substantive information. A **content item** is an addressable keyed portion of it. Its **content type** identifies a supported structure; its **content-type contract** specifies meaning, required information, references, qualifications, dependencies and partiality. A **schema** describes mechanically checkable shape. Neither structure nor schema validation establishes truth.
+
+Items can contain several related claims; not every sentence is an independent proposition record. Local component keys enable exact references without introducing global Entities. A qualified prose item remains valid, but does not silently satisfy a requested specialized form. Architectural concepts guide interpretation; diagram types map compatible supplied information to pictures without adding architectural claims.
+
+### Content association
+
+*[decision: [Qualified declarations](decisions/association-organization-and-exposure.md#qualified-declarations-and-exact-uses)]*
+
+A **content association** is a qualified designated use of content for an Entity and information role, or for a Query result. Identification is a recognized Entity role; other topical information uses meaningful local keys, and further understood roles can be added when justified. The protocol may encode generic topical associations without making `topic` a fixed governing role. A result designation targets a Query result. Topic labels are not global identities. Every association has its own address within its owning investigram.
+
+**Association declarations** add a use, supersede exact earlier uses with a new one, or withdraw uses without replacement. They are qualified immutable organizing metadata. They may reference another investigram's content without transferring ownership, evidence or provenance. Displacing one use does not globally invalidate its content or other associations. Derived standing, qualifications and reconsideration are distinct; no last-writer priority or automatic reinstatement is implied.
+
+An association is **standing** (non-displaced) until an accepted supersession or withdrawal targets it; it is then **displaced**. “Equally standing” means non-displaced alternatives without implicit priority, not equal confidence. Displacing a replacement does not reinstate an earlier use. Standing does not establish truth or clear reconsideration.
+
+### Exposure and reconsideration
+
+*[decision: [Exposure and reconsideration](decisions/association-organization-and-exposure.md#exposure-and-reconsideration)]*
+
+An **exposure index** records qualified information actually supplied to a producing investigation, including exact association/content deliveries and explicitly acquired inventory or selection scopes. It does not assert reliance, endorsement or comprehension. Per-investigram attribution follows its actual production history, not a shared acceptance batch. Bare references, host equality reuse, human browsing and answer assembly create no production exposure. Evidence citations are different from this index.
+
+**Needs reconsideration** is derived cause-bearing status from relevant later changes to acquired information/scopes or exact designated membership, including transitive exposure paths. Known context and exact change notices actually received during production follow the timing rules; receiving a notice need not include acquiring replacement content. Fixed result membership is not exposure, and an exact description is not a blanket inventory dependency. A warning does not prove error, suppress reuse, clear other causes or initiate investigation. Exact captured answers remain unchanged; fresh status access discloses current standing and causes, and displayed affected information carries its applicable qualification.
+
+Status is derived for each exact designation, not one warning set on the Query result. Its own displacement is standing; the designation does not acquire the cause that created it. Independent membership and producing-context concerns remain applicable.
+
+Producing-context concerns are derived for each investigram from its actual production inputs. An association has its own standing and exposes relevant content/producer concerns; each result designation has its own standing and membership/producer concerns. A Query result does not merge these into a single status. Neither an entire investigram nor its content item is globally superseded. [[Status bearers](decisions/association-organization-and-exposure.md#properties-facets-and-derived-status)]
 
 <a id="presentation-and-view"></a>
 ### Presentation and View
@@ -242,7 +290,7 @@ Result/Presentation compatibility is an explicit contract between the qualified 
 
 An **investigation context** comprises the Views accumulated while following subjects, relationships, and questions, together with their captured bases and relevant lineage. It identifies what each View shows and how it relates to the investigation. It can span Workspace arrangements and does not imply a separately stored context object, common captured state, or persistent Session. The [application specification](app-specification.md#workspaces-and-navigation) states the retained-lineage contract.
 
-This is local application terminology for Views, bases and lineage, not the definition of all [retained architectural understanding](../foundation/product-design.md#retained-architectural-understanding-and-continuity). It is distinct from an observation archive and the context supplied during an Investigator execution. Those responsibilities may refer to overlapping information without requiring one shared object. [[Retained understanding and context](decisions/research-question-driven-observation.md#retained-understanding-and-context)]
+This is local application terminology for Views, bases and lineage, not the definition of all [retained architectural understanding](../foundation/product-design.md#retained-architectural-understanding-and-continuity). It is distinct from an observation archive and the context supplied during an execution by an investigating agent. Those responsibilities may refer to overlapping information without requiring one shared object. [[Retained understanding and context](decisions/research-question-driven-observation.md#retained-understanding-and-context)]
 
 <a id="workspace"></a>
 ### Workspace

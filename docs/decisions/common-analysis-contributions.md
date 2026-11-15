@@ -1,7 +1,7 @@
 # Common qualified analysis contributions
 
-Status: in review
-Decided: pending adoption
+Status: accepted
+Decided: 2026-11-15
 Arising from: [Structured architectural accounts](../plans/structured-architectural-accounts.md)
 Scope: Session-local identities, analysis contributions, producer integration and retained-domain boundaries
 Supersedes:
