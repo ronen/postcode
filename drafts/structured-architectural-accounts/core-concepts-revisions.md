@@ -162,9 +162,9 @@ An **Investigram** is an immutable, addressable analysis contribution produced m
 - **Evidence context:** supporting material and its claimed relationship to the information.
 - **Provenance:** producing operation, selected subject/context, method, basis and actual input deliveries.
 - **Qualifications:** attributable Claim context for content and organizing judgments, including narrower scope and limitations.
-- **Organizing metadata:** content-association declarations and, where supplied, qualified follow-up options, illustrations and inconsistency reports.
+- **Organizing metadata:** where supplied, content-association declarations, qualified follow-up options, illustrations and inconsistency reports.
 
-A submitted pool of investigrams is accepted atomically without parent/child nesting. Different producers in one pool retain separate provenance/exposure. Content can be referenced across owners without copying or strengthening it. A declaration-only contribution is possible; no artificial substantive root is required.
+A submitted pool of investigrams is accepted atomically without parent/child nesting. Different producers in one pool retain separate provenance/exposure. Content can be referenced across owners without copying or strengthening it. A declaration-only contribution is possible; no artificial substantive root is required. Conversely, a contribution can contain qualified addressable items without any association or result designation. Its items remain discoverable through the owning investigram and available for later acquisition and association; lack of an organizing use is not structural invalidity.
 
 An investigram is not globally replaced. Later declarations can displace particular uses, leaving original items, metadata, qualifications and identity intact. The contribution is not a Query result, a Projection, a program Entity merely by being addressable, or an accepted architectural intention merely because it was retained. Analysis content retains the actual epistemic guarantees of its method.
 
