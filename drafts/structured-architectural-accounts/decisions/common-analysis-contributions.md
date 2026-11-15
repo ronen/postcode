@@ -119,6 +119,6 @@ Lens, Projection, Presentation and View retain their captured-basis meanings, in
 
 **Rationale and consequences.** The shared mechanism changes retention and lookup semantics, not the domain guarantees accumulated by earlier slices. All existing mechanical and agentic information migrates in the associated plan; a permanent representative-only adapter would leave the intended boundary incomplete. Intermediate breakage or coexistence can be explicit during implementation, but final conformance is required rather than backlogged.
 
-## Adoption and follow-up
+## Adoption and subsequent work
 
 Adopt with the associated plan, other contribution decisions, governing revisions and predecessor mappings. This does not authorize implementation or certify current conformance. The plan establishes conformance through controlled producers, early native/agentic integration, remaining migration and integrated review. Future organization, correspondence and lifetime work remain separate backlog candidates.

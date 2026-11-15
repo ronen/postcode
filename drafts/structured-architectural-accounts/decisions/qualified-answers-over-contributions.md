@@ -145,6 +145,6 @@ Verification covers full qualified construction versus bounded output, relevant 
 
 **Rationale and consequences.** Frozen semantic support preserves exact answers while allowing history to accumulate. Whole-headed replacement carries forward mechanical qualification, reference and presentation obligations while removing tree-specific algorithms. This is required conformance in the plan, not a future optional migration or a new complete-output archive.
 
-## Consequences and follow-up
+## Consequences and subsequent work
 
 This decision changes engine integration and history vocabulary while preserving outer application meaning. The migration verifies every existing Lens family and reports concrete conflicts instead of silently weakening identity or method contracts. Reassessment, GUI selection/navigation and initial product catalogue remain separate. The application specification and core concepts are revised together; no new research recording or mandatory generic ancestry mechanism follows.

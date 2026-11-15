@@ -9,6 +9,8 @@ Start with [the plan](plans/structured-architectural-accounts.md), then read the
 3. [Qualified application answers](decisions/qualified-answers-over-contributions.md): outer/engine mapping, per-Lens migration, exact subjects, identity, fixed presentation and construction.
 4. [Structured explanation](decisions/structured-architectural-explanation.md): content contracts, metadata, invocation of follow-up options and the bounded state-diagram capability.
 
+Vocabulary: reserve “follow-up” for the retained **follow-up option** component and its invocation. Use “investigation of selected content” for that input case and ordinary alternatives such as “subsequent work” elsewhere.
+
 Review these against the complete replacement units in `core-concepts-revisions.md`, `architectural-constraints-revisions.md` and `app-specification-revisions.md`. `backlog-revisions.md` separates deferred capabilities. Capability/CLI revision files only disclose the planned transition; actual support documentation changes during implementation rather than claiming delivery at adoption.
 
 The decisions carry the ownership distinctions, alternatives, scope and verification obligations inline. The plan's milestones put controlled producer coverage first, then a real mechanical/agentic/diagram slice, then complete migration and integrated review. Temporary migration gaps are recorded at checkpoints; final conformance is not optional. The real diagram is a bounded directed state-transition diagram, without a full statechart language or interaction/composition requirement.

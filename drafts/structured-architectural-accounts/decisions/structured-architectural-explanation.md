@@ -86,6 +86,6 @@ Combine controlled dialogs/producers for deterministic mechanism coverage with a
 
 **Consequences.** The associated plan tests all common mechanisms while migrating existing capabilities. Actual schemas, renderer, input examples and live trial arrangements remain implementation choices within these semantics. New requirements that would change meaning, authority or coverage return to human design review.
 
-## Adoption and follow-up
+## Adoption and subsequent work
 
 Adopt with the contribution/association/application decisions and governing revisions. Broader composition and interaction, concept-driven relevance, graphical navigation and organization remain backlog candidates. Required qualification and evidence stay binding in all modalities actually supported; this first delivery does not add hypothetical/intended-input infrastructure by implication.
