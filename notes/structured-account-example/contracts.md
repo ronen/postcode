@@ -1,6 +1,6 @@
 # Illustrative contribution and content contracts
 
-Updated 2026-11-14. Exploratory contracts and executable authored probes, not adopted
+Updated 2026-11-15. Exploratory contracts and executable authored probes, not adopted
 schemas or product APIs. The [proposal](../structured-architectural-accounts-proposal.md)
 and [consolidation](../structured-architectural-accounts-consolidation.md) explain the
 change from whole-investigram correction to association declarations and entity context.
@@ -228,7 +228,7 @@ error. Different context alone is not grounds to withdraw a still-valid scoped u
 Other associations to the same item remain intact. There is no whole-investigram
 superseded flag and no implicit item correspondence based on a repeated key.
 
-## Unresolved inconsistency — migration agreement, not yet exercised
+## Unresolved inconsistency — exact claims and uses
 
 The agreed report identifies exact content items or associations, with attributable grounds and
 qualification. Item targets compare substantive claims; association targets identify disputed uses
@@ -237,8 +237,15 @@ owning investigram. Acquisition of sufficient substantive information and suppor
 instruction, not a special prior-delivery acceptance gate; qualified partial content can support a
 limited comparison. References do not create exposure. See the
 [working agreement](../structured-architectural-accounts-proposal.md#unresolved-inconsistency-reports).
-The current fixture/model has no migrated inconsistency-report payload or acceptance probe. Passing
-its declaration checks does not demonstrate this migration; no additional declaration kind is implied.
+The [alignment probe](review-alignment.md) uses optional investigram metadata `inconsistencies`.
+Each report has a unique local `key`, at least two distinct `targets`, `reason`, `qualifications`
+and `evidence`. Each target is either `{item: {investigram, contentKey}}` or
+`{association: {investigram, associationKey}}`. Target lookup returns exact report handles;
+separate report acquisition supplies its qualified grounds and records the reporting producer's
+exposure, without delivering either endpoint merely by reference. Missing targets or grounds and
+altered qualified deliveries are rejected atomically. Both an acquired comparison and an intentionally
+no-delivery structural control pass; the latter does not demonstrate compliance with the acquisition
+instruction. This local encoding is replaceable and is not an additional association declaration kind.
 
 ## Query results and exact history
 
@@ -297,7 +304,7 @@ occurrence/release explanation. That link neither delivers the content nor asser
 that minimal identification is unintelligible without it.
 
 <a id="provisional-partition-default"></a>
-## Provisional partition default
+## Qualification-based partition guidance
 
 Prefer coherent qualification boundaries. Separate identifying investigrams remain useful when
 an investigation mixes general identities and narrower behavior. This does not require nesting:
@@ -307,7 +314,7 @@ path remains for link continuity; its payloads now contain no child links or com
 
 ## Entity context, delivery and reconsideration
 
-Supplying an entity means supplying a qualified context selection delivered to the investigator.
+Supplying information about an Entity means supplying a qualified context selection to the investigator.
 A selection names exact associations, item excerpts or options reachable through that
 entity's information. It is not just an ID, all history, or a canonical definition.
 Each delivered item/declaration/option preserves its own value, source investigram,
@@ -371,16 +378,13 @@ shared-item overlap. The separate addition experiment below preserves this rule 
 
 ### Actual-delivery timing and known causes
 
-> **Design update, 2026-11-14:** the agreed during-production rule now recognizes receipt of
-> the relevant updated information and qualified change context before the producing investigation
-> submits. That change alone should not flag its resulting contribution because an earlier delivery
-> preceded the change. Preserve both deliveries. This does not clear completed contributions,
-> alter association standing or transfer awareness between producers. The executable model below
-> still implements the earlier blanket no-refresh treatment. Its repeated old-excerpt/notice case
-> does not test substantive update delivery. Add that positive case and notice-only, undelivered,
-> separate-producer and completed-contribution controls before claiming alignment. No semantic
-> proof-of-understanding gate is required.
-
+A still-producing investigation can receive an intervening update before submission. Keep the
+old and new deliveries; do not mark its contribution for that change merely because an earlier
+input preceded it. The bounded [alignment probe](review-alignment.md) recognizes a sufficient
+case: actual delivery of the full qualified cause declaration and its complete replacement/addition
+members before submission. For withdrawal there are no replacement members. This is per producing
+investigram, not per shared invocation or acceptance, and does not clear completed contributions.
+No semantic proof-of-understanding or producer-asserted exemption is introduced.
 
 `acceptedAt` orders accepted contributions; `asOfAcceptance` records the retained-state
 position at which a context delivery was captured for delivery. These are host-owned fixture
@@ -400,8 +404,9 @@ All propagation paths compare the cause to each actual delivery. Known causes ca
 as new warnings via a source query or result designation. New designation membership compares
 against designation acceptance: already-displaced members retain their standing but do not
 create new membership causes. Its producing evaluation may still carry a cause from an earlier
-acquisition. If a query receives both an old and a refreshed context delivery, the refresh does not
-clear the old exposure. Query-start time and final acceptance are not delivery-time proxies.
+acquisition unless its producing investigation receives the relevant qualified update before
+submission. Receiving the old excerpt again with notices alone does not supply replacement content.
+Query-start time and final acceptance are not delivery-time proxies.
 
 Notices preserve reasons, qualification and exact standing; they do not deliver all referenced
 replacement members or establish sufficient understanding. Those acquisition obligations remain.
@@ -455,8 +460,9 @@ result membership; a declared scope used to select descriptions is a distinct de
 An included exact association's displacement still creates membership concerns; an inventory-
 affected generating evaluation still passes its concern to its results and actual consumers.
 The same cause/timing rules and producer exemption apply. A fresh matching inventory contains
-already accepted entries without treating them as later changes; refresh does not clear an
-older acquisition. Inventory receipt does not imply member-content receipt or comprehension.
+already accepted entries without treating them as later changes. Refreshing only the list does not
+supply the added content; the production-update rule requires that substantive update too. Inventory
+receipt does not imply member-content receipt or comprehension.
 
 Do not automatically disclose every other addition about the entity. Qualified displacement
 and inherited-cause disclosures for actually supplied material remain required; their substantive
@@ -718,5 +724,6 @@ context is RESULT-Q4; selected occurrences need not become entities.
 The origin-free request selects P/S/R/B information, including ADMISSION-2's admission
 association, without delivering old admission content by default. Actual deliveries and
 source provenance are recorded. A separate architectural state model for composition,
-resource-lifetime content type, structured selection-origin field and live follow-up
-remain open. See the [verification guide](README.md#verification) for exercised boundaries.
+resource-lifetime content type and structured selection-origin field remain later probe work.
+Live execution of retained follow-up options is required within the selected state-behavior
+capability; this does not require live execution of the composition scenario. See the [verification guide](README.md#verification) for exercised boundaries.

@@ -1,6 +1,6 @@
 # Structured architectural information: executable working examples
 
-Updated 2026-11-12. These are authored exploratory fixtures, not an adopted protocol,
+Updated 2026-11-15. These are authored exploratory fixtures, not an adopted protocol,
 product implementation or live investigator run. They now follow the entity/context and
 association-declaration direction throughout. Earlier whole-investigram correction
 fixtures remain in Git history; current examples no longer return correction record K.
@@ -149,23 +149,22 @@ independent expansion/competition probes so successful redesignation is visible.
 uses actual delivery timing: disclosed prior causes are known context, while later changes
 can trigger warnings. Missing direct or inherited disclosure is a delivery defect. Producer
 exemption remains. The separate addition experiment uses explicit inventory exposure for new-information
-causes, not every entity use. General inventory coverage remains open; clearance and general
+causes, not every entity use. Detailed inventory coverage remains implementation work; clearance and general
 reinstatement are deferred. Renewed assertions can use new associations to original qualified
 content, preserving provenance without undoing earlier displacement (see [contracts](contracts.md)).
 
 <a id="verification"></a>
 ## Verification
 
-**Pending timing alignment (2026-11-14):** the notes now distinguish an update actually delivered
-within an ongoing investigation from a change not delivered before submission. The current probe's
-old excerpt plus fresh notices does not exercise receiving the substantive update; the model retains
-the earlier blanket no-refresh rule. Passing these checks does not yet validate the new production-
-context treatment. See [the contract update](contracts.md#actual-delivery-timing-and-known-causes).
-
+The [review-alignment checks](review-alignment.md) cover substantive updates delivered during
+production, exact inconsistency reports and discovery through explicit referents in both partitions.
+Their [generated report](review-alignment-report.json) distinguishes actual update delivery from
+notice-only/inventory-only acquisition, independent producers, completed contributions and later causes.
+These close the previously recorded authored-probe gaps; they are not product integration evidence.
 
 Timing branches contrast delivery before a change with informed delivery afterward,
-including an investigation finishing later, a later refresh that does not clear an old
-exposure, inherited producer concerns and knowingly designating historical membership.
+including an investigation finishing later, a notice-only refresh that does not supply updated
+content, inherited producer concerns and knowingly designating historical membership.
 Q-reuse/Q-withdraw do not acquire the already-disclosed expansion cause. Q-competing does
 not acquire the expansion it knew about, while its new cause still reaches earlier consumers.
 The report preserves acceptance/delivery positions and qualified known-cause notices.
@@ -179,6 +178,7 @@ python3 notes/structured-account-example/check-guidance.py
 python3 notes/structured-account-example/check-additions.py
 python3 notes/structured-account-example/check-baseline.py
 python3 notes/structured-account-example/check-acquisition.py
+python3 notes/structured-account-example/check-review-alignment.py
 python3 notes/structured-account-example/unification/check-unification.py
 python3 notes/structured-account-example/composition/check-and-render.py
 python3 notes/structured-account-example/render-overviews.py

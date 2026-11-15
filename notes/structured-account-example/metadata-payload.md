@@ -62,7 +62,7 @@ scope, rather than exact references, also record that selection guarantee and po
 need not be preceded by a separately displayed inventory. Substantive listing summaries
 would themselves require qualified content exposure.
 
-Q2's subject/context entity is RESULT-Q1. Its option address remains
+Q2's subject/context identity is Query result RESULT-Q1. Its option address remains
 ADMISSION-1/concurrent-callers-option, and its architectural focus is S. Those are
 three different roles. This request deliberately delivers the declarations and full
 members it will supersede. Ordinary option delivery need not do that; the historical
@@ -99,14 +99,15 @@ redesignation, old-content reuse and withdrawal. Original ownership remains visi
 The main new design pressure is delivery and reconsideration precision, not adding a
 mutable canonical entity model.
 
-The [verification guide](README.md#verification) lists checks. Same-target displacement,
-one initial result designation and accurate qualified deliveries are explicit provisional choices.
+The [verification guide](README.md#verification) lists checks. Same-target displacement and one
+initial result designation are bounded fixture encodings. Accurate qualified deliveries and exact
+standing are architectural requirements, not optional fixture choices.
 Complete target-support acquisition before displacement is an investigator instruction; mechanical
 completeness enforcement is deferred. Reuse and earlier-query redesignation likewise have no prior-
 delivery gate; reference integrity and accurate records remain enforced. Exact designation statuses separate displacement from membership and
 generating-context concerns; shared entity/item identity alone is not a cause. General inventory
-coverage, required dependency delivery for arbitrary excerpts and declaration standing need
-bounded contracts. Investigator-directed propagation, targeted suppression, reassessment/clearance
+coverage and required dependency delivery for arbitrary excerpts need explicit bounded
+contracts in implementation, preserving the agreed standing and qualification rules. Investigator-directed propagation, targeted suppression, reassessment/clearance
 and automatic scheduling are deferred. They do not need new payload fields in this capability.
 No governing/product files were changed.
 
@@ -114,6 +115,8 @@ No governing/product files were changed.
 Delivery snapshots record their retained-state position, and accepted contributions record
 acceptance order. Known direct and indirect concerns accompany fresh context deliveries. They do
 not become new warnings for that recipient; missing disclosure is rejected instead. Earlier
-snapshots and warnings remain unchanged, and a later refresh is not reassessment. The
+snapshots and completed contributions remain unchanged. A substantive update received during
+production informs that contribution without clearing completed ones; notice-only refresh is not
+reassessment. The [alignment probe](review-alignment.md) exercises that distinction. The
 [lifecycle report](children/lifecycle-report.json) includes explicit timing probes and the
 complete main ordering, including excerpt/updated-answer consumers and the competing copy.

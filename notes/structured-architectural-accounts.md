@@ -2642,3 +2642,37 @@ actual-inventory/content-selection-scope rule, without reverting to blanket enti
 remain possible concerns rather than proof of error. If practical use shows too many warnings, address
 that based on observed cases; targeted suppression, reassessment and clearance remain deferred. Added
 the rationale to the proposal and consolidation. No behavior or fixture changes were needed.
+
+
+## 2026-11-15 — Align the review probes and consolidate the notes
+
+The human authorized alignment and consolidation before a further independent review. Added a
+review-resolution map tying the fresh review's B1–B6, D1–D7 and optional suggestions to the decisions
+made in discussion. Removed stale claims that fresh selection, baseline context or the Analysis
+content name remained undecided. Clarified standing, designation, guidance, Query result versus
+Entity, engine captures versus Projections, and invocation-level fixture summaries versus actual
+per-investigram production exposure. Recorded the rationale for full staged migration and preserved
+implementation freedom and explicit deferrals. Historical review/discussion remains unchanged.
+
+Aligned three authored probe gaps in both partitions:
+
+- A producing investigation receiving the full qualified change declaration and its substantive
+  members before submission does not acquire that change as a new concern merely from earlier
+  exposure. Both deliveries remain recorded. Controls cover notices without member content,
+  inventory-only refresh, undelivered/later changes, independent producers, inherited causes,
+  completed contributions and withdrawal without replacement members. This bounded sufficient
+  case does not certify adequacy of arbitrary partial inputs or implement retrospective clearance.
+- Qualified inconsistency reports identify exact content claims or association uses. Exact-target
+  lookup and separate report delivery preserve attribution without inventing endpoint exposure.
+  Earlier standing and unrelated sibling claims remain unchanged. Structural controls can omit
+  acquisition; the semantic acquisition instruction remains, without a special acceptance gate.
+- Referent lookup discovers ADMISSION-1 through Half-open even though the behavioral association
+  concerns Circuit Breaker. Reference-only discovery and subsequent qualified content acquisition
+  are distinct, with historical lookup and incidental-prose controls.
+
+All authored checks pass: lifecycle 74 malformed cases; additions 26 plus four historical-policy
+controls; acquisition 26; identification baseline 14; unification 33; guidance 26; composition five
+and selectors nine; review alignment 44. Diagram/legend sources regenerate unchanged. Current note
+links and whitespace checks pass. These are authored simulation checks, not product integration,
+semantic truth, instruction-compliance or performance evidence. No product, governing or foundation
+files were changed, and no planning package was started. The human will arrange re-review.

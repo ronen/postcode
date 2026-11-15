@@ -105,7 +105,7 @@ Q2 is exempt from its own declaration causes. No warning changes an exact captur
 Q-observer received the original result designation and inherits its concerns. Q-excerpt
 received only the admission item via its P association: it receives the admission cause,
 not the redesignation cause of an answer it never received. Q-updated receives the new
-designation; it does not inherit warnings merely because its context entity is also RESULT-Q1.
+designation; it does not inherit warnings merely because its context identity is also Query result RESULT-Q1.
 The report shows this checkpoint before subsequent independent expansion.
 
 Withdrawal of a later P association does not flag Q1 or other uses merely sharing its item.
@@ -114,8 +114,11 @@ received after displacement carries that notice; the known cause does not newly 
 recipient. This also applies to indirect designation/producer concerns and new designation
 membership, without clearing the historical source's warnings. Missing required disclosure
 is a delivery defect. Notices do not supply all replacement content or prove its adequacy.
-A query that acquired the item before the change can still be flagged even if it finishes
-later or refreshes afterward. General reassessment and clearance remain unimplemented.
+A producing investigation that receives only notices can still be flagged even if it finishes
+later. Receiving the substantive update and qualified change context before submission avoids that
+particular cause without erasing the earlier delivery. The [alignment probe](structured-account-example/review-alignment.md)
+exercises this distinction, separate producers and completed contributions. General reassessment
+and retrospective clearance remain unimplemented.
 
 ## 5. Expansion without a factual-error claim
 

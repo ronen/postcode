@@ -4,9 +4,13 @@ Updated: 2026-11-15
 
 Current exploratory model, not an adopted schema or product behavior. The
 [proposal](structured-architectural-accounts-proposal.md) states scope, consequences and
-open decisions; [fixtures](structured-account-example/README.md) now exercise the new
+the remaining drafting work; [fixtures](structured-account-example/README.md) now exercise the new
 direction. Prior discussion remains in the [historical notes](structured-architectural-accounts.md).
 Governing documents still describe whole-investigram correction.
+
+The [review resolution map](structured-account-example/review-alignment.md#review-resolutions) distinguishes
+settled behavior, replaceable fixture details, remaining drafting work and explicit deferrals. The
+three previously missing authored probes are aligned; product integration remains unverified.
 
 ## Center of the model
 
@@ -117,8 +121,8 @@ The working scope also migrates existing agentic capabilities (`summarize`, `exp
 mechanism. Preserve their questions and qualified information, with no permanent legacy correction/
 exposure regime. Changes from whole-investigram correction and replacement-chain selection must be
 explicit. Drafting names the cut-over; faithful subject/input mapping and interface packaging must
-preserve the application/engine distinction. This does not settle the review's separate fresh-answer
-selection question. See [agentic migration](structured-architectural-accounts-proposal.md#existing-agentic-capability-migration).
+preserve the application/engine distinction. The fresh-answer rule above supplies all equally
+standing alternatives without a hidden priority. See [agentic migration](structured-architectural-accounts-proposal.md#existing-agentic-capability-migration).
 
 An internal producer/contribution boundary enables controlled mechanism tests before real-provider
 migration, including separately attributed producers for cross-producer cases. Mechanical and agentic
@@ -151,6 +155,11 @@ indexes remain implementation choices. See [entity storage and lookup](structure
 
 <a id="working-vocabulary"></a>
 ## Working vocabulary
+
+**Standing** records exact association displacement, not truth. **Designation** means a result
+association with explicit membership. **Guidance** groups follow-up options and illustrations; it
+is not a third mechanism. Fixture `evaluations` report invocation-level cause unions, while actual
+exposure belongs to producing investigrams; they do not redefine the outer application Evaluation.
 
 The citation-index to exposure-index rename is included across affected governing documents, APIs
 and code alongside the semantic migration. Evidence citations and substantive support retain their
@@ -219,6 +228,7 @@ Invocation Q and its allocated query result RESULT-Q
       exact content/declaration members where applicable
       exact earlier associations displaced
       reason and attributable grounds
+    Qualified inconsistency reports with exact item/association targets
     Follow-up options and illustrations
   Local entity introductions and references to existing identities
 ```
@@ -243,6 +253,7 @@ Query invocations and their generating/delivery history
 Immutable investigrams
   Original items, declarations, qualifications, evidence, guidance
 Association indexes for Entity + role and for Query results
+Explicit referent lookup and exact-target inconsistency lookup
 Query-result designations with explicit member references
 Captured answers and exact context deliveries
 Separately acquired inventory snapshots with scope, coverage and delivery position
@@ -260,7 +271,8 @@ Association standing: displacement links and competing declarations
 Entity context selections: explicit selected information with qualifications and applicable context disclosures
 Inventory acquisition: scoped availability, without implicit content delivery
 Result membership: exact declarations/items, never implicit current substitutions
-Reconsideration causes on evaluations and exact result designations
+Reconsideration causes per producing investigram and exact result designation
+Invocation-level cause summaries (not a new exposure unit)
 Validated diagram inputs and rendered diagrams/legends
 ```
 
@@ -303,11 +315,13 @@ relationships remains in scope.
 | Illustration specification | Owned by the producing investigram; references the architectural content used to explain through a picture. Application rendering and independent compatible diagrams do not change it. |
 | Context delivery | Captures actual delivered content, original qualification, source provenance and applicable disclosures. A subject ID or human browsing is not exposure. |
 | Inventory delivery | Captures availability scope/coverage and time separately. Matching later entries may affect selection; listed content is not supplied merely by appearing. |
+| Inconsistency report | Producing investigram owns qualified comparison of exact claims/uses. Indexing the targets neither delivers their content nor changes their standing. |
 | Reconsideration | Derived cause-specific warning, not proof of wrongness or automatic withdrawal. |
 
 The fixture requires same-target supersession and displacement targets accepted earlier. Complete
 acquisition of the targeted declaration and support is an investigator instruction, not a structural
-acceptance gate. Same-target scope remains an explicit bounded choice for drafting review.
+acceptance gate. Same-target supersession versus explicit withdrawal/addition is a bounded
+operation shape; product encoding may differ while preserving exact displacement and target meaning.
 
 ## Baseline initial context and association vocabulary
 
@@ -339,8 +353,9 @@ contribution's descriptive association concerns Circuit Breaker. A known address
 origin is not required. This preserves an existing purpose of referents, not a new semantic-search
 capability. Finding a reference does not automatically deliver the contribution's content; subsequent
 qualified acquisition and actual exposure remain distinct. Indexes and tool shapes are implementation
-choices. Include this path in validation; the current association-backed fixture does not yet
-exercise it, which is a coverage gap rather than deferred scope.
+choices. The [alignment probe](structured-account-example/review-alignment.md) now checks this path:
+reference-only lookup, historical coverage and separate qualified item acquisition. Native application
+integration remains required validation, not demonstrated by this authored simulation.
 
 ## Exposure and result membership
 
@@ -408,12 +423,14 @@ dialog is one ordinary source of such updates.
 This is per-producing-investigation context handling, not retrospective clearance: it neither clears
 completed contributions nor transfers across producers sharing an invocation/acceptance. Undelivered
 or subsequent changes and other causes retain ordinary behavior. Displaced standing and exact result
-membership do not change. The existing timing probe lacks the substantive-update positive case and
-must be aligned; its repeated old excerpt plus notices does not establish that case.
+membership do not change. The [alignment probe](structured-account-example/review-alignment.md)
+checks full qualified update delivery, direct/inherited concerns, notice-only controls, separate
+producers and completed contributions. Its full-declaration/member rule is a bounded sufficient
+case, not semantic certification of arbitrary partial inputs or a required public schema.
 
 The fixture records host-assigned acceptance positions and delivery-state positions; these
-are ordering aids, not proposed public timestamps or agent-supplied exemption claims. General inventory
-coverage, clearance and reassessment remain open. Producers still exclude their own causes. Identifying content newly established from the
+are ordering aids, not proposed public timestamps or agent-supplied exemption claims. Detailed inventory
+coverage is implementation work; clearance and reassessment are deferred. Producers still exclude their own causes. Identifying content newly established from the
 pinned basis need not copy irrelevant source behavioral restrictions; original reused content
 retains its qualifications, while new scenario examples carry their own applicable limits.
 
@@ -467,7 +484,8 @@ substantive information, qualifications and relevant support; a scoped excerpt m
 references, structure and required grounds mechanically, without a special prior-delivery gate or
 inventing exposure from references. This explicitly revises the existing inconsistency contract's
 whole-investigram targeting and recorded-delivery prerequisite. The package must carry that governing
-mapping; the authored fixtures do not yet test the migrated report shape. This is not an additional
+mapping. The [alignment probe](structured-account-example/review-alignment.md) tests the migrated
+report shape, exact-target indexing, qualification, unchanged standing and actual exposure. This is not an additional
 association declaration operation. See the [proposal](structured-architectural-accounts-proposal.md#unresolved-inconsistency-reports).
 
 ## Retained follow-up execution in scope
@@ -557,10 +575,10 @@ conservative warnings; partitioning alone does not remove them. The existing `ch
 names the partitioned variant for link continuity, not a retained nesting mechanism.
 
 Composition receives selected P/S/R/B context and returns pattern entities plus
-RESULT-Q4. Exact local selectors remain valid; their context entity is RESULT-Q4. The
+RESULT-Q4. Exact local selectors remain valid; their context identity is Query result RESULT-Q4. The
 same architectural diagrams and assertions remain authored content.
 
-## Open decisions and verification limits
+## Settled scope and verification limits
 
 The [revised addition probe](structured-account-example/additions.md) distinguishes exact
 association content from availability/selection scope. A description supplied by reference does
@@ -587,8 +605,9 @@ displacement of the supplied declaration too, without implying reinstatement of 
 Removing implicit entity-wide exposure and unsolicited addition reasons is a structural
 refinement, not targeted suppression or semantic clearance. It leaves a coverage limit:
 unrequested new information may matter even when no inventory dependency was established.
-The human accepts that coverage limitation. General initial selection and richer inventory
-policies still need bounded treatment. The contract is at the investigation boundary; dialog
+The human accepts that coverage limitation. Baseline initial selection is settled: all standing
+identifications for each subject Entity. More detailed inventory coverage and retrieval bounds remain
+implementation choices with explicit completeness guarantees. The contract is at the investigation boundary; dialog
 tools and storage sharing are implementation choices. The broad earlier counts no longer
 establish a first-delivery need for reassessment.
 
@@ -668,7 +687,7 @@ coverage, including optional actions such as follow-up options, illustrations,
 reported inability, association operations and cross-investigation content reuse. Do not rely on
 spontaneous agent choices for repeatable coverage. Include an explicit state-diagram result contract:
 successful fulfillment, otherwise valid content that leaves the requirement unmet, and producer-
-reported inability. This differs from optionally recommending a diagram. Accepted contributions
+reported inability. This differs from an investigator optionally authoring an illustration. Accepted contributions
 retain their normal processing and effects despite unmet requirements; prose alone does not fulfill
 the diagram contract. No additional architectural concept is needed. Harnesses, mocking arrangements and exact test
 scenarios are implementation details. “Plausibly useful” is a sanity check on the representative
@@ -678,8 +697,8 @@ checks establish mechanism behavior, not the usefulness of an investigation expe
 user value is not required. The separate [SLICE step](upcoming-work.md#slice) selects the
 initial user-facing offering using the demonstrated capabilities and limitations.
 
-Before drafting, resolve any remaining concrete ambiguity in information meaning or qualification;
-mapping the agreed validation scope to observable checks is planning work. Detailed schemas, API/tool shapes, operational bounds, incidental
+The review discussions have resolved the identified design questions; re-review may reveal others.
+Mapping the agreed validation scope to observable checks is planning work. Detailed schemas, API/tool shapes, operational bounds, incidental
 ordering and implementation task breakdown need not be fixed here. The test is whether a different
 choice changes retained meaning, investigator guarantees, consumer-visible information or the
 promised capability. Existing atomicity, truthful coverage and qualified-delivery requirements still

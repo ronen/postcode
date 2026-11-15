@@ -12,6 +12,7 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 
 ## Current notes
 
+- Review consolidation: [resolution map and aligned probes](structured-account-example/review-alignment.md) records the fresh review discussions, production-update timing, precise inconsistency reports and referent discovery.
 - Structured architectural accounts: [working proposal](structured-architectural-accounts-proposal.md) consolidates the emerging design; [discussion notes](structured-architectural-accounts.md) retain exploration, alternatives and research.
 - Investigram structure: [consolidation checkpoint](structured-architectural-accounts-consolidation.md) maps immutable contributions, association declarations, entity/query-result context, guidance ownership and concept/content/diagram contracts, including the [agreed vocabulary](structured-architectural-accounts-consolidation.md#working-vocabulary).
 - Complete illustrative account results: [partitioned variant](structured-account-example/children/README.md) and [mixed-account comparison](structured-account-example/README.md), with association supersession/withdrawal, query-result designation, exact history, qualified context and diagrams generated from structured content.
@@ -21,7 +22,7 @@ Use [`drafts/`](../drafts/) for canonical-shaped proposals, an ignored root unde
 - Acquisition review: [scope selection, discovery and declaration disclosure](structured-account-example/acquisition.md) distinguish exact-reference controls from scope-dependent context and record the accepted coverage limit and defer declared dependencies alongside investigator-directed propagation.
 - Composition design probe: [two wrapping orders](structured-account-example/composition/README.md), with separate component accounts, local scenario roles and relationships, explicit resource/state snapshots, and generated sequence diagrams.
 - Diagram readability examples: [compact overviews and keyed legends](structured-account-example/diagrams.md), with concise authored labels and full qualified meaning kept alongside.
-- Complete metadata payload: [guided tour](structured-account-example/metadata-payload.md) exercises investigram-owned follow-up options and presentation recommendations, exact addresses, qualified delivery and explicit trial diagram inputs.
+- Complete metadata payload: [guided tour](structured-account-example/metadata-payload.md) exercises investigram-owned follow-up options and illustrations, exact addresses, qualified delivery and explicit trial diagram inputs.
 - Retained follow-up option: [bounded admission-to-trial invocation](structured-account-example/followup-options.md), with exact originating option references, result-entity context and historical access in both partitions.
 - [Upcoming work](upcoming-work.md)
 - [Candidate capabilities](candidate-capabilities.md)

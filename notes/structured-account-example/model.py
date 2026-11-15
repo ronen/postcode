@@ -50,6 +50,38 @@ class Model:
     def items(self):
         return {(oid, x['key']): x for oid, a in self.investigrams.items() for x in a['content']}
 
+    def inconsistencies(self):
+        return {(oid, x['key']): x for oid, a in self.investigrams.items() for x in a.get('inconsistencies', [])}
+
+    def comparison_target(self, target):
+        """Exact claims and exact uses are different comparison endpoints."""
+        assert isinstance(target, dict) and len(target) == 1, 'ambiguous comparison target'
+        kind = next(iter(target))
+        assert kind in {'item', 'association'}, 'unsupported comparison target'
+        field = 'contentKey' if kind == 'item' else 'associationKey'
+        assert set(target[kind]) == {'investigram', field}, 'invalid comparison address'
+        ref = address(target[kind], field)
+        assert ref in (self.items() if kind == 'item' else self.declarations()), 'missing comparison target'
+        return kind, ref
+
+    def inconsistencies_for(self, target, as_of=None):
+        endpoint = self.comparison_target(target)
+        as_of = self.acceptance_order if as_of is None else as_of
+        assert type(as_of) is int and 0 <= as_of <= self.acceptance_order
+        return [{'investigram': ref[0], 'inconsistencyKey': ref[1]}
+                for ref, report in sorted(self.inconsistencies().items())
+                if self.accepted_at(ref) <= as_of and endpoint in
+                [self.comparison_target(x) for x in report['targets']]]
+
+    def discover_referents(self, entity, as_of=None):
+        """Reference lookup, not content delivery or association-inventory acquisition."""
+        as_of = self.acceptance_order if as_of is None else as_of
+        assert type(as_of) is int and 0 <= as_of <= self.acceptance_order
+        assert entity in self.entities and self.entities[entity]['kind'] != 'query-result'
+        return {'entity': entity, 'asOfAcceptance': as_of, 'coverage': 'explicit-referents-only',
+                'investigrams': [{'investigram': oid} for oid, a in sorted(self.investigrams.items())
+                                 if a.get('acceptedAt', 0) <= as_of and {'entity': entity} in a.get('referents', [])]}
+
     def is_identifying(self, item):
         return item['contentType'] == 'entity-description/0' or self.content_contracts.get(item['contentType'], {}).get('identifying', False)
 
@@ -142,13 +174,13 @@ class Model:
 
     @staticmethod
     def projection_sources(projection):
-        return {x['queryInvocation'] for field in ['items', 'declarations', 'associationUses', 'options', 'notices']
-                for x in projection[field].values()}
+        return {x['queryInvocation'] for field in ['items', 'declarations', 'associationUses', 'options', 'notices', 'inconsistencies']
+                for x in projection.get(field, {}).values()}
 
     @staticmethod
     def delivered_owners(projection):
-        return {x['sourceInvestigram'] for field in ['items', 'declarations', 'associationUses', 'options', 'notices']
-                for x in projection[field].values()}
+        return {x['sourceInvestigram'] for field in ['items', 'declarations', 'associationUses', 'options', 'notices', 'inconsistencies']
+                for x in projection.get(field, {}).values()}
 
     @staticmethod
     def projection_entities(projection):
@@ -257,6 +289,18 @@ class Model:
         if selection_scope is not None:
             # The scope guarantee accompanies the selected content; no unseen list is invented.
             projection['selectionScope'] = selection_scope
+        if 'referentDiscovery' in selection:
+            assert selection['referentDiscovery'] is True, 'invalid referent discovery request'
+            projection['referentDiscovery'] = self.discover_referents(entity, as_of)
+        if 'inconsistencies' in selection:
+            reports = {}
+            for ref in selection['inconsistencies']:
+                assert set(ref) == {'investigram', 'inconsistencyKey'}, 'invalid inconsistency address'
+                key = address(ref, 'inconsistencyKey')
+                assert key in self.inconsistencies() and self.accepted_at(key) <= as_of, 'missing inconsistency at delivery'
+                assert label(key) not in reports, 'duplicate inconsistency selection'
+                reports[label(key)] = self.qualified(key[0], self.inconsistencies()[key])
+            projection['inconsistencies'] = reports
         if 'inventory' in selection:
             scope = selection['inventory']
             assert set(scope) == {'roles'}, 'inventory requires explicit supported scope'
@@ -307,6 +351,8 @@ class Model:
             assert projection.get('inventory') == expected.get('inventory'), 'missing or altered inventory delivery'
             assert projection.get('selectionScope') == expected.get('selectionScope'), 'missing or altered selection-scope delivery'
             assert projection.get('queryMeanings') == expected.get('queryMeanings'), 'missing or altered delivered query meaning'
+            assert projection.get('referentDiscovery') == expected.get('referentDiscovery'), 'missing or altered referent lookup'
+            assert projection.get('inconsistencies') == expected.get('inconsistencies'), 'missing or altered inconsistency delivery'
             # Validate what the selected delivery actually contained, independently of
             # whether it was sufficient for the investigator's later displacement.
             assert projection['declarations'] == expected['declarations'] and projection['items'] == expected['items'], 'missing or altered selected content'
@@ -365,6 +411,19 @@ class Model:
         assert len(introductions) == len(set(introductions))
         assert set(introductions) | {rid} == set(bindings['entityIds'].values()), 'entity allocation lacks introduction'
         staged.validate_content(new_owners, set(request['suppliedEvidence']))
+        for oid in new_owners:
+            reports = staged.investigrams[oid].get('inconsistencies', [])
+            assert isinstance(reports, list)
+            keys = [r['key'] for r in reports]
+            assert all(isinstance(k, str) and k.strip() for k in keys) and len(keys) == len(set(keys)), 'invalid inconsistency keys'
+            for report in reports:
+                assert set(report) == {'key', 'targets', 'reason', 'qualifications', 'evidence'}, 'invalid inconsistency structure'
+                assert isinstance(report['reason'], str) and report['reason'].strip(), 'missing comparison grounds'
+                assert isinstance(report['qualifications'], list) and report['qualifications'] and all(isinstance(q, str) and q.strip() for q in report['qualifications']), 'missing comparison qualification'
+                assert isinstance(report['evidence'], list) and report['evidence'], 'missing comparison support'
+                assert isinstance(report['targets'], list) and len(report['targets']) >= 2, 'comparison needs multiple targets'
+                endpoints = [staged.comparison_target(x) for x in report['targets']]
+                assert len(endpoints) == len(set(endpoints)), 'duplicate comparison target'
         decls = staged.declarations()
         new_decls = {k: v for k, v in decls.items() if k[0] in new_owners}
         assert not bindings.get('renewals'), 'automatic renewal metadata is unsupported'
@@ -445,7 +504,7 @@ class Model:
             for item in staged.investigrams[oid]['productionExposure']['sameSubmissionItems']:
                 check_inputs(item['sourceInvestigram'], path | {oid})
         for oid in new_owners: check_inputs(oid, set())
-        exposure = sorted({p['entity'] for p in projections if p['items'] or p['declarations'] or p['options'] or p['notices']})
+        exposure = sorted({p['entity'] for p in projections if any(p.get(f) for f in ['items', 'declarations', 'options', 'notices', 'inconsistencies'])})
         sources = sorted({src for p in projections for src in self.projection_sources(p)})
         staged.acceptance_order = self.acceptance_order + 1
         staged.queries[qid] = {'acceptedAt': staged.acceptance_order, 'request':copy.deepcopy(request), 'resultEntity':rid,'initialDesignation':own_results[0], 'deliveries':projections,'exposureIndex':exposure,'sourceQueries':sources,'declarations':list(new_decls)}
@@ -523,6 +582,21 @@ class Model:
         by=[label(r) for r,s in self.declarations().items() if any(address(x,'associationKey')==ref for x in s.get('displaces',[]))]
         return {'displacedBy':sorted(by),'competingDeclarations':len(by)>1}
 
+    def received_update(self, contribution, cause):
+        """Bounded sufficient update: full change declaration and its complete members.
+
+        Only actual inputs before this contribution's acceptance count. This is not
+        clearance, a reliance claim, or a universal sufficiency test for partial inputs.
+        """
+        at = self.accepted_at(cause)
+        deliveries = [p for p in contribution['productionExposure']['deliveries']
+                      if at <= p['asOfAcceptance'] < contribution['acceptedAt']]
+        declarations = {key for p in deliveries for field in ['declarations', 'notices'] for key in p[field]}
+        items = {key for p in deliveries for key in p['items']}
+        required_declarations, required_items = self.expand(cause)
+        return ({label(r) for r in required_declarations} <= declarations and
+                {label(r) for r in required_items} <= items)
+
     def reconsideration(self, as_of=None):
         """Later changes only, relative to each delivery and designation's acceptance."""
         as_of = self.acceptance_order if as_of is None else as_of
@@ -547,6 +621,7 @@ class Model:
             # Each contribution retains only its producing execution's captured input.
             prior = {oid: [p for p in a['productionExposure']['deliveries'] if p['asOfAcceptance'] < cause_at]
                      for oid, a in contributions.items()}
+            updated = {oid for oid, a in contributions.items() if self.received_update(a, cause)}
             for oid, a in contributions.items():
                 if self.addition_policy == 'inventory':
                     direct = any(self.inventory_matches(p, declaration) or
@@ -556,7 +631,7 @@ class Model:
                     direct = any(target_entity in self.projection_entities(p) if addition else
                                  bool(self.delivered_declarations(p) & {label(r) for r in displaced})
                                  for p in prior[oid])
-                if a['productionExposure']['execution'] != producer and direct:
+                if a['productionExposure']['execution'] != producer and direct and oid not in updated:
                     contribution_causes[oid].add(cid)
             for ref in designations:
                 represented = {decls[r]['target']['entity']['entity'] for r in membership[ref] | {ref}}
@@ -569,7 +644,7 @@ class Model:
                 before = copy.deepcopy(contribution_causes)
                 for oid, a in contributions.items():
                     exposure = a['productionExposure']
-                    if exposure['execution'] == producer:
+                    if exposure['execution'] == producer or oid in updated:
                         continue
                     for projection in prior[oid]:
                         received_affected_designation = any(

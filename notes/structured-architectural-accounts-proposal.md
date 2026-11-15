@@ -24,7 +24,7 @@ architectural understanding. Preserve evidence, limitations, conflicts and exact
 information. Organize multiple accounts rather than maintain one reconciled model.
 
 The deliverable is the new mechanism, including the agreed staged migration of existing
-mechanical architectural information. This plan does not select the initial user-facing
+mechanical architectural information and existing agentic capabilities. This plan does not select the initial user-facing
 investigation catalogue or mandate a particular user journey.
 
 The selected architectural capability is explaining **state-dependent behavior**, including
@@ -158,6 +158,29 @@ new semantic enforcement gates or bring deferred mechanisms into scope.
 record. Entity-organized accounts need not be complete, consistent or canonical. Content,
 association declarations, qualified relationships and exact selections remain distinct.
 
+<a id="reading-conventions"></a>
+## Reading conventions
+
+- **Standing** records whether an exact association remains undisplaced or which later declarations
+  displace it. **Displaced** does not mean deleted, false, or replaced in every use. Content keeps its
+  original provenance; other associations to it retain their own standing.
+- A **result designation** is an association selecting exact content/declarations for a particular
+  Query result. A captured engine selection is a qualified delivery of that selection, not an outer
+  application Projection. A Lens determines its answer under its existing contract and captures that
+  answer in a Projection; neither kind of immutable capture changes when standing changes.
+- **Guidance** is collective shorthand for investigram-owned follow-up options and illustrations,
+  not a third metadata mechanism. A **context entity/result** is the identity used to organize a
+  particular context request, not an assertion that everything about it was delivered.
+- Q labels an engine invocation. Fixture reports call invocation-level cause summaries `evaluations`;
+  those are unions of per-investigram production concerns, not a redefinition of the governing
+  application Evaluation or an exposure unit shared by independent producers. The fixtures do not
+  prescribe how application operations map to producer executions.
+
+The [consolidation vocabulary](structured-architectural-accounts-consolidation.md#working-vocabulary)
+gives the remaining terms. Example labels are local: P is Circuit Breaker, S is Half-open, R is one
+scenario's breaker instance; ADMISSION/TRIAL name immutable investigram contributions. Exact field
+spellings and report counts illustrate the mechanism rather than define the product API.
+
 ## Identity and reuse
 
 Reuse means reuse as a referent: “this account concerns the previously identified thing.”
@@ -222,7 +245,7 @@ qualified analysis contribution bundle. Mechanical and agentic producers can con
 content and association declarations through common organizing machinery. Method, captured basis,
 evidence, scope and guarantees remain attributable; common packaging does not confer one producer's
 guarantees on another's claims. "Interpretation content" would need a broader governing definition
-and name (provisionally analysis content). No adopted document is changed by this recommendation.
+and name: **Analysis content**, as agreed here. No adopted document is changed by this recommendation.
 
 <a id="investigation-and-execution-vocabulary"></a>
 Working vocabulary: **investigation** is the architectural inquiry; **analysis** is work performed
@@ -259,7 +282,7 @@ Neither all mechanical output nor every claim in a mechanically produced bundle 
 
 Either kind of analysis may enhance, qualify, challenge or supersede information from the other.
 For example, mechanical analysis may establish statically resolved module dependencies while an
-interpreted investigation identifies a runtime dependency through a dynamic loader or configuration.
+agentic investigation identifies a runtime dependency through a dynamic loader or configuration.
 That can add complementary qualified information about the same modules without displacing a valid
 static-dependency association. If an earlier contribution claimed exhaustive dependency coverage,
 the new finding may instead warrant explicit supersession of that association. Whether it does is
@@ -379,13 +402,18 @@ Detailed interface packaging remains open within the established application/eng
 Drafting must name the cut-over and verify interaction between existing agentic outputs, new
 structured investigations and mechanical contributions under the common rules. Any consequential
 change to question, subject meaning or answer-selection behavior must be surfaced rather than
-hidden as an adapter detail. Fresh selection remains a separate review discussion item; this
-scope agreement does not resolve it. No cross-Session data migration is implied.
+hidden as an adapter detail. The fresh-selection rule below preserves all equally standing
+alternatives; exact captures remain immutable. No cross-Session data migration is implied.
 
 ## Agreed implementation scope: existing mechanical information, staged
 
-The human chose migration of all currently supported mechanical architectural information within
-this plan, with staged implementation and verification. A partial migration is an intermediate
+The chosen scope is migration of all currently supported mechanical architectural information within
+this plan, with staged implementation and verification. A purely agentic extension would leave two
+retention/qualification regimes; a permanent mechanical adapter or representative-only migration
+would leave existing information outside the common association and exposure guarantees. Full staged
+migration makes those guarantees consistent while allowing an early vertical checkpoint to expose
+problems before the remaining integration work. This is a deliberate scope choice, not a requirement
+to rewrite provider algorithms or physical storage. A partial migration is an intermediate
 milestone, not the intended endpoint. The migration groups below are not the full milestone sequence.
 
 Define an internal producer/contribution boundary so the common mechanism can be implemented and
@@ -535,9 +563,11 @@ for each subject Entity, including alternatives, empty selections and reconsider
 New associations can reference content owned by another investigram. B owns its new
 association; A still owns the referenced content, qualifications, evidence and original
 provenance. No copying, reparenting or silent scope expansion occurs. If wording must
-change, produce new content. The fixture accepts only same-target supersession; reassociation
-to another entity/role is withdrawal plus addition. This is an explicit provisional
-restriction for review, not an inferred identity rule.
+change, produce new content. The bounded fixture expresses same-target replacement as
+supersession and a change of entity/role as withdrawal plus addition. This is an illustrative
+operation shape, not an inferred identity rule or an unresolved permission to change targets.
+A product encoding must preserve the exact displaced uses and the new qualified use without
+silent reassociation; any materially different semantics require discussion.
 
 Supersession and withdrawal have qualified reasons, normally inline. Additional exact
 content/evidence references are supplied where needed; do not repeat the target's already
@@ -574,8 +604,9 @@ asserting that either entire investigram is invalid. Keep the report attributabl
 against its precise targets; index/API representation is implementation work. This deliberately
 revises the prior whole-investigram targets and mechanical exposure prerequisite in
 [Investigrams and progressive investigation](../docs/decisions/investigrams-and-progressive-investigation.md).
-The planning package must map that governing change explicitly. Current authored fixtures do not
-yet exercise this migrated report shape; it is not a new association declaration operation.
+The planning package must map that governing change explicitly. The [review-alignment probe](structured-account-example/review-alignment.md)
+exercises exact claim/use targets, qualified report access, unchanged standing and acceptance without
+an acquisition gate. This is not a new association declaration operation.
 
 ## Result designation and immutable history
 
@@ -866,9 +897,9 @@ requirement for general relevance ranking. Discovery does not automatically supp
 content or fabricate content exposure; normal qualification, acquisition and actual-delivery rules
 apply. Referent lookup, association targets and evidential support remain distinct. Indexes and
 interface/tool shapes are implementation choices. Planning must include this path in validation.
-The current context-selection simulator exercises association-backed selection rather than this
-path, so referent-based discovery remains an explicit fixture/product validation gap, not an open
-scope decision or a deferred capability.
+The [review-alignment probe](structured-account-example/review-alignment.md) exercises reference-only
+lookup followed by separate qualified item acquisition, including discovery of ADMISSION-1 through S
+although the behavioral association concerns P. Product integration remains to be implemented and verified.
 
 Specify acquisition at the investigation boundary, leaving dialog tools to implementation.
 An investigation receives its subject, question and selected initial context, and can acquire
@@ -1068,20 +1099,23 @@ disclose known direct and indirect causes with qualified reasons. Notice receipt
 awareness, not sufficient replacement context or endorsement of the displaced association.
 Further acquisition and qualification obligations still apply.
 
-This timing rule does not implement retrospective reassessment or clearance. Richer inventory
-coverage and partial-delivery precision remain open. Displacement uses exact association exposure;
+This timing rule does not implement retrospective reassessment or clearance. Detailed inventory
+coverage and partial-delivery contracts remain implementation work within these guarantees. Displacement uses exact association exposure;
 additions use actual scoped inventory exposure. A newly read inventory includes already accepted
 entries without a later-change warning. Refreshing an inventory preserves earlier exposure and does
 not by itself deliver the newly listed content. The during-production rule requires the relevant
 update and change context, not mere availability. Acquiring a description before an addition and the
 inventory only afterward does not create a pre-addition inventory dependency.
 
-The executable timing probe still checks the earlier conservative behavior. Its repeated old excerpt
-with fresh notices does not exercise receiving the substantive update during production. Align the
-probe with a positive updated-context case and controls for notice-only delivery, undelivered changes,
-separate producers and completed contributions; passing the current checks does not validate this
-new agreement. Exact recording/validation details remain implementation work, not a new semantic
-completeness gate.
+The [review-alignment probe](structured-account-example/review-alignment.md) supplies a bounded
+sufficient case: before submission, the producing investigation receives the full qualified change
+declaration and all its declared replacement/addition members. A withdrawal has no replacement
+members; its qualified declaration and reason supply the update. Actual deliveries can supply these
+across several acquisitions. The probe checks both direct and inherited causes, keeps notice-only
+and inventory-only controls, and preserves completed contributions and separate producers' histories.
+It does not decide semantic sufficiency for arbitrary excerpts, invent agent-asserted clearance, or
+require this exact representation in the product. Implementation must preserve the agreed timing
+behavior while defining supported delivery contracts; any consequential coverage restriction needs review.
 
 Causes remain distinct; no automatic transitive equivalence, last-writer truth, or disappearance
 of a cause through context trimming. A supersession can be contested. Competing declarations
@@ -1341,7 +1375,7 @@ distinct. Scenario relationships can stay locally designated; this proves local 
 suffices here, not that general relationship identities are never useful.
 
 Q4 receives selected P, S, R and B information, not whole investigrams or a historical
-superseded admission payload by default. Its result has its own entity and declares pattern
+superseded admission payload by default. Its Query result has its own identity; the contribution also declares pattern
 identities C-BB/C-BH. Follow-up can select a pattern or an exact occurrence within RESULT-Q4;
 neither recreates the pair as a new generic operation or promotes every selected node.
 The two-subject invocation is a design probe with explicit unordered roles. A general state
@@ -1445,7 +1479,7 @@ behavior cannot be dismissed as an implementation detail.
 | Context acquisition | Selection meaning, actual coverage, qualification, exposure and the representation of unavailable or incomplete support. | Dialog tool shapes, fetching strategy, pagination mechanics and operational limits that preserve those contracts. |
 | Architectural content and diagrams | State-dependent behavior exercises varied architectural subjects/relationships and supplies the meaning needed for a state diagram; live-agent runs check integration and controlled dialogs provide mechanism coverage. This is not selection of the initial user-facing catalogue. | Concrete examples, detailed schemas, field layout and renderer implementation that satisfy the agreed validation coverage. |
 | Entity lookup | Stable exact identity within the Session; qualified and potentially ambiguous name lookup; no silent identity merging or displaced-description authority. | Storage layout, lookup indexes, caching and search mechanics within the supported lookup semantics. |
-| Migration and verification | All existing mechanical architectural information joins the common model in agreed stages; define observable acceptance scenarios and retained guarantees. | Test harnesses, internal task breakdown and sequencing within those stages. |
+| Migration and verification | All existing mechanical architectural information and agentic capabilities join the common model in agreed stages; define observable acceptance scenarios and retained guarantees. | Test harnesses, internal task breakdown and sequencing within those stages. |
 
 An executable probe is evidence about a proposed behavior, not authority for every field, constant,
 role spelling or operational restriction in its implementation. During drafting, distinguish:
@@ -1460,11 +1494,14 @@ it preserves the agreed behavior. A choice that changes that behavior, weakens a
 exposes an unresolved architectural question requires discussion and the applicable decision
 workflow. Neither the probes nor this boundary authorize product implementation.
 
-## Decisions still to make in notes
+<a id="decisions-still-to-make-in-notes"></a>
+## Settled decisions and remaining drafting work
 
-Partial/unsuccessful investigation treatment is now agreed above; its packaging does not remain
-an open architectural decision. The remaining pre-draft discussion is narrower than the previous
-list of fixture details:
+The identified review questions have been discussed and resolved below; no known consequential
+decision is intentionally left for the drafter to make implicitly. Re-review may reveal further
+conflicts. The [review alignment summary](structured-account-example/review-alignment.md#review-resolutions)
+locates the resolutions, authored validation and explicit deferrals. Remaining work is to express
+these agreements in the planning package and map their governing changes:
 
 | Question | Required resolution |
 | --- | --- |
@@ -1500,9 +1537,6 @@ and [nanopublications](https://nanopub.net/docs/guidelines/) as conceptual prece
 Missing information is not a negative assertion; structural validity is not truth;
 an agent's classification remains a claim. No library selection or universal logical
 inference engine follows from these references.
-
-
-The earlier [research discussion](structured-architectural-accounts.md) considers incremental
-formalization, qualified statements, reason maintenance and nanopublications. Their useful
-lesson here is to preserve identity, claims, provenance and contestability separately.
-Avoid adopting a universal truth-maintenance model merely because it can express the data.
+The [research discussion](structured-architectural-accounts.md) records the exploration behind
+these precedents. Preserve identity, claims, provenance and contestability separately; expressive
+power alone is not a reason to adopt a universal truth-maintenance model.

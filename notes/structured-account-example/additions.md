@@ -71,8 +71,10 @@ inventory would need explicit rules for removals/status changes too.
 
 The producer excludes its own causes. Exact cause references and conservative propagation
 through later deliveries remain. A fresh inventory read after an addition creates no warning
-for that already-present association. An old inventory read still creates a cause even if
-refreshed later. Receiving content before an addition, but first requesting inventory after
+for that already-present association. Refreshing only an old inventory does not deliver the added
+content. The [production-update probe](review-alignment.md) additionally checks substantive update
+delivery before submission; this does not clear completed contributions. Receiving content before
+an addition, but first requesting inventory after
 it, does not create retroactive inventory exposure.
 
 Fixed result membership is **not** inventory exposure. Adding another association to S does
