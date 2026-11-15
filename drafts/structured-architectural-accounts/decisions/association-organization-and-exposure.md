@@ -78,6 +78,10 @@ Each investigram inherits its own producer's actual input history. Independently
 
 No exposure arises merely from a reference, human browsing, provider identity/equality resolution, result membership, or answer assembly/retrieval/presentation. A producer that actually consumes retained information to establish new content or organizing claims does record it, whether mechanical or agentic. Source findings and an organizer's judgment preserve separate attribution. A consumer of the finding follows its producing history, not a sibling organizer's inputs.
 
+For mechanical production, distinguish actual retained inputs from recomputation and identity bookkeeping. A dependency producer supplied a retained module population records that input as exposure. A producer independently discovering the same population from source records its actual source basis, not an invented delivery of an earlier discovery result. Host mapping of native IDs to common Entity IDs creates no exposure by itself. Combining already-produced names and dependency findings into an application answer remains claim-free assembly, not another producer.
+
+A fixed captured module population is not automatically an acquired evolving inventory. Record whether the actual delivery selected fixed content or acquired a declared scope, including its discovery method and coverage. A method-specific module population must not silently broaden to every Entity later identified by an agent. These distinctions follow the actual input contract rather than the mechanical/agentic label.
+
 Keep three concern paths distinct:
 
 | Path | Cause and boundary |
