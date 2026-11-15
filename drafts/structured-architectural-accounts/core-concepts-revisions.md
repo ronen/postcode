@@ -24,7 +24,7 @@ Exact reference, native identity, implementation identifier, displayed label and
 
 A **Subject** is what a Lens investigates or a claim concerns. It is a role, not another Entity kind. Entities, collections, architectural relationships, qualified changes, investigrams and exact selected information can be subjects where the method supports them. A configured project can be an inventory subject without denoting an executable entry point or a Workspace.
 
-Subject designation does not establish a captured basis, input binding or correspondence. A question about a module across states preserves those separately identified states; a question about an identified removal preserves its change and supporting evidence. Subjects can concern implemented, hypothetical or intended architecture within the capability's supported modalities.
+Subject designation does not establish a captured basis, input binding or correspondence. A question about a module across states preserves those separately identified states; a question about an identified removal preserves its change and supporting evidence. Subjects can concern implemented, hypothetical or intended architecture within the capability's supported modalities. [[Open-ended subjects](decisions/coordinated-views-and-qualified-results.md#keep-subject-open-ended-and-state-designation-explicit)]
 
 An investigation of selected content preserves the exact selected investigram/content/designated answer as its subject, with its originating question/result and applicable standing available separately. It does not silently follow a Query result's latest designation. A selected phrase need not be registered as an Entity. [[Exact prior information](decisions/qualified-answers-over-contributions.md#exact-prior-information-as-a-subject)]
 
@@ -44,7 +44,7 @@ A relationship may be deliberately identified as an Entity for continued referen
 
 ### Query result
 
-*[decision: [Result designation](decisions/association-organization-and-exposure.md#result-designation-and-historical-selection)]*
+*[decision: [Identified things and inquiry results](decisions/common-analysis-contributions.md#identified-things-and-inquiry-results)]*
 
 A **Query result** is the organizing identity for the answer to one particular engine investigation invocation. It is neither an Entity in the system under study nor a Projection. Its designated answers remain traceable to the invocation's question, subjects, parameters, explicitly selected context and requested result contract so their meaning can be understood. Required analysis content participates in request equivalence; sharing useful supporting information does not make different requests the same.
 
@@ -60,7 +60,7 @@ A **result designation** is an immutable content association selecting exact ite
 
 *[decision: [Inputs and captured bases](decisions/qualified-answers-over-contributions.md#application-answers-and-captured-bases)]*
 
-A **captured basis** identifies the specific input material used for a Lens application. It may contain one or more program states, observations, participant-supplied architectural material or earlier Projections. Preserve the contributions' provenance, scope and limitations, their associations with the information they support, and meaningful roles or order. Including material does not establish its truth or agreement with other material. Earlier PostCode output remains a qualified artifact, not independent repository evidence.
+A **captured basis** identifies the specific input material used for a Lens application. It may contain one or more program states, observations, participant-supplied architectural material, earlier Projections or other retained qualified contributions. Preserve the contributions' provenance, scope and limitations, their associations with the information they support, and meaningful roles or order. Including material does not establish its truth or agreement with other material. Earlier PostCode output remains a qualified artifact, not independent repository evidence.
 
 A **program input** is a designated source of program information, such as a repository revision, working tree, index, execution or observation stream. Its **binding policy** determines which state is used when a request is performed. For revision-oriented inputs, following resolves a changing input again and pinned continues to use the same captured program state.
 
@@ -166,7 +166,7 @@ An **Investigram** is an immutable, addressable analysis contribution produced m
 
 A submitted pool of investigrams is accepted atomically without parent/child nesting. Different producers in one pool retain separate provenance/exposure. Content can be referenced across owners without copying or strengthening it. A declaration-only contribution is possible; no artificial substantive root is required. Conversely, a contribution can contain qualified addressable items without any association or result designation. Its items remain discoverable through the owning investigram and available for later acquisition and association; lack of an organizing use is not structural invalidity.
 
-An investigram is not globally replaced. Later declarations can displace particular uses, leaving original items, metadata, qualifications and identity intact. The contribution is not a Query result, a Projection, a program Entity merely by being addressable, or an accepted architectural intention merely because it was retained. Analysis content retains the actual epistemic guarantees of its method.
+An investigram is not globally replaced. Later declarations can displace particular uses, leaving original items, metadata, qualifications and identity intact. The contribution is not a Query result, a Projection, a program Entity merely by being addressable, or an accepted architectural intention merely because it was retained. Arbitrary participant-supplied documents are not automatically investigrams; their intake and use remain separately qualified. Analysis content retains the actual epistemic guarantees of its method.
 
 **Add “Analysis content and content items” and “Content association” after “Investigram”.**
 
@@ -188,6 +188,8 @@ A **content association** is a qualified designated use of content for an Entity
 
 **Association declarations** add a use, supersede exact earlier uses with a new one, or withdraw uses without replacement. They are qualified immutable organizing metadata. They may reference another investigram's content without transferring ownership, evidence or provenance. Displacing one use does not globally invalidate its content or other associations. Derived standing, qualifications and reconsideration are distinct; no last-writer priority or automatic reinstatement is implied.
 
+An association is **standing** (non-displaced) until an accepted supersession or withdrawal targets it; it is then **displaced**. “Equally standing” means non-displaced alternatives without implicit priority, not equal confidence. Displacing a replacement does not reinstate an earlier use. Standing does not establish truth or clear reconsideration.
+
 **Add “Exposure and reconsideration” after “Content association”.**
 
 ### Exposure and reconsideration
@@ -196,6 +198,51 @@ A **content association** is a qualified designated use of content for an Entity
 
 An **exposure index** records qualified information actually supplied to a producing investigation, including exact association/content deliveries and explicitly acquired inventory or selection scopes. It does not assert reliance, endorsement or comprehension. Per-investigram attribution follows its actual production history, not a shared acceptance batch. Bare references, host equality reuse, human browsing and answer assembly create no production exposure. Evidence citations are different from this index.
 
-**Needs reconsideration** is derived cause-bearing status from relevant later changes to acquired information/scopes or exact designated membership, including transitive exposure paths. Known context and exact change notices actually received during production follow the timing rules; receiving a notice need not include acquiring replacement content. Fixed result membership is not exposure, and an exact description is not a blanket inventory dependency. A warning does not prove error, suppress reuse, clear other causes or initiate investigation. Exact captured answers remain unchanged; fresh access can disclose current standing and causes.
+**Needs reconsideration** is derived cause-bearing status from relevant later changes to acquired information/scopes or exact designated membership, including transitive exposure paths. Known context and exact change notices actually received during production follow the timing rules; receiving a notice need not include acquiring replacement content. Fixed result membership is not exposure, and an exact description is not a blanket inventory dependency. A warning does not prove error, suppress reuse, clear other causes or initiate investigation. Exact captured answers remain unchanged; fresh status access discloses current standing and causes, and displayed affected information carries its applicable qualification.
 
 Status is derived for each exact designation, not one warning set on the Query result. Its own displacement is standing; the designation does not acquire the cause that created it. Independent membership and producing-context concerns remain applicable.
+
+Producing-context concerns are derived for each investigram from its actual production inputs. An association has its own standing and exposes relevant content/producer concerns; each result designation has its own standing and membership/producer concerns. A Query result does not merge these into a single status. Neither an entire investigram nor its content item is globally superseded. [[Status bearers](decisions/association-organization-and-exposure.md#properties-facets-and-derived-status)]
+
+**Replace “Claim”.**
+
+### Claim
+
+*[decision: [Architectural subjects](decisions/common-analysis-contributions.md#identified-things-and-inquiry-results)]*
+
+A **Claim** is the information asserted by an analysis result. Its content is distinct from the Claim context that qualifies it and the evaluation outcome describing the attempt to produce it. Information about an entity and an assertion of a relationship are examples of claim content.
+
+Claim does not mean proven fact. PostCode's qualified information distinguishes mechanically derived facts, recorded assertions, scoped observations, and interpretations. Establishing that documentation records a statement is different from establishing that the statement is true; establishing its association with a subject is another claim. This vocabulary does not require these distinctions to form one exhaustive record taxonomy.
+
+**Replace “Property”.**
+
+### Property
+
+*[decision: [Subject facets](decisions/association-organization-and-exposure.md#properties-facets-and-derived-status)]*
+
+A **Property** is a characteristic of a subject about which information can be requested or asserted. A claim supplies information about such a characteristic in a particular context; naming the property alone does not establish its value or whether it holds. For example, rejection of duplicate identifiers may be investigated as a behavioral property, while test evidence and interpretation support different claims about it.
+
+Property is descriptive vocabulary here. It does not imply a source-language field, an accessor, a separately addressable record, or a universal property schema.
+
+**Replace “Facet”.**
+
+### Facet
+
+*[decision: [Subject facets](decisions/association-organization-and-exposure.md#properties-facets-and-derived-status)]*
+
+A **Facet** is a property used as a compact classification dimension for describing, filtering, grouping, or comparing subjects, including entities and investigrams. A claim supplies its value, and Claim context supplies its qualification. Different facets may overlap and need not share one representation or value type. For example, a module may be both external and declaration-only.
+
+Facet names a role played by a property, not a separate record category or a special epistemological status. It does not imply a universal facet schema.
+
+A conceptual facet describes the subject in terms useful to the investigation. A source facet describes its source-level representation or implementation mapping. Language-specific knowledge can establish a conceptual facet; language-specific does not by itself mean source-level. Facet names do not determine the strength of the supporting claim.
+
+**Replace “Investigation context”.**
+
+<a id="investigation-context"></a>
+### Investigation context
+
+*[decision: [Application specification boundaries](decisions/application-specification-boundaries.md#start-with-a-workspace-as-a-collection-and-arrangement-of-views)]*
+
+An **investigation context** comprises the Views accumulated while following subjects, relationships, and questions, together with their captured bases and relevant lineage. It identifies what each View shows and how it relates to the investigation. It can span Workspace arrangements and does not imply a separately stored context object, common captured state, or persistent Session. The [application specification](app-specification.md#workspaces-and-navigation) states the retained-lineage contract.
+
+This is local application terminology for Views, bases and lineage, not the definition of all [retained architectural understanding](../foundation/product-design.md#retained-architectural-understanding-and-continuity). It is distinct from an observation archive and the context supplied during an execution by an investigating agent. Those responsibilities may refer to overlapping information without requiring one shared object. [[Retained understanding and context](decisions/research-question-driven-observation.md#retained-understanding-and-context)]

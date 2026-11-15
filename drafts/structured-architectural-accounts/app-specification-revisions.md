@@ -55,9 +55,9 @@ Answer assembly selects retained qualified information without creating producer
 
 Support qualified explanations through prose and structured architectural content, with picture-plus-explanation where appropriate. Content contracts define meaning independently of rendering. An explicit request for a supported diagram requires compatible retained semantic content; prose alone does not fulfill it. Optional authored illustrations identify exact diagram types and content inputs, but compatible rendering does not require an illustration. Preserve limits and separate alternatives; a picture must not invent or strengthen architectural claims. [[Structured explanation](decisions/structured-architectural-explanation.md)]
 
-The first mechanism delivery supplies state-dependent behavior and one bounded directed state-transition diagram through supported application APIs. The contract covers named states, qualified bearer, established entry, transitions and their conditions/effects; unsupported statechart features and unknown information remain explicit. This is not a full diagram language, GUI or initial user-facing catalogue commitment.
+State-dependent behavior and one bounded directed state-transition diagram are supported through application APIs under the [migration conformance contract](decisions/common-analysis-contributions.md#adoption-and-migration-conformance). The contract covers named states, qualified bearer, established entry, transitions and their conditions/effects; unsupported statechart features and unknown information remain explicit. This is not a full diagram language, GUI or initial user-facing catalogue commitment.
 
-Retained follow-up options are owner-specific qualified metadata. The application can invoke an exact option with its subjects/parameters and declared result contract, preserving the originating information. Investigation of selected content targets that exact information, not silently updated answers. Existing summary/explanation/decomposition/examination capabilities migrate to these semantics; decomposition need not create nested investigrams. API availability does not imply a new CLI command or menu. [[Guidance and scope](decisions/structured-architectural-explanation.md#validation-and-application-scope)]
+Retained follow-up options are owner-specific qualified metadata. The application can invoke an exact option with its subjects/parameters and declared result contract, preserving the originating information. Investigation of selected content targets that exact information, not silently updated answers. Summary, explanation, decomposition and examination use these semantics; decomposition need not create nested investigrams. API availability does not imply a new CLI command or menu. [[Guidance and scope](decisions/structured-architectural-explanation.md#validation-and-application-scope)]
 
 Initial Entity context supplies all standing identifications with applicable support, qualification and concerns. Additional acquisition and explicit-referent discovery make related retained explanations available without assuming where the user obtained a subject. Delivery is qualified and bounded honestly; inaccessible information is not an established empty result. [[Acquisition](decisions/association-organization-and-exposure.md#acquisition-baseline-context-and-discovery)]
 
@@ -79,3 +79,119 @@ The user can explicitly ask to investigate the same question again using current
 If all current answer designations have been withdrawn, ordinary retrieval reports no current designated answer, exposes qualified withdrawal grounds and preserves access to historical answers. It neither restores an old answer nor automatically investigates again. This is not an established absence of architectural findings or a failure of the original investigation. A diagram requirement has no current fulfilling answer in this case, while exact access to the historical diagram remains available. The user can explicitly request a fresh investigation.
 
 Contribution validity, fulfillment and substantive correctness are distinct. If valid content is submitted, retain it and process all its declarations normally even when a required diagram or other requested information is missing, or the producer reports inability. Disclose that shortfall; accepted content is neither quarantined nor passed off as complete. No returned contribution and structurally invalid unrepairable submission remain different cases. [[Contribution outcomes](decisions/common-analysis-contributions.md#access-and-outcomes)]
+
+**Replace “Architectural modalities and captured bases”.**
+
+<a id="architectural-modalities-and-captured-bases"></a>
+### Architectural modalities and captured bases
+
+Accounts may concern implemented, hypothetical or intended architecture. Implemented accounts concern actual software and remain supported and qualified by implementation evidence. Hypothetical accounts concern alternatives without implied acceptance, feasibility or realization. Intended accounts concern accepted requirements or design decisions. These distinctions are independent of provenance, method and epistemological status; exact recording of a proposal does not establish that it is feasible, accepted or implemented. Observed behavior supplies execution-scoped evidence rather than another modality. Preserve provenance and history when a proposal becomes an intention. Sharing an account implies neither participant agreement nor authority for PostCode's interpretation. [[Modalities](decisions/specialized-architectural-investigation.md#architectural-modalities)]
+
+A captured basis identifies the specific input material used for a Lens application. It can include program states, observations, participant-supplied architectural material, earlier Projections and other retained qualified contributions, with their qualifications and meaningful roles or order preserved. Program inputs and captured program states remain useful special cases; they do not exhaust the general model. Subject designation does not replace basis attribution. Lens applicability across modalities depends on method, not merely a compatible-looking data shape. New architectural claims require core analysis, including when resolving requests or comparing accounts. [[Captured bases](decisions/qualified-answers-over-contributions.md#application-answers-and-captured-bases)]
+
+The current CLI remains an implemented-architecture subset: configured TypeScript project analysis, module-originating prose interpretations and investigations of selected content within a transient unchanged-input Session. It does not offer hypothetical/intended account investigation or general participant-material capture. These are future capabilities, not prerequisites for retaining the accurately described current subset.
+
+**Replace “Responsibilities and boundaries”.**
+
+<a id="responsibilities-and-boundaries"></a>
+### Responsibilities and boundaries
+
+Core concepts defines the meanings; architectural constraints is the operational source for binding cross-cutting rules. [Immutability of retained evidence and qualified results](#immutable-results-and-interpretation-history) is a high-level architectural commitment, distinct from retention policy. The architecture separates these responsibilities without requiring independently materialized stages or a particular package layout:
+
+| Responsibility | Contract |
+| --- | --- |
+| Request interpretation and coordination | Resolve expressed needs and choices using qualified information; request missing work; preserve resolution outcomes, attribution, and consequential choices. |
+| Lens requirements | Identify the information requested of a subject, with meaningful parameters and applicable supporting analyses or operations. |
+| Evaluation | Coordinate analysis, compatible reuse, execution constraints, evidence, and qualified outcomes. Interpretation participates through the investigation boundary. |
+| Projection construction | Select qualified materialized information and relevant outcomes into an addressable retained answer. |
+| Presentation and interaction | Arrange supplied answers, preserve their meaning, disclose omissions and evidence attribution without depending on source-language literacy, and issue further requests when interaction needs new information. |
+
+A Lens is distinct from reusable operations supplying its information. Several analyses or qualified results can contribute to one answer; several answers can be coordinated without creating another Lens. New synthesis is analysis. Neither one operation per Lens nor a distinct “composite Lens” category is a universal requirement.
+
+Rendering and arrangement do not initiate Evaluation or independently query accumulated state to broaden an answer. Interactions requiring additional information return through request coordination, Evaluation, and core construction. Standard expansions remain subject-kind detail declared before evaluation; another Lens question is not made a standard expansion by inline placement. The [qualified-construction boundary](decisions/qualified-answers-over-contributions.md#qualified-construction-and-retained-support) and its scoped binding-only capability remain in force.
+
+Shared, lazy, staged, or presentation-guided execution is permitted when it preserves Lens meaning, qualified populations, materialization, and retained-result semantics. Pushdown does not reclassify presentation parameters as Lens parameters. Current eager builders are a scoped implementation choice, not a universal requirement.
+
+**Replace “Application functionality and interface clients”.**
+
+<a id="application-interface-boundary"></a>
+### Application functionality and interface clients
+
+Application and investigation behavior is accessible through an explicit internal
+application API independently of the interface used to request it. Shared
+services coordinate qualified resolution, information requirements, Evaluation,
+answer construction, analysis-contribution selection into answers, retention, exact
+retained-answer access, reference validity and operational outcomes. The API is
+the request-validation boundary for direct callers. Clients do not duplicate those
+operations; they own interaction, input handling, choice of supplied answers to
+display, Presentations and output delivery.
+[[Internal application boundary](decisions/internal-application-api.md#shared-application-boundary)]
+
+Requests distinguish information needs, exact retained-answer access and
+operational reports. Application results preserve selected qualified content and
+supporting context independently of display bounds or format. Current eager
+families deliver full selected materialized content, without making exhaustive
+analysis or eager materialization a universal requirement. Typed application attribution and optional client invocation context remain
+distinct from answer meaning and identity. Client Presentation methods affect
+their artifacts, not application input or answer identity. Precise IDs suffice for clients;
+compact aliases are a CLI affordance. Holding data does not extend the host-declared
+Session/reference lifetime or promise availability after disposal. Internal
+source-bearing support is not a ready-made public JSON or external-agent export.
+[[Qualified answer delivery](decisions/qualified-answers-over-contributions.md#qualified-application-access)]
+[[Method provenance](decisions/internal-application-api.md#method-provenance)]
+
+Clients own Presentations and declare their information requirements through shared
+coordination. Compatibility uses semantic content contracts
+and qualified materialization; arrangement cannot acquire missing information or
+broaden a retained answer. Presentations may be shared by compatible clients.
+A direct information request without a Presentation defaults to current subject-kind
+standard expansions supported by its answer family's content contract and may
+request a supported subset;
+exact retrieval never acquires missing support. Future costly expansions require
+reconsidering that default. Interfaces may expose different capability subsets.
+[[Requirements and Presentations](decisions/internal-application-api.md#requirements-and-presentations)]
+
+Application work and client presentation/publication have distinct outcomes. An
+answer successfully produced or retrieved remains completed application work when
+subsequent client presentation fails; the client still reports its failure.
+Application validity requirements must be satisfied before completing application
+work, except where a guarded host explicitly takes ownership of those checks. Compact
+alias handling preserves existing request and reference behavior without making
+aliases a prerequisite for other clients.
+[[CLI binding and outcomes](decisions/internal-application-api.md#cli-bindings-and-outcomes)]
+
+Shared provider/account, feedback and delivery services preserve credentials,
+resources, actual-display context and failure distinctions independently of command
+handling. Shared publication guards enforce validity policy; hosts retain actual
+output and recording choices. Feedback services accept available actual-display
+context through neutral contracts or explicit context-free input; each client
+exposes only the context it can supply. Future human
+clients must reuse or re-establish verified output disclosure before exposing
+internal support. The boundary permits later hosting without requiring a public
+library, network service, separate process or permanent
+schema. Keeping useful command-line facilities does not require indefinite
+retention of an interactive human shell.
+[[Runtime and publication](decisions/internal-application-api.md#runtime-and-publication)]
+
+The associated [implementation plan](plans/application-interface-boundary.md)
+establishes conformance for current capabilities. Adoption does not claim that
+the existing implementation already supplies the boundary or that future graphical
+and external-agent interfaces exist. Those tasks may extend these contracts.
+
+**Replace “Language and evidence integration”.**
+
+<a id="language-and-evidence-integration"></a>
+### Language and evidence integration
+
+Language support supplies discoverable subjects, analyses, and guarantees. Concepts shared across languages and language-specific extensions coexist; do not distort implementation semantics to fit a predefined universal model. Structural Projections should use only relationships the applicable language analysis can define accurately, and should not manufacture symmetry where language semantics differ. Repository organization is a qualified scheme, not canonical architecture. External endpoints with opaque interiors do not establish empty interiors or richer package/service identity.
+
+Defined evidence access preserves capture, provenance, qualification, and output exclusions. The built-in investigating agent uses PostCode's subject-based evidence surface; repository material is evidence, not instructions. Its existing prohibition on independent filesystem discovery, shell execution, mutation, and web access remains scoped to that role. External design and implementation agents have separate integration roles; an agent acting in the implementation role may change programs under the human’s instructions. External participation does not expand the built-in investigating agent’s access contract.
+
+**Replace “Scope and future refinement”.**
+
+<a id="scope-and-future-refinement"></a>
+## Scope and future refinement
+
+Keep the [capability reference](capability-reference.md), status and interface documentation accurate about supported behavior and disclosed gaps. The [human-facing representation decision](decisions/human-facing-architectural-representations.md#adoption-and-conformance) requires conformance with the human output boundary and inadequacy feedback. The [reconciliation plan](plans/product-design-reconciliation.md#implementation-specification) scopes the implementation and verification needed to establish that conformance.
+
+The [contribution and association architecture](decisions/structured-architectural-explanation.md#accumulate-qualified-accounts) supports the required [accumulated-understanding capability](#immutable-results-and-interpretation-history) through retained qualified information and further investigation. Its implementation and migration follow the [conformance contract](decisions/common-analysis-contributions.md#adoption-and-migration-conformance); adoption does not establish delivery. Broader navigation and initial user-facing catalogue choices remain separate. Further UX decisions may select richer workspace context, specialized workspace kinds, or a particular initial View. Continuity across program changes and application restarts needs later requirements and lifecycle design. Investigation of hypothetical and intended architecture, participant-material intake, general multi-state analysis, live refresh, shared-context protocols, resource-policy mechanisms and new language or Lens families each require appropriately scoped work. Retained interpretation already supplies qualified input to supported investigations of selected content; it does not deliver those broader capabilities.
