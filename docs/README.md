@@ -46,7 +46,7 @@ For supported questions and actions, begin with the [capability reference](capab
 
 Architecture documentation is a selective, descriptive map of how the current system works, not an exhaustive inventory of the implementation or a source of prescriptive requirements. It describes major boundaries, responsibilities, data flows, and operational constraints. Intended high-level responsibilities and guarantees belong in the application specification and governing architectural documents; scoped implementation proposals belong in plans and decisions. Neither belongs here as if already implemented.
 
-Create architecture documentation under `architecture/` when there is implemented architecture to describe. Begin with `architecture/README.md` as the single overview, and add further documents only when a stable area needs its own conceptual explanation. Implementing agents may maintain this descriptive account within authorized work and governing contracts. Link to accepted decisions that govern the described architecture; if implementation and a governing decision diverge, expose the inconsistency rather than making the description silently normative.
+[`architecture/README.md`](architecture/README.md) provides an overview of the implemented system and links to detailed architectural accounts. Follow the [architecture documentation guidance](../dev/workflow.md#descriptive-architecture) when maintaining these documents.
 
 <a id="implementation-conventions"></a>
 ### Implementation conventions
