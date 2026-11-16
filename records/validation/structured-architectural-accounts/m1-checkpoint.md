@@ -4,7 +4,8 @@ Date: 2026-11-15
 Task: [Implement structured architectural accounts](../../tasks/2026-11-15-structured-architectural-accounts.md)
 Plan: [Structured architectural accounts](../../../docs/plans/structured-architectural-accounts.md#1-common-contribution-mechanism)
 Starting revision: `8a7f2834470644726dd742a0ddaeb1455bac3b2a`
-Implementation: `2b9fce8823577cc16b94554142d3eb6db3672d33`
+Implementation: `1f7e1ec8a2aafd3e0f4b28ffb7fdfa5815a081ae`
+Reviewed in round 4: `2b9fce8823577cc16b94554142d3eb6db3672d33`
 Reviewed in round 3: `5ebe10a19be93a2613ec5fe5cf5f5dcaf16df295`
 Reviewed in round 2, by two reviewers: `b02c7bcdd59e4253dbe9cddb761c590bb52ca360`
 Reviewed in round 1: `84c1cc16f70f3b384a6d772aa3bcb8fda70836b5`
@@ -177,6 +178,25 @@ Two reviews examined the corrected mechanism. The [Claude round 3 rereview](../.
 
 The Claude reviewer noted that treating a disclosed concern as weaker than a notice would be a semantic choice the checkpoint should state. It is not treated as weaker here: a disclosed concern names the exact change declaration, its operation and the affected use or route, which is what the decision requires a notice to identify.
 
+## Corrections after round 4
+
+The [Codex round 4 findings](../../reviews/structured-architectural-accounts/2026-11-16-m1-mechanism-round-4-codex-findings.md) re-examined the whole mechanism at `2b9fce8` and reported three new defects and one concrete reproduction, O1, in an area earlier assigned to M2. All were accepted.
+
+| Finding | Correction | Regression coverage |
+| --- | --- | --- |
+| F1: method-specific identification filtered by the producer of the organizing declaration | Selection follows the method that produced the identifying content. The organizing use and its standing remain available separately. | A finding and its organizing use from independently attributed producers in one batch, a different method's identification of the same Entity, and withdrawal of the organizing use |
+| F2: retained excerpt deliveries did not state their actual coverage | An item delivery record carries the delivered and omitted extent of the serialized body. With the immutable item this identifies exactly what arrived, without a copy of the content. | Two bounds at one ledger position remain distinguishable after conclusion, each record recovers the delivered text, and complete deliveries carry no excerpt |
+| F3: an error from the fulfillment check after acceptance reopened structural repair | Repair handling covers acceptance only. A failing check propagates with its original error. | With and without a repair allowance: one producer callback, the contribution retained, the production concluded as accepted, the original error preserved |
+| O1: a fresh partial attempt was reported fulfilled by an earlier answer it did not return | An attempt's fulfillment is assessed over the answers it supplied or explicitly returned. An attempt that supplied none has the explicit status `no-answer-supplied`. A reported answer must designate the attempt's own invocation result. Assessment of the Query result as a whole is unchanged and separate. | A partial fresh attempt unmet while the earlier answer still stands, explicit reuse of an adequate existing answer fulfilled, and a reported answer for another Query result rejected |
+
+O1 changes an earlier disposition. The second reviewer's observation that reported answers were not related to fulfillment had been carried into M2/M3. The reproduction showed the M1 producer boundary returning a false fulfilled status, and the governing text settles the behavior: an empty response does not satisfy a required form, while an exact existing answer can. It was therefore corrected here, not deferred. This is the implementing agent's scope judgment, reported to the human with this checkpoint.
+
+The existing two-alternatives test changed accordingly: the attempt that supplied a compliant answer is itself fulfilled, and the request as a whole, with one non-compliant standing alternative, is not. Both are asserted.
+
+The reviewer also reproduced the known open-production observation. The shared producer boundary now discards the production when the producer throws, so nothing can be submitted late; a regression covers it. Distinguishing execution-limit, investigation-failure and communication-failure outcomes still returns with the agentic family.
+
+Two entries under the second reviewer's carried observations are thereby resolved at M1: the open production after a producer defect, and the relation of a reported answer to fulfillment.
+
 ## Known risks carried forward
 
 - Baseline identification scopes produce an addition cause for every producer that acquired a baseline whenever any identification of that Entity is later added. The tests show the behavior on single Entities; its breadth on a real module population is unmeasured and is an explicit observation point at the M2 checkpoint.
@@ -188,9 +208,9 @@ The Claude reviewer noted that treating a disclosed concern as weaker than a not
 Run by the implementing agent on the implementation's content, offline, with no credentials or inference:
 
 - `npm run check` and `git diff --check` passed.
-- The three contribution test files pass **43/43**.
-- The complete offline suite passed **711/711** with no skips in about three minutes: the 668 tests of the starting revision, none modified, and the 43 new tests.
-- The initial implementation passed 697/697 on two complete runs, the round 1 review target 700/700 on one, the round 2 review target 704/704 on one, and the corrections of the second round 2 review 707/707 on one, and the round 3 review target 708/708 on one.
+- The three contribution test files pass **48/48**.
+- The complete offline suite passed **716/716** with no skips in about three minutes: the 668 tests of the starting revision, none modified, and the 48 new tests.
+- The initial implementation passed 697/697 on two complete runs, the round 1 review target 700/700 on one, the round 2 review target 704/704 on one, and the corrections of the second round 2 review 707/707 on one, the round 3 review target 708/708 on one, and the round 4 review target 711/711 on one. The round 4 reviewer's own two complete runs of that target passed 708/711, with three sign-in tests failing in its sandbox and passing outside it.
 
 Three other complete runs had failures and are not counted as passes:
 
