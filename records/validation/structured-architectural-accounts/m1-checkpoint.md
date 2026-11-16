@@ -4,7 +4,8 @@ Date: 2026-11-15
 Task: [Implement structured architectural accounts](../../tasks/2026-11-15-structured-architectural-accounts.md)
 Plan: [Structured architectural accounts](../../../docs/plans/structured-architectural-accounts.md#1-common-contribution-mechanism)
 Starting revision: `8a7f2834470644726dd742a0ddaeb1455bac3b2a`
-Implementation: `22698aeb7ff5c99fa608ee68017c8bcd6a29ea11`
+Implementation: `73fe7a9d3becb65e8ffef38ba58a6d859d006122` (source unchanged from `22698ae`; one test and documentation added)
+Reviewed in rounds 6 and 7: `22698aeb7ff5c99fa608ee68017c8bcd6a29ea11`
 Reviewed in round 5: `1f7e1ec8a2aafd3e0f4b28ffb7fdfa5815a081ae`
 Reviewed in round 4: `2b9fce8823577cc16b94554142d3eb6db3672d33`
 Reviewed in round 3: `5ebe10a19be93a2613ec5fe5cf5f5dcaf16df295`
@@ -206,13 +207,30 @@ The [Codex round 5 findings](../../reviews/structured-architectural-accounts/202
 | --- | --- | --- |
 | R1: an unexpected exception during acceptance validation left the failed execution's production open, permitting a late submission | Every terminal exit of the shared producer boundary ends its production. It stays open only while a permitted structural repair continues. An unexpected failure propagates unchanged. | A defective content contract with and without a repair allowance, a defect during a repair attempt, exhausted repair, an asynchronous producer failure and a withheld submission; in each the production is closed and a late submission refused. The post-acceptance fulfillment failure is covered by the round 4 regression. |
 
-### Open question: a further displacement shown only as standing
+### Resolved: a further displacement shown only as standing
 
-O1 is not corrected, because it is a question of interpretation, not a conformance defect, and the reviewer did not assert one. It awaits the human's direction.
+O1 was a question of interpretation, not a conformance defect, and the reviewer did not assert one. The human resolved it on 2026-11-16, as recorded in the task follow-ups: **keep the existing reference-versus-notice rule; automatic enrichment of secondary standing is not required.**
 
-When displacement context for A is delivered, it shows the current standing of the replacement B. If C has displaced B, that standing names C by reference. A producer that had actually acquired B, and so has C as a cause, is not treated as having been told of C by that reference: C stays a cause until an exact notice or actual delivery of C.
+When displacement context for A is delivered, it shows the current standing of the replacement B. If C has displaced B, that standing names C by reference. A producer that had actually acquired B, and so has C as a cause, is not told of C by that reference: C stays a cause until an exact notice or actual delivery of C. The reference states neither C's operation nor its grounds, and the decision requires an exact notice to identify the change declaration, the affected use and the operation. A test pins this behavior with its two controls. No acquisition of B or C's content is created.
 
-The implemented reading is that the reference is standing plus an address. It states neither C's operation nor its grounds, and the decision requires an exact notice to identify the change declaration, the affected use and the operation. This is the status quo and the more conservative of the two readings, since it never suppresses a cause. The alternative is to have the context state the further change's operation and record it as known. That would add a suppression, and is the human's choice. A test pins the current behavior and its two controls so the boundary is explicit before a real producer adapter presents this context. No acquisition of B or C's content is created either way.
+#### Result delivery after secondary work
+
+The same follow-up directed a check of the existing result-delivery path: when secondary work returns C, including its declaration that C supersedes B, the producer that invoked it must receive that qualified declaration and have the delivery recorded.
+
+The path exists in the mechanism and needed no correction. A production receives another contribution through its own acquisitions. Acquiring the whole resulting contribution delivers each of its declarations, an addition or supersession as the exact use it establishes with its operation, displaced uses, grounds and owner qualification, and records an association delivery for it. Acquiring the declared use directly does the same. Either makes C known to that production, so C is not a cause for its output.
+
+A controlled test covers an outer producer that receives B, has secondary work supersede B with C under its own invocation, receives the result and then submits:
+
+| Outer producer | What reached it | C a cause for its output |
+| --- | --- | --- |
+| Receives the whole resulting contribution | C's qualified declaration, recorded | No |
+| Acquires the declared use C | C's qualified declaration, recorded | No |
+| Invokes the work and receives nothing | Nothing | Yes |
+| Receives only the secondary answer designation, which names C as an undelivered member | A bare reference | Yes |
+
+Before any result is received, C is pending for all four: invocation alone establishes no knowledge. A withdrawal by an unrelated producer during the secondary work, of a use every outer producer had received, stays a cause for all four. Receiving a result does not notify unrelated side effects.
+
+**Concrete integration gap, not verified here.** Nothing in M1 invokes secondary work on behalf of an open production or returns its result to that production. The test's host delivers the result explicitly through the outer production. No nested-execution machinery was added. M2 must demonstrate this through the real dialog integration: when a dialog requests work whose accepted result declares a change, the result the agent actually receives must be delivered through the requesting production so that the declaration and its delivery are recorded. Until then the behavior is established for the mechanism only.
 
 ## Known risks carried forward
 
@@ -225,9 +243,9 @@ The implemented reading is that the reference is standing plus an address. It st
 Run by the implementing agent on the implementation's content, offline, with no credentials or inference:
 
 - `npm run check` and `git diff --check` passed.
-- The three contribution test files pass **50/50**.
-- The complete offline suite passed **718/718** with no skips in about three minutes: the 668 tests of the starting revision, none modified, and the 50 new tests.
-- The initial implementation passed 697/697 on two complete runs, the round 1 review target 700/700 on one, the round 2 review target 704/704 on one, and the corrections of the second round 2 review 707/707 on one, the round 3 review target 708/708 on one, the round 4 review target 711/711 on one, and the round 5 review target 716/716 on one. The round 4 reviewer's own two complete runs of that target passed 708/711, with three sign-in tests failing in its sandbox and passing outside it.
+- The three contribution test files pass **51/51**.
+- The complete offline suite passed **719/719** with no skips in about three minutes: the 668 tests of the starting revision, none modified, and the 51 new tests. The one test added after the round 7 review changes no source.
+- The initial implementation passed 697/697 on two complete runs, the round 1 review target 700/700 on one, the round 2 review target 704/704 on one, and the corrections of the second round 2 review 707/707 on one, the round 3 review target 708/708 on one, the round 4 review target 711/711 on one, the round 5 review target 716/716 on one, and the round 6 and 7 review target `22698ae` 718/718 on one. The round 4 reviewer's own two complete runs of that target passed 708/711, with three sign-in tests failing in its sandbox and passing outside it.
 
 Three other complete runs had failures and are not counted as passes:
 
