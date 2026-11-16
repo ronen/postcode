@@ -152,7 +152,8 @@ export class ProductionHandle {
     const bounded = excerptCharacters !== undefined && serialized.length > excerptCharacters;
     const coverage = bounded ? 'excerpt' : 'complete';
     const owner = this.#owner(address.investigram);
-    this.#record({ kind: 'item', position: this.#ledger.position, item: address, route, coverage, concerns: changes(owner.concerns) });
+    this.#record({ kind: 'item', position: this.#ledger.position, item: address, route, coverage, concerns: changes(owner.concerns),
+      excerpt: bounded ? { deliveredCharacters: excerptCharacters, omittedCharacters: serialized.length - excerptCharacters } : null });
     return { address, owner, route, coverage, type: item.type, qualification: item.qualification,
       referents: item.referents, evidence: item.evidence, support: item.support, dependencies: item.dependencies, item: bounded ? null : item,
       excerpt: bounded ? { text: serialized.slice(0, excerptCharacters), omittedCharacters: serialized.length - excerptCharacters! } : null };

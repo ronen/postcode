@@ -579,3 +579,25 @@ test('a change disclosed as a concern on a later delivery is known and does not 
   const of = (index: number) => causes(ledger, submitted(acceptance, handles[index]!).investigram(`k${index}`)).map(cause => cause.change);
   assert.deepEqual([of(0), of(1), of(2), of(3)], [[], [w], [], [m]]);
 });
+
+test('retained history states the actual portion of each bounded delivery', () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  const a = account(ledger, module, 'a'), item = a.item('a', 'p');
+  const serialized = JSON.stringify(ledger.item(item).body);
+  const acquire = (bound?: number) => {
+    const handle = ledger.begin({ producer: agentic('reader') });
+    const delivered = handle.item(item, bound === undefined ? {} : { excerptCharacters: bound });
+    const concluded = ledger.abandon(handle, 'not-submitted').deliveries[0]!;
+    return { delivered, record: concluded.kind === 'item' ? concluded : assert.fail() };
+  };
+  const one = acquire(1), nine = acquire(9), whole = acquire(), generous = acquire(serialized.length);
+  // Distinct excerpts acquired at the same position stay distinguishable after conclusion.
+  assert.notDeepEqual(one.record, nine.record);
+  for (const [bound, { delivered, record }] of [[1, one], [9, nine]] as const) {
+    assert.deepEqual([record.coverage, record.excerpt], ['excerpt', { deliveredCharacters: bound, omittedCharacters: serialized.length - bound }]);
+    // The record recovers exactly the portion that arrived, without retaining a copy of the content.
+    assert.equal(serialized.slice(0, record.excerpt!.deliveredCharacters), delivered.excerpt!.text);
+    assert.equal(record.excerpt!.omittedCharacters, delivered.excerpt!.omittedCharacters);
+  }
+  for (const { delivered, record } of [whole, generous]) assert.deepEqual([record.coverage, record.excerpt, delivered.excerpt], ['complete', null, null]);
+});

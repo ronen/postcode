@@ -197,7 +197,13 @@ export type SelectionScope =
 export type Delivery =
   | { readonly kind: 'item'; readonly position: number; readonly item: ItemAddress;
     /** The exact association route when delivered as a particular use. */
-    readonly route: AssociationAddress | null; readonly coverage: 'complete' | 'excerpt'; readonly concerns: readonly DeclarationAddress[] }
+    readonly route: AssociationAddress | null; readonly coverage: 'complete' | 'excerpt';
+    /**
+     * The portion actually delivered when bounded: a prefix of the item's serialized body, by
+     * UTF-16 code units. With the immutable item this identifies exactly what arrived. Null for complete delivery.
+     */
+    readonly excerpt: { readonly deliveredCharacters: number; readonly omittedCharacters: number } | null;
+    readonly concerns: readonly DeclarationAddress[] }
   | { readonly kind: 'association'; readonly position: number; readonly association: AssociationAddress;
     /** Displacements already accepted and disclosed with this delivery. */
     readonly disclosed: readonly DeclarationAddress[]; readonly concerns: readonly DeclarationAddress[] }

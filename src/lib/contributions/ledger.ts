@@ -160,14 +160,19 @@ export class ContributionLedger {
   }
   /**
    * Identification uses of an Entity. General access defaults to the standing uses. A
-   * method-specific request defaults to all of that method's identifying findings regardless
-   * of standing, since later displacement does not remove a method's findings; callers obtain
-   * standing separately. An explicit `standing` overrides either default.
+   * method-specific request selects by the method that produced the identifying content,
+   * not by the producer of the organizing declaration that uses it: a finding and its
+   * organizing use can have different producers. It defaults to every use of that method's
+   * identifying findings regardless of standing, since later displacement does not remove a
+   * method's findings; the use and its standing are available separately. An explicit
+   * `standing` overrides either default.
    */
   identifications(entity: EntityId, options: { readonly standing?: 'current' | 'all'; readonly method?: string } = {}): readonly AssociationEntry[] {
     this.entity(entity);
     return this.associations({ kind: 'entity', entity, role: 'identification' }, options.standing ?? (options.method === undefined ? 'current' : 'all'))
-      .filter(entry => options.method === undefined || this.production(entry.owner.production).producer.method === options.method);
+      .filter(entry => options.method === undefined || entry.declaration.members.some(member => member.kind === 'item'
+        && this.catalog.get(this.item(member.item).type)?.identifying !== undefined
+        && this.production(this.investigram(member.item.investigram).production).producer.method === options.method));
   }
   designations(result: QueryResultId, standing: 'current' | 'all' = 'current'): readonly AssociationEntry[] {
     this.result(result);
@@ -540,6 +545,11 @@ export class ContributionLedger {
       const raw = record(value, ['inability', 'answer', 'statement'], 'producer report');
       const answer = distinct(optional(raw.answer, 'answer reference').map(entry => associationRef(entry, false)), addressKey, 'answer reference');
       if (answer.some(address => !isDesignation(address))) fail('A reported answer identifies exact result designations.');
+      // An attempt answers its own invocation's question; a designation of another Query result is not its answer.
+      const result = handle.invocation ? this.invocation(handle.invocation).result : null;
+      if (result !== null && answer.some(address => { const declaration = declared(address); return declaration.operation !== 'withdraw' && declaration.target.kind === 'result' && declaration.target.result !== result; })) {
+        fail('A reported answer must designate the Query result of this production\'s invocation.');
+      }
       concluded.set(handle, { inability: raw.inability === undefined || raw.inability === null ? null : text(raw.inability, 'reported inability'),
         answer, statement: raw.statement === undefined || raw.statement === null ? null : text(raw.statement, 'report statement') });
     }

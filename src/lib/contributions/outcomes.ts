@@ -25,9 +25,11 @@ export interface Fulfillment {
   /**
    * `fulfilled` only when every alternative in scope meets every requirement.
    * `no-current-answer` means every designation was displaced; `no-designated-answer`
-   * means none was ever supplied. Neither establishes absence of findings.
+   * means none was ever supplied. `no-answer-supplied` means an explicit selection, such as
+   * one attempt's own answers, was empty; other answers of the Query result may still stand.
+   * None of these establishes absence of findings.
    */
-  readonly status: 'fulfilled' | 'unfulfilled' | 'no-current-answer' | 'no-designated-answer';
+  readonly status: 'fulfilled' | 'unfulfilled' | 'no-current-answer' | 'no-designated-answer' | 'no-answer-supplied';
   readonly alternatives: readonly AlternativeFulfillment[];
   /** Exact historical designations and the changes that displaced them, for qualified historical access. */
   readonly history: readonly { readonly designation: AssociationAddress; readonly displacedBy: readonly DeclarationAddress[] }[];
@@ -69,8 +71,28 @@ export function assessFulfillment(ledger: ContributionLedger, contract: ResultCo
   });
   const needsAnswer = contract.requirements.length > 0;
   const status = alternatives.length ? alternatives.every(item => !item.unmet.length) ? 'fulfilled' : 'unfulfilled'
-    : !needsAnswer ? 'fulfilled' : all.length ? 'no-current-answer' : 'no-designated-answer';
+    : !needsAnswer ? 'fulfilled' : selection ? 'no-answer-supplied' : all.length ? 'no-current-answer' : 'no-designated-answer';
   return { contract: contract.id, result, status, alternatives, history };
+}
+
+/**
+ * The answers one concluded attempt supplied for a Query result: the designations its own
+ * investigrams declared for it, and exact existing designations it reported as its answer.
+ * Answers that merely stand for the same Query result from other attempts are not included.
+ */
+export function attemptAnswers(ledger: ContributionLedger, production: Production, result: QueryResultId): readonly AssociationAddress[] {
+  const answers = new Map<string, AssociationAddress>();
+  for (const id of production.investigrams) for (const declaration of ledger.investigram(id).declarations) {
+    if (declaration.operation !== 'withdraw' && declaration.target.kind === 'result' && declaration.target.result === result) {
+      const address = { investigram: id, declaration: declaration.key };
+      answers.set(addressKey(address), address);
+    }
+  }
+  for (const address of production.report?.answer ?? []) {
+    const target = ledger.association(address).declaration.target;
+    if (target.kind === 'result' && target.result === result) answers.set(addressKey(address), address);
+  }
+  return [...answers.values()];
 }
 
 /** What a producing attempt returned, kept distinct from whether a retained contribution fulfills its request. */
@@ -81,7 +103,11 @@ export type ProductionOutcome =
   | { readonly kind: 'invalid-submission'; readonly problems: readonly string[]; readonly production: Production }
   /** A valid contribution, retained with all its declarations in effect whatever its fulfillment. */
   | { readonly kind: 'accepted'; readonly acceptance: Acceptance; readonly production: Production; readonly repairs: number;
-    /** Determined by PostCode's contract checks. */
+    /**
+     * Determined by PostCode's contract checks, for the answers this attempt itself supplied.
+     * An earlier answer still standing for the same Query result does not fulfill this attempt
+     * unless the attempt explicitly returned it. Assess the Query result as a whole separately.
+     */
     readonly fulfillment: Fulfillment | null;
     /** Reported by the producer; a different observation from the contract checks. */
     readonly reportedInability: string | null };
@@ -106,21 +132,32 @@ export async function produce(ledger: ContributionLedger, request: ProductionReq
   const handle = ledger.begin({ producer: request.producer, invocation: request.invocation ?? null });
   const problems: string[] = [];
   for (let attempt = 0; ; attempt++) {
-    const contribution = await producer(handle, attempt ? { problem: problems.at(-1)! } : null);
+    let contribution: unknown;
+    try {
+      contribution = await producer(handle, attempt ? { problem: problems.at(-1)! } : null);
+    } catch (error) {
+      // A producer defect propagates unchanged. Its production is discarded so nothing can be submitted late.
+      handle.close();
+      throw error;
+    }
     if (contribution === undefined) {
       return problems.length ? { kind: 'invalid-submission', problems, production: ledger.abandon(handle, 'invalid-submission') }
         : { kind: 'no-contribution', reason: 'not-submitted', production: ledger.abandon(handle, 'not-submitted') };
     }
+    // Structural repair concerns acceptance only. Once a contribution is accepted, a failure of
+    // the fulfillment check is a defect of that check: it propagates, and never reopens repair.
+    let acceptance: Acceptance;
     try {
-      const acceptance = ledger.accept([{ production: handle, contribution }]);
-      const production = ledger.production(handle.id);
-      const fulfillment = request.contract && request.invocation
-        ? assessFulfillment(ledger, request.contract, ledger.invocation(request.invocation).result) : null;
-      return { kind: 'accepted', acceptance, production, repairs: attempt, fulfillment, reportedInability: production.report?.inability ?? null };
+      acceptance = ledger.accept([{ production: handle, contribution }]);
     } catch (error) {
       if (!(error instanceof InvalidContribution)) throw error;
       problems.push(error.message);
       if (attempt >= (request.repairs ?? 0)) return { kind: 'invalid-submission', problems, production: ledger.abandon(handle, 'invalid-submission') };
+      continue;
     }
+    const production = ledger.production(handle.id);
+    const result = request.contract && request.invocation ? ledger.invocation(request.invocation).result : null;
+    const fulfillment = request.contract && result ? assessFulfillment(ledger, request.contract, result, attemptAnswers(ledger, production, result)) : null;
+    return { kind: 'accepted', acceptance, production, repairs: attempt, fulfillment, reportedInability: production.report?.inability ?? null };
   }
 }

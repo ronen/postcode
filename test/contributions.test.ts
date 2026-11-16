@@ -364,3 +364,29 @@ test('exact access returns immutable values; a caller cannot alter standing or r
   assert.throws(() => { (ledger.referencing(module)[0] as { item: string }).item = 'x'; }, TypeError);
   assert.equal(ledger.association(use).declaration, ledger.investigram(use.investigram).declarations[0]);
 });
+
+test('method-specific identification follows the producer of the identifying finding, not of its organizing use', () => {
+  const ledger = createLedger();
+  const finder = ledger.begin({ producer: mechanical('test/finder@1') }), policy = ledger.begin({ producer: mechanical('test/policy@1') });
+  const acceptance = ledger.accept([
+    { production: finder, contribution: { investigrams: [{ key: 'finding', qualification: derived, entities: [{ key: 'e', entityKind: 'module' }],
+      items: [{ key: 'name', type: 'identification', body: { name: 'timer.ts', nameOrigin: 'system-under-study', designation: 'Source module timer.ts' } }] }] } },
+    { production: policy, contribution: { investigrams: [{ key: 'organizer', declarations: [{ key: 'identify', operation: 'add',
+      qualification: { status: 'organizing-policy', limitations: ['Deterministic wrapper policy.'] },
+      target: { kind: 'entity', entity: { local: 'e' }, role: 'identification' }, members: [local('finding', 'name')] }] }] } },
+  ]);
+  const entity = submitted(acceptance, finder).entity('e'), use = submitted(acceptance, policy).use('organizer', 'identify');
+  const of = (method: string, standing?: 'current' | 'all') => ledger.identifications(entity, { method, ...(standing ? { standing } : {}) }).map(entry => entry.address);
+  assert.deepEqual([ledger.identifications(entity).map(entry => entry.address), of('test/finder@1'), of('test/policy@1')], [[use], [use], []]);
+  // The organizing use and its producer remain available separately from the finding's method.
+  assert.equal(ledger.production(ledger.association(use).owner.production).producer.method, 'test/policy@1');
+  // A different method's identification of the same Entity is that method's finding only.
+  const interpreted = submit(ledger, agentic(), [{ key: 'i', qualification: caveat,
+    items: [{ key: 'id', type: 'identification', body: { name: 'Scheduler', nameOrigin: 'assigned', designation: 'Schedules probes' } }],
+    declarations: [{ key: 'identify', operation: 'add', target: { kind: 'entity', entity, role: 'identification' }, members: [local('i', 'id')] }] }]).use('i', 'identify');
+  assert.deepEqual([of('test/finder@1'), of('test/investigation@1')], [[use], [interpreted]]);
+  // After the organizing use is withdrawn, the method's finding is still returned, with its standing available separately.
+  submit(ledger, agentic('w'), [{ key: 'w', declarations: [{ key: 'w', operation: 'withdraw', qualification: caveat, displaces: [use], grounds: { text: 'g' } }] }]);
+  assert.deepEqual([of('test/finder@1'), of('test/finder@1', 'current'), ledger.standing(use).state, ledger.identifications(entity).map(entry => entry.address)],
+    [[use], [], 'displaced', [interpreted]]);
+});

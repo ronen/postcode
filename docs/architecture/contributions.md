@@ -19,7 +19,7 @@ Four responsibilities are kept apart:
 | Derived status | Standing and needs-reconsideration are computed from retained declarations, deliveries and membership under a versioned method. They are never written back into contributions. |
 | Outcome and fulfillment | What an attempt returned (nothing, an unrepaired invalid submission, or an accepted contribution) is reported separately from whether the selected answer meets its requested result contract. |
 
-Values returned by read access are immutable or fresh copies, so a caller cannot alter retained declarations, standing or indexes. General identification access returns the standing uses; a method-specific request returns all of that method's identifying findings by default, whatever their standing, with standing available separately.
+Values returned by read access are immutable or fresh copies, so a caller cannot alter retained declarations, standing or indexes. General identification access returns the standing uses; a method-specific request selects by the method that produced the identifying content, not by the producer of the organizing declaration that uses it, and by default returns every use of that method's findings whatever its standing, with the use and its standing available separately.
 
 Read access to the ledger — identity resolution, name lookup, association and designation selection, status — involves no production and therefore records no exposure. This is the structural basis for answer assembly, browsing and host identity bookkeeping creating no producer exposure.
 
@@ -49,7 +49,7 @@ Displacement context delivered with a displaced use is the exact change declarat
 
 Malformed acquisition requests are refused whole, before any part is delivered or recorded: a scope must be well formed and name an existing Entity or Query result, and an excerpt bound must be a non-negative whole number. Each recorded delivery is an owned immutable capture, so later changes to a caller's objects cannot rewrite the history.
 
-A production records deliveries of exact content items (complete or as a disclosed excerpt, with the association route when delivered as a particular use), exact associations with the displacements already known, declaration grounds, qualified metadata, acquired inventory scopes (current-only or all-history, with the addresses listed), exact change notices and discovery-only referent handles. Positions are counts of accepted submissions and serve only to order deliveries against changes.
+A production records deliveries of exact content items (complete, or as an excerpt with the delivered and omitted extent of the body, and with the association route when delivered as a particular use), exact associations with the displacements already known, declaration grounds, qualified metadata, acquired inventory scopes (current-only or all-history, with the addresses listed), exact change notices and discovery-only referent handles. Positions are counts of accepted submissions and serve only to order deliveries against changes.
 
 The ledger enumerates associations within a scope in acceptance order. That is repeatable for the same retained information and independent of identifiers, but it depends on arrival order and is not a semantic order. Ordering the content of a mechanical answer belongs to the Lens method's own semantic keys.
 
@@ -66,7 +66,9 @@ Status has separate bearers. An investigram has producing-context causes. An ass
 
 ## Outcomes
 
-The shared producer boundary opens a production, lets the producer acquire inputs and submit, applies bounded structural repair, and concludes the production. An attempt that returns no contribution is retained with its deliveries and no investigram. An accepted contribution takes full effect whatever its fulfillment. Fulfillment is assessed against every current designation of the invocation's Query result, or against an explicitly selected alternative, and distinguishes a result that never had a designation from one whose designations were all displaced.
+The shared producer boundary opens a production, lets the producer acquire inputs and submit, applies bounded structural repair, and concludes the production. An attempt that returns no contribution is retained with its deliveries and no investigram. An accepted contribution takes full effect whatever its fulfillment. Structural repair applies to acceptance only: a failure of the fulfillment check after acceptance propagates and never reopens repair, and a producer defect discards the open production so nothing can be submitted late.
+
+Fulfillment has two distinct subjects. An attempt's fulfillment is assessed over the answers that attempt supplied: the designations it declared for its invocation's Query result and any exact existing designations it reported as its answer, which must belong to that result. An earlier answer that still stands does not fulfill a later attempt that neither designated nor returned an answer. The Query result as a whole is assessed separately, against every current designation or an explicitly selected alternative, and distinguishes a result that never had a designation from one whose designations were all displaced.
 
 ## Deliberate limits at this stage
 

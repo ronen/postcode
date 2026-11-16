@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { assessFulfillment, designatedItems, produce } from '../src/lib/contributions/outcomes.js';
+import { assessFulfillment, attemptAnswers, designatedItems, produce } from '../src/lib/contributions/outcomes.js';
+import { InvalidContribution } from '../src/lib/contributions/model.js';
+import type { ProductionHandle } from '../src/lib/contributions/production.js';
 import type { ResultContract } from '../src/lib/contributions/outcomes.js';
 import type { AssociationAddress, EntityId, QueryResultId } from '../src/lib/contributions/model.js';
 import type { ContributionLedger } from '../src/lib/contributions/ledger.js';
@@ -167,7 +169,8 @@ test('production outcomes separate no contribution, invalid submission and accep
     repair ? { investigrams: [{ ...malformed.investigrams[0]!, qualification: caveat }] } : malformed);
   assert.deepEqual([repaired.kind, repaired.kind === 'accepted' && repaired.repairs], ['accepted', 1]);
   // Valid useful partial content, with no association or designation: retained, addressable, and reported as unfulfilled.
-  assert.equal(repaired.kind === 'accepted' && repaired.fulfillment?.status, 'no-designated-answer');
+  assert.equal(repaired.kind === 'accepted' && repaired.fulfillment?.status, 'no-answer-supplied');
+  assert.equal(assessFulfillment(ledger, tableContract, result.id).status, 'no-designated-answer');
   assert.equal(ledger.investigrams().length, 2);
   // Prose designated as the answer does not silently fulfill the required specialized form; its declarations still take effect.
   const prose = await produce(ledger, request, production => {
@@ -189,8 +192,11 @@ test('production outcomes separate no contribution, invalid submission and accep
   assert.equal(ledger.associations({ kind: 'entity', entity: module, role: 'topic', topic: 'states' }, 'current').length, 1);
   // Two equally standing alternatives, only one meeting the contract: both preserved, the request not reported as fulfilled.
   const structured = await produce(ledger, request, () => ({ investigrams: table(result.id, 'structured', ['Closed', 'Open']) }));
-  assert.equal(structured.kind === 'accepted' && structured.fulfillment?.status, 'unfulfilled');
-  const alternatives = structured.kind === 'accepted' ? structured.fulfillment!.alternatives : [];
+  // This attempt's own answer meets the contract. The request as a whole now has two standing alternatives and is not fulfilled.
+  assert.deepEqual(structured.kind === 'accepted' && [structured.fulfillment?.status, structured.fulfillment?.alternatives.length], ['fulfilled', 1]);
+  const whole = assessFulfillment(ledger, tableContract, result.id);
+  assert.equal(whole.status, 'unfulfilled');
+  const alternatives = whole.alternatives;
   assert.deepEqual(alternatives.map(item => item.unmet.length), [1, 0]);
   // A request explicitly selecting one alternative is assessed for that selection.
   assert.equal(assessFulfillment(ledger, tableContract, result.id, [alternatives[1]!.designation]).status, 'fulfilled');
@@ -216,4 +222,55 @@ test('an established empty result is fulfilled content, distinct from a missing 
   assert.deepEqual(empty.kind === 'accepted' && [empty.fulfillment?.status, empty.fulfillment?.alternatives.length, empty.fulfillment?.history.length], ['fulfilled', 1, 1]);
   // An unexpected defect in a producer is not converted into an ordinary outcome.
   await assert.rejects(produce(ledger, request, () => { throw new TypeError('defect'); }), TypeError);
+});
+
+test('an attempt is fulfilled only by answers it supplied or explicitly returned, not by an earlier answer that still stands', async () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module'), other = discoverModule(ledger, 'timer.ts').entity('module');
+  const { invocation, result } = summaryInvocation(ledger, module, tableContract.id);
+  const first = await produce(ledger, { producer: agentic('model-a'), invocation: invocation.id, contract: tableContract }, () => ({ investigrams: table(result.id, 'first', ['Closed']) }));
+  assert.equal(first.kind === 'accepted' && first.fulfillment?.status, 'fulfilled');
+  const d1 = current(ledger, result.id)[0]!;
+  const fresh = () => ({ producer: agentic('model-b'), invocation: summaryInvocation(ledger, module, tableContract.id, true).invocation.id, contract: tableContract });
+  // A fresh partial attempt: qualified notes and a reported inability, no designation and no returned answer.
+  const partial = await produce(ledger, fresh(), () => ({ report: { inability: 'I could not construct the table.' },
+    investigrams: [{ key: 'notes', qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text: 'Partial notes.' } }] }] }));
+  assert.equal(partial.kind, 'accepted');
+  if (partial.kind !== 'accepted') return;
+  assert.deepEqual([partial.fulfillment?.status, partial.fulfillment?.alternatives, partial.reportedInability], ['no-answer-supplied', [], 'I could not construct the table.']);
+  assert.deepEqual(attemptAnswers(ledger, partial.production, result.id), []);
+  // The earlier answer still stands and the request as a whole is still answered; that is a separate assessment.
+  assert.deepEqual([current(ledger, result.id), assessFulfillment(ledger, tableContract, result.id).status], [[d1], 'fulfilled']);
+  // Explicit reuse: the attempt returns the exact existing answer and is fulfilled by it without a new declaration.
+  const reuse = await produce(ledger, fresh(), production => { production.designations(result.id, { content: true }); return { investigrams: [], report: { answer: [d1], statement: 'No organizing change is warranted.' } }; });
+  assert.deepEqual(reuse.kind === 'accepted' && [reuse.fulfillment?.status, reuse.fulfillment?.alternatives.map(item => item.designation), reuse.production.investigrams], ['fulfilled', [d1], []]);
+  // A reported answer must answer this attempt's own question.
+  const elsewhere = summaryInvocation(ledger, other, tableContract.id);
+  const foreign = submit(ledger, agentic(), table(elsewhere.result.id, 'elsewhere', ['Idle']), { invocation: elsewhere.invocation.id }).use('elsewhere', 'answer');
+  const mismatched = await produce(ledger, fresh(), () => ({ investigrams: [], report: { answer: [foreign] } }));
+  assert.deepEqual(mismatched.kind === 'invalid-submission' && mismatched.problems, ['A reported answer must designate the Query result of this production\'s invocation.']);
+});
+
+test('a failing fulfillment check propagates after acceptance and never reopens structural repair', async () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  const contract: ResultContract = { id: 'test/defective-check@1', requirements: [{ kind: 'content', description: 'A table.', type: 'test-table',
+    unmet: () => { throw new InvalidContribution('fulfillment checker defect'); } }] };
+  const { invocation, result } = summaryInvocation(ledger, module, contract.id);
+  for (const repairs of [0, 1]) {
+    const handles: ProductionHandle[] = [], before = ledger.productions().length;
+    await assert.rejects(produce(ledger, { producer: agentic(), invocation: invocation.id, contract, repairs }, production => {
+      handles.push(production);
+      return { investigrams: table(result.id, `t${repairs}`, ['Closed']) };
+    }), (error: unknown) => error instanceof InvalidContribution && error.message === 'fulfillment checker defect');
+    // One callback, the accepted contribution retained with its declaration in effect, and the production concluded as accepted.
+    assert.deepEqual([handles.length, handles[0]!.closed, ledger.productions().length - before, ledger.production(handles[0]!.id).outcome.kind], [1, true, 1, 'accepted']);
+  }
+  assert.equal(current(ledger, result.id).length, 2);
+});
+
+test('a producer defect propagates and its production accepts nothing afterwards', async () => {
+  const ledger = createLedger(), captured: ProductionHandle[] = [], before = snapshot(ledger);
+  await assert.rejects(produce(ledger, { producer: agentic() }, production => { captured.push(production); throw new TypeError('defect'); }), TypeError);
+  assert.equal(captured[0]!.closed, true);
+  assert.throws(() => ledger.accept([{ production: captured[0]!, contribution: { investigrams: [{ key: 'late', qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text: 'x' } }] }] } }]), /not open/);
+  assert.equal(snapshot(ledger), before);
 });
