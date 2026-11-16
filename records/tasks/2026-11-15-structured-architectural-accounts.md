@@ -50,6 +50,25 @@ to begin the substantive implementation task described by that plan.
 >
 > This feedback prepares M1 for independent review; it does not replace that review or constitute checkpoint acceptance. Leave the implementation ready for me to arrange the M1 checkpoint review.
 
+2026-11-16, received while the second round 2 reviewer's findings (F1–F3 of the Claude round 2 record) were being corrected; those corrections were committed as `9ca9865` before this follow-up was acted on:
+
+> Also, please record the reviewer’s observation about displacement disclosure as a clarification of the existing delivery contract.
+>
+> When an investigator acquires association A and is informed that B superseded it, delivery of A and B’s qualified displacement context does not itself constitute acquisition of B’s replacement use or content.
+>
+> “Reasons only” should mean sufficient qualified displacement context: the exact declaration, affected use, operation, grounds and replacement reference. It must not mean an isolated explanation stripped of qualification or traceability. Record what was actually delivered; the explanation retains its own provenance and exposure implications.
+>
+> Consequently, if C later displaces B, a recipient of only A and that displacement context does not automatically acquire C as another reconsideration cause. The historical displacement of A remains. Actual acquisition of B, or another relevant exposure path, can make C applicable.
+>
+> Check that the implementation and existing tests preserve this distinction. Add focused coverage if it is missing, distinguishing:
+> - acquiring A with displacement context and a reference to B;
+> - actually acquiring B’s replacement use/content;
+> - the effects of a later displacement of B.
+>
+> Update the checkpoint and descriptive documentation as appropriate. Treat this as clarification of the adopted contract, not a new propagation policy. If you find a conflict with the governing text or actual behavior, report it rather than silently changing semantics.
+>
+> Report the changes and verification. This clarification does not itself constitute M1 checkpoint acceptance.
+
 ## Outcome
 
 ## Verification
