@@ -4,7 +4,8 @@ Date: 2026-11-15
 Task: [Implement structured architectural accounts](../../tasks/2026-11-15-structured-architectural-accounts.md)
 Plan: [Structured architectural accounts](../../../docs/plans/structured-architectural-accounts.md#1-common-contribution-mechanism)
 Starting revision: `8a7f2834470644726dd742a0ddaeb1455bac3b2a`
-Implementation: `1f7e1ec8a2aafd3e0f4b28ffb7fdfa5815a081ae`
+Implementation: `22698aeb7ff5c99fa608ee68017c8bcd6a29ea11`
+Reviewed in round 5: `1f7e1ec8a2aafd3e0f4b28ffb7fdfa5815a081ae`
 Reviewed in round 4: `2b9fce8823577cc16b94554142d3eb6db3672d33`
 Reviewed in round 3: `5ebe10a19be93a2613ec5fe5cf5f5dcaf16df295`
 Reviewed in round 2, by two reviewers: `b02c7bcdd59e4253dbe9cddb761c590bb52ca360`
@@ -197,6 +198,22 @@ The reviewer also reproduced the known open-production observation. The shared p
 
 Two entries under the second reviewer's carried observations are thereby resolved at M1: the open production after a producer defect, and the relation of a reported answer to fulfillment.
 
+## Corrections after round 5
+
+The [Codex round 5 findings](../../reviews/structured-architectural-accounts/2026-11-16-m1-mechanism-round-5-codex-findings.md) found the round 4 corrections resolved, reported one remaining defect, R1, and recorded one observation, O1, whose interpretation it left open.
+
+| Finding | Correction | Regression coverage |
+| --- | --- | --- |
+| R1: an unexpected exception during acceptance validation left the failed execution's production open, permitting a late submission | Every terminal exit of the shared producer boundary ends its production. It stays open only while a permitted structural repair continues. An unexpected failure propagates unchanged. | A defective content contract with and without a repair allowance, a defect during a repair attempt, exhausted repair, an asynchronous producer failure and a withheld submission; in each the production is closed and a late submission refused. The post-acceptance fulfillment failure is covered by the round 4 regression. |
+
+### Open question: a further displacement shown only as standing
+
+O1 is not corrected, because it is a question of interpretation, not a conformance defect, and the reviewer did not assert one. It awaits the human's direction.
+
+When displacement context for A is delivered, it shows the current standing of the replacement B. If C has displaced B, that standing names C by reference. A producer that had actually acquired B, and so has C as a cause, is not treated as having been told of C by that reference: C stays a cause until an exact notice or actual delivery of C.
+
+The implemented reading is that the reference is standing plus an address. It states neither C's operation nor its grounds, and the decision requires an exact notice to identify the change declaration, the affected use and the operation. This is the status quo and the more conservative of the two readings, since it never suppresses a cause. The alternative is to have the context state the further change's operation and record it as known. That would add a suppression, and is the human's choice. A test pins the current behavior and its two controls so the boundary is explicit before a real producer adapter presents this context. No acquisition of B or C's content is created either way.
+
 ## Known risks carried forward
 
 - Baseline identification scopes produce an addition cause for every producer that acquired a baseline whenever any identification of that Entity is later added. The tests show the behavior on single Entities; its breadth on a real module population is unmeasured and is an explicit observation point at the M2 checkpoint.
@@ -208,9 +225,9 @@ Two entries under the second reviewer's carried observations are thereby resolve
 Run by the implementing agent on the implementation's content, offline, with no credentials or inference:
 
 - `npm run check` and `git diff --check` passed.
-- The three contribution test files pass **48/48**.
-- The complete offline suite passed **716/716** with no skips in about three minutes: the 668 tests of the starting revision, none modified, and the 48 new tests.
-- The initial implementation passed 697/697 on two complete runs, the round 1 review target 700/700 on one, the round 2 review target 704/704 on one, and the corrections of the second round 2 review 707/707 on one, the round 3 review target 708/708 on one, and the round 4 review target 711/711 on one. The round 4 reviewer's own two complete runs of that target passed 708/711, with three sign-in tests failing in its sandbox and passing outside it.
+- The three contribution test files pass **50/50**.
+- The complete offline suite passed **718/718** with no skips in about three minutes: the 668 tests of the starting revision, none modified, and the 50 new tests.
+- The initial implementation passed 697/697 on two complete runs, the round 1 review target 700/700 on one, the round 2 review target 704/704 on one, and the corrections of the second round 2 review 707/707 on one, the round 3 review target 708/708 on one, the round 4 review target 711/711 on one, and the round 5 review target 716/716 on one. The round 4 reviewer's own two complete runs of that target passed 708/711, with three sign-in tests failing in its sandbox and passing outside it.
 
 Three other complete runs had failures and are not counted as passes:
 
