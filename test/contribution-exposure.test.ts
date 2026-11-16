@@ -10,6 +10,11 @@ import type { Submitted } from './contribution-helpers.js';
 const local = (investigram: string, item: string) => ({ kind: 'item' as const, item: { investigram: { local: investigram }, item } });
 const admission = (module: EntityId) => ({ kind: 'entity' as const, entity: module, role: 'topic' as const, topic: 'admission' });
 const causes = (ledger: ContributionLedger, investigram: InvestigramId) => ledger.status.investigram(investigram).producing;
+/** A designated summary answer for the module, to serve as the exact subject of a secondary investigation. */
+function summaryAnswer(ledger: ContributionLedger, module: EntityId): AssociationAddress {
+  const { invocation, result } = summaryInvocation(ledger, module);
+  return explainAdmission(ledger, module, result.id, invocation.id).use('summary', 'answer');
+}
 
 /** An account of admission, with a use on the module. */
 function account(ledger: ContributionLedger, module: EntityId, key: string, prepare?: (handle: ProductionHandle) => void): Submitted {
@@ -619,4 +624,54 @@ test('a further displacement shown only as standing and a reference is not an ex
   delivered.association(b);
   const routes = (handle: ProductionHandle) => handle.pending().map(cause => [cause.change, cause.routes.map(route => route.kind)]);
   assert.deepEqual([routes(reference), routes(noticed), routes(delivered)], [[[c, ['exact']]], [], []]);
+});
+
+test('an outer producer that receives the result of secondary work it invoked knows the changes that result declares', () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  const a = account(ledger, module, 'a').use('a', 'u'), b = supersede(ledger, module, 'b', a).use('b', 'u');
+  const x = account(ledger, module, 'x').use('x', 'u');
+  // Each outer production receives B, and an unrelated use X, before the secondary work runs.
+  const outers = ['whole-result', 'exact-use', 'not-received', 'bare-reference'].map(model => {
+    const handle = ledger.begin({ producer: agentic(model) });
+    handle.association(b, { content: true }); handle.association(x);
+    return handle;
+  });
+  const [wholeResult, exactUse, notReceived, bareReference] = outers as [ProductionHandle, ProductionHandle, ProductionHandle, ProductionHandle];
+  // The secondary investigation, invoked on B, supersedes B with C and designates C as its answer.
+  const secondary = ledger.invoke({ operation: 'examine', subjects: [{ role: null, subject: { kind: 'designation', association: summaryAnswer(ledger, module) } }],
+    parameters: {}, context: [], resultContract: null });
+  const result = submit(ledger, agentic('secondary'), handle => {
+    handle.association(b, { content: true });
+    return [{ key: 'c', qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text: 'Fuller account c.' } }],
+      declarations: [
+        { key: 'u', operation: 'supersede', target: admission(module), members: [local('c', 'p')], displaces: [b], grounds: { text: 'Grounds c.' } },
+        { key: 'answer', operation: 'add', target: { kind: 'result', result: secondary.result.id }, members: [{ kind: 'association', association: { investigram: { local: 'c' }, declaration: 'u' } }] },
+      ] }];
+  }, { invocation: secondary.invocation.id });
+  const c = result.use('c', 'u'), answer = result.use('c', 'answer');
+  // Meanwhile an unrelated producer withdraws X. That is no part of the secondary result.
+  const unrelated = withdraw(ledger, 'w', x).use('w', 'w');
+  // Invocation alone establishes no knowledge: every outer production still has C pending.
+  for (const handle of outers) assert.deepEqual(handle.pending().map(cause => cause.change), [c, unrelated]);
+  // Receiving the result: the whole contribution, or the exact use it declared.
+  const whole = wholeResult.investigram(result.investigram('c'));
+  const declared = whole.declarations.find(item => 'address' in item && item.address.declaration === 'u');
+  assert.deepEqual(declared && 'address' in declared && [declared.declaration.operation, declared.declaration.operation === 'supersede' && declared.declaration.displaces,
+    declared.declaration.operation === 'supersede' && declared.declaration.grounds.text, declared.owner.qualification?.status], ['supersede', [b], 'Grounds c.', 'interpretation']);
+  exactUse.association(c, { content: true });
+  // The actual delivery of the qualified declaration is recorded.
+  for (const handle of [wholeResult, exactUse]) {
+    assert.equal(handle.deliveries.some(delivery => delivery.kind === 'association' && delivery.association.investigram === c.investigram && delivery.association.declaration === c.declaration), true);
+  }
+  // Only a bare reference: the secondary answer designation is received, with C named as an undelivered member.
+  assert.deepEqual(bareReference.designations(secondary.result.id).map(item => [item.address, item.undeliveredMembers]), [[answer, [c]]]);
+  assert.equal(bareReference.deliveries.some(delivery => delivery.kind === 'association' && delivery.association.declaration === c.declaration && delivery.association.investigram === c.investigram), false);
+  const acceptance = ledger.accept(outers.map((production, index) => ({ production,
+    contribution: { investigrams: [{ key: `k${index}`, qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text: 'x' } }] }] } })));
+  const of = (index: number) => causes(ledger, submitted(acceptance, outers[index]!).investigram(`k${index}`)).map(cause => [cause.change, cause.routes.map(route => route.kind)]);
+  // C is not a cause for an output whose producer received the result. The unrelated withdrawal, never disclosed, still is.
+  assert.deepEqual([of(0), of(1)], [[[unrelated, ['exact']]], [[unrelated, ['exact']]]]);
+  // Controls: not received, and bare reference only.
+  assert.deepEqual([of(2), of(3)], [[[c, ['exact']], [unrelated, ['exact']]], [[c, ['exact']], [unrelated, ['exact']]]]);
+  assert.equal(notReceived.deliveries.some(delivery => delivery.kind === 'notice'), false);
 });
