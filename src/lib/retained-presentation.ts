@@ -19,7 +19,7 @@ import type { WorkScope } from './work-attribution.js';
 
 type RetentionStore = Pick<ProgramRecordStore, 'get' | 'lookup'>;
 /** Fixed-reference resolution has no selection, population enumeration or Evaluation capability. */
-export function resolveRetainedContent(store: RetentionStore, answer: RetainedAnswer): PresentationContent {
+export function resolveRetainedContent(store: RetentionStore, answer: Exclude<RetainedAnswer, { kind: 'contribution-projection' }>): PresentationContent {
   switch (answer.kind) {
     case 'projection': return { contract: 'modules', value: resolveModuleProjection(store, answer) };
     case 'organization-projection': return { contract: 'organization', value: resolveOrganizationProjection(store, answer) };
@@ -57,6 +57,7 @@ export function presentRetained(store: ProgramRecordStore, session: SessionId,
   const answer = store.lookup(id);
   if (!answer) return refuse('unknown-answer', 'This target is not retained in this Session.');
   if (!isAnswer(answer)) return refuse('unsupported-answer', 'This retained record is not a supported Projection.');
+  if (answer.kind === 'contribution-projection') return refuse('presentation-unavailable', 'No Presentation of this interface accepts this retained answer. It remains exactly available through the application interface.', [answer.id]);
   const answerReference = store.answerIds([answer.id]).get(answer.id)!;
   const associated = answer.kind === 'investigation-selection-projection' && answer.variant === 'associated-inspection';
   const mechanical = associated ? store.get(answer.mechanical) : null;

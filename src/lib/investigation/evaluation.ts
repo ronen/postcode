@@ -13,6 +13,7 @@ import { investigate } from './execute.js';
 import type { InvestigationBounds } from './execute.js';
 import type { AttemptReport, Correction, InvestigationHistory, InvestigationOutcome, InvestigationRequest, InvestigatorAgent } from './contracts.js';
 import { InvestigationUsage } from './usage.js';
+import type { DialogAgent } from '../contributions/dialog.js';
 
 export interface InvestigationEvaluationRecord extends RecordContext {
   readonly kind: 'investigation-evaluation';
@@ -31,6 +32,8 @@ export interface InvestigationSelection {
 }
 export interface InvestigationDependencies {
   readonly agent?: InvestigatorAgent;
+  /** The agent-communication participant for investigations retained through common contributions. */
+  readonly dialogAgent?: DialogAgent;
   /** Internal assessment injection, selected only for missing work. */
   readonly selectAgent?: (request: InvestigationRequest) => Promise<InvestigatorAgent>;
   readonly bounds?: InvestigationBounds;

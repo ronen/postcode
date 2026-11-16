@@ -97,7 +97,8 @@ export class InvestigatorReferences {
     let fields: Fields;
     switch (record.kind) {
       case 'session': fields = this.#fields(['repository']); break;
-      case 'analysis-inputs': case 'repository-evidence': fields = {}; break;
+      // Contribution answers are application answers, never evidence delivered to an agent.
+      case 'analysis-inputs': case 'repository-evidence': case 'contribution-projection': fields = {}; break;
       case 'module': case 'symbol': case 'group': fields = this.#fields(['claim']); break;
       case 'claim': fields = this.#fields(['subject', 'context'], [], { information: object(this.#information(record.information)) }); break;
       case 'recorded-assertion': fields = this.#fields(['context']); break;

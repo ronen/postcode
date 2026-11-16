@@ -4,6 +4,7 @@ import { resolveOrganizationProjection } from '../organization/content.js';
 import { resolveDependencyProjection } from '../dependencies/content.js';
 import { resolveModuleExports } from '../exports/content.js';
 import { resolveInvestigationContent } from '../investigation/content.js';
+import { resolveContributionAnswer } from '../contributions/answers.js';
 import type { ProgramRecordStore, RecordId, SessionId } from '../records.js';
 import { isAnswer } from '../answer-references.js';
 import type { QualifiedContent } from './content.js';
@@ -17,6 +18,7 @@ export function resolveRetainedContent(store: RetentionStore, answer: RetainedAn
     case 'dependency-projection': return { contract: 'dependencies', value: resolveDependencyProjection(store, answer) };
     case 'module-exports-projection': return { contract: 'module-exports', value: resolveModuleExports(store, answer) };
     case 'investigation-selection-projection': return { contract: 'investigation', value: resolveInvestigationContent(store, answer) };
+    case 'contribution-projection': return { contract: 'contribution', value: resolveContributionAnswer(store, answer) };
   }
 }
 
@@ -30,6 +32,8 @@ export function supportingWork(content: QualifiedContent): readonly RecordId[] {
     case 'dependencies': return [content.value.evaluation.id, content.value.basis.id,
       ...content.value.moduleEvaluations.map(item => item.id), ...(content.value.expanded ? [content.value.expanded.id] : [])];
     case 'module-exports': return [content.value.basis.id, ...content.value.evaluations.map(item => item.id)];
+    // Its support is ledger contributions, attributed by exact address in the content itself.
+    case 'contribution': return [];
     case 'investigation': return [...(content.value.evaluation ? [content.value.evaluation.id] : []),
       ...content.value.accounts.map(item => item.id), ...content.value.corrections.map(item => item.id),
       ...content.value.support.map(item => item.record.id)];

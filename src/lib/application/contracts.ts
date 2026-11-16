@@ -76,8 +76,9 @@ export interface Capability {
   readonly cardinality: LensDefinition['cardinality'];
   readonly parameters: LensDefinition['parameters'];
   readonly results: LensDefinition['results'];
-  readonly requirements: { readonly kind: Exclude<LensDefinition['requirements']['kind'], 'interpretation'> }
-    | Extract<LensDefinition['requirements'], { kind: 'interpretation' }>;
+  /** Mechanical Lenses expose only their kind. Agentic Lenses expose their operation and requested result contract. */
+  readonly requirements: { readonly kind: Exclude<LensDefinition['requirements']['kind'], 'interpretation' | 'contribution' | 'follow-up'> }
+    | Extract<LensDefinition['requirements'], { kind: 'interpretation' | 'contribution' | 'follow-up' }>;
 }
 export interface ApplicationSession {
   readonly id: SessionId;

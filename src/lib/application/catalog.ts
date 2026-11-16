@@ -1,5 +1,6 @@
 import { representationProblem } from './input.js';
-import { lenses } from './lenses.js';
+import { contributionLenses, lenses } from './lenses.js';
+import { contributionOperations, resultContract } from '../contributions/operations.js';
 import type { LensDefinition } from './lenses.js';
 import { operations, requireOperation } from '../investigation/operations.js';
 import type { OperationCatalog } from '../investigation/operations.js';
@@ -14,7 +15,7 @@ export interface ApplicationCatalog {
   readonly operations: OperationCatalog;
   readonly presentations?: readonly PresentationDeclaration[];
 }
-export const applicationCatalog: ApplicationCatalog = freezeOwned({ lenses, operations });
+export const applicationCatalog: ApplicationCatalog = freezeOwned({ lenses: { ...lenses, ...contributionLenses }, operations });
 export type CapturedApplicationCatalog = ApplicationCatalog & { readonly presentations: readonly PresentationDeclaration[] };
 export function captureApplicationCatalog(source: ApplicationCatalog): CapturedApplicationCatalog {
   const problem = representationProblem(source, 'catalog');
@@ -31,6 +32,13 @@ export function captureApplicationCatalog(source: ApplicationCatalog): CapturedA
     const builtin = Object.hasOwn(lenses, id) ? (lenses as Readonly<Record<string, LensDefinition>>)[id] : undefined;
     if (builtin && builtin.requirements.kind !== 'interpretation' && canonical(lens) !== canonical(builtin)) throw new Error('Unsupported mechanical Lens definitions for built-in identity');
     mechanicalImplementation(lens);
+    if (lens.requirements.kind === 'contribution') {
+      const operation = Object.hasOwn(contributionOperations, lens.requirements.operation) ? contributionOperations[lens.requirements.operation] : undefined;
+      if (!operation || operation.subject !== 'module' || resultContract(lens.requirements.resultContract) === undefined || lens.cardinality !== 'one'
+        || lens.subjects.length !== 1 || lens.subjects[0] !== 'module' || lens.results.length !== 1 || lens.results[0] !== 'contribution' || Object.keys(lens.parameters).length) throw new Error('Incompatible contribution Lens definition');
+    }
+    if (lens.requirements.kind === 'follow-up' && (lens.cardinality !== 'one' || lens.subjects.length !== 1 || lens.subjects[0] !== 'contribution'
+      || lens.results.length !== 1 || lens.results[0] !== 'contribution' || Object.keys(lens.parameters).join() !== 'option')) throw new Error('Incompatible follow-up Lens definition');
     if (lens.requirements.kind === 'interpretation') {
       if (!lens.parameters || typeof lens.parameters !== 'object' || Array.isArray(lens.parameters)
         || Object.getPrototypeOf(lens.parameters) !== Object.prototype || Object.keys(lens.parameters).length) throw new Error('Interpretation Lens definitions must declare an empty parameter object');

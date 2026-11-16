@@ -10,9 +10,7 @@ Export evaluation is the second real producer. Each module's export finding is c
 
 The internal exports answer is the first consumer. It selects the discovery method's own identifying finding and the export method's own finding from the ledger, and captures each use's standing and displacement grounds in the retained answer. This is read-only assembly and records no producer exposure. A finding stays selected after a use of it is displaced; a fresh answer then shows the displacement with its grounds, and an earlier answer keeps what it captured. The answer fails if a finding it needs was never contributed, so a producer that bypasses the ledger is detected.
 
-An agentic dialog over the ledger exists as a domain boundary and is exercised with a substituted agent-communication participant on real fixtures. It is not yet reachable from the application API, the CLI or a hosted agent, and the existing investigation operations still run on the earlier dialog and retention structures.
-
-No other Lens or public CLI command reads the ledger yet.
+An agentic dialog over the ledger is reachable through the application interface for two Lenses, described under [Application route](#application-route). It has only been exercised with a substituted agent-communication participant; no hosted agent adapter speaks its protocol yet, so it cannot run against a real model. The existing `summarize`, `explain`, `decompose` and `examine` operations still run on the earlier dialog and retention structures, and no public CLI command reads the ledger.
 
 ## State-dependent behavior and its diagram
 
@@ -20,7 +18,7 @@ State-dependent behavior is the one architectural concept supported so far. Thre
 
 The renderer draws one node per supplied state, one edge per supplied transition and an entry marker only for an established entry. It produces an SVG picture, a plain-text form, a legend with every transition's full trigger, guard and effect, and notes stating entry, coverage, applicability and unsupported semantics. Agent-authored labels are neutralized in the picture and shown with visible control characters in text. A model with no states is incompatible, which is a missing-content condition and not a rendering failure.
 
-An explicit state-diagram request has a result contract requiring a designated answer that selects a state model with at least one state. Prose does not meet it, and each standing alternative is assessed on its own selected content. Nothing invokes this from the application API yet.
+An explicit state-diagram request has a result contract requiring a designated answer that selects a state model with at least one state. Prose does not meet it, and each standing alternative is assessed on its own selected content.
 
 ## Agentic dialog
 
@@ -101,3 +99,23 @@ Fulfillment has two distinct subjects. An attempt's fulfillment is assessed over
 ## Deliberate limits at this stage
 
 Inventories are delivered whole; bounded or ranked listings with explicit coverage are not implemented. The selected-content baseline, compact reference bindings for the new identities, Projection snapshots of association and status selections, and any persistence are later work in the same plan. Status derivation recomputes after each acceptance and has not been measured on a representative Session.
+
+<a id="application-route"></a>
+## Application route
+
+Two Lenses are answered from contributions. They are in the application catalogue and visible as capabilities with their subject signatures and result contracts. There is no command-line spelling, menu or CLI Presentation for them.
+
+| Lens | Subject | Request | Result |
+| --- | --- | --- | --- |
+| `state-behavior` | One discovered module, by name or reference | The state-behavior operation with the state-diagram result contract | A contribution answer |
+| `follow-up` | One retained contribution, by its exact identity, with the option key as a parameter | The investigation the option proposes, under the option's own result contract | A contribution answer |
+
+Evaluation resolves the request to its invocation and Query result. An ordinary request reuses a retained outcome for that question, whether it was accepted or ended in a retained failure, and runs no dialog. Communication and configuration failures are not reusable. An explicit `fresh` request always runs a new producing attempt; it is refused for mechanical Lenses and for the earlier interpretation operations.
+
+Invoking a follow-up option preserves its owner and key. The option must name a supported operation and satisfy that operation's subject signature, otherwise the request is refused without running anything. The option itself is delivered to the dialog as substantive input, and the exact selected content it names is the dialog's subject.
+
+The answer is a retained record that selects the current designated answers of the question: every standing alternative, in stable enumeration with no preference. It captures each alternative's content items with their own and their owners' qualification and producer, its membership and producing-context causes, unresolved inconsistency reports, the requirements of the requested result contract its content does not meet, and the follow-up options it offers. It also captures displaced designations with their grounds and the fulfillment of the request as a whole. Because the record carries its selected content, exact presentation follows only that record and needs neither the ledger nor a producer. A later declaration yields a different answer on the next request and leaves this one unchanged.
+
+A shared arrangement turns a contribution answer into explanation with pictures: for each alternative its qualifications, prose, a diagram for every state model that supports one, or the reason none can be drawn. It states when alternatives are shown separately and when only some can be drawn, and reports the no-current-answer condition with the withdrawal history. It is presentation over supplied content and adds no claim.
+
+When no agent is configured the request returns an answer with no alternatives and a failed attempt; nothing is fabricated.

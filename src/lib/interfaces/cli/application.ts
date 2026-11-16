@@ -80,6 +80,8 @@ function arrange(result: AnswerDelivery, context: RequestContext, port: Referenc
   const display = { selectionMode: result.selectionMode, referenceLifetime: result.referenceLifetime, answerReference: result.answerReference };
   const resolution = result.resolution && result.context.request.kind === 'lens' ? resolutionContext(result.context.request.designation, result.resolution) : undefined;
   const content = result.answer.mechanical ?? result.answer.content;
+  // No CLI Presentation is declared for contribution answers, so coordination never selects one for them.
+  if (content.contract === 'contribution') throw new Error('No CLI Presentation accepts a contribution answer');
   if (content.contract === 'investigation') {
     const arranged = arrangeInvestigationView(content.value, { ...display, title: result.title, presentation,
       ...(resolution ? { resolution } : {}), ...(choices.after === undefined ? {} : { after: choices.after }), revisionPage: choices.revisionPage ?? 1 }, result.reporting, result.usage, port);

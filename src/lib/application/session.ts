@@ -21,6 +21,8 @@ import { applicationCatalog, captureApplicationCatalog } from './catalog.js';
 import type { ApplicationCatalog } from './catalog.js';
 import type { ApplicationSession, OpenApplicationResult, ApplicationDependencies, ApplicationContext, ApplicationResult, CapturedInvocation } from './contracts.js';
 import { requestExecutor } from './executor.js';
+import { contributionEvaluation } from '../contributions/evaluation.js';
+import { sessionLedger } from '../contributions/modules.js';
 import { registerOperationHost } from './operation-scope.js';
 
 export async function openApplication(options: ProjectOptions, lifetime: ApplicationDependencies = {}, definitions: ApplicationCatalog = applicationCatalog): Promise<OpenApplicationResult> {
@@ -70,7 +72,11 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
       onReport: report => { if (!currentWork) return; const captured = freezeOwned(structuredClone(report)); reports.set(report.attempt, captured); investigation.onReport?.(captured); },
       onProgress: report => { if (!currentWork || controller.signal.aborted) return; const captured = freezeOwned(structuredClone(report)); reports.set(report.attempt, captured); investigation.onProgress?.(captured); },
     }, check, controller.signal, catalog.operations);
-    return { store, execute: requestExecutor(store, project.analysis, id, integration, usageReport, catalog), changed: project.changed,
+    // Contribution investigations share the Session's evidence boundary, usage ledger, validity check and cancellation.
+    const report = (value: AttemptReport) => { if (!currentWork) return; const captured = freezeOwned(structuredClone(value)); reports.set(value.attempt, captured); investigation.onReport?.(captured); };
+    const contributions = contributionEvaluation(store, sessionLedger(store, id), integration.evidence, usage,
+      { ...(investigation.dialogAgent ? { dialogAgent: investigation.dialogAgent } : {}), ...(investigation.bounds ? { bounds: investigation.bounds } : {}), onReport: report }, check, controller.signal);
+    return { store, execute: requestExecutor(store, project.analysis, id, integration, usageReport, catalog, contributions), changed: project.changed,
       evaluate: (request: Parameters<typeof integration.evaluate>[0], work?: RequestWork) => {
         evaluateModules(store, project.analysis, [], work?.scope('Establish the module basis for direct interpretation.'));
         return integration.evaluate(request, work);
@@ -110,7 +116,7 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
   };
   const session: ApplicationSession = {
     id,
-    capabilities: () => freezeOwned(Object.values(catalog.lenses).map(({ requirements, ...lens }) => ({ ...lens, requirements: requirements.kind === 'interpretation' ? requirements : { kind: requirements.kind } }))),
+    capabilities: () => freezeOwned(Object.values(catalog.lenses).map(({ requirements, ...lens }) => ({ ...lens, requirements: requirements.kind === 'interpretation' || requirements.kind === 'contribution' || requirements.kind === 'follow-up' ? requirements : { kind: requirements.kind } }))),
     check: () => operation(check), usage: usageReport, work: () => currentWork?.snapshot() ?? latestWork,
     execute(request, execution = {}) {
       const captured = captureApplicationRequest(request, catalog.lenses);

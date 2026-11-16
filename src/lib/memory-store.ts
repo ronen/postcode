@@ -19,6 +19,8 @@ function references(record: ProgramRecord): readonly RecordId[] {
     case 'investigram-correction': return [record.provenance, record.reporter, record.target, record.replacement, ...record.correctedSubjects, ...record.evidence];
     case 'investigation-provenance': return [record.request.subject, record.originatingModule, ...record.citations,
       ...record.completeTargets, ...record.completeCorrections, ...record.suppliedEvidence, ...record.summarizedEvidence];
+    // A contribution answer carries its selected content; its references are ledger identities, not program records.
+    case 'contribution-projection': return [];
     case 'session': return record.repository ? [record.repository] : [];
     case 'analysis-inputs': return [];
     case 'captured-content': return [record.subject, record.inputs, record.mapping];

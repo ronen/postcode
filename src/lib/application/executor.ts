@@ -23,10 +23,18 @@ import { resolveRetainedTarget, supportingWork } from './retained.js';
 import type { ApplicationContext, PreparedResult, AnswerDelivery } from './contracts.js';
 import type { CapturedApplicationCatalog } from './catalog.js';
 import type { ResolutionInformation } from './reports.js';
+import { resolveContributionAnswer, selectContributionAnswer } from '../contributions/answers.js';
+import type { contributionEvaluation, ContributionEvaluated } from '../contributions/evaluation.js';
+import { UnknownReference } from '../contributions/model.js';
+import type { InvestigramId, InvocationRequest, MetadataAddress, SubjectRef } from '../contributions/model.js';
+import { entityModule, moduleEntity, sessionLedger } from '../contributions/modules.js';
+import { contributionOperations, resultContract } from '../contributions/operations.js';
+import type { ContributionOperation } from '../contributions/operations.js';
 
 const noBindings: CoordinatedBindings = { modules: [], groups: [], detail: [], associations: [] };
 export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnalysis, session: SessionId,
-  integration: ReturnType<typeof investigationEvaluation>, usage: () => InvestigationUsageReport, catalog: CapturedApplicationCatalog) {
+  integration: ReturnType<typeof investigationEvaluation>, usage: () => InvestigationUsageReport, catalog: CapturedApplicationCatalog,
+  contributions?: ReturnType<typeof contributionEvaluation>) {
   return async (context: ApplicationContext, work: RequestWork, referenceLifetime: 'session' | 'command', constraints: InputConstraints = {}): Promise<PreparedResult> => {
     const request = context.request;
     const lookupWork = work.scope('Establish qualified populations to resolve the requested subject.', null, 'resolution-prerequisite');
@@ -51,10 +59,11 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
       return { kind: 'answer', context, usage: usage(), answer: { id: content.value.projection.id, content, mechanical },
         title, selectionMode, referenceLifetime, answerReference, consumption: decision, reporting, failed,
         ...(resolution ? { resolution } : {}),
-        bindings: base.contract === 'investigation' ? noBindings : coordinateBindings(store, base,
+        bindings: base.contract === 'investigation' || base.contract === 'contribution' ? noBindings : coordinateBindings(store, base,
           content.contract === 'investigation' ? content.value.projection.associated : undefined),
         repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
-        methods: selectionMode === 'fresh' && base.contract === 'investigation' ? [...sessionContext.methods, methods.investigationEvaluation] : sessionContext.methods };
+        methods: selectionMode === 'fresh' && base.contract === 'investigation' ? [...sessionContext.methods, methods.investigationEvaluation]
+          : base.contract === 'contribution' ? [...sessionContext.methods, methods.contributions, methods.contributionStatus, methods.contributionProjection] : sessionContext.methods };
     };
     if (request.kind === 'rejected') return refusal({ reason: 'invalid-request', explanation: 'The supplied request input could not be accepted.',
       candidates: [], criteria: ['Registered Lens or report', 'Serializable request data', 'Supported designation and reference choices'],
@@ -104,6 +113,48 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
     }
     const definition = catalog.lenses[request.lens]!;
     const designation = request.designation;
+    /** Obtain or reuse the investigation, then select the current designated answer of its question into a retained answer. */
+    const contribution = async (operation: ContributionOperation, invocation: InvocationRequest, subject: RecordId, parameters: Readonly<Record<string, string>>,
+      resolution: SubjectResolution | undefined, context: readonly MetadataAddress[] = []): Promise<PreparedResult> => {
+      if (!contributions) throw new Error('Contribution investigations are not available in this Session');
+      const ledger = sessionLedger(store, session), contract = resultContract(invocation.resultContract);
+      if (contract === undefined) return basic('invalid-parameters', `The requested result contract ${invocation.resultContract} is not supported.`, ['Supported result contract']);
+      const evaluated: ContributionEvaluated = await contributions.evaluate(invocation, operation, contract, { ...(request.fresh ? { fresh: true } : {}), context, subject });
+      answerWork.check();
+      const content: QualifiedContent = { contract: 'contribution', value: resolveContributionAnswer(store, selectContributionAnswer(store, ledger,
+        { lens: request.lens, subject, parameters, result: evaluated.result, contract })) };
+      const outcome = evaluated.execution?.outcome ?? null;
+      answerWork.record('interpretation', evaluated.reused ? 'reused' : outcome?.kind === 'accepted' ? 'established' : 'unavailable', { records: [content.value.projection.id],
+        limitations: [evaluated.reused ? 'A retained outcome for this question was reused; no dialog ran.' : outcome?.kind ?? evaluated.unavailable?.kind ?? 'unavailable'] });
+      const plan = request.consumption ? consumptionPlan(catalog.presentations, 'contribution', request.consumption, freshFacts(definition)) : [];
+      const decision = request.consumption ? settleConsumption(plan, content) : null;
+      if (request.consumption && !decision) return failPresentation('No compatible Presentation accepts this contribution answer and the supplied choices.', resolution, [content.value.projection.id], content);
+      // The attempt failed when a dialog ran, or could not run, without an accepted contribution. Reuse reports the retained outcome as it is.
+      const failed = evaluated.reused ? evaluated.attempt!.outcome.kind !== 'accepted' : outcome?.kind !== 'accepted';
+      return delivery(content, content, decision, definition.title, store.answerIds([content.value.projection.id]).get(content.value.projection.id)!, 'fresh', resolution,
+        { reused: evaluated.reused, attempt: evaluated.execution?.attempt ?? evaluated.attempt?.id ?? null, ...(evaluated.unavailable?.provider ? { provider: evaluated.unavailable.provider } : {}) }, failed);
+    };
+    if (definition.requirements.kind === 'follow-up') {
+      // The option supplies the delegated question. It must name a supported operation and satisfy that operation's subject signature.
+      const ledger = sessionLedger(store, session), key = request.parameters.option as string;
+      const criteria = ['Exact contribution retained in this Session', 'A follow-up option of that contribution', 'A supported operation whose subject signature the option satisfies'];
+      if (designation.kind !== 'reference') return basic('invalid-designation', 'A follow-up option is designated by the exact identity of the contribution that offers it.', criteria);
+      const owner = designation.value.replace(/^@/, '') as InvestigramId;
+      let option;
+      try { option = ledger.investigram(owner).options.find(item => item.key === key); } catch (error) {
+        if (!(error instanceof UnknownReference)) throw error;
+        return basic('unknown-reference', 'This contribution is not retained in this Session.', criteria);
+      }
+      if (!option) return basic('invalid-parameters', `The designated contribution offers no follow-up option with key ${JSON.stringify(key)}.`, criteria);
+      const operation = Object.hasOwn(contributionOperations, option.request.operation) ? contributionOperations[option.request.operation] : undefined;
+      const subjects = option.request.subjects.map(item => item.subject);
+      const moduleSubject = (item: SubjectRef | undefined) => item?.kind === 'entity' ? entityModule(store, session, item.entity) : undefined;
+      const satisfied = operation && subjects.length === 1 && (operation.subject === 'module' ? moduleSubject(subjects[0]) !== undefined
+        : ['content', 'designation', 'investigram'].includes(subjects[0]!.kind));
+      // Naming an unsupported operation, or a subject it does not accept, does not make an option executable.
+      if (!operation || !satisfied) return basic('unsupported-subject', `This follow-up option requests ${JSON.stringify(option.request.operation)} on a subject no supported operation accepts, so it cannot be invoked.`, criteria);
+      return contribution(operation, option.request, owner, { option: key }, undefined, [{ investigram: owner, metadata: 'option', key }]);
+    }
     const plans = new Map(definition.results.map(contract => [contract, request.consumption
       ? consumptionPlan(catalog.presentations, contract, request.consumption, freshFacts(definition)) : []]));
     if (request.consumption && ![...plans.values()].some(plan => plan.length)) return failPresentation('No Presentation accepts the prospective answer contract with the supplied format, source and paging choices.');
@@ -115,7 +166,7 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
     if (resolution.status !== 'resolved') return refusal({ ...resolution, reason: resolution.status, explanation: resolutionExplanation(resolution), retainedAnswers: [] });
     const selected = resolution.candidates.map(candidate => candidate.id);
     const interpretationInspection = definition.requirements.kind === 'inspection' && resolution.candidates[0]?.kind === 'investigram';
-    const contract = operation !== null ? 'investigation' : mechanical!.contract(resolution);
+    const contract = definition.requirements.kind === 'contribution' ? 'contribution' : operation !== null ? 'investigation' : mechanical!.contract(resolution);
     const plan: readonly PresentationDeclaration[] = plans.get(contract) ?? [];
     if (request.consumption && !plan.length) return failPresentation('No compatible Presentation accepts the resolved subject’s answer contract and supplied choices.', resolution);
     const requirements = request.requirements ?? standardRequirements[contract];
@@ -128,6 +179,15 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
       const records = [...new Set([...selection.relations.flatMap(item => [item.original, item.account]), ...selection.displaced, ...selection.associated])];
       if (records.length) answerWork.record('interpretation', 'consumed', { records, limitations: ['Retained interpretation and revision/association selection; no new inference or independent corroboration.'] });
     };
+    if (definition.requirements.kind === 'contribution') {
+      // The module basis establishes the subject's common Entity and its identifying finding.
+      evaluateModules(store, analysis, [], answerWork); answerWork.check();
+      store.entityIds(selected, 'module');
+      const entity = moduleEntity(store, selected[0]!);
+      if (!entity) throw new Error('Expected a contributed module identification');
+      return contribution(contributionOperations[definition.requirements.operation]!, { operation: definition.requirements.operation,
+        subjects: [{ role: null, subject: { kind: 'entity', entity } }], parameters: {}, context: [], resultContract: definition.requirements.resultContract }, selected[0]!, {}, resolution);
+    }
     if (operation !== null || interpretationInspection) {
       const basis = evaluateModules(store, analysis, [], answerWork); answerWork.check();
       if (definition.subjects.includes('module') && operation !== null) store.entityIds(basis.modules, 'module');

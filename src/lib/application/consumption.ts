@@ -40,6 +40,7 @@ export const standardRequirements: Readonly<Record<ResultContract, InformationRe
   dependencies: { modules: moduleStandardExpansions, groups: groupStandardExpansions },
   'module-exports': { modules: ['exports', 'documentation'], groups: [] },
   investigation: { modules: [], groups: [] },
+  contribution: { modules: [], groups: [] },
 });
 export function supportedRequirements(contract: ResultContract, requirements: InformationRequirements): boolean {
   const supported = standardRequirements[contract];
@@ -119,6 +120,6 @@ export function suppliedRequirements(content: QualifiedContent, requirements: In
     case 'dependencies': return (!content.value.basis.modules.length || requirements.modules.every(item => content.value.moduleEvaluations.some(outcome => outcome.requirement === item)))
       && (!requirements.groups.length || content.value.expanded !== null);
     case 'module-exports': return requirements.modules.every(item => content.value.evaluations.some(outcome => outcome.requirement === item));
-    case 'investigation': return !requirements.modules.length && !requirements.groups.length;
+    case 'investigation': case 'contribution': return !requirements.modules.length && !requirements.groups.length;
   }
 }

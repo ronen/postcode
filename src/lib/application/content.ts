@@ -5,6 +5,7 @@ import type { OrganizationProjectionContent } from '../organization/content.js';
 import type { DependencyProjectionContent } from '../dependencies/content.js';
 import type { InvestigationProjectionContent } from '../investigation/content.js';
 import type { ModuleExportsContent } from '../exports/content.js';
+import type { ContributionAnswerContent } from '../contributions/answers.js';
 
 /** These contracts name qualified meanings, not interchangeable graph shapes. */
 export type QualifiedContent =
@@ -12,7 +13,8 @@ export type QualifiedContent =
   | { readonly contract: 'organization'; readonly value: OrganizationProjectionContent }
   | { readonly contract: 'dependencies'; readonly value: DependencyProjectionContent }
   | { readonly contract: 'investigation'; readonly value: InvestigationProjectionContent }
-  | { readonly contract: 'module-exports'; readonly value: ModuleExportsContent };
+  | { readonly contract: 'module-exports'; readonly value: ModuleExportsContent }
+  | { readonly contract: 'contribution'; readonly value: ContributionAnswerContent };
 
 const complete = (state: Pick<EvaluationState, 'applicability' | 'availability' | 'execution' | 'materialization'>) =>
   state.applicability === 'applicable' && state.availability === 'available' && completedMaterialization(state);
@@ -21,9 +23,11 @@ const complete = (state: Pick<EvaluationState, 'applicability' | 'availability' 
  * The family resolvers have already checked support records and their kinds. */
 export function validateContent(content: QualifiedContent): void {
   const projection = content.value.projection;
-  const expected = { modules: 'projection', organization: 'organization-projection', dependencies: 'dependency-projection', investigation: 'investigation-selection-projection', 'module-exports': 'module-exports-projection' };
+  const expected = { modules: 'projection', organization: 'organization-projection', dependencies: 'dependency-projection', investigation: 'investigation-selection-projection', 'module-exports': 'module-exports-projection', contribution: 'contribution-projection' };
   if (projection.kind !== expected[content.contract] || !projection.id || !projection.session) throw new Error('Malformed Presentation content contract');
-  if (content.contract === 'modules') {
+  if (content.contract === 'contribution') {
+    if (content.value.projection.alternatives.some(item => !item.items.length)) throw new Error('Malformed contribution answer content');
+  } else if (content.contract === 'modules') {
     if (!['configured-project', 'selected-modules'].includes(content.value.projection.subject)
       || content.value.discovery.kind !== 'evaluation' || content.value.evaluations[0]?.id !== content.value.discovery.id || content.value.session.id !== projection.session
       || content.value.modules.length !== content.value.projection.modules.length
@@ -63,6 +67,8 @@ export function materializationLimitations(content: QualifiedContent): readonly 
     : [`${label}: ${value.applicability}, ${value.availability}, ${value.execution}, ${value.materialization}${value.reason ? `; ${value.reason}` : ''}`];
   const outsiders = (ids: readonly string[] | undefined) => ids?.length ? ['Selected subjects are outside the supplied evaluation population.'] : [];
   switch (content.contract) {
+    case 'contribution': return [...(content.value.projection.alternatives.length ? [] : ['No answer is currently designated for this question.']),
+      ...content.value.projection.alternatives.flatMap(item => item.unmet.map(unmet => `Requested result not met: ${unmet.requirement} ${unmet.reason}`))];
     case 'module-exports': return [...(content.value.complete ? [] : ['A complete export surface is not established.']),
       ...[content.value.basis, ...content.value.evaluations].flatMap(item => state(`Exports (${item.requirement})`, item))];
     case 'modules': return [...outsiders(content.value.projection.selection.outsidePopulation),

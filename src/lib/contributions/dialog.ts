@@ -99,6 +99,8 @@ export interface DialogOptions {
   readonly signal?: AbortSignal;
   readonly bounds?: InvestigationBounds;
   readonly repairs?: number;
+  /** Retained guidance supplied as initial input, such as the follow-up option being invoked. */
+  readonly context?: readonly MetadataAddress[];
 }
 export type DialogOutcome =
   | { readonly kind: 'accepted'; readonly acceptance: Acceptance; readonly repairs: number; readonly fulfillment: Fulfillment | null; readonly reportedInability: string | null }
@@ -245,6 +247,7 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
         : subject.kind === 'content' ? contribution({ kind: 'item', item: subject.item })
         : subject.kind === 'investigram' ? contribution({ kind: 'contribution', investigram: subject.investigram })
         : { tool: 'unavailable', limitations: ['This subject designates a scope, not retained content.'] });
+    for (const address of options.context ?? []) responses.push(contribution({ kind: 'metadata', address }));
     // A repeated question is supplied with the answers currently designated for it.
     if (invocation.fresh) responses.push(contribution({ kind: 'designations', result: invocation.result, content: true }));
     conversation = options.agent.open();

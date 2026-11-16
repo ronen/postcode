@@ -1,7 +1,8 @@
 import { validateContent as validatePresentationContent, materializationLimitations } from './application/content.js';
-import type { QualifiedContent as PresentationContent } from './application/content.js';
+import type { QualifiedContent } from './application/content.js';
+/** Content families this client can arrange. Contribution answers have no CLI Presentation. */
+export type PresentationContent = Exclude<QualifiedContent, { contract: 'contribution' }>;
 export { validateContent as validatePresentationContent, materializationLimitations } from './application/content.js';
-export type { QualifiedContent as PresentationContent } from './application/content.js';
 import { freezeOwned } from './immutable.js';
 import { moduleStandardExpansions } from './records.js';
 import type { ModuleExpansion } from './records.js';
