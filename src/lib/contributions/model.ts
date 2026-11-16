@@ -303,6 +303,8 @@ export interface SubmittedContribution {
 }
 
 export class InvalidContribution extends Error {}
+/** A malformed acquisition request. Nothing is delivered or recorded for it. */
+export class InvalidAcquisition extends Error {}
 
 export const addressKey = (address: DeclarationAddress): string => `${address.investigram}#${address.declaration}`;
 export const itemKey = (address: ItemAddress): string => `${address.investigram}#${address.item}`;

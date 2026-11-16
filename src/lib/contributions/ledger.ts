@@ -106,6 +106,8 @@ export class ContributionLedger {
   // Identities and exact retained access. None of these reads records producer exposure.
   entity(id: EntityId): Entity { return this.#entities.get(id) ?? this.#missing('Entity', id); }
   entities(): readonly Entity[] { return [...this.#entities.values()]; }
+  hasEntity(id: EntityId): boolean { return this.#entities.has(id); }
+  hasResult(id: QueryResultId): boolean { return this.#results.has(id); }
   /** Host identity bookkeeping: resolve a provider-native identity within its rule and scope. */
   native(native: NativeIdentity): EntityId | undefined { return this.#natives.get(canonical(native)); }
   /** The contribution already established for a provider contribution key; equivalent recomputation reuses it. */

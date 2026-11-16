@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import type { ContributionLedger } from '../src/lib/contributions/ledger.js';
-import type { AssociationAddress, EntityId, InvestigramId } from '../src/lib/contributions/model.js';
+import { InvalidAcquisition } from '../src/lib/contributions/model.js';
+import type { AssociationAddress, EntityId, InvestigramId, QueryResultId, SelectionScope } from '../src/lib/contributions/model.js';
 import type { ProductionHandle } from '../src/lib/contributions/production.js';
 import { agentic, caveat, createLedger, discoverModule, evidenceRecord, explainAdmission, mechanical, derived, submit, submitted, summaryInvocation } from './contribution-helpers.js';
 import type { Submitted } from './contribution-helpers.js';
@@ -418,4 +419,94 @@ test('recorded deliveries are owned immutable captures that a caller cannot rewr
   // The mutation neither invented nor removed a cause: displacing the received use is still exactly one cause.
   const change = supersede(ledger, module, 'b', use).use('b', 'u');
   assert.deepEqual(causes(ledger, reader.investigram('r')).map(cause => [cause.change, cause.routes.map(item => item.kind)]), [[change, ['exact', 'scope', 'scope']]]);
+});
+
+test('a change declaration actually delivered before submission is known, by every route', () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  const a = account(ledger, module, 'a'), use = a.use('a', 'u');
+  const middle = account(ledger, module, 'middle', handle => { handle.association(use, { content: true }); });
+  const open = (model: string, inherited = false) => {
+    const handle = ledger.begin({ producer: agentic(model) });
+    if (inherited) handle.item(middle.item('middle', 'p')); else handle.association(use);
+    return handle;
+  };
+  const redelivered = open('redelivered'), direct = open('direct'), inherited = open('inherited', true), listed = open('listed'), undisclosed = open('undisclosed');
+  const scoped = ledger.begin({ producer: agentic('scoped') }), scopedOnly = ledger.begin({ producer: agentic('scoped-only') });
+  for (const handle of [scoped, scopedOnly]) handle.inventory(admission(module), 'current-only');
+  const change = withdraw(ledger, 'w', use).use('w', 'w');
+  const added = account(ledger, module, 'added').use('added', 'u');
+  for (const handle of [redelivered, direct, listed, undisclosed]) assert.deepEqual(handle.pending().map(cause => [cause.change, cause.routes.map(route => route.kind)]), [[change, ['exact']]]);
+  assert.deepEqual(inherited.pending().map(cause => cause.routes.map(route => route.kind)), [['inherited']]);
+  // Re-delivery discloses the withdrawal with its grounds; the declaration can also be acquired directly.
+  const again = redelivered.association(use);
+  assert.deepEqual(again.displacements.map(item => [item.change, item.declaration.operation === 'withdraw' && item.declaration.grounds.text]), [[change, 'Withdrawn by w.']]);
+  assert.equal('change' in direct.declaration(change), true);
+  // The inherited variant: the use arrives, with the change disclosed, only after the change.
+  inherited.association(use);
+  // A refreshed listing reflects the change without identifying it.
+  listed.inventory(admission(module), 'current-only');
+  // A later addition within an acquired scope is known once the new use itself is delivered, not when it is merely listed.
+  scoped.association(added);
+  scopedOnly.inventory(admission(module), 'current-only');
+  const handles = [redelivered, direct, inherited, listed, undisclosed, scoped, scopedOnly];
+  for (const handle of [redelivered, direct, inherited]) assert.deepEqual(handle.pending(), []);
+  // The records stay distinguishable: these were content deliveries, not notices.
+  assert.equal(handles.some(handle => handle.deliveries.some(delivery => delivery.kind === 'notice')), false);
+  const acceptance = ledger.accept(handles.map((production, index) => ({ production,
+    contribution: { investigrams: [{ key: `k${index}`, qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text: 'x' } }] }] } })));
+  const of = (index: number) => causes(ledger, submitted(acceptance, handles[index]!).investigram(`k${index}`)).map(cause => [cause.change, cause.routes.map(route => route.kind)]);
+  for (const index of [0, 1, 2]) assert.deepEqual(of(index), [], `disclosed ${index}`);
+  for (const index of [3, 4]) assert.deepEqual(of(index), [[change, ['exact']]], `undisclosed ${index}`);
+  assert.deepEqual(of(5), [[change, ['scope']]]);
+  assert.deepEqual(of(6), [[change, ['scope']], [added, ['scope']]]);
+  // The completed intermediate contribution is not retrospectively cleared.
+  assert.equal(causes(ledger, middle.investigram('middle')).length, 1);
+});
+
+test('an association-establishing declaration is always delivered as an exact use', () => {
+  const ledger = createLedger(), discovery = discoverModule(ledger), module = discovery.entity('module');
+  const identify = discovery.use('discovery', 'identify');
+  const { invocation, result } = summaryInvocation(ledger, module);
+  const summary = explainAdmission(ledger, module, result.id, invocation.id);
+  const d = summary.use('summary', 'answer'), member = summary.use('summary', 'admission');
+  const viaDeclaration = ledger.begin({ producer: agentic('declaration') }), viaAssociation = ledger.begin({ producer: agentic('association') });
+  const received = viaDeclaration.declaration(identify);
+  assert.equal('status' in received && received.status.standing.state, 'standing');
+  viaDeclaration.declaration(d); viaAssociation.association(identify); viaAssociation.association(d);
+  assert.deepEqual(viaDeclaration.deliveries, viaAssociation.deliveries);
+  const withdrawal = withdraw(ledger, 'w', identify).use('w', 'w'), change = supersede(ledger, module, 'b', member).use('b', 'u');
+  // The designation's producer acquired the module's baseline identification scope, so the withdrawal also reaches its recipients as an inherited concern.
+  const expected = [[withdrawal, ['exact', 'inherited']], [change, ['membership']]];
+  for (const handle of [viaDeclaration, viaAssociation]) assert.deepEqual(handle.pending().map(cause => [cause.change, cause.routes.map(route => route.kind)]), expected);
+  // A use that is already displaced arrives with the displacing grounds, not only their addresses.
+  const late = ledger.begin({ producer: agentic('late') }), displaced = late.declaration(identify);
+  assert.deepEqual('displacements' in displaced && displaced.displacements.map(item => [item.change, item.declaration.operation === 'withdraw' && item.declaration.grounds.text]),
+    [[withdrawal, 'Withdrawn by w.']]);
+  // A withdrawal establishes no use and is delivered as its grounds.
+  const grounds = late.declaration(withdrawal);
+  assert.deepEqual(['change' in grounds && grounds.standing, late.deliveries.map(delivery => delivery.kind)], [null, ['association', 'declaration', 'declaration']]);
+  assert.deepEqual(late.pending(), []);
+});
+
+test('malformed acquisition requests are refused and record nothing', () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  const a = account(ledger, module, 'a'), handle = ledger.begin({ producer: agentic('reader') });
+  const scopes: unknown[] = [
+    { kind: 'entity', entity: 'session:x:entity:0', role: 'any' }, { kind: 'result', result: 'session:x:query-result:0' },
+    { kind: 'entity', entity: module, role: 'topic' }, { kind: 'entity', entity: module, role: 'topic', topic: '' },
+    { kind: 'entity', entity: module, role: 'described' }, { kind: 'entity', entity: module }, { kind: 'investigram', entity: module, role: 'any' }, null,
+  ];
+  for (const scope of scopes) assert.throws(() => handle.inventory(scope as SelectionScope, 'current-only'), InvalidAcquisition, JSON.stringify(scope));
+  assert.throws(() => handle.inventory({ kind: 'entity', entity: module, role: 'any' }, 'recent' as 'all-history'), InvalidAcquisition);
+  assert.throws(() => handle.designations('session:x:query-result:0' as QueryResultId), InvalidAcquisition);
+  assert.throws(() => handle.baseline('session:x:entity:0' as EntityId), InvalidAcquisition);
+  for (const bound of [-5, 2.5, Number.NaN, Number.POSITIVE_INFINITY]) {
+    assert.throws(() => handle.item(a.item('a', 'p'), { excerptCharacters: bound }), InvalidAcquisition);
+    assert.throws(() => handle.member(a.use('a', 'u'), a.item('a', 'p'), { excerptCharacters: bound }), InvalidAcquisition);
+  }
+  assert.deepEqual(handle.deliveries.map(delivery => delivery.kind), ['association', 'association', 'association', 'association']);
+  // An explicit null topic selects every topic; an omitted key is not that request. A zero bound is a valid, fully disclosed excerpt.
+  assert.deepEqual(handle.inventory({ kind: 'entity', entity: module, role: 'topic', topic: null }, 'current-only').listed, [a.use('a', 'u')]);
+  const empty = handle.item(a.item('a', 'p'), { excerptCharacters: 0 });
+  assert.deepEqual([empty.coverage, empty.excerpt?.text, (empty.excerpt?.omittedCharacters ?? 0) > 0], ['excerpt', '', true]);
 });

@@ -2,9 +2,9 @@ import type { RecordId } from '../records.js';
 import type { ContributionLedger } from './ledger.js';
 import type { AssociationAddress, AssociationDeclaration, ContentItem, Declaration, DeclarationAddress, Delivery, EntityId, FollowUpOption,
   Illustration, InconsistencyReport, InvestigramId, InvocationId, ItemAddress, MetadataAddress, Producer, ProductionId, Qualification,
-  SelectionScope } from './model.js';
+  QueryResultId, SelectionScope } from './model.js';
 import { freezeOwned } from '../immutable.js';
-import { addressKey } from './model.js';
+import { InvalidAcquisition, addressKey } from './model.js';
 import type { AssociationStatus, Cause, Standing } from './status.js';
 
 export interface DeliveredOwner {
@@ -88,6 +88,26 @@ export class ProductionHandle {
   get evidence(): readonly RecordId[] { return [...this.#evidence]; }
   /** Ends acquisition. Called when the ledger accepts or abandons this production; later deliveries are refused. */
   close(): void { this.#closed = true; }
+  #open(): void { if (this.#closed) throw new Error('Production has concluded'); }
+  /**
+   * A well-formed scope over an existing target. An unknown target or malformed rule is
+   * refused: it is unavailable information, never a complete empty inventory.
+   */
+  #scope(scope: SelectionScope): SelectionScope {
+    const value = scope as { kind?: unknown; entity?: unknown; role?: unknown; topic?: unknown; result?: unknown };
+    const invalid = (message: string): never => { throw new InvalidAcquisition(message); };
+    if (value === null || typeof value !== 'object') return invalid('Expected a selection scope.');
+    if (value.kind === 'result') {
+      if (typeof value.result !== 'string' || !this.#ledger.hasResult(value.result as QueryResultId)) return invalid('A result scope must name an existing Query result.');
+      return { kind: 'result', result: value.result as QueryResultId };
+    }
+    if (value.kind !== 'entity' || typeof value.entity !== 'string' || !this.#ledger.hasEntity(value.entity as EntityId)) return invalid('An Entity scope must name an existing Entity.');
+    const entity = value.entity as EntityId;
+    if (value.role === 'identification' || value.role === 'any') return { kind: 'entity', entity, role: value.role };
+    if (value.role !== 'topic' || value.topic !== null && (typeof value.topic !== 'string' || !value.topic.trim())) return invalid('A topical scope states one topic key, or null for every topic.');
+    return { kind: 'entity', entity, role: 'topic', topic: value.topic };
+  }
+
   /** The record is an owned immutable capture of what arrived; later changes to a caller's objects cannot rewrite it. */
   #record(delivery: Delivery): void {
     if (this.#closed) throw new Error('Production has concluded');
@@ -107,6 +127,9 @@ export class ProductionHandle {
   }
 
   #item(address: ItemAddress, route: AssociationAddress | null, excerptCharacters: number | undefined): DeliveredItem {
+    this.#open();
+    // A bound that is not a whole number of characters cannot state actual coverage.
+    if (excerptCharacters !== undefined && (!Number.isInteger(excerptCharacters) || excerptCharacters < 0)) throw new InvalidAcquisition('An excerpt bound must be a non-negative whole number of characters.');
     const item = this.#ledger.item(address);
     address = { investigram: address.investigram, item: address.item };
     const serialized = JSON.stringify(item.body);
@@ -144,8 +167,14 @@ export class ProductionHandle {
     return { change, declaration, owner: this.#owner(change.investigram),
       standing: declaration.operation === 'withdraw' ? null : this.#ledger.standing(change) };
   }
-  /** A declaration's own qualified grounds, such as a withdrawal reason. Does not deliver any replacement content. */
-  declaration(address: DeclarationAddress): DeliveredChange { return this.#change(address); }
+  /**
+   * One exact declaration. A withdrawal is delivered as its qualified grounds. An addition or
+   * supersession establishes a use, so it is delivered as that exact use, with its standing and
+   * known displacement grounds; a use never arrives as bare declaration text.
+   */
+  declaration(address: DeclarationAddress): DeliveredAssociation | DeliveredChange {
+    return this.#ledger.declaration(address).operation === 'withdraw' ? this.#change(address) : this.association(address);
+  }
 
   /** An exact use with its grounds, standing and known displacement context; optionally its item members' content. */
   association(address: AssociationAddress, options: { readonly content?: boolean } = {}): DeliveredAssociation {
@@ -161,6 +190,9 @@ export class ProductionHandle {
 
   /** An explicitly scoped inventory of addresses. It records the acquired scope without delivering listed content. */
   inventory(scope: SelectionScope, inventory: 'current-only' | 'all-history'): DeliveredInventory {
+    this.#open();
+    scope = this.#scope(scope);
+    if (inventory !== 'current-only' && inventory !== 'all-history') throw new InvalidAcquisition('Unknown inventory kind.');
     const listed = this.#ledger.associations(scope, inventory === 'current-only' ? 'current' : 'all').map(entry => entry.address);
     this.#record({ kind: 'scope', position: this.#ledger.position, scope, inventory, listed, complete: true });
     return { scope, inventory, listed, complete: true };

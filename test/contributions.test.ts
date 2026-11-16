@@ -84,7 +84,7 @@ test('a contribution without investigrams requires a producer report, and a conc
   assert.throws(() => ledger.accept([{ production: handle, contribution: { investigrams: [] } }]), /requires a producer report/);
   ledger.accept([{ production: handle, contribution: { investigrams: [{ key: 'a', qualification: caveat, items: [prose('p', 'x')] }] } }]);
   assert.throws(() => ledger.accept([{ production: handle, contribution: { investigrams: [{ key: 'late', qualification: caveat, items: [prose('p', 'x')] }] } }]), /not open/);
-  assert.throws(() => handle.inventory({ kind: 'entity', entity: 'x' as EntityId, role: 'any' }, 'all-history'));
+  assert.throws(() => handle.inventory({ kind: 'entity', entity: 'x' as EntityId, role: 'any' }, 'all-history'), /concluded/);
   assert.throws(() => handle.supplied([evidenceRecord]), /concluded/);
 });
 
