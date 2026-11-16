@@ -14,6 +14,14 @@ An agentic dialog over the ledger exists as a domain boundary and is exercised w
 
 No other Lens or public CLI command reads the ledger yet.
 
+## State-dependent behavior and its diagram
+
+State-dependent behavior is the one architectural concept supported so far. Three responsibilities are kept apart without separate registries. The concept is agent guidance on recognizing and explaining state-dependent behavior, including when not to apply it. The `state-model` content type is the retained meaning: a bearer that is an Entity or a scoped role, named states, an entry that is a state, unknown or established as none, directed transitions with optional trigger, guard and effect, a coverage claim for states and for transitions, applicability, and any semantics the bounded model cannot express. States and transitions are locally addressable components, not Entities. The diagram type maps a state model to a directed state-transition picture.
+
+The renderer draws one node per supplied state, one edge per supplied transition and an entry marker only for an established entry. It produces an SVG picture, a plain-text form, a legend with every transition's full trigger, guard and effect, and notes stating entry, coverage, applicability and unsupported semantics. Agent-authored labels are neutralized in the picture and shown with visible control characters in text. A model with no states is incompatible, which is a missing-content condition and not a rendering failure.
+
+An explicit state-diagram request has a result contract requiring a designated answer that selects a state model with at least one state. Prose does not meet it, and each standing alternative is assessed on its own selected content. Nothing invokes this from the application API yet.
+
 ## Agentic dialog
 
 One dialog is one producing execution with a fresh agent conversation. The outer boundary opens a production for the invocation, supplies initial context, dispatches tool requests, delivers exact change notices, validates the submission with bounded structural repair, and returns one outcome. The agent-communication participant only exchanges messages; provider protocol and credentials stay behind it.
@@ -57,7 +65,7 @@ A submission is a flat pool of investigrams, each belonging to one production; s
 
 A qualification can name provider Claim-context records. These are the qualified claim's own Claim context as its producing method retains it, not a citation of someone else's. Provider Claim contexts qualify mechanically derived findings, so an agentic qualification cannot name one. Reuse does not need it: referenced content keeps its owner's qualification, a supplied context record can be cited as evidence, and neither transfers a guarantee to the claim that uses it.
 
-Content items have a type from a content catalogue. The type's contract validates shape, resolves any references in the body and reports locally addressable components and content dependencies. Only prose and identification types are built in at this stage.
+Content items have a type from a content catalogue. The type's contract validates shape, resolves any references in the body and reports locally addressable components and content dependencies. Prose and identification types are built in. A Session's catalogue adds the module identification, module exports and state-model types.
 
 Declarations are addressed through their owning investigram. An addition or supersession establishes an association at its own address, targeting either an Entity with an identification or topical role, or a Query result. A supersession or withdrawal names exact earlier associations and carries qualified grounds. A supersession's displaced uses must concern the same Entity and role class, or the same Query result; topic keys may differ, and validation does not judge whether two topics mean the same thing. Members are exact content items, and for result designations also other associations, with circular membership rejected. Declarations may reference another owner's content; ownership and qualification stay with the source.
 
