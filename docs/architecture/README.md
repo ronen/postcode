@@ -25,7 +25,8 @@ The [common analysis contribution mechanism](contributions.md) is implemented un
 `src/lib/contributions/` and verified with controlled producers. It retains Session
 identities, immutable investigrams, exact association declarations, Query-result
 designations and recorded producer input, and derives standing and reconsideration
-from them. No Session, Lens, CLI or investigating-agent path uses it yet: everything
+from them. Module discovery now contributes each module's identifying finding to the Session's
+ledger, but no Lens, CLI or investigating-agent path reads it yet: everything
 described below still operates on the earlier retention structures under the
 [temporary migration contract](../decisions/common-analysis-contributions.md#adoption-and-migration-conformance).
 The [structured-accounts plan](../plans/structured-architectural-accounts.md) migrates

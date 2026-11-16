@@ -4,7 +4,9 @@ This describes the implemented common contribution mechanism under `src/lib/cont
 
 ## Current integration status
 
-The mechanism is exercised only by controlled producers in tests. No Session, Lens, CLI or investigating-agent path produces or consumes contributions yet. Existing mechanical retention, investigram trees, whole-investigram corrections and citation-based reconsideration are unchanged and remain subject to the [temporary migration contract](../decisions/common-analysis-contributions.md#adoption-and-migration-conformance). The state-behavior investigation, state diagram and follow-up-option invocation are not available. The other architecture documents therefore still describe the operating system; this document describes the target mechanism those capabilities migrate onto.
+Module discovery is the first real producer. Each Session's record store has one contribution ledger paired with it and released with it. When a module evaluation is first recorded, each module's identifying finding is contributed once, under the discovery method, and a separately attributed deterministic policy uses that finding as the module's identification. A module record and its common Entity resolve to each other; equivalent recomputation recognizes the established finding and adds nothing, so a withdrawn identification is not renewed. A mechanical qualification can name only a Claim context of its own producing method.
+
+Nothing consumes these contributions yet. No Lens, CLI or investigating-agent path reads the ledger, and every other producer is still exercised only by controlled producers in tests. Existing mechanical retention, investigram trees, whole-investigram corrections and citation-based reconsideration are unchanged and remain subject to the [temporary migration contract](../decisions/common-analysis-contributions.md#adoption-and-migration-conformance). The state-behavior investigation, state diagram and follow-up-option invocation are not available. The other architecture documents therefore still describe the operating system; this document describes the target mechanism those capabilities migrate onto.
 
 ## Responsibilities
 

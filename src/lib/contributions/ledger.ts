@@ -41,6 +41,11 @@ export interface LedgerOptions {
   readonly catalog?: ContentCatalog;
   /** Whether a program record reference resolves in this Session. Defaults to accepting none. */
   readonly resolvesRecord?: (id: RecordId) => boolean;
+  /**
+   * Whether a record is a Claim context of the given producing method, and so can be named as
+   * the own context of that method's qualification. Defaults to resolution alone.
+   */
+  readonly qualifiesContext?: (id: RecordId, producer: Producer) => boolean;
 }
 
 const fail = (message: string): never => { throw new InvalidContribution(message); };
@@ -72,6 +77,7 @@ export class ContributionLedger {
   readonly catalog: ContentCatalog;
   readonly status: ContributionStatus;
   readonly #resolvesRecord: (id: RecordId) => boolean;
+  readonly #qualifiesContext: (id: RecordId, producer: Producer) => boolean;
   #position = 0;
   #sequence = 0;
   readonly #entities = new Map<EntityId, Entity>();
@@ -97,6 +103,7 @@ export class ContributionLedger {
     this.session = options.session;
     this.catalog = options.catalog ?? new ContentCatalog();
     this.#resolvesRecord = options.resolvesRecord ?? (() => false);
+    this.#qualifiesContext = options.qualifiesContext ?? (id => this.#resolvesRecord(id));
     this.status = new ContributionStatus(this);
   }
 
@@ -395,7 +402,9 @@ export class ContributionLedger {
         const scope = item.scope === undefined || item.scope === null ? null : text(item.scope, 'scope');
         const contexts = optional(item.contexts, 'context').map(entry => {
           const id = text(entry, 'context reference') as RecordId;
-          return this.#resolvesRecord(id) ? id : fail('Unknown qualification context reference.');
+          if (!this.#resolvesRecord(id)) fail('Unknown qualification context reference.');
+          // A qualification's own context belongs to its producing method; another method's context is cited as evidence instead.
+          return producer.mechanism === 'agentic' || this.#qualifiesContext(id, producer) ? id : fail('A qualification context must be a Claim context of the producing method.');
         });
         let status: EpistemicStatus;
         if (producer.mechanism === 'agentic') {

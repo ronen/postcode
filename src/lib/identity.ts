@@ -23,6 +23,7 @@ export const methods = {
   organization: 'postcode/organization@3',
   contributions: 'postcode/contributions@1',
   contributionStatus: 'postcode/contribution-status@1',
+  moduleIdentificationPolicy: 'postcode/module-identification-policy@1',
 } as const;
 
 /** Stable key order without locale, clock, random IDs, or storage identity. */
