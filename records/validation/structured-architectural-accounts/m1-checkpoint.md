@@ -4,7 +4,8 @@ Date: 2026-11-15
 Task: [Implement structured architectural accounts](../../tasks/2026-11-15-structured-architectural-accounts.md)
 Plan: [Structured architectural accounts](../../../docs/plans/structured-architectural-accounts.md#1-common-contribution-mechanism)
 Starting revision: `8a7f2834470644726dd742a0ddaeb1455bac3b2a`
-Implementation: `5ebe10a19be93a2613ec5fe5cf5f5dcaf16df295`
+Implementation: `2b9fce8823577cc16b94554142d3eb6db3672d33`
+Reviewed in round 3: `5ebe10a19be93a2613ec5fe5cf5f5dcaf16df295`
 Reviewed in round 2, by two reviewers: `b02c7bcdd59e4253dbe9cddb761c590bb52ca360`
 Reviewed in round 1: `84c1cc16f70f3b384a6d772aa3bcb8fda70836b5`
 Initial implementation, before the recorded follow-up: `2bc5b862d8a4acfd85463525c0abe80def0f46b2`
@@ -162,6 +163,20 @@ Not defects at M1; each is assigned to the milestone that first meets it.
 - Delivering a designation lists member associations as undelivered addresses without their standing. Nested designated-content acquisition must disclose members displaced before the designation was accepted (M2).
 - A mechanical qualification's context reference is checked only for resolution. Real wrappers must check record kind and method (M2).
 
+## Corrections after round 3
+
+Two reviews examined the corrected mechanism. The [Claude round 3 rereview](../../reviews/structured-architectural-accounts/2026-11-15-m1-mechanism-round-3-claude-findings.md) of `5ebe10a` found its three round 2 findings resolved, agreed with the displacement-context clarification, and reported one remaining finding, R1. The [Copilot review](../../reviews/structured-architectural-accounts/2026-11-15-m1-mechanism-round-3-copilot-findings.md) of the pull request head made six inline comments; its sixth is the same issue as R1. All were accepted as within the authorized scope.
+
+| Finding | Correction | Regression coverage |
+| --- | --- | --- |
+| Claude R1 and Copilot 6: a change disclosed as a concern on a later delivery still re-entered by an earlier route | Item, use, declaration and metadata deliveries now record the exact changes disclosed with them as concerns: the owner's producing-context causes and, for a use, its membership and content-owner causes. Those changes are known by every route, under the same rule as the earlier F1 correction. | The inherited and membership variants, each with an undisclosed control, and the recorded concerns themselves |
+| Copilot 1 and 3: displacement entries and declaration entries were returned mutable | Displacement lists are returned as copies of frozen entries; declaration entries, item addresses and inconsistency addresses are frozen before they are indexed. | Attempts to truncate or alter displacements and to replace an entry's fields leave standing and exact access unchanged |
+| Copilot 2: two open productions with one caller-supplied identity were accepted in one batch, the second overwriting the first | A batch containing two productions with the same identity is refused before anything is retained. | The batch is rejected with retained state unchanged; accepted separately, the second is refused and the first keeps its producer |
+| Copilot 4: a method-filtered identification request defaulted to standing uses, so a withdrawn method finding disappeared | A method-specific request now defaults to all of that method's identifying findings whatever their standing. General access still defaults to standing uses, and an explicit choice overrides either. | The withdrawal test no longer overrides the default, and checks the explicit current-only and general all-history requests |
+| Copilot 5: member delivery recorded the use before validating the excerpt bound | The whole request is validated before either part is delivered or recorded. | The malformed-request test now requires an empty history. Its earlier assertion had encoded the defect by expecting four leftover deliveries. |
+
+The Claude reviewer noted that treating a disclosed concern as weaker than a notice would be a semantic choice the checkpoint should state. It is not treated as weaker here: a disclosed concern names the exact change declaration, its operation and the affected use or route, which is what the decision requires a notice to identify.
+
 ## Known risks carried forward
 
 - Baseline identification scopes produce an addition cause for every producer that acquired a baseline whenever any identification of that Entity is later added. The tests show the behavior on single Entities; its breadth on a real module population is unmeasured and is an explicit observation point at the M2 checkpoint.
@@ -173,9 +188,9 @@ Not defects at M1; each is assigned to the milestone that first meets it.
 Run by the implementing agent on the implementation's content, offline, with no credentials or inference:
 
 - `npm run check` and `git diff --check` passed.
-- The three contribution test files pass **40/40**.
-- The complete offline suite passed **708/708** with no skips in about three minutes: the 668 tests of the starting revision, none modified, and the 40 new tests.
-- The initial implementation passed 697/697 on two complete runs, the round 1 review target 700/700 on one, the round 2 review target 704/704 on one, and the corrections of the second round 2 review 707/707 on one before the final test was added.
+- The three contribution test files pass **43/43**.
+- The complete offline suite passed **711/711** with no skips in about three minutes: the 668 tests of the starting revision, none modified, and the 43 new tests.
+- The initial implementation passed 697/697 on two complete runs, the round 1 review target 700/700 on one, the round 2 review target 704/704 on one, and the corrections of the second round 2 review 707/707 on one, and the round 3 review target 708/708 on one.
 
 Three other complete runs had failures and are not counted as passes:
 
