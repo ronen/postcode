@@ -510,3 +510,43 @@ test('malformed acquisition requests are refused and record nothing', () => {
   const empty = handle.item(a.item('a', 'p'), { excerptCharacters: 0 });
   assert.deepEqual([empty.coverage, empty.excerpt?.text, (empty.excerpt?.omittedCharacters ?? 0) > 0], ['excerpt', '', true]);
 });
+
+test('displacement context for A references its replacement B without acquiring B; only actual acquisition of B makes a later displacement of B a cause', () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  const a = account(ledger, module, 'a').use('a', 'u');
+  const early = ledger.begin({ producer: agentic('early') });
+  early.association(a);
+  const superseding = supersede(ledger, module, 'b', a), b = superseding.use('b', 'u'), content = superseding.item('b', 'p');
+  const open = (model: string) => { const handle = ledger.begin({ producer: agentic(model) }); return { handle, delivered: handle.association(a, { content: true }) }; };
+  // Acquiring A after B superseded it: A arrives with B's qualified displacement context and a reference to B.
+  const contextOnly = open('context-only'), context = contextOnly.delivered.displacements[0]!;
+  assert.deepEqual([context.change, context.establishes, context.declaration.operation, context.declaration.operation === 'supersede' && context.declaration.displaces,
+    context.declaration.operation === 'supersede' && context.declaration.grounds.text], [b, b, 'supersede', [a], 'Grounds b.']);
+  // The explanation keeps its own provenance and qualification.
+  assert.deepEqual([context.owner.investigram, context.owner.producer.agent?.model, context.owner.qualification?.status], [b.investigram, 'b', 'interpretation']);
+  // What was recorded is A, A's content and B's declaration grounds: no use of B and none of B's content.
+  assert.deepEqual(contextOnly.handle.deliveries.map(delivery => delivery.kind === 'item' ? [delivery.kind, delivery.item.investigram === a.investigram] : [delivery.kind,
+    delivery.kind === 'association' ? delivery.association : delivery.kind === 'declaration' ? delivery.declaration : null]),
+    [['association', a], ['declaration', b], ['item', true]]);
+  // Others go on to actually acquire B: its use, its content as a member of that use, its bare content, or a listing containing it.
+  const acquiredUse = open('use'), acquiredMember = open('member'), bareContent = open('bare'), listing = open('listing');
+  acquiredUse.handle.association(b);
+  acquiredMember.handle.member(b, content);
+  bareContent.handle.item(content);
+  listing.handle.inventory(admission(module), 'current-only');
+  // C later displaces B.
+  const c = supersede(ledger, module, 'c', b).use('c', 'u');
+  const pending = (handle: ProductionHandle) => handle.pending().map(cause => [cause.change, cause.routes]);
+  // The recipient of only A and its displacement context does not acquire C. A's displacement by B was known context.
+  assert.deepEqual(pending(contextOnly.handle), []);
+  // Receiving B's content apart from the use B is not exposure to that use either.
+  assert.deepEqual(pending(bareContent.handle), []);
+  // Actual acquisition of B, or another recorded path to it, makes C applicable.
+  assert.deepEqual(pending(acquiredUse.handle), [[c, [{ kind: 'exact', association: b }]]]);
+  assert.deepEqual(pending(acquiredMember.handle), [[c, [{ kind: 'exact', association: b }]]]);
+  assert.deepEqual(pending(listing.handle), [[c, [
+    { kind: 'scope', scope: admission(module), effect: 'addition', association: c }, { kind: 'scope', scope: admission(module), effect: 'removal', association: b }]]]);
+  // The recipient of A from before B keeps the historical displacement of A as its cause; C is not a second one.
+  assert.deepEqual(early.pending().map(cause => [cause.change, cause.standing]), [[b, { state: 'displaced', displacedBy: [c] }]]);
+  assert.deepEqual(ledger.standing(a).displacedBy, [b]);
+});

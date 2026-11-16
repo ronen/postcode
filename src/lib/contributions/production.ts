@@ -36,10 +36,18 @@ export interface DeliveredItem {
   /** A bounded excerpt of the serialized body; not complete delivery. */
   readonly excerpt: { readonly text: string; readonly omittedCharacters: number } | null;
 }
+/**
+ * Qualified displacement context: the exact change declaration with its operation, the uses it
+ * affects, its grounds and qualification, its owner's provenance, and a reference to any
+ * replacement use. It is recorded as delivery of that declaration's grounds. It is not
+ * acquisition of the replacement use or of its content, which remain references.
+ */
 export interface DeliveredChange {
   readonly change: DeclarationAddress;
   readonly declaration: Declaration;
   readonly owner: DeliveredOwner;
+  /** The replacement use a supersession established: a reference only. Null for a withdrawal. */
+  readonly establishes: AssociationAddress | null;
   /** Current standing of the association the change established, when it established one. */
   readonly standing: Standing | null;
 }
@@ -164,7 +172,7 @@ export class ProductionHandle {
   #change(change: DeclarationAddress): DeliveredChange {
     const declaration = this.#ledger.declaration(change);
     this.#record({ kind: 'declaration', position: this.#ledger.position, declaration: change });
-    return { change, declaration, owner: this.#owner(change.investigram),
+    return { change, declaration, owner: this.#owner(change.investigram), establishes: declaration.operation === 'withdraw' ? null : change,
       standing: declaration.operation === 'withdraw' ? null : this.#ledger.standing(change) };
   }
   /**
