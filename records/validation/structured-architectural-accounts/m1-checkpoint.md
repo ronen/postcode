@@ -4,7 +4,8 @@ Date: 2026-11-15
 Task: [Implement structured architectural accounts](../../tasks/2026-11-15-structured-architectural-accounts.md)
 Plan: [Structured architectural accounts](../../../docs/plans/structured-architectural-accounts.md#1-common-contribution-mechanism)
 Starting revision: `8a7f2834470644726dd742a0ddaeb1455bac3b2a`
-Implementation: `b02c7bcdd59e4253dbe9cddb761c590bb52ca360`
+Implementation: `5ebe10a19be93a2613ec5fe5cf5f5dcaf16df295`
+Reviewed in round 2, by two reviewers: `b02c7bcdd59e4253dbe9cddb761c590bb52ca360`
 Reviewed in round 1: `84c1cc16f70f3b384a6d772aa3bcb8fda70836b5`
 Initial implementation, before the recorded follow-up: `2bc5b862d8a4acfd85463525c0abe80def0f46b2`
 
@@ -127,6 +128,40 @@ The [round 1 findings](../../reviews/structured-architectural-accounts/2026-11-1
 
 The reviewer judged the twelve implementation choices permitted or conforming and found no further consequential selection. Its remaining limits are carried forward unchanged: the qualification-context trust assumption must be checked against real record kinds, methods and scopes in M2, and the M2 obligations above are obligations, not evidence.
 
+## Corrections after the second round 2 review
+
+The [Codex round 2 findings](../../reviews/structured-architectural-accounts/2026-11-15-m1-mechanism-round-2-findings.md) found the round 1 corrections resolved with nothing further. A second reviewer of the same target, in the [Claude round 2 findings](../../reviews/structured-architectural-accounts/2026-11-15-m1-mechanism-round-2-claude-findings.md), agreed and found three further conformance defects over the whole mechanism. All three were accepted as within the authorized scope.
+
+| Finding | Correction | Regression coverage |
+| --- | --- | --- |
+| F1: only an explicit notice made a change known, so a change fully delivered before submission was still a cause | A change is known by every route once that particular change was actually delivered before submission: as a notice, a disclosed displacement, the declaration's grounds, or the exact use it established. Record kinds stay distinct. A listing that reflects a change still does not make it known. | Re-delivery with disclosure, direct declaration delivery, the inherited variant, an addition known through delivery of the new use, and the undisclosed and refreshed-listing controls |
+| F2: acquiring an addition or supersession by its declaration address delivered a use without exact-use exposure or displacement grounds | Such a declaration is delivered as the exact use it establishes. Only a withdrawal is delivered as bare grounds. | Equal recorded history through either route, a later displacement and a later member displacement as causes, and known withdrawal grounds disclosed for an already displaced use |
+| F3: malformed scopes and excerpt bounds became recorded deliveries | A scope must be well formed and name an existing Entity or Query result, a topical scope must state a topic key or null, and an excerpt bound must be a non-negative whole number. Refusal happens before anything is recorded. | Eight malformed scopes, unknown baseline and designation targets, four invalid bounds, nothing recorded, and the valid null-topic and zero-bound controls. The earlier assertion that passed for an unrelated reason now checks its intended message. |
+
+The correction of F1 treats delivery of an association as delivery of the change declaration at that address, as well as the cases the reviewer named. This follows from the same rule, since that delivery identifies the change, its operation and the uses it affects.
+
+### Displacement context is not acquisition of the replacement
+
+Recorded as a clarification of the existing delivery contract, at the human's direction in the task follow-ups. It was the reviewer's observation on choice 7 and introduces no new propagation policy.
+
+When a producer acquires association A after B superseded it, A arrives with B's qualified displacement context: the exact change declaration, its operation, the use it affects, its grounds and qualification, its owner's provenance and a reference to B as the replacement. This is what the decision's "reasons" means here; it is never an explanation stripped of qualification or traceability. The delivery is recorded as delivery of that declaration's grounds. It is not acquisition of B as a use, nor of B's content.
+
+If C later displaces B, that recipient does not acquire C as a cause. The historical displacement of A remains what it was: known context for a recipient who received A afterwards, and a retained cause, now shown with displaced standing, for one who received A before. C becomes applicable through an actual path to B: acquiring B as a use, acquiring B's content as a member of B, or an acquired scope that listed B. Receiving B's content apart from the use is not such a path.
+
+The delivered explanation keeps its own provenance and exposure implications. Concretely, producing-context concerns of B's producer that are accepted after the delivery reach the recipient by the inherited route, because the recipient received content of B's investigram. That is a concern about how the explanation was produced, not about B's later standing.
+
+The implementation already behaved this way. One focused test now distinguishes the three cases and their controls, and the delivered context names its replacement reference explicitly. No conflict with the governing text or with actual behavior was found.
+
+### Observations carried forward from the second reviewer
+
+Not defects at M1; each is assigned to the milestone that first meets it.
+
+- Investigram and Entity local keys are unique across a whole batch, including independently attributed productions. Mechanical wrappers that batch providers must namespace their keys (M2).
+- The shared producer boundary leaves a production open if the producer throws, and distinguishes only not-submitted and invalid-submission endings. Execution-limit, investigation-failure and communication-failure outcomes return with the agentic family, where the open production must be concluded or explicitly discarded (M2/M3).
+- A producer report's answer must name result designations but is not checked against the production's own invocation result, and fulfillment does not consult it. The fresh-attempt path decides how a reported existing answer relates to fulfillment (M2/M3).
+- Delivering a designation lists member associations as undelivered addresses without their standing. Nested designated-content acquisition must disclose members displaced before the designation was accepted (M2).
+- A mechanical qualification's context reference is checked only for resolution. Real wrappers must check record kind and method (M2).
+
 ## Known risks carried forward
 
 - Baseline identification scopes produce an addition cause for every producer that acquired a baseline whenever any identification of that Entity is later added. The tests show the behavior on single Entities; its breadth on a real module population is unmeasured and is an explicit observation point at the M2 checkpoint.
@@ -138,9 +173,9 @@ The reviewer judged the twelve implementation choices permitted or conforming an
 Run by the implementing agent on the implementation's content, offline, with no credentials or inference:
 
 - `npm run check` and `git diff --check` passed.
-- The three contribution test files pass **36/36**.
-- The complete offline suite passed **704/704** with no skips in about three minutes: the 668 tests of the starting revision, none modified, and the 36 new tests.
-- The initial implementation passed 697/697 on two complete runs, and the round 1 review target passed 700/700 on one.
+- The three contribution test files pass **40/40**.
+- The complete offline suite passed **708/708** with no skips in about three minutes: the 668 tests of the starting revision, none modified, and the 40 new tests.
+- The initial implementation passed 697/697 on two complete runs, the round 1 review target 700/700 on one, the round 2 review target 704/704 on one, and the corrections of the second round 2 review 707/707 on one before the final test was added.
 
 Three other complete runs had failures and are not counted as passes:
 
