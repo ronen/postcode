@@ -150,7 +150,10 @@ export async function produce(ledger: ContributionLedger, request: ProductionReq
     try {
       acceptance = ledger.accept([{ production: handle, contribution }]);
     } catch (error) {
-      if (!(error instanceof InvalidContribution)) throw error;
+      // Only a structural rejection keeps the production open, and only while a permitted repair continues.
+      // Any other failure of acceptance, such as a defect in a content contract, ends the execution:
+      // it propagates unchanged and its production is discarded so nothing can be submitted late.
+      if (!(error instanceof InvalidContribution)) { handle.close(); throw error; }
       problems.push(error.message);
       if (attempt >= (request.repairs ?? 0)) return { kind: 'invalid-submission', problems, production: ledger.abandon(handle, 'invalid-submission') };
       continue;

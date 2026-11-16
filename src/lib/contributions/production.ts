@@ -48,7 +48,12 @@ export interface DeliveredChange {
   readonly owner: DeliveredOwner;
   /** The replacement use a supersession established: a reference only. Null for a withdrawal. */
   readonly establishes: AssociationAddress | null;
-  /** Current standing of the association the change established, when it established one. */
+  /**
+   * Current standing of the association the change established, when it established one.
+   * A further displacement appears here as standing plus a reference only. It does not state
+   * that further change's operation or grounds, so it is not an exact notice of it and does
+   * not make it known; that takes a notice or actual delivery of that change.
+   */
   readonly standing: Standing | null;
 }
 export interface DeliveredAssociation {

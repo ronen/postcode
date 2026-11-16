@@ -5,7 +5,8 @@ import { InvalidContribution } from '../src/lib/contributions/model.js';
 import type { ProductionHandle } from '../src/lib/contributions/production.js';
 import type { ResultContract } from '../src/lib/contributions/outcomes.js';
 import type { AssociationAddress, EntityId, QueryResultId } from '../src/lib/contributions/model.js';
-import type { ContributionLedger } from '../src/lib/contributions/ledger.js';
+import { ContentCatalog, identificationContract, proseContract } from '../src/lib/contributions/catalog.js';
+import { ContributionLedger } from '../src/lib/contributions/ledger.js';
 import { agentic, caveat, createLedger, discoverModule, explainAdmission, rejects, snapshot, submit, summaryInvocation } from './contribution-helpers.js';
 
 const answer = (result: QueryResultId, investigram: string, item: string) => ({ key: 'answer', operation: 'add' as const, target: { kind: 'result' as const, result },
@@ -273,4 +274,34 @@ test('a producer defect propagates and its production accepts nothing afterwards
   assert.equal(captured[0]!.closed, true);
   assert.throws(() => ledger.accept([{ production: captured[0]!, contribution: { investigrams: [{ key: 'late', qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text: 'x' } }] }] } }]), /not open/);
   assert.equal(snapshot(ledger), before);
+});
+
+test('every terminal exit of the producer boundary ends its production; only a continuing repair keeps it open', async () => {
+  const defect = new TypeError('content contract defect');
+  const ledger = new ContributionLedger({ session: createLedger().session, catalog: new ContentCatalog([proseContract, identificationContract,
+    { type: 'broken', method: 'test/broken@1', meaning: 'A contract with a programming defect.', accept() { throw defect; } }]) });
+  const valid = { investigrams: [{ key: 'ok', qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text: 'x' } }] }] };
+  const broken = { investigrams: [{ key: 'bad', qualification: caveat, items: [{ key: 'b', type: 'broken', body: {} }] }] };
+  const unqualified = { investigrams: [{ key: 'u', items: [{ key: 'p', type: 'prose', body: { text: 'x' } }] }] };
+  // An unexpected failure during acceptance validation: the original error, nothing retained, and no late submission.
+  for (const repairs of [0, 2]) {
+    const captured: ProductionHandle[] = [];
+    await assert.rejects(produce(ledger, { producer: agentic(), repairs }, production => { captured.push(production); return broken; }), (error: unknown) => error === defect);
+    assert.deepEqual([captured.length, captured[0]!.closed, ledger.position, ledger.productions().length], [1, true, 0, 0]);
+    assert.throws(() => ledger.accept([{ production: captured[0]!, contribution: valid }]), /not open/);
+  }
+  // A repairable structural rejection keeps the production open for exactly the permitted repair, then ends it.
+  const states: boolean[] = [], handles: ProductionHandle[] = [];
+  const exhausted = await produce(ledger, { producer: agentic(), repairs: 1 }, production => { handles.push(production); states.push(production.closed); return unqualified; });
+  assert.deepEqual([exhausted.kind, states, handles[0] === handles[1], handles[0]!.closed, ledger.position], ['invalid-submission', [false, false], true, true, 0]);
+  assert.throws(() => ledger.accept([{ production: handles[0]!, contribution: valid }]), /not open/);
+  // A defect during a repair attempt also ends it.
+  const repairing: ProductionHandle[] = [];
+  await assert.rejects(produce(ledger, { producer: agentic(), repairs: 1 }, (production, repair) => { repairing.push(production); return repair ? broken : unqualified; }), (error: unknown) => error === defect);
+  assert.deepEqual([repairing.length, repairing[0]!.closed, ledger.position], [2, true, 0]);
+  // An asynchronous producer failure and a withheld submission end it too.
+  const rejected: ProductionHandle[] = [], silent: ProductionHandle[] = [];
+  await assert.rejects(produce(ledger, { producer: agentic() }, async production => { rejected.push(production); await Promise.resolve(); throw defect; }), (error: unknown) => error === defect);
+  await produce(ledger, { producer: agentic() }, production => { silent.push(production); return undefined; });
+  assert.deepEqual([rejected[0]!.closed, silent[0]!.closed], [true, true]);
 });

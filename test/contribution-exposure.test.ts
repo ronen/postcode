@@ -601,3 +601,22 @@ test('retained history states the actual portion of each bounded delivery', () =
   }
   for (const { delivered, record } of [whole, generous]) assert.deepEqual([record.coverage, record.excerpt, delivered.excerpt], ['complete', null, null]);
 });
+
+test('a further displacement shown only as standing and a reference is not an exact notice of that change', () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  const a = account(ledger, module, 'a').use('a', 'u');
+  const b = supersede(ledger, module, 'b', a).use('b', 'u');
+  // P actually acquires B while it stands, so a later displacement of B is a cause for P.
+  const reference = ledger.begin({ producer: agentic('reference') }), noticed = ledger.begin({ producer: agentic('noticed') }), delivered = ledger.begin({ producer: agentic('delivered') });
+  for (const handle of [reference, noticed, delivered]) handle.association(b);
+  const c = supersede(ledger, module, 'c', b).use('c', 'u');
+  // Acquiring A now shows B's displacement context, in which B's standing names C by reference only.
+  const context = reference.association(a).displacements[0]!;
+  assert.deepEqual([context.change, context.standing], [b, { state: 'displaced', displacedBy: [c] }]);
+  assert.equal(reference.deliveries.some(delivery => JSON.stringify(delivery).includes(c.investigram)), false);
+  // That reference states neither C's operation nor its grounds. C stays a cause until it is noticed exactly or actually delivered.
+  noticed.notify(c);
+  delivered.association(b);
+  const routes = (handle: ProductionHandle) => handle.pending().map(cause => [cause.change, cause.routes.map(route => route.kind)]);
+  assert.deepEqual([routes(reference), routes(noticed), routes(delivered)], [[[c, ['exact']]], [], []]);
+});
