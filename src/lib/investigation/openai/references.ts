@@ -144,6 +144,14 @@ export class InvestigatorReferences {
       page: object({ ...this.#fields(['next']), omitted: list(object(this.#fields(['id']))) }) })(value, path);
   };
   #alive(): void { if (this.#closed) throw new Error('Investigator references are closed'); }
+  // Another typed protocol over the same dialogue shares this table; it designates its own reference fields.
+  /** Start recording the resolutions of one exchange. */
+  begin(): void { this.#alive(); this.#resolutions = []; }
+  handle(reference: string): string { this.#alive(); return this.#encode(reference, '') as string; }
+  resolve(handle: string, path: string): string { this.#alive(); return this.#decode(handle, path) as string; }
+  /** Encode one program-evidence response by its typed record structure. */
+  evidenceResponse(value: unknown, path: string): unknown { this.#alive(); return this.#response(value, path); }
+  evidenceRequest(value: unknown, path: string): unknown { this.#alive(); return object(this.#fields(['subject', 'cursor'], [], {}, this.#decode))(value, path); }
   encode(input: AgentInput): { readonly request: unknown; readonly responses: unknown } {
     this.#alive(); this.#resolutions = [];
     return { request: this.#request()(input.request, '$.request'), responses: list(this.#response)(input.responses, '$.responses') };

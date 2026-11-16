@@ -10,7 +10,7 @@ Export evaluation is the second real producer. Each module's export finding is c
 
 The internal exports answer is the first consumer. It selects the discovery method's own identifying finding and the export method's own finding from the ledger, and captures each use's standing and displacement grounds in the retained answer. This is read-only assembly and records no producer exposure. A finding stays selected after a use of it is displaced; a fresh answer then shows the displacement with its grounds, and an earlier answer keeps what it captured. The answer fails if a finding it needs was never contributed, so a producer that bypasses the ledger is detected.
 
-An agentic dialog over the ledger is reachable through the application interface for two Lenses, described under [Application route](#application-route). It has only been exercised with a substituted agent-communication participant; no hosted agent adapter speaks its protocol yet, so it cannot run against a real model. The existing `summarize`, `explain`, `decompose` and `examine` operations still run on the earlier dialog and retention structures, and no public CLI command reads the ledger.
+An agentic dialog over the ledger is reachable through the application interface for two Lenses, described under [Application route](#application-route). The hosted transports can carry its protocol, as described under [Hosted transport](#hosted-transport), but it has only been exercised with a substituted agent-communication participant and with offline provider responses. It has not yet been run against a real model, and no application or CLI configuration path selects the hosted agent for it. The existing `summarize`, `explain`, `decompose` and `examine` operations still run on the earlier dialog and retention structures, and no public CLI command reads the ledger.
 
 ## State-dependent behavior and its diagram
 
@@ -119,3 +119,10 @@ The answer is a retained record that selects the current designated answers of t
 A shared arrangement turns a contribution answer into explanation with pictures: for each alternative its qualifications, prose, a diagram for every state model that supports one, or the reason none can be drawn. It states when alternatives are shown separately and when only some can be drawn, and reports the no-current-answer condition with the withdrawal history. It is presentation over supplied content and adds no claim.
 
 When no agent is configured the request returns an answer with no alternatives and a failed attempt; nothing is fabricated.
+
+<a id="hosted-transport"></a>
+## Hosted transport
+
+The hosted OpenAI transport is generic over a typed dialog protocol: two functions, one to request information and one to submit, plus the structural translation of that protocol's reference fields. Credentials, routes, streaming, usage reporting, failure classification and exchange capture are shared and unchanged. The original investigator protocol and the contribution dialog protocol are two such protocols; an agent identity records the contribution protocol in its configuration.
+
+The contribution protocol follows the [reference transport decision](../decisions/investigator-reference-transport.md). Identities travel as short handles from one private per-dialogue table. Translation is structural: a string at a designated reference key is an identity, and everything else is literal, including names, local keys, prose, labels, qualification text and scope descriptions that happen to contain an identity. An embedded program-evidence response is translated by the existing typed record traversal. An unknown handle in a reply stays explicitly unresolvable, so the dialog reports it unavailable or acceptance rejects it. An unparseable submission is still a submission, subject to validation and bounded repair.
