@@ -19,6 +19,8 @@ Four responsibilities are kept apart:
 | Derived status | Standing and needs-reconsideration are computed from retained declarations, deliveries and membership under a versioned method. They are never written back into contributions. |
 | Outcome and fulfillment | What an attempt returned (nothing, an unrepaired invalid submission, or an accepted contribution) is reported separately from whether the selected answer meets its requested result contract. |
 
+Values returned by read access are immutable or fresh copies, so a caller cannot alter retained declarations, standing or indexes. General identification access returns the standing uses; a method-specific request returns all of that method's identifying findings by default, whatever their standing, with standing available separately.
+
 Read access to the ledger — identity resolution, name lookup, association and designation selection, status — involves no production and therefore records no exposure. This is the structural basis for answer assembly, browsing and host identity bookkeeping creating no producer exposure.
 
 ## Identities
@@ -45,7 +47,7 @@ Every delivered item carries its own qualification, referents, evidence and supp
 
 Displacement context delivered with a displaced use is the exact change declaration: its operation, the uses it affects, its grounds and qualification, its owner's provenance and, for a supersession, a reference to the replacement use. It is recorded as delivery of that declaration's grounds. It is not acquisition of the replacement use or of its content. A recipient of A and that context therefore gains no cause when the replacement B is itself displaced later; acquiring B, B's content as a member of B, or a scope listing B does. The delivered explanation keeps its own provenance, so concerns of its producer still reach the recipient by the inherited route.
 
-Malformed acquisition requests are refused before anything is recorded: a scope must be well formed and name an existing Entity or Query result, and an excerpt bound must be a non-negative whole number. Each recorded delivery is an owned immutable capture, so later changes to a caller's objects cannot rewrite the history.
+Malformed acquisition requests are refused whole, before any part is delivered or recorded: a scope must be well formed and name an existing Entity or Query result, and an excerpt bound must be a non-negative whole number. Each recorded delivery is an owned immutable capture, so later changes to a caller's objects cannot rewrite the history.
 
 A production records deliveries of exact content items (complete or as a disclosed excerpt, with the association route when delivered as a particular use), exact associations with the displacements already known, declaration grounds, qualified metadata, acquired inventory scopes (current-only or all-history, with the addresses listed), exact change notices and discovery-only referent handles. Positions are counts of accepted submissions and serve only to order deliveries against changes.
 
@@ -58,7 +60,7 @@ Each investigram inherits the deliveries of its own production. Causes are exact
 - a producing-context cause of the investigram that owns supplied content, declarations or metadata, when that cause was accepted after the delivery;
 - later displacement of a member association of a designation, for the designation's own status and for a producer that received the designation. Receiving a designation is not delivery of its members or their content, and none is recorded.
 
-A change accepted at or before a delivery is known context for that delivery. A change is known by every route once that particular change was actually delivered to the production before it submitted: as an exact notice, as a disclosed displacement, as the declaration's grounds, or as the exact use it established. The record kinds stay distinct, so a notice is never mistaken for content delivery. A listing that merely reflects a change does not make it known. A production never acquires a cause from its own declarations. Notices, bare references and discovery handles are not content exposure.
+A change accepted at or before a delivery is known context for that delivery. A change is known by every route once that particular change was actually delivered to the production before it submitted: as an exact notice, as a disclosed displacement, as the declaration's grounds, as the exact use it established, or as a concern disclosed with a delivery. Each item, use, declaration and metadata delivery records the exact changes disclosed with it as concerns: its owner's producing-context causes and, for a use, its membership and content-owner causes. The record kinds stay distinct, so a notice is never mistaken for content delivery. A listing that merely reflects a change does not make it known. A production never acquires a cause from its own declarations. Notices, bare references and discovery handles are not content exposure.
 
 Status has separate bearers. An investigram has producing-context causes. An association has its standing, membership causes relative to its own acceptance, its declarer's producing-context causes, and the producing-context causes of other owners whose content it references. A cause reports the current standing of the association its change established.
 

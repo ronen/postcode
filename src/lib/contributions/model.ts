@@ -188,20 +188,25 @@ export type SelectionScope =
   | { readonly kind: 'entity'; readonly entity: EntityId; readonly role: 'topic'; readonly topic: string | null }
   | { readonly kind: 'result'; readonly result: QueryResultId };
 
-/** Substantive information actually supplied to one producing execution, with its delivery position. */
+/**
+ * Substantive information actually supplied to one producing execution, with its delivery position.
+ * `concerns` records the exact changes disclosed with a delivery as concerns: producing-context
+ * causes of the owner and, for a use, its membership and content-owner causes. They reached the
+ * producer identified exactly, so the history must show them.
+ */
 export type Delivery =
   | { readonly kind: 'item'; readonly position: number; readonly item: ItemAddress;
     /** The exact association route when delivered as a particular use. */
-    readonly route: AssociationAddress | null; readonly coverage: 'complete' | 'excerpt' }
+    readonly route: AssociationAddress | null; readonly coverage: 'complete' | 'excerpt'; readonly concerns: readonly DeclarationAddress[] }
   | { readonly kind: 'association'; readonly position: number; readonly association: AssociationAddress;
     /** Displacements already accepted and disclosed with this delivery. */
-    readonly disclosed: readonly DeclarationAddress[] }
-  | { readonly kind: 'declaration'; readonly position: number; readonly declaration: DeclarationAddress }
+    readonly disclosed: readonly DeclarationAddress[]; readonly concerns: readonly DeclarationAddress[] }
+  | { readonly kind: 'declaration'; readonly position: number; readonly declaration: DeclarationAddress; readonly concerns: readonly DeclarationAddress[] }
   | { readonly kind: 'scope'; readonly position: number; readonly scope: SelectionScope;
     readonly inventory: 'current-only' | 'all-history'; readonly listed: readonly AssociationAddress[]; readonly complete: boolean }
   /** An exact change notice; not delivery of replacement content. */
   | { readonly kind: 'notice'; readonly position: number; readonly change: DeclarationAddress }
-  | { readonly kind: 'metadata'; readonly position: number; readonly address: MetadataAddress }
+  | { readonly kind: 'metadata'; readonly position: number; readonly address: MetadataAddress; readonly concerns: readonly DeclarationAddress[] }
   /** Discovery-only handles; no content exposure. */
   | { readonly kind: 'discovery'; readonly position: number; readonly referent: EntityId; readonly handles: readonly ItemAddress[] };
 

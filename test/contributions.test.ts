@@ -208,8 +208,11 @@ test('exact identity and method-specific identification survive interpreted iden
     grounds: { text: 'The file name does not describe the responsibility.' } }] }]);
   assert.equal(ledger.entity(module).id, module);
   assert.deepEqual(ledger.identifications(module).map(entry => entry.address), [interpreted.use('i', 'identify')]);
-  const retained = ledger.identifications(module, { standing: 'all', method: 'test/module-discovery@1' });
+  // The method-specific request still returns that method's finding by default; standing is obtained separately.
+  const retained = ledger.identifications(module, { method: 'test/module-discovery@1' });
   assert.deepEqual(retained.map(entry => entry.address), [mechanicalUse]);
+  assert.deepEqual(ledger.identifications(module, { method: 'test/module-discovery@1', standing: 'current' }), []);
+  assert.deepEqual(ledger.identifications(module, { standing: 'all' }).map(entry => entry.address), [mechanicalUse, interpreted.use('i', 'identify')]);
   assert.equal((ledger.item(discovery.item('discovery', 'name')).body as { name: string }).name, 'breaker.ts');
   assert.equal(ledger.standing(mechanicalUse).state, 'displaced');
   // A displaced name still locates its Entity when history is requested, with its standing; it is not a current name.
@@ -328,4 +331,36 @@ test('a valid pool is accepted whole in either order when a use selects content 
     assert.deepEqual(observe(batch), { ...expected, productions: [['accepted', 1], ['accepted', 1]] });
     assert.notEqual(batch.investigram(batch.entities()[0]!.introducedBy).production, batch.association(batch.identifications(batch.entities()[0]!.id)[0]!.address).owner.production);
   }
+});
+
+test('two open productions with one caller-supplied identity cannot be accepted together', () => {
+  const ledger = createLedger(), id = `${ledger.session}:production:${'a'.repeat(64)}` as InvestigramId;
+  const first = ledger.begin({ producer: agentic('first'), id }), second = ledger.begin({ producer: agentic('second'), id });
+  const contribution = (key: string) => ({ investigrams: [{ key, qualification: caveat, items: [prose('p', key)] }] });
+  const before = snapshot(ledger);
+  assert.throws(() => ledger.accept([{ production: first, contribution: contribution('a') }, { production: second, contribution: contribution('b') }]), /submitted twice/);
+  assert.equal(snapshot(ledger), before);
+  // Accepted separately, the second is refused because that identity has concluded; the first keeps its own producer and history.
+  const accepted = submitted(ledger.accept([{ production: first, contribution: contribution('a') }]), first);
+  assert.throws(() => ledger.accept([{ production: second, contribution: contribution('b') }]), /not open/);
+  assert.throws(() => ledger.begin({ producer: agentic('third'), id }), /already concluded/);
+  assert.equal(ledger.production(ledger.investigram(accepted.investigram('a')).production).producer.agent?.model, 'first');
+});
+
+test('exact access returns immutable values; a caller cannot alter standing or retained declarations', () => {
+  const ledger = createLedger(), discovery = discoverModule(ledger), module = discovery.entity('module'), use = discovery.use('discovery', 'identify');
+  const withdrawal = submit(ledger, agentic(), [{ key: 'w', declarations: [{ key: 'w', operation: 'withdraw', qualification: caveat, displaces: [use], grounds: { text: 'g' } }] }]).use('w', 'w');
+  const displacements = ledger.displacements(use) as { change: unknown; position: number }[];
+  displacements.length = 0;
+  assert.throws(() => { (ledger.displacements(use)[0] as { position: number }).position = 99; }, TypeError);
+  assert.deepEqual(ledger.standing(use), { state: 'displaced', displacedBy: [withdrawal] });
+  assert.equal(ledger.standing(use, discovery.acceptance.position).state, 'standing');
+  const entry = ledger.association(use) as unknown as Record<string, unknown>;
+  for (const key of ['declaration', 'owner', 'address', 'sequence']) assert.throws(() => { entry[key] = null; }, TypeError);
+  assert.equal(Object.isFrozen(ledger.associations({ kind: 'entity', entity: module, role: 'any' }, 'all')[0]), true);
+  assert.throws(() => { (ledger.lookupName('breaker.ts', { history: true }).matches[0]!.item as { item: string }).item = 'x'; }, TypeError);
+  const exports = submit(ledger, mechanical('test/exports@1'), [{ key: 'e', qualification: derived, items: [{ key: 't', type: 'test-table', body: { rows: ['open'], about: module } }] }]);
+  assert.deepEqual(ledger.referencing(module), [exports.item('e', 't')]);
+  assert.throws(() => { (ledger.referencing(module)[0] as { item: string }).item = 'x'; }, TypeError);
+  assert.equal(ledger.association(use).declaration, ledger.investigram(use.investigram).declarations[0]);
 });

@@ -86,12 +86,14 @@ export class ContributionStatus {
   #derive(self: ProductionId, deliveries: readonly Delivery[]): readonly Cause[] {
     const ledger = this.#ledger, pending: Pending = new Map();
     // A change is known once the production was actually told of that particular change before it
-    // submitted: by an exact notice, or because the change declaration itself was delivered, as a
-    // disclosed displacement, as qualified grounds, or as the exact use it established. A known change
-    // is not a cause by any route. A listing that merely reflects a change does not make it known.
-    const noticed = new Set(deliveries.flatMap(delivery => delivery.kind === 'notice' ? [addressKey(delivery.change)]
-      : delivery.kind === 'declaration' ? [addressKey(delivery.declaration)]
-      : delivery.kind === 'association' ? [addressKey(delivery.association), ...delivery.disclosed.map(addressKey)] : []));
+    // submitted: by an exact notice; because the change declaration itself was delivered, as a
+    // disclosed displacement, as qualified grounds, or as the exact use it established; or because
+    // it was disclosed, identified exactly, as a concern on a delivery. A known change is not a
+    // cause by any route. A listing that merely reflects a change does not make it known.
+    const noticed = new Set(deliveries.flatMap(delivery => (delivery.kind === 'notice' ? [delivery.change]
+      : delivery.kind === 'declaration' ? [delivery.declaration, ...delivery.concerns]
+      : delivery.kind === 'association' ? [delivery.association, ...delivery.disclosed, ...delivery.concerns]
+      : delivery.kind === 'item' || delivery.kind === 'metadata' ? delivery.concerns : []).map(addressKey)));
     const add = (change: DeclarationAddress, route: CauseRoute) => {
       const key = addressKey(change);
       // A production acquires no cause solely from its own declarations.

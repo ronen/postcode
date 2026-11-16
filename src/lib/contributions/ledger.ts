@@ -138,7 +138,7 @@ export class ContributionLedger {
 
   /** Accepted displacements of one exact association, in acceptance enumeration order. */
   displacements(address: AssociationAddress): readonly { readonly change: DeclarationAddress; readonly position: number }[] {
-    return this.#displacements.get(addressKey(address)) ?? [];
+    return [...(this.#displacements.get(addressKey(address)) ?? [])];
   }
   /** Standing of an exact use, now or as of an earlier position. Displacing a replacement never reinstates its predecessor. */
   standing(address: AssociationAddress, at: number = this.#position): Standing {
@@ -159,12 +159,14 @@ export class ContributionLedger {
     return standing === 'all' ? [...entries] : entries.filter(entry => this.displacements(entry.address).length === 0);
   }
   /**
-   * Identification uses of an Entity. A method-specific request retains that method's
-   * identifying findings regardless of standing; callers obtain standing separately.
+   * Identification uses of an Entity. General access defaults to the standing uses. A
+   * method-specific request defaults to all of that method's identifying findings regardless
+   * of standing, since later displacement does not remove a method's findings; callers obtain
+   * standing separately. An explicit `standing` overrides either default.
    */
   identifications(entity: EntityId, options: { readonly standing?: 'current' | 'all'; readonly method?: string } = {}): readonly AssociationEntry[] {
     this.entity(entity);
-    return this.associations({ kind: 'entity', entity, role: 'identification' }, options.standing ?? 'current')
+    return this.associations({ kind: 'entity', entity, role: 'identification' }, options.standing ?? (options.method === undefined ? 'current' : 'all'))
       .filter(entry => options.method === undefined || this.production(entry.owner.production).producer.method === options.method);
   }
   designations(result: QueryResultId, standing: 'current' | 'all' = 'current'): readonly AssociationEntry[] {
@@ -283,7 +285,8 @@ export class ContributionLedger {
     const handles = new Set<ProductionHandle>(), pool = new Map<string, Staged>(), reports = new Map<ProductionHandle, unknown>();
     for (const { production: handle, contribution } of submissions) {
       this.#owns(handle);
-      if (handles.has(handle)) throw new Error('Production submitted twice');
+      // Distinct handles can carry the same caller-supplied identity; one would overwrite the other's history.
+      if (handles.has(handle) || [...handles].some(other => other.id === handle.id)) throw new Error('Production submitted twice');
       handles.add(handle);
       const value = record(contribution, ['investigrams', 'report'], 'contribution');
       const investigrams = list(value.investigrams, 'investigram');
@@ -569,7 +572,7 @@ export class ContributionLedger {
       this.#investigrams.set(id, investigram);
       if (investigram.providerKey !== null) this.#providerKeys.set(investigram.providerKey, id);
       for (const item of investigram.items) {
-        const address = { investigram: id, item: item.key };
+        const address = freezeOwned({ investigram: id, item: item.key });
         this.#items.set(itemKey(address), item);
         for (const entity of new Set([...item.referents, ...investigram.referents])) index(this.#referencing, entity, address);
       }
@@ -580,9 +583,9 @@ export class ContributionLedger {
       const id = investigram.id;
       for (const declaration of investigram.declarations) {
         const address = freezeOwned({ investigram: id, declaration: declaration.key });
-        const entry = { address, declaration, owner: investigram, sequence: this.#sequence++ };
+        const entry = Object.freeze({ address, declaration, owner: investigram, sequence: this.#sequence++ });
         this.#declarations.set(addressKey(address), entry);
-        if (declaration.operation !== 'add') for (const displaced of declaration.displaces) index(this.#displacements, addressKey(displaced), { change: address, position });
+        if (declaration.operation !== 'add') for (const displaced of declaration.displaces) index(this.#displacements, addressKey(displaced), Object.freeze({ change: address, position }));
         if (declaration.operation === 'withdraw') continue;
         const association = entry as AssociationEntry;
         index(this.#byTarget, targetKey(declaration.target), association);
@@ -590,7 +593,7 @@ export class ContributionLedger {
         index(this.#byEntity, declaration.target.entity, association);
       }
       for (const report of investigram.inconsistencies) {
-        const address: MetadataAddress = { investigram: id, metadata: 'inconsistency', key: report.key };
+        const address: MetadataAddress = freezeOwned({ investigram: id, metadata: 'inconsistency', key: report.key });
         for (const endpoint of report.endpoints) {
           index(this.#inconsistencies, memberKey(endpoint), address);
           const owner = endpoint.kind === 'item' ? endpoint.item.investigram : endpoint.association.investigram;

@@ -504,7 +504,8 @@ test('malformed acquisition requests are refused and record nothing', () => {
     assert.throws(() => handle.item(a.item('a', 'p'), { excerptCharacters: bound }), InvalidAcquisition);
     assert.throws(() => handle.member(a.use('a', 'u'), a.item('a', 'p'), { excerptCharacters: bound }), InvalidAcquisition);
   }
-  assert.deepEqual(handle.deliveries.map(delivery => delivery.kind), ['association', 'association', 'association', 'association']);
+  // A refused request delivered nothing, so it recorded nothing: no use was exposed and no change made known.
+  assert.deepEqual(handle.deliveries, []);
   // An explicit null topic selects every topic; an omitted key is not that request. A zero bound is a valid, fully disclosed excerpt.
   assert.deepEqual(handle.inventory({ kind: 'entity', entity: module, role: 'topic', topic: null }, 'current-only').listed, [a.use('a', 'u')]);
   const empty = handle.item(a.item('a', 'p'), { excerptCharacters: 0 });
@@ -549,4 +550,32 @@ test('displacement context for A references its replacement B without acquiring 
   // The recipient of A from before B keeps the historical displacement of A as its cause; C is not a second one.
   assert.deepEqual(early.pending().map(cause => [cause.change, cause.standing]), [[b, { state: 'displaced', displacedBy: [c] }]]);
   assert.deepEqual(ledger.standing(a).displacedBy, [b]);
+});
+
+test('a change disclosed as a concern on a later delivery is known and does not re-enter by the earlier route', () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  const a = account(ledger, module, 'a').use('a', 'u');
+  const x = account(ledger, module, 'x', handle => { handle.association(a); });
+  const { invocation, result } = summaryInvocation(ledger, module);
+  const summary = explainAdmission(ledger, module, result.id, invocation.id), d = summary.use('summary', 'answer'), member = summary.use('summary', 'admission');
+  const open = (prepare: (handle: ProductionHandle) => void) => { const handle = ledger.begin({ producer: agentic('p') }); prepare(handle); return handle; };
+  // Inherited: P received X's item before the change. Membership: P received designation D before its member changed.
+  const inherited = open(handle => { handle.item(x.item('x', 'p')); }), inheritedControl = open(handle => { handle.item(x.item('x', 'p')); });
+  const membership = open(handle => { handle.association(d); }), membershipControl = open(handle => { handle.association(d); });
+  const w = withdraw(ledger, 'w', a).use('w', 'w'), m = withdraw(ledger, 'm', member).use('m', 'w');
+  const routes = (handle: ProductionHandle) => handle.pending().map(cause => [cause.change, cause.routes.map(route => route.kind)]);
+  assert.deepEqual([routes(inherited), routes(membership)], [[[w, ['inherited']]], [[m, ['membership']]]]);
+  // Received again: the concern is disclosed, identified exactly, and the record shows it.
+  assert.deepEqual(inherited.item(x.item('x', 'p')).owner.concerns.map(cause => cause.change), [w]);
+  assert.deepEqual(membership.association(d).status.membership.map(cause => cause.change), [m]);
+  assert.deepEqual(inherited.deliveries.map(delivery => delivery.kind === 'item' && delivery.concerns), [[], [w]]);
+  assert.deepEqual(membership.deliveries.map(delivery => delivery.kind === 'association' && delivery.concerns), [[], [m]]);
+  assert.deepEqual([routes(inherited), routes(membership)], [[], []]);
+  // No notice was needed, and none was recorded. The controls, shown nothing further, still have their causes.
+  assert.equal([...inherited.deliveries, ...membership.deliveries].some(delivery => delivery.kind === 'notice'), false);
+  const handles = [inherited, inheritedControl, membership, membershipControl];
+  const acceptance = ledger.accept(handles.map((production, index) => ({ production,
+    contribution: { investigrams: [{ key: `k${index}`, qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text: 'x' } }] }] } })));
+  const of = (index: number) => causes(ledger, submitted(acceptance, handles[index]!).investigram(`k${index}`)).map(cause => cause.change);
+  assert.deepEqual([of(0), of(1), of(2), of(3)], [[], [w], [], [m]]);
 });

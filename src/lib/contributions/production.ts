@@ -70,6 +70,11 @@ export interface DeliveredInventory {
   readonly complete: boolean;
 }
 
+/** The exact change declarations named by disclosed causes, each once. */
+function changes(causes: readonly Cause[]): DeclarationAddress[] {
+  return [...new Map(causes.map(cause => [addressKey(cause.change), cause.change])).values()];
+}
+
 interface ProductionInit { readonly id: ProductionId; readonly producer: Producer; readonly invocation: InvocationId | null }
 
 /**
@@ -134,17 +139,21 @@ export class ProductionHandle {
       concerns: this.#ledger.status.investigram(investigram).producing };
   }
 
-  #item(address: ItemAddress, route: AssociationAddress | null, excerptCharacters: number | undefined): DeliveredItem {
+  /** A bound that is not a whole number of characters cannot state actual coverage. Checked before anything is recorded. */
+  #bound(excerptCharacters: number | undefined): void {
     this.#open();
-    // A bound that is not a whole number of characters cannot state actual coverage.
     if (excerptCharacters !== undefined && (!Number.isInteger(excerptCharacters) || excerptCharacters < 0)) throw new InvalidAcquisition('An excerpt bound must be a non-negative whole number of characters.');
+  }
+  #item(address: ItemAddress, route: AssociationAddress | null, excerptCharacters: number | undefined): DeliveredItem {
+    this.#bound(excerptCharacters);
     const item = this.#ledger.item(address);
     address = { investigram: address.investigram, item: address.item };
     const serialized = JSON.stringify(item.body);
     const bounded = excerptCharacters !== undefined && serialized.length > excerptCharacters;
     const coverage = bounded ? 'excerpt' : 'complete';
-    this.#record({ kind: 'item', position: this.#ledger.position, item: address, route, coverage });
-    return { address, owner: this.#owner(address.investigram), route, coverage, type: item.type, qualification: item.qualification,
+    const owner = this.#owner(address.investigram);
+    this.#record({ kind: 'item', position: this.#ledger.position, item: address, route, coverage, concerns: changes(owner.concerns) });
+    return { address, owner, route, coverage, type: item.type, qualification: item.qualification,
       referents: item.referents, evidence: item.evidence, support: item.support, dependencies: item.dependencies, item: bounded ? null : item,
       excerpt: bounded ? { text: serialized.slice(0, excerptCharacters), omittedCharacters: serialized.length - excerptCharacters! } : null };
   }
@@ -164,15 +173,17 @@ export class ProductionHandle {
    */
   member(route: AssociationAddress, address: ItemAddress, options: { readonly excerptCharacters?: number } = {}):
   { readonly association: DeliveredAssociation; readonly item: DeliveredItem } {
+    // The whole request is checked before either part is delivered or recorded.
+    this.#bound(options.excerptCharacters);
     if (!this.#ledger.association(route).declaration.members.some(member => member.kind === 'item'
       && member.item.investigram === address.investigram && member.item.item === address.item)) throw new Error('Item is not a member of the stated association');
     return { association: this.association(route), item: this.#item(address, { investigram: route.investigram, declaration: route.declaration }, options.excerptCharacters) };
   }
 
   #change(change: DeclarationAddress): DeliveredChange {
-    const declaration = this.#ledger.declaration(change);
-    this.#record({ kind: 'declaration', position: this.#ledger.position, declaration: change });
-    return { change, declaration, owner: this.#owner(change.investigram), establishes: declaration.operation === 'withdraw' ? null : change,
+    const declaration = this.#ledger.declaration(change), owner = this.#owner(change.investigram);
+    this.#record({ kind: 'declaration', position: this.#ledger.position, declaration: change, concerns: changes(owner.concerns) });
+    return { change, declaration, owner, establishes: declaration.operation === 'withdraw' ? null : change,
       standing: declaration.operation === 'withdraw' ? null : this.#ledger.standing(change) };
   }
   /**
@@ -188,11 +199,12 @@ export class ProductionHandle {
   association(address: AssociationAddress, options: { readonly content?: boolean } = {}): DeliveredAssociation {
     address = { investigram: address.investigram, declaration: address.declaration };
     const declaration = this.#ledger.association(address).declaration;
-    const status = this.#ledger.status.association(address);
-    this.#record({ kind: 'association', position: this.#ledger.position, association: address, disclosed: status.standing.displacedBy });
+    const status = this.#ledger.status.association(address), owner = this.#owner(address.investigram);
+    this.#record({ kind: 'association', position: this.#ledger.position, association: address, disclosed: status.standing.displacedBy,
+      concerns: changes([...owner.concerns, ...status.membership, ...status.producing, ...status.content.flatMap(item => item.producing)]) });
     const displacements = status.standing.displacedBy.map(change => this.#change(change));
     const content = options.content ? declaration.members.flatMap(member => member.kind === 'item' ? [this.#item(member.item, address, undefined)] : []) : [];
-    return { address, declaration, owner: this.#owner(address.investigram), status, displacements, content,
+    return { address, declaration, owner, status, displacements, content,
       undeliveredMembers: declaration.members.flatMap(member => member.kind === 'association' ? [member.association] : []) };
   }
 
@@ -227,8 +239,9 @@ export class ProductionHandle {
     /** Association declarations are delivered as exact uses; withdrawals as their qualified grounds. */
     readonly declarations: readonly (DeliveredAssociation | DeliveredChange)[];
     readonly options: readonly FollowUpOption[]; readonly illustrations: readonly Illustration[]; readonly inconsistencies: readonly InconsistencyReport[] } {
-    const owner = this.#ledger.investigram(id);
-    const metadata = (kind: MetadataAddress['metadata'], key: string) => this.#record({ kind: 'metadata', position: this.#ledger.position, address: { investigram: id, metadata: kind, key } });
+    const owner = this.#ledger.investigram(id), delivered = this.#owner(id);
+    const metadata = (kind: MetadataAddress['metadata'], key: string) => this.#record({ kind: 'metadata', position: this.#ledger.position,
+      address: { investigram: id, metadata: kind, key }, concerns: changes(delivered.concerns) });
     const items = owner.items.map(item => this.item({ investigram: id, item: item.key }));
     const declarations = owner.declarations.map(declaration => {
       const address = { investigram: id, declaration: declaration.key };
@@ -237,14 +250,14 @@ export class ProductionHandle {
     owner.options.forEach(item => metadata('option', item.key));
     owner.illustrations.forEach(item => metadata('illustration', item.key));
     owner.inconsistencies.forEach(item => metadata('inconsistency', item.key));
-    return { owner: this.#owner(id), items, declarations, options: owner.options, illustrations: owner.illustrations, inconsistencies: owner.inconsistencies };
+    return { owner: delivered, items, declarations, options: owner.options, illustrations: owner.illustrations, inconsistencies: owner.inconsistencies };
   }
 
   /** One follow-up option, illustration or inconsistency report as substantive qualified input. */
   metadata(address: MetadataAddress): { readonly owner: DeliveredOwner; readonly value: FollowUpOption | Illustration | InconsistencyReport } {
-    const value = this.#ledger.metadata(address);
-    this.#record({ kind: 'metadata', position: this.#ledger.position, address });
-    return { owner: this.#owner(address.investigram), value };
+    const value = this.#ledger.metadata(address), owner = this.#owner(address.investigram);
+    this.#record({ kind: 'metadata', position: this.#ledger.position, address, concerns: changes(owner.concerns) });
+    return { owner, value };
   }
 
   /** Explicit-referent discovery: exact handles only, creating no content exposure. */
