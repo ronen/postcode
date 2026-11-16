@@ -81,6 +81,10 @@ to begin the substantive implementation task described by that plan.
 >
 > Record the resolution and verification in the checkpoint. M2 must additionally demonstrate the behavior through the real dialog integration.
 
+2026-11-16, after the secondary-standing resolution was verified and recorded (`73fe7a9`, `ca5ba19`). The "other choices" are the implementation choices in the M1 checkpoint record, including the implementing agent's scope judgment to correct attempt fulfillment in M1:
+
+> your other choices are approved.  M1 is satisfied.
+
 ## Outcome
 
 ## Verification
