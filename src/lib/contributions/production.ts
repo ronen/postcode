@@ -132,6 +132,21 @@ export class ProductionHandle {
     this.#deliveries.push(freezeOwned(structuredClone(delivery)));
   }
 
+  /**
+   * Mark the recorded history so that acquisitions made after this point can be discarded if
+   * what they returned never reaches the producer, for example a response withheld by a size
+   * bound or a dialog that ends before dispatch. Exposure is recorded only for actual delivery.
+   */
+  checkpoint(): { readonly deliveries: number; readonly evidence: readonly RecordId[] } {
+    return { deliveries: this.#deliveries.length, evidence: [...this.#evidence] };
+  }
+  discard(checkpoint: { readonly deliveries: number; readonly evidence: readonly RecordId[] }): void {
+    if (this.#closed) throw new Error('Production has concluded');
+    this.#deliveries.length = Math.min(this.#deliveries.length, checkpoint.deliveries);
+    this.#evidence.clear();
+    checkpoint.evidence.forEach(id => this.#evidence.add(id));
+  }
+
   /** Register program evidence actually supplied to, or acquired as the source basis of, this production. */
   supplied(records: readonly RecordId[]): void {
     if (this.#closed) throw new Error('Production has concluded');
@@ -182,7 +197,7 @@ export class ProductionHandle {
     // The whole request is checked before either part is delivered or recorded.
     this.#bound(options.excerptCharacters);
     if (!this.#ledger.association(route).declaration.members.some(member => member.kind === 'item'
-      && member.item.investigram === address.investigram && member.item.item === address.item)) throw new Error('Item is not a member of the stated association');
+      && member.item.investigram === address.investigram && member.item.item === address.item)) throw new InvalidAcquisition('Item is not a member of the stated association.');
     return { association: this.association(route), item: this.#item(address, { investigram: route.investigram, declaration: route.declaration }, options.excerptCharacters) };
   }
 

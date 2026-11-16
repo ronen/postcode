@@ -314,6 +314,8 @@ export interface SubmittedContribution {
 }
 
 export class InvalidContribution extends Error {}
+/** A reference to an identity or address this ledger does not retain, or of the wrong kind. */
+export class UnknownReference extends Error {}
 /** A malformed acquisition request. Nothing is delivered or recorded for it. */
 export class InvalidAcquisition extends Error {}
 

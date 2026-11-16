@@ -10,7 +10,21 @@ Export evaluation is the second real producer. Each module's export finding is c
 
 The internal exports answer is the first consumer. It selects the discovery method's own identifying finding and the export method's own finding from the ledger, and captures each use's standing and displacement grounds in the retained answer. This is read-only assembly and records no producer exposure. A finding stays selected after a use of it is displaced; a fresh answer then shows the displacement with its grounds, and an earlier answer keeps what it captured. The answer fails if a finding it needs was never contributed, so a producer that bypasses the ledger is detected.
 
-No other Lens, the CLI's public commands, or any investigating-agent path reads the ledger yet, and every other producer is still exercised only by controlled producers in tests. Existing mechanical retention, investigram trees, whole-investigram corrections and citation-based reconsideration are unchanged and remain subject to the [temporary migration contract](../decisions/common-analysis-contributions.md#adoption-and-migration-conformance). The state-behavior investigation, state diagram and follow-up-option invocation are not available. The other architecture documents therefore still describe the operating system; this document describes the target mechanism those capabilities migrate onto.
+An agentic dialog over the ledger exists as a domain boundary and is exercised with a substituted agent-communication participant on real fixtures. It is not yet reachable from the application API, the CLI or a hosted agent, and the existing investigation operations still run on the earlier dialog and retention structures.
+
+No other Lens or public CLI command reads the ledger yet.
+
+## Agentic dialog
+
+One dialog is one producing execution with a fresh agent conversation. The outer boundary opens a production for the invocation, supplies initial context, dispatches tool requests, delivers exact change notices, validates the submission with bounded structural repair, and returns one outcome. The agent-communication participant only exchanges messages; provider protocol and credentials stay behind it.
+
+Initial context is acquired through the production like anything requested later: the baseline identifications of a subject Entity, or the exact selected designation, item or contribution. A fresh investigation of a repeated question is also supplied the answers currently designated for it.
+
+Tool requests are either program-evidence queries, answered by the existing evidence boundary with exact record references, or acquisitions of retained contributions. Evidence responses carry the host's mapping from module records to common Entities, which is not content. When a requested evidence query obtains mechanical work, that work keeps its own producers, and what it retained reaches the dialog as a separate recorded delivery through the dialog's own production.
+
+An acquisition is recorded only if its response is actually dispatched to the agent. A response withheld by the response bound, a refused request, and anything acquired after the last dispatched exchange are discarded from the recorded history. Before each exchange the dialog delivers an exact notice for each change that would otherwise be a cause, and records it with that exchange.
+
+The dialog distinguishes an accepted contribution with its attempt fulfillment and any reported inability, an unrepaired invalid submission, a limit stop, a dialog that ended without submitting, and communication or configuration failure. Each concludes the production, so nothing can be submitted late. Interruption, invalidation and defects propagate. Existing mechanical retention, investigram trees, whole-investigram corrections and citation-based reconsideration are unchanged and remain subject to the [temporary migration contract](../decisions/common-analysis-contributions.md#adoption-and-migration-conformance). The state-behavior investigation, state diagram and follow-up-option invocation are not available. The other architecture documents therefore still describe the operating system; this document describes the target mechanism those capabilities migrate onto.
 
 ## Responsibilities
 

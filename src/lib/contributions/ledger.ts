@@ -4,7 +4,7 @@ import { freezeOwned } from '../immutable.js';
 import type { RecordId, SessionId } from '../records.js';
 import { ContentCatalog, list, record, text } from './catalog.js';
 import type { IdentifyingName } from './catalog.js';
-import { InvalidContribution, addressKey, inScope, itemKey, targetKey } from './model.js';
+import { InvalidContribution, UnknownReference, addressKey, inScope, itemKey, targetKey } from './model.js';
 import type { AssociationAddress, AssociationDeclaration, AssociationTarget, ContentItem, Declaration, DeclarationAddress, Entity, EntityId,
   EpistemicStatus, FollowUpOption, Grounds, Illustration, InconsistencyReport, Investigram, InvestigramId, Invocation, InvocationId,
   InvocationRequest, ItemAddress, Member, MetadataAddress, NativeIdentity, Producer, ProducerReport, Production, ProductionId, Qualification,
@@ -128,7 +128,7 @@ export class ContributionLedger {
   declaration(address: DeclarationAddress): Declaration { return this.declarationEntry(address).declaration; }
   association(address: AssociationAddress): AssociationEntry {
     const entry = this.declarationEntry(address);
-    if (entry.declaration.operation === 'withdraw') throw new Error('A withdrawal establishes no association');
+    if (entry.declaration.operation === 'withdraw') throw new UnknownReference('A withdrawal establishes no association');
     return entry as AssociationEntry;
   }
   metadata(address: MetadataAddress): FollowUpOption | Illustration | InconsistencyReport {
@@ -141,7 +141,7 @@ export class ContributionLedger {
   productions(): readonly Production[] { return [...this.#productions.values()]; }
   invocation(id: InvocationId): Invocation { return this.#invocations.get(id) ?? this.#missing('invocation', id); }
   result(id: QueryResultId): QueryResult { return this.#results.get(id) ?? this.#missing('Query result', id); }
-  #missing(what: string, id: string): never { throw new Error(`Missing ${what}: ${id}`); }
+  #missing(what: string, id: string): never { throw new UnknownReference(`Missing ${what}: ${id}`); }
 
   /** Accepted displacements of one exact association, in acceptance enumeration order. */
   displacements(address: AssociationAddress): readonly { readonly change: DeclarationAddress; readonly position: number }[] {
