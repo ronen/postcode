@@ -19,6 +19,7 @@ import { openCliSession as openSession } from '../src/lib/interfaces/cli/applica
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
+import { contributeModuleFindings } from '../src/lib/contributions/modules.js';
 import { methods, recordId } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { sourceDisclosure } from '../src/lib/source-disclosure.js';
@@ -181,6 +182,9 @@ test('qualified exports preserve partial, unavailable, unrequested and outside-p
           const record = store.get(id); return record.kind === 'claim' && record.information.type === 'export';
         }).slice(0, 1) : [], reason: `Controlled ${state} export analysis.` }));
     store.put([basis, ...expansions]);
+    // These controlled outcomes stand for a provider's partial or unavailable result, so they enter
+    // the common contribution model through the same wrapper as real evaluations.
+    contributeModuleFindings(store, basis);
     const content = resolveModuleExports(store, moduleExports(store, basis, [subject], 'exports'));
     assert.equal(content.complete, false);
     assert.equal(content.exports.length, state === 'partial' ? 1 : 0);

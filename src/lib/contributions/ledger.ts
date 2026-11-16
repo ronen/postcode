@@ -308,8 +308,11 @@ export class ContributionLedger {
         const raw = record(entry, ['key', 'providerKey', 'qualification', 'entities', 'referents', 'items', 'declarations', 'options', 'illustrations', 'inconsistencies'], 'investigram');
         const key = text(raw.key, 'investigram key');
         if (pool.has(key)) fail(`Duplicate investigram key: ${key}.`);
+        // A provider contribution's identity follows its provider key, so it does not depend on which
+        // producing execution happened to establish it first. Other contributions are identified within their production.
+        const provided = raw.providerKey === undefined || raw.providerKey === null ? null : text(raw.providerKey, 'provider key');
         pool.set(key, { handle, key, raw, ordinal: pool.size, items: keyed(raw.items, 'content item'), declarations: keyed(raw.declarations, 'declaration'),
-          id: recordId(session, 'investigram', [identityReference(session, handle.id), key]) as InvestigramId });
+          id: recordId(session, 'investigram', provided === null ? [identityReference(session, handle.id), key] : ['provider', provided]) as InvestigramId });
       }
     }
 

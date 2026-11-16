@@ -6,7 +6,7 @@ export const methods = {
   inputs: 'postcode/observed-inputs@7',
   records: 'postcode/program-records@23',
   content: 'postcode/subject-content@1',
-  exportsProjection: 'postcode/module-exports-projection@1',
+  exportsProjection: 'postcode/module-exports-projection@2',
   investigation: 'postcode/investigation@14',
   investigationEvaluation: 'postcode/investigation-evaluation@3',
   investigationProjection: 'postcode/investigation-projection@4',
@@ -24,6 +24,7 @@ export const methods = {
   contributions: 'postcode/contributions@1',
   contributionStatus: 'postcode/contribution-status@1',
   moduleIdentificationPolicy: 'postcode/module-identification-policy@1',
+  moduleExportsPolicy: 'postcode/module-exports-policy@1',
 } as const;
 
 /** Stable key order without locale, clock, random IDs, or storage identity. */

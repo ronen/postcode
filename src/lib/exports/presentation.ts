@@ -43,6 +43,7 @@ export function arrangeModuleExports(content: ModuleExportsContent, reference: s
       qualification: presentQualification(content.module.context) },
     exports, completeness: content.complete ? 'complete' as const : 'not-established' as const,
     outsidePopulation: content.projection.outsidePopulation,
+    contributions: content.projection.contributions,
     evaluations: [content.basis, ...content.evaluations].map(({ id, requirement, applicability, availability, execution, materialization, reason }) =>
       ({ id, requirement, applicability, availability, execution, materialization, reason })),
     qualifications: content.contexts.map(item => presentQualification(item.context)),
@@ -59,7 +60,10 @@ export function renderModuleExports(view: ModuleExportsView): string {
     ...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution),
     view.completeness === 'complete' ? `${view.exports.length + view.omittedExports} exports established; ${view.exports.length} shown.`
       : 'Export completeness is not established; an empty listing does not establish no exports.',
-    ...(view.outsidePopulation ? ['The subject is outside the supplied evaluation population.'] : [])];
+    ...(view.outsidePopulation ? ['The subject is outside the supplied evaluation population.'] : []),
+    // A method's finding stays selected after a use of it is displaced; it must not appear unaffected.
+    ...[['module identification', view.contributions.naming] as const, ['export listing', view.contributions.surface?.uses ?? []] as const].flatMap(([what, uses]) =>
+      uses.flatMap(use => use.displacements.map(change => `The use of this ${what} as information about the module was ${change.operation === 'withdraw' ? 'withdrawn' : 'superseded'} by later analysis: ${inlineText(change.grounds)} The finding itself, shown here under its own method, is unchanged.`)))];
   for (const outcome of view.evaluations) lines.push(`${outcome.requirement}: ${outcome.applicability}, ${outcome.availability}, ${outcome.execution}, ${outcome.materialization}${outcome.reason ? `; ${inlineText(outcome.reason)}` : ''}`);
   for (const item of view.exports) {
     const details = exportRoutes(item);
