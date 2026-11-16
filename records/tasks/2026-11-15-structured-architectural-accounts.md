@@ -69,6 +69,18 @@ to begin the substantive implementation task described by that plan.
 >
 > Report the changes and verification. This clarification does not itself constitute M1 checkpoint acceptance.
 
+2026-11-16, after the clean round 7 review of `22698ae`, with Milestone 2 still on hold at the human's direction ("don't move on to M2 yet, next i'll be looking at the open question and will review the other choices you made"). On the open secondary-standing question recorded in the M1 checkpoint:
+
+> Keep the existing reference-versus-notice rule; automatic enrichment of secondary standing is not required.
+>
+> Check the existing producer/result-delivery path: when a secondary investigation returns C, including its declaration that C supersedes B, the invoking producer must receive that qualified declaration and have its actual delivery recorded. Fix any omission in the existing path.
+>
+> Add a controlled test where an outer producer receives B, invokes secondary work that supersedes B with C, receives that result, and then submits. C must not become a reconsideration cause for that output. Preserve controls where the change was not disclosed or only a bare reference was supplied; invocation alone establishes no knowledge.
+>
+> Do not introduce new nested-execution machinery or notification of unrelated side effects merely for this case. If the required delivery path does not yet exist, identify that concrete integration gap rather than claiming it has been verified.
+>
+> Record the resolution and verification in the checkpoint. M2 must additionally demonstrate the behavior through the real dialog integration.
+
 ## Outcome
 
 ## Verification
