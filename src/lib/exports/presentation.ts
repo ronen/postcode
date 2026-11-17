@@ -45,7 +45,12 @@ export function arrangeModuleExports(content: ModuleExportsContent, reference: s
   const owners = new Map(support.owners.map(owner => [owner.investigram, owner]));
   const use = (value: UseSnapshot) => ({ ...value, displacements: value.displacements.map(change => {
     const { declaration } = changes.get(addressKey(change.change))!, owner = owners.get(change.change.investigram)!;
-    return { ...change, producer: owner.producer, ownerQualification: owner.qualification, qualification: declaration.qualification,
+    return { ...change, producer: owner.producer, production: owner.production,
+      producing: owner.producing.map(cause => {
+        const source = changes.get(addressKey(cause.change))!, sourceOwner = owners.get(cause.change.investigram)!;
+        return { ...cause, grounds: source.declaration.grounds, qualification: source.declaration.qualification,
+          producer: sourceOwner.producer, ownerQualification: sourceOwner.qualification };
+      }), ownerQualification: owner.qualification, qualification: declaration.qualification,
       evidence: declaration.grounds!.evidence, support: declaration.grounds!.support };
   }) });
   const { id, session, lens, subject, parameters } = content.projection;
@@ -83,6 +88,14 @@ export function renderModuleExports(view: ModuleExportsView): string {
         `  Displacement producer: ${inlineText(change.producer.mechanism)} (${inlineText(change.producer.method)}).`,
         ...displacementQualification('Displacement owner', change.ownerQualification),
         ...displacementQualification('Displacement declaration', change.qualification),
+        ...(change.producing.length ? [
+          `  Displacement production needs reconsideration: ${new Set(change.producing.map(cause => addressKey(cause.change))).size} later change(s) to received information. This does not establish an error, reverse the displacement or reinstate the earlier association.`,
+          ...change.producing.flatMap(cause => [
+            `    Reconsideration cause: ${inlineText(cause.operation)}${cause.grounds ? ` — ${inlineText(cause.grounds.text)}` : ''}.`,
+            ...displacementQualification('Cause owner', cause.ownerQualification),
+            ...displacementQualification('Cause declaration', cause.qualification),
+          ]),
+        ] : []),
       ])))];
   for (const outcome of view.evaluations) lines.push(`${outcome.requirement}: ${outcome.applicability}, ${outcome.availability}, ${outcome.execution}, ${outcome.materialization}${outcome.reason ? `; ${inlineText(outcome.reason)}` : ''}`);
   for (const item of view.exports) {

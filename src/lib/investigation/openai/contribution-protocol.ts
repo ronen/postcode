@@ -1,3 +1,4 @@
+import { componentSelectorGuidance } from '../../contributions/catalog.js';
 import type { FunctionTool } from 'openai/resources/responses/responses.js';
 import type { DialogAgent, DialogInput, DialogReply } from '../../contributions/dialog.js';
 import type { ChatGPTSession } from './chatgpt-credentials.js';
@@ -5,7 +6,7 @@ import { hostedAgent } from './adapter.js';
 import type { OpenAIExchange, WireProtocol } from './adapter.js';
 import { InvestigatorReferences } from './references.js';
 
-export const contributionWireProtocol = 'postcode/contribution-dialog-wire@4';
+export const contributionWireProtocol = 'postcode/contribution-dialog-wire@5';
 
 /**
  * Reference positions of the contribution dialog. A string at one of these keys is an exact
@@ -46,7 +47,7 @@ const subject = { anyOf: [
   { type: 'object', additionalProperties: false, required: ['kind', 'investigram'], properties: { kind: { const: 'investigram' }, investigram: reference } },
   { type: 'object', additionalProperties: false, required: ['kind', 'association'], properties: { kind: { const: 'designation' }, association: use } },
   { type: 'object', additionalProperties: false, required: ['kind', 'entity'], properties: { kind: { const: 'entity' }, entity: reference } },
-  { type: 'object', additionalProperties: false, required: ['kind', 'item'], properties: { kind: { const: 'content' }, item: content, component: { type: 'string' } } }] };
+  { type: 'object', additionalProperties: false, required: ['kind', 'item'], properties: { kind: { const: 'content' }, item: content, component: { type: 'string', description: componentSelectorGuidance } } }] };
 const investigram = { type: 'object', additionalProperties: false, required: ['key', 'qualification'], properties: {
   key: { type: 'string' }, qualification,
   entities: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['key', 'entityKind'], properties: { key: { type: 'string' }, entityKind: { type: 'string' } } } },

@@ -353,3 +353,66 @@ test('every production operation advertises supported follow-up signatures and r
     assert.match(instructions, /omit resultContract when no specialized form is promised/);
   }
 });
+
+test('production component guidance matches schema and contract validation; the observed body-field selector gets normal repair', async () => {
+  const { contributionOperations } = await import('../src/lib/contributions/operations.js');
+  const { componentSelectorGuidance } = await import('../src/lib/contributions/catalog.js');
+  const { stateDiagramContract } = await import('../src/lib/contributions/state-model.js');
+  const { contributionFunctions } = await import('../src/lib/investigation/openai/contribution-protocol.js');
+  for (const operation of Object.values(contributionOperations)) {
+    const instructions = dialogInstructions(operation);
+    assert.ok(instructions.includes(componentSelectorGuidance));
+    assert.match(instructions, /locally addressable part of a content item, not a separate Entity/);
+    assert.match(instructions, /declared by the content-type contract and listed in the retained item’s components array/);
+    assert.match(instructions, /arbitrary content-body field name is not automatically a valid selector/);
+    assert.match(instructions, /omit component and target the whole item/);
+    assert.match(instructions, /state:<key> for each state key and transition:<key> for each transition key/);
+  }
+  // The wire schema permits an optional string. Membership in a particular item's
+  // contract-defined component list is checked by domain validation, not a global enum.
+  const schema = contributionFunctions.find(tool => tool.name === 'submit_contribution')!.parameters as Record<string, any>;
+  const subjects = schema.properties.investigrams.items.properties.options.items.properties.request.properties.subjects;
+  const content = subjects.items.properties.subject.anyOf.find((shape: any) => shape.properties.kind.const === 'content');
+  assert.deepEqual(content.required, ['kind', 'item']);
+  assert.deepEqual(content.properties.component, { type: 'string', description: componentSelectorGuidance });
+
+  for (const badComponent of ['unsupported', 'HalfOpen concurrency and deferred-decision semantics']) {
+    const { ledger, entity, run } = await setup(), barrel = entity('barrel');
+    const request = ledger.invoke({ operation: 'state-behavior', subjects: [{ role: null, subject: { kind: 'entity', entity: barrel } }],
+      parameters: {}, context: [], resultContract: stateDiagramContract.id });
+    const account = (selectors: readonly (string | undefined)[]): SubmittedInvestigram => ({ key: 'states', qualification: caveat,
+      items: [{ key: 'model', type: 'state-model', body: { bearer: { entity: barrel }, states: [{ key: 'closed', label: 'Closed' }, { key: 'open', label: 'Open' }],
+        initial: { kind: 'unknown' }, transitions: [{ key: 'trip', from: 'closed', to: 'open' }], coverage: { states: 'some', transitions: 'some' },
+        unsupported: ['Concurrent callers are not modeled.'] } }],
+      declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: request.result.id },
+        members: [{ kind: 'item', item: { investigram: { local: 'states' }, item: 'model' } }] }],
+      options: selectors.map((component, index) => ({ key: `option-${index}`, meaning: 'Investigate the limitations of this account.', request: { operation: 'examine-content',
+        subjects: [{ subject: { kind: 'content', item: { investigram: { local: 'states' }, item: 'model' }, ...(component === undefined ? {} : { component }) } }] } })),
+    });
+    const position = ledger.position;
+    const { execution, agent } = await run([
+      // Preserve both actual live mistakes: a body-field name in the capped retry
+      // and a free-text description in the completed run. Neither is a selector.
+      () => ({ kind: 'submit', contribution: { investigrams: [account([badComponent])] } }),
+      input => {
+        assert.deepEqual(input.responses, [{ tool: 'invalid-submission', problem: 'Unknown content component reference.' }]);
+        assert.equal(input.remaining.repairs, 0);
+        assert.equal(ledger.position, position, 'the invalid option does not partially accept its account');
+        return { kind: 'submit', contribution: { investigrams: [account([undefined, 'state:open', 'transition:trip'])] } };
+      },
+    ], request.invocation, { operation: { ...contributionOperations['state-behavior']!, contract: stateDiagramContract } });
+    assert.equal(execution.outcome.kind, 'accepted');
+    if (execution.outcome.kind !== 'accepted') return;
+    assert.equal(execution.outcome.repairs, 1);
+    assert.equal(execution.outcome.fulfillment?.status, 'fulfilled');
+    assert.equal(agent.inputs.length, 2);
+    const owner = execution.outcome.acceptance.productions[0]!.investigrams.states!;
+    assert.deepEqual(ledger.item({ investigram: owner, item: 'model' }).components, ['state:closed', 'state:open', 'transition:trip']);
+    const options = ledger.investigram(owner).options;
+    assert.deepEqual(options.map(option => option.request.subjects[0]!.subject.kind === 'content' ? option.request.subjects[0]!.subject.component : assert.fail()),
+      [null, 'state:open', 'transition:trip']);
+    for (const option of options) assert.doesNotThrow(() => ledger.invoke(option.request));
+    const whole = options[0]!.request;
+    assert.throws(() => ledger.invoke({ ...whole, subjects: [{ role: null, subject: { kind: 'content', item: { investigram: owner, item: 'model' }, component: badComponent } }] }), /Unknown content component/);
+  }
+});

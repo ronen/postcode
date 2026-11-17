@@ -1,3 +1,4 @@
+import { componentSelectorGuidance } from './catalog.js';
 import { methods } from '../identity.js';
 import { freezeOwned } from '../immutable.js';
 import type { DialogOperation } from './dialog.js';
@@ -30,6 +31,7 @@ export function followUpInstructions(): string {
     ...Object.values(contributionOperations).map(operation => `${operation.id}: ${operation.subject === 'module'
       ? 'one discovered module Entity, { kind: "entity", entity }. A newly invented Entity is not a discovered module.'
       : 'one exact content item { kind: "content", item: { investigram, item }, component?: string }, result designation { kind: "designation", association: { investigram, declaration } }, or contribution { kind: "investigram", investigram }. Submission-local references are allowed.'} ${operation.objective}`),
+    componentSelectorGuidance,
     'SUPPORTED OPTIONAL RESULT CONTRACTS: omit resultContract when no specialized form is promised.',
     ...Object.values(contributionResultContracts).map(contract => `${contract.id}: ${contract.requirements.map(requirement => requirement.description).join(' ')}`),
     'Set the option meaning to the specific question being proposed. Invoking that exact owner/key preserves its meaning as the delegated question; another option is a different question even if operation and subjects match.',

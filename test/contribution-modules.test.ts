@@ -274,3 +274,51 @@ test('export displacement snapshots retain separately qualified evidence and sup
   };
   assert.deepEqual(await run(), await run(), 'qualified displacement captures and identities are repeatable across Sessions');
 });
+
+test('fresh exports disclose reconsideration of the displacing production without reversing its displacement or revising an exact answer', async () => {
+  const { store, ledger, entity, answer } = await exportsSession();
+  const initial = answer(), naming = initial.contributions.naming[0]!.association, surface = initial.contributions.surface!.uses[0]!.association;
+  const premise = ledger.accept([{ production: ledger.begin({ producer: agent }), contribution: { investigrams: [{ key: 'premise', qualification: caveat,
+    items: [{ key: 'p', type: 'prose', body: { text: 'A limited organizing premise.' } }],
+    declarations: [{ key: 'use', operation: 'add', target: { kind: 'entity', entity, role: 'topic', topic: 'organizing-premise' },
+      members: [{ kind: 'item', item: { investigram: { local: 'premise' }, item: 'p' } }] }] }] } }]);
+  const premiseUse = { investigram: premise.productions[0]!.investigrams.premise!, declaration: 'use' };
+  const displacer = ledger.begin({ producer: agent });
+  displacer.association(premiseUse);
+  const withdrawn = ledger.accept([{ production: displacer, contribution: { investigrams: [{ key: 'w', qualification: caveat,
+    declarations: [{ key: 'withdraw', operation: 'withdraw', displaces: [naming, surface], grounds: { text: 'Organizing judgment based on the received premise.' } }] }] } }]);
+  const owner = withdrawn.productions[0]!.investigrams.w!;
+  const earlier = answer(), fixed = structuredClone(earlier);
+  const arrange = (projection: typeof earlier) => arrangeModuleExports(resolveModuleExports(store, projection), 'module-test', unicode, 'Exports');
+  const earlierView = arrange(earlier), earlierText = renderModuleExports(earlierView);
+  assert.deepEqual(earlierView.contributions.surface!.uses[0]!.displacements[0]!.producing, []);
+  const changed = ledger.accept([{ production: ledger.begin({ producer: agent }), contribution: { investigrams: [{ key: 'change', qualification: caveat,
+    declarations: [{ key: 'withdraw-premise', operation: 'withdraw', displaces: [premiseUse],
+      qualification: { limitations: ['CAUSE_LIMIT: concerns only the organizing premise.'] }, grounds: { text: 'The organizing premise was withdrawn.' } }] }] } }]);
+  const cause = { investigram: changed.productions[0]!.investigrams.change!, declaration: 'withdraw-premise' };
+  const fresh = answer(), view = arrange(fresh), text = renderModuleExports(view);
+  assert.notEqual(fresh.id, earlier.id);
+  for (const use of [view.contributions.naming[0]!, view.contributions.surface!.uses[0]!]) {
+    assert.equal(use.standing, 'displaced');
+    const change = use.displacements[0]!;
+    assert.deepEqual(change.change, { investigram: owner, declaration: 'withdraw' });
+    assert.equal(change.production, displacer.id);
+    assert.deepEqual(change.producing.map(item => item.change), [cause]);
+    assert.equal(change.producing[0]!.grounds?.text, 'The organizing premise was withdrawn.');
+    assert.deepEqual(change.producing[0]!.routes, [{ kind: 'exact', association: premiseUse }]);
+  }
+  assert.match(text, /Displacement production needs reconsideration: 1 later change/);
+  assert.match(text, /does not establish an error, reverse the displacement or reinstate the earlier association/);
+  assert.match(text, /Reconsideration cause: withdraw — The organizing premise was withdrawn/);
+  assert.match(text, /CAUSE_LIMIT/);
+  assert.deepEqual(view.module.qualification, earlierView.module.qualification);
+  assert.deepEqual(view.exports, earlierView.exports);
+  assert.deepEqual(ledger.status.investigram(initial.contributions.surface!.item.investigram).producing, []);
+  assert.equal(ledger.standing(surface).state, 'displaced');
+  assert.equal(fresh.contributions.support.changes.some(item => item.address.investigram === cause.investigram && item.address.declaration === cause.declaration), true);
+  assert.deepEqual(resolveModuleExports(store, earlier).projection, fixed);
+  assert.deepEqual(arrange(earlier), earlierView);
+  assert.equal(renderModuleExports(arrange(earlier)), earlierText);
+  assert.doesNotMatch(earlierText, /needs reconsideration|CAUSE_LIMIT/);
+  assert.equal(answer().id, fresh.id);
+});

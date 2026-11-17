@@ -1,6 +1,9 @@
 import { InvalidContribution } from './model.js';
 import type { EntityId, ItemAddress } from './model.js';
 
+/** Shared wording for production instructions and the hosted content-subject schema. */
+export const componentSelectorGuidance = 'component selects a locally addressable part of a content item, not a separate Entity. Supported selectors are declared by the content-type contract and listed in the retained item’s components array. For a submission-local item, use only selectors defined by that type’s documented contract. An arbitrary content-body field name is not automatically a valid selector. When no supported selector is available, omit component and target the whole item.';
+
 /** Assigned labels remain distinguishable from names in the system under study. */
 export interface IdentifyingName { readonly text: string; readonly origin: 'system-under-study' | 'assigned' | 'generated-handle' }
 
