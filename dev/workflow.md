@@ -141,5 +141,7 @@ Verification should be proportional to the risk and scope of the change. Before 
 
 Report what was verified, what was not verified, and any residual uncertainty. Never imply that an unperformed check passed. Raise unresolved risks or questions, and identify useful follow-up work outside the current scope.
 
+For authorized live-agent trials, estimate the inference requests needed for the planned scenarios, including multi-request interactions, normal repair, and reasonable retries. Choose a finite request cap with sufficient headroom to complete those trials; its purpose is to prevent runaway requests, not to impose an arbitrary testing allowance. Count failed attempts and retries toward the cap, and stop when the verification objective is met rather than spending the remaining allowance. If the cap is reached, assess why before proposing an extension. Respect any explicit human-set limit; do not increase it without authorization.
+
 <a id="intermediate-review"></a>
 For independent-review defaults, including intermediate review, follow the [task protocol](task-protocol.md#independent-review).
