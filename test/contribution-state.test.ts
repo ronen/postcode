@@ -147,6 +147,8 @@ test('several self-transitions on one state are drawn as distinct nested loops w
   assert.equal(captions.length, 6);
   assert.equal(new Set(captions.map(caption => caption.at)).size, 6);
   assert.deepEqual(captions.map(caption => caption.text.split(' ')[0]).sort(), ['T1', 'T2', 'T3', 'T4', 'T5', 'T6']);
+  // Captions are drawn after every state box, so none can be hidden behind one.
+  assert.ok(svg.lastIndexOf('<rect class="state"') < svg.indexOf('<text class="edge-label"'));
   // Every coordinate stays inside the picture.
   const [width, height] = svg.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/)!.slice(1).map(Number);
   for (const caption of captions) { const [x, y] = caption.at.split(',').map(Number); assert.ok(x! > 0 && x! < width! && y! > 0 && y! < height!, caption.at); }

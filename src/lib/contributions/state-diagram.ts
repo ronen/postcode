@@ -12,7 +12,7 @@ export interface StateDiagram {
   /** Qualification that must accompany the picture: entry, coverage, applicability and unsupported semantics. */
   readonly notes: readonly string[];
 }
-export const stateDiagramMethod = 'postcode/state-transition-diagram@2';
+export const stateDiagramMethod = 'postcode/state-transition-diagram@4';
 
 /** Why a state model cannot be drawn, or null. Missing content is a different condition from a rendering failure. */
 export function stateDiagramIncompatibility(model: StateModel): string | null {
@@ -47,6 +47,8 @@ export function renderStateDiagram(model: StateModel, bearerLabel: string): Stat
   const legend = model.transitions.map((transition, index) => ({ mnemonic: `T${index + 1}`, from: label.get(transition.from)!, to: label.get(transition.to)!,
     trigger: transition.trigger, guard: transition.guard, effect: transition.effect }));
   const pairs = new Map<string, number>(), loops = new Map<string, number>();
+  const boxes = [...position.values()].map(at => ({ left: at.x - box.width / 2 - 4, right: at.x + box.width / 2 + 4, top: at.y - box.height / 2 - 4, bottom: at.y + box.height / 2 + 4 }));
+  const placed: { left: number; right: number; top: number; bottom: number }[] = [];
   const edges = model.transitions.map((transition, index) => {
     const a = position.get(transition.from)!, b = position.get(transition.to)!, mnemonic = legend[index]!.mnemonic;
     const caption = escape(`${mnemonic}${transition.trigger ? ` ${short(transition.trigger, 28)}` : ' (trigger not established)'}`);
@@ -58,7 +60,8 @@ export function renderStateDiagram(model: StateModel, bearerLabel: string): Stat
       const away = count === 1 ? -1 : Math.sign(a.y - centre.y) || -1, edge = a.y + away * box.height / 2;
       const reach = 56 + 34 * nth, spread = 28 + 10 * nth;
       const label = edge + away * (reach - 6) + (away < 0 ? -4 : 14);
-      return `<path class="edge" d="M ${(a.x - spread).toFixed(1)} ${edge.toFixed(1)} C ${(a.x - spread - 36).toFixed(1)} ${(edge + away * reach).toFixed(1)}, ${(a.x + spread + 36).toFixed(1)} ${(edge + away * reach).toFixed(1)}, ${(a.x + spread).toFixed(1)} ${edge.toFixed(1)}" marker-end="url(#arrow)"/><text class="edge-label" x="${a.x.toFixed(1)}" y="${label.toFixed(1)}">${caption}</text>`;
+      return { path: `<path class="edge" d="M ${(a.x - spread).toFixed(1)} ${edge.toFixed(1)} C ${(a.x - spread - 36).toFixed(1)} ${(edge + away * reach).toFixed(1)}, ${(a.x + spread + 36).toFixed(1)} ${(edge + away * reach).toFixed(1)}, ${(a.x + spread).toFixed(1)} ${edge.toFixed(1)}" marker-end="url(#arrow)"/>`,
+        caption: `<text class="edge-label" x="${a.x.toFixed(1)}" y="${label.toFixed(1)}">${caption}</text>` };
     }
     // Parallel and opposite transitions between the same pair of states bend apart instead of overlapping.
     const pair = [transition.from, transition.to].sort().join('\u0000'), nth = pairs.get(pair) ?? 0;
@@ -70,12 +73,23 @@ export function renderStateDiagram(model: StateModel, bearerLabel: string): Stat
     const tx = b.x - control.x, ty = b.y - control.y, scale = Math.min(Math.abs((box.width / 2 + 4) / (tx || 1e-9)), Math.abs((box.height / 2 + 4) / (ty || 1e-9)));
     const end = { x: b.x - tx * scale, y: b.y - ty * scale };
     // The caption sits beside the curve, on the side it bends toward, staggered along it so that
-    // captions of transitions between the same states do not coincide.
-    const t = [0.5, 0.34, 0.66][nth % 3]!, u = 1 - t;
-    const on = { x: u * u * a.x + 2 * u * t * control.x + t * t * end.x, y: u * u * a.y + 2 * u * t * control.y + t * t * end.y };
+    // captions of transitions between the same states do not coincide. If its estimated extent would
+    // cross a state box or an earlier caption, further points along the curve are tried.
     const side = { x: -(dy / length) * Math.sign(offset), y: (dx / length) * Math.sign(offset) };
     const anchor = side.x > 0.3 ? 'start' : side.x < -0.3 ? 'end' : 'middle';
-    return `<path class="edge" d="M ${a.x.toFixed(1)} ${a.y.toFixed(1)} Q ${control.x.toFixed(1)} ${control.y.toFixed(1)} ${end.x.toFixed(1)} ${end.y.toFixed(1)}" marker-end="url(#arrow)"/><text class="edge-label" style="text-anchor:${anchor}" x="${(on.x + side.x * 10).toFixed(1)}" y="${(on.y + side.y * 14 + 4).toFixed(1)}">${caption}</text>`;
+    const width = 6.2 * (caption.length), place = (t: number) => {
+      const u = 1 - t, on = { x: u * u * a.x + 2 * u * t * control.x + t * t * end.x, y: u * u * a.y + 2 * u * t * control.y + t * t * end.y };
+      const x = on.x + side.x * 10, y = on.y + side.y * 14 + 4;
+      const left = anchor === 'start' ? x : anchor === 'end' ? x - width : x - width / 2;
+      return { x, y, box: { left, right: left + width, top: y - 11, bottom: y + 3 } };
+    };
+    const candidates = [[0.5, 0.34, 0.66][nth % 3]!, 0.42, 0.58, 0.26, 0.74, 0.18, 0.82].map(place);
+    const chosen = candidates.find(candidate => ![...boxes, ...placed].some(other => candidate.box.left < other.right && candidate.box.right > other.left
+      && candidate.box.top < other.bottom && candidate.box.bottom > other.top)) ?? candidates[0]!;
+    placed.push(chosen.box);
+    const on = { x: chosen.x - side.x * 10, y: chosen.y - side.y * 14 - 4 };
+    return { path: `<path class="edge" d="M ${a.x.toFixed(1)} ${a.y.toFixed(1)} Q ${control.x.toFixed(1)} ${control.y.toFixed(1)} ${end.x.toFixed(1)} ${end.y.toFixed(1)}" marker-end="url(#arrow)"/>`,
+      caption: `<text class="edge-label" style="text-anchor:${anchor}" x="${(on.x + side.x * 10).toFixed(1)}" y="${(on.y + side.y * 14 + 4).toFixed(1)}">${caption}</text>` };
   });
   const nodes = model.states.map(state => {
     const at = position.get(state.key)!;
@@ -97,7 +111,8 @@ export function renderStateDiagram(model: StateModel, bearerLabel: string): Stat
   const svg = [`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escape(`State-transition diagram of ${bearerLabel}`)}">`,
     '<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z"/></marker></defs>',
     '<style>.state{fill:#f6f8fa;stroke:#24292f;stroke-width:1.5}.state-label{font:14px sans-serif;text-anchor:middle}.edge{fill:none;stroke:#24292f;stroke-width:1.3}.edge-label{font:11px sans-serif;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:4}.entry{fill:#24292f}.title{font:600 15px sans-serif;text-anchor:middle}</style>',
-    `<text class="title" x="${centre.x}" y="30">${escape(short(`States of ${bearerLabel}`, 80))}</text>`, ...edges, entry, ...nodes, '</svg>'].join('');
+    // Captions are drawn last, above every state, so no box can hide one.
+    `<text class="title" x="${centre.x}" y="30">${escape(short(`States of ${bearerLabel}`, 80))}</text>`, ...edges.map(item => item.path), entry, ...nodes, ...edges.map(item => item.caption), '</svg>'].join('');
   const describe = (item: StateDiagram['legend'][number]) => [`${item.mnemonic}  ${item.from} → ${item.to}`,
     `      trigger: ${item.trigger ?? 'not established'}`, ...(item.guard ? [`      guard: ${item.guard}`] : []), ...(item.effect ? [`      effect: ${item.effect}`] : [])];
   const text = [`States of ${bearerLabel}`, ...model.states.map(state => `  [${state.label}]${state.description ? `  ${state.description}` : ''}`),
