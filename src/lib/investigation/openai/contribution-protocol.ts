@@ -61,7 +61,7 @@ export const contributionProtocol: WireProtocol<DialogInput, DialogReply> = {
     const encode = (value: unknown, path: string): unknown => translate(value, '', path, reference => references.handle(reference),
       // A program-evidence response is translated by its typed record structure; the wrapper's own fields by key.
       (object, at): unknown => object.tool === 'evidence' && 'response' in object ? { ...object, response: references.evidenceResponse(object.response, `${at}.response`),
-        entities: encode(object.entities, `${at}.entities`), retained: encode(object.retained, `${at}.retained`) } : undefined);
+        entities: encode(object.entities, `${at}.entities`), retained: encode(object.retained, `${at}.retained`), retainedOmitted: encode(object.retainedOmitted, `${at}.retainedOmitted`) } : undefined);
     const decode = (value: unknown, path: string) => translate(value, '', path, (handle, at) => references.resolve(handle, at), () => undefined);
     return {
       message(input) {

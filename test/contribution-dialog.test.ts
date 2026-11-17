@@ -190,3 +190,31 @@ test('dialog outcomes separate repair, exhausted repair, limits, ended dialogs a
   await assert.rejects(run([() => { throw new TypeError('agent defect'); }], request().invocation), TypeError);
   assert.match(dialogInstructions(operation), /MAINTAIN IDENTITY DELIBERATELY/);
 });
+
+test('an evidence page is still delivered when the retained finding it obtained does not fit beside it', async () => {
+  const { ledger, record, entity, invoke, run, account } = await setup();
+  const barrel = entity('barrel'), main = invoke(barrel);
+  const { responseCharacters } = await import('../src/lib/contributions/dialog.js');
+  // Stand in for a module with a very large export surface by making the retained finding's qualification enormous.
+  const bulky = ledger.begin({ producer: { mechanism: 'mechanical', method: 'test/bulky-exports@1', agent: null } });
+  const big = 'x'.repeat(responseCharacters);
+  ledger.accept([{ production: bulky, contribution: { investigrams: [{ key: 'b', qualification: { status: 'mechanically-derived', limitations: [big] },
+    items: [{ key: 'p', type: 'prose', body: { text: 'A very large export listing.' } }],
+    declarations: [{ key: 'use', operation: 'add', target: { kind: 'entity', entity: barrel, role: 'topic', topic: 'exports' }, members: [{ kind: 'item', item: { investigram: { local: 'b' }, item: 'p' } }] }] }] } }]);
+  const bulkyUse = { investigram: ledger.investigrams().at(-1)!.id, declaration: 'use' };
+  const { execution } = await run([
+    () => ({ kind: 'tools', requests: [{ kind: 'exports', subject: record('barrel') }] }),
+    input => {
+      const page = input.responses[0] as Extract<DialogResponse, { tool: 'evidence' }>;
+      // The evidence page arrives; the retained uses are named, not delivered, and the omission is stated.
+      assert.equal(page.tool, 'evidence');
+      assert.equal(page.response.records.some(item => item.kind === 'claim' && item.information.type === 'export'), true);
+      assert.deepEqual(page.retained, []);
+      assert.equal(page.retainedOmitted.some(address => address.investigram === bulkyUse.investigram), true);
+      assert.match(page.response.limitations.at(-1)!, /did not fit in this response and was not delivered/);
+      return { kind: 'submit', contribution: { investigrams: [account('a', barrel, main.result.id)] } };
+    },
+  ], main.invocation);
+  // Only the baseline was recorded as delivered; no retained use was.
+  assert.deepEqual(kinds(execution.production.deliveries), ['scope', 'association', 'item']);
+});

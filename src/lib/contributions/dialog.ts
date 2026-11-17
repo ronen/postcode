@@ -48,7 +48,9 @@ export type DialogResponse =
     /** Host identity mapping from module records to common Entities. Not content. */
     readonly entities: readonly { readonly record: RecordId; readonly entity: EntityId }[];
     /** Retained contributions of the mechanical work this request obtained, delivered to this dialog. */
-    readonly retained: readonly unknown[] }
+    readonly retained: readonly unknown[];
+    /** Retained uses that did not fit in this response: addresses only, not delivered. */
+    readonly retainedOmitted: readonly AssociationAddress[] }
   | { readonly tool: 'contribution'; readonly kind: ContributionTool['kind']; readonly value: unknown }
   | { readonly tool: 'unavailable'; readonly limitations: readonly string[] }
   /** A structurally invalid submission, returned for bounded repair. Nothing was accepted. */
@@ -216,16 +218,24 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
   });
   const evidence = async (query: EvidenceQuery): Promise<DialogResponse> => {
     const response = await options.evidence.query(query, controller.signal);
-    return bounded(() => {
-      // Mechanical work this request obtained keeps its own producer; what it retained reaches this dialog as a separate, recorded delivery.
-      const subject = 'subject' in query ? moduleEntity(store, query.subject) : undefined;
-      const retained = query.kind === 'exports' && subject && response.status !== 'unavailable'
-        ? ledger.associations({ kind: 'entity', entity: subject, role: 'topic', topic: 'exports' }, 'current').map(entry => handle.association(entry.address, { content: true })) : [];
+    const subject = 'subject' in query ? moduleEntity(store, query.subject) : undefined;
+    const page = bounded(() => {
       handle.supplied(response.records.map(record => record.id));
       const modules = [...new Set([...('subject' in query ? [query.subject] : []), ...response.selected, ...response.records.filter(record => record.kind === 'module').map(record => record.id)])];
-      return { tool: 'evidence', response, retained,
+      return { tool: 'evidence', response, retained: [], retainedOmitted: [],
         entities: modules.flatMap(record => { const entity = moduleEntity(store, record); return entity ? [{ record, entity }] : []; }) };
     });
+    if (page.tool !== 'evidence' || query.kind !== 'exports' || !subject || response.status === 'unavailable') return page;
+    // Mechanical work this request obtained keeps its own producer; what it retained reaches this dialog as a separate,
+    // recorded delivery. It is added only if the whole response still fits; otherwise the evidence page is delivered
+    // and the retained uses are named by address, undelivered, for separate acquisition.
+    const addresses = ledger.associations({ kind: 'entity', entity: subject, role: 'topic', topic: 'exports' }, 'current').map(entry => entry.address);
+    const mark = handle.checkpoint();
+    const enriched = { ...page, retained: addresses.map(address => handle.association(address, { content: true })) };
+    if (JSON.stringify(enriched).length <= responseCharacters) return enriched;
+    handle.discard(mark);
+    return { ...page, retainedOmitted: addresses,
+      response: { ...page.response, limitations: [...page.response.limitations, `The retained export finding for this module (${addresses.length} use${addresses.length === 1 ? '' : 's'}) did not fit in this response and was not delivered. Acquire it separately by association, with an excerpt if needed.`] } };
   };
   const parse = (value: unknown): DialogTool | null => {
     if (!value || typeof value !== 'object' || Array.isArray(value)) return null;

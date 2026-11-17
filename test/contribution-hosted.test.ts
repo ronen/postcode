@@ -73,7 +73,7 @@ test('the hosted transport carries the contribution dialog with exact handles an
   };
   const exported = { kind: 'claim', id: claim, session, method: 'm', subject: module, context: id('context', '3'), information: { type: 'export', exportedName: literal, symbol: null, origin: null, roles: null, routes: [] } };
   const submitted = await dialogue.exchange({ ...input, notices: [], responses: [{ tool: 'evidence', response: { status: 'available', records: [exported], selected: [claim], limitations: [] },
-    entities: [{ record: module, entity }], retained: [] }] } as unknown as DialogInput, signal, item => reported.push(item));
+    entities: [{ record: module, entity }], retained: [], retainedOmitted: [] }] } as unknown as DialogInput, signal, item => reported.push(item));
   assert.equal(submitted.kind, 'submit');
   const contribution = (submitted as { contribution: { investigrams: any[] } }).contribution.investigrams[0];
   assert.deepEqual([contribution.referents, contribution.items[0].evidence, contribution.items[0].body.bearer, contribution.items[0].body.states[0].entity, contribution.declarations[0].target.result,
