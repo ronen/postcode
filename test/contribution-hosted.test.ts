@@ -81,6 +81,13 @@ test('the hosted transport carries the contribution dialog with exact handles an
     [[entity], [claim], { entity }, { local: 'open' }, result, { investigram: { local: 'states' }, item: 'model' }, [{ investigram, declaration: 'identify' }], literal, [literal]]);
   // Only the two PostCode functions are offered, the credential never enters the request body or captures, and usage is reported per call.
   assert.deepEqual(sent[0]!.tools.map((tool: { name: string }) => tool.name), ['request_information', 'submit_contribution']);
+  // The submission schema closes the structures live agents got wrong: a report inside an investigram, an option's
+  // request fields at its top level or stray values in its subjects, and grounds with fields other than text, evidence and support.
+  const schema = sent[0]!.tools[1].parameters as Record<string, any>, shape = schema.properties.investigrams.items;
+  assert.deepEqual([shape.additionalProperties, Object.hasOwn(shape.properties, 'report')], [false, false]);
+  const option = shape.properties.options.items;
+  assert.deepEqual([option.additionalProperties, option.required, option.properties.request.additionalProperties, option.properties.request.properties.subjects.items.required], [false, ['key', 'meaning', 'request'], false, ['subject']]);
+  assert.deepEqual(Object.keys(shape.properties.declarations.items.properties.grounds.properties), ['text', 'evidence', 'support']);
   assert.equal(JSON.stringify([sent, captures]).includes(sentinel), false);
   assert.equal(reported.length, 2);
   dialogue.close();

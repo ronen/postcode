@@ -5,7 +5,7 @@ import { hostedAgent } from './adapter.js';
 import type { OpenAIExchange, WireProtocol } from './adapter.js';
 import { InvestigatorReferences } from './references.js';
 
-export const contributionWireProtocol = 'postcode/contribution-dialog-wire@1';
+export const contributionWireProtocol = 'postcode/contribution-dialog-wire@2';
 
 /**
  * Reference positions of the contribution dialog. A string at one of these keys is an exact
@@ -29,6 +29,42 @@ function translate(value: unknown, key: string, path: string, map: (value: strin
 
 const exact = { type: 'string', description: 'An exact handle supplied in this dialogue.' };
 const address = (second: string) => ({ type: 'object', properties: { investigram: exact, [second]: { type: 'string' } }, required: ['investigram', second] });
+// The submission's structure, matching the shapes stated in the instructions. Item bodies are typed by their content type.
+const strings = { type: 'array', items: { type: 'string' } };
+const qualification = { type: 'object', additionalProperties: false, required: ['limitations'], properties: { limitations: strings } };
+const local = { type: 'object', additionalProperties: false, required: ['local'], properties: { local: { type: 'string' } } };
+const reference = { description: 'A supplied handle, or { local: <key> } for something in this submission.', anyOf: [{ type: 'string' }, local] };
+const content = { type: 'object', additionalProperties: false, required: ['investigram', 'item'], properties: { investigram: reference, item: { type: 'string' } } };
+const use = { type: 'object', additionalProperties: false, required: ['investigram', 'declaration'], properties: { investigram: reference, declaration: { type: 'string' } } };
+const member = { anyOf: [
+  { type: 'object', additionalProperties: false, required: ['kind', 'item'], properties: { kind: { const: 'item' }, item: content } },
+  { type: 'object', additionalProperties: false, required: ['kind', 'association'], properties: { kind: { const: 'association' }, association: use } }] };
+const grounds = { type: 'object', additionalProperties: false, required: ['text'], properties: { text: { type: 'string' }, evidence: strings, support: { type: 'array', items: content } } };
+const subject = { anyOf: [
+  { type: 'object', additionalProperties: false, required: ['kind', 'entity'], properties: { kind: { const: 'entity' }, entity: reference } },
+  { type: 'object', additionalProperties: false, required: ['kind', 'item'], properties: { kind: { const: 'content' }, item: content, component: { type: 'string' } } }] };
+const investigram = { type: 'object', additionalProperties: false, required: ['key', 'qualification'], properties: {
+  key: { type: 'string' }, qualification,
+  entities: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['key', 'entityKind'], properties: { key: { type: 'string' }, entityKind: { type: 'string' } } } },
+  referents: { type: 'array', items: reference },
+  items: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['key', 'type', 'body'], properties: {
+    key: { type: 'string' }, type: { type: 'string' }, body: { type: 'object', description: 'Always an object; for prose { text }.' },
+    referents: { type: 'array', items: reference }, evidence: strings, support: { type: 'array', items: content }, qualification } } },
+  declarations: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['key', 'operation'], properties: {
+    key: { type: 'string' }, operation: { type: 'string', enum: ['add', 'supersede', 'withdraw'] },
+    target: { type: 'object', description: '{ kind: "entity", entity, role: "identification" }, { kind: "entity", entity, role: "topic", topic } or { kind: "result", result }. Omitted for a withdrawal.' },
+    members: { type: 'array', items: member }, displaces: { type: 'array', items: use }, grounds, qualification } } },
+  options: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['key', 'meaning', 'request'], properties: {
+    key: { type: 'string' }, meaning: { type: 'string' },
+    request: { type: 'object', additionalProperties: false, required: ['operation', 'subjects'], properties: {
+      operation: { type: 'string' }, subjects: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['subject'], properties: { subject } } }, resultContract: { type: 'string' } } },
+    references: { type: 'array', items: member }, qualification } } },
+  illustrations: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['key', 'diagramType', 'inputs'], properties: {
+    key: { type: 'string' }, diagramType: { type: 'string' }, inputs: { type: 'array', items: content }, qualification } } },
+  inconsistencies: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['key', 'endpoints', 'grounds'], properties: {
+    key: { type: 'string' }, endpoints: { type: 'array', items: member }, grounds, qualification } } },
+} };
+
 /** Only PostCode's subject-based acquisition and explicit whole-contribution submission. */
 export const contributionFunctions: FunctionTool[] = [
   { type: 'function', name: 'request_information', strict: false,
@@ -45,11 +81,10 @@ export const contributionFunctions: FunctionTool[] = [
         association: address('declaration'), declaration: address('declaration'), item: address('item'), content: { type: 'boolean' }, excerptCharacters: { type: 'integer', minimum: 0 },
         inventory: { type: 'string', enum: ['current-only', 'all-history'] }, scope: { type: 'object' }, address: { type: 'object' } } } } } } },
   { type: 'function', name: 'submit_contribution', strict: false,
-    description: 'Submit the complete contribution for atomic validation, in the form the instructions give. Copy supplied handles exactly; refer to content of this same submission with { investigram: { local: <key> }, item | declaration }. A structurally invalid submission is returned once for repair. Schema conformance establishes neither valid references nor truth.',
+    description: 'Submit the complete contribution for atomic validation, in the shapes the instructions give. Copy supplied handles exactly; refer to content of this same submission with { investigram: { local: <key> }, item | declaration }. A structurally invalid submission is returned once for repair with the first problem found. Schema conformance establishes neither valid references nor truth.',
     parameters: { type: 'object', additionalProperties: false, required: ['investigrams'], properties: {
-      investigrams: { type: 'array', items: { type: 'object', additionalProperties: true, required: ['key'], properties: { key: { type: 'string' } } } },
-      report: { type: 'object', additionalProperties: false, properties: { inability: { type: 'string' }, statement: { type: 'string' },
-        answer: { type: 'array', items: address('declaration') } } } } } },
+      investigrams: { type: 'array', items: investigram },
+      report: { type: 'object', additionalProperties: false, properties: { inability: { type: 'string' }, statement: { type: 'string' }, answer: { type: 'array', items: address('declaration') } } } } } },
 ];
 
 /** The contribution dialog over the hosted transport, with its own structural reference translation. */

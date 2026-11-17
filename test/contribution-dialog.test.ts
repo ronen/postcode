@@ -227,6 +227,9 @@ test('the instructions state the exact submission shapes that live agents got wr
   assert.match(text, /grounds: \{ text: string, evidence\?: \[program record handle\], support\?: \[content address\] \}/);
   assert.match(text, /option: \{ key, meaning: string, request: \{ operation, subjects: \[\{ subject \}\]/);
   assert.match(text, /The operation and subjects go inside request/);
+  // Observed in the second live trials: prose bodies given as bare strings, and a report placed inside an investigram.
+  assert.match(text, /for type "prose" it is \{ text: string \}/);
+  assert.match(text, /The report belongs to the whole contribution, never inside an investigram/);
   const { stateBehaviorGuidance } = await import('../src/lib/contributions/state-model.js');
   assert.match(stateBehaviorGuidance, /unsupported is a list of strings/);
   // Retained regression cases: each observed shape is rejected with a message naming the problem, and the stated shape is accepted.
