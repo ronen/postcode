@@ -106,3 +106,8 @@ The [report-answer verification record](report-answer-verification.md) records t
 ## Report-only return wording after round 9
 
 The [report-only verification record](report-only-verification.md) reports a narrow initial-answer/fresh-review run on `4267a05`. Both submissions were accepted without repair. The fresh investigator used `investigrams: []` and returned the exact existing answer, fulfilling its contract without a new investigram or designation. The run used 6 of a new 20-request cap (103 cumulative M2 dispatches) and stopped once the objective was met. Architectural correctness and broad reliability remain outside this evidence.
+
+
+## Follow-up contract evidence: scope clarification after round 10
+
+The [contract-evidence reconciliation](follow-up-contract-evidence.md) confirms that original run 6, trial 2 did invoke an option promising `postcode/state-diagram-answer@1`; its accepted answer was projected as fulfilled. That historical result used dialog `@3` / wire `@2` and an elicitation supplying operation names and subject signatures. Later focused option chains promised no contract, while the latest report-only check invoked no option. Thus “no non-null follow-up demonstrated live” applies to the later focused/current-revision evidence, not to all M2 trials. The clarification preserves the revision and elicitation limits and adds current application-level offline coverage for forwarding, fulfilled/unfulfilled outcomes, and unknown-contract refusal. No new inference was run.
