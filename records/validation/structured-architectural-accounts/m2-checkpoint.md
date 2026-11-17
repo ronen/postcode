@@ -120,3 +120,10 @@ Implementing-agent offline verification under Node 22.13.1:
 - `git diff --check` passed. Local logs are in ignored `_verification/m2-intent-observations.log` and `_verification/m2-intent-expanded-regression.log`.
 
 No live inference was run for these corrections. **The revised production instructions have not yet been verified live.** Earlier live evidence remains evidence for its recorded implementation and does not establish first-submission success or the architectural correctness of generated explanations under the revised instructions. Cumulative dispatched inference usage remains 69 of the previously authorized 70 requests; the latest direction authorizes no additional live inference. M2 remains unaccepted, and M3 has not begun.
+
+
+## Subsequent authorized live verification — 2026-11-17
+
+After the offline corrections above, task follow-up `76e2ea6` authorized up to 30 additional inference requests, with further attempts only to resolve specific uncertainties. The [revised-selector live record](m2-trials/revised-selector-verification.md) now supplies live evidence for implementation `2ed7b5f251157e2176879023694b5166892923b2`: one completed chain used 13 requests. The authored option used valid `state:half`; an unrelated invalid invocation-as-investigram reference in its report was repaired normally without changing the selector. The exact option, meaning and selector reached the subsequent investigator, whose first submission was accepted. Initial contract fulfillment and null follow-up fulfillment matched the actual requests. Production instruction/schema equality and usage were checked against all captures.
+
+This later evidence supersedes the earlier lack of live verification for the revised instructions; the preceding correction record remains an accurate account of its verification at that time. No code, elicitation or repair behavior changed for this run. No further live attempt was made, and 17 of the newly authorized requests remain unused. This is focused integration evidence, not architectural proof, broad reliability evidence, or independent review of the corrections. M2 remains unaccepted and M3 has not begun.
