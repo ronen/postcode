@@ -1,0 +1,63 @@
+States of ConsecutiveBreaker
+  [Below threshold]  The persisted counter state is less than the instance's configured threshold.
+  [Threshold reached]  The persisted counter state is greater than or equal to the configured threshold. This is a comparison category, not a latched open/broken mode: later failures still increment the counter.
+  [Unordered numeric comparison]  Neither counter < threshold nor counter >= threshold is true, as can occur when the counter or threshold is NaN.
+Transitions
+T1  Below threshold → Below threshold
+      trigger: failure() is called
+      guard: Incrementing the current counter still leaves it below threshold.
+      effect: Increment the counter by one and return false.
+T2  Below threshold → Threshold reached
+      trigger: failure() is called
+      guard: The incremented counter is greater than or equal to threshold.
+      effect: Increment the counter by one and return true, indicating that the circuit should open.
+T3  Threshold reached → Threshold reached
+      trigger: failure() is called
+      effect: Increment the counter by one and return true.
+T4  Unordered numeric comparison → Unordered numeric comparison
+      trigger: failure() is called
+      effect: Increment the counter; the greater-than-or-equal comparison remains false, so return false.
+T5  Below threshold → Below threshold
+      trigger: success() is called
+      guard: threshold > 0
+      effect: Set the counter to 0.
+T6  Below threshold → Threshold reached
+      trigger: success() is called
+      guard: threshold <= 0
+      effect: Set the counter to 0.
+T7  Below threshold → Unordered numeric comparison
+      trigger: success() is called
+      guard: threshold is NaN
+      effect: Set the counter to 0.
+T8  Threshold reached → Below threshold
+      trigger: success() is called
+      guard: threshold > 0
+      effect: Set the counter to 0.
+T9  Threshold reached → Threshold reached
+      trigger: success() is called
+      guard: threshold <= 0
+      effect: Set the counter to 0.
+T10  Threshold reached → Unordered numeric comparison
+      trigger: success() is called
+      guard: threshold is NaN
+      effect: Set the counter to 0.
+T11  Unordered numeric comparison → Below threshold
+      trigger: success() is called
+      guard: threshold > 0
+      effect: Set the counter to 0.
+T12  Unordered numeric comparison → Threshold reached
+      trigger: success() is called
+      guard: threshold <= 0
+      effect: Set the counter to 0.
+T13  Unordered numeric comparison → Unordered numeric comparison
+      trigger: success() is called
+      guard: threshold is NaN
+      effect: Set the counter to 0.
+Entry: not established by this account. No entry marker is drawn.
+States shown: the account claims these are all the states.
+Transitions shown: some transitions only; others may exist.
+Applies to: This comparison-category model covers the implementation's numeric state under the language's number semantics. Construction always sets the counter to 0, but the initial category depends on the supplied threshold: below for threshold > 0, reached for threshold <= 0, and unordered for NaN; because no threshold was supplied for this analysis, the categorical initial state is unknown.
+Not representable in this diagram: The counter is public and the IBreaker contract says it can be set for serialization. Arbitrary external assignments can move between categories without using success() or failure(); those assignment transitions are not enumerated.
+Not representable in this diagram: The flat model groups an unbounded set of counter values into comparison categories, so it does not show the exact count retained within a category.
+Not representable in this diagram: Runtime writes that bypass the implementation's numeric type and their coercion behavior are outside the model.
+The diagram arranges the supplied account. It adds no state, transition or completeness claim, and the absence of an arrow is not a claim that no transition exists unless stated above.
