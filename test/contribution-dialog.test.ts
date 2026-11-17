@@ -56,7 +56,14 @@ test('a dialog consumes retained mechanical module information, receives request
   const controlled = await run([() => ({ kind: 'tools', requests: [{ kind: 'inventory', scope: exportsScope(origin), inventory: 'current-only' }] }),
     input => { assert.deepEqual((input.responses[0] as { value: { listed: unknown[] } }).value.listed, []); return { kind: 'submit', contribution: { investigrams: [account('c', origin, control.result.id)] } }; }], control.invocation);
   const main = invoke(barrel);
-  let citedClaim: RecordId | undefined, retainedUse: AssociationAddress | undefined;
+  let citedClaim: RecordId | undefined, retainedUse: AssociationAddress | undefined, acquiredSeparately = false;
+  const finish = (retained: readonly DeliveredAssociation[]): DialogReply => {
+    assert.deepEqual([retained.length, retained[0]!.owner.producer.mechanism, retained[0]!.content[0]!.type], [1, 'mechanical', 'module-exports']);
+    retainedUse = retained[0]!.address;
+    const submitted = account('a', barrel, main.result.id, 'The module forwards the exports of its origin.');
+    return { kind: 'submit', contribution: { investigrams: [{ ...submitted,
+      items: [{ ...submitted.items![0]!, evidence: [citedClaim!], support: [retained[0]!.content[0]!.address] }] }] } };
+  };
   const { execution, agent } = await run([
     input => {
       // Initial context: the subject Entity's standing identifications, with the mechanical finding's own qualification.
@@ -72,20 +79,31 @@ test('a dialog consumes retained mechanical module information, receives request
       assert.deepEqual(inventory.value.listed, []);
       assert.equal(exported.response.records.some(item => item.kind === 'claim' && item.information.type === 'export'), true);
       assert.deepEqual(exported.entities.filter(item => item.record === record('barrel')), [{ record: record('barrel'), entity: barrel }]);
-      const retained = exported.retained as DeliveredAssociation[];
-      assert.deepEqual([retained.length, retained[0]!.owner.producer.mechanism, retained[0]!.content[0]!.type], [1, 'mechanical', 'module-exports']);
-      retainedUse = retained[0]!.address;
       citedClaim = exported.response.records.find(item => item.kind === 'claim' && item.information.type === 'export')!.id;
-      const submitted = account('a', barrel, main.result.id, 'The module forwards the exports of its origin.');
-      return { kind: 'submit', contribution: { investigrams: [{ ...submitted,
-        items: [{ ...submitted.items![0]!, evidence: [citedClaim], support: [retained[0]!.content[0]!.address] }] }] } };
+      // Absolute paths change evidence pagination. Accept either inline delivery or an explicit omission,
+      // then acquire the exact omitted use before citing it as support.
+      if (exported.retained.length) {
+        assert.deepEqual(exported.retainedOmitted, []);
+        return finish(exported.retained as readonly DeliveredAssociation[]);
+      }
+      acquiredSeparately = true;
+      assert.equal(exported.retainedOmitted.length, 1);
+      assert.deepEqual(input.notices.map(notice => [notice.change, notice.operation]), [[exported.retainedOmitted[0], 'add']]);
+      assert.match(exported.response.limitations.at(-1)!, /was not delivered/);
+      return { kind: 'tools', requests: [{ kind: 'association', association: exported.retainedOmitted[0]!, content: true }] };
+    },
+    input => {
+      const acquired = input.responses[0]!;
+      assert.equal(acquired.tool, 'contribution');
+      if (acquired.tool !== 'contribution' || acquired.kind !== 'association') return assert.fail('Expected acquired export use');
+      return finish([acquired.value as DeliveredAssociation]);
     },
   ], main.invocation);
   assert.equal(execution.outcome.kind, 'accepted');
   if (execution.outcome.kind !== 'accepted') return;
   const produced = execution.outcome.acceptance.productions[0]!.investigrams.a!;
-  // Exactly what was dispatched: baseline scope with the identification and its content, the acquired scope, then the retained export use and its content.
-  assert.deepEqual(kinds(execution.production.deliveries), ['scope', 'association', 'item', 'scope', 'association', 'item']);
+  // Exactly what was dispatched: baseline and acquired scope, an addition notice when content was omitted, then the retained export use and its content.
+  assert.deepEqual(kinds(execution.production.deliveries), ['scope', 'association', 'item', 'scope', ...(acquiredSeparately ? ['notice'] : []), 'association', 'item']);
   assert.equal(execution.production.evidence.includes(citedClaim!), true);
   assert.deepEqual([execution.production.producer.mechanism, execution.production.producer.agent?.model, execution.production.invocation, agent.closes], ['agentic', 'scripted', main.invocation.id, 1]);
   assert.equal(ledger.investigram(produced).qualification?.status, 'interpretation');
@@ -320,5 +338,18 @@ test('retained failures preserve their domain kind and details when evaluation i
     assert.equal(reused.reused, true);
     assert.equal(reused.attempt?.id, execution.production.id);
     assert.deepEqual(reused.attemptResult?.outcome, execution.outcome);
+  }
+});
+
+test('every production operation advertises supported follow-up signatures and result contracts without trial elicitation', async () => {
+  const { contributionOperations } = await import('../src/lib/contributions/operations.js');
+  for (const operation of Object.values(contributionOperations)) {
+    const instructions = dialogInstructions(operation);
+    assert.match(instructions, /state-behavior: one discovered module Entity/);
+    assert.match(instructions, /examine-content: one exact content item/);
+    assert.match(instructions, /kind: "designation"/);
+    assert.match(instructions, /kind: "investigram"/);
+    assert.match(instructions, /postcode\/state-diagram-answer@1/);
+    assert.match(instructions, /omit resultContract when no specialized form is promised/);
   }
 });

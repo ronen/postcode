@@ -80,3 +80,10 @@ These are a few focused trials of one model on one repository. They show that th
 ## Subsequent review elicitation
 
 The [review follow-up trial record](review-elicitation.md) preserves three additionally authorized scenarios and the observations missing from the original runs: precise inconsistency, withdrawal, content reuse/partitioning and illustrations. It used 10 further requests, bringing the cumulative total to 49 of the original 60. The earlier run descriptions above remain evidence of their original targets and instruction versions.
+
+
+## Round 4 instruction-evidence clarification
+
+Round 4 found that the trial-1 elicitation supplied the supported operation names and subject signatures, while production instructions at the reviewed target did not. The observed option remains evidence that authoring and invoking it worked with that supplied guidance. It does not establish that an agent could author an invocable option without the elicitation’s operation list.
+
+The round 4 correction includes the operation list, subject signatures and optional result-contract identities in production instructions, derived from the application’s registrations. Offline instruction and invocation tests cover this correction. No live trial of the corrected instructions without the earlier elicitation was run, and no additional inference requests were used; the cumulative total remains 49 of 60. Further live verification requires separately confirmed authorization.

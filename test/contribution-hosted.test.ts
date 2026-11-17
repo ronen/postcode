@@ -124,7 +124,8 @@ test('originating questions keep exact wire references and literal parameters se
   const codec = contributionProtocol.codec();
   const origin = { invocation: 'session:origin:invocation:1', result: 'session:origin:query-result:1', fresh: false,
     request: { operation: 'original-question', subjects: [{ role: null, subject: { kind: 'entity', entity: 'session:origin:entity:1' } }],
-      parameters: { entity: 'literal parameter', scenario: 'original-scope' }, context: [], resultContract: 'original-contract' } };
+      parameters: { entity: 'literal parameter', scenario: 'original-scope' }, context: [], resultContract: 'original-contract',
+      option: { investigram: 'session:origin:investigram:1', key: 'session:literal-option-key' } } };
   const message = codec.message({ attempt: 'session:attempt' as never, instructions: '', request: { invocation: 'session:new:invocation:1', result: 'session:new:query-result:1', operation: 'examine-content', fresh: false,
     subjects: [], parameters: {}, resultContract: null }, notices: [], responses: [{ tool: 'contribution', kind: 'item', value: { owner: { origin } } }],
     remaining: { milliseconds: 1000, calls: 1, toolCalls: 1, repairs: 1 } } as unknown as DialogInput);
@@ -133,6 +134,8 @@ test('originating questions keep exact wire references and literal parameters se
   assert.notEqual(encoded.result, origin.result);
   assert.equal(encoded.request.operation, origin.request.operation);
   assert.deepEqual(encoded.request.parameters, origin.request.parameters);
+  assert.notEqual(encoded.request.option.investigram, origin.request.option.investigram);
+  assert.equal(encoded.request.option.key, origin.request.option.key);
   const request = codec.tools({ requests: [{ kind: 'designations', result: encoded.result }] });
   assert.deepEqual(request, { kind: 'tools', requests: [{ kind: 'designations', result: origin.result }] });
   codec.close();

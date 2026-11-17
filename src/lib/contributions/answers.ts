@@ -78,6 +78,7 @@ export function selectContributionAnswer(store: ProgramRecordStore, ledger: Cont
   const fulfillment = selection.contract ? assessFulfillment(ledger, selection.contract, result.id) : null;
   const producer = (address: { readonly investigram: ItemAddress['investigram'] }) => ledger.production(ledger.investigram(address.investigram).production).producer;
   const support = answerSupport(store, ledger);
+  if (request.option) support.metadata({ ...request.option, metadata: 'option' });
   const alternatives = ledger.designations(result.id).map((entry): AnswerAlternative => {
     const status = ledger.status.association(entry.address), items = designatedItems(ledger, entry.address);
     const uses = [entry.address, ...ledger.memberAssociations(entry.address)];
@@ -144,6 +145,9 @@ export interface ArrangedAlternative {
   /** A diagram for each selected state model, or why none can be drawn from this alternative's content. */
   readonly diagrams: readonly StateDiagram[];
   readonly diagramUnavailable: string | null;
+  /** Every selected item not rendered, including each incompatible model and its full retained meaning. */
+  readonly unpresented: readonly { readonly address: ItemAddress; readonly type: string; readonly reason: string;
+    readonly bearer: string | null; readonly stateModel: StateModel | null }[];
   readonly options: readonly { readonly address: MetadataAddress; readonly meaning: string; readonly operation: string; readonly resultContract: string | null }[];
 }
 export interface ContributionAnswerView {
@@ -235,7 +239,15 @@ export function arrangeContributionAnswer(content: ContributionAnswerContent, ti
     return { designation: alternative.designation, producer: alternative.producer, qualifications,
       prose: alternative.items.flatMap(item => item.type === 'prose' ? [(item.body as { text: string }).text] : []),
       diagrams: drawable.map(model => renderStateDiagram(model, bearer(model))),
-      diagramUnavailable: drawable.length ? null : models.length ? stateDiagramIncompatibility(models[0]!) : 'This alternative selects no state model.',
+      diagramUnavailable: drawable.length ? null : models.length ? 'None of the selected state models can be drawn; see the unpresented items.' : 'This alternative selects no state model.',
+      unpresented: alternative.items.flatMap((item): ArrangedAlternative['unpresented'] => {
+        if (item.type === 'prose') return [];
+        if (item.type === 'state-model') {
+          const model = item.body as StateModel, reason = stateDiagramIncompatibility(model);
+          return reason ? [{ address: item.address, type: item.type, reason, bearer: bearer(model), stateModel: model }] : [];
+        }
+        return [{ address: item.address, type: item.type, reason: `Selected ${item.type} content is retained but has no renderer in this arrangement.`, bearer: null, stateModel: null }];
+      }),
       options: alternative.options.map(({ address, option }) => ({ address, meaning: option.meaning, operation: option.request.operation, resultContract: option.request.resultContract })) };
   });
   const drawn = alternatives.filter(item => item.diagrams.length).length;

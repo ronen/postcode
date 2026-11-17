@@ -5,6 +5,8 @@ export interface StateDiagram {
   readonly diagramType: 'state-transition';
   readonly method: string;
   readonly svg: string;
+  /** Exact local state keys and full labels; mnemonics distinguish colliding displayed labels. */
+  readonly stateLegend: readonly { readonly key: string; readonly mnemonic: string | null; readonly label: string }[];
   /** Plain-text form of the same supplied information, for interfaces that cannot show a picture. */
   readonly text: string;
   /** Full labels behind the picture's mnemonics. The picture alone is an overview. */
@@ -12,7 +14,7 @@ export interface StateDiagram {
   /** Qualification that must accompany the picture: entry, coverage, applicability and unsupported semantics. */
   readonly notes: readonly string[];
 }
-export const stateDiagramMethod = 'postcode/state-transition-diagram@6';
+export const stateDiagramMethod = 'postcode/state-transition-diagram@7';
 
 /** Why a state model cannot be drawn, or null. Missing content is a different condition from a rendering failure. */
 export function stateDiagramIncompatibility(model: StateModel): string | null {
@@ -44,7 +46,10 @@ export function renderStateDiagram(model: StateModel, bearerLabel: string): Stat
   }));
   const deepest = Math.max(0, ...[...new Set(model.transitions.filter(item => item.from === item.to).map(item => item.from))].map(key => model.transitions.filter(item => item.from === key && item.to === key).length));
   const height = Math.max(...[...position.values()].map(at => at.y)) + box.height / 2 + 70 + 34 * deepest;
-  const label = new Map(model.states.map(state => [state.key, state.label]));
+  const captions = model.states.map(state => short(visible(state.label), 20));
+  const disambiguate = new Set(captions).size !== captions.length;
+  const stateLegend = model.states.map((state, index) => ({ key: state.key, mnemonic: disambiguate ? `S${index + 1}` : null, label: state.label }));
+  const label = new Map(stateLegend.map(state => [state.key, state.mnemonic ? `${state.mnemonic}: ${state.label}` : state.label]));
   const legend = model.transitions.map((transition, index) => ({ mnemonic: `T${index + 1}`, from: label.get(transition.from)!, to: label.get(transition.to)!,
     trigger: transition.trigger, guard: transition.guard, effect: transition.effect }));
   const pairs = new Map<string, number>(), loops = new Map<string, number>();
@@ -94,7 +99,7 @@ export function renderStateDiagram(model: StateModel, bearerLabel: string): Stat
   });
   const nodes = model.states.map(state => {
     const at = position.get(state.key)!;
-    return `<rect class="state" x="${(at.x - box.width / 2).toFixed(1)}" y="${(at.y - box.height / 2).toFixed(1)}" width="${box.width}" height="${box.height}" rx="12"/><text class="state-label" x="${at.x.toFixed(1)}" y="${(at.y + 5).toFixed(1)}">${escape(short(state.label, 20))}</text>`;
+    return `<rect class="state" x="${(at.x - box.width / 2).toFixed(1)}" y="${(at.y - box.height / 2).toFixed(1)}" width="${box.width}" height="${box.height}" rx="12"/><text class="state-label" x="${at.x.toFixed(1)}" y="${(at.y + 5).toFixed(1)}">${escape(short(visible(label.get(state.key)!), 20))}</text>`;
   });
   const entry = model.initial.kind === 'state' ? (() => {
     const at = position.get(model.initial.state)!, from = { x: at.x - box.width / 2 - 46, y: at.y - box.height / 2 - 26 };
@@ -117,7 +122,7 @@ export function renderStateDiagram(model: StateModel, bearerLabel: string): Stat
     `<text class="title" x="${centre.x}" y="30">${escape(short(`States of ${bearerLabel}`, 80))}</text>`, ...edges.map(item => item.path), entry, ...nodes, ...edges.map(item => item.caption), '</svg>'].join('');
   const describe = (item: StateDiagram['legend'][number]) => [`${item.mnemonic}  ${item.from} → ${item.to}`,
     `      trigger: ${item.trigger ?? 'not established'}`, ...(item.guard ? [`      guard: ${item.guard}`] : []), ...(item.effect ? [`      effect: ${item.effect}`] : [])];
-  const text = [`States of ${bearerLabel}`, ...model.states.map(state => `  [${state.label}]${state.description ? `  ${state.description}` : ''}`),
+  const text = [`States of ${bearerLabel}`, ...model.states.map(state => `  [${label.get(state.key)}]${state.description ? `  ${state.description}` : ''}`),
     model.transitions.length ? 'Transitions' : 'No transitions are listed.', ...legend.flatMap(describe), ...notes].map(visible).join('\n');
-  return { diagramType: 'state-transition', method: stateDiagramMethod, svg, text, legend, notes };
+  return { diagramType: 'state-transition', method: stateDiagramMethod, svg, text, stateLegend, legend, notes };
 }

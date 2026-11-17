@@ -5,7 +5,7 @@ import { hostedAgent } from './adapter.js';
 import type { OpenAIExchange, WireProtocol } from './adapter.js';
 import { InvestigatorReferences } from './references.js';
 
-export const contributionWireProtocol = 'postcode/contribution-dialog-wire@3';
+export const contributionWireProtocol = 'postcode/contribution-dialog-wire@4';
 
 /**
  * Reference positions of the contribution dialog. A string at one of these keys is an exact
@@ -43,6 +43,8 @@ const member = { anyOf: [
   { type: 'object', additionalProperties: false, required: ['kind', 'association'], properties: { kind: { const: 'association' }, association: use } }] };
 const grounds = { type: 'object', additionalProperties: false, required: ['text'], properties: { text: { type: 'string' }, evidence: strings, support: { type: 'array', items: content } } };
 const subject = { anyOf: [
+  { type: 'object', additionalProperties: false, required: ['kind', 'investigram'], properties: { kind: { const: 'investigram' }, investigram: reference } },
+  { type: 'object', additionalProperties: false, required: ['kind', 'association'], properties: { kind: { const: 'designation' }, association: use } },
   { type: 'object', additionalProperties: false, required: ['kind', 'entity'], properties: { kind: { const: 'entity' }, entity: reference } },
   { type: 'object', additionalProperties: false, required: ['kind', 'item'], properties: { kind: { const: 'content' }, item: content, component: { type: 'string' } } }] };
 const investigram = { type: 'object', additionalProperties: false, required: ['key', 'qualification'], properties: {

@@ -96,7 +96,6 @@ test('multiple state models preserve their distinct role and Entity bearers with
   assert.deepEqual(view.alternatives[0]!.prose, []);
 });
 
-
 test('discovered module bearers retain distinct qualified labels without supplemental identifications', async () => {
   const { store, ledger, entity, result, select, claims } = await setup();
   const origin = moduleEntity(store, claims.find(claim => claim.information.handle === 'origin')!.subject)!;
@@ -136,4 +135,27 @@ test('discovered module bearers retain distinct qualified labels without supplem
   const current = arrangeContributionAnswer(resolveContributionAnswer(store, select()), 'Modules');
   assert.ok(current.alternatives[0]!.diagrams[0]!.text.startsWith('States of Unlabelled Entity\n'));
   assert.ok(current.alternatives[0]!.diagrams[1]!.text.startsWith('States of origin\n'));
+});
+
+test('arrangement discloses every unrendered selected item and preserves incompatible model limits beside drawable models', async () => {
+  const { store, ledger, result, select } = await setup();
+  const model = (role: string, drawable: boolean) => ({ bearer: { role }, states: drawable ? [{ key: 'idle', label: 'Idle' }] : [], initial: { kind: 'unknown' },
+    transitions: [], coverage: { states: 'some', transitions: 'unknown' }, applicability: `${role}_APPLICABILITY`, unsupported: [`${role}_CONCURRENCY_NOT_REPRESENTABLE`] });
+  const items = [
+    { key: 'draw', type: 'state-model', body: model('worker', true) }, { key: 'empty', type: 'state-model', body: model('shared pool', false) },
+    { key: 'identification', type: 'identification', body: { name: 'Pool', nameOrigin: 'assigned', designation: 'The shared resource pool' } },
+    { key: 'empty2', type: 'state-model', body: model('second pool', false) }, { key: 'draw2', type: 'state-model', body: model('caller', true) }];
+  const accepted = submit(ledger, agentic(), [{ key: 'mixed', qualification: q('MIXED_LIMIT'), items,
+    declarations: [{ key: 'a', operation: 'add', target: { kind: 'result', result: result.id }, members: items.map(item => ({ kind: 'item', item: { investigram: { local: 'mixed' }, item: item.key } })) }] }]);
+  const projection = select(), view = arrangeContributionAnswer(resolveContributionAnswer(store, projection), 'Mixed'), alternative = view.alternatives[0]!;
+  assert.equal(alternative.diagrams.length, 2);
+  assert.deepEqual(alternative.unpresented.map(item => [item.address, item.type]), [
+    [accepted.item('mixed', 'empty'), 'state-model'], [accepted.item('mixed', 'identification'), 'identification'], [accepted.item('mixed', 'empty2'), 'state-model']]);
+  for (const omitted of alternative.unpresented.filter(item => item.type === 'state-model')) {
+    assert.equal(omitted.reason, 'The state model establishes no states.');
+    assert.equal(omitted.stateModel?.applicability, `${omitted.bearer}_APPLICABILITY`);
+    assert.deepEqual(omitted.stateModel?.unsupported, [`${omitted.bearer}_CONCURRENCY_NOT_REPRESENTABLE`]);
+  }
+  assert.match(alternative.unpresented[1]!.reason, /retained but has no renderer/);
+  assert.equal(alternative.diagramUnavailable, null, 'the summary does not suppress the per-item omission list');
 });

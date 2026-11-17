@@ -238,6 +238,7 @@ export class ContributionLedger {
   invoke(request: InvocationRequest, options: { readonly fresh?: boolean } = {}): { readonly invocation: Invocation; readonly result: QueryResult; readonly reused: boolean } {
     const owned = freezeOwned(structuredClone(request));
     owned.subjects.forEach(item => this.#subject(item.subject)); owned.context.forEach(item => this.#subject(item));
+    if (owned.option) this.metadata({ ...owned.option, metadata: 'option' });
     const key = canonical(owned), earlier = this.#requests.get(key);
     if (earlier && !options.fresh) {
       const invocation = this.invocation(earlier);

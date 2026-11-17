@@ -181,6 +181,8 @@ export interface InvestigatorAgent {
   open(): AgentDialogue;
 }
 export interface AttemptReport {
+  /** The retained option that delegated this attempt's question, when invoked through follow-up. */
+  readonly followUp?: { readonly owner: RecordId; readonly key: string; readonly meaning: string };
   readonly parent?: InitiationContext;
   readonly attempt: RecordId;
   readonly session: SessionId;

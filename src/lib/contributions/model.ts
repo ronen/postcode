@@ -67,6 +67,8 @@ export type SubjectRef =
   | { readonly kind: 'scope'; readonly scope: string };
 
 export interface InvocationRequest {
+  /** Exact retained option delegating this question; different owner/key pairs are different questions. */
+  readonly option?: { readonly investigram: InvestigramId; readonly key: string };
   readonly operation: string;
   readonly subjects: readonly { readonly role: string | null; readonly subject: SubjectRef }[];
   readonly parameters: Readonly<Record<string, unknown>>;

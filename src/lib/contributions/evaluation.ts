@@ -61,7 +61,9 @@ export function contributionEvaluation(store: ProgramRecordStore, ledger: Contri
       code: 'investigating-agent-not-configured', diagnostic: 'No investigating agent is configured for contribution investigations.' } };
     const execution = await conductDialog({ ledger, store, evidence, operation: { ...operation, contract }, invocation: invocation.id, agent: dependencies.dialogAgent, usage, check, signal,
       onReport: report => dependencies.onReport?.({ ...report, session: ledger.session,
-        request: { operation: operation.id, subject: options.subject, parameters: {} } }),
+        request: { operation: operation.id, subject: options.subject, parameters: {} },
+        ...(request.option ? { followUp: { owner: request.option.investigram, key: request.option.key,
+          meaning: ledger.investigram(request.option.investigram).options.find(option => option.key === request.option!.key)!.meaning } } : {}) }),
       ...(dependencies.bounds ? { bounds: dependencies.bounds } : {}), ...(options.context ? { context: options.context } : {}) });
     if (signal.aborted) throw signal.reason;
     const { outcome } = execution;

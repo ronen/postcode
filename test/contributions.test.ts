@@ -259,6 +259,17 @@ test('follow-up options and illustrations are qualified metadata owned by their 
   assert.deepEqual('request' in option && option.request.subjects, [{ role: null, subject: { kind: 'content', item: { investigram: id, item: 'states' }, component: 'Open' } }]);
   assert.equal('request' in option && option.request.resultContract, 'state-diagram');
   assert.equal(ledger.investigram(id).illustrations[0]!.diagramType, 'state-transition');
+  // The same key and request offered by a different owner is a different delegated question.
+  const request = ledger.investigram(id).options[0]!.request;
+  const other = submit(ledger, agentic(), [{ key: 'other', qualification: caveat,
+    options: [{ key: 'probe', meaning: 'Investigate a separately proposed question.', request }] }]).investigram('other');
+  const firstQuestion = { ...request, option: { investigram: id, key: 'probe' } };
+  const firstResult = ledger.invoke(firstQuestion).result.id;
+  assert.notEqual(ledger.invoke({ ...request, option: { investigram: other, key: 'probe' } }).result.id, firstResult);
+  assert.notEqual(ledger.invoke(request).result.id, firstResult);
+  assert.equal(ledger.invoke(firstQuestion).result.id, firstResult);
+  assert.equal(ledger.invoke(firstQuestion, { fresh: true }).result.id, firstResult);
+
   rejects(ledger, agentic(), [{ key: 'b', qualification: caveat, items: [{ key: 's', type: 'test-table', body: { rows: ['Closed'] } }],
     options: [{ key: 'o', meaning: 'm', request: { operation: 'examine', subjects: [{ subject: { kind: 'content', item: { investigram: { local: 'b' }, item: 's' }, component: 'Open' } }] } }] }], /Unknown content component/);
   rejects(ledger, agentic(), [{ key: 'b', qualification: caveat, illustrations: [{ key: 'i', diagramType: 'state-transition', inputs: [] }] }], /exact primary content inputs/);

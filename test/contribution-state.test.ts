@@ -162,3 +162,23 @@ test('Entity bearer diagrams use the derived label independently of Session iden
   assert.ok(!JSON.stringify(original).includes('session:'));
   assert.match(original.text, /States of Breaker/);
 });
+
+test('duplicate and truncated state labels keep distinguishable state identities in picture, text and legends', () => {
+  const model = accept({ bearer: { role: 'a request' },
+    states: [{ key: 'w1', label: 'Waiting for primary response' }, { key: 'w2', label: 'Waiting for primary response (retry)' }, { key: 'd1', label: 'Done' }, { key: 'd2', label: 'Done' }],
+    initial: { kind: 'state', state: 'w2' }, transitions: [{ key: 'first', from: 'w1', to: 'd1' }, { key: 'second', from: 'w2', to: 'd2' }],
+    coverage: { states: 'some', transitions: 'some' } }).item.body as StateModel;
+  const diagram = renderStateDiagram(model, 'Request');
+  assert.deepEqual(diagram.stateLegend.map(state => [state.key, state.mnemonic]), [['w1', 'S1'], ['w2', 'S2'], ['d1', 'S3'], ['d2', 'S4']]);
+  assert.deepEqual(diagram.legend.map(transition => [transition.from, transition.to]), [['S1: Waiting for primary response', 'S3: Done'], ['S2: Waiting for primary response (retry)', 'S4: Done']]);
+  const labels = [...diagram.svg.matchAll(/<text class="state-label"[^>]*>([^<]*)<\/text>/g)].map(match => match[1]!);
+  assert.equal(new Set(labels).size, 4);
+  for (const state of diagram.stateLegend) {
+    assert.ok(labels.some(label => label.startsWith(`${state.mnemonic}: `)));
+    assert.ok(diagram.text.includes(`[${state.mnemonic}: ${state.label}]`));
+  }
+  assert.ok(diagram.notes.some(note => note.startsWith('Entry: S2: Waiting for primary response (retry)')));
+  // Prefix collision alone must trigger disambiguation even when every full label is unique.
+  const distinctFullLabels = { ...model, states: model.states.map(state => state.key.startsWith('d') ? { ...state, label: `Done ${state.key}` } : state) };
+  assert.deepEqual(renderStateDiagram(distinctFullLabels, 'Request').stateLegend.map(state => state.mnemonic), ['S1', 'S2', 'S3', 'S4']);
+});

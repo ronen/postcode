@@ -26,7 +26,7 @@ import type { ResolutionInformation } from './reports.js';
 import { resolveContributionAnswer, selectContributionAnswer } from '../contributions/answers.js';
 import type { contributionEvaluation, ContributionEvaluated } from '../contributions/evaluation.js';
 import { UnknownReference } from '../contributions/model.js';
-import type { InvestigramId, InvocationRequest, MetadataAddress, SubjectRef } from '../contributions/model.js';
+import type { InvestigramId, InvocationRequest, SubjectRef } from '../contributions/model.js';
 import { entityModule, moduleEntity, sessionLedger } from '../contributions/modules.js';
 import { contributionOperations, resultContract } from '../contributions/operations.js';
 import type { ContributionOperation } from '../contributions/operations.js';
@@ -115,11 +115,11 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
     const designation = request.designation;
     /** Obtain or reuse the investigation, then select the current designated answer of its question into a retained answer. */
     const contribution = async (operation: ContributionOperation, invocation: InvocationRequest, subject: RecordId, parameters: Readonly<Record<string, string>>,
-      resolution: SubjectResolution | undefined, context: readonly MetadataAddress[] = []): Promise<PreparedResult> => {
+      resolution: SubjectResolution | undefined): Promise<PreparedResult> => {
       if (!contributions) throw new Error('Contribution investigations are not available in this Session');
       const ledger = sessionLedger(store, session), contract = resultContract(invocation.resultContract);
       if (contract === undefined) return basic('invalid-parameters', `The requested result contract ${invocation.resultContract} is not supported.`, ['Supported result contract']);
-      const evaluated: ContributionEvaluated = await contributions.evaluate(invocation, operation, contract, { ...(request.fresh ? { fresh: true } : {}), context, subject });
+      const evaluated: ContributionEvaluated = await contributions.evaluate(invocation, operation, contract, { ...(request.fresh ? { fresh: true } : {}), subject });
       answerWork.check();
       const content: QualifiedContent = { contract: 'contribution', value: resolveContributionAnswer(store, selectContributionAnswer(store, ledger,
         { lens: request.lens, subject, parameters, result: evaluated.result, contract })) };
@@ -153,7 +153,7 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
         : ['content', 'designation', 'investigram'].includes(subjects[0]!.kind));
       // Naming an unsupported operation, or a subject it does not accept, does not make an option executable.
       if (!operation || !satisfied) return basic('unsupported-subject', `This follow-up option requests ${JSON.stringify(option.request.operation)} on a subject no supported operation accepts, so it cannot be invoked.`, criteria);
-      return contribution(operation, option.request, owner, { option: key }, undefined, [{ investigram: owner, metadata: 'option', key }]);
+      return contribution(operation, { ...option.request, option: { investigram: owner, key } }, owner, { option: key }, undefined);
     }
     const plans = new Map(definition.results.map(contract => [contract, request.consumption
       ? consumptionPlan(catalog.presentations, contract, request.consumption, freshFacts(definition)) : []]));

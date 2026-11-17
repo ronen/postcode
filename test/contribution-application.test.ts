@@ -268,3 +268,44 @@ test('failed attempts with different diagnostics preserve identical empty answer
   assert.deepEqual(exact.projection, first.projection);
   assert.equal(exact.result.reporting, null);
 });
+
+test('distinct delegated options keep separate questions while repeated and fresh invocation stay with the same option', async t => {
+  const reports: import('../src/lib/investigation/contracts.js').AttemptReport[] = [];
+  const meanings = { reopen: 'Investigate how the open state is left.', shared: 'Investigate whether callers share state.' };
+  const follow = (key: keyof typeof meanings, text: string): Step => input => {
+    assert.equal(input.request.option?.key, key);
+    const option = input.responses.find(response => response.tool === 'contribution' && response.kind === 'metadata');
+    assert.ok(option && option.tool === 'contribution');
+    assert.equal((option.value as { value: { meaning: string } }).value.meaning, meanings[key]);
+    return { kind: 'submit', contribution: { investigrams: [{ key: 'answer', qualification: caveat,
+      items: [{ key: 'p', type: 'prose', body: { text } }], declarations: [{ key: 'a', operation: 'add', target: { kind: 'result', result: input.request.result },
+        members: [{ kind: 'item', item: { investigram: { local: 'answer' }, item: 'p' } }] }] }] } };
+  };
+  const agent = new ScriptedDialogs([[input => ({ kind: 'submit', contribution: { investigrams: [{ key: 'source', qualification: caveat,
+    items: [{ key: 'p', type: 'prose', body: { text: 'Initial account.' } }],
+    declarations: [{ key: 'a', operation: 'add', target: { kind: 'result', result: input.request.result }, members: [{ kind: 'item', item: { investigram: { local: 'source' }, item: 'p' } }] }],
+    options: Object.entries(meanings).map(([key, meaning]) => ({ key, meaning, request: { operation: 'examine-content',
+      subjects: [{ subject: { kind: 'content', item: { investigram: { local: 'source' }, item: 'p' } } }] } })) }] } })],
+    [follow('reopen', 'ANSWER_A')], [follow('shared', 'ANSWER_B')], [follow('shared', 'FRESH_B')]]);
+  const opened = await openApplication(fixture(t), { investigation: { dialogAgent: agent, onReport: report => reports.push(report) } });
+  assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
+  const session = opened.session; t.after(() => session.close());
+  const initial = answer(await session.execute({ kind: 'lens', lens: 'state-behavior', designation: { kind: 'name', value: 'breaker' } }));
+  const owner = initial.projection.alternatives[0]!.designation.investigram;
+  const request = (option: string) => ({ kind: 'lens' as const, lens: 'follow-up', designation: { kind: 'reference' as const, value: owner }, parameters: { option } });
+  const a = answer(await session.execute(request('reopen'))), b = answer(await session.execute(request('shared')));
+  assert.equal(b.result.reporting?.reused, false);
+  assert.notEqual(a.projection.question.result, b.projection.question.result);
+  assert.deepEqual(b.projection.question.request.option, { investigram: owner, key: 'shared' });
+  assert.equal((b.projection.alternatives[0]!.items[0]!.body as { text: string }).text, 'ANSWER_B');
+  assert.ok(b.projection.support.metadata.some(meta => meta.address.metadata === 'option' && meta.address.key === 'shared' && 'meaning' in meta.value && meta.value.meaning === meanings.shared));
+  assert.equal(answer(await session.execute(request('reopen'))).projection.id, a.projection.id);
+  assert.equal(answer(await session.execute(request('shared'))).projection.id, b.projection.id);
+  const fresh = answer(await session.execute({ ...request('shared'), fresh: true }));
+  assert.equal(fresh.projection.question.result, b.projection.question.result);
+  assert.deepEqual(fresh.projection.alternatives.map(alternative => (alternative.items[0]!.body as { text: string }).text), ['ANSWER_B', 'FRESH_B']);
+  assert.equal(answer(await session.execute(request('reopen'))).projection.id, a.projection.id);
+  assert.equal(agent.inputs.length, 4);
+  assert.deepEqual(reports.filter(report => report.followUp).map(report => report.followUp), [
+    { owner, key: 'reopen', meaning: meanings.reopen }, { owner, key: 'shared', meaning: meanings.shared }, { owner, key: 'shared', meaning: meanings.shared }]);
+});
