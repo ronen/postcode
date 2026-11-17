@@ -8,7 +8,7 @@ import { openApplication } from '../src/lib/application/index.js';
 import type { ApplicationResult } from '../src/lib/application/index.js';
 import { arrangeContributionAnswer } from '../src/lib/contributions/answers.js';
 import type { DialogAgent, DialogInput, DialogReply } from '../src/lib/contributions/dialog.js';
-import type { EntityId } from '../src/lib/contributions/model.js';
+import type { EntityId, SubmittedContribution } from '../src/lib/contributions/model.js';
 import { temporaryDirectory } from './cli-helpers.js';
 
 const caveat = { limitations: ['Interpretation from the supplied source; not mechanically established.'] };
@@ -347,4 +347,61 @@ test('follow-up requirements and prospective Presentation refusal precede dialog
   assert.equal(valid.projection.alternatives.length, 1);
   assert.equal(agent.inputs.length, 2);
   assert.deepEqual(answer(await session.execute({ kind: 'present', target: initial.projection.id })).projection, initial.projection);
+});
+
+test('a follow-up forwards and enforces its promised result contract, including unfulfilled accepted content and unknown-contract refusal', async t => {
+  const contract = 'postcode/state-diagram-answer@1';
+  const initial: Step = input => {
+    const reply = stateAccount('source', ['closed', 'open'])(input);
+    assert.equal(reply.kind, 'submit');
+    if (reply.kind !== 'submit') throw new Error('Expected submitted fixture');
+    const contribution = reply.contribution as SubmittedContribution;
+    return { kind: 'submit', contribution: { ...contribution, investigrams: contribution.investigrams.map(ig => ({ ...ig,
+      options: ['complete', 'partial', 'unknown'].map(key => ({ key, meaning: `Examine the retained model: ${key}.`,
+        request: { operation: 'examine-content', subjects: [{ subject: { kind: 'content', item: { investigram: { local: 'source' }, item: 'model' } } }],
+          resultContract: key === 'unknown' ? 'test/unsupported-contract@1' : contract } })) })) } };
+  };
+  const follow = (complete: boolean): Step => input => {
+    // examine-content has no implicit specialized contract: this must come from the exact option.
+    assert.deepEqual([input.request.operation, input.request.resultContract, input.request.option?.key], ['examine-content', contract, complete ? 'complete' : 'partial']);
+    const metadata = input.responses.find(response => response.tool === 'contribution' && response.kind === 'metadata');
+    assert.ok(metadata && metadata.tool === 'contribution');
+    assert.equal((metadata.value as { value: { request: { resultContract: string } } }).value.request.resultContract, contract);
+    return { kind: 'submit', contribution: { investigrams: [{ key: 'follow', qualification: caveat,
+      items: [complete ? { key: 'answer', type: 'state-model', body: { bearer: { role: 'The selected breaker' },
+        states: [{ key: 'open', label: 'Open' }], initial: { kind: 'unknown' }, transitions: [], coverage: { states: 'some', transitions: 'unknown' } } }
+        : { key: 'answer', type: 'prose', body: { text: 'Only partial prose was established; no state model is supplied.' } }],
+      declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: input.request.result },
+        members: [{ kind: 'item', item: { investigram: { local: 'follow' }, item: 'answer' } }] }] }] } };
+  };
+  const agent = new ScriptedDialogs([[initial], [follow(true)], [follow(false)]]);
+  const opened = await openApplication(fixture(t), { investigation: { dialogAgent: agent } });
+  assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
+  const session = opened.session; t.after(() => session.close());
+  const first = answer(await session.execute({ kind: 'lens', lens: 'state-behavior', designation: { kind: 'name', value: 'breaker' } }));
+  const owner = first.projection.alternatives[0]!.designation.investigram;
+  const request = (option: string) => ({ kind: 'lens' as const, lens: 'follow-up', designation: { kind: 'reference' as const, value: owner }, parameters: { option } });
+  for (const [key, expected] of [['complete', 'fulfilled'], ['partial', 'unfulfilled']] as const) {
+    const result = answer(await session.execute(request(key)));
+    assert.equal(result.result.failed, false, 'a contract shortfall does not invalidate useful accepted content');
+    assert.equal(result.result.reporting?.contribution?.outcome.kind, 'accepted');
+    assert.equal(result.projection.question.request.resultContract, contract);
+    assert.deepEqual(result.projection.question.request.option, { investigram: owner, key });
+    assert.equal(result.result.reporting?.contribution?.fulfillment?.contract, contract);
+    assert.equal(result.result.reporting?.contribution?.fulfillment?.status, expected);
+    assert.equal(result.projection.fulfillment, expected);
+    assert.deepEqual(result.projection.alternatives[0]!.unmet.map(item => item.reason), key === 'complete' ? [] : ['The selected answer contains no state-model content.']);
+    const reused = answer(await session.execute(request(key)));
+    assert.equal(reused.result.reporting?.reused, true);
+    assert.equal(reused.projection.id, result.projection.id);
+    assert.equal(reused.result.reporting?.contribution?.fulfillment?.status, expected);
+    const exact = answer(await session.execute({ kind: 'present', target: result.projection.id }));
+    assert.deepEqual(exact.projection, result.projection);
+  }
+  const refused = await session.execute(request('unknown'));
+  assert.equal(refused.kind, 'resolution');
+  if (refused.kind !== 'resolution') throw new Error('Expected unsupported contract refusal');
+  assert.equal(refused.resolution.reason, 'invalid-parameters');
+  assert.equal(agent.inputs.length, 3, 'unknown contracts and reused/exact answers never open an extra dialog');
+  assert.deepEqual(agent.inputs.map(inputs => inputs.length), [1, 1, 1], 'contract shortfalls do not enter structural repair');
 });
