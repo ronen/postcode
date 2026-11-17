@@ -173,6 +173,10 @@ to begin the substantive implementation task described by that plan.
 > \
 > Clarify `report.answer` in the production instructions and hosted schema:- The submission’s own answer designations already count as its answer; agents need not repeat them in `report.answer`.- The field allows an investigator to explicitly return existing answer designations for this invocation—for example, when an earlier answer remains adequate and no new designation is needed.- Entries reference answer-designation declarations, not invocation handles, Query results or arbitrary dialogue handles.- Describe the exact reference forms validation accepts, including applicable local references. Replace the misleading generic description asking only for “an exact handle supplied in this dialogue”.Preserve existing semantics. Do not prohibit harmless repetition of the submission’s own designations merely to enforce the preferred authoring style. Explicitly returning an existing answer must not clear its reconsideration causes.Retain the observed invocation-handle mistake as a regression case. Add focused offline verification of the instructions/schema agreement, valid existing-designation references, own-designation handling, and rejection/repair of the invalid invocation reference.Verify with a focused live trial, using our previous approach to retries, with a large enough cap to be able to perform the test effticvely.
 
+2026-11-17, authorizing the proposed narrow live check of the R9-F1 wording correction at `4267a05`: an initial answer followed by a fresh adequacy review, using the same pinned fixture, route/model and normal production repair, with a new hard cap of 20 requests. Further attempts must resolve a specific uncertainty; preserve all evidence. M2 remains unaccepted and M3 remains on hold.
+
+> Go ahead with the live inference
+
 ## Outcome
 
 ## Verification
