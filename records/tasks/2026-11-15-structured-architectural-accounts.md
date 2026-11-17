@@ -85,6 +85,14 @@ to begin the substantive implementation task described by that plan.
 
 > your other choices are approved.  M1 is satisfied.
 
+2026-11-17, during Milestone 2. The implementing agent proposed four focused live-agent trials and asked about route, ceiling and elicitation. Proposal as put to the human: run on Cockatiel at the commit pinned by the earlier assessments (`80b5ed6`), whose CircuitBreakerPolicy has the plan's representative circuit-breaker states; (1) state-behavior on CircuitBreakerPolicy, expecting a state model and diagram; (2) invoke a retained follow-up option from trial 1; (3) an explicit fresh investigation of trial 1's question, to observe identity reuse, acquisition before change, and supersede-versus-add; (4) state-behavior on a second policy module, to check for name conflation and honest "no state" handling; mid-dialog change notices to stay covered by deterministic tests only. The human's selections:
+
+> Route: ChatGPT plan (Recommended) — Sign in with ChatGPT, gpt-5.6-sol at medium reasoning: the route and model the earlier assessments used.
+>
+> Ceiling: 60 requests (Recommended).
+>
+> Elicitation: Ask for options in trial 1 (Recommended) — Trial 1's request deliberately asks the agent to propose at least one follow-up investigation, as the plan allows for eliciting optional actions. Recorded as elicited, not spontaneous.
+
 ## Outcome
 
 ## Verification
