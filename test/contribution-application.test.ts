@@ -108,7 +108,7 @@ test('the state-behavior investigation, its diagram, exact access and a retained
   assert.deepEqual([view.alternatives.length, view.alternatives[0]!.diagrams.length, view.alternatives[0]!.diagramUnavailable, view.noCurrentAnswer], [1, 1, null, null]);
   assert.match(view.alternatives[0]!.diagrams[0]!.svg, /<rect class="state"/);
   assert.deepEqual(view.alternatives[0]!.diagrams[0]!.legend.map(item => [item.from, item.to, item.trigger]), [['Closed', 'Open', 'a failure is recorded']]);
-  assert.equal(view.alternatives[0]!.qualifications.some(item => /^Interpretation \(/.test(item)), true);
+  assert.equal(view.alternatives[0]!.qualifications.flatMap(group => [...group.statements, ...(group.owner?.statements ?? [])]).some(item => /^Interpretation \(/.test(item)), true);
   assert.deepEqual(view.alternatives[0]!.options.map(option => [option.address.key, option.operation]), [['reopen', 'examine-content'], ['unsupported', 'simulate']]);
 
   // An ordinary equivalent request reuses the retained outcome: no dialog, the same answer.
@@ -144,7 +144,7 @@ test('the state-behavior investigation, its diagram, exact access and a retained
   assert.deepEqual([plain.result.failed, plain.projection.fulfillment, plain.projection.alternatives[0]!.unmet.map(item => item.reason)], [false, 'unfulfilled', ['The selected answer contains no state-model content.']]);
   const plainView = arrangeContributionAnswer(plain.content, plain.result.title);
   assert.deepEqual([plainView.alternatives[0]!.diagrams, plainView.alternatives[0]!.diagramUnavailable, plainView.alternatives[0]!.prose], [[], 'This alternative selects no state model.', ['The module only exports a constant.']]);
-  assert.equal(plainView.alternatives[0]!.qualifications.some(item => /Requested result not met/.test(item)), true);
+  assert.equal(plainView.alternatives[0]!.qualifications.flatMap(group => [...group.statements, ...(group.owner?.statements ?? [])]).some(item => /Requested result not met/.test(item)), true);
 
   // An explicit fresh investigation runs new production. Its addition stands beside the earlier answer; neither is preferred.
   const fresh = answer(await session.execute({ ...request, fresh: true }));
@@ -173,7 +173,7 @@ test('without a configured agent the investigation is unavailable and fabricates
   assert.deepEqual([unavailable.result.failed, unavailable.result.reporting, unavailable.projection.alternatives, unavailable.projection.fulfillment],
     [true, { reused: false, attempt: null, contribution: null, unavailable: { kind: 'configuration-unavailable', code: 'investigating-agent-not-configured', diagnostic: 'No investigating agent is configured for contribution investigations.' } }, [], 'no-designated-answer']);
   const view = arrangeContributionAnswer(unavailable.content, unavailable.result.title);
-  assert.equal(view.noCurrentAnswer?.explanation, 'Investigation unavailable: No investigating agent is configured for contribution investigations.');
+  assert.equal(view.noCurrentAnswer?.explanation, 'No answer has been designated for this question.');
 });
 
 test('failure then successful fresh work reuses an accepted attempt; later fresh inability stays separate from current fulfillment', async t => {
@@ -201,7 +201,7 @@ test('failure then successful fresh work reuses an accepted attempt; later fresh
   assert.equal(session.usage().attempts.length, 3);
 });
 
-test('accepted partial report and domain diagnostics survive application delivery and exact access', async t => {
+test('selected owner reports survive exact access while attempt diagnostics stay in delivery reporting', async t => {
   const agent = new ScriptedDialogs([[input => ({ kind: 'submit', contribution: { report: { inability: 'Could not verify concurrency', statement: 'Coverage is one scenario.' },
     investigrams: [{ key: 'partial', qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text: 'Partial explanation.' } }],
       declarations: [{ key: 'a', operation: 'add', target: { kind: 'result', result: input.request.result }, members: [{ kind: 'item', item: { investigram: { local: 'partial' }, item: 'p' } }] }] }] } })],
@@ -212,13 +212,14 @@ test('accepted partial report and domain diagnostics survive application deliver
   const partial = answer(await session.execute({ kind: 'lens', lens: 'state-behavior', designation: { kind: 'name', value: 'breaker' } }));
   assert.equal(partial.result.reporting?.contribution?.report?.inability, 'Could not verify concurrency');
   const exact = answer(await session.execute({ kind: 'present', target: partial.projection.id }));
-  const qualifications = arrangeContributionAnswer(exact.content, 'Partial').alternatives[0]!.qualifications;
+  const qualifications = arrangeContributionAnswer(exact.content, 'Partial').alternatives[0]!.qualifications.flatMap(group => [...group.statements, ...(group.owner?.statements ?? [])]);
   assert.ok(qualifications.includes('Producer-reported inability: Could not verify concurrency'));
   assert.ok(qualifications.includes('Coverage is one scenario.'));
   const unavailable = answer(await session.execute({ kind: 'lens', lens: 'state-behavior', designation: { kind: 'name', value: 'plain' } }));
   assert.equal(unavailable.result.reporting?.unavailable?.code, 'timeout');
-  assert.deepEqual(answer(await session.execute({ kind: 'present', target: unavailable.projection.id })).projection.unavailable,
-    { kind: 'communication-failure', code: 'timeout', diagnostic: 'No service response.' });
+  const unavailableExact = answer(await session.execute({ kind: 'present', target: unavailable.projection.id }));
+  assert.equal(unavailableExact.result.reporting, null);
+  assert.ok(!JSON.stringify(unavailableExact.projection).includes('No service response.'));
 });
 
 test('cancellation reports already dispatched usage and accepts no late contribution', async t => {
@@ -245,4 +246,25 @@ test('cancellation reports already dispatched usage and accepts no late contribu
   assert.equal(reports[0]!.usage.length, 1);
   assert.equal(opened.session.usage().calls, 1);
   assert.equal(opened.session.usage().attempts.length, 1);
+});
+
+test('failed attempts with different diagnostics preserve identical empty answer identity', async t => {
+  const agent = new ScriptedDialogs([[() => ({ kind: 'ended' })],
+    [() => ({ kind: 'communication-failure', code: 'timeout', diagnostic: 'Different failure reason.' })],
+    [() => ({ kind: 'submit', contribution: { investigrams: [], report: { inability: 'No designation supplied.' } } })]]);
+  const opened = await openApplication(fixture(t), { investigation: { dialogAgent: agent } });
+  assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
+  const session = opened.session; t.after(() => session.close());
+  const request = { kind: 'lens' as const, lens: 'state-behavior', designation: { kind: 'name' as const, value: 'breaker' } };
+  const first = answer(await session.execute(request));
+  const second = answer(await session.execute({ ...request, fresh: true }));
+  assert.equal(first.result.reporting?.contribution?.outcome.kind, 'investigation-failure');
+  assert.equal(second.result.reporting?.unavailable?.code, 'timeout');
+  assert.deepEqual(second.projection, first.projection);
+  const empty = answer(await session.execute({ ...request, fresh: true }));
+  assert.equal(empty.result.reporting?.contribution?.report?.inability, 'No designation supplied.');
+  assert.deepEqual(empty.projection, first.projection);
+  const exact = answer(await session.execute({ kind: 'present', target: first.projection.id }));
+  assert.deepEqual(exact.projection, first.projection);
+  assert.equal(exact.result.reporting, null);
 });

@@ -49,12 +49,12 @@ export function contributionEvaluation(store: ProgramRecordStore, ledger: Contri
     const { invocation, result } = ledger.invoke(request, { fresh: options.fresh === true });
     if (!options.fresh) {
       const candidates = ledger.productions().filter(production => production.invocation !== null && ledger.invocation(production.invocation).result === result.id
-        && (production.outcome.kind === 'accepted' || !transient.includes(production.outcome.reason)));
+        && (production.outcome.kind === 'accepted' || !transient.includes(production.outcome.failure.kind)));
       // A completed accepted investigation remains reusable even if an earlier attempt failed.
       // This selects execution reporting only; every standing claim is still selected independently.
       const attempt = candidates.find(production => production.outcome.kind === 'accepted') ?? candidates[0];
       if (attempt) return { invocation, result: result.id, reused: true, execution: null, attempt, unavailable: null,
-        attemptResult: completed.get(attempt.id) ?? { outcome: attempt.outcome.kind === 'accepted' ? { kind: 'accepted' } : { kind: 'investigation-failure', reason: attempt.outcome.reason },
+        attemptResult: completed.get(attempt.id) ?? { outcome: attempt.outcome.kind === 'accepted' ? { kind: 'accepted' } : attempt.outcome.failure,
           fulfillment: contract && attempt.outcome.kind === 'accepted' ? assessFulfillment(ledger, contract, result.id, attemptAnswers(ledger, attempt, result.id)) : null, report: attempt.report } };
     }
     if (!dependencies.dialogAgent) return { invocation, result: result.id, reused: false, execution: null, attempt: null, attemptResult: null, unavailable: { kind: 'configuration-unavailable',

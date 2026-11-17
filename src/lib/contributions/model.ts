@@ -224,6 +224,12 @@ export interface ProducerReport {
   readonly statement: string | null;
 }
 
+/** A retained terminal failure, independent of an evaluator's disposable reporting cache. */
+export type ProductionFailure =
+  | { readonly kind: 'limit-stop' | 'investigation-failure'; readonly reason: string }
+  | { readonly kind: 'invalid-submission'; readonly problems: readonly string[] }
+  | { readonly kind: 'communication-failure' | 'configuration-unavailable'; readonly code: string; readonly diagnostic: string };
+
 /** One producing execution. Each of its investigrams inherits exactly this input history. */
 export interface Production {
   readonly kind: 'production';
@@ -234,7 +240,7 @@ export interface Production {
   readonly opened: number;
   /** Acceptance position of the submission, or the position at which the attempt ended without one. */
   readonly concluded: number;
-  readonly outcome: { readonly kind: 'accepted' } | { readonly kind: 'no-contribution'; readonly reason: string };
+  readonly outcome: { readonly kind: 'accepted' } | { readonly kind: 'no-contribution'; readonly reason: string; readonly failure: ProductionFailure };
   readonly deliveries: readonly Delivery[];
   /** Program evidence actually supplied to, or acquired as the source basis of, this production. */
   readonly evidence: readonly RecordId[];

@@ -153,3 +153,12 @@ test('several self-transitions on one state are drawn as distinct nested loops w
   const [width, height] = svg.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/)!.slice(1).map(Number);
   for (const caption of captions) { const [x, y] = caption.at.split(',').map(Number); assert.ok(x! > 0 && x! < width! && y! > 0 && y! < height!, caption.at); }
 });
+
+test('Entity bearer diagrams use the derived label independently of Session identity', () => {
+  const model = accept(breaker({ entity: { local: 'breaker' } })).item.body as StateModel;
+  const original = renderStateDiagram(model, 'Breaker');
+  const other: StateModel = { ...model, bearer: { kind: 'entity', entity: 'session:33333333-3333-4333-8333-333333333333:entity:other' as EntityId } };
+  assert.deepEqual(renderStateDiagram(other, 'Breaker'), original);
+  assert.ok(!JSON.stringify(original).includes('session:'));
+  assert.match(original.text, /States of Breaker/);
+});

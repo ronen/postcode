@@ -12,7 +12,7 @@ export interface StateDiagram {
   /** Qualification that must accompany the picture: entry, coverage, applicability and unsupported semantics. */
   readonly notes: readonly string[];
 }
-export const stateDiagramMethod = 'postcode/state-transition-diagram@5';
+export const stateDiagramMethod = 'postcode/state-transition-diagram@6';
 
 /** Why a state model cannot be drawn, or null. Missing content is a different condition from a rendering failure. */
 export function stateDiagramIncompatibility(model: StateModel): string | null {
@@ -31,7 +31,7 @@ const short = (value: string, limit: number): string => value.length <= limit ? 
  * unknown information is shown as unknown, and anything the picture abbreviates is in the legend.
  */
 export function renderStateDiagram(model: StateModel, bearerLabel: string): StateDiagram {
-  bearerLabel = model.bearer.kind === 'role' ? model.bearer.role : `${bearerLabel} [Entity: ${model.bearer.entity}]`;
+  bearerLabel = model.bearer.kind === 'role' ? model.bearer.role : bearerLabel;
   const reason = stateDiagramIncompatibility(model);
   if (reason) throw new Error(`Incompatible state model: ${reason}`);
   const count = model.states.length, radius = Math.max(150, 50 * count), width = 2 * radius + 360;

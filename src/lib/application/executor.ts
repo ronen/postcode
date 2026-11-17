@@ -121,12 +121,8 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
       if (contract === undefined) return basic('invalid-parameters', `The requested result contract ${invocation.resultContract} is not supported.`, ['Supported result contract']);
       const evaluated: ContributionEvaluated = await contributions.evaluate(invocation, operation, contract, { ...(request.fresh ? { fresh: true } : {}), context, subject });
       answerWork.check();
-      const domainOutcome = evaluated.attemptResult?.outcome;
-      const unavailable = evaluated.unavailable ? { kind: evaluated.unavailable.kind, code: evaluated.unavailable.code, diagnostic: evaluated.unavailable.diagnostic }
-        : domainOutcome && domainOutcome.kind !== 'accepted' ? { kind: domainOutcome.kind, reason: 'reason' in domainOutcome ? domainOutcome.reason
-          : 'problems' in domainOutcome ? domainOutcome.problems.join('; ') : domainOutcome.diagnostic } : null;
       const content: QualifiedContent = { contract: 'contribution', value: resolveContributionAnswer(store, selectContributionAnswer(store, ledger,
-        { lens: request.lens, subject, parameters, result: evaluated.result, contract, unavailable, report: evaluated.attemptResult?.report ?? null })) };
+        { lens: request.lens, subject, parameters, result: evaluated.result, contract })) };
       const outcome = evaluated.execution?.outcome ?? null;
       answerWork.record('interpretation', evaluated.reused ? 'reused' : outcome?.kind === 'accepted' ? 'established' : 'unavailable', { records: [content.value.projection.id],
         limitations: [evaluated.reused ? 'A retained outcome for this question was reused; no dialog ran.' : outcome?.kind ?? evaluated.unavailable?.kind ?? 'unavailable'] });

@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { test } from 'node:test';
+import { contributionEvaluation } from '../src/lib/contributions/evaluation.js';
+import { InvestigationUsage } from '../src/lib/investigation/usage.js';
 import { conductDialog, dialogInstructions } from '../src/lib/contributions/dialog.js';
 import type { DialogAgent, DialogInput, DialogOperation, DialogReply, DialogResponse } from '../src/lib/contributions/dialog.js';
 import type { AssociationAddress, EntityId, InvestigramId, SubmittedInvestigram } from '../src/lib/contributions/model.js';
@@ -158,7 +160,7 @@ test('dialog outcomes separate repair, exhausted repair, limits, ended dialogs a
   const failing = request();
   const exhausted = await run([() => ({ kind: 'submit', contribution: unqualified(failing.result.id) }), () => ({ kind: 'submit', contribution: unqualified(failing.result.id) })], failing.invocation, withContract);
   assert.deepEqual([exhausted.execution.outcome.kind, exhausted.execution.production.outcome, exhausted.execution.production.investigrams, ledger.investigrams().length],
-    ['invalid-submission', { kind: 'no-contribution', reason: 'invalid-submission' }, [], retained]);
+    ['invalid-submission', { kind: 'no-contribution', reason: 'invalid-submission', failure: exhausted.execution.outcome }, [], retained]);
   // A limit stops the dialog. What was acquired but never dispatched to the agent is not recorded as delivered.
   const limited = await run([() => ({ kind: 'tools', requests: [{ kind: 'contribution', investigram: ledger.investigrams().at(-1)!.id }, { kind: 'read-file', path: '/etc/passwd' }] })],
     request().invocation, { bounds: { milliseconds: 60_000, calls: 1, toolCalls: 10, characters: 1_000_000 } });
@@ -174,14 +176,14 @@ test('dialog outcomes separate repair, exhausted repair, limits, ended dialogs a
     assert.deepEqual(input.responses.map(response => response.tool), ['unavailable', 'unavailable', 'unavailable']);
     return { kind: 'ended' };
   }], refusing.invocation);
-  assert.deepEqual([refused.execution.outcome.kind, refused.execution.production.outcome], ['investigation-failure', { kind: 'no-contribution', reason: 'ended' }]);
+  assert.deepEqual([refused.execution.outcome.kind, refused.execution.production.outcome], ['investigation-failure', { kind: 'no-contribution', reason: 'ended', failure: refused.execution.outcome }]);
   assert.equal(refused.execution.production.deliveries.every(delivery => delivery.position <= ledger.position), true);
   // The fresh request was supplied the answers currently designated for the repeated question.
   assert.equal((refused.agent.inputs[0]!.responses[1] as { kind: string }).kind, 'designations');
   // A communication failure is its own outcome; the attempt is concluded and nothing can be submitted late.
   const failure = { kind: 'communication-failure' as const, code: 'timeout', diagnostic: 'No response.' };
   const failed = await run([() => failure], request().invocation);
-  assert.deepEqual([failed.execution.outcome, failed.execution.production.outcome], [failure, { kind: 'no-contribution', reason: 'communication-failure' }]);
+  assert.deepEqual([failed.execution.outcome, failed.execution.production.outcome], [failure, { kind: 'no-contribution', reason: 'communication-failure', failure }]);
   // Useful partial content with a reported inability: accepted, in effect, and reported as not fulfilling the request.
   const partial = await run([() => ({ kind: 'submit', contribution: { report: { inability: 'No answer could be established.' },
     investigrams: [{ key: 'notes', qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text: 'Notes.' } }] }] } })], request().invocation, withContract);
@@ -298,4 +300,25 @@ test('selected content and whole-owner acquisition retain the originating questi
     return { kind: 'ended' };
   }], selected.invocation);
   assert.equal(result.execution.production.deliveries[0]?.kind, 'item');
+});
+
+test('retained failures preserve their domain kind and details when evaluation is recreated', async () => {
+  const { store, ledger, record, entity, invoke, run } = await setup();
+  const cases = [
+    { kind: 'limit-stop', script: [() => ({ kind: 'tools' as const, requests: [] })], extra: { bounds: { milliseconds: 60_000, calls: 1, toolCalls: 10, characters: 1_000_000 } } },
+    { kind: 'invalid-submission', script: [() => ({ kind: 'submit' as const, contribution: null })], extra: { repairs: 0 } },
+    { kind: 'investigation-failure', script: [() => ({ kind: 'ended' as const })], extra: {} },
+  ];
+  for (const scenario of cases) {
+    const { invocation } = invoke(entity('barrel'), scenario.kind);
+    const { execution } = await run(scenario.script, invocation, scenario.extra);
+    assert.equal(execution.outcome.kind, scenario.kind);
+    const rebuilt = contributionEvaluation(store, ledger,
+      { lookup: id => store.lookup(id), query: async () => { throw new Error('Reuse must acquire nothing'); } },
+      new InvestigationUsage(), {}, async () => {}, new AbortController().signal);
+    const reused = await rebuilt.evaluate(invocation.request, { ...operation, subject: 'module' }, null, { subject: record('barrel') });
+    assert.equal(reused.reused, true);
+    assert.equal(reused.attempt?.id, execution.production.id);
+    assert.deepEqual(reused.attemptResult?.outcome, execution.outcome);
+  }
 });

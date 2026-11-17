@@ -281,6 +281,12 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
     termination = outcome.kind === 'invalid-submission' ? 'investigation-failure' : outcome.kind;
     return freezeOwned({ outcome, production, ...report() });
   };
+  const abandon = (outcome: Exclude<DialogOutcome, { kind: 'accepted' }>, reason: string = outcome.kind): DialogExecution => {
+    // Provider transport details remain invocation reporting; retain only the domain failure.
+    const failure = outcome.kind === 'communication-failure' || outcome.kind === 'configuration-unavailable'
+      ? { kind: outcome.kind, code: outcome.code, diagnostic: outcome.diagnostic } : outcome;
+    return conclude(outcome, ledger.abandon(handle, reason, failure));
+  };
   const problems: string[] = [];
   let undelivered = handle.checkpoint();
   try {
@@ -315,12 +321,12 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
       });
       volume(reply);
       if (!reply || typeof reply !== 'object' || !['tools', 'submit', 'ended', 'refused', 'truncated', 'communication-failure', 'configuration-unavailable'].includes(reply.kind)) {
-        return conclude({ kind: 'investigation-failure', reason: 'Malformed agent response.' }, ledger.abandon(handle, 'investigation-failure'));
+        return abandon({ kind: 'investigation-failure', reason: 'Malformed agent response.' });
       }
-      if (reply.kind === 'communication-failure' || reply.kind === 'configuration-unavailable') return conclude(reply, ledger.abandon(handle, reply.kind));
+      if (reply.kind === 'communication-failure' || reply.kind === 'configuration-unavailable') return abandon(reply);
       if (reply.kind === 'ended' || reply.kind === 'refused' || reply.kind === 'truncated') {
-        return problems.length ? conclude({ kind: 'invalid-submission', problems }, ledger.abandon(handle, 'invalid-submission'))
-          : conclude({ kind: 'investigation-failure', reason: `The agent ended without an accepted submission (${reply.kind}).` }, ledger.abandon(handle, reply.kind));
+        return problems.length ? abandon({ kind: 'invalid-submission', problems })
+          : abandon({ kind: 'investigation-failure', reason: `The agent ended without an accepted submission (${reply.kind}).` }, reply.kind);
       }
       if (reply.kind === 'submit') {
         // Submission before any stop enters ordinary validation; validation is not another agent turn.
@@ -329,7 +335,7 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
         try { acceptance = ledger.accept([{ production: handle, contribution: reply.contribution }]); } catch (error) {
           if (!(error instanceof InvalidContribution)) throw error;
           problems.push(error.message);
-          if (problems.length > repairs) return conclude({ kind: 'invalid-submission', problems }, ledger.abandon(handle, 'invalid-submission'));
+          if (problems.length > repairs) return abandon({ kind: 'invalid-submission', problems });
           responses = [{ tool: 'invalid-submission', problem: error.message }];
           continue;
         }
@@ -337,7 +343,7 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
         const fulfillment = operation.contract ? assessFulfillment(ledger, operation.contract, invocation.result, attemptAnswers(ledger, production, invocation.result)) : null;
         return conclude({ kind: 'accepted', acceptance, repairs: problems.length, fulfillment, reportedInability: production.report?.inability ?? null }, production);
       }
-      if (reply.kind !== 'tools' || !Array.isArray(reply.requests)) return conclude({ kind: 'investigation-failure', reason: 'Malformed tool exchange.' }, ledger.abandon(handle, 'investigation-failure'));
+      if (reply.kind !== 'tools' || !Array.isArray(reply.requests)) return abandon({ kind: 'investigation-failure', reason: 'Malformed tool exchange.' });
       responses = [];
       for (const candidate of reply.requests) {
         if (++toolCalls > bounds.toolCalls) throw new LimitStop('Tool request guard reached.');
@@ -350,7 +356,7 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
   } catch (error) {
     // Acquisitions never dispatched to the agent were not delivered.
     if (!handle.closed) handle.discard(undelivered);
-    if (error instanceof LimitStop) return conclude({ kind: 'limit-stop', reason: error.message }, ledger.abandon(handle, 'limit-stop'));
+    if (error instanceof LimitStop) return abandon({ kind: 'limit-stop', reason: error.message });
     // Interruption, invalidation and defects end the execution; its production accepts nothing afterwards.
     termination = error instanceof CommandInterrupted ? 'interrupted' : error instanceof SessionInvalidated ? 'invalidated' : 'defect';
     handle.close();

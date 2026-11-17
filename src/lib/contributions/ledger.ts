@@ -7,7 +7,7 @@ import type { IdentifyingName } from './catalog.js';
 import { InvalidContribution, UnknownReference, addressKey, inScope, itemKey, targetKey } from './model.js';
 import type { AssociationAddress, AssociationDeclaration, AssociationTarget, ContentItem, Declaration, DeclarationAddress, Entity, EntityId,
   EpistemicStatus, FollowUpOption, Grounds, Illustration, InconsistencyReport, Investigram, InvestigramId, Invocation, InvocationId,
-  InvocationRequest, ItemAddress, Member, MetadataAddress, NativeIdentity, Producer, ProducerReport, Production, ProductionId, Qualification,
+  InvocationRequest, ItemAddress, Member, MetadataAddress, NativeIdentity, Producer, ProducerReport, Production, ProductionFailure, ProductionId, Qualification,
   QueryResult, QueryResultId, SelectionScope, SubjectRef } from './model.js';
 import { ProductionHandle } from './production.js';
 import { ContributionStatus } from './status.js';
@@ -265,10 +265,10 @@ export class ContributionLedger {
   }
 
   /** Conclude an attempt that returned no contribution. Its actual deliveries remain attributable; nothing unsubmitted is accepted. */
-  abandon(handle: ProductionHandle, reason: string): Production {
+  abandon(handle: ProductionHandle, reason: string, failure: ProductionFailure = { kind: 'investigation-failure', reason }): Production {
     this.#owns(handle);
     handle.close();
-    return this.#conclude(handle, { kind: 'no-contribution', reason }, null, []);
+    return this.#conclude(handle, { kind: 'no-contribution', reason, failure }, null, []);
   }
   #owns(handle: ProductionHandle): void {
     if (handle.ledger !== this || handle.closed || this.#productions.has(handle.id)) throw new Error('Production is not open in this ledger');

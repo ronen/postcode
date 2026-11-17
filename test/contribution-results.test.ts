@@ -146,8 +146,8 @@ test('a fresh investigation preserves earlier attempts; supersession excludes th
   // A failed fresh attempt preserves earlier information and its own provenance.
   const failed = ledger.begin({ producer: agentic('model-e'), invocation: summaryInvocation(ledger, module, tableContract.id, true).invocation.id });
   failed.designations(result.id);
-  const abandoned = ledger.abandon(failed, 'limit-stop');
-  assert.deepEqual([abandoned.outcome, abandoned.investigrams, abandoned.producer.agent?.model], [{ kind: 'no-contribution', reason: 'limit-stop' }, [], 'model-e']);
+  const abandoned = ledger.abandon(failed, 'limit-stop', { kind: 'limit-stop', reason: 'Call guard reached.' });
+  assert.deepEqual([abandoned.outcome, abandoned.investigrams, abandoned.producer.agent?.model], [{ kind: 'no-contribution', reason: 'limit-stop', failure: { kind: 'limit-stop', reason: 'Call guard reached.' } }, [], 'model-e']);
   assert.deepEqual(current(ledger, result.id), [d2, d3]);
   assert.equal(ledger.productions().filter(item => item.invocation !== null).length, 5);
 });

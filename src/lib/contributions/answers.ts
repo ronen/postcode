@@ -5,8 +5,8 @@ import { identityReference, methods, recordId } from '../identity.js';
 import { freezeOwned } from '../immutable.js';
 import type { ProgramRecordStore, RecordContext, RecordId } from '../records.js';
 import type { ContributionLedger } from './ledger.js';
-import type { AssociationAddress, DeclarationAddress, FollowUpOption, Grounds, InvocationRequest, ItemAddress, MetadataAddress, Producer,
-  Qualification, QueryResultId, ProducerReport } from './model.js';
+import type { AssociationAddress, DeclarationAddress, FollowUpOption, Grounds, InvocationRequest, InvestigramId, ItemAddress, MetadataAddress, Producer,
+  Qualification, QueryResultId } from './model.js';
 import { assessFulfillment, designatedItems } from './outcomes.js';
 import type { Fulfillment, ResultContract } from './outcomes.js';
 import { renderStateDiagram, stateDiagramIncompatibility } from './state-diagram.js';
@@ -61,10 +61,6 @@ export interface ContributionAnswer extends RecordContext {
   readonly question: { readonly result: QueryResultId; readonly request: InvocationRequest };
   readonly alternatives: readonly AnswerAlternative[];
   readonly support: AnswerSupport;
-  /** Producer report when this selection supplies no standing answer. */
-  readonly emptyReport: ProducerReport | null;
-  /** Domain failure of a selection with no answer; provider transport details remain invocation reporting. */
-  readonly unavailable: { readonly kind: string; readonly code?: string; readonly diagnostic?: string; readonly reason?: string } | null;
   /** Designations no longer standing, with the grounds of their displacement, for exact historical access. */
   readonly history: readonly { readonly designation: AssociationAddress;
     readonly displacedBy: readonly { readonly change: DeclarationAddress; readonly operation: 'supersede' | 'withdraw'; readonly grounds: string }[] }[];
@@ -77,7 +73,7 @@ export interface ContributionAnswer extends RecordContext {
  * answer assembly: it establishes no claim and records no producer exposure.
  */
 export function selectContributionAnswer(store: ProgramRecordStore, ledger: ContributionLedger, selection: { readonly lens: string; readonly subject: RecordId;
-  readonly parameters: Readonly<Record<string, string>>; readonly result: QueryResultId; readonly contract: ResultContract | null; readonly unavailable?: ContributionAnswer['unavailable']; readonly report?: ProducerReport | null }): ContributionAnswer {
+  readonly parameters: Readonly<Record<string, string>>; readonly result: QueryResultId; readonly contract: ResultContract | null }): ContributionAnswer {
   const session = ledger.session, result = ledger.result(selection.result), request = ledger.invocation(result.origin).request;
   const fulfillment = selection.contract ? assessFulfillment(ledger, selection.contract, result.id) : null;
   const producer = (address: { readonly investigram: ItemAddress['investigram'] }) => ledger.production(ledger.investigram(address.investigram).production).producer;
@@ -113,7 +109,7 @@ export function selectContributionAnswer(store: ProgramRecordStore, ledger: Cont
     return displacedBy.length ? [{ designation: entry.address, displacedBy }] : [];
   });
   const payload: Omit<ContributionAnswer, 'id'> = structuredClone({ kind: 'contribution-projection', method: methods.contributionProjection, session, lens: selection.lens,
-    subject: selection.subject, parameters: selection.parameters, question: { result: result.id, request }, alternatives, history, support: support.finish(), emptyReport: alternatives.length ? null : selection.report ?? null, unavailable: alternatives.length ? null : selection.unavailable ?? null, fulfillment: fulfillment?.status ?? null });
+    subject: selection.subject, parameters: selection.parameters, question: { result: result.id, request }, alternatives, history, support: support.finish(), fulfillment: fulfillment?.status ?? null });
   // Only the producing Session's namespace is normalized in the identity, so equal answers are equal independently of it.
   const identity = JSON.parse(JSON.stringify(payload).replaceAll(session, 'session')) as unknown;
   const answer = { ...payload, id: recordId(session, payload.kind, [identityReference(session, session), identity]) };
@@ -129,11 +125,21 @@ export function resolveContributionAnswer(store: Pick<ProgramRecordStore, 'get'>
   return freezeOwned({ projection: retained });
 }
 
+/** Qualification stays attached to its exact source; owner statements qualify that source's production. */
+export interface ArrangedQualification {
+  readonly kind: 'selected-content' | 'selected-use' | 'supporting-item' | 'bearer-identification' | 'displacement' | 'reconsideration' | 'inconsistency' | 'result-contract';
+  readonly source: { readonly kind: 'item'; readonly address: ItemAddress }
+    | { readonly kind: 'association' | 'declaration'; readonly address: DeclarationAddress }
+    | { readonly kind: 'metadata'; readonly address: MetadataAddress };
+  readonly label: string;
+  readonly statements: readonly string[];
+  readonly owner: { readonly investigram: InvestigramId; readonly statements: readonly string[] } | null;
+}
 export interface ArrangedAlternative {
   readonly designation: AssociationAddress;
   readonly producer: Producer;
   /** Statements a reader needs alongside the content: epistemic status, limitations, and current concerns. */
-  readonly qualifications: readonly string[];
+  readonly qualifications: readonly ArrangedQualification[];
   readonly prose: readonly string[];
   /** A diagram for each selected state model, or why none can be drawn from this alternative's content. */
   readonly diagrams: readonly StateDiagram[];
@@ -187,7 +193,6 @@ export function arrangeContributionAnswer(content: ContributionAnswerContent, ti
     const displacements = uses.flatMap(use => use.status.standing.displacedBy.map(address => changeSupport.get(addressKey(address))!));
     const changes = [...new Map([...displacements, ...concerns.map(cause => changeSupport.get(addressKey(cause.change))!)].map(change => [addressKey(change.address), change])).values()];
     const reports = projection.support.metadata.filter(meta => conflicts.has(JSON.stringify(meta.address)));
-    const contextualOwners = new Set([...changes.map(change => change.address.investigram), ...reports.map(report => report.address.investigram)]);
     const bearer = (model: StateModel): string => {
       if (model.bearer.kind === 'role') return model.bearer.role;
       const entity = model.bearer.entity, selected = bearerSupport.get(entity);
@@ -198,19 +203,34 @@ export function arrangeContributionAnswer(content: ContributionAnswerContent, ti
       }) ?? [];
       return labels.length ? [...new Set(labels)].join(' / ') : 'Unlabelled Entity';
     };
-    return { designation: alternative.designation, producer: alternative.producer,
-      qualifications: [...new Set([...qualify(alternative.qualification), ...qualify(alternative.ownerQualification),
-        ...owners.flatMap(owner => qualify(owner.qualification)), ...[...uses, ...bearerUses].flatMap(use => qualify(use.declaration.qualification)),
-        ...bearerUses.flatMap(use => use.declaration.members.flatMap(member => member.kind === 'item' ? qualify(itemSupport.get(itemKey(member.item))!.item.qualification) : [])),
-        ...projection.support.owners.filter(owner => contextualOwners.has(owner.investigram)).flatMap(owner => qualify(owner.qualification)),
-        ...changes.flatMap(change => qualify(change.declaration.qualification)), ...reports.flatMap(report => qualify(report.value.qualification)),
-        ...owners.flatMap(owner => [owner.report?.inability ? `Producer-reported inability: ${owner.report.inability}` : '', owner.report?.statement ?? ''].filter(Boolean)),
-        ...displacements.map(change => `Selected use displaced by ${change.declaration.operation}: ${change.declaration.grounds?.text ?? ''}`),
-        ...reports.flatMap(report => 'grounds' in report.value ? [`Unresolved inconsistency: ${report.value.grounds.text}`] : []),
-        ...selectedItems.flatMap(item => qualify(item.item.qualification)),
-        ...(concerns.length ? [`Needs reconsideration: ${new Set(concerns.map(cause => `${cause.change.investigram}#${cause.change.declaration}`)).size} later change(s) to information this answer selected or its producer received. This does not establish an error.`] : []),
-        ...(conflicts.size ? [`${conflicts.size} unresolved inconsistency report(s) target this answer.`] : []),
-        ...alternative.unmet.map(item => `Requested result not met: ${item.requirement} ${item.reason}`)])],
+    const concernText = (causes: readonly Cause[]) => causes.length ? [`Needs reconsideration: ${new Set(causes.map(cause => addressKey(cause.change))).size} later change(s) to selected or received information. This does not establish an error.`] : [];
+    const group = (kind: ArrangedQualification['kind'], source: ArrangedQualification['source'], label: string,
+      statements: readonly string[]): ArrangedQualification => {
+      const owner = projection.support.owners.find(owner => owner.investigram === source.address.investigram)!;
+      return { kind, source, label, statements: [...new Set(statements)], owner: kind === 'result-contract' ? null : { investigram: owner.investigram,
+        statements: [...qualify(owner.qualification), ...concernText(owner.producing),
+          ...(owner.report?.inability ? [`Producer-reported inability: ${owner.report.inability}`] : []), ...(owner.report?.statement ? [owner.report.statement] : [])] } };
+    };
+    const selectedKeys = new Set(alternative.items.map(item => itemKey(item.address)));
+    const displacedKeys = new Set(displacements.map(change => addressKey(change.address)));
+    const qualifications: ArrangedQualification[] = [
+      ...selectedItems.map(item => group(selectedKeys.has(itemKey(item.address)) ? 'selected-content' : 'supporting-item',
+        { kind: 'item', address: item.address }, `${selectedKeys.has(itemKey(item.address)) ? 'Selected content' : 'Supporting item'}: ${item.item.key}`, qualify(item.item.qualification))),
+      ...uses.map(use => group('selected-use', { kind: 'association', address: use.address }, `Selected use: ${use.address.declaration}`,
+        [...qualify(use.declaration.qualification), ...concernText(use.status.membership)])),
+      ...bearerUses.flatMap(use => [group('bearer-identification', { kind: 'association', address: use.address }, 'Bearer identification use',
+        [...qualify(use.declaration.qualification), ...concernText(use.status.membership)]),
+        ...use.declaration.members.flatMap(member => member.kind === 'item' ? [group('bearer-identification', { kind: 'item', address: member.item },
+          'Bearer identification content', qualify(itemSupport.get(itemKey(member.item))!.item.qualification))] : [])]),
+      ...changes.map(change => group(displacedKeys.has(addressKey(change.address)) ? 'displacement' : 'reconsideration',
+        { kind: 'declaration', address: change.address }, displacedKeys.has(addressKey(change.address)) ? 'Displacement of selected use' : 'Change requiring reconsideration',
+        [...qualify(change.declaration.qualification), `${change.declaration.operation}: ${change.declaration.grounds?.text ?? ''}`])),
+      ...reports.map(report => group('inconsistency', { kind: 'metadata', address: report.address }, 'Inconsistency report',
+        [...qualify(report.value.qualification), ...('grounds' in report.value ? [`Unresolved inconsistency: ${report.value.grounds.text}`] : [])])),
+      ...(alternative.unmet.length ? [group('result-contract', { kind: 'association', address: alternative.designation }, 'Requested result',
+        alternative.unmet.map(item => `Requested result not met: ${item.requirement} ${item.reason}`))] : []),
+    ];
+    return { designation: alternative.designation, producer: alternative.producer, qualifications,
       prose: alternative.items.flatMap(item => item.type === 'prose' ? [(item.body as { text: string }).text] : []),
       diagrams: drawable.map(model => renderStateDiagram(model, bearer(model))),
       diagramUnavailable: drawable.length ? null : models.length ? stateDiagramIncompatibility(models[0]!) : 'This alternative selects no state model.',
@@ -219,9 +239,8 @@ export function arrangeContributionAnswer(content: ContributionAnswerContent, ti
   const drawn = alternatives.filter(item => item.diagrams.length).length;
   return freezeOwned({ answer: projection.id, title, alternatives,
     noCurrentAnswer: alternatives.length ? null : { withdrawn: projection.history,
-      explanation: projection.unavailable ? `Investigation unavailable: ${projection.unavailable.diagnostic ?? projection.unavailable.reason ?? projection.unavailable.kind}` : projection.history.length ? 'Every designated answer to this question has been withdrawn or superseded without a standing replacement. This is not a finding that nothing can be established, and no earlier answer is restored. Historical answers remain exactly accessible; a fresh investigation can be requested explicitly.'
+      explanation: projection.history.length ? 'Every designated answer to this question has been withdrawn or superseded without a standing replacement. This is not a finding that nothing can be established, and no earlier answer is restored. Historical answers remain exactly accessible; a fresh investigation can be requested explicitly.'
         : 'No answer has been designated for this question.' },
-    notices: [...(projection.emptyReport?.inability ? [`Producer-reported inability: ${projection.emptyReport.inability}`] : []),
-      ...(projection.emptyReport?.statement ? [projection.emptyReport.statement] : []), ...(alternatives.length > 1 ? [`${alternatives.length} equally standing alternative answers are shown separately. Their order implies no preference, and they are not reconciled.`] : []),
+    notices: [...(alternatives.length > 1 ? [`${alternatives.length} equally standing alternative answers are shown separately. Their order implies no preference, and they are not reconciled.`] : []),
       ...(alternatives.length > 1 && drawn > 0 && drawn < alternatives.length ? [`A diagram can be drawn for ${drawn} of ${alternatives.length} alternatives; the request is not fulfilled for the others.`] : [])] });
 }

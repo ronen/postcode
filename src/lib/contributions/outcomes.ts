@@ -141,7 +141,7 @@ export async function produce(ledger: ContributionLedger, request: ProductionReq
       throw error;
     }
     if (contribution === undefined) {
-      return problems.length ? { kind: 'invalid-submission', problems, production: ledger.abandon(handle, 'invalid-submission') }
+      return problems.length ? { kind: 'invalid-submission', problems, production: ledger.abandon(handle, 'invalid-submission', { kind: 'invalid-submission', problems }) }
         : { kind: 'no-contribution', reason: 'not-submitted', production: ledger.abandon(handle, 'not-submitted') };
     }
     // Structural repair concerns acceptance only. Once a contribution is accepted, a failure of
@@ -155,7 +155,7 @@ export async function produce(ledger: ContributionLedger, request: ProductionReq
       // it propagates unchanged and its production is discarded so nothing can be submitted late.
       if (!(error instanceof InvalidContribution)) { handle.close(); throw error; }
       problems.push(error.message);
-      if (attempt >= (request.repairs ?? 0)) return { kind: 'invalid-submission', problems, production: ledger.abandon(handle, 'invalid-submission') };
+      if (attempt >= (request.repairs ?? 0)) return { kind: 'invalid-submission', problems, production: ledger.abandon(handle, 'invalid-submission', { kind: 'invalid-submission', problems }) };
       continue;
     }
     const production = ledger.production(handle.id);

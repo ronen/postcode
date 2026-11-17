@@ -17,7 +17,7 @@ The human approved four trials, the route, a 60-request ceiling and elicitation 
 | Requests used | 39 of 60 across all runs, each reserved in the ledger before dispatch |
 | Elicitation | Trial 1 only. One appended instruction asked the agent to offer at least one follow-up option, naming a supported operation and its subject. The harness records it with the step and in every captured exchange. |
 
-The raw captures stay in the session scratch directory and are not committed. They hold sanitized provider exchanges, delivered answers and attempt reports, and they contain repository source. What is committed here is the four accepted state models, rendered with the current renderer, `postcode/state-transition-diagram@4`, as SVG pictures and text forms. These contain agent-authored labels and conditions, and no source text.
+The raw captures stay in the session scratch directory and the worktree’s ignored `_trials/` directory and are not committed. They hold sanitized provider exchanges, delivered answers and attempt reports, and they contain repository source. What is committed here is the four accepted state models, rendered with the current renderer, `postcode/state-transition-diagram@4`, as SVG pictures and text forms. These contain agent-authored labels and conditions, and no source text.
 
 ## Runs
 
