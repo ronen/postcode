@@ -133,6 +133,10 @@ to begin the substantive implementation task described by that plan.
 
 > Possibly it's worth trying the trial again?
 
+2026-11-17, during the unchanged focused retry, after asking whether seven requests would suffice. This adds ten inference requests to the existing cumulative ceiling of sixty, for a new ceiling of seventy; all other trial constraints remain unchanged:
+
+> let's increase the cap with an additional ten
+
 ## Outcome
 
 ## Verification
