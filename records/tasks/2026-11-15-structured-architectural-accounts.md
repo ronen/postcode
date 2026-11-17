@@ -101,6 +101,10 @@ to begin the substantive implementation task described by that plan.
 
 > Run the three prepared trials within the remaining 21 requests
 
+2026-11-17, after the [clean M2 round 3 review](../reviews/structured-architectural-accounts/2026-11-17-m2-vertical-round-3-findings.md) and [round 2 corrections intent check](../reviews/structured-architectural-accounts/2026-11-17-m2-vertical-round-2-corrections-intent-check-claude.md), both concerning implementation target `56995015770f4c1a8bf4a91ca179526884dafd97`:
+
+> round 3 review and another intent check are clean.  but because this is a such core functionality i'll get some more independent reviews before moving to M3
+
 ## Outcome
 
 ## Verification
