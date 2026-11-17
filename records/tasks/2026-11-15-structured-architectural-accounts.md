@@ -93,6 +93,10 @@ to begin the substantive implementation task described by that plan.
 >
 > Elicitation: Ask for options in trial 1 (Recommended) — Trial 1's request deliberately asks the agent to propose at least one follow-up investigation, as the plan allows for eliciting optional actions. Recorded as elicited, not spontaneous.
 
+2026-11-17, implementation handover from Claude to Codex at the Milestone 2 checkpoint:
+
+> Please continue the active task 2026-11-15-structured-architectural-accounts in ../app-worktrees/structured-architectural-accounts-impl on its existing branch. Implementation is handed over from Claude to you. Record this instruction as a task follow-up first. Milestone 2 awaits its checkpoint review (handoff records/reviews/structured-architectural-accounts/2026-11-17-m2-vertical-handoff.md). When findings arrive, address them under dev/review\.md. Do not start Milestone 3 until I say the checkpoint is sufficient. Raw trial captures are in the worktree's ignored \_trials/
+
 ## Outcome
 
 ## Verification
