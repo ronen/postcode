@@ -129,6 +129,10 @@ to begin the substantive implementation task described by that plan.
 > \
 > This is focused verification, not a rerun of the full live suite. Completion of the re-review does not itself accept the M2 checkpoint or authorize starting M3. Report the trial outcome for independent review.
 
+2026-11-17, after the first focused option-verification attempt hit the normal elapsed-dialog limit, using four of the eleven authorized requests. The retry will use the unchanged elicitation, route/model, fixture and production limits, within the seven requests remaining in the existing authorization:
+
+> Possibly it's worth trying the trial again?
+
 ## Outcome
 
 ## Verification
