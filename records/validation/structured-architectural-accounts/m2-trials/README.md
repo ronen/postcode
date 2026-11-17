@@ -96,3 +96,8 @@ The [focused option verification record](focused-option-verification.md) preserv
 ## Revised selector instructions: subsequent live verification
 
 The [revised-selector verification record](revised-selector-verification.md) reports one completed chain on implementation `2ed7b5f`, under a new authorization capped at 30 additional requests. It used 13 requests (82 cumulative across M2), leaving 17 unused. The agent authored an option with valid `state:half`, retained that selector through a normal repair of an unrelated report reference, and the application invoked it successfully. Exact option identity, meaning and selector reached the subsequent investigator, whose contribution was accepted without repair. No further attempt was needed to resolve the focused uncertainty. The record preserves the startup failure before inference, repair, usage and limits; generated architectural claims remain unproved, and M2 remains unaccepted.
+
+
+## Explicit answer reporting after round 8
+
+The [report-answer verification record](report-answer-verification.md) records the correction's focused live run on `2b0d0c3`: new answers counted without `report.answer`, and a fresh investigator explicitly returned an existing designation without a replacement designation. All three steps completed using 15 of a new 30-request cap (97 cumulative M2 dispatches). An empty investigram required ordinary repair; the existing-answer reference was correct and unchanged. No further attempt was needed. The record preserves elicitation, usage, the failure and limits, including the distinction between successful execution and architectural correctness.
