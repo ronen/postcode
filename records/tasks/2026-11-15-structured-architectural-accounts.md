@@ -97,6 +97,10 @@ to begin the substantive implementation task described by that plan.
 
 > Please continue the active task 2026-11-15-structured-architectural-accounts in ../app-worktrees/structured-architectural-accounts-impl on its existing branch. Implementation is handed over from Claude to you. Record this instruction as a task follow-up first. Milestone 2 awaits its checkpoint review (handoff records/reviews/structured-architectural-accounts/2026-11-17-m2-vertical-handoff.md). When findings arrive, address them under dev/review\.md. Do not start Milestone 3 until I say the checkpoint is sufficient. Raw trial captures are in the worktree's ignored \_trials/
 
+2026-11-17, after receiving the M2 round 1 findings. The implementing agent prepared three additional Cockatiel instruction-usability trials on the same ChatGPT route/model, capped at the remaining 21 requests from the original ceiling of 60. The proposal was to create explicitly hypothetical conflicting claims, compare/reuse/partition qualified content with an illustration, then withdraw an explicitly temporary use. The question offered running these trials or leaving the live-trial gap open for checkpoint discussion. The human selected:
+
+> Run the three prepared trials within the remaining 21 requests
+
 ## Outcome
 
 ## Verification
