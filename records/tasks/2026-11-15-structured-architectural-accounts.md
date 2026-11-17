@@ -163,6 +163,10 @@ to begin the substantive implementation task described by that plan.
 > \
 > No additional live inference is authorized by this instruction. State clearly that the revised instructions have not yet been verified live. These fixes do not accept the M2 checkpoint or authorize starting M3.
 
+2026-11-17, authorizing focused live verification of the revised component-selector instructions at implementation `2ed7b5f`. Use the same fixture, route/model and unchanged elicitation, with normal production repair. Thirty additional requests are a hard ceiling, not a usage target; the unused request from the earlier allowance is not added to this new run's allowance. Further attempts must resolve a specific uncertainty, and all evidence is preserved:
+
+> Go ahead with a cap of 30 additional requests. Record this under the task protocol, and make further attempts only to resolve specific uncertainties. Preserve the evidence for review; M2 remains unaccepted.
+
 ## Outcome
 
 ## Verification
