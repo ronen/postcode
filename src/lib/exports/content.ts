@@ -9,6 +9,7 @@ import type { DocumentationAssociationClaim, EvaluationRecord, ExportClaim, Modu
 import { moduleEntity, moduleExportsKey, sessionLedger } from '../contributions/modules.js';
 import type { AssociationEntry, ContributionLedger } from '../contributions/ledger.js';
 import type { ItemAddress } from '../contributions/model.js';
+import { answerSupport } from '../contributions/answer-support.js';
 import { exportsIdentity } from './records.js';
 import type { ExportsContributions, ModuleExportsProjection, UseSnapshot } from './records.js';
 
@@ -39,8 +40,9 @@ export function moduleExports(store: ProgramRecordStore, basis: EvaluationRecord
 }
 
 /** Capture one use of a finding with its standing and displacement grounds as they are now. */
-function useSnapshot(ledger: ContributionLedger, entry: AssociationEntry, item: ItemAddress): UseSnapshot {
+function useSnapshot(ledger: ContributionLedger, support: ReturnType<typeof answerSupport>, entry: AssociationEntry, item: ItemAddress): UseSnapshot {
   const displacements = ledger.standing(entry.address).displacedBy.map(change => {
+    support.change(change);
     const declaration = ledger.declaration(change);
     if (declaration.operation === 'add') throw new Error('Expected a displacing declaration');
     return { change, operation: declaration.operation, grounds: declaration.grounds.text };
@@ -55,14 +57,16 @@ function useSnapshot(ledger: ContributionLedger, entry: AssociationEntry, item: 
 function selectContributions(store: ProgramRecordStore, module: RecordId, discoveryMethod: string, exportsOutcome: EvaluationRecord | undefined): ExportsContributions {
   const session = store.get(module).session, ledger = sessionLedger(store, session), entity = moduleEntity(store, module);
   if (!entity) throw new Error('Expected a contributed module identification');
+  const support = answerSupport(store, ledger);
   const members = (entry: AssociationEntry) => entry.declaration.members.flatMap(member => member.kind === 'item' ? [member.item] : []);
   const naming = ledger.identifications(entity, { method: discoveryMethod }).flatMap(entry =>
-    members(entry).filter(item => ledger.production(ledger.investigram(item.investigram).production).producer.method === discoveryMethod).map(item => useSnapshot(ledger, entry, item)));
+    members(entry).filter(item => ledger.production(ledger.investigram(item.investigram).production).producer.method === discoveryMethod).map(item => useSnapshot(ledger, support, entry, item)));
   const finding = exportsOutcome ? ledger.established(moduleExportsKey(store, module, exportsOutcome)) : undefined;
   if (exportsOutcome && !finding) throw new Error('Expected a contributed export finding');
   const item = finding ? { investigram: finding, item: 'exports' } : null;
-  return { entity, naming, surface: item ? { item, uses: ledger.associations({ kind: 'entity', entity, role: 'topic', topic: 'exports' }, 'all')
-    .filter(entry => members(entry).some(member => member.investigram === item.investigram && member.item === item.item)).map(entry => useSnapshot(ledger, entry, item)) } : null };
+  const surface = item ? { item, uses: ledger.associations({ kind: 'entity', entity, role: 'topic', topic: 'exports' }, 'all')
+    .filter(entry => members(entry).some(member => member.investigram === item.investigram && member.item === item.item)).map(entry => useSnapshot(ledger, support, entry, item)) } : null;
+  return { entity, naming, surface, support: support.finish() };
 }
 
 export interface ModuleExportsContent {

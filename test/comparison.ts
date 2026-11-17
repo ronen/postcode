@@ -12,7 +12,7 @@ const references = new Set([
   'groups', 'candidates', 'artifacts', 'containment', 'placements', 'occurrence', 'occurrences',
   'relationships', 'members', 'internalRelationships', 'coverage', 'nonEdgeRequests',
   // Common contribution identities and the investigram part of content, association and declaration addresses.
-  'entity', 'investigram',
+  'entity', 'investigram', 'production',
   'population', 'prerequisites', 'outsidePopulation', 'subjects', 'opaqueSubjects', 'projectModules', 'source', 'commonAncestors', 'entries', 'values', 'targetEvidence', 'moduleClaims', 'moduleEvaluations',
 ]);
 

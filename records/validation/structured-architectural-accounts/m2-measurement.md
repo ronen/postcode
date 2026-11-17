@@ -75,3 +75,9 @@ This is the behavior the [exposure decision](../../../docs/decisions/association
 - Part C's dialogs are scripted, so delivery volume reflects what this script requests, not what a real agent would request.
 - The measurement does not cover hosted inference, CLI rendering of contribution answers (no such Presentation exists), or migration of the earlier interpretation operations. The plan asks for the relevant measurement to be repeated after the remaining migration.
 - Raw reports were kept in the scratch directory and are not committed. They contain repository paths and record identifiers but no source text. Rerun the script to reproduce them.
+
+## Report-output reproduction constraint after M2 round 6
+
+The [Copilot round 6 review](../../reviews/structured-architectural-accounts/2026-11-17-m2-vertical-round-6-copilot-findings.md) found that the script excluded the entire optional report parent, which could remove project inputs when the report was placed beside the configuration or inside source directories. The corrected script requires a dedicated empty report directory, creates it when absent, and refuses a nonempty parent before opening the project. Choose a new directory for each saved run; omitting the output argument still prints the report without adding a report exclusion.
+
+The original measurements above were not rerun for this correction. A controlled two-module regression verifies both unsafe-parent refusals and identical selected answers with no output versus output in a dedicated directory. Its one scripted dialog uses no hosted inference.

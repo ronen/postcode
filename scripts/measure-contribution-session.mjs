@@ -1,6 +1,7 @@
 /** Accumulating-Session measurement for the structured-accounts plan. Descriptive only: no thresholds.
  *
  *   node --expose-gc scripts/measure-contribution-session.mjs <project tsconfig> <build directory> [output.json] [dialogs]
+ * Output must be in a dedicated, empty directory (created if absent); its whole directory is excluded.
  *
  * Part A runs a fixed mechanical journey through the application interface; it exists in the
  * baseline build too, so the two builds can be compared like for like. Parts B and C need the
@@ -9,7 +10,7 @@
  * real retained information, then applies a broad identification change and a narrow withdrawal,
  * recording delivery volume, status derivation cost and how many contributions gain a cause.
  */
-import { existsSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { buildIdentity } from './comparison-fixtures.mjs';
@@ -20,7 +21,16 @@ const output = process.argv[4];
 const dialogCount = Number(process.argv[5] ?? 40);
 const load = file => import(pathToFileURL(path.join(build, 'src/lib', file)));
 const root = path.dirname(configPath);
-const excluded = [path.join(root, '_build'), path.join(root, '_observations'), build, ...(output ? [path.dirname(path.resolve(output))] : [])];
+// The exclusion policy is directory-based. Never exclude an arbitrary report parent:
+// it may be the configuration directory or contain source that the measurement needs.
+const reportDirectory = output ? path.dirname(path.resolve(output)) : null;
+if (reportDirectory) {
+  if (existsSync(reportDirectory) && readdirSync(reportDirectory).length) {
+    throw new Error('The report requires a dedicated empty output directory; its parent contains existing files. Choose a new report directory.');
+  }
+  mkdirSync(reportDirectory, { recursive: true, mode: 0o700 });
+}
+const excluded = [path.join(root, '_build'), path.join(root, '_observations'), build, ...(reportDirectory ? [reportDirectory] : [])];
 const collect = async () => { for (let i = 0; i < 3; i++) { global.gc?.(); await new Promise(resolve => setImmediate(resolve)); } const { rss, heapUsed } = process.memoryUsage(); return { rss, heapUsed }; };
 const timed = async run => { const started = performance.now(); const value = await run(); return { value, milliseconds: performance.now() - started }; };
 const report = { configPath, build: buildIdentity(build), node: process.versions.node, gcAvailable: Boolean(global.gc), at: new Date().toISOString() };

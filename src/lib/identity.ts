@@ -6,7 +6,7 @@ export const methods = {
   inputs: 'postcode/observed-inputs@7',
   records: 'postcode/program-records@23',
   content: 'postcode/subject-content@1',
-  exportsProjection: 'postcode/module-exports-projection@2',
+  exportsProjection: 'postcode/module-exports-projection@3',
   investigation: 'postcode/investigation@14',
   investigationEvaluation: 'postcode/investigation-evaluation@3',
   investigationProjection: 'postcode/investigation-projection@4',

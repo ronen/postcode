@@ -113,10 +113,16 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
     }
     const definition = catalog.lenses[request.lens]!;
     const designation = request.designation;
+    const plans = new Map(definition.results.map(contract => [contract, request.consumption
+      ? consumptionPlan(catalog.presentations, contract, request.consumption, freshFacts(definition)) : []]));
+    if (request.consumption && ![...plans.values()].some(plan => plan.length)) return failPresentation('No Presentation accepts the prospective answer contract with the supplied format, source and paging choices.');
     /** Obtain or reuse the investigation, then select the current designated answer of its question into a retained answer. */
     const contribution = async (operation: ContributionOperation, invocation: InvocationRequest, subject: RecordId, parameters: Readonly<Record<string, string>>,
       resolution: SubjectResolution | undefined): Promise<PreparedResult> => {
       if (!contributions) throw new Error('Contribution investigations are not available in this Session');
+      if (!request.consumption && !supportedRequirements('contribution', request.requirements ?? standardRequirements.contribution)) {
+        return failPresentation('The requested expansions are not supported by this answer content contract.', resolution);
+      }
       const ledger = sessionLedger(store, session), contract = resultContract(invocation.resultContract);
       if (contract === undefined) return basic('invalid-parameters', `The requested result contract ${invocation.resultContract} is not supported.`, ['Supported result contract']);
       const evaluated: ContributionEvaluated = await contributions.evaluate(invocation, operation, contract, { ...(request.fresh ? { fresh: true } : {}), subject });
@@ -126,7 +132,7 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
       const outcome = evaluated.execution?.outcome ?? null;
       answerWork.record('interpretation', evaluated.reused ? 'reused' : outcome?.kind === 'accepted' ? 'established' : 'unavailable', { records: [content.value.projection.id],
         limitations: [evaluated.reused ? 'A retained outcome for this question was reused; no dialog ran.' : outcome?.kind ?? evaluated.unavailable?.kind ?? 'unavailable'] });
-      const plan = request.consumption ? consumptionPlan(catalog.presentations, 'contribution', request.consumption, freshFacts(definition)) : [];
+      const plan = plans.get('contribution') ?? [];
       const decision = request.consumption ? settleConsumption(plan, content) : null;
       if (request.consumption && !decision) return failPresentation('No compatible Presentation accepts this contribution answer and the supplied choices.', resolution, [content.value.projection.id], content);
       // The attempt failed when a dialog ran, or could not run, without an accepted contribution. Reuse reports the retained outcome as it is.
@@ -155,9 +161,6 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
       if (!operation || !satisfied) return basic('unsupported-subject', `This follow-up option requests ${JSON.stringify(option.request.operation)} on a subject no supported operation accepts, so it cannot be invoked.`, criteria);
       return contribution(operation, { ...option.request, option: { investigram: owner, key } }, owner, { option: key }, undefined);
     }
-    const plans = new Map(definition.results.map(contract => [contract, request.consumption
-      ? consumptionPlan(catalog.presentations, contract, request.consumption, freshFacts(definition)) : []]));
-    if (request.consumption && ![...plans.values()].some(plan => plan.length)) return failPresentation('No Presentation accepts the prospective answer contract with the supplied format, source and paging choices.');
     const mechanical = mechanicalImplementation(definition);
     const operation = definition.requirements.kind === 'interpretation' ? definition.requirements.operation : null;
     const lookupModules = designation.kind === 'name' && definition.subjects.includes('module') ? evaluateModules(store, analysis, mechanical?.lookup.modules ?? [], lookupWork) : undefined;

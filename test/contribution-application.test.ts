@@ -309,3 +309,42 @@ test('distinct delegated options keep separate questions while repeated and fres
   assert.deepEqual(reports.filter(report => report.followUp).map(report => report.followUp), [
     { owner, key: 'reopen', meaning: meanings.reopen }, { owner, key: 'shared', meaning: meanings.shared }, { owner, key: 'shared', meaning: meanings.shared }]);
 });
+
+test('follow-up requirements and prospective Presentation refusal precede dialog and organizing changes', async t => {
+  const { applicationCatalog } = await import('../src/lib/application/catalog.js');
+  const agent = new ScriptedDialogs([[stateAccount('initial', ['closed', 'open'])], [input => ({ kind: 'submit', contribution: {
+    investigrams: [{ key: 'followed', qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text: 'Only the accepted request ran.' } }],
+      declarations: [{ key: 'a', operation: 'add', target: { kind: 'result', result: input.request.result },
+        members: [{ kind: 'item', item: { investigram: { local: 'followed' }, item: 'p' } }] }] }] } })]]);
+  const opened = await openApplication(fixture(t), { investigation: { dialogAgent: agent } }, { ...applicationCatalog, presentations: [
+    { id: 'account', contract: 'contribution', default: true, requirements: { modules: [], groups: [] }, precondition: 'qualified',
+      eligibility: [{ option: 'format', when: 'always', values: ['json'], label: 'format' }] },
+    { id: 'inventory', contract: 'modules', default: true, requirements: { modules: [], groups: [] }, precondition: 'qualified', eligibility: [] },
+  ] });
+  assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
+  const session = opened.session; t.after(() => session.close());
+  const initial = answer(await session.execute({ kind: 'lens', lens: 'state-behavior', designation: { kind: 'name', value: 'breaker' } }));
+  const request = { kind: 'lens' as const, lens: 'follow-up', designation: { kind: 'reference' as const, value: initial.projection.alternatives[0]!.designation.investigram }, parameters: { option: 'reopen' } };
+  for (const choices of [
+    { requirements: { modules: ['exports' as const], groups: [] } },
+    { requirements: { modules: [], groups: ['group-details' as const] } },
+    { consumption: { presentations: ['inventory'], options: {} } },
+    { consumption: { presentations: ['account'], options: { format: 'unsupported' } } },
+    { consumption: { presentations: ['account'], options: { format: 'json', source: true } } },
+    { consumption: { presentations: ['account'], options: { format: 'json', page: 1 } } },
+  ]) {
+    const refused = await session.execute({ ...request, ...choices, fresh: true });
+    assert.equal(refused.kind, 'resolution');
+    if (refused.kind !== 'resolution') throw new Error('Expected preflight refusal');
+    assert.equal(refused.resolution.reason, 'presentation-unavailable');
+    assert.deepEqual(refused.resolution.retainedAnswers, []);
+    assert.equal(agent.inputs.length, 1);
+    assert.equal(session.usage().attempts.length, 1);
+  }
+  const valid = answer(await session.execute({ ...request, consumption: { presentations: ['account'], options: { format: 'json' } } }));
+  assert.equal(valid.result.reporting?.reused, false);
+  assert.equal(valid.result.consumption?.selected.id, 'account');
+  assert.equal(valid.projection.alternatives.length, 1);
+  assert.equal(agent.inputs.length, 2);
+  assert.deepEqual(answer(await session.execute({ kind: 'present', target: initial.projection.id })).projection, initial.projection);
+});

@@ -4,7 +4,7 @@ import { test } from 'node:test';
 import { entityModule, moduleEntity, sessionLedger } from '../src/lib/contributions/modules.js';
 import { InvalidContribution } from '../src/lib/contributions/model.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
-import { methods } from '../src/lib/identity.js';
+import { methods, recordId } from '../src/lib/identity.js';
 import type { ClaimContextRecord, ModuleClaim, ModuleRecord, RecordId } from '../src/lib/records.js';
 import { moduleExports, resolveModuleExports } from '../src/lib/exports/content.js';
 import { arrangeModuleExports, renderModuleExports } from '../src/lib/exports/presentation.js';
@@ -218,4 +218,59 @@ test('equivalent exports answers are identical when findings arrive in a differe
   // Unrelated accumulated work and another standing identification did not broaden or reorder the method's answer.
   assert.equal(direct!.projection.contributions.naming.length, 1);
   assert.equal(direct!.projection.contributions.surface!.uses.length, 1);
+});
+
+test('export displacement snapshots retain separately qualified evidence and support through later changes', async () => {
+  const run = async () => {
+    const { store, ledger, entity, answer } = await exportsSession();
+    const before = answer(), naming = before.contributions.naming[0]!.association, surface = before.contributions.surface!.uses[0]!.association;
+    const producer = ledger.begin({ producer: agent, id: recordId(ledger.session, 'production', 'qualified-export-displacement') });
+    // The controlled producer is supplied the actual retained export claim before citing it.
+    producer.supplied([store.get(before.exports[0]!).id]);
+    const accepted = ledger.accept([{ production: producer, contribution: { investigrams: [{ key: 'change',
+      qualification: { scope: 'hypothetical comparison only', limitations: ['OWNER_LIMIT: this organizing judgment is hypothetical.'] },
+      items: [{ key: 'grounds', type: 'prose', body: { text: 'SUPPORT_BODY: the comparison uses one hypothetical scenario.' },
+        qualification: { limitations: ['SUPPORT_LIMIT: not a mechanically established fact.'] }, evidence: [before.exports[0]!] },
+        { key: 'replacement', type: 'prose', body: { text: 'REPLACEMENT_CONTENT_NOT_SELECTED' } }],
+      declarations: [
+        { key: 'withdraw-name', operation: 'withdraw', displaces: [naming],
+          qualification: { scope: 'naming only', limitations: ['DECLARATION_LIMIT: applies only to the hypothetical naming use.'] },
+          grounds: { text: 'Compare the name in the hypothetical scenario.', evidence: [before.exports[0]!], support: [{ investigram: { local: 'change' }, item: 'grounds' }] } },
+        { key: 'replace-exports', operation: 'supersede', target: { kind: 'entity', entity, role: 'topic', topic: 'exports' }, displaces: [surface],
+          members: [{ kind: 'item', item: { investigram: { local: 'change' }, item: 'replacement' } }],
+          qualification: { limitations: ['EXPORT_LIMIT: replacement use is conditional.'] },
+          grounds: { text: 'Compare another export account.', support: [{ investigram: { local: 'change' }, item: 'grounds' }] } },
+      ] }] } }]);
+    const owner = accepted.productions[0]!.investigrams.change!;
+    const selected = answer(), fixed = structuredClone(selected), support = selected.contributions.support;
+    assert.deepEqual(support.owners.find(item => item.investigram === owner)?.producer, agent);
+    assert.equal(support.owners.find(item => item.investigram === owner)?.qualification?.scope, 'hypothetical comparison only');
+    assert.equal(support.changes.find(item => item.address.declaration === 'withdraw-name')?.declaration.qualification?.scope, 'naming only');
+    assert.ok(support.evidence.some(record => record.id === before.exports[0]));
+    assert.ok(support.evidence.some(record => record.kind === 'claim-context'));
+    assert.ok(support.items.some(item => item.address.item === 'grounds' && item.item.qualification?.limitations.includes('SUPPORT_LIMIT: not a mechanically established fact.')));
+    assert.ok(!support.items.some(item => item.address.item === 'replacement'), 'displacement context does not select replacement content');
+    const render = () => arrangeModuleExports(resolveModuleExports(store, selected), 'module-test', unicode, 'Exports');
+    const view = render(), text = renderModuleExports(view);
+    assert.match(text, /Displacement producer: agentic \(test\/investigation@1\)/);
+    assert.match(text, /Displacement owner: interpretation.*scope: hypothetical comparison only/);
+    assert.match(text, /OWNER_LIMIT/); assert.match(text, /DECLARATION_LIMIT/); assert.match(text, /EXPORT_LIMIT/);
+    assert.ok(!view.module.qualification.limitations.some(value => /OWNER_LIMIT|DECLARATION_LIMIT|EXPORT_LIMIT/.test(value)));
+    const displacement = view.contributions.naming[0]!.displacements[0]!;
+    assert.deepEqual(displacement.evidence, [before.exports[0]]);
+    assert.deepEqual(displacement.support, [{ investigram: owner, item: 'grounds' }]);
+    assert.ok(!('support' in view.contributions), 'raw resolved source evidence is not copied into the public View');
+    const textBeforeLaterChange = renderModuleExports(view);
+    const later = ledger.begin({ producer: agent });
+    ledger.accept([{ production: later, contribution: { investigrams: [{ key: 'later', qualification: caveat, declarations: [{ key: 'w', operation: 'withdraw',
+      displaces: [{ investigram: owner, declaration: 'replace-exports' }], grounds: { text: 'Later withdrawal of the replacement use.' } }] }] } }]);
+    assert.deepEqual(resolveModuleExports(store, selected).projection, fixed);
+    assert.equal(renderModuleExports(render()), textBeforeLaterChange);
+    assert.equal(before.contributions.support.changes.length, 0);
+    const fresh = answer();
+    assert.notEqual(fresh.id, selected.id);
+    assert.equal(fresh.contributions.support.changes.find(item => item.address.declaration === 'replace-exports')?.standing?.state, 'displaced');
+    return { projection: normalizeSession(fixed), view: normalizeSession(view, selected.session), text: normalizeSession(textBeforeLaterChange, selected.session) };
+  };
+  assert.deepEqual(await run(), await run(), 'qualified displacement captures and identities are repeatable across Sessions');
 });
