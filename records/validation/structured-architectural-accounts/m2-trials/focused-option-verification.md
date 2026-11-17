@@ -6,7 +6,13 @@ Review context: [Clean round 5 re-review](../../../reviews/structured-architectu
 Prior evidence: [M2 trials](README.md), [review elicitation](review-elicitation.md)
 Harness: [`run-trial.mjs`](../../../../scripts/structured-accounts/run-trial.mjs)
 
-## Outcome
+## Current outcome
+
+**The unchanged focused chain completed successfully on the third run**, after the initial timeout and a capped retry preserved below. The application accepted an elicited option, invoked it, delivered its exact retained identity and meaning to the subsequent investigator, and accepted the subsequent contribution. The initial state-diagram answer fulfilled its contract. The generated option did not specify an optional result contract, so the follow-up correctly recorded null fulfillment rather than claiming to fulfill a contract it did not have. A non-null follow-up contract was not exercised in these new runs.
+
+The focused work used **20 of 21 authorized additional inference requests**, bringing all M2 trials to **69 of the increased 70-request ceiling**. One request remains unused. No application code, production instructions, repair behavior or elicitation changed between runs. Successful execution does not establish the architectural correctness of either generated account. M2 remains open for independent review and the human's checkpoint decision; M3 has not begun.
+
+## First attempt outcome
 
 **The focused chain is incomplete.** The initial investigation reached the normal 180-second elapsed-dialog guard during its fourth provider request. No contribution or follow-up option was accepted. The application returned a failed answer delivery with `limit-stop`, reason `Elapsed dialog guard reached.`, no standing alternatives and result fulfillment `no-designated-answer`. The harness then recorded the invocation step as skipped because the earlier answer offered no option.
 
@@ -76,3 +82,55 @@ The following live checks remain **unverified in this run**:
 The earlier offline regressions and independent re-review remain evidence for their stated scopes; this trial does not replace them or establish those behaviors live. A timeout before acceptance does not isolate a defect in option instructions, and successful information acquisition does not establish the architectural correctness of an explanation. No explanation was accepted here for architectural assessment. No general reliability rate, broader live-suite result or M2 checkpoint acceptance is claimed.
 
 Milestone 2 remains open for the human’s decision and independent review of this outcome. Milestone 3 has not begun.
+
+## Authorized retry within the original ceiling
+
+After seeing the first timeout, the human asked, “Possibly it's worth trying the trial again?” This direction was recorded before retrying in task follow-up `ff4a3a0f9e1e0234530de4745c6f17041e942dfc`. The retry used that checkout, the same implementation `6f72f86`, unchanged elicitation, harness, route/model, pinned clean fixture and production limits. It began in a fresh Session with seven requests remaining under the original ceiling.
+
+The initial investigation succeeded after five requests (ordinals 54–58), taking approximately 112,627 ms of dialog time. Its first submission was rejected with `Unknown content component reference.`: the proposed option referred to `unsupported` as though it were a declared component of the state-model item. The one normal structural repair removed that component selector and referred to the whole retained model. No trial guidance was added. The repaired contribution was accepted, designated one alternative, and fulfilled `postcode/state-diagram-answer@1` in both attempt reporting and answer projection.
+
+The accepted option key was `concurrency-followup`. Its exact meaning was:
+
+> Examine the state model more deeply to determine how concurrent HalfOpen executions, queued callers, cancellation, and isolation interleave, and identify any race-sensitive behaviors not expressible in the flat diagram.
+
+It requested `examine-content` on the retained state-model item, with no optional result contract. The harness invoked that returned option through the application's follow-up Lens. A capture audit verified the identical retained owner/key in the subsequent question and wire request, the identical meaning in delivered option metadata, and the identical owner/key/meaning in terminal attempt reporting. The subsequent investigator acquired information in requests 59–60. Its next dispatch was refused by the harness budget before a provider request was made. Consequently, no subsequent contribution was accepted; its empty answer had zero alternatives and null contract fulfillment, consistent with the option's absent contract.
+
+The budget refusal surfaced through the adapter as `communication-failure` / `transport_error`. This is a harness-enforced allowance stop, not evidence of provider unavailability or option rejection. Application usage records eight call attempts, including the refused dispatch with no provider usage; the request ledger records exactly seven dispatched requests. All seven have provider usage: 143,943 input plus 5,372 output tokens, totaling 149,315. The cumulative dispatch count reached 60. This retry verifies option acceptance, invocation and identity/meaning delivery, but not completion of the subsequent investigation.
+
+During this retry, the human authorized ten additional requests, recorded in task follow-up `c1c0cef9192a35e717cfcb931545a0cda549dd62`. The running harness held an exclusive budget lease and a fixed in-memory ceiling; it was allowed to finish under its original cap. After it closed the Session and released the lease, the ledger ceiling was raised from 60 to 70. Continuing the chain therefore required a fresh Session and another unchanged initial investigation, rather than resuming the closed Session or fabricating a retained option.
+
+## Completed run under the increased ceiling
+
+This run executed checkout `c1c0cef9192a35e717cfcb931545a0cda549dd62`, still using application implementation `6f72f86d7cf4cfa1dd61c34e4455cc97ec42133b`. The same Cockatiel commit was verified clean before and after execution. The exact elicitation above, production instructions, route/model, runtime and 180-second per-dialog limit were unchanged. The harness made nine requests, ordinals 61–69, under the newly authorized ceiling of 70.
+
+The initial investigation completed in approximately 126,536 ms using three requests. Its first submission again received `Unknown content component reference.`; the ordinary single repair succeeded. The accepted answer contained a state model and prose, one designated alternative and an applicable option. Both attempt and answer projection recorded `fulfilled` for `postcode/state-diagram-answer@1`.
+
+The returned option key was `half_open_concurrency`, owned by the accepted initial investigram. Its meaning was:
+
+> Investigate the retained state model more deeply to characterize concurrent HalfOpen call interleavings, waiting-call wakeups, cancellation behavior, and stale-result handling without flattening them into misleading extra states.
+
+Its request was `examine-content` on the retained model, with references to both that model and its explanation and no optional result contract. The application invoked the exact returned owner/key. The audit matched that identity in the subsequent question, the wire request's resolved handles and terminal reporting. It also matched the retained meaning byte-for-byte in the option metadata delivered to the next investigator and the terminal follow-up report. The follow-up's fixed support retained the source owner and its qualification.
+
+The subsequent investigator used six requests, acquiring retained content and further source evidence before submitting. Its contribution was accepted without structural repair after approximately 112,590 ms. It designated a new alternative containing a refined state model and prose under the follow-up question's result. The attempt report's answer addresses matched the projected designation. Its additive declaration targeted the new examination result and explicitly disclaimed supersession of the original whole-policy answer. The explanation addresses admission, waiting callers, wakeups, cancellation and stale results, with captured-source/test-file limitations and an explicit statement that no tests were executed.
+
+The contribution report and answer projection both recorded null fulfillment, matching the option's null result contract. This distinguishes acceptance and designation from satisfaction of a required result shape. The initial state-diagram contract was exercised; live fulfillment of a non-null contract on the follow-up remains outside this run's evidence.
+
+| Request ordinal | Step and outcome | Input tokens | Output tokens | Total tokens |
+| --- | --- | ---: | ---: | ---: |
+| 61 | Initial information acquisition | 5,020 | 99 | 5,119 |
+| 62 | Initial submission; rejected component reference | 31,349 | 3,691 | 35,040 |
+| 63 | Normal repair; initial contribution accepted | 35,195 | 2,482 | 37,677 |
+| 64 | Follow-up information acquisition | 6,634 | 137 | 6,771 |
+| 65 | Follow-up information acquisition | 12,698 | 131 | 12,829 |
+| 66 | Follow-up information acquisition | 35,883 | 151 | 36,034 |
+| 67 | Follow-up information acquisition | 43,456 | 115 | 43,571 |
+| 68 | Follow-up information acquisition | 52,980 | 52 | 53,032 |
+| 69 | Follow-up contribution accepted | 58,461 | 3,943 | 62,404 |
+
+All nine dispatched requests reported usage: 281,676 input plus 10,801 output tokens, totaling 292,477. Together the three focused runs dispatched 4 + 7 + 9 = 20 requests. Their known token reports total 503,541 tokens, but that is still partial because request 53 from the first run never reported usage. The refused dispatch in the capped retry is not counted as a provider request or silently assigned provider consumption.
+
+## Combined interpretation for independent review
+
+The completed run demonstrates this elicited option-authoring and invocation path using only actual production guidance and normal repair. The exact option's identity and retained meaning reached the subsequent investigator, whose accepted result was designated under the corresponding question. Offline assertions against the captures checked production-instruction equality, requested model/reasoning, exact identity/meaning delivery, acceptance, designation/report correspondence and the fulfilled-versus-null contract outcomes. Raw captures from all three runs remain separate in ignored working material, with manifests for the retries; the first timeout and allowance stop are not discarded.
+
+This evidence does not establish spontaneous option generation, first-submission validity, repeatable reliability, a non-null follow-up contract, or architectural correctness of the generated accounts. Both successful initial submissions needed the one normal repair for an unknown component reference. The generated concurrency claims were observed and retained, not independently proved by execution or a complete source audit. The live chain's success is an integration observation, not endorsement of the explanations' completeness or truth. No further inference was attempted after completion, and the broader live suite was not rerun.
