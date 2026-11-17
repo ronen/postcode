@@ -1,16 +1,30 @@
 import type { RecordId } from '../records.js';
 import type { ContributionLedger } from './ledger.js';
 import type { AssociationAddress, AssociationDeclaration, ContentItem, Declaration, DeclarationAddress, Delivery, EntityId, FollowUpOption,
-  Illustration, InconsistencyReport, InvestigramId, InvocationId, ItemAddress, MetadataAddress, Producer, ProductionId, Qualification,
+  Illustration, InconsistencyReport, InvestigramId, Invocation, InvocationId, ItemAddress, MetadataAddress, Producer, ProductionId, Qualification,
   QueryResultId, SelectionScope } from './model.js';
 import { freezeOwned } from '../immutable.js';
 import { InvalidAcquisition, addressKey } from './model.js';
 import type { AssociationStatus, Cause, Standing } from './status.js';
 
+/** The recorded question only; never a guessed navigation origin or current-answer lookup. */
+export interface OriginatingQuestion {
+  readonly invocation: InvocationId;
+  readonly result: QueryResultId;
+  readonly request: Invocation['request'];
+  readonly fresh: boolean;
+}
+export function originatingQuestion(ledger: ContributionLedger, id: InvocationId): OriginatingQuestion {
+  const { result, request, fresh } = ledger.invocation(id);
+  return { invocation: id, result, request, fresh };
+}
+
 export interface DeliveredOwner {
   readonly investigram: InvestigramId;
   readonly production: ProductionId;
   readonly producer: Producer;
+  /** Recorded producing question, distinct from the route by which this content was selected. */
+  readonly origin: OriginatingQuestion | null;
   /** Owner-wide qualification, applicable alongside any narrower item or declaration qualification. */
   readonly qualification: Qualification | null;
   /** Producing-context concerns already known at this delivery. */
@@ -59,6 +73,8 @@ export interface DeliveredChange {
 export interface DeliveredAssociation {
   readonly address: AssociationAddress;
   readonly declaration: AssociationDeclaration;
+  /** The exact question designated by this use, which may differ from its producer’s question. */
+  readonly question: OriginatingQuestion | null;
   readonly owner: DeliveredOwner;
   readonly status: AssociationStatus;
   /** Displacements already accepted, with their grounds; replacement content is referenced, not delivered. */
@@ -155,7 +171,8 @@ export class ProductionHandle {
 
   #owner(investigram: InvestigramId): DeliveredOwner {
     const owner = this.#ledger.investigram(investigram), production = this.#ledger.production(owner.production);
-    return { investigram, production: production.id, producer: production.producer, qualification: owner.qualification,
+    return { investigram, production: production.id, producer: production.producer,
+      origin: production.invocation ? originatingQuestion(this.#ledger, production.invocation) : null, qualification: owner.qualification,
       concerns: this.#ledger.status.investigram(investigram).producing };
   }
 
@@ -225,7 +242,7 @@ export class ProductionHandle {
       concerns: changes([...owner.concerns, ...status.membership, ...status.producing, ...status.content.flatMap(item => item.producing)]) });
     const displacements = status.standing.displacedBy.map(change => this.#change(change));
     const content = options.content ? declaration.members.flatMap(member => member.kind === 'item' ? [this.#item(member.item, address, undefined)] : []) : [];
-    return { address, declaration, owner, status, displacements, content,
+    return { address, declaration, question: declaration.target.kind === 'result' ? originatingQuestion(this.#ledger, this.#ledger.result(declaration.target.result).origin) : null, owner, status, displacements, content,
       undeliveredMembers: declaration.members.flatMap(member => member.kind === 'association' ? [member.association] : []) };
   }
 

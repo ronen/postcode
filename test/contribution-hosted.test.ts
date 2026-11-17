@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import type { DialogInput } from '../src/lib/contributions/dialog.js';
 import { chatGPTIdentity, openAIIdentity } from '../src/lib/investigation/openai/adapter.js';
 import type { OpenAIExchange } from '../src/lib/investigation/openai/adapter.js';
-import { contributionWireProtocol, openAIDialogAgent } from '../src/lib/investigation/openai/contribution-protocol.js';
+import { contributionProtocol, contributionWireProtocol, openAIDialogAgent } from '../src/lib/investigation/openai/contribution-protocol.js';
 import type { ReportedUsage } from '../src/lib/investigation/contracts.js';
 import type { RecordId } from '../src/lib/records.js';
 
@@ -118,4 +118,22 @@ test('the hosted transport carries the contribution dialog with exact handles an
   fourth.close();
   // A fresh dialog has a fresh handle table and no history.
   assert.equal(sent.at(-1)!.input.length, 1);
+});
+
+test('originating questions keep exact wire references and literal parameters separate', () => {
+  const codec = contributionProtocol.codec();
+  const origin = { invocation: 'session:origin:invocation:1', result: 'session:origin:query-result:1', fresh: false,
+    request: { operation: 'original-question', subjects: [{ role: null, subject: { kind: 'entity', entity: 'session:origin:entity:1' } }],
+      parameters: { entity: 'literal parameter', scenario: 'original-scope' }, context: [], resultContract: 'original-contract' } };
+  const message = codec.message({ attempt: 'session:attempt' as never, instructions: '', request: { invocation: 'session:new:invocation:1', result: 'session:new:query-result:1', operation: 'examine-content', fresh: false,
+    subjects: [], parameters: {}, resultContract: null }, notices: [], responses: [{ tool: 'contribution', kind: 'item', value: { owner: { origin } } }],
+    remaining: { milliseconds: 1000, calls: 1, toolCalls: 1, repairs: 1 } } as unknown as DialogInput);
+  const encoded = (message.responses as { value: { owner: { origin: typeof origin } } }[])[0]!.value.owner.origin;
+  assert.notEqual(encoded.invocation, origin.invocation);
+  assert.notEqual(encoded.result, origin.result);
+  assert.equal(encoded.request.operation, origin.request.operation);
+  assert.deepEqual(encoded.request.parameters, origin.request.parameters);
+  const request = codec.tools({ requests: [{ kind: 'designations', result: encoded.result }] });
+  assert.deepEqual(request, { kind: 'tools', requests: [{ kind: 'designations', result: origin.result }] });
+  codec.close();
 });

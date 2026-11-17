@@ -12,7 +12,7 @@ export interface StateDiagram {
   /** Qualification that must accompany the picture: entry, coverage, applicability and unsupported semantics. */
   readonly notes: readonly string[];
 }
-export const stateDiagramMethod = 'postcode/state-transition-diagram@4';
+export const stateDiagramMethod = 'postcode/state-transition-diagram@5';
 
 /** Why a state model cannot be drawn, or null. Missing content is a different condition from a rendering failure. */
 export function stateDiagramIncompatibility(model: StateModel): string | null {
@@ -31,6 +31,7 @@ const short = (value: string, limit: number): string => value.length <= limit ? 
  * unknown information is shown as unknown, and anything the picture abbreviates is in the legend.
  */
 export function renderStateDiagram(model: StateModel, bearerLabel: string): StateDiagram {
+  bearerLabel = model.bearer.kind === 'role' ? model.bearer.role : `${bearerLabel} [Entity: ${model.bearer.entity}]`;
   const reason = stateDiagramIncompatibility(model);
   if (reason) throw new Error(`Incompatible state model: ${reason}`);
   const count = model.states.length, radius = Math.max(150, 50 * count), width = 2 * radius + 360;
@@ -100,6 +101,7 @@ export function renderStateDiagram(model: StateModel, bearerLabel: string): Stat
     return `<circle class="entry" cx="${from.x.toFixed(1)}" cy="${from.y.toFixed(1)}" r="7"/><path class="edge" d="M ${from.x.toFixed(1)} ${from.y.toFixed(1)} L ${(at.x - box.width / 2 - 4).toFixed(1)} ${(at.y - box.height / 2 + 6).toFixed(1)}" marker-end="url(#arrow)"/>`;
   })() : '';
   const notes = [
+    `State bearer: ${bearerLabel}.`,
     model.initial.kind === 'state' ? `Entry: ${label.get(model.initial.state)}${model.initial.condition ? `, ${model.initial.condition}` : ''}.`
       : model.initial.kind === 'unknown' ? 'Entry: not established by this account. No entry marker is drawn.' : 'Entry: this account establishes that there is no distinguished entry state.',
     `States shown: ${model.coverage.states === 'all' ? 'the account claims these are all the states' : model.coverage.states === 'some' ? 'some states only; others may exist' : 'whether other states exist is not established'}.`,

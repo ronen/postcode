@@ -35,7 +35,9 @@ export interface AnswerDelivery extends ApplicationDelivery {
   readonly resolution?: SubjectResolution;
   readonly bindings: CoordinatedBindings;
   readonly consumption: ConsumptionDecision | null;
-  readonly reporting: { readonly reused: boolean; readonly attempt: RecordId | null;
+  readonly reporting: { readonly contribution?: import('../contributions/evaluation.js').ContributionAttemptResult | null;
+    readonly unavailable?: import('../investigation/contracts.js').AgentFailure | null;
+    readonly reused: boolean; readonly attempt: RecordId | null;
     readonly provider?: NonNullable<NonNullable<InvestigationSelection['unavailable']>['provider']> } | null;
   readonly repositoryRoot: string | null;
   readonly methods: readonly string[];

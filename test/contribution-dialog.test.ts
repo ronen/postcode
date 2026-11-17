@@ -246,3 +246,56 @@ test('the instructions state the exact submission shapes that live agents got wr
   assert.doesNotThrow(() => ledger.accept([{ production: handle, contribution: { investigrams: [{ ...base,
     options: [{ key: 'o', meaning: 'Investigate further.', request: { operation: 'state-behavior', subjects: [{ subject: { kind: 'entity', entity: barrel } }] } }] }] } }]));
 });
+
+test('malformed acquisitions are refused without delivery while genuine defects propagate', async () => {
+  const { entity, invoke, run } = await setup();
+  const malformed = [
+    { kind: 'item' }, { kind: 'association', association: null }, { kind: 'metadata' },
+    { kind: 'member', association: {}, item: [] }, { kind: 'declaration', declaration: 'wrong' },
+    { kind: 'item', item: { investigram: 'wrong', item: 12 } }, { kind: 'metadata', address: { investigram: 'wrong', key: 'x', metadata: 'bad' } },
+    { kind: 'inventory', scope: null }, { kind: 'contribution', investigram: {} }, { kind: 'source' },
+  ];
+  const { execution } = await run([() => ({ kind: 'tools', requests: malformed }), input => {
+    assert.equal(input.responses.length, malformed.length);
+    assert.ok(input.responses.every(response => response.tool === 'unavailable'));
+    return { kind: 'ended' };
+  }], invoke(entity('barrel')).invocation);
+  assert.deepEqual(kinds(execution.production.deliveries), ['scope', 'association', 'item']);
+});
+
+test('timeout preserves dispatched context but discards acquisitions awaiting dispatch', async () => {
+  const { entity, invoke, run } = await setup();
+  const bounds = { milliseconds: 100, calls: 10, toolCalls: 10, characters: 1_000_000 };
+  const pending = new Promise<never>(() => {});
+  const dispatched = await run([input => { assert.ok(input.responses.length); return pending; }], invoke(entity('barrel')).invocation, { bounds });
+  assert.equal(dispatched.execution.outcome.kind, 'limit-stop');
+  assert.deepEqual(kinds(dispatched.execution.production.deliveries), ['scope', 'association', 'item']);
+  const beforeDispatch = await run([() => ({ kind: 'tools', requests: [{ kind: 'baseline', entity: entity('origin') }, { kind: 'modules' }] })],
+    invoke(entity('barrel')).invocation, { bounds, evidence: { lookup: () => undefined, query: () => pending } });
+  assert.equal(beforeDispatch.execution.outcome.kind, 'limit-stop');
+  assert.deepEqual(beforeDispatch.execution.production.deliveries, dispatched.execution.production.deliveries);
+});
+
+test('selected content and whole-owner acquisition retain the originating question without retargeting history', async () => {
+  const { ledger, entity, run, account } = await setup();
+  const barrel = entity('barrel');
+  const original = ledger.invoke({ operation: 'ORIGINAL_QUESTION_MARKER', subjects: [{ role: 'bearer', subject: { kind: 'entity', entity: barrel } }],
+    parameters: { scenario: 'ORIGINAL_SCOPE_MARKER' }, context: [], resultContract: 'original-contract' });
+  const produced = await run([() => ({ kind: 'submit', contribution: { investigrams: [account('first', barrel, original.result.id)] } })], original.invocation);
+  const owner = produced.execution.production.investigrams[0]!;
+  const selected = ledger.invoke({ operation: 'examine-content', subjects: [{ role: null, subject: { kind: 'content', item: { investigram: owner, item: 'p' }, component: null } }],
+    parameters: {}, context: [], resultContract: null });
+  const result = await run([input => {
+    const value = (input.responses[0] as { value: { owner: import('../src/lib/contributions/production.js').DeliveredOwner } }).value;
+    assert.equal(value.owner.origin?.request.operation, 'ORIGINAL_QUESTION_MARKER');
+    assert.equal(value.owner.origin?.request.parameters.scenario, 'ORIGINAL_SCOPE_MARKER');
+    assert.equal(value.owner.origin?.result, original.result.id);
+    return { kind: 'tools', requests: [{ kind: 'contribution', investigram: owner }] };
+  }, input => {
+    const value = (input.responses[0] as { value: { owner: import('../src/lib/contributions/production.js').DeliveredOwner } }).value;
+    assert.equal(value.owner.origin?.request.resultContract, 'original-contract');
+    assert.deepEqual(value.owner.origin?.request.subjects, original.invocation.request.subjects);
+    return { kind: 'ended' };
+  }], selected.invocation);
+  assert.equal(result.execution.production.deliveries[0]?.kind, 'item');
+});

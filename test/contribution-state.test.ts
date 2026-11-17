@@ -83,14 +83,14 @@ test('the diagram arranges exactly the supplied states and transitions and carri
   assert.match(diagram.text, /T6 {2}Closed → Open\n {6}trigger: not established/);
   assert.match(diagram.text, /guard: no other probe is in flight/);
   // Scope and qualification accompany the picture.
-  assert.deepEqual(diagram.notes.slice(0, 5), ['Entry: Closed, on construction.', 'States shown: the account claims these are all the states.',
+  assert.deepEqual(diagram.notes.slice(1, 6), ['Entry: Closed, on construction.', 'States shown: the account claims these are all the states.',
     'Transitions shown: some transitions only; others may exist.', 'Applies to: Default configuration only.', 'Not representable in this diagram: Concurrent callers during the probe are not modelled.']);
   assert.match(diagram.notes.at(-1)!, /adds no state, transition or completeness claim/);
   assert.equal(renderStateDiagram(model, 'Breaker').svg, diagram.svg);
   // An entry that is not established is stated, never drawn; established absence is a different statement.
   const unknown = renderStateDiagram({ ...model, initial: { kind: 'unknown' }, coverage: { states: 'unknown', transitions: 'unknown' } }, 'Breaker');
-  assert.deepEqual([unknown.svg.includes('class="entry"'), unknown.notes[0], unknown.notes[1]], [false, 'Entry: not established by this account. No entry marker is drawn.', 'States shown: whether other states exist is not established.']);
-  assert.equal(renderStateDiagram({ ...model, initial: { kind: 'none' } }, 'Breaker').notes[0], 'Entry: this account establishes that there is no distinguished entry state.');
+  assert.deepEqual([unknown.svg.includes('class="entry"'), unknown.notes[1], unknown.notes[2]], [false, 'Entry: not established by this account. No entry marker is drawn.', 'States shown: whether other states exist is not established.']);
+  assert.equal(renderStateDiagram({ ...model, initial: { kind: 'none' } }, 'Breaker').notes[1], 'Entry: this account establishes that there is no distinguished entry state.');
   // Agent-authored labels are data: markup and control characters are neutralized in every output.
   const hostile = renderStateDiagram({ ...model, states: [{ key: 'closed', label: '<script>alert(1)</script>\u001b[31m', description: null, entity: null }, ...model.states.slice(1)] }, '"><b>x');
   assert.equal(/<script|<b>/.test(hostile.svg), false);

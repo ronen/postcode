@@ -121,8 +121,12 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
       if (contract === undefined) return basic('invalid-parameters', `The requested result contract ${invocation.resultContract} is not supported.`, ['Supported result contract']);
       const evaluated: ContributionEvaluated = await contributions.evaluate(invocation, operation, contract, { ...(request.fresh ? { fresh: true } : {}), context, subject });
       answerWork.check();
+      const domainOutcome = evaluated.attemptResult?.outcome;
+      const unavailable = evaluated.unavailable ? { kind: evaluated.unavailable.kind, code: evaluated.unavailable.code, diagnostic: evaluated.unavailable.diagnostic }
+        : domainOutcome && domainOutcome.kind !== 'accepted' ? { kind: domainOutcome.kind, reason: 'reason' in domainOutcome ? domainOutcome.reason
+          : 'problems' in domainOutcome ? domainOutcome.problems.join('; ') : domainOutcome.diagnostic } : null;
       const content: QualifiedContent = { contract: 'contribution', value: resolveContributionAnswer(store, selectContributionAnswer(store, ledger,
-        { lens: request.lens, subject, parameters, result: evaluated.result, contract })) };
+        { lens: request.lens, subject, parameters, result: evaluated.result, contract, unavailable, report: evaluated.attemptResult?.report ?? null })) };
       const outcome = evaluated.execution?.outcome ?? null;
       answerWork.record('interpretation', evaluated.reused ? 'reused' : outcome?.kind === 'accepted' ? 'established' : 'unavailable', { records: [content.value.projection.id],
         limitations: [evaluated.reused ? 'A retained outcome for this question was reused; no dialog ran.' : outcome?.kind ?? evaluated.unavailable?.kind ?? 'unavailable'] });
@@ -132,7 +136,7 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
       // The attempt failed when a dialog ran, or could not run, without an accepted contribution. Reuse reports the retained outcome as it is.
       const failed = evaluated.reused ? evaluated.attempt!.outcome.kind !== 'accepted' : outcome?.kind !== 'accepted';
       return delivery(content, content, decision, definition.title, store.answerIds([content.value.projection.id]).get(content.value.projection.id)!, 'fresh', resolution,
-        { reused: evaluated.reused, attempt: evaluated.execution?.attempt ?? evaluated.attempt?.id ?? null, ...(evaluated.unavailable?.provider ? { provider: evaluated.unavailable.provider } : {}) }, failed);
+        { contribution: evaluated.attemptResult, unavailable: evaluated.unavailable, reused: evaluated.reused, attempt: evaluated.execution?.attempt ?? evaluated.attempt?.id ?? null, ...(evaluated.unavailable?.provider ? { provider: evaluated.unavailable.provider } : {}) }, failed);
     };
     if (definition.requirements.kind === 'follow-up') {
       // The option supplies the delegated question. It must name a supported operation and satisfy that operation's subject signature.

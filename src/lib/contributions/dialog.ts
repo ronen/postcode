@@ -6,7 +6,7 @@ import { recordId } from '../identity.js';
 import { freezeOwned } from '../immutable.js';
 import { investigationBounds } from '../investigation/bounds.js';
 import type { InvestigationBounds } from '../investigation/bounds.js';
-import type { AgentFailure, AgentIdentity, CallUsage, ReportedUsage } from '../investigation/contracts.js';
+import type { AgentFailure, AgentIdentity, AttemptReport, CallUsage, ReportedUsage } from '../investigation/contracts.js';
 import { InvestigationUsage } from '../investigation/usage.js';
 import type { ProgramRecord, ProgramRecordStore, RecordId } from '../records.js';
 import type { Acceptance, ContributionLedger } from './ledger.js';
@@ -101,6 +101,8 @@ export interface DialogOptions {
   readonly signal?: AbortSignal;
   readonly bounds?: InvestigationBounds;
   readonly repairs?: number;
+  /** Emitted on every terminal exit, including interruption and defects. */
+  readonly onReport?: (report: Omit<AttemptReport, 'session' | 'request'>) => void;
   /** Retained guidance supplied as initial input, such as the follow-up option being invoked. */
   readonly context?: readonly MetadataAddress[];
 }
@@ -247,13 +249,38 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
   };
   const parse = (value: unknown): DialogTool | null => {
     if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
-    const kind = (value as { kind?: unknown }).kind;
-    return typeof kind === 'string' && (contributionTools.includes(kind) || evidenceTools.includes(kind)) ? value as DialogTool : null;
+    const tool = value as Record<string, unknown>, kind = tool.kind;
+    const text = (value: unknown) => typeof value === 'string' && value.trim().length > 0;
+    const address = (value: unknown, field: string) => value !== null && typeof value === 'object' && !Array.isArray(value)
+      && text((value as Record<string, unknown>).investigram) && text((value as Record<string, unknown>)[field]);
+    const content = tool.content === undefined || typeof tool.content === 'boolean';
+    const excerpt = tool.excerptCharacters === undefined || typeof tool.excerptCharacters === 'number' && Number.isSafeInteger(tool.excerptCharacters) && tool.excerptCharacters >= 0;
+    let valid = false;
+    switch (kind) {
+      case 'baseline': case 'referents': valid = text(tool.entity); break;
+      // The production boundary validates the exact inventory scope and mode before recording anything.
+      case 'inventory': valid = tool.scope !== null && typeof tool.scope === 'object' && !Array.isArray(tool.scope); break;
+      case 'association': valid = address(tool.association, 'declaration') && content; break;
+      case 'declaration': valid = address(tool.declaration, 'declaration'); break;
+      case 'item': valid = address(tool.item, 'item') && excerpt; break;
+      case 'member': valid = address(tool.association, 'declaration') && address(tool.item, 'item') && excerpt; break;
+      case 'contribution': valid = text(tool.investigram); break;
+      case 'designations': valid = text(tool.result) && content; break;
+      case 'metadata': valid = address(tool.address, 'key') && ['option', 'illustration', 'inconsistency'].includes((tool.address as MetadataAddress).metadata); break;
+      default: valid = typeof kind === 'string' && evidenceTools.includes(kind)
+        && (kind === 'modules' || kind === 'organization' || text(tool.subject))
+        && (tool.cursor === undefined || text(tool.cursor));
+    }
+    return valid ? value as DialogTool : null;
   };
   const subjects = invocation.request.subjects.map(({ role, subject }) => ({ role, subject,
     ...(subject.kind === 'entity' ? { moduleRecord: ledger.entity(subject.entity).native?.provider === 'typescript' ? `${ledger.session}${ledger.entity(subject.entity).native!.key.slice('session'.length)}` : null } : {}) }));
   const report = (): Omit<DialogExecution, 'outcome' | 'production'> => ({ attempt, agent: identity, instructions, usage: usage.calls(attempt), elapsedMilliseconds: performance.now() - start });
-  const conclude = (outcome: DialogOutcome, production: Production): DialogExecution => freezeOwned({ outcome, production, ...report() });
+  let termination: AttemptReport['termination'] = 'defect';
+  const conclude = (outcome: DialogOutcome, production: Production): DialogExecution => {
+    termination = outcome.kind === 'invalid-submission' ? 'investigation-failure' : outcome.kind;
+    return freezeOwned({ outcome, production, ...report() });
+  };
   const problems: string[] = [];
   let undelivered = handle.checkpoint();
   try {
@@ -280,10 +307,12 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
           parameters: invocation.request.parameters, resultContract: invocation.request.resultContract },
         remaining: { milliseconds: Math.max(0, bounds.milliseconds - (performance.now() - start)), calls: bounds.calls - calls, toolCalls: bounds.toolCalls - toolCalls, repairs: repairs - problems.length } }));
       volume(input);
-      const recordUsage = usage.start(attempt, ++calls, identity);
-      const reply = await wait(() => conversation!.exchange(input, controller.signal, value => { if (activeUsage) recordUsage(value); }));
-      // The exchange was dispatched: its responses and notices reached the agent.
-      undelivered = handle.checkpoint();
+      const reply = await wait(() => {
+        // Dispatch is delivery even if the participant never returns or throws afterwards.
+        undelivered = handle.checkpoint();
+        const recordUsage = usage.start(attempt, ++calls, identity);
+        return conversation!.exchange(input, controller.signal, value => { if (activeUsage) recordUsage(value); });
+      });
       volume(reply);
       if (!reply || typeof reply !== 'object' || !['tools', 'submit', 'ended', 'refused', 'truncated', 'communication-failure', 'configuration-unavailable'].includes(reply.kind)) {
         return conclude({ kind: 'investigation-failure', reason: 'Malformed agent response.' }, ledger.abandon(handle, 'investigation-failure'));
@@ -314,7 +343,7 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
         if (++toolCalls > bounds.toolCalls) throw new LimitStop('Tool request guard reached.');
         await wait(options.check);
         const tool = parse(candidate);
-        responses.push(!tool ? { tool: 'unavailable', limitations: ['Unsupported tool request; paths and arbitrary reads are not permitted.'] }
+        responses.push(!tool ? { tool: 'unavailable', limitations: ['Malformed or unsupported tool request; required addresses and fields must have the stated shapes. Paths and arbitrary reads are not permitted.'] }
           : contributionTools.includes(tool.kind) ? contribution(tool as ContributionTool) : await wait(() => evidence(tool as EvidenceQuery)));
       }
     }
@@ -323,6 +352,7 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
     if (!handle.closed) handle.discard(undelivered);
     if (error instanceof LimitStop) return conclude({ kind: 'limit-stop', reason: error.message }, ledger.abandon(handle, 'limit-stop'));
     // Interruption, invalidation and defects end the execution; its production accepts nothing afterwards.
+    termination = error instanceof CommandInterrupted ? 'interrupted' : error instanceof SessionInvalidated ? 'invalidated' : 'defect';
     handle.close();
     throw error;
   } finally {
@@ -330,6 +360,8 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
     clearTimeout(timer);
     options.signal?.removeEventListener('abort', interrupt);
     controller.abort();
-    conversation?.close();
+    try { conversation?.close(); } finally {
+      options.onReport?.({ ...report(), termination, deliveries: [], suppliedEvidence: handle.evidence, summarizedEvidence: [] });
+    }
   }
 }

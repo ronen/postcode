@@ -104,7 +104,7 @@ test('the state-behavior investigation, its diagram, exact access and a retained
   const alternative = first.projection.alternatives[0]!;
   assert.deepEqual([alternative.items.map(item => item.type), alternative.unmet, alternative.producer.mechanism, alternative.qualification?.status], [['state-model', 'prose'], [], 'agentic', 'interpretation']);
   // The requested diagram is rendered from the retained state model, with its explanation and qualification alongside.
-  const view = arrangeContributionAnswer(first.content, first.result.title, 'breaker');
+  const view = arrangeContributionAnswer(first.content, first.result.title);
   assert.deepEqual([view.alternatives.length, view.alternatives[0]!.diagrams.length, view.alternatives[0]!.diagramUnavailable, view.noCurrentAnswer], [1, 1, null, null]);
   assert.match(view.alternatives[0]!.diagrams[0]!.svg, /<rect class="state"/);
   assert.deepEqual(view.alternatives[0]!.diagrams[0]!.legend.map(item => [item.from, item.to, item.trigger]), [['Closed', 'Open', 'a failure is recorded']]);
@@ -142,7 +142,7 @@ test('the state-behavior investigation, its diagram, exact access and a retained
   // A diagram request that the accepted contribution does not meet is disclosed; its content and declarations are retained and in effect.
   const plain = answer(await session.execute({ ...request, designation: { kind: 'name', value: 'plain' } }));
   assert.deepEqual([plain.result.failed, plain.projection.fulfillment, plain.projection.alternatives[0]!.unmet.map(item => item.reason)], [false, 'unfulfilled', ['The selected answer contains no state-model content.']]);
-  const plainView = arrangeContributionAnswer(plain.content, plain.result.title, 'plain');
+  const plainView = arrangeContributionAnswer(plain.content, plain.result.title);
   assert.deepEqual([plainView.alternatives[0]!.diagrams, plainView.alternatives[0]!.diagramUnavailable, plainView.alternatives[0]!.prose], [[], 'This alternative selects no state model.', ['The module only exports a constant.']]);
   assert.equal(plainView.alternatives[0]!.qualifications.some(item => /Requested result not met/.test(item)), true);
 
@@ -150,7 +150,7 @@ test('the state-behavior investigation, its diagram, exact access and a retained
   const fresh = answer(await session.execute({ ...request, fresh: true }));
   assert.deepEqual([fresh.result.reporting?.reused, fresh.projection.alternatives.length, fresh.projection.id === first.projection.id, agent.inputs.length], [false, 2, false, 4]);
   assert.deepEqual(fresh.projection.alternatives[0]!.designation, alternative.designation);
-  const freshView = arrangeContributionAnswer(fresh.content, fresh.result.title, 'breaker');
+  const freshView = arrangeContributionAnswer(fresh.content, fresh.result.title);
   assert.deepEqual(freshView.alternatives.map(item => item.diagrams[0]!.legend.length), [1, 1]);
   assert.match(freshView.notices[0]!, /2 equally standing alternative answers are shown separately/);
   // The earlier exact answer still presents what it captured, and ordinary retrieval now selects both alternatives without a dialog.
@@ -171,7 +171,78 @@ test('without a configured agent the investigation is unavailable and fabricates
   t.after(() => opened.session.close());
   const unavailable = answer(await opened.session.execute({ kind: 'lens', lens: 'state-behavior', designation: { kind: 'name', value: 'breaker' } }));
   assert.deepEqual([unavailable.result.failed, unavailable.result.reporting, unavailable.projection.alternatives, unavailable.projection.fulfillment],
-    [true, { reused: false, attempt: null }, [], 'no-designated-answer']);
-  const view = arrangeContributionAnswer(unavailable.content, unavailable.result.title, 'breaker');
-  assert.equal(view.noCurrentAnswer?.explanation, 'No answer has been designated for this question.');
+    [true, { reused: false, attempt: null, contribution: null, unavailable: { kind: 'configuration-unavailable', code: 'investigating-agent-not-configured', diagnostic: 'No investigating agent is configured for contribution investigations.' } }, [], 'no-designated-answer']);
+  const view = arrangeContributionAnswer(unavailable.content, unavailable.result.title);
+  assert.equal(view.noCurrentAnswer?.explanation, 'Investigation unavailable: No investigating agent is configured for contribution investigations.');
+});
+
+test('failure then successful fresh work reuses an accepted attempt; later fresh inability stays separate from current fulfillment', async t => {
+  const agent = new ScriptedDialogs([[() => ({ kind: 'ended' })], [stateAccount('ok', ['closed', 'open'])],
+    [() => ({ kind: 'submit', contribution: { investigrams: [], report: { inability: 'FRESH_INABILITY_SENTINEL', statement: 'Coverage remains incomplete.' } } })]]);
+  const opened = await openApplication(fixture(t), { investigation: { dialogAgent: agent } });
+  assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
+  const session = opened.session; t.after(() => session.close());
+  const request = { kind: 'lens' as const, lens: 'state-behavior', designation: { kind: 'name' as const, value: 'breaker' } };
+  const failed = answer(await session.execute(request));
+  assert.equal(failed.result.failed, true);
+  const success = answer(await session.execute({ ...request, fresh: true }));
+  const reuse = answer(await session.execute(request));
+  assert.equal(reuse.result.failed, false);
+  assert.equal(reuse.result.reporting?.attempt, success.result.reporting?.attempt);
+  assert.notEqual(reuse.result.reporting?.attempt, failed.result.reporting?.attempt);
+  assert.equal(reuse.result.reporting?.contribution?.fulfillment?.status, 'fulfilled');
+  const fresh = answer(await session.execute({ ...request, fresh: true }));
+  assert.equal(fresh.projection.fulfillment, 'fulfilled');
+  assert.equal(fresh.result.reporting?.contribution?.fulfillment?.status, 'no-answer-supplied');
+  assert.equal(fresh.result.reporting?.contribution?.report?.inability, 'FRESH_INABILITY_SENTINEL');
+  assert.equal(fresh.result.reporting?.contribution?.report?.statement, 'Coverage remains incomplete.');
+  assert.equal(fresh.projection.id, success.projection.id, 'invocation-specific inability is not answer identity');
+  assert.equal(agent.inputs.length, 3);
+  assert.equal(session.usage().attempts.length, 3);
+});
+
+test('accepted partial report and domain diagnostics survive application delivery and exact access', async t => {
+  const agent = new ScriptedDialogs([[input => ({ kind: 'submit', contribution: { report: { inability: 'Could not verify concurrency', statement: 'Coverage is one scenario.' },
+    investigrams: [{ key: 'partial', qualification: caveat, items: [{ key: 'p', type: 'prose', body: { text: 'Partial explanation.' } }],
+      declarations: [{ key: 'a', operation: 'add', target: { kind: 'result', result: input.request.result }, members: [{ kind: 'item', item: { investigram: { local: 'partial' }, item: 'p' } }] }] }] } })],
+    [() => ({ kind: 'communication-failure', code: 'timeout', diagnostic: 'No service response.' })]]);
+  const opened = await openApplication(fixture(t), { investigation: { dialogAgent: agent } });
+  assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
+  const session = opened.session; t.after(() => session.close());
+  const partial = answer(await session.execute({ kind: 'lens', lens: 'state-behavior', designation: { kind: 'name', value: 'breaker' } }));
+  assert.equal(partial.result.reporting?.contribution?.report?.inability, 'Could not verify concurrency');
+  const exact = answer(await session.execute({ kind: 'present', target: partial.projection.id }));
+  const qualifications = arrangeContributionAnswer(exact.content, 'Partial').alternatives[0]!.qualifications;
+  assert.ok(qualifications.includes('Producer-reported inability: Could not verify concurrency'));
+  assert.ok(qualifications.includes('Coverage is one scenario.'));
+  const unavailable = answer(await session.execute({ kind: 'lens', lens: 'state-behavior', designation: { kind: 'name', value: 'plain' } }));
+  assert.equal(unavailable.result.reporting?.unavailable?.code, 'timeout');
+  assert.deepEqual(answer(await session.execute({ kind: 'present', target: unavailable.projection.id })).projection.unavailable,
+    { kind: 'communication-failure', code: 'timeout', diagnostic: 'No service response.' });
+});
+
+test('cancellation reports already dispatched usage and accepts no late contribution', async t => {
+  const { syntheticUsage } = await import('./investigator-double.js');
+  const { CommandInterrupted } = await import('../src/lib/execution-errors.js');
+  const controller = new AbortController();
+  const reports: import('../src/lib/investigation/contracts.js').AttemptReport[] = [];
+  let closed = false;
+  const agent: DialogAgent = {
+    identity: { provider: 'postcode-test', model: 'scripted', configuration: {}, origin: 'scripted' },
+    open: () => ({ exchange: async (input, _signal, reportUsage) => {
+      reportUsage(syntheticUsage);
+      controller.abort();
+      return stateAccount('late', ['closed', 'open'])(input);
+    }, close: () => { closed = true; } }),
+  };
+  const opened = await openApplication(fixture(t), { signal: controller.signal, investigation: { dialogAgent: agent, onReport: report => reports.push(report) } });
+  assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
+  t.after(() => opened.session.close());
+  await assert.rejects(opened.session.execute({ kind: 'lens', lens: 'state-behavior', designation: { kind: 'name', value: 'breaker' } }), CommandInterrupted);
+  assert.equal(closed, true);
+  assert.equal(reports.length, 1);
+  assert.equal(reports[0]!.termination, 'interrupted');
+  assert.equal(reports[0]!.usage.length, 1);
+  assert.equal(opened.session.usage().calls, 1);
+  assert.equal(opened.session.usage().attempts.length, 1);
 });

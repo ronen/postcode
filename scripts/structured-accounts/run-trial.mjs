@@ -83,7 +83,7 @@ try {
     const record = { step, request, elicited: elicit, kind: result.kind, milliseconds: performance.now() - started, failed: result.failed ?? null, reporting: result.reporting ?? null };
     if (result.kind === 'answer' && result.answer.content.contract === 'contribution') {
       requests.set(step, request); results.set(step, result);
-      const view = arrangeContributionAnswer(result.answer.content.value, result.title, item.bearerLabel ?? spec.bearerLabel ?? 'subject');
+      const view = arrangeContributionAnswer(result.answer.content.value, result.title);
       view.alternatives.forEach((alternative, index) => alternative.diagrams.forEach((diagram, n) => {
         save(path.join('diagrams', `${step}-${index + 1}-${n + 1}.svg`), diagram.svg);
         save(path.join('diagrams', `${step}-${index + 1}-${n + 1}.txt`), diagram.text + '\n');

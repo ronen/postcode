@@ -5,7 +5,7 @@ import { hostedAgent } from './adapter.js';
 import type { OpenAIExchange, WireProtocol } from './adapter.js';
 import { InvestigatorReferences } from './references.js';
 
-export const contributionWireProtocol = 'postcode/contribution-dialog-wire@2';
+export const contributionWireProtocol = 'postcode/contribution-dialog-wire@3';
 
 /**
  * Reference positions of the contribution dialog. A string at one of these keys is an exact
@@ -18,6 +18,8 @@ const referenceKeys = new Set(['entity', 'investigram', 'production', 'result', 
 const depthLimit = 64;
 
 function translate(value: unknown, key: string, path: string, map: (value: string, path: string) => string, special: (value: Record<string, unknown>, path: string) => unknown, depth = 0): unknown {
+  // Request parameters are opaque literal question context, even when their keys resemble references.
+  if (key === 'parameters') return value;
   if (typeof value === 'string') return referenceKeys.has(key) ? map(value, path) : value;
   // Domain validation rejects whatever lies beyond the structural bound, untouched.
   if (depth > depthLimit || value === null || typeof value !== 'object') return value;
