@@ -87,3 +87,7 @@ The [review follow-up trial record](review-elicitation.md) preserves three addit
 Round 4 found that the trial-1 elicitation supplied the supported operation names and subject signatures, while production instructions at the reviewed target did not. The observed option remains evidence that authoring and invoking it worked with that supplied guidance. It does not establish that an agent could author an invocable option without the elicitation’s operation list.
 
 The round 4 correction includes the operation list, subject signatures and optional result-contract identities in production instructions, derived from the application’s registrations. Offline instruction and invocation tests cover this correction. No live trial of the corrected instructions without the earlier elicitation was run, and no additional inference requests were used; the cumulative total remains 49 of 60. Further live verification requires separately confirmed authorization.
+
+## Focused option verification after round 5
+
+The [focused option verification record](focused-option-verification.md) preserves the subsequently authorized run using the corrected production instructions and an elicitation that supplies no operation names, subject signatures, shapes or contract IDs. The initial investigation hit the normal elapsed-dialog guard before accepting a contribution, so option invocation was not reached. It used four additional requests, bringing the cumulative total to 53 of 60; seven remain unused. This is an incomplete verification, preserved without a prompt change or retry.
