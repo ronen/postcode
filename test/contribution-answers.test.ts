@@ -15,7 +15,7 @@ async function setup() {
   const entity = moduleEntity(store, subject)!;
   const { result, invocation } = ledger.invoke({ operation: 'test-answer', subjects: [{ role: null, subject: { kind: 'entity', entity } }], parameters: {}, context: [], resultContract: null });
   const select = () => selectContributionAnswer(store, ledger, { lens: 'test-answer', subject, parameters: {}, result: result.id, contract: null });
-  return { store, ledger, subject, entity, result, invocation, select };
+  return { store, ledger, subject, entity, result, invocation, select, claims };
 }
 
 test('answers retain cross-owner use paths, prior displacement, precise conflicts and resolved support without exposure', async () => {
@@ -94,4 +94,46 @@ test('multiple state models preserve their distinct role and Entity bearers with
   assert.deepEqual((projection.alternatives[0]!.items[2]!.body as { bearer: unknown }).bearer, { kind: 'entity', entity });
   assert.ok(!diagrams.some(diagram => diagram.text.includes('wrong common module label')));
   assert.deepEqual(view.alternatives[0]!.prose, []);
+});
+
+
+test('discovered module bearers retain distinct qualified labels without supplemental identifications', async () => {
+  const { store, ledger, entity, result, select, claims } = await setup();
+  const origin = moduleEntity(store, claims.find(claim => claim.information.handle === 'origin')!.subject)!;
+  const entities = [entity, origin], handles = ['barrel', 'origin'];
+  const uses = entities.map(entity => ledger.identifications(entity).map(entry => entry.address));
+  assert.ok(uses.every(addresses => addresses.length === 1));
+  submit(ledger, agentic(), [{ key: 'models', qualification: q('MODEL_LIMIT'), items: entities.map((entity, index) => ({
+    key: handles[index]!, type: 'state-model', body: { bearer: { entity }, states: [{ key: 'idle', label: 'Idle' }], initial: { kind: 'unknown' },
+      transitions: [], coverage: { states: 'some', transitions: 'unknown' } } })),
+    declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: result.id },
+      members: handles.map(item => ({ kind: 'item', item: { investigram: { local: 'models' }, item } })) }] }]);
+  const deliveries = ledger.productions().map(production => production.deliveries);
+  const projection = select(), content = resolveContributionAnswer(store, projection);
+  const view = arrangeContributionAnswer(content, 'Modules'), alternative = view.alternatives[0]!;
+  for (const [index, handle] of handles.entries()) {
+    const diagram = alternative.diagrams[index]!;
+    assert.ok(diagram.text.startsWith(`States of ${handle}\n`));
+    assert.ok(diagram.notes.includes(`State bearer: ${handle}.`));
+    assert.ok(diagram.svg.includes(`States of ${handle}`));
+    assert.deepEqual((projection.alternatives[0]!.items[index]!.body as { bearer: unknown }).bearer, { kind: 'entity', entity: entities[index] });
+    const identification = projection.support.items.find(value => value.item.type === 'module-identification' && (value.item.body as { handle: string }).handle === handle)!;
+    assert.ok(identification);
+    assert.deepEqual(identification.identifyingNames, [{ text: handle, origin: 'generated-handle' }]);
+    assert.equal((identification.item.body as { name: null; handleProvenance: string }).name, null);
+    assert.equal((identification.item.body as { handleProvenance: string }).handleProvenance, 'source-basename');
+    const group = alternative.qualifications.find(group => group.kind === 'bearer-identification' && group.source.kind === 'item'
+      && group.source.address.investigram === identification.address.investigram)!;
+    assert.ok(group.statements.includes(`Generated handle: ${handle}.`));
+    assert.ok(group.statements.some(statement => statement.startsWith('Mechanically derived')));
+  }
+  assert.ok(!JSON.stringify(alternative.diagrams).includes(ledger.session));
+  assert.deepEqual(ledger.productions().map(production => production.deliveries), deliveries);
+  // Presentation of the old answer cannot refresh its identification after a withdrawal.
+  submit(ledger, agentic(), [{ key: 'withdraw', qualification: q('WITHDRAWAL_LIMIT'), declarations: [{ key: 'w', operation: 'withdraw',
+    displaces: uses[0]!, grounds: { text: 'Withdraw the first module identifying use.' } }] }]);
+  assert.deepEqual(arrangeContributionAnswer(resolveContributionAnswer(store, projection), 'Modules'), view);
+  const current = arrangeContributionAnswer(resolveContributionAnswer(store, select()), 'Modules');
+  assert.ok(current.alternatives[0]!.diagrams[0]!.text.startsWith('States of Unlabelled Entity\n'));
+  assert.ok(current.alternatives[0]!.diagrams[1]!.text.startsWith('States of origin\n'));
 });

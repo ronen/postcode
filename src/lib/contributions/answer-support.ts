@@ -1,6 +1,7 @@
 import { evidenceDelivery } from '../evidence-delivery.js';
 import type { ProgramRecord, ProgramRecordStore } from '../records.js';
 import type { ContributionLedger } from './ledger.js';
+import type { IdentifyingName } from './catalog.js';
 import { addressKey, itemKey } from './model.js';
 import type { AssociationAddress, ContentItem, Declaration, DeclarationAddress, EntityId, FollowUpOption, Grounds, Illustration,
   InconsistencyReport, InvestigramId, ItemAddress, MetadataAddress, Producer, ProductionId, ProducerReport, Qualification } from './model.js';
@@ -26,7 +27,7 @@ export interface AnswerUse {
 /** Fixed, resolved support. Links retain their exact meaning; inclusion is not selection or exposure. */
 export interface AnswerSupport {
   readonly owners: readonly AnswerOwner[];
-  readonly items: readonly { readonly address: ItemAddress; readonly item: ContentItem; readonly inconsistencies: readonly MetadataAddress[] }[];
+  readonly items: readonly { readonly address: ItemAddress; readonly item: ContentItem; readonly identifyingNames: readonly IdentifyingName[]; readonly inconsistencies: readonly MetadataAddress[] }[];
   readonly uses: readonly AnswerUse[];
   readonly changes: readonly { readonly address: DeclarationAddress; readonly declaration: Declaration; readonly standing: Standing | null }[];
   readonly metadata: readonly { readonly address: MetadataAddress; readonly value: FollowUpOption | Illustration | InconsistencyReport }[];
@@ -77,7 +78,9 @@ export function answerSupport(store: ProgramRecordStore, ledger: ContributionLed
     const key = itemKey(address);
     if (items.has(key)) return;
     const value = ledger.item(address), inconsistencies = ledger.inconsistencies({ kind: 'item', item: address });
-    items.set(key, { address, item: value, inconsistencies }); owner(address.investigram);
+    // Resolve the contract's identifying information now; arrangement has no catalog or ledger access.
+    const identifyingNames = ledger.catalog.get(value.type)?.identifying?.(value.body) ?? [];
+    items.set(key, { address, item: value, identifyingNames, inconsistencies }); owner(address.investigram);
     qualification(value.qualification); value.evidence.forEach(id => evidence.add(id));
     value.support.forEach(item); value.dependencies.forEach(item); inconsistencies.forEach(meta);
     if (value.type === 'state-model') {

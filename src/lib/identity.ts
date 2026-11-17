@@ -25,7 +25,7 @@ export const methods = {
   contributionStatus: 'postcode/contribution-status@1',
   moduleIdentificationPolicy: 'postcode/module-identification-policy@1',
   moduleExportsPolicy: 'postcode/module-exports-policy@1',
-  contributionProjection: 'postcode/contribution-projection@4',
+  contributionProjection: 'postcode/contribution-projection@5',
   contributionDialog: 'postcode/contribution-dialog@5',
 } as const;
 

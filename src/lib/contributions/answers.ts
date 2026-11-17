@@ -198,8 +198,9 @@ export function arrangeContributionAnswer(content: ContributionAnswerContent, ti
       const entity = model.bearer.entity, selected = bearerSupport.get(entity);
       const labels = selected?.identifications.flatMap(address => {
         const use = useSupport.get(addressKey(address))!;
-        return use.declaration.members.flatMap(member => member.kind === 'item' ? [itemSupport.get(itemKey(member.item))!.item] : [])
-          .filter(item => item.type === 'identification').map(item => { const body = item.body as { name: string | null; designation: string }; return body.name ?? body.designation; });
+        return use.declaration.members.flatMap(member => member.kind === 'item' ? [itemSupport.get(itemKey(member.item))!] : [])
+          .flatMap(({ item, identifyingNames }) => identifyingNames.length ? identifyingNames.map(name => name.text)
+            : item.type === 'identification' ? [(item.body as { designation: string }).designation] : []);
       }) ?? [];
       return labels.length ? [...new Set(labels)].join(' / ') : 'Unlabelled Entity';
     };
@@ -221,7 +222,8 @@ export function arrangeContributionAnswer(content: ContributionAnswerContent, ti
       ...bearerUses.flatMap(use => [group('bearer-identification', { kind: 'association', address: use.address }, 'Bearer identification use',
         [...qualify(use.declaration.qualification), ...concernText(use.status.membership)]),
         ...use.declaration.members.flatMap(member => member.kind === 'item' ? [group('bearer-identification', { kind: 'item', address: member.item },
-          'Bearer identification content', qualify(itemSupport.get(itemKey(member.item))!.item.qualification))] : [])]),
+          'Bearer identification content', [...qualify(itemSupport.get(itemKey(member.item))!.item.qualification),
+            ...itemSupport.get(itemKey(member.item))!.identifyingNames.map(name => `${name.origin === 'generated-handle' ? 'Generated handle' : name.origin === 'assigned' ? 'Assigned name' : 'Name in the system under study'}: ${name.text}.`)])] : [])]),
       ...changes.map(change => group(displacedKeys.has(addressKey(change.address)) ? 'displacement' : 'reconsideration',
         { kind: 'declaration', address: change.address }, displacedKeys.has(addressKey(change.address)) ? 'Displacement of selected use' : 'Change requiring reconsideration',
         [...qualify(change.declaration.qualification), `${change.declaration.operation}: ${change.declaration.grounds?.text ?? ''}`])),
