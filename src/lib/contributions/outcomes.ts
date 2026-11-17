@@ -75,6 +75,9 @@ export function assessFulfillment(ledger: ContributionLedger, contract: ResultCo
   return { contract: contract.id, result, status, alternatives, history };
 }
 
+/** Shared submission guidance for report-only returns and substantive investigrams. */
+export const contributionSubmissionGuidance = 'investigrams may be empty when a producer report is supplied. For an answer-only return, use { investigrams: [], report: { answer: [address] } }; no placeholder investigram is needed. Every investigram must contribute at least one content item, organizing declaration or qualified metadata entry (option, illustration or inconsistency report). A qualification alone is not a contribution. If you choose to retain an adequacy judgment as content, put it in a qualified prose item; that note does not require a new answer designation.';
+
 /** Shared authoring guidance for the producer report's explicit answer selection. */
 export const reportAnswerGuidance = 'report.answer is optional: this submission’s own answer designations already count as its answer, so you need not repeat them. Use report.answer to explicitly return existing answer designations for this invocation, for example when an earlier answer remains adequate and no new designation is needed. Each entry is { investigram: <retained investigram handle>, declaration: <declaration key> }, or { investigram: { local: <investigram key in this submission> }, declaration: <declaration key> } for a designation in this submission. The declaration must be an add or supersede designation of this invocation’s Query result. Reference the owning investigram and declaration key, not an invocation handle, Query result handle or arbitrary dialogue handle. Repeating an own designation here is allowed but unnecessary; do not list the same address twice. Returning an existing designation does not change its standing or clear its reconsideration causes.';
 

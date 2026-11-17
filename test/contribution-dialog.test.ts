@@ -471,3 +471,54 @@ test('the observed invocation-as-investigram report reference is rejected atomic
     assert.equal(agent.inputs.length, 2);
   }
 });
+
+test('report-only returns need no placeholder investigram; the observed empty review is rejected and repaired normally', async () => {
+  const { contributionSubmissionGuidance, attemptAnswers } = await import('../src/lib/contributions/outcomes.js');
+  const { contributionOperations } = await import('../src/lib/contributions/operations.js');
+  const { contributionFunctions } = await import('../src/lib/investigation/openai/contribution-protocol.js');
+  for (const operation of Object.values(contributionOperations)) {
+    assert.ok(dialogInstructions(operation).includes(contributionSubmissionGuidance));
+  }
+  assert.match(contributionSubmissionGuidance, /investigrams may be empty when a producer report is supplied/);
+  assert.match(contributionSubmissionGuidance, /Every investigram must contribute at least one content item, organizing declaration or qualified metadata entry/);
+  assert.match(contributionSubmissionGuidance, /qualification alone is not a contribution/);
+  const schema = contributionFunctions.find(tool => tool.name === 'submit_contribution')!.parameters as Record<string, any>;
+  assert.equal(schema.properties.investigrams.description, contributionSubmissionGuidance);
+  assert.equal(schema.properties.investigrams.minItems ?? 0, 0);
+
+  const contract: ResultContract = { id: 'test/report-only@1', requirements: [{ kind: 'content', type: 'prose', description: 'An account.' }] };
+  for (const mode of ['direct', 'repair-to-report', 'repair-to-note']) {
+    const { ledger, entity, invoke, run, account } = await setup(), barrel = entity('barrel');
+    const request = invoke(barrel, contract.id);
+    const first = await run([() => ({ kind: 'submit', contribution: { investigrams: [account('first', barrel, request.result.id)] } })],
+      request.invocation, { operation: { ...operation, contract } });
+    assert.equal(first.execution.outcome.kind, 'accepted');
+    const designation = { investigram: first.execution.production.investigrams[0]!, declaration: 'answer' };
+    const fresh = invoke(barrel, contract.id, true), position = ledger.position, count = ledger.investigrams().length;
+    const report = { answer: [designation], statement: 'The earlier answer remains adequate.' };
+    const finish = (): DialogReply => ({ kind: 'submit', contribution: { report, investigrams: mode === 'repair-to-note'
+      ? [{ key: 'review', qualification: caveat, items: [{ key: 'assessment', type: 'prose', body: { text: 'The earlier account remains adequate within its limitations.' } }] }] : [] } });
+    const script: Step[] = mode === 'direct' ? [finish] : [
+      // The actual live mistake: a qualification-only placeholder beside a correct returned answer.
+      () => ({ kind: 'submit', contribution: { report, investigrams: [{ key: 'review', qualification: caveat }] } }),
+      input => {
+        assert.deepEqual(input.responses, [{ tool: 'invalid-submission', problem: 'An investigram must contribute content, declarations or qualified metadata.' }]);
+        assert.equal(ledger.position, position);
+        assert.equal(ledger.investigrams().length, count);
+        assert.equal(input.remaining.repairs, 0);
+        return finish();
+      },
+    ];
+    const { execution, agent } = await run(script, fresh.invocation, { operation: { ...operation, contract } });
+    assert.equal(execution.outcome.kind, 'accepted');
+    if (execution.outcome.kind !== 'accepted') return;
+    assert.equal(execution.outcome.repairs, mode === 'direct' ? 0 : 1);
+    assert.equal(agent.inputs.length, mode === 'direct' ? 1 : 2);
+    assert.equal(execution.outcome.fulfillment?.status, 'fulfilled');
+    assert.deepEqual(execution.production.report?.answer, [designation]);
+    assert.deepEqual(attemptAnswers(ledger, execution.production, request.result.id), [designation]);
+    assert.deepEqual(ledger.designations(request.result.id).map(entry => entry.address), [designation]);
+    assert.equal(execution.production.investigrams.length, mode === 'repair-to-note' ? 1 : 0);
+    assert.equal(ledger.investigrams().length, count + (mode === 'repair-to-note' ? 1 : 0));
+  }
+});
