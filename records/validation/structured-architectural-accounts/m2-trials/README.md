@@ -76,3 +76,7 @@ In trial 3 the agent chose supersession, not an added alternative, for a fresh a
 ## Limits
 
 These are a few focused trials of one model on one repository. They show that the integration can produce and consume useful-shaped qualified content. They establish neither statistical reliability, nor the correctness of the architectural accounts, nor user value. No answer or picture is frozen as an expected output.
+
+## Subsequent review elicitation
+
+The [review follow-up trial record](review-elicitation.md) preserves three additionally authorized scenarios and the observations missing from the original runs: precise inconsistency, withdrawal, content reuse/partitioning and illustrations. It used 10 further requests, bringing the cumulative total to 49 of the original 60. The earlier run descriptions above remain evidence of their original targets and instruction versions.
