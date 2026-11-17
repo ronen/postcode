@@ -61,8 +61,14 @@ test('multiple state models preserve their distinct role and Entity bearers with
     { key: 'connection', type: 'state-model', body: model({ role: 'one connection' }) },
     { key: 'entity', type: 'state-model', body: model({ entity }) }],
     declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: result.id },
-      members: ['cache', 'connection', 'entity'].map(item => ({ kind: 'item', item: { investigram: { local: 'models' }, item } })) }] }]);
-  const view = arrangeContributionAnswer(resolveContributionAnswer(store, select()), 'Models');
+      members: ['cache', 'connection', 'entity'].map(item => ({ kind: 'item', item: { investigram: { local: 'models' }, item } })) }],
+    illustrations: [{ key: 'cache-picture', diagramType: 'state-transition', inputs: [{ investigram: { local: 'models' }, item: 'cache' }], qualification: q('ILLUSTRATION_LIMIT') }] }]);
+  const projection = select();
+  const illustration = projection.support.metadata.find(value => value.address.metadata === 'illustration');
+  assert.ok(illustration && 'inputs' in illustration.value);
+  assert.equal(illustration.value.inputs[0]!.item, 'cache');
+  assert.deepEqual(illustration.value.qualification?.limitations, ['ILLUSTRATION_LIMIT']);
+  const view = arrangeContributionAnswer(resolveContributionAnswer(store, projection), 'Models');
   const diagrams = view.alternatives[0]!.diagrams;
   assert.equal(diagrams.length, 3);
   assert.match(diagrams[0]!.text, /States of each cache instance\\u001b/);

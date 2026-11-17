@@ -87,7 +87,11 @@ export function selectContributionAnswer(store: ProgramRecordStore, ledger: Cont
     const uses = [entry.address, ...ledger.memberAssociations(entry.address)];
     uses.forEach(support.use);
     const owners = [...new Set([...uses.map(use => use.investigram), ...items.map(item => item.investigram)])];
-    for (const investigram of owners) for (const option of ledger.investigram(investigram).options) support.metadata({ investigram, metadata: 'option', key: option.key });
+    for (const investigram of owners) {
+      const owner = ledger.investigram(investigram);
+      for (const option of owner.options) support.metadata({ investigram, metadata: 'option', key: option.key });
+      for (const illustration of owner.illustrations) support.metadata({ investigram, metadata: 'illustration', key: illustration.key });
+    }
     return { designation: entry.address, producer: producer(entry.address), qualification: entry.declaration.qualification ?? entry.owner.qualification, ownerQualification: entry.owner.qualification, uses, grounds: entry.declaration.grounds,
       items: items.map(address => {
         const item = ledger.item(address), owner = ledger.investigram(address.investigram);
