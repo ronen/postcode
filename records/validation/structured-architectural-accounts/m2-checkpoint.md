@@ -99,3 +99,24 @@ Run by the implementing agent, offline except where stated:
 - Live trials used 39 of the approved 60 requests on the ChatGPT plan route; see the trial record.
 
 These are implementing-agent checks, not independent review. Milestone 2 is implemented and awaits the human-arranged checkpoint review.
+
+
+## Corrections to the round 6 intent-check observations — 2026-11-17
+
+Human direction was recorded before implementation in task follow-up `d7c4972`. Both observations in the [round 6 corrections intent check](../../reviews/structured-architectural-accounts/2026-11-17-m2-vertical-round-6-corrections-intent-check-claude.md) are addressed by implementation commit **`2ed7b5f251157e2176879023694b5166892923b2`**, the exact target for further independent review under the existing [M2 handoff](../../reviews/structured-architectural-accounts/2026-11-17-m2-vertical-handoff.md). The historical review and handoff are unchanged.
+
+- **Displacing production concerns:** exports presentation now exposes the captured producing-context status, with exact causes, routes, grounds and source qualifications available in the View. Rendering attributes reconsideration to the displacement's production and explicitly states that it does not establish an error, reverse displacement or reinstate the earlier association. The mechanical export finding's qualification stays separate. A focused regression introduces a later cause, verifies its visibility in a fresh answer, and checks that the earlier retained answer's capture, View and rendered text stay unchanged. Standing is unchanged.
+- **Component selectors:** shared production and schema guidance explains that a selector addresses a locally addressable part of a content item, with supported selectors defined by its content-type contract and listed in a retained item's `components` array. State-model guidance specifies `state:<key>` and `transition:<key>`. Arbitrary body fields are not selectors; agents are told to omit `component` and target the whole item when no supported selector is available. Validation and the ordinary bounded repair path are unchanged. Regressions preserve both observed invalid values, `unsupported` and `HalfOpen concurrency and deferred-decision semantics`, assert rejection without ledger mutation, and exercise repair to whole-item and valid state/transition targets.
+
+The concurrently returned [round 7 findings](../../reviews/structured-architectural-accounts/2026-11-17-m2-vertical-round-7-claude-findings.md) reviewed live evidence from `6f72f86d7cf4cfa1dd61c34e4455cc97ec42133b`, read at `372e5ec`. That review did **not** assess these corrections. Its R7-F1 identifies the same selector-guidance gap; its capture evidence supplied the second invalid-value regression above. The new implementation target remains subject to independent review.
+
+Identity versions are now exports Presentation `@8`, contribution dialog `@7` and contribution wire `@5`. Export capture semantics and supported selector semantics did not change.
+
+Implementing-agent offline verification under Node 22.13.1:
+
+- TypeScript build passed.
+- **163/163** selected contribution, application, exports, source-disclosure, answer-identity and presentation tests passed, with no failures or skips.
+- After adding the second observed selector to the regression, a fresh build and **22/22** dialog, hosted-protocol and module tests passed, with no failures or skips. This expanded test data after the 163-test run; no production code changed between those runs.
+- `git diff --check` passed. Local logs are in ignored `_verification/m2-intent-observations.log` and `_verification/m2-intent-expanded-regression.log`.
+
+No live inference was run for these corrections. **The revised production instructions have not yet been verified live.** Earlier live evidence remains evidence for its recorded implementation and does not establish first-submission success or the architectural correctness of generated explanations under the revised instructions. Cumulative dispatched inference usage remains 69 of the previously authorized 70 requests; the latest direction authorizes no additional live inference. M2 remains unaccepted, and M3 has not begun.
