@@ -109,6 +109,26 @@ to begin the substantive implementation task described by that plan.
 
 > Use exact option identity (recommended)
 
+2026-11-17, after the clean round 5 re-review of `6f72f86`:
+
+> The latest re-review is complete and reports no actionable findings. I accept the consequence of exact option identity: follow-up-option requests and ordinary requests do not automatically share answers, while their retained content remains available for reuse.\
+> \
+> Before deciding the M2 checkpoint, please run the focused live verification below. Record this direction under the task protocol.\
+> \
+> I authorize up to 11 additional inference requests using the same route/model and pinned Cockatiel fixture as the earlier trials. Stop at that limit and report any incomplete verification.\
+> \
+> Exercise this chain through the application:\
+> \
+> 1\. Request a suitable investigation and explicitly ask it to include an applicable follow-up option. The trial prompt must not supply operation names, subject signatures, request shapes or result-contract identifiers. The agent must obtain those from the actual production instructions.\
+> 2\. Invoke the returned option through the application.\
+> 3\. Verify that the option is accepted and invocable, its exact identity and retained meaning reach the subsequent investigator, and the resulting contribution and contract fulfillment are handled correctly.\
+> \
+> Use the normal production instructions and repair behavior. Do not require exact architectural wording or spontaneous option generation. If the trial fails, preserve and report the failure rather than adding missing guidance to the trial prompt.\
+> \
+> Update the durable trial record with the elicitation, implementation revision, inference usage, observed behavior and limitations, following the existing evidence conventions. Distinguish successful execution from the architectural correctness of the generated explanation.\
+> \
+> This is focused verification, not a rerun of the full live suite. Completion of the re-review does not itself accept the M2 checkpoint or authorize starting M3. Report the trial outcome for independent review.
+
 ## Outcome
 
 ## Verification
