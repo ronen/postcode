@@ -30,9 +30,9 @@ Substantive implementation follows the [task protocol's pull-request requirement
 <a id="pull-request-descriptions"></a>
 ## Pull Request Descriptions
 
-Keep the PR description concise and proportionate to the change. Explain its purpose and what it accomplishes, including material limitations or risks. Describe the resulting change; omit implementation history and workflow status, including review progress and readiness for closure or merge. Update it only when its substantive content changes, not as the workflow advances.
+Describe the PR's purpose, scope, and principal outcomes, including material limitations or risks that affect the resulting behavior or its use. Optionally summarize the verification approach in general terms. Link to plans, decisions, validation reports, or review records when their detail is useful rather than duplicating their content. Do not include workflow status or detailed review or verification results.
 
-Link to plans, decisions, validation reports, or review records when their detail is useful. Do not duplicate those records or turn the description into a reviewer prompt unless the human explicitly requests that.
+Update the description only when the character of the PR changes materially or a statement becomes misleading.
 
 ## Disposable Scratch Material
 
