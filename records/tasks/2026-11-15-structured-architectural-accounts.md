@@ -105,6 +105,10 @@ to begin the substantive implementation task described by that plan.
 
 > round 3 review and another intent check are clean.  but because this is a such core functionality i'll get some more independent reviews before moving to M3
 
+2026-11-17, while addressing round 4 finding R4-F1. The implementing agent asked: "For R4-F1, should each retained follow-up option’s exact owner/key be part of its question identity? This keeps different options separate even when their operation and subjects match; repeated invocation of the same option can still reuse its answer." The human selected:
+
+> Use exact option identity (recommended)
+
 ## Outcome
 
 ## Verification
