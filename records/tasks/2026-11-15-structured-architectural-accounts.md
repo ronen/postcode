@@ -137,6 +137,32 @@ to begin the substantive implementation task described by that plan.
 
 > let's increase the cap with an additional ten
 
+2026-11-17, after the original implementer’s round 6 corrections intent check:
+
+> Please address both observations in:\
+> \
+> records/reviews/structured-architectural-accounts/2026-11-17-m2-vertical-round-6-corrections-intent-check-claude.md\
+> \
+> Record this direction under the task protocol and follow the repository’s review-response workflow.\
+> \
+> 1\. Hidden reconsideration status in export answers\
+> \
+> Keep the captured status and expose it in the export presentation, following the existing contribution-answer approach.\
+> \
+> If a displacing declaration’s producing context needs reconsideration, make that visible and preserve access to its exact causes. Attribute the concern to the organizing declaration/its production—not to the mechanical export finding. Do not imply that the displacement has been reversed or that the earlier association has been reinstated.\
+> \
+> Add focused verification that a later cause is visible in a fresh export answer, while exact presentation of an earlier retained answer preserves its captured state.\
+> \
+> 2\. Unexplained component selector\
+> \
+> Clarify the production instructions: what `component` means, where supported component selectors come from, and that an arbitrary content-body field name is not automatically a valid selector. Tell agents to omit `component` and target the whole item when no supported selector is available.\
+> \
+> Keep the observed `component: "unsupported"` submission as a regression case. Verify the instruction/schema/validation agreement and the normal repair path. Do not broaden selector semantics merely to accept that mistaken submission.\
+> \
+> Run the relevant offline checks and record the corrections and verification for independent review. Do not rewrite the historical review.\
+> \
+> No additional live inference is authorized by this instruction. State clearly that the revised instructions have not yet been verified live. These fixes do not accept the M2 checkpoint or authorize starting M3.
+
 ## Outcome
 
 ## Verification
