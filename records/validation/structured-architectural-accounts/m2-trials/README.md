@@ -101,3 +101,8 @@ The [revised-selector verification record](revised-selector-verification.md) rep
 ## Explicit answer reporting after round 8
 
 The [report-answer verification record](report-answer-verification.md) records the correction's focused live run on `2b0d0c3`: new answers counted without `report.answer`, and a fresh investigator explicitly returned an existing designation without a replacement designation. All three steps completed using 15 of a new 30-request cap (97 cumulative M2 dispatches). An empty investigram required ordinary repair; the existing-answer reference was correct and unchanged. No further attempt was needed. The record preserves elicitation, usage, the failure and limits, including the distinction between successful execution and architectural correctness.
+
+
+## Report-only return wording after round 9
+
+The [report-only verification record](report-only-verification.md) reports a narrow initial-answer/fresh-review run on `4267a05`. Both submissions were accepted without repair. The fresh investigator used `investigrams: []` and returned the exact existing answer, fulfilling its contract without a new investigram or designation. The run used 6 of a new 20-request cap (103 cumulative M2 dispatches) and stopped once the objective was met. Architectural correctness and broad reliability remain outside this evidence.
