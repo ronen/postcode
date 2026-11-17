@@ -59,7 +59,8 @@ try {
     return { close: () => conversation.close(),
       exchange: (input, signal, usage) => conversation.exchange(elicit ? { ...input, instructions: `${input.instructions}\n${elicit}` } : input, signal, usage) };
   } };
-  const opened = await openApplication({ configPath: spec.project, excludedOutputDirectories: [spec.output, path.dirname(spec.budget)] },
+  // Only the trial's own output is excluded from evidence. The ledger file lives outside the analyzed project.
+  const opened = await openApplication({ configPath: spec.project, excludedOutputDirectories: [spec.output] },
     { investigation: { dialogAgent: agent, onReport: report => append('attempts.jsonl', JSON.stringify(report) + '\n') } });
   if (opened.status !== 'opened') throw new Error(`Project did not open: ${JSON.stringify(opened)}`);
   session = opened.session;

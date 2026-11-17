@@ -12,7 +12,7 @@ export interface StateDiagram {
   /** Qualification that must accompany the picture: entry, coverage, applicability and unsupported semantics. */
   readonly notes: readonly string[];
 }
-export const stateDiagramMethod = 'postcode/state-transition-diagram@1';
+export const stateDiagramMethod = 'postcode/state-transition-diagram@2';
 
 /** Why a state model cannot be drawn, or null. Missing content is a different condition from a rendering failure. */
 export function stateDiagramIncompatibility(model: StateModel): string | null {
@@ -33,23 +33,32 @@ const short = (value: string, limit: number): string => value.length <= limit ? 
 export function renderStateDiagram(model: StateModel, bearerLabel: string): StateDiagram {
   const reason = stateDiagramIncompatibility(model);
   if (reason) throw new Error(`Incompatible state model: ${reason}`);
-  const count = model.states.length, radius = Math.max(150, 50 * count), width = 2 * radius + 360, centre = { x: width / 2, y: radius + 150 };
+  const count = model.states.length, radius = Math.max(150, 50 * count), width = 2 * radius + 360;
+  const loopsAbove = Math.max(0, ...model.states.map(state => model.transitions.filter(item => item.from === state.key && item.to === state.key).length));
+  const centre = { x: width / 2, y: radius + 150 + 34 * Math.max(0, loopsAbove - 1) };
   const box = { width: 150, height: 44 };
   const position = new Map(model.states.map((state, index) => {
     const angle = count === 1 ? -Math.PI / 2 : -Math.PI / 2 + (2 * Math.PI * index) / count;
     return [state.key, { x: centre.x + radius * Math.cos(angle), y: centre.y + radius * Math.sin(angle) }];
   }));
-  const height = Math.max(...[...position.values()].map(at => at.y)) + box.height / 2 + 70;
+  const deepest = Math.max(0, ...[...new Set(model.transitions.filter(item => item.from === item.to).map(item => item.from))].map(key => model.transitions.filter(item => item.from === key && item.to === key).length));
+  const height = Math.max(...[...position.values()].map(at => at.y)) + box.height / 2 + 70 + 34 * deepest;
   const label = new Map(model.states.map(state => [state.key, state.label]));
   const legend = model.transitions.map((transition, index) => ({ mnemonic: `T${index + 1}`, from: label.get(transition.from)!, to: label.get(transition.to)!,
     trigger: transition.trigger, guard: transition.guard, effect: transition.effect }));
-  const pairs = new Map<string, number>();
+  const pairs = new Map<string, number>(), loops = new Map<string, number>();
   const edges = model.transitions.map((transition, index) => {
     const a = position.get(transition.from)!, b = position.get(transition.to)!, mnemonic = legend[index]!.mnemonic;
     const caption = escape(`${mnemonic}${transition.trigger ? ` ${short(transition.trigger, 28)}` : ' (trigger not established)'}`);
     if (transition.from === transition.to) {
-      const top = a.y - box.height / 2;
-      return `<path class="edge" d="M ${a.x - 30} ${top} C ${a.x - 60} ${top - 60}, ${a.x + 60} ${top - 60}, ${a.x + 30} ${top}" marker-end="url(#arrow)"/><text class="edge-label" x="${a.x}" y="${top - 52}">${caption}</text>`;
+      // Self-transitions sit on the side of the state facing away from the centre. Several on one state are
+      // nested, each larger than the last, with their captions stacked, so none hides another.
+      const nth = loops.get(transition.from) ?? 0;
+      loops.set(transition.from, nth + 1);
+      const away = count === 1 ? -1 : Math.sign(a.y - centre.y) || -1, edge = a.y + away * box.height / 2;
+      const reach = 56 + 34 * nth, spread = 28 + 10 * nth;
+      const label = edge + away * (reach - 6) + (away < 0 ? -4 : 14);
+      return `<path class="edge" d="M ${(a.x - spread).toFixed(1)} ${edge.toFixed(1)} C ${(a.x - spread - 36).toFixed(1)} ${(edge + away * reach).toFixed(1)}, ${(a.x + spread + 36).toFixed(1)} ${(edge + away * reach).toFixed(1)}, ${(a.x + spread).toFixed(1)} ${edge.toFixed(1)}" marker-end="url(#arrow)"/><text class="edge-label" x="${a.x.toFixed(1)}" y="${label.toFixed(1)}">${caption}</text>`;
     }
     // Parallel and opposite transitions between the same pair of states bend apart instead of overlapping.
     const pair = [transition.from, transition.to].sort().join('\u0000'), nth = pairs.get(pair) ?? 0;

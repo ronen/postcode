@@ -130,3 +130,24 @@ test('an explicit state-diagram request is fulfilled only by state-model content
   assert.equal(assessFulfillment(store, stateDiagramContract, result.id, [structured]).status, 'fulfilled');
   assert.equal(assessFulfillment(store, stateDiagramContract, result.id, [empty]).status, 'unfulfilled');
 });
+
+test('several self-transitions on one state are drawn as distinct nested loops with separate captions', () => {
+  const states = [{ key: 'below', label: 'Below threshold', description: null, entity: null }, { key: 'reached', label: 'Threshold reached', description: null, entity: null }];
+  const loop = (key: string, at: string, trigger: string) => ({ key, from: at, to: at, trigger, guard: null, effect: null });
+  // The live trial's shape: two self-transitions on each of two states, besides transitions between them.
+  const model: StateModel = { bearer: { kind: 'role', role: 'breaker' }, states, initial: { kind: 'unknown' }, applicability: null, unsupported: [],
+    coverage: { states: 'all', transitions: 'all' }, transitions: [loop('t1', 'below', 'failure() below threshold'), { key: 't2', from: 'below', to: 'reached', trigger: 'failure() reaches threshold', guard: null, effect: null },
+      loop('t3', 'reached', 'failure() again'), loop('t4', 'below', 'success()'), { key: 't6', from: 'reached', to: 'below', trigger: 'success()', guard: null, effect: null }, loop('t7', 'reached', 'success() with zero threshold')] };
+  const { svg } = renderStateDiagram(model, 'Breaker');
+  const paths = [...svg.matchAll(/<path class="edge" d="([^"]+)"/g)].map(match => match[1]);
+  const captions = [...svg.matchAll(/<text class="edge-label"[^>]* x="([^"]+)" y="([^"]+)">([^<]+)<\/text>/g)].map(match => ({ at: `${match[1]},${match[2]}`, text: match[3]! }));
+  // One distinct path and one distinctly placed caption per supplied transition: none is hidden behind another.
+  assert.equal(paths.length, 6);
+  assert.equal(new Set(paths).size, 6);
+  assert.equal(captions.length, 6);
+  assert.equal(new Set(captions.map(caption => caption.at)).size, 6);
+  assert.deepEqual(captions.map(caption => caption.text.split(' ')[0]).sort(), ['T1', 'T2', 'T3', 'T4', 'T5', 'T6']);
+  // Every coordinate stays inside the picture.
+  const [width, height] = svg.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/)!.slice(1).map(Number);
+  for (const caption of captions) { const [x, y] = caption.at.split(',').map(Number); assert.ok(x! > 0 && x! < width! && y! > 0 && y! < height!, caption.at); }
+});

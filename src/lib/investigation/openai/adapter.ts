@@ -229,10 +229,18 @@ function hosted<I extends { readonly instructions: string }, R>(session: ChatGPT
               if (typeof call.call_id !== 'string' || !call.call_id || typeof call.arguments !== 'string') return { kind: 'ended' };
               if (call.name !== protocol.submitFunction && call.name !== protocol.requestFunction) return { kind: 'ended' };
               let args: unknown;
-              try { args = JSON.parse(call.arguments); } catch {
-                return call.name === protocol.submitFunction ? references.submission(null, true) : { kind: 'ended' };
+              let parsed = true;
+              try { args = JSON.parse(call.arguments); } catch { parsed = false; }
+              if (call.name === protocol.submitFunction) {
+                // A protocol with bounded repair answers a rejected submission in the next exchange, as this call's
+                // output. Keep the call in history as the pending one; a protocol without repair simply closes.
+                if (response.output.every(item => item.type === 'function_call' || item.type === 'message' || item.type === 'reasoning')) {
+                  for (const item of response.output) history.push(item);
+                  pending = call.call_id;
+                }
+                return references.submission(parsed ? args : null, !parsed);
               }
-              if (call.name === protocol.submitFunction) return references.submission(args, false);
+              if (!parsed) return { kind: 'ended' };
               const requested = references.tools(args);
               if (requested === null) return { kind: 'ended' };
               for (const item of response.output) {

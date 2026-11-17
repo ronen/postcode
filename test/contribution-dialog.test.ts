@@ -218,3 +218,28 @@ test('an evidence page is still delivered when the retained finding it obtained 
   // Only the baseline was recorded as delivered; no retained use was.
   assert.deepEqual(kinds(execution.production.deliveries), ['scope', 'association', 'item']);
 });
+
+test('the instructions state the exact submission shapes that live agents got wrong, and those shapes are rejected', async () => {
+  const { ledger, entity, invoke, account } = await setup();
+  const text = dialogInstructions(operation), barrel = entity('barrel'), { result } = invoke(barrel, 'shapes');
+  // Observed in the first live trials: grounds with a statement field, an option with its request at top level,
+  // and unsupported semantics as one string. Each shape is stated exactly.
+  assert.match(text, /grounds: \{ text: string, evidence\?: \[program record handle\], support\?: \[content address\] \}/);
+  assert.match(text, /option: \{ key, meaning: string, request: \{ operation, subjects: \[\{ subject \}\]/);
+  assert.match(text, /The operation and subjects go inside request/);
+  const { stateBehaviorGuidance } = await import('../src/lib/contributions/state-model.js');
+  assert.match(stateBehaviorGuidance, /unsupported is a list of strings/);
+  // Retained regression cases: each observed shape is rejected with a message naming the problem, and the stated shape is accepted.
+  const base = account('r', barrel, result.id);
+  const cases: [RegExp, unknown][] = [
+    [/Unexpected grounds field: statement/, { ...base, declarations: [{ ...base.declarations![0]!, grounds: { statement: 'Because.' } }] }],
+    [/Unexpected follow-up option field: operation/, { ...base, options: [{ key: 'o', meaning: 'm', operation: 'state-behavior', subjects: [{ subject: { kind: 'entity', entity: barrel } }] }] }],
+  ];
+  for (const [message, investigram] of cases) {
+    const handle = ledger.begin({ producer: { mechanism: 'agentic', method: 'test@1', agent: null } });
+    assert.throws(() => ledger.accept([{ production: handle, contribution: { investigrams: [investigram] } }]), message);
+  }
+  const handle = ledger.begin({ producer: { mechanism: 'agentic', method: 'test@1', agent: null } });
+  assert.doesNotThrow(() => ledger.accept([{ production: handle, contribution: { investigrams: [{ ...base,
+    options: [{ key: 'o', meaning: 'Investigate further.', request: { operation: 'state-behavior', subjects: [{ subject: { kind: 'entity', entity: barrel } }] } }] }] } }]));
+});

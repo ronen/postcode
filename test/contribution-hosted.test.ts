@@ -84,6 +84,18 @@ test('the hosted transport carries the contribution dialog with exact handles an
   assert.equal(JSON.stringify([sent, captures]).includes(sentinel), false);
   assert.equal(reported.length, 2);
   dialogue.close();
+  // A rejected submission is answered in the next exchange as the submission call's output, and the dialogue continues.
+  const repairing = agent.open();
+  reply = () => [call('submit_contribution', { investigrams: [{ key: 'x' }] })];
+  assert.equal((await repairing.exchange(input, signal, () => {})).kind, 'submit');
+  const sentBefore = sent.length;
+  reply = () => [call('submit_contribution', { investigrams: [{ key: 'y', qualification: { limitations: ['q'] }, items: [] }] })];
+  const repaired = await repairing.exchange({ ...input, notices: [], responses: [{ tool: 'invalid-submission', problem: 'A content item requires attributable qualification.' }] } as unknown as DialogInput, signal, () => {});
+  assert.deepEqual((repaired as { contribution: { investigrams: { key: string }[] } }).contribution.investigrams.map(item => item.key), ['y']);
+  const repairRequest = sent[sentBefore]!;
+  const output = repairRequest.input.find((item: { type?: string }) => item.type === 'function_call_output');
+  assert.deepEqual([output.call_id, JSON.parse(output.output)], ['call_1', [{ tool: 'invalid-submission', problem: 'A content item requires attributable qualification.' }]]);
+  repairing.close();
   // An unparseable submission is still a submission for validation and repair; a malformed request ends the turn.
   const second = agent.open();
   reply = () => [call('submit_contribution', '{not json')];
