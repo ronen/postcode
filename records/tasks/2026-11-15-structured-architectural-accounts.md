@@ -177,6 +177,20 @@ to begin the substantive implementation task described by that plan.
 
 > Go ahead with the live inference
 
+2026-11-17, after round 10, clarifying the scope of live follow-up contract evidence and checking current offline coverage. The accompanying reviewer note repeats the non-null-contract limitation alongside the accepted remaining limitations; it will be preserved separately from implementation interpretation.
+
+> Please reconcile the follow-up result-contract evidence:
+>
+> The latest review says a non-null follow-up contract has not been demonstrated live, but m2-trials/README.md says the earlier trial 2 answered under its option’s promised state-diagram contract.
+>
+> Check the underlying evidence and clarify whether the limitation applies only to the latest focused trials or to the live evidence overall. Preserve any relevant differences between implementation revisions and elicitation conditions; do not claim the earlier trial proves more than it does.
+>
+> Also confirm that current offline tests cover forwarding and enforcing a follow-up option’s result contract. Add focused coverage if it is missing.
+>
+> Record the clarification and verification using the repository’s review-response workflow, without rewriting historical reviews. Report any actual gap that remains. No additional live inference is authorized.
+>
+> The other observations—limited reliability/correctness evidence, offline-only lifecycle cases, the single repair attempt and the missing hosted-agent configuration path—can remain explicit limitations or later-milestone obligations.
+
 ## Outcome
 
 ## Verification
