@@ -64,7 +64,7 @@ test('the hosted transport carries the contribution dialog with exact handles an
     const output = JSON.parse(sent[1]!.input.find((item: { type?: string }) => item.type === 'function_call_output').output);
     assert.deepEqual([output[0].response.records[0].id, output[0].response.records[0].subject, output[0].entities[0], output[0].response.records[0].information.exportedName],
       [output[0].response.selected[0], handles.module, { record: handles.module, entity: handles.entity }, literal]);
-    return [call('submit_contribution', { report: { answer: [] }, investigrams: [{ key: 'states', qualification: { limitations: [literal] }, referents: [handles.entity],
+    return [call('submit_contribution', { report: { answer: [{ investigram: handles.investigram, declaration: 'earlier-answer' }, { investigram: { local: 'states' }, declaration: 'answer' }] }, investigrams: [{ key: 'states', qualification: { limitations: [literal] }, referents: [handles.entity],
       entities: [{ key: 'open', entityKind: 'state' }],
       items: [{ key: 'model', type: 'state-model', evidence: [handles.claim], body: { bearer: { entity: handles.entity }, states: [{ key: 'open', label: 'Open', entity: { local: 'open' } }],
         initial: { kind: 'unknown' }, transitions: [], coverage: { states: 'some', transitions: 'unknown' } } }],
@@ -75,6 +75,8 @@ test('the hosted transport carries the contribution dialog with exact handles an
   const submitted = await dialogue.exchange({ ...input, notices: [], responses: [{ tool: 'evidence', response: { status: 'available', records: [exported], selected: [claim], limitations: [] },
     entities: [{ record: module, entity }], retained: [], retainedOmitted: [] }] } as unknown as DialogInput, signal, item => reported.push(item));
   assert.equal(submitted.kind, 'submit');
+  assert.deepEqual((submitted as { contribution: { report: unknown } }).contribution.report,
+    { answer: [{ investigram, declaration: 'earlier-answer' }, { investigram: { local: 'states' }, declaration: 'answer' }] });
   const contribution = (submitted as { contribution: { investigrams: any[] } }).contribution.investigrams[0];
   assert.deepEqual([contribution.referents, contribution.items[0].evidence, contribution.items[0].body.bearer, contribution.items[0].body.states[0].entity, contribution.declarations[0].target.result,
     contribution.declarations[0].members[0].item, contribution.declarations[1].displaces, contribution.declarations[1].grounds.text, contribution.qualification.limitations],

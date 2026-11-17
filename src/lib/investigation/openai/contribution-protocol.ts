@@ -1,3 +1,4 @@
+import { reportAnswerGuidance } from '../../contributions/outcomes.js';
 import { componentSelectorGuidance } from '../../contributions/catalog.js';
 import type { FunctionTool } from 'openai/resources/responses/responses.js';
 import type { DialogAgent, DialogInput, DialogReply } from '../../contributions/dialog.js';
@@ -6,7 +7,7 @@ import { hostedAgent } from './adapter.js';
 import type { OpenAIExchange, WireProtocol } from './adapter.js';
 import { InvestigatorReferences } from './references.js';
 
-export const contributionWireProtocol = 'postcode/contribution-dialog-wire@5';
+export const contributionWireProtocol = 'postcode/contribution-dialog-wire@6';
 
 /**
  * Reference positions of the contribution dialog. A string at one of these keys is an exact
@@ -89,7 +90,10 @@ export const contributionFunctions: FunctionTool[] = [
     description: 'Submit the complete contribution for atomic validation, in the shapes the instructions give. Copy supplied handles exactly; refer to content of this same submission with { investigram: { local: <key> }, item | declaration }. A structurally invalid submission is returned once for repair with the first problem found. Schema conformance establishes neither valid references nor truth.',
     parameters: { type: 'object', additionalProperties: false, required: ['investigrams'], properties: {
       investigrams: { type: 'array', items: investigram },
-      report: { type: 'object', additionalProperties: false, properties: { inability: { type: 'string' }, statement: { type: 'string' }, answer: { type: 'array', items: address('declaration') } } } } } },
+      report: { type: 'object', additionalProperties: false, properties: { inability: { type: 'string' }, statement: { type: 'string' }, answer: { type: 'array', description: reportAnswerGuidance,
+          items: { type: 'object', additionalProperties: false, required: ['investigram', 'declaration'], properties: {
+            investigram: { ...reference, description: 'The retained investigram handle owning the answer designation, or { local: <investigram key in this submission> }. Never an invocation or Query result handle.' },
+            declaration: { type: 'string', description: 'The key of an add or supersede answer-designation declaration in that investigram, targeting this invocation’s Query result.' } } } } } } } } },
 ];
 
 /** The contribution dialog over the hosted transport, with its own structural reference translation. */

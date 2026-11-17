@@ -305,3 +305,33 @@ test('every terminal exit of the producer boundary ends its production; only a c
   await produce(ledger, { producer: agentic() }, production => { silent.push(production); return undefined; });
   assert.deepEqual([rejected[0]!.closed, silent[0]!.closed], [true, true]);
 });
+
+test('explicitly returning an existing designation preserves its exact reconsideration causes and creates no new designation', async () => {
+  const ledger = createLedger(), discovery = discoverModule(ledger), module = discovery.entity('module');
+  const { invocation, result } = summaryInvocation(ledger, module, tableContract.id);
+  const first = submit(ledger, agentic(), handle => {
+    handle.association(discovery.use('discovery', 'identify'), { content: true });
+    return table(result.id, 'first', ['Closed']);
+  }, { invocation: invocation.id });
+  const designation = first.use('first', 'answer');
+  const change = submit(ledger, agentic('withdraw'), [{ key: 'withdraw', qualification: caveat, declarations: [{ key: 'change', operation: 'withdraw',
+    displaces: [discovery.use('discovery', 'identify')], grounds: { text: 'The earlier identification needs correction.' } }] }]).use('withdraw', 'change');
+  const before = structuredClone(ledger.status.association(designation).producing);
+  assert.deepEqual(before.map(cause => cause.change), [change]);
+  const count = ledger.investigrams().length;
+  const fresh = summaryInvocation(ledger, module, tableContract.id, true);
+  const returned = await produce(ledger, { producer: agentic('return'), invocation: fresh.invocation.id, contract: tableContract }, handle => {
+    handle.designations(result.id, { content: true });
+    return { investigrams: [], report: { answer: [designation], statement: 'The earlier answer remains adequate, with its existing qualification.' } };
+  });
+  assert.equal(returned.kind, 'accepted');
+  if (returned.kind !== 'accepted') return;
+  assert.equal(returned.fulfillment?.status, 'fulfilled');
+  assert.deepEqual(attemptAnswers(ledger, returned.production, result.id), [designation]);
+  assert.deepEqual(returned.production.investigrams, []);
+  assert.equal(ledger.investigrams().length, count);
+  assert.deepEqual(current(ledger, result.id), [designation]);
+  assert.deepEqual(ledger.status.association(designation).producing, before);
+  assert.deepEqual(ledger.status.investigram(first.investigram('first')).producing, before);
+  assert.equal(ledger.standing(designation).state, 'standing');
+});

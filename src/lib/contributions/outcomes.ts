@@ -75,6 +75,9 @@ export function assessFulfillment(ledger: ContributionLedger, contract: ResultCo
   return { contract: contract.id, result, status, alternatives, history };
 }
 
+/** Shared authoring guidance for the producer report's explicit answer selection. */
+export const reportAnswerGuidance = 'report.answer is optional: this submission’s own answer designations already count as its answer, so you need not repeat them. Use report.answer to explicitly return existing answer designations for this invocation, for example when an earlier answer remains adequate and no new designation is needed. Each entry is { investigram: <retained investigram handle>, declaration: <declaration key> }, or { investigram: { local: <investigram key in this submission> }, declaration: <declaration key> } for a designation in this submission. The declaration must be an add or supersede designation of this invocation’s Query result. Reference the owning investigram and declaration key, not an invocation handle, Query result handle or arbitrary dialogue handle. Repeating an own designation here is allowed but unnecessary; do not list the same address twice. Returning an existing designation does not change its standing or clear its reconsideration causes.';
+
 /**
  * The answers one concluded attempt supplied for a Query result: the designations its own
  * investigrams declared for it, and exact existing designations it reported as its answer.

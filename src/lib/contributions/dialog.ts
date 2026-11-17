@@ -15,7 +15,7 @@ import type { AssociationAddress, DeclarationAddress, EntityId, InvestigramId, I
   SelectionScope } from './model.js';
 import { moduleEntity } from './modules.js';
 import { followUpInstructions } from './operations.js';
-import { assessFulfillment, attemptAnswers } from './outcomes.js';
+import { assessFulfillment, attemptAnswers, reportAnswerGuidance } from './outcomes.js';
 import type { Fulfillment, ResultContract } from './outcomes.js';
 
 /** Reusable agentic work, independent of the Lens that consumes its answer. */
@@ -146,6 +146,7 @@ export function dialogInstructions(operation: DialogOperation): string {
     'RESPOND TO CHANGE NOTICES. A notice identifies one exact change accepted during this dialog. Consider whether it matters and acquire further information if it does. A notice is not the replacement content and does not oblige agreement.',
     'FOLLOW-UP OPTIONS AND ILLUSTRATIONS. An option proposes a further investigation with its operation, subjects and any promised result form. An illustration names a diagram type and the exact content items of this explanation it pictures. Both belong to the contribution that offers them and need qualification.',
     'Submit one contribution: { investigrams: [ investigram ], report?: { inability?: string, statement?: string, answer?: [ address ] } }. The report belongs to the whole contribution, never inside an investigram. Shapes, exactly:',
+    reportAnswerGuidance,
     'investigram: { key, qualification: { limitations: [string] }, entities?: [{ key, entityKind }], referents?: [entity], items?: [item], declarations?: [declaration], options?: [option], illustrations?: [illustration], inconsistencies?: [report] }.',
     'item: { key, type, body, referents?: [entity], evidence?: [program record handle], support?: [content address], qualification?: { limitations: [string] } }. The body is always an object: for type "prose" it is { text: string }; for type "identification" it is { name: string or null, nameOrigin: "system-under-study" or "assigned" (omit when name is null), designation: string }; other types are described with their guidance.',
     'declaration: { key, operation: "add" | "supersede" | "withdraw", target: { kind: "entity", entity, role: "identification" } or { kind: "entity", entity, role: "topic", topic } or { kind: "result", result }, members: [{ kind: "item", item: content address } or { kind: "association", association: address }], displaces?: [address], grounds?: grounds, qualification?: { limitations: [string] } }. A withdrawal has no target or members. Supersession and withdrawal require grounds.',
@@ -153,7 +154,7 @@ export function dialogInstructions(operation: DialogOperation): string {
     'option: { key, meaning: string, request: { operation, subjects: [{ subject }], resultContract?: string }, references?: [member], qualification?: { limitations: [string] } }. A subject has the shape specified by its supported operation above. The operation and subjects go inside request.',
     'illustration: { key, diagramType: "state-transition", inputs: [content address] }. report (inconsistency): { key, endpoints: [member, member], grounds }.',
     'A content address is { investigram, item }; an address is { investigram, declaration }. Within this submission use { investigram: { local: key }, ... }; for retained content use the exact handles supplied. An entity is a supplied handle or { local: key } for one introduced in entities.',
-    'Designate your answer with an add or supersede declaration whose target is { kind: "result", result } for the Query result of this request. Submit explicitly when the whole contribution is ready. A structurally invalid submission is returned once for repair with the first problem found; check the shapes above before submitting.',
+    'When supplying a new answer, designate it with an add or supersede declaration whose target is { kind: "result", result } for the Query result of this request. Submit explicitly when the whole contribution is ready. A structurally invalid submission is returned once for repair with the first problem found; check the shapes above before submitting.',
   ].filter(Boolean).join('\n');
 }
 

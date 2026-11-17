@@ -416,3 +416,58 @@ test('production component guidance matches schema and contract validation; the 
     assert.throws(() => ledger.invoke({ ...whole, subjects: [{ role: null, subject: { kind: 'content', item: { investigram: owner, item: 'model' }, component: badComponent } }] }), /Unknown content component/);
   }
 });
+
+test('report.answer instructions and hosted schema describe the accepted designation reference forms', async () => {
+  const { reportAnswerGuidance } = await import('../src/lib/contributions/outcomes.js');
+  const { contributionOperations } = await import('../src/lib/contributions/operations.js');
+  const { contributionFunctions } = await import('../src/lib/investigation/openai/contribution-protocol.js');
+  for (const operation of Object.values(contributionOperations)) {
+    const instructions = dialogInstructions(operation);
+    assert.ok(instructions.includes(reportAnswerGuidance));
+    assert.match(instructions, /own answer designations already count/);
+    assert.match(instructions, /earlier answer remains adequate and no new designation is needed/);
+    assert.match(instructions, /not an invocation handle, Query result handle or arbitrary dialogue handle/);
+    assert.match(instructions, /Repeating an own designation here is allowed but unnecessary/);
+    assert.match(instructions, /does not change its standing or clear its reconsideration causes/);
+  }
+  const schema = contributionFunctions.find(tool => tool.name === 'submit_contribution')!.parameters as Record<string, any>;
+  const report = schema.properties.report, answer = report.properties.answer;
+  assert.equal(report.required?.includes('answer') ?? false, false);
+  assert.equal(answer.description, reportAnswerGuidance);
+  assert.deepEqual(answer.items.required, ['investigram', 'declaration']);
+  assert.equal(answer.items.additionalProperties, false);
+  assert.deepEqual(answer.items.properties.investigram.anyOf, [{ type: 'string' },
+    { type: 'object', additionalProperties: false, required: ['local'], properties: { local: { type: 'string' } } }]);
+  assert.match(answer.items.properties.investigram.description, /retained investigram handle owning the answer designation/);
+  assert.match(answer.items.properties.investigram.description, /local: <investigram key in this submission>/);
+  assert.match(answer.items.properties.declaration.description, /add or supersede answer-designation/);
+});
+
+test('the observed invocation-as-investigram report reference is rejected atomically and normally repaired', async () => {
+  const { attemptAnswers } = await import('../src/lib/contributions/outcomes.js');
+  // Both preferred omission and harmless local repetition preserve the own answer.
+  for (const repeatOwn of [false, true]) {
+    const { ledger, entity, invoke, run, account } = await setup(), barrel = entity('barrel');
+    const request = invoke(barrel), position = ledger.position;
+    const investigrams = [account('account', barrel, request.result.id)];
+    const { execution, agent } = await run([
+      input => ({ kind: 'submit', contribution: { investigrams,
+        report: { answer: [{ investigram: input.request.invocation, declaration: 'answer' }] } } }),
+      input => {
+        assert.deepEqual(input.responses, [{ tool: 'invalid-submission', problem: 'Unknown investigram reference.' }]);
+        assert.equal(ledger.position, position);
+        assert.equal(input.remaining.repairs, 0);
+        return { kind: 'submit', contribution: { investigrams,
+          ...(repeatOwn ? { report: { answer: [{ investigram: { local: 'account' }, declaration: 'answer' }] } } : {}) } };
+      },
+    ], request.invocation);
+    assert.equal(execution.outcome.kind, 'accepted');
+    if (execution.outcome.kind !== 'accepted') return;
+    assert.equal(execution.outcome.repairs, 1);
+    const owner = execution.outcome.acceptance.productions[0]!.investigrams.account!;
+    const designation = { investigram: owner, declaration: 'answer' };
+    assert.deepEqual(attemptAnswers(ledger, execution.production, request.result.id), [designation]);
+    assert.deepEqual(execution.production.report?.answer ?? [], repeatOwn ? [designation] : []);
+    assert.equal(agent.inputs.length, 2);
+  }
+});
