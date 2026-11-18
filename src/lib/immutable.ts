@@ -2,13 +2,19 @@ import { types } from 'node:util';
 
 /** Freeze a value owned by this boundary. Callers must clone borrowed values first. */
 export function freezeOwned<T>(value: T): T {
-  if (value !== null && typeof value === 'object') {
-    Object.values(value).forEach(freezeOwned);
-    Object.freeze(value);
-  }
+  // Traversal state belongs only to this call, not to an ownership registry.
+  // An already-frozen node can still have mutable descendants, so visit it too.
+  const visited = new Set<object>();
+  const freeze = (item: unknown): void => {
+    if (item !== null && typeof item === 'object' && !visited.has(item)) {
+      visited.add(item);
+      Object.values(item).forEach(freeze);
+      Object.freeze(item);
+    }
+  };
+  freeze(value);
   return value;
 }
-
 
 const nativeCopy = Symbol('native copy required');
 

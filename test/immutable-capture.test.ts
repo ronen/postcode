@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { ImmutableCapture } from '../src/lib/immutable.js';
+import { freezeOwned, ImmutableCapture } from '../src/lib/immutable.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { recordId, sessionId } from '../src/lib/identity.js';
 
@@ -36,6 +36,23 @@ test('capture preserves plain structured graph aliases, cycles, sparse arrays an
   assert.equal(actual.shared, actual.again); assert.equal(actual.array[2], actual.shared); assert.equal(actual.self, actual);
   assert.ok(Object.isFrozen(actual.shared)); assert.ok(Object.isFrozen(actual.array));
   assert.equal(capture.capture(actual), actual);
+  capture.dispose();
+  const late = capture.capture(actual);
+  assert.notEqual(late, actual); assert.notEqual(late.shared, actual.shared);
+  assert.deepEqual(late, actual);
+  assert.equal(late.self, late); assert.equal(late.again, late.shared); assert.equal(late.array[2], late.shared);
+  assert.ok(Object.isFrozen(late)); assert.ok(Object.isFrozen(late.array)); assert.ok(Object.isFrozen(late.shared));
+  assert.throws(() => Object.assign(late.shared, { value: 2 }), TypeError);
+  assert.notEqual(capture.capture(late), late, 'Capturing cycles after disposal does not restore ownership reuse');
+});
+
+test('freezing owned graphs follows cycles and still visits descendants of shallow-frozen nodes', () => {
+  const nested = { values: [1] }, root = Object.freeze({ nested, alias: nested });
+  Object.assign(nested, { parent: root });
+  assert.equal(freezeOwned(root), root);
+  assert.equal(root.alias, nested);
+  assert.ok(Object.isFrozen(nested)); assert.ok(Object.isFrozen(nested.values));
+  assert.throws(() => nested.values.push(2), TypeError);
 });
 
 test('native fallback copies the whole graph with aliasing and getter behavior, and never brands exotic values', () => {
@@ -49,6 +66,10 @@ test('native fallback copies the whole graph with aliasing and getter behavior, 
   assert.notEqual(capture.capture(actual), actual, 'Exotic graph is not accepted as deeply immutable');
   assert.throws(() => capture.capture({ callback() {} }), { name: 'DataCloneError' });
   assert.throws(() => capture.capture(new Proxy({}, {})), { name: 'DataCloneError' });
+  const cyclic = { child, get self(): unknown { return cyclic; } };
+  const fallback = capture.capture(cyclic);
+  assert.equal(fallback.self, fallback); assert.notEqual(fallback.child, child);
+  assert.ok(Object.isFrozen(fallback)); assert.ok(Object.isFrozen(fallback.child));
 });
 
 test('ownership is independent per boundary and disposal cannot recreate sharing bookkeeping', () => {

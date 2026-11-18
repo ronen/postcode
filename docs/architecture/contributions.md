@@ -111,6 +111,11 @@ they do not keep the table, store or compiler alive. Unclosed internal stores re
 their table for their own lifetime. This change does not optimize canonical identity
 construction or comparison allocation, and it does not change answer method versions.
 
+Ordinary deep freezing tracks visited nodes only for that call. Cycles and aliases
+therefore remain valid through native fallback and captures after disposal, without
+recreating ownership bookkeeping. A shallow-frozen node does not stop traversal into
+its descendants; unknown input still receives the full copy-and-freeze treatment.
+
 ## State-dependent behavior and its diagram
 
 State-dependent behavior is the one architectural concept supported so far. Three responsibilities are kept apart without separate registries. The concept is agent guidance on recognizing and explaining state-dependent behavior, including when not to apply it. The `state-model` content type is the retained meaning: a bearer that is an Entity or a scoped role, named states, an entry that is a state, unknown or established as none, directed transitions with optional trigger, guard and effect, a coverage claim for states and for transitions, applicability, and any semantics the bounded model cannot express. States and transitions are locally addressable components, not Entities. The diagram type maps a state model to a directed state-transition picture.
