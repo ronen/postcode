@@ -3,6 +3,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { test } from 'node:test';
+import { fileURLToPath } from 'node:url';
 import { temporaryDirectory } from './cli-helpers.js';
 
 test('measurement refuses report parents with project inputs and preserves the journey with a dedicated output directory', t => {
@@ -12,7 +13,8 @@ test('measurement refuses report parents with project inputs and preserves the j
   writeFileSync(path.join(source, 'entry.ts'), "export { value } from './value.js';\n");
   writeFileSync(path.join(source, 'value.ts'), 'export const value = 1;\n');
   execFileSync('git', ['init', '--quiet', root]);
-  const args = [path.resolve('scripts/measure-contribution-session.mjs'), path.join(root, 'tsconfig.json'), path.resolve('_build')];
+  const build = path.resolve(fileURLToPath(new URL('../', import.meta.url)));
+  const args = [path.resolve('scripts/measure-contribution-session.mjs'), path.join(root, 'tsconfig.json'), build];
   for (const parent of [root, source]) {
     const output = path.join(parent, 'report.json');
     const result = spawnSync(process.execPath, [...args, output, '1'], { encoding: 'utf8' });
@@ -22,6 +24,8 @@ test('measurement refuses report parents with project inputs and preserves the j
   }
   const run = (output: string) => JSON.parse(execFileSync(process.execPath, [...args, output, '1'], { encoding: 'utf8', maxBuffer: 2_000_000 }));
   const baseline = run(''), output = path.join(root, '_measurement', 'report.json'), saved = run(output);
+  assert.equal(saved.build.build, build);
+  assert.equal(baseline.build.build, build);
   assert.equal(saved.modules, 2);
   assert.equal(saved.modules, baseline.modules);
   assert.deepEqual(saved.application.samples.map((sample: { answer: string }) => sample.answer), baseline.application.samples.map((sample: { answer: string }) => sample.answer));
