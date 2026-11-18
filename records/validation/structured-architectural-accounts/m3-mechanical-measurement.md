@@ -65,3 +65,7 @@ The remaining serialized growth reflects substantially more qualified content an
 The dialogs add 40 investigrams and 40 productions to each build. Their exchange volume remains bounded by the same selected information; the newly retained mechanical population is not automatically delivered to them. The status pass intentionally visits every investigram, now about 51,000 rather than 3,000.
 
 Both builds have zero flagged dialogs before changes. Adding alternate identification for their 40 modules flags all 40 (one cause for the first dialog, two for the others). Withdrawing the first dialog's account retains the same 40 flagged dialogs (one cause for the first, three for each later dialog that read it). The broad and narrow controls preserve M2's cause breadth. These are controlled mechanism observations, not additional instruction-usability or architectural-correctness trials. Agentic/caller migration still requires its separate checkpoint.
+
+## Subsequent investigation
+
+The [corrected-revision memory investigation](m3-memory-investigation.md) separately profiles round-1 correction target `8e06c5c`. It distinguishes retained immutable duplication from per-answer state and temporary allocation, tests sharing in scratch builds, and explains representative post-close output retention with weak references and an async-frame lifetime control. The measurements above retain their original target and historical meaning; the newer report supplies the evidence the small-fixture collection check could not establish.
