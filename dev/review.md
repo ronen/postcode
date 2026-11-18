@@ -107,7 +107,7 @@ Keep repeated review and correction under one handoff lightweight while its assi
 
 Ordinary rereview does not require another handoff, an intermediate disposition, an update to the original handoff, or a separate durable rereview-request document. A correction already required by the authorized task and governing material does not require a task follow-up merely because a reviewer identified it. Human direction and the task follow-up protocol remain necessary when a finding would change, extend, or redirect the authorized work.
 
-When a review cycle is clean, report that result and await human direction on further review or task closure. Do not present closure as the expected next step merely because one reviewer has no remaining findings. Keep any PR current with the changes under review.
+When a review cycle is clean, report that result and await human direction on further review or task closure. Do not present closure as the expected next step merely because one reviewer has no remaining findings. Keep the PR branch current with the changes under review; maintain its description according to the [PR-description conventions](process-conventions.md#pull-request-descriptions).
 
 ## Disposition and further review
 
