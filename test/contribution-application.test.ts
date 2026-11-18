@@ -134,6 +134,10 @@ test('the state-behavior investigation, its diagram, exact access and a retained
     [{ option: 'reopen' }, owner.replace(/.$/, owner.endsWith('0') ? '1' : '0'), 'unknown-reference']] as const) {
     const refused = await session.execute({ ...followUp, parameters, designation: { kind: 'reference', value: designation } });
     assert.deepEqual([refused.kind, refused.kind === 'resolution' && refused.resolution.reason], ['resolution', reason]);
+    if (parameters.option === 'unsupported' && refused.kind === 'resolution') {
+      assert.match(refused.resolution.explanation, /simulate/);
+      assert.match(refused.resolution.explanation, /no supported operation accepts.*cannot be invoked/);
+    }
   }
   const missing = await session.execute({ kind: 'lens', lens: 'follow-up', designation: { kind: 'reference', value: owner } });
   assert.deepEqual(missing.kind === 'resolution' && missing.resolution.reason, 'invalid-parameters');
@@ -379,6 +383,8 @@ test('a follow-up forwards and enforces its promised result contract, including 
   assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
   const session = opened.session; t.after(() => session.close());
   const first = answer(await session.execute({ kind: 'lens', lens: 'state-behavior', designation: { kind: 'name', value: 'breaker' } }));
+  const retainedUnknown = first.projection.alternatives[0]!.options.find(option => option.address.key === 'unknown');
+  assert.equal(retainedUnknown?.option.request.resultContract, 'test/unsupported-contract@1', 'unsupported capability does not invalidate retained guidance');
   const owner = first.projection.alternatives[0]!.designation.investigram;
   const request = (option: string) => ({ kind: 'lens' as const, lens: 'follow-up', designation: { kind: 'reference' as const, value: owner }, parameters: { option } });
   for (const [key, expected] of [['complete', 'fulfilled'], ['partial', 'unfulfilled']] as const) {
@@ -402,6 +408,7 @@ test('a follow-up forwards and enforces its promised result contract, including 
   assert.equal(refused.kind, 'resolution');
   if (refused.kind !== 'resolution') throw new Error('Expected unsupported contract refusal');
   assert.equal(refused.resolution.reason, 'invalid-parameters');
+  assert.match(refused.resolution.explanation, /test\/unsupported-contract@1 is not supported/);
   assert.equal(agent.inputs.length, 3, 'unknown contracts and reused/exact answers never open an extra dialog');
   assert.deepEqual(agent.inputs.map(inputs => inputs.length), [1, 1, 1], 'contract shortfalls do not enter structural repair');
 });

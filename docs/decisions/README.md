@@ -65,6 +65,7 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 - [Association organization and actual exposure](association-organization-and-exposure.md)
 - [Qualified application answers over retained contributions](qualified-answers-over-contributions.md)
 - [Structured architectural explanation and illustrations](structured-architectural-explanation.md)
+- [Validate follow-up capability availability at invocation](follow-up-capability-validation.md)
 
 - [Internal application API independent of interfaces](internal-application-api.md) — partially superseded; see the record’s heading mappings.
 
