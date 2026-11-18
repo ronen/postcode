@@ -191,6 +191,10 @@ to begin the substantive implementation task described by that plan.
 >
 > The other observations—limited reliability/correctness evidence, offline-only lifecycle cases, the single repair attempt and the missing hosted-agent configuration path—can remain explicit limitations or later-milestone obligations.
 
+2026-11-18, authorizing the proposed focused live check of a follow-up option promising a non-null result contract under current production guidance and exact-option identity. Use the same pinned Cockatiel fixture and route/model, natural-language elicitation asking for a follow-up whose answer includes a state diagram, and no supplied protocol identifiers, reference shapes or operation names. Invoke the returned option through the application with normal production repair. The new hard cap is 20 additional requests; further attempts must resolve a specific uncertainty and all evidence is preserved. M2 remains unaccepted and M3 remains on hold.
+
+> ok do it
+
 ## Outcome
 
 ## Verification
