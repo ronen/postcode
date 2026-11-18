@@ -260,6 +260,10 @@ to begin the substantive implementation task described by that plan.
 
 > The conflict has been resolved by accepted decision investigation-attempts-and-answer-outcomes.md, commit bd9f581, already in this worktree. Record the implementation direction as a task follow-up, then complete the migration under that decision and its verification requirements.
 
+2026-11-18, accepting the M3 caller checkpoint at `4a4d060` after the clean round 2 review, and directing continued work under the approved plan. The remaining integration, legacy retirement and final review are M4; this interpretation follows the completed M3 checkpoints. No additional live inference is authorized, and final integrated-review acceptance remains separate.
+
+> ok, M3 called acceptance is good, continue with M3
+
 ## Outcome
 
 ## Verification
