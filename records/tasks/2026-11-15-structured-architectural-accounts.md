@@ -252,6 +252,10 @@ to begin the substantive implementation task described by that plan.
 > \
 > Update the implementation documentation and validation records, and prepare the change for independent review. This does not accept the M3 checkpoint
 
+2026-11-18, accepting the M3 mechanical checkpoint, including its reviewed ownership-sharing correction at `08f6cde`, and authorizing continuation of the separate agentic/caller migration under the approved plan. The later agentic/caller checkpoint and M4 integrated review remain required; no additional live inference is authorized.
+
+> I accept the M3 mechanical checkpoint, please continue implementation
+
 ## Outcome
 
 ## Verification
