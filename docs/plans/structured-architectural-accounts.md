@@ -2,7 +2,7 @@
 
 Status: approved
 Created: 2026-11-15
-Updated: 2026-11-15
+Updated: 2026-11-18
 Superseded by:
 
 ## Problem and intended outcome
@@ -71,6 +71,7 @@ This plan is governed by:
 - [Common analysis contributions](../decisions/common-analysis-contributions.md): identity, producer boundary, retention and execution.
 - [Association organization and exposure](../decisions/association-organization-and-exposure.md): declarations, results, acquisition, timing and reconsideration.
 - [Qualified answers over contributions](../decisions/qualified-answers-over-contributions.md): Lens selection, exact subjects, reuse, identity and application access.
+- [Investigation attempts and answer outcomes](../decisions/investigation-attempts-and-answer-outcomes.md): separates retained attempt diagnostics and request reporting from architectural answer selection across new and migrated investigation families, partially superseding inherited unavailable-selection requirements.
 - [Structured architectural explanation](../decisions/structured-architectural-explanation.md): content contracts, guidance, diagram coverage and bounded delivery.
 
 The coordinated revisions change core concepts, architectural constraints and the application specification. Predecessor records receive complete forward supersession mappings; successors identify the live headed decisions they replace. Historical predecessors already superseded through another decision retain their existing links. The backlog separates future mechanisms from this plan's endpoint and explicitly tracks the temporary conformance gap as required plan work. No foundation or development-process revision is needed.
@@ -78,6 +79,8 @@ The coordinated revisions change core concepts, architectural constraints and th
 Adoption establishes intended contracts, not implementation conformance. The [temporary adoption and migration contract](../decisions/common-analysis-contributions.md#adoption-and-migration-conformance) preserves pre-adoption behavioral contracts for unmigrated capabilities and requires explicit migration status until closure. Implementation authorization remains separate. The internal application API is present in this planning baseline: the [completed application-interface task](../../records/tasks/2026-11-08-application-interface-boundary.md) closed on 2026-11-09, and the implementation provides `src/lib/application/` with a CLI adapter. Build on that boundary. Existing exact-retained-answer, qualified-construction, language-integration and Session contracts also remain prerequisites. Reconcile intervening changes at the actual implementation starting revision rather than recreate an older interface boundary.
 
 ## Milestones and review checkpoints
+
+Migration applies the [attempt/answer distinction](../decisions/investigation-attempts-and-answer-outcomes.md#separate-attempt-reporting-and-answer-meaning) to existing investigation families as well as newer contribution-based operations. Preserve failure kind/code/diagnostic on the attempt and in request reporting, without carrying attempt-only diagnostics into empty answer identity or exact presentation. Retain mechanical unavailability and selected partial-content qualification. The decision's [verification cases](../decisions/investigation-attempts-and-answer-outcomes.md#migration-and-verification) replace earlier assertions that different attempt failures must yield different answer identities; record affected test replacements and their rationale in the migration inventory.
 
 ### 1. Common contribution mechanism
 

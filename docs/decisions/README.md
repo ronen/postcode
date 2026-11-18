@@ -63,7 +63,8 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 
 - [Common qualified analysis contributions](common-analysis-contributions.md)
 - [Association organization and actual exposure](association-organization-and-exposure.md)
-- [Qualified application answers over retained contributions](qualified-answers-over-contributions.md)
+- [Qualified application answers over retained contributions](qualified-answers-over-contributions.md) — partially superseded; see the record’s heading mapping.
+- [Separate investigation-attempt diagnostics from retained answers](investigation-attempts-and-answer-outcomes.md)
 - [Structured architectural explanation and illustrations](structured-architectural-explanation.md)
 - [Validate follow-up capability availability at invocation](follow-up-capability-validation.md)
 
