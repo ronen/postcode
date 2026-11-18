@@ -256,6 +256,10 @@ to begin the substantive implementation task described by that plan.
 
 > I accept the M3 mechanical checkpoint, please continue implementation
 
+2026-11-18, directing the caller migration under the accepted investigation-attempt/answer-outcome decision at `bd9f581`. The separate caller checkpoint and M4 review remain required; no inference is authorized.
+
+> The conflict has been resolved by accepted decision investigation-attempts-and-answer-outcomes.md, commit bd9f581, already in this worktree. Record the implementation direction as a task follow-up, then complete the migration under that decision and its verification requirements.
+
 ## Outcome
 
 ## Verification
