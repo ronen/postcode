@@ -6,7 +6,7 @@ Task: [Implement structured architectural accounts](../../tasks/2026-11-15-struc
 Handoff: [M3 remaining mechanical-family review](2026-11-18-m3-mechanical-handoff.md)
 Findings: [round 1](2026-11-18-m3-mechanical-round-1-findings.md), [round 2](2026-11-18-m3-mechanical-round-2-findings.md)
 Correction target: `8e06c5c74ba6679dd7e030dbb28162503b6235aa`
-Gate status: Human determination pending
+Gate status: Accepted by the human on 2026-11-18
 
 ## Findings and dispositions
 
@@ -37,3 +37,7 @@ No additional implementation change or test rerun was needed to receive these cl
 ## Gate conclusion
 
 The mechanical reviewer recommends sufficiency from the perspective of these findings. The human has notified the implementer that both assignments have been reviewed, but has not yet accepted the mechanical checkpoint. Human determination of review sufficiency remains pending. The task stays active; this disposition does not authorize proceeding through the gate, close the task, or replace the separate agentic/caller checkpoint and M4 integrated review.
+
+## Human acceptance
+
+On 2026-11-18 the human stated: “I accept the M3 mechanical checkpoint, please continue implementation”. This accepts the mechanical checkpoint including the reviewed ownership-sharing correction at `08f6cde`. The earlier pending conclusion above records the state before that direction. The task continues with agentic/caller migration under its separate checkpoint; M4 integrated review remains required. No additional live inference is authorized. The direction is preserved in the active task record.

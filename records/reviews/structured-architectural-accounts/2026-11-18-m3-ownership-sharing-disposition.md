@@ -6,7 +6,7 @@ Task: [Implement structured architectural accounts](../../tasks/2026-11-15-struc
 Handoff: [M3 ownership-aware sharing review](2026-11-18-m3-ownership-sharing-handoff.md)
 Findings: [round 1](2026-11-18-m3-ownership-sharing-round-1-findings.md), [round 2 Copilot](2026-11-18-m3-ownership-sharing-round-2-copilot-findings.md), [round 3](2026-11-18-m3-ownership-sharing-round-3-findings.md)
 Corrected target: `08f6cde38d514251a34962ccc095a569a1e22a5f`
-Gate status: Human determination pending
+Gate status: Accepted by the human on 2026-11-18
 
 ## Findings and dispositions
 
@@ -33,3 +33,7 @@ The independent round 1 reduced-scale memory reproduction remains evidence for t
 ## Gate conclusion
 
 The ownership-sharing review cycle is clean at the corrected target. The human has reported completion of the re-review but has not yet accepted the M3 mechanical checkpoint. Human determination remains pending. This disposition is separate from the [mechanical-family disposition](2026-11-18-m3-mechanical-disposition.md); neither substitutes for the later agentic/caller checkpoint or M4 integrated review. The task stays active and no gate acceptance, task closure or further live inference is inferred.
+
+## Human acceptance
+
+On 2026-11-18 the human stated: “I accept the M3 mechanical checkpoint, please continue implementation”. This accepts the mechanical checkpoint including the reviewed ownership-sharing correction at `08f6cde`. The earlier pending conclusion above records the state before that direction. The task continues with agentic/caller migration under its separate checkpoint; M4 integrated review remains required. No additional live inference is authorized. The direction is preserved in the active task record.
