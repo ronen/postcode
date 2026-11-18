@@ -6,7 +6,7 @@ Task: [Implement structured architectural accounts](../../tasks/2026-11-15-struc
 Handoff: [M3 agentic/caller cut-over](2026-11-18-m3-agentic-caller-handoff.md)
 Findings: [round 1, Claude](2026-11-18-m3-agentic-caller-round-1-findings.md)
 Corrected target: `4a4d060e2c789f903f950d68602ffa99d0575d42`
-Gate status: Human determination pending
+Gate status: Accepted by the human on 2026-11-18
 
 ## Findings and dispositions
 
@@ -41,3 +41,9 @@ Claude's round 1 reviewed `e6f5c4c28a467670100fbdc77b9fabac0b1df17e`, found the 
 ## Gate conclusion
 
 Both findings are corrected and locally verified. The human has reported that the review is ready but has not yet accepted the M3 caller checkpoint. Human determination remains pending; the mechanical checkpoint's prior acceptance does not accept this one. The existing handoff applies if the human requests further review, using the corrected target above. M4 integrated verification, legacy retirement and final review remain later obligations. The task stays active; no acceptance, closure, merge or live inference is inferred.
+
+## Round 2 and human acceptance
+
+[Claude's round 2](2026-11-18-m3-agentic-caller-round-2-findings.md), committed at `d30e0f7`, independently reviewed `4a4d060`, reproduced both fixes and the compiled-source digest, and returned no actionable findings. Its full Linux VM run recorded 784 passes, two native kernel-lock failures and one corresponding skip out of 787 tests; the preserved report explains those environment limits. It did not repeat memory measurements or live inference. Its round 1 assessment otherwise applies to the corrected target.
+
+The human then stated: “ok, M3 called acceptance is good, continue with M3”. This accepts the caller checkpoint at `4a4d060`; direction is preserved in task follow-up `82d8b96`. Together with the earlier mechanical acceptance, the M3 checkpoints are satisfied. Continue the approved plan's remaining M4 integrated verification, legacy retirement and documentation work. Final integrated review and human confirmation remain required before task closure; no additional live inference is authorized. The earlier pending conclusions above remain historical evidence.
