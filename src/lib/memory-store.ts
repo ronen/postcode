@@ -2,7 +2,7 @@ import { isAnswer } from './answer-references.js';
 import type { InvestigationEvaluationRecord } from './investigation/evaluation.js';
 import { selectionReferences } from './investigation/selection-record.js';
 import { validateInvestigationSelection } from './investigation/selection-validation.js';
-import { freezeOwned } from './immutable.js';
+import { ImmutableCapture } from './immutable.js';
 import path from 'node:path';
 import { completedMaterialization } from './evaluation-state.js';
 import { canonical, digest, EntityBindings } from './identity.js';
@@ -68,6 +68,10 @@ function references(record: ProgramRecord): readonly RecordId[] {
 
 /** Atomic batches permit mutually referring entity/claim/context records. */
 export class MemoryProgramRecordStore implements ProgramRecordStore {
+  readonly #ownership = new ImmutableCapture();
+  capture<T>(value: T): T { return this.#ownership.capture(value); }
+  /** The application releases ownership bookkeeping on close, independently of retained outputs. */
+  releaseOwnership(): void { this.#ownership.dispose(); }
   readonly #bindings = new Map<SessionId, EntityBindings>();
   readonly #evaluations = new Map<SessionId, Map<RecordId, EvaluationRecord>>();
   readonly #investigations = new Map<SessionId, InvestigationEvaluationRecord[]>();
@@ -79,7 +83,7 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
       if (!record.id || !record.session || !record.method) throw new Error('Missing record context');
       const prior = pending.get(record.id) ?? this.#records.get(record.id);
       if (prior && canonical(prior) !== canonical(record)) throw new Error('Immutable record collision');
-      pending.set(record.id, structuredClone(record));
+      pending.set(record.id, this.capture(record));
     }
     const groupMembership = new Map<RecordId, ReadonlySet<RecordId>>();
     for (const record of pending.values()) {
@@ -457,7 +461,6 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
       // Validation above is never skipped for a resubmission. Preserve the
       // already-owned object when the validated content is identical.
       if (this.#records.has(id)) continue;
-      freezeOwned(record);
       this.#records.set(id, record);
       if (record.kind === 'investigation-evaluation') {
         const list = this.#investigations.get(record.session) ?? [];

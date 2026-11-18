@@ -76,6 +76,41 @@ as modules. General application subject resolution, earlier agentic evidence del
 associated inspection, and hosted native-content reference translation remain part of
 the separate caller cut-over; these are not claims of complete M3 conformance.
 
+## Immutable capture and ownership lifetime
+
+The program store owns an `ImmutableCapture` boundary shared by its contribution
+ledger. Store retention, ledger acceptance, contribution-answer capture and production
+delivery capture reuse plain immutable subgraphs already owned by that boundary.
+`ProgramRecordStore.capture` captures a value without assigning record identity,
+accepting a contribution or recording exposure. A standalone ledger has its own
+capture boundary, released with that ledger. Independent stores have independent
+ownership proofs; sharing grants no reference authority across Sessions.
+
+The boundary copies unknown plain objects/arrays, preserves graph aliases, and freezes
+all copied nodes before registering them in its private WeakSet. Neither an arbitrary
+caller freeze nor a value received from another store/worker proves ownership. For
+accessors or exotic objects it uses native structured cloning for the entire graph,
+preserving native aliasing/error behavior and leaving that graph unregistered. There
+is no process-wide object registry, ownership marker in delivered data, or callback
+from a retained value to its owner.
+
+Selections, standing, displacement and reconsideration causes are still derived at
+answer construction and captured as frozen values. Sharing an immutable content item,
+declaration or evidence record never turns those snapshots into current-ledger views.
+Resolved historical content remains present in the answer graph and can be arranged
+after Session close without lookup or analysis. Public and worker structured delivery
+continues to use native cloning; internal pointer sharing does not change wire meaning
+or create/remove exposure records. Store collision/reference checks and ledger atomic
+acceptance still validate every submission, including already-owned values.
+
+The application explicitly discards the ownership table on close, interruption or
+invalidation, even if a facade or old output remains reachable. Late cancellation work
+uses ordinary copying and cannot recreate bookkeeping. This releases the table's
+capacity as well as its weak keys. Captured answers keep only their immutable data;
+they do not keep the table, store or compiler alive. Unclosed internal stores retain
+their table for their own lifetime. This change does not optimize canonical identity
+construction or comparison allocation, and it does not change answer method versions.
+
 ## State-dependent behavior and its diagram
 
 State-dependent behavior is the one architectural concept supported so far. Three responsibilities are kept apart without separate registries. The concept is agent guidance on recognizing and explaining state-dependent behavior, including when not to apply it. The `state-model` content type is the retained meaning: a bearer that is an Entity or a scoped role, named states, an entry that is a state, unknown or established as none, directed transitions with optional trigger, guard and effect, a coverage claim for states and for transitions, applicability, and any semantics the bounded model cannot express. States and transitions are locally addressable components, not Entities. The diagram type maps a state model to a directed state-transition picture.

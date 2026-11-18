@@ -22,6 +22,25 @@ const { MemoryProgramRecordStore } = await load('memory-store.js');
 const { sessionLedger, moduleEntity } = await load('contributions/modules.js');
 const { inspect } = await load('projections.js');
 const immutable = await load('immutable.js');
+// Attribute the production ownership-aware capture through the same sampling
+// labels as native cloning. The wrapper does not change the value or ownership.
+const capture = immutable.ImmutableCapture?.prototype.capture;
+if (capture) {
+  const tagged = (() => {
+    function cloneAnswerRecord(value) { return capture.call(this, value); }
+    function cloneCanonicalRecord(value) { return capture.call(this, value); }
+    function cloneLedgerRecord(value) { return capture.call(this, value); }
+    function cloneOther(value) { return capture.call(this, value); }
+    return { cloneAnswerRecord, cloneCanonicalRecord, cloneLedgerRecord, cloneOther };
+  })();
+  immutable.ImmutableCapture.prototype.capture = function(value) {
+    const kind = value?.kind;
+    const tag = kind?.includes('projection') ? tagged.cloneAnswerRecord
+      : kind === 'investigram' || kind === 'production' ? tagged.cloneLedgerRecord
+        : value?.session && value?.id ? tagged.cloneCanonicalRecord : tagged.cloneOther;
+    return tag.call(this, value);
+  };
+}
 const nativeClone = globalThis.structuredClone;
 // Tag native clone allocations without changing the production build's ownership behavior.
 // Prototype modules opt in locally; do not replace public structuredClone with sharing.
@@ -52,7 +71,7 @@ MemoryProgramRecordStore.prototype.put = function(values) {
 const inspector = new Inspector(); inspector.connect();
 const post = (method, params = {}) => new Promise((resolve, reject) => inspector.post(method, params, (error, result) => error ? reject(error) : resolve(result)));
 await post('HeapProfiler.startSampling', { samplingInterval: 32768 });
-const report = { at: new Date().toISOString(), node: process.versions.node, build: buildIdentity(build), prototype: Boolean(immutable.copyOwned), samples: [] };
+const report = { at: new Date().toISOString(), node: process.versions.node, build: buildIdentity(build), prototype: Boolean(immutable.copyOwned), ownershipAware: Boolean(capture), samples: [] };
 let allocationMode = 'live sampled allocations';
 const save = () => writeFileSync(path.join(output, 'report.json'), JSON.stringify(report, null, 2) + '\n');
 const bytes = value => Buffer.byteLength(JSON.stringify(value));
@@ -84,6 +103,7 @@ function audit() {
   return { kinds, canonicalBytes, answerBytes, answerCount, support, evidenceOccurrences, uniqueEvidence: uniqueEvidence.size,
     itemOccurrences, uniqueItems: uniqueItems.size, evidenceShared, itemShared,
     ledger: ledger ? { entities: ledger.entities().length, investigrams: ledger.investigrams().length, productions: ledger.productions().length,
+      deliveries: ledger.productions().reduce((count, production) => count + production.deliveries.length, 0),
       serializedBytes: bytes([ledger.entities(), ledger.investigrams(), ledger.productions()]) } : null };
 }
 function allocationSummary(profile) {
@@ -205,4 +225,5 @@ else {
 await post('HeapProfiler.stopSampling'); inspector.disconnect();
 globalThis.structuredClone = nativeClone;
 MemoryProgramRecordStore.prototype.put = put;
+if (capture) immutable.ImmutableCapture.prototype.capture = capture;
 save();

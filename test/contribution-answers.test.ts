@@ -18,7 +18,7 @@ async function setup() {
   return { store, ledger, subject, entity, result, invocation, select, claims };
 }
 
-test('answers retain cross-owner use paths, prior displacement, precise conflicts and resolved support without exposure', async () => {
+test('answers retain cross-owner use paths, prior displacement, precise conflicts and resolved support without exposure', async t => {
   const { store, ledger, subject, entity, result, select } = await setup();
   const module = store.get(subject);
   assert.equal(module.kind, 'module'); if (module.kind !== 'module') return;
@@ -34,6 +34,8 @@ test('answers retain cross-owner use paths, prior displacement, precise conflict
     target: { kind: 'result', result: result.id }, qualification: q('DESIGNATION_NARROW_LIMIT'), members: [{ kind: 'association', association: source.use('source', 'use') }] }] }]);
   const deliveries = ledger.productions().map(production => production.deliveries);
   const first = select(), content = resolveContributionAnswer(store, first), view = arrangeContributionAnswer(content, 'Claim');
+  for (const entry of first.support.items) assert.equal(entry.item, ledger.item(entry.address));
+  for (const evidence of first.support.evidence) assert.equal(evidence, store.get(evidence.id));
   const groups = view.alternatives[0]!.qualifications;
   for (const limit of ['SOURCE_LIMIT', 'MEMBER_USE_LIMIT', 'DESIGNATION_OWNER_LIMIT', 'DESIGNATION_NARROW_LIMIT', 'WITHDRAWAL_LIMIT']) assert.ok(groups.flatMap(statements).includes(limit), limit);
   const withdrawal = groups.find(group => group.kind === 'displacement')!;
@@ -56,6 +58,8 @@ test('answers retain cross-owner use paths, prior displacement, precise conflict
     endpoints: [{ kind: 'item', item: source.item('source', 'p') }, { kind: 'item', item: other.item('other', 'p') }], grounds: { text: 'PRECISE_CONFLICT' } }] }]);
   const second = select();
   assert.notEqual(first.id, second.id);
+  assert.equal(second.support.items.find(value => value.item === ledger.item(source.item('source', 'p')))!.item,
+    first.support.items.find(value => value.item === ledger.item(source.item('source', 'p')))!.item);
   const conflictGroups = arrangeContributionAnswer(resolveContributionAnswer(store, second), 'Claim').alternatives[0]!.qualifications.filter(group => statements(group).includes('CONFLICT_LIMIT'));
   assert.equal(conflictGroups.length, 1);
   assert.equal(conflictGroups[0]!.kind, 'inconsistency');
@@ -65,6 +69,12 @@ test('answers retain cross-owner use paths, prior displacement, precise conflict
   // Unrelated acceptance changes no selected support or status and therefore no answer identity.
   submit(ledger, agentic(), [{ key: 'unrelated', qualification: q('UNRELATED'), items: [{ key: 'p', type: 'prose', body: { text: 'Other work.' } }] }]);
   assert.equal(select().id, second.id);
+  store.releaseOwnership();
+  for (const method of ['get', 'lookup', 'capture'] as const) t.mock.method(store, method, () => { throw Error('Presentation consulted the store'); });
+  t.mock.method(ledger, 'standing', () => { throw Error('Presentation consulted current standing'); });
+  t.mock.method(ledger.status, 'association', () => { throw Error('Presentation reconsidered an earlier answer'); });
+  assert.deepEqual(arrangeContributionAnswer(content, 'Claim'), view);
+  assert.deepEqual(arrangeContributionAnswer(structuredClone(content), 'Claim'), view);
 });
 
 test('multiple state models preserve their distinct role and Entity bearers without accompanying prose', async () => {

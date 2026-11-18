@@ -165,7 +165,7 @@ test('retained snapshots reconstruct without session enumeration after correctio
   assert.deepEqual(after.displaced, [id('A'), id('child')]);
   assert.deepEqual(f.historical('A').relations.map(item => item.account), [id('A'), id('child')]);
   assert.deepEqual(associated.associated, [id('A')]); assert.deepEqual(newAssociated.associated, [id('A'), id('B')]);
-  const fixedOnly: ProgramRecordStore = { get: id => store.get(id), lookup: () => { throw new Error('No lookup'); },
+  const fixedOnly: ProgramRecordStore = { capture: () => { throw new Error('No capture'); }, get: id => store.get(id), lookup: () => { throw new Error('No lookup'); },
     put: () => { throw new Error('No publication'); }, investigations: () => { throw new Error('No history enumeration'); },
     answerIds: () => { throw new Error('Forbidden answer binding'); }, boundAnswer: () => { throw new Error('Forbidden answer lookup'); }, boundEntity: () => { throw new Error('No subject lookup'); },
     evaluations: () => { throw new Error('No evaluation enumeration'); }, entityIds: () => { throw new Error('No allocation'); } };

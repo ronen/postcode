@@ -129,6 +129,10 @@ test('all module expansions retain exact symbols, exports, assertions and compos
   const { store, analysis, evaluation } = await discover(path.resolve('fixtures/exports/tsconfig.json'));
   const complete = evaluateModules(store, analysis, ['exports', 'documentation', 'composition']);
   const ledger = sessionLedger(store, evaluation.session), answer = modules(store, complete);
+  const retained = store.get(answer.id);
+  assert.equal(retained.kind, 'projection');
+  for (const evidence of retained.contributions.support.evidence) assert.equal(evidence, store.get(evidence.id));
+  for (const entry of retained.contributions.support.items) assert.equal(entry.item, ledger.item(entry.address));
   const records = nativeFindingRecords(store, answer.expansions.claims);
   for (const type of ['symbol', 'export', 'documentation-association', 'module-composition']) {
     assert.ok(records.some(value => value.kind === 'claim' && value.information.type === type), type);
@@ -139,6 +143,7 @@ test('all module expansions retain exact symbols, exports, assertions and compos
     const item = ledger.item(address);
     if (record.kind === 'claim' && record.information.type === 'module') continue;
     assert.deepEqual(item.body, { record: record.id, finding: record });
+    assert.equal((item.body as { finding: unknown }).finding, record, 'Native content shares the owned provider statement');
     assert.deepEqual(item.evidence, [record.id]);
     assert.ok(answer.contributions.support.items.some(item => itemKey(item.address) === itemKey(address)));
     if (record.kind === 'recorded-assertion') assert.equal(item.qualification!.status, 'recorded-assertion');

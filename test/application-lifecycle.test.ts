@@ -10,8 +10,11 @@ import { withCliOperation } from '../src/lib/application/operation-scope.js';
 import { lenses } from '../src/lib/application/lenses.js';
 import { operations } from '../src/lib/investigation/operations.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
+import { arrangeModuleView } from '../src/lib/presentation.js';
+import { MessageChannel } from 'node:worker_threads';
+import { once } from 'node:events';
 import type { ReferenceBinding } from '../src/lib/reference-binding.js';
-import type { RecordId } from '../src/lib/records.js';
+import type { ProgramRecord, RecordId } from '../src/lib/records.js';
 import { ScriptedInvestigator } from './investigator-double.js';
 
 function fixture(t: TestContext) {
@@ -22,6 +25,49 @@ function fixture(t: TestContext) {
   return { configPath, source };
 }
 const inventory = { kind: 'lens', lens: 'modules', designation: { kind: 'configured-project' } } as const;
+
+test('simultaneous Sessions dispose only their own capture bookkeeping and detached historical output survives close and worker delivery', async t => {
+  const f = fixture(t), stores = new Map<string, MemoryProgramRecordStore>();
+  const put = MemoryProgramRecordStore.prototype.put;
+  t.mock.method(MemoryProgramRecordStore.prototype, 'put', function(this: MemoryProgramRecordStore, records: readonly ProgramRecord[]) {
+    put.call(this, records); for (const record of records) stores.set(record.session, this);
+  });
+  const a = await openApplication(f), b = await openApplication(f);
+  assert.equal(a.status, 'opened'); assert.equal(b.status, 'opened');
+  t.after(() => Promise.all([a.session.close(), b.session.close()]));
+  const first = await a.session.execute(inventory), other = await b.session.execute(inventory);
+  assert.equal(first.kind, 'answer'); assert.equal(other.kind, 'answer');
+  assert.equal(first.answer.content.contract, 'modules');
+  const content = first.answer.content.value, before = structuredClone(first.answer);
+  const ids = new Map(content.discovery.modules.map(id => [id, String(id)]));
+  const view = arrangeModuleView(content, ids, { format: 'json', moreDetails: false }, 'Modules');
+  const firstStore = stores.get(a.session.id)!, secondStore = stores.get(b.session.id)!;
+  const one = firstStore.get(first.answer.id), two = secondStore.get(other.answer.id);
+  assert.equal(firstStore.capture(one), one); assert.equal(secondStore.capture(two), two);
+  await a.session.close();
+  assert.notEqual(firstStore.capture(one), one, 'Close releases the first ownership table');
+  assert.equal(secondStore.capture(two), two, 'The second Session keeps its own ownership proof');
+  await assert.rejects(a.session.execute(inventory), SessionClosed);
+  const repeated = await b.session.execute(inventory); assert.equal(repeated.kind, 'answer');
+  assert.equal(repeated.answer.id, other.answer.id);
+  const foreign = await b.session.execute({ kind: 'present', target: first.answer.id });
+  assert.equal(foreign.kind, 'resolution'); assert.equal(foreign.resolution.reason, 'foreign-answer');
+  await b.session.close();
+  assert.notEqual(secondStore.capture(two), two);
+  for (const store of [firstStore, secondStore]) for (const method of ['get', 'lookup', 'capture'] as const) {
+    t.mock.method(store, method, () => { throw Error('Closed output consulted retained state'); });
+  }
+  assert.deepEqual(first.answer, before);
+  assert.deepEqual(arrangeModuleView(content, ids, { format: 'json', moreDetails: false }, 'Modules'), view);
+  assert.throws(() => Object.assign(content.projection.contributions.support.evidence[0]!, { method: 'changed' }), TypeError);
+  const { port1, port2 } = new MessageChannel(); t.after(() => { port1.close(); port2.close(); });
+  const received = once(port2, 'message'); port1.postMessage(first.answer);
+  const [delivered] = await received;
+  assert.deepEqual(delivered, before);
+  assert.equal(delivered.content.contract, 'modules');
+  assert.notEqual(delivered.content.value.projection, content.projection);
+  assert.deepEqual(arrangeModuleView(delivered.content.value, ids, { format: 'json', moreDetails: false }, 'Modules'), view);
+});
 
 test('direct requests capture caller data and declarations, honor subsets and refuse unsupported exact expansion', async t => {
   const f = fixture(t);

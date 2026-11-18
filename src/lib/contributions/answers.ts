@@ -109,7 +109,7 @@ export function selectContributionAnswer(store: ProgramRecordStore, ledger: Cont
     if (displacedBy.length) support.use(entry.address);
     return displacedBy.length ? [{ designation: entry.address, displacedBy }] : [];
   });
-  const payload: Omit<ContributionAnswer, 'id'> = structuredClone({ kind: 'contribution-projection', method: methods.contributionProjection, session, lens: selection.lens,
+  const payload: Omit<ContributionAnswer, 'id'> = store.capture({ kind: 'contribution-projection', method: methods.contributionProjection, session, lens: selection.lens,
     subject: selection.subject, parameters: selection.parameters, question: { result: result.id, request }, alternatives, history, support: support.finish(), fulfillment: fulfillment?.status ?? null });
   // Only the producing Session's namespace is normalized in the identity, so equal answers are equal independently of it.
   const identity = JSON.parse(JSON.stringify(payload).replaceAll(session, 'session')) as unknown;

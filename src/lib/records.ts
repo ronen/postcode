@@ -220,6 +220,9 @@ export type ProgramRecord = SessionRecord | AnalysisInputsRecord | ModuleRecord 
 
 /** Only the domain operations currently used by discovery and lenses. */
 export interface ProgramRecordStore {
+  /** Own a frozen value graph, sharing only this store's already-owned immutable values.
+   * This captures data without assigning an identity, retaining a record or recording exposure. */
+  capture<T>(value: T): T;
   put(records: readonly ProgramRecord[]): void;
   get(id: RecordId): ProgramRecord;
   lookup(id: RecordId): ProgramRecord | undefined;

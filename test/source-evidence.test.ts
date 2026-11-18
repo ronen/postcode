@@ -31,6 +31,7 @@ test('reused content digests preserve distinct captured evidence and refresh on 
       const store = new MemoryProgramRecordStore();
       const records = new Map<string, ProgramRecord>();
       const result = analysis.discover({
+        capture: value => store.capture(value),
         put: batch => { store.put(batch); for (const record of batch) records.set(record.id, record); },
         answerIds: ids => store.answerIds(ids), boundAnswer: (session, reference) => store.boundAnswer(session, reference),
         boundEntity: (session, reference) => store.boundEntity(session, reference),

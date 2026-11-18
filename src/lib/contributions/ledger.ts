@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { canonical, identityReference, methods, recordId } from '../identity.js';
-import { freezeOwned } from '../immutable.js';
+import { freezeOwned, ImmutableCapture } from '../immutable.js';
 import type { RecordId, SessionId } from '../records.js';
 import { ContentCatalog, list, record, text } from './catalog.js';
 import type { IdentifyingName } from './catalog.js';
@@ -38,6 +38,8 @@ export interface NameMatch {
 }
 export interface LedgerOptions {
   readonly session: SessionId;
+  /** Share the host store's immutable capture boundary. Standalone ledgers own their own. */
+  readonly capture?: <T>(value: T) => T;
   readonly catalog?: ContentCatalog;
   /** Whether a program record reference resolves in this Session. Defaults to accepting none. */
   readonly resolvesRecord?: (id: RecordId) => boolean;
@@ -73,6 +75,9 @@ function sameUse(a: AssociationTarget, b: AssociationTarget): boolean {
  * reconsideration are derived, never written back into retained contributions.
  */
 export class ContributionLedger {
+  readonly #capture: <T>(value: T) => T;
+  /** Snapshot data without deriving standing or recording a delivery. */
+  capture<T>(value: T): T { return this.#capture(value); }
   readonly session: SessionId;
   readonly catalog: ContentCatalog;
   readonly status: ContributionStatus;
@@ -100,6 +105,8 @@ export class ContributionLedger {
   readonly #names = new Map<string, Omit<NameMatch, 'standing'>[]>();
 
   constructor(options: LedgerOptions) {
+    const ownership = options.capture ? undefined : new ImmutableCapture();
+    this.#capture = options.capture ?? (value => ownership!.capture(value));
     this.session = options.session;
     this.catalog = options.catalog ?? new ContentCatalog();
     this.#resolvesRecord = options.resolvesRecord ?? (() => false);
@@ -236,7 +243,7 @@ export class ContributionLedger {
    * that keeps the repeated question's Query result as its organizing target.
    */
   invoke(request: InvocationRequest, options: { readonly fresh?: boolean } = {}): { readonly invocation: Invocation; readonly result: QueryResult; readonly reused: boolean } {
-    const owned = freezeOwned(structuredClone(request));
+    const owned = this.capture(request);
     owned.subjects.forEach(item => this.#subject(item.subject)); owned.context.forEach(item => this.#subject(item));
     if (owned.option) this.metadata({ ...owned.option, metadata: 'option' });
     const key = canonical(owned), earlier = this.#requests.get(key);
@@ -262,7 +269,7 @@ export class ContributionLedger {
     if (init.invocation) this.invocation(init.invocation);
     const id = (init.id ?? recordId(this.session, 'production', [randomUUID()])) as ProductionId;
     if (this.#productions.has(id)) throw new Error('Production identity already concluded');
-    return new ProductionHandle(this, { id, producer: freezeOwned(structuredClone(init.producer)), invocation: init.invocation ?? null });
+    return new ProductionHandle(this, { id, producer: this.capture(init.producer), invocation: init.invocation ?? null });
   }
 
   /** Conclude an attempt that returned no contribution. Its actual deliveries remain attributable; nothing unsubmitted is accepted. */
@@ -275,9 +282,9 @@ export class ContributionLedger {
     if (handle.ledger !== this || handle.closed || this.#productions.has(handle.id)) throw new Error('Production is not open in this ledger');
   }
   #conclude(handle: ProductionHandle, outcome: Production['outcome'], report: ProducerReport | null, investigrams: readonly InvestigramId[]): Production {
-    const production: Production = freezeOwned(structuredClone({ kind: 'production', id: handle.id, session: this.session, producer: handle.producer,
+    const production: Production = this.capture({ kind: 'production', id: handle.id, session: this.session, producer: handle.producer,
       invocation: handle.invocation, opened: handle.opened, concluded: this.#position, outcome, deliveries: handle.deliveries,
-      evidence: handle.evidence, report, investigrams }));
+      evidence: handle.evidence, report, investigrams });
     this.#productions.set(production.id, production);
     return production;
   }
@@ -578,7 +585,7 @@ export class ContributionLedger {
 
     // Prepare everything that could still fail before changing retained state: owned immutable
     // copies, and identifying names resolved against the whole staged pool in any pool order.
-    const retained = built.map(value => freezeOwned(structuredClone(value)));
+    const retained = built.map(value => this.capture(value));
     const stagedItems = new Map(retained.flatMap(investigram => investigram.items.map(item => [itemKey({ investigram: investigram.id, item: item.key }), item] as const)));
     const names: (Omit<NameMatch, 'standing'>)[] = [];
     for (const investigram of retained) for (const declaration of investigram.declarations) {
@@ -587,7 +594,7 @@ export class ContributionLedger {
         if (entry.kind !== 'item') continue;
         const item = stagedItems.get(itemKey(entry.item)) ?? this.item(entry.item);
         for (const name of this.catalog.get(item.type)?.identifying?.(item.body) ?? []) {
-          names.push(freezeOwned(structuredClone({ entity: declaration.target.entity, association: { investigram: investigram.id, declaration: declaration.key }, item: entry.item, name })));
+          names.push(this.capture({ entity: declaration.target.entity, association: { investigram: investigram.id, declaration: declaration.key }, item: entry.item, name }));
         }
       }
     }

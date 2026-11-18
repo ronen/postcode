@@ -3,7 +3,6 @@ import type { ContributionLedger } from './ledger.js';
 import type { AssociationAddress, AssociationDeclaration, ContentItem, Declaration, DeclarationAddress, Delivery, EntityId, FollowUpOption,
   Illustration, InconsistencyReport, InvestigramId, Invocation, InvocationId, ItemAddress, MetadataAddress, Producer, ProductionId, Qualification,
   QueryResultId, SelectionScope } from './model.js';
-import { freezeOwned } from '../immutable.js';
 import { InvalidAcquisition, addressKey } from './model.js';
 import type { AssociationStatus, Cause, Standing } from './status.js';
 
@@ -145,7 +144,7 @@ export class ProductionHandle {
   /** The record is an owned immutable capture of what arrived; later changes to a caller's objects cannot rewrite it. */
   #record(delivery: Delivery): void {
     if (this.#closed) throw new Error('Production has concluded');
-    this.#deliveries.push(freezeOwned(structuredClone(delivery)));
+    this.#deliveries.push(this.#ledger.capture(delivery));
   }
 
   /**

@@ -33,8 +33,10 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
   const controller = new AbortController(), reports = new Map<RecordId, AttemptReport>();
   const usage = new InvestigationUsage();
   const usageReport = () => usageSummary([...reports.values()]);
+  let state: { store: MemoryProgramRecordStore; execute: ReturnType<typeof requestExecutor>;
+    evaluate: ReturnType<typeof investigationEvaluation>['evaluate']; changed: () => Promise<boolean> } | undefined;
   let disposed: Error | undefined, busy = false, invalid = false;
-  const dispose = (reason: Error) => { disposed ??= reason; controller.abort(reason); return owner?.close(reason) ?? Promise.resolve(); };
+  const dispose = (reason: Error) => { disposed ??= reason; state?.store.releaseOwnership(); controller.abort(reason); return owner?.close(reason) ?? Promise.resolve(); };
   const interrupt = () => { void dispose(new CommandInterrupted()).catch(() => {}); };
   lifetime.signal?.addEventListener('abort', interrupt, { once: true });
   if (lifetime.signal?.aborted) interrupt();
@@ -49,8 +51,6 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
   }
   if (opened.status !== 'opened') { lifetime.signal?.removeEventListener('abort', interrupt); await dispose(new SessionClosed()); return opened; }
   const id = opened.session;
-  let state: { store: MemoryProgramRecordStore; execute: ReturnType<typeof requestExecutor>;
-    evaluate: ReturnType<typeof investigationEvaluation>['evaluate']; changed: () => Promise<boolean> } | undefined;
   const check = async () => {
     alive();
     if (!state) throw new SessionClosed();
@@ -62,7 +62,7 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
       }
     }
     alive();
-    if (invalid) { const error = new SessionInvalidated(); controller.abort(error); throw error; }
+    if (invalid) { state.store.releaseOwnership(); const error = new SessionInvalidated(); controller.abort(error); throw error; }
   };
   // Retained domain state is owned by this holder and released on close. Final
   // attempt accounting may arrive during cancellation; progress cannot revive work.
@@ -134,7 +134,7 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
       return operation(() => perform(captured, { ...(requestId !== undefined ? { requestId } : {}), ...(invocation ? { invocation: { fields: invocation.input, problems: invocation.problems } } : {}) }, false));
     },
     interrupt: () => dispose(new CommandInterrupted()),
-    async close() { state = undefined; lifetime.signal?.removeEventListener('abort', interrupt); await dispose(new SessionClosed()); },
+    async close() { const closing = dispose(new SessionClosed()); state = undefined; lifetime.signal?.removeEventListener('abort', interrupt); await closing; },
   };
   registerOperationHost(session, {
     run: client => operation(async () => {
