@@ -4,6 +4,7 @@ import { completedMaterialization } from './evaluation-state.js';
 import type { ContentResult } from './evidence-access.js';
 import type { DependencyResult } from './dependencies/records.js';
 import { identityReference, canonical, methods, recordId } from './identity.js';
+import { contributeNativeFindings } from './contributions/native.js';
 import { contributeModuleFindings } from './contributions/modules.js';
 import type { EvaluationRecord, EvaluationState, ModuleExpansion, ProgramRecordStore, RecordId, SessionId } from './records.js';
 
@@ -67,6 +68,7 @@ export function recordModuleEvaluation(store: ProgramRecordStore, discovery: Dis
   if (owned.kind !== 'evaluation') throw new Error('Expected retained evaluation');
   // Module findings enter the common contribution model once, when first established.
   contributeModuleFindings(store, owned);
+  contributeNativeFindings(store, owned.session, expanded.flatMap(outcome => outcome.claims));
   if (complete || retryBasis !== undefined) {
     let cache = retained.get(store);
     if (!cache) { cache = new Map(); retained.set(store, cache); }

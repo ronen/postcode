@@ -1,3 +1,4 @@
+import { nativeConcerns, nativeConcernLines } from '../contributions/native-presentation.js';
 import { presentationMethods } from '../interfaces/cli/methods.js';
 import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
 import { sourceAttribution } from '../evidence-view.js';
@@ -60,6 +61,7 @@ export function arrangeModuleExports(content: ModuleExportsContent, reference: s
       qualification: presentQualification(content.module.context) },
     exports, completeness: content.complete ? 'complete' as const : 'not-established' as const,
     outsidePopulation: content.projection.outsidePopulation,
+    nativeConcerns: nativeConcerns(content.projection.native),
     // Resolved raw evidence remains internal; presentation carries attributed displacement
     // qualifications and exact support references, not an unclassified source-body export.
     contributions: { ...contributions, naming: contributions.naming.map(use),
@@ -77,7 +79,7 @@ export function renderModuleExports(view: ModuleExportsView): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
   const lines = [inlineText(view.title), `Session ${view.projection.session.replace(/^session:/, '')}`,
     `${inlineText(view.module.name ?? view.module.handle)} (${inlineText(view.module.reference)})`,
-    ...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution),
+    ...nativeConcernLines(view.nativeConcerns), ...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution),
     view.completeness === 'complete' ? `${view.exports.length + view.omittedExports} exports established; ${view.exports.length} shown.`
       : 'Export completeness is not established; an empty listing does not establish no exports.',
     ...(view.outsidePopulation ? ['The subject is outside the supplied evaluation population.'] : []),

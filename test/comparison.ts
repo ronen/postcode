@@ -12,7 +12,7 @@ const references = new Set([
   'groups', 'candidates', 'artifacts', 'containment', 'placements', 'occurrence', 'occurrences',
   'relationships', 'members', 'internalRelationships', 'coverage', 'nonEdgeRequests',
   // Common contribution identities and the investigram part of content, association and declaration addresses.
-  'entity', 'investigram', 'production',
+  'entity', 'investigram', 'production', 'record', 'referents',
   'population', 'prerequisites', 'outsidePopulation', 'subjects', 'opaqueSubjects', 'projectModules', 'source', 'commonAncestors', 'entries', 'values', 'targetEvidence', 'moduleClaims', 'moduleEvaluations',
 ]);
 
@@ -57,6 +57,8 @@ export function normalizeSession<T>(value: T, declaredSession?: string): T {
         // Captured input values are opaque evidence, including arbitrary field names.
         (object.kind === 'analysis-inputs' && key === 'value') || ['capture', 'layout', 'artifact', 'link', 'links', 'location', 'dependencyResolution'].includes(key) ? child
           : object.kind === 'module-exports-projection' && ['exports', 'documentation'].includes(key) ? visit(child, '$references')
+          : field === 'module-exports-body' && key === 'exports' ? visit(child, '$references')
+          : object.type === 'module-exports' && key === 'body' ? visit(child, 'module-exports-body')
           : field === 'designation' && object.kind === 'reference' && key === 'value' && typeof child === 'string' ? reference(child)
           : object.kind === 'rendered-output' && key === 'value' && typeof child === 'string' ? normalizeRendered(child, session) : visit(child, key)]));
     }

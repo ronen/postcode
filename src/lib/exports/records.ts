@@ -1,7 +1,9 @@
+import { nativeSelectionIdentity } from '../contributions/native-selection.js';
+import type { NativeSelection } from '../contributions/native-selection.js';
 import { identityReference } from '../identity.js';
 import type { AnswerSupport } from '../contributions/answer-support.js';
-import type { Cause, Standing } from '../contributions/status.js';
-import type { AssociationAddress, DeclarationAddress, EntityId, InvestigramId, ItemAddress } from '../contributions/model.js';
+import { answerSupportIdentity } from '../contributions/support-identity.js';
+import type { AssociationAddress, DeclarationAddress, EntityId, ItemAddress } from '../contributions/model.js';
 import type { RecordContext, RecordId } from '../records.js';
 
 /** A captured use of a finding: its exact association, standing at selection, and the grounds of any displacement. */
@@ -39,6 +41,7 @@ export interface ModuleExportsProjection extends RecordContext {
   readonly contexts: readonly RecordId[];
   readonly outsidePopulation: boolean;
   readonly contributions: ExportsContributions;
+  readonly native: NativeSelection;
 }
 export function exportsIdentity(answer: Omit<ModuleExportsProjection, 'id'>) {
   const ref = (id: RecordId) => identityReference(answer.session, id);
@@ -46,26 +49,10 @@ export function exportsIdentity(answer: Omit<ModuleExportsProjection, 'id'>) {
     item: { ...item.item, investigram: ref(item.item.investigram) },
     displacements: item.displacements.map(change => ({ ...change, change: { ...change.change, investigram: ref(change.change.investigram) } })) });
   const { entity, naming, surface, support } = answer.contributions;
-  const address = <T extends { readonly investigram: InvestigramId }>(value: T) => ({ ...value, investigram: ref(value.investigram) });
-  const standing = (value: Standing | null) => value && ({ ...value, displacedBy: value.displacedBy.map(address) });
-  const cause = (value: Cause) => ({ ...value, change: address(value.change), standing: standing(value.standing), routes: value.routes.map(route =>
-    route.kind === 'inherited' ? { ...route, from: ref(route.from) } : { ...route, association: address(route.association),
-      ...(route.kind === 'scope' ? { scope: { ...route.scope, ...(route.scope.kind === 'entity' ? { entity: ref(route.scope.entity) } : { result: ref(route.scope.result) }) } } : {}) }) });
-  // Exact immutable references identify source content and provenance. Only captured derived
-  // status needs a value key; normalize its reference positions without rewriting ordinary text.
-  const supportKey = {
-    owners: support.owners.map(owner => ({ investigram: ref(owner.investigram), producing: owner.producing.map(cause) })),
-    items: support.items.map(item => ({ address: address(item.address), identifyingNames: item.identifyingNames, inconsistencies: item.inconsistencies.map(address) })),
-    uses: support.uses.map(use => ({ address: address(use.address), status: { ...use.status, address: address(use.status.address),
-      standing: standing(use.status.standing), membership: use.status.membership.map(cause), producing: use.status.producing.map(cause),
-      content: use.status.content.map(value => ({ investigram: ref(value.investigram), producing: value.producing.map(cause) })), inconsistencies: use.status.inconsistencies.map(address) } })),
-    changes: support.changes.map(change => ({ address: address(change.address), standing: standing(change.standing) })),
-    metadata: support.metadata.map(value => address(value.address)),
-    bearers: support.bearers.map(value => ({ entity: ref(value.entity), identifications: value.identifications.map(address) })),
-    evidence: support.evidence.map(record => ref(record.id)),
-  };
+  const supportKey = answerSupportIdentity(answer.session, support);
   return { ...answer, session: ref(answer.session), subject: ref(answer.subject), evaluation: ref(answer.evaluation),
     evaluations: answer.evaluations.map(ref), exports: answer.exports.map(ref), documentation: answer.documentation.map(ref), contexts: answer.contexts.map(ref),
+    native: nativeSelectionIdentity(answer.session, answer.native),
     contributions: { support: supportKey, entity: ref(entity), naming: naming.map(use),
       surface: surface ? { item: { ...surface.item, investigram: ref(surface.item.investigram) }, uses: surface.uses.map(use) } : null } };
 }

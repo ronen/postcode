@@ -1,8 +1,8 @@
 /** Client artifact methods never participate in application input or Session capture. */
 export const presentationMethods = {
-  presentation: 'postcode/presentation@38',
+  presentation: 'postcode/presentation@39',
   investigationPresentation: 'postcode/investigation-presentation@23',
-  exportsPresentation: 'postcode/module-exports-presentation@8',
+  exportsPresentation: 'postcode/module-exports-presentation@9',
 } as const;
 
 /** Record only the Presentations responsible for the delivered artifact. */

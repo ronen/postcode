@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-11-09
+Last reviewed: 2026-11-18
 
 PostCode is currently available as a development CLI for investigating one
 configured TypeScript project.
@@ -27,6 +27,9 @@ This page summarizes current capabilities and significant limits. The [capabilit
 - **[Dependency investigation](docs/cli-reference.md#dependency-investigation).**
   Dependency structure, cycles, direct dependencies and dependents are available,
   with unresolved requests and analysis limits distinguished.
+- **Qualified retained findings.** Mechanical module, dependency and organization
+  answers preserve exact contribution support. Fresh answers disclose changed uses
+  and their qualified grounds; presenting an earlier answer keeps its captured state.
 - **[Supporting evidence](docs/cli-reference.md#source-detail-and-observations).**
   Inspections can expose qualified detail, names and captured implementation
   locations without source excerpts. Inadequacy feedback is available in the shell

@@ -25,8 +25,10 @@ The [common analysis contribution mechanism](contributions.md) is implemented un
 `src/lib/contributions/` and verified with controlled producers. It retains Session
 identities, immutable investigrams, exact association declarations, Query-result
 designations and recorded producer input, and derives standing and reconsideration
-from them. Module discovery and export evaluation now contribute their findings to the Session's
-ledger, and the internal exports answer selects its naming and export finding from it.
+from them. Module/symbol identification, expansions, dependencies and repository organization
+now contribute their findings to the Session ledger. Mechanical answers capture their
+selected findings with organizing status and exact qualified support. Fresh selections
+show later changes while exact retained answers preserve their earlier snapshots.
 The application interface also exposes `state-behavior` and `follow-up` Lenses over
 this ledger, with contribution evaluation, investigating-agent dialogs and retained
 answers. The hosted transport supports that dialog protocol; callers currently
@@ -34,8 +36,8 @@ construct the agent because no application or CLI configuration path selects it.
 See the [application route](contributions.md#application-route) and
 [hosted transport](contributions.md#hosted-transport) for those boundaries.
 
-The public CLI and earlier `summarize`, `explain`, `decompose` and `examine`
-operations remain on the earlier dialog and retention structures under the
+The earlier `summarize`, `explain`, `decompose` and `examine` operations
+and their associated-content callers remain on the earlier dialog and retention structures under the
 [temporary migration contract](../decisions/common-analysis-contributions.md#adoption-and-migration-conformance).
 The [structured-accounts plan](../plans/structured-architectural-accounts.md) migrates
 those remaining capabilities in later milestones. The interpretation description

@@ -1,3 +1,4 @@
+import { contributeModuleFindings } from '../src/lib/contributions/modules.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { digest, identityReference, recordId, sessionId } from '../src/lib/identity.js';
@@ -58,6 +59,7 @@ function fixture(session: SessionId = sessionId(), overrides: Readonly<Record<st
     { ...base, id: id('capture'), kind: 'captured-content', subject: module, inputs, mapping: source,
       path: '/fixture/entry.ts', contentDigest: digest(text), text, coverage: 'full-file', limitations: ['Captured only.'] },
   ]);
+  contributeModuleFindings(store, evaluation);
   function publish(specs: readonly AccountSpec[], correctionSpecs: readonly CorrectionSpec[] = [], options: {
     citations?: readonly RecordId[]; complete?: readonly RecordId[]; subject?: RecordId; supplied?: readonly RecordId[]; summarized?: readonly RecordId[];
   } = {}): InvestigationSelection {

@@ -1,3 +1,5 @@
+import { contributeModuleFindings } from '../src/lib/contributions/modules.js';
+import { contributeNativeFindings } from '../src/lib/contributions/native.js';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { test } from 'node:test';
@@ -44,6 +46,12 @@ test('unordered selections canonicalize whole payloads without changing populati
       store.put([{ ...source, id, claim: claimId }, { ...naming, id: claimId, subject: id, context: contextId },
         { ...context, id: contextId, scope: id }]);
     }
+    // Controlled providers must use the same contribution boundary as the real provider.
+    if (kind === 'module') {
+      const produced = { ...evaluation, id: recordId(evaluation.session, 'evaluation', 'outsider-modules'), modules: ids };
+      store.put([produced]); contributeModuleFindings(store, produced);
+    }
+    else contributeNativeFindings(store, evaluation.session, ids);
     store.entityIds([ids[1]!], kind);
     const bindings = store.entityIds(ids, kind);
     assert.ok(bindings.get(ids[1]!)! < bindings.get(ids[0]!)!);

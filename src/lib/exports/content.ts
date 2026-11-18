@@ -1,3 +1,4 @@
+import { selectNativeContributions } from '../contributions/native-selection.js';
 import { completedMaterialization } from '../evaluation-state.js';
 import { freezeOwned } from '../immutable.js';
 import { methods, recordId } from '../identity.js';
@@ -33,7 +34,8 @@ export function moduleExports(store: ProgramRecordStore, basis: EvaluationRecord
   const payload: Omit<ModuleExportsProjection, 'id'> = { kind: 'module-exports-projection', method: methods.exportsProjection, session: basis.session,
     lens, subject, parameters: {}, evaluation: basis.id, evaluations: outcomes.map(item => item.id), exports: exports.map(item => item.id),
     documentation: documentation.map(item => item.id), contexts: [...new Set([naming.context, ...basis.contexts, ...outcomes.flatMap(item => item.contexts)])],
-    outsidePopulation: !basis.modules.includes(subject), contributions };
+    outsidePopulation: !basis.modules.includes(subject), contributions,
+    native: selectNativeContributions(store, basis.session, [naming.id, ...exports.map(item => item.id), ...documentation.map(item => item.id)], outcomes.filter(item => item.requirement === 'exports')) };
   const projection = { ...payload, id: recordId(basis.session, payload.kind, exportsIdentity(payload)) };
   store.put([projection]);
   return store.get(projection.id) as ModuleExportsProjection;

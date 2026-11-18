@@ -1,3 +1,5 @@
+import { nativeConcerns, nativeConcernLines } from '../contributions/native-presentation.js';
+import type { NativeConcerns } from '../contributions/native-presentation.js';
 import { presentationMethods } from '../interfaces/cli/methods.js';
 import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
 import { sourceAttribution, detailRecord } from '../evidence-view.js';
@@ -42,6 +44,7 @@ type Row = { readonly component: number; readonly depth: number; readonly refere
 export interface QualifiedDependencyView extends AnswerDisplay {
   readonly schema: 'postcode-dependency-view/1-experimental'; readonly id: RecordId;
   readonly resolution?: ResolutionContext;
+  readonly contributionConcerns: NativeConcerns;
   readonly projection: Pick<DependencyProjectionContent['projection'], 'id' | 'session' | 'lens' | 'subject' | 'subjectRole' | 'coverageScope' | 'parameters' | 'selection'>;
   readonly presentation: PresentedOptions & { readonly expansions: readonly string[] };
   readonly evaluations: { readonly modules: Outcome; readonly dependencies: Outcome; readonly organization: Outcome | null };
@@ -198,6 +201,7 @@ export function arrangeDependencyView(content: DependencyProjectionContent, ids:
     ...answerDisplay(context), schema: 'postcode-dependency-view/1-experimental',
     id: recordId(projection.session, 'dependency-view', { method: presentationMethods.presentation, projection: identityReference(projection.session, projection.id), presentation, ...answerIdentity(context), resolution: resolutionContextIdentity(projection.session, resolution) }),
     ...(resolution ? { resolution } : {}),
+    contributionConcerns: nativeConcerns(projection.contributions),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       subjectRole: projection.subjectRole, coverageScope: projection.coverageScope, parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: [...new Set(content.moduleEvaluations.flatMap(outcome => outcome.requirement !== 'modules' ? [outcome.requirement] : [])), ...(expanded ? ['repository-layout'] : [])] },
@@ -234,7 +238,7 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
     'Analysis outcomes below describe supported source requests, not complete runtime behavior.',
     `Display bounds: ${counted(view.display.omittedModules, 'module')} and ${counted(view.display.omittedRelationships, 'relationship')} omitted; ${counted(view.display.prunedComponents, 'further descent')} pruned.`];
   for (const [name, outcome] of Object.entries(view.evaluations)) if (outcome) lines.push(`${name}: ${outcome.availability}, ${outcome.execution}, materialization ${outcome.materialization}${outcome.reason ? ` · ${inlineText(outcome.reason)}` : ''}`);
-  lines.push(...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
+  lines.push(...nativeConcernLines(view.contributionConcerns), ...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
   if (view.projection.subject === 'selected-modules') {
     if (view.projection.selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; dependency detail is unavailable in this answer.');
     lines.push(`${view.projection.selection.matches} ${lookupDescription(view.resolution, view.projection.selection.matches) ?? 'selected modules'}`);

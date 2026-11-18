@@ -1,3 +1,4 @@
+import { selectNativeContributions } from '../contributions/native-selection.js';
 import { mechanicalAnswerIdentity } from '../answer-identity.js';
 import { completedMaterialization } from '../evaluation-state.js';
 import { compare, methods, recordId } from '../identity.js';
@@ -82,6 +83,8 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
   const payload: Omit<DependencyProjectionRecord, 'id'> = {
     kind: 'dependency-projection', method, session: evaluation.session,
     lens, subject: resolved === null ? 'configured-project' : 'selected-modules', subjectRole, coverageScope, parameters: {},
+    contributions: selectNativeContributions(store, evaluation.session, [...included, ...relationships.map(edge => edge.id), ...occurrences, ...nonEdgeRequests, ...coverage, ...moduleExpansionClaims,
+      ...(organization ? (store.get(organization) as import('./records.js').DependencyOrganizationEvaluation).claims : [])], outcomes),
     evaluation: evaluation.id, subjects, modules: [...included].sort(compare), relationships: relationships.map(edge => edge.id),
     occurrences, nonEdgeRequests, coverage, contexts: [...contexts],
     opaqueSubjects: subjects.filter(id => !projectModules.has(id)),

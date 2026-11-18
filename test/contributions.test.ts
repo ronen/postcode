@@ -68,6 +68,7 @@ test('invalid submissions are rejected atomically with no partial accepted contr
     [/must contribute content, declarations or qualified metadata/, [{ key: 'a', qualification: caveat }]],
     [/Unexpected investigram field/, [{ ...valid, children: [] }]],
     [/already established/, [{ ...valid, qualification: derived, providerKey: 'discovery project-1 breaker.ts' }], mechanical()],
+    [/already established/, [{ ...valid, providerKey: 'same-new-finding' }, { ...valid, key: 'b', providerKey: 'same-new-finding' }]],
   ];
   for (const [message, investigrams, producer] of cases) rejects(ledger, producer ?? agentic(), investigrams, message);
   // A later valid item in the same pool does not rescue, and is not retained from, a rejected pool.

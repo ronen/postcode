@@ -1,3 +1,5 @@
+import { nativeConcerns, nativeConcernLines } from './contributions/native-presentation.js';
+import type { NativeConcerns } from './contributions/native-presentation.js';
 import { presentationMethods } from './interfaces/cli/methods.js';
 import { diagnosticLines, withDiagnosticMeanings } from './diagnostic-view.js';
 import { sourceAttribution } from './evidence-view.js';
@@ -49,6 +51,7 @@ export interface QualifiedView extends AnswerDisplay {
   readonly schema: 'postcode-view/1-experimental';
   readonly id: RecordId;
   readonly resolution?: ResolutionContext;
+  readonly contributionConcerns: NativeConcerns;
   readonly title: string;
   readonly projection: Pick<ModuleProjectionContent['projection'], 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
   readonly presentation: PresentedOptions & { readonly expansions: readonly ModuleExpansion[] };
@@ -144,6 +147,7 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
     ...answerDisplay(context), schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: presentationMethods.presentation, ...answerIdentity(context) }),
     title,
     ...(resolution ? { resolution } : {}),
+    contributionConcerns: nativeConcerns(projection.contributions),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: projection.expansions.requested },
@@ -189,7 +193,7 @@ export function renderUnicode(view: QualifiedView, placement: 'standalone' | 'em
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`
       : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population}${lookupDescription(view.resolution, selection.matches) ? ` · ${lookupDescription(view.resolution, selection.matches)}` : ''}`];
   if (placement === 'standalone') lines.push(...answerLines(view), ...continuationLines(view));
-  lines.push(...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
+  lines.push(...nativeConcernLines(view.contributionConcerns), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
   if (selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!selection.populationEstablished) lines.push('Module population is not established.');
   const outcomeGroups = new Map<string, number>();

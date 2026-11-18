@@ -1,3 +1,4 @@
+import type { NativeSelection } from './contributions/native-selection.js';
 import type { Investigram, Correction, InvestigationProvenance } from './investigation/contracts.js';
 import type { InvestigationEvaluationRecord } from './investigation/evaluation.js';
 import type { InvestigationSelectionProjection } from './investigation/selection-record.js';
@@ -194,6 +195,7 @@ export interface EvaluationRecord extends RecordContext, EvaluationState {
 }
 
 export interface ProjectionRecord extends RecordContext {
+  readonly contributions: NativeSelection;
   readonly kind: 'projection';
   readonly lens: 'modules' | 'inspect';
   readonly subject: 'configured-project' | 'selected-modules';

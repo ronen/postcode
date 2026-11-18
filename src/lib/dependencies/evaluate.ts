@@ -1,3 +1,4 @@
+import { contributeNativeFindings } from '../contributions/native.js';
 import { workState } from '../work-attribution.js';
 import type { WorkScope } from '../work-attribution.js';
 import { recordModuleEvaluation } from '../evaluation.js';
@@ -35,6 +36,7 @@ export function evaluateDependencies(store: ProgramRecordStore, analysis: Module
   store.put([outcome]);
   const owned = store.get(outcome.id);
   if (owned.kind !== 'dependency-evaluation') throw new Error('Expected retained dependency-evaluation');
+  contributeNativeFindings(store, owned.session, [...owned.relationships, ...owned.occurrences, ...owned.coverage]);
   // This path derives and validates an outcome on every call, even when insertion
   // returns an equal retained object. Provider reuse is reported independently.
   work?.record('dependency-evaluation', 'established', { records: [owned.id], state: workState(owned) }, firstRetention ? [owned.id] : []);

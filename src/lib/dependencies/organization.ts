@@ -1,3 +1,4 @@
+import { contributeNativeFindings } from '../contributions/native.js';
 import { workState } from '../work-attribution.js';
 import type { WorkScope } from '../work-attribution.js';
 import { directedGraph } from '../directed-graph.js';
@@ -170,6 +171,7 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
   store.put([...records, ...expanded, result]);
   const owned = store.get(result.id);
   if (owned.kind !== 'dependency-organization-evaluation') throw new Error('Expected retained dependency-organization-evaluation');
+  contributeNativeFindings(store, owned.session, owned.claims, [...dependency.relationships, ...dependency.occurrences, ...organization.claims]);
   work?.record('dependency-organization-evaluation', 'established', { records: [owned.id], state: workState(owned) });
   return owned;
 }

@@ -1,3 +1,4 @@
+import { contributeNativeFindings } from '../src/lib/contributions/native.js';
 import { invokeCli } from './cli-helpers.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -291,6 +292,7 @@ test('candidate ambiguity retains partial status and reachable candidate groups 
     const next = { ...outcome, id: nextId, claims: [...claims.filter(claim => claim.id !== original.id && claim.information.type !== 'group-properties').map(claim => claim.id),
       ambiguous.id, ...properties.map(claim => claim.id)], placement: { ...outcome.placement, materialization: 'partial' as const, reason: 'Candidate membership not established.' } };
     store.put([ambiguous, ...properties, next]);
+    contributeNativeFindings(store, next.session, next.claims, evaluation.modules);
     const projection = inspectOrganization(store, next, store.entityIds(evaluation.modules, 'module').get(ambiguous.subject)!, true);
     assert.ok(ambiguous.information.candidates.every(id => projection.expansions.groups.includes(id)));
     const view = createOrganizationView(store, projection, { format: 'unicode', moreDetails: false }, 'Inspect');

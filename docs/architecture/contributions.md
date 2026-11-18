@@ -1,6 +1,6 @@
 # Common analysis contributions
 
-This describes the implemented common contribution mechanism under `src/lib/contributions/`. It realizes the first two milestones of the [structured architectural accounts plan](../plans/structured-architectural-accounts.md) and is governed by [common analysis contributions](../decisions/common-analysis-contributions.md), [association organization and exposure](../decisions/association-organization-and-exposure.md), [qualified answers over contributions](../decisions/qualified-answers-over-contributions.md) and [structured architectural explanation](../decisions/structured-architectural-explanation.md).
+This describes the implemented common contribution mechanism under `src/lib/contributions/`. It implements the mechanism, early vertical slice and mechanical-family migration in the [structured architectural accounts plan](../plans/structured-architectural-accounts.md) and is governed by [common analysis contributions](../decisions/common-analysis-contributions.md), [association organization and exposure](../decisions/association-organization-and-exposure.md), [qualified answers over contributions](../decisions/qualified-answers-over-contributions.md) and [structured architectural explanation](../decisions/structured-architectural-explanation.md).
 
 ## Current integration status
 
@@ -10,7 +10,64 @@ Export evaluation is the second real producer. Each module's export finding is c
 
 The internal exports answer is the first consumer. It selects the discovery method's own identifying finding and the export method's own finding from the ledger, and captures each use's standing and qualified displacement context in the retained answer. Fixed support retains each displacing declaration, its producer and owner/declaration qualifications, grounds evidence and supporting content. Export presentation labels these organizing judgments separately from the mechanical finding's qualification; raw evidence bodies stay in internal support, while optional source detail exposes declaration locations. Captured producing-context concerns are shown under the displacing production, with exact cause references, routes, grounds and qualifications in the structured View. The warning does not reverse the displacement, reinstate an earlier use or qualify the mechanical finding as erroneous. Earlier exact answers keep their captured concerns. This is read-only assembly and records no producer exposure. A finding stays selected after a use of it is displaced; a fresh answer then shows the displacement with its grounds, and an earlier answer keeps what it captured. The answer fails if a finding it needs was never contributed, so a producer that bypasses the ledger is detected.
 
-An agentic dialog over the ledger is reachable through the application interface for two Lenses, described under [Application route](#application-route). The hosted transports can carry its protocol, as described under [Hosted transport](#hosted-transport), and the M2 live trials exercised that path against a real model. No application or CLI configuration path selects the hosted agent; a caller constructs it. The existing `summarize`, `explain`, `decompose` and `examine` operations still run on the earlier dialog and retention structures, and no public CLI command reads the ledger.
+An agentic dialog over the ledger is reachable through the application interface for two Lenses, described under [Application route](#application-route). The hosted transports can carry its protocol, as described under [Hosted transport](#hosted-transport), and the M2 live trials exercised that path against a real model. No application or CLI configuration path selects the hosted agent; a caller constructs it. The existing `summarize`, `explain`, `decompose` and `examine` operations still run on the earlier dialog and retention structures, while mechanical CLI answers now capture and disclose contribution status. The separate agentic/caller cut-over remains incomplete.
+
+## Mechanical families and retained inputs
+
+Module expansions, dependencies, repository organization and dependency-organization
+expansions retain their provider statements through the common acceptance boundary.
+Symbol and group identification resolve the provider's scoped native identity before
+allocating a common Entity. Group roots retain explicit anonymity; symbols retain
+language names and roles. Export routes, documentation associations and recorded
+assertions, composition, dependency occurrences and recognition coverage, containment,
+placement and group properties keep their existing provider records and qualifications.
+An addressable relationship or assertion does not become an Entity. Findings whose
+subject is a non-Entity record remain addressable through their owning contribution;
+no filler identification or invented Entity is needed to retain them.
+
+The native wrapper checks each statement against its retained provider record. It
+attributes the finding to its own Claim-context method, including an existing composite
+method where the provider carries inherited qualification. Recorded documentation
+retains assertion status. A separately attributed deterministic policy associates
+Entity-subject findings with their explicit subjects. Provider keys prevent equivalent
+recomputation from adding another use or renewing a withdrawn one. Native record IDs
+remain implementation references, mapped to common identities under the provider's
+rule and scope; names never act as identity keys.
+
+Organization providers can emit new record IDs when a requested module requirement
+set changes without changing the finding. Their contribution keys therefore compare
+the statement, its qualification and relevant fixed population, excluding incidental
+evaluation identity. Dependency-organization keys also normalize their supporting
+placement claims. The original exact provider record remains in the established item;
+equivalent later records resolve to that same item.
+
+Compiler-derived findings are obtained independently from source. Repository layout
+uses captured repository evidence. Placement and group properties consume a fixed
+retained module population; dependency organization consumes retained relationship,
+occurrence and organization findings. Those derivations record exact item deliveries
+without claiming an evolving inventory or delivery through an organizing association.
+Mapping identities and constructing answers record no delivery. Internal computation
+within a provider pass does not manufacture an extra invocation or acquired input.
+
+Module, organization, dependency and internal export answers capture their selected
+native items, uses and full qualified support. Selection follows the family's existing
+population and expansion rules, including partial and unavailable results. Method-specific
+findings stay selected after a use is displaced. Fresh answers capture changed standing,
+exact causes and inconsistency reports; exact answers retain the old snapshot.
+Presentation discloses concerns with attributable grounds and qualifications, preserving
+precise references in structured output without exporting raw source bodies.
+
+Snapshot identity uses exact immutable item/declaration owners and captured derived
+status. Resolved evidence remains in the payload but is not independently re-keyed:
+its input capture can include operational output exclusions that do not change the
+provider's findings. Collection selection uses deterministic provider ordering, and
+native-use lookup indexes each selected Entity once rather than rescanning all its
+associations for every selected item.
+
+The historical-name index now includes native symbol and group identifications as well
+as modules. General application subject resolution, earlier agentic evidence delivery,
+associated inspection, and hosted native-content reference translation remain part of
+the separate caller cut-over; these are not claims of complete M3 conformance.
 
 ## State-dependent behavior and its diagram
 
@@ -30,11 +87,11 @@ Tool requests are either program-evidence queries, answered by the existing evid
 
 Malformed tool shapes are refused before acquisition; internal defects still propagate. An acquisition is recorded only if its response is actually dispatched to the agent. Dispatch advances the delivery checkpoint before waiting for the response, so a timeout cannot erase context already received. A response withheld by the response bound, a refused request, and anything acquired after the last dispatched exchange are discarded from the recorded history. Before each exchange the dialog delivers an exact notice for each change that would otherwise be a cause, and records it with that exchange.
 
-The dialog distinguishes an accepted contribution with its attempt fulfillment and any reported inability, an unrepaired invalid submission, a limit stop, a dialog that ended without submitting, and communication or configuration failure. Each concludes the production, so nothing can be submitted late. Interruption, invalidation and defects propagate, with final attributed usage reporting from the dialog’s terminal cleanup. These exits accept no late contribution. Existing mechanical retention, investigram trees, whole-investigram corrections and citation-based reconsideration are unchanged and remain subject to the [temporary migration contract](../decisions/common-analysis-contributions.md#adoption-and-migration-conformance). The state-behavior investigation, diagram arrangement and follow-up-option invocation are available through the application route below. Remaining producer and caller migration is M3/M4 work.
+The dialog distinguishes an accepted contribution with its attempt fulfillment and any reported inability, an unrepaired invalid submission, a limit stop, a dialog that ended without submitting, and communication or configuration failure. Each concludes the production, so nothing can be submitted late. Interruption, invalidation and defects propagate, with final attributed usage reporting from the dialog’s terminal cleanup. These exits accept no late contribution. The earlier agentic investigram trees, whole-investigram corrections and citation-based reconsideration are unchanged and remain subject to the [temporary migration contract](../decisions/common-analysis-contributions.md#adoption-and-migration-conformance). The state-behavior investigation, diagram arrangement and follow-up-option invocation are available through the application route below. Remaining producer and caller migration is M3/M4 work.
 
 ## Responsibilities
 
-A Session-owned **contribution ledger** retains Entities, invocations with their Query results, immutable investigrams and the record of each producing execution. It is a separate component from the program record store. Content items can reference program records such as source evidence and provider Claim contexts; the ledger does not copy or reinterpret them.
+A Session-owned **contribution ledger** retains Entities, invocations with their Query results, immutable investigrams and the record of each producing execution. It is a separate component from the program record store. Content items can reference program records such as source evidence and provider Claim contexts; the ledger preserves their meaning and qualification. Native-finding items carry the exact immutable provider statement as their body, validated against its retained record, while source evidence and Claim context remain separately referenced.
 
 Four responsibilities are kept apart:
 
@@ -63,7 +120,7 @@ A submission is a flat pool of investigrams, each belonging to one production; s
 
 A qualification can name provider Claim-context records. These are the qualified claim's own Claim context as its producing method retains it, not a citation of someone else's. Provider Claim contexts qualify mechanically derived findings, so an agentic qualification cannot name one. Reuse does not need it: referenced content keeps its owner's qualification, a supplied context record can be cited as evidence, and neither transfers a guarantee to the claim that uses it.
 
-Content items have a type from a content catalogue. The type's contract validates shape, resolves any references in the body and reports locally addressable components and content dependencies. Prose and identification types are built in. A Session's catalogue adds the module identification, module exports and state-model types. A content subject's optional `component` names a locally addressable selector declared by that type's contract, not an arbitrary body field or an Entity. Retained items list valid selectors in `components`; for new submission-local items, production guidance supplies the contract's selector rules. State models declare `state:<key>` and `transition:<key>`, not `unsupported`. Production instructions and the hosted schema share the general explanation and direct agents to omit `component` when no supported selector is available. Domain validation still rejects undeclared selectors and uses the normal bounded repair path.
+Content items have a type from a content catalogue. The type's contract validates shape, resolves any references in the body and reports locally addressable components and content dependencies. Prose and identification types are built in. A Session's catalogue adds the module identification, module exports, native findings and state-model types. A content subject's optional `component` names a locally addressable selector declared by that type's contract, not an arbitrary body field or an Entity. Retained items list valid selectors in `components`; for new submission-local items, production guidance supplies the contract's selector rules. State models declare `state:<key>` and `transition:<key>`, not `unsupported`. Production instructions and the hosted schema share the general explanation and direct agents to omit `component` when no supported selector is available. Domain validation still rejects undeclared selectors and uses the normal bounded repair path.
 
 Declarations are addressed through their owning investigram. An addition or supersession establishes an association at its own address, targeting either an Entity with an identification or topical role, or a Query result. A supersession or withdrawal names exact earlier associations and carries qualified grounds. A supersession's displaced uses must concern the same Entity and role class, or the same Query result; topic keys may differ, and validation does not judge whether two topics mean the same thing. Members are exact content items, and for result designations also other associations, with circular membership rejected. Declarations may reference another owner's content; ownership and qualification stay with the source.
 

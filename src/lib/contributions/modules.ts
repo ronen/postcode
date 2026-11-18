@@ -4,6 +4,7 @@ import { ContentCatalog, identificationContract, proseContract, record, text } f
 import type { ContentTypeContract, IdentifyingName } from './catalog.js';
 import { ContributionLedger } from './ledger.js';
 import { InvalidContribution } from './model.js';
+import { nativeFindingContract } from './native-contract.js';
 import { stateModelContract } from './state-model.js';
 import type { EntityId, NativeIdentity, SubmittedInvestigram } from './model.js';
 
@@ -38,7 +39,7 @@ export function sessionLedger(store: ProgramRecordStore, session: SessionId): Co
   if (!bySession) { bySession = new Map(); ledgers.set(store, bySession); }
   let ledger = bySession.get(session);
   if (!ledger) {
-    ledger = new ContributionLedger({ session, catalog: new ContentCatalog([proseContract, identificationContract, moduleIdentificationContract, moduleExportsContract, stateModelContract]),
+    ledger = new ContributionLedger({ session, catalog: new ContentCatalog([proseContract, identificationContract, moduleIdentificationContract, moduleExportsContract, nativeFindingContract(store, session), stateModelContract]),
       resolvesRecord: id => store.lookup(id)?.session === session,
       qualifiesContext: (id, producer) => { const context = store.lookup(id); return context?.kind === 'claim-context' && context.session === session && context.method === producer.method; } });
     bySession.set(session, ledger);

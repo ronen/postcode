@@ -56,7 +56,7 @@ test('equivalent recomputation reuses the established findings and never renews 
   const ledger = sessionLedger(store, evaluation.session);
   const module = evaluation.modules[0]!, entity = moduleEntity(store, module)!, use = ledger.identifications(entity)[0]!.address;
   const discoveryMethod = (store.get(module) as ModuleRecord).method;
-  const identifying = () => ledger.entities().flatMap(item => ledger.identifications(item.id, { standing: 'all' })).length;
+  const identifying = () => ledger.entities().filter(item => item.entityKind === 'module').flatMap(item => ledger.identifications(item.id, { standing: 'all' })).length;
   const before = [ledger.position, ledger.entities().length, identifying()];
   // An interpreted identification is added and the mechanical one withdrawn.
   const handle = ledger.begin({ producer: agent });
@@ -70,11 +70,12 @@ test('equivalent recomputation reuses the established findings and never renews 
   const exports = evaluateModules(store, analysis, ['exports', 'documentation']);
   evaluateModules(store, analysis, ['composition']);
   assert.notEqual(exports.id, evaluation.id);
-  // The export evaluation contributes its own new findings, once; no Entity or identification is added by any of them.
+  // Expansion contributes new findings and symbol identities once; module identification is unchanged.
   const exported = ledger.position;
-  assert.equal(exported, after[0]! + 1);
+  assert.ok(exported > after[0]!, 'New export, symbol, documentation and composition findings were retained');
+  const entitiesAfterExpansions = ledger.entities().length;
   evaluateModules(store, analysis, ['exports', 'documentation']); evaluateModules(store, analysis, ['exports']);
-  assert.deepEqual([ledger.position, ledger.entities().length, identifying()], [exported, after[1], after[2]]);
+  assert.deepEqual([ledger.position, ledger.entities().length, identifying()], [exported, entitiesAfterExpansions, after[2]]);
   assert.deepEqual(after, [before[0]! + 1, before[1], before[2]! + 1]);
   // The exact Entity and the method's own finding remain, with the withdrawal available as standing.
   assert.equal(moduleEntity(store, module), entity);
@@ -158,15 +159,18 @@ test('an exports answer is assembled from the methods\' retained findings withou
   // Mechanical semantic content survives the wrapper: the export claims and their qualification are the provider's own records.
   for (const exported of content.exports) assert.equal(exported.claim.record.subject, barrel);
   // The export producer analysed source independently and the assembly only read retained information: nothing was delivered to anyone.
-  assert.equal(ledger.productions().length, productions + 2);
+  assert.ok(ledger.productions().length > productions, 'Provider expansion creates its source findings');
   assert.deepEqual(ledger.productions().flatMap(production => production.deliveries), []);
+  const afterProduction = ledger.productions().length;
   const again = answer();
   assert.equal(again.id, projection.id);
-  assert.equal(ledger.productions().length, productions + 2);
+  assert.equal(ledger.productions().length, afterProduction);
 });
 
 test('a withdrawn use of a method\'s finding is captured by a fresh answer, shown with it, and never renewed or applied to the earlier answer', async () => {
   const { store, analysis, ledger, entity, answer } = await exportsSession();
+  // Establish the complete expansion population before testing equivalent recomputation.
+  evaluateModules(store, analysis, ['exports', 'documentation', 'composition']);
   const before = answer(), use = before.contributions.naming[0]!.association, exportsUse = before.contributions.surface!.uses[0]!.association;
   // An agentic producer consumes the retained export finding, then withdraws both mechanical uses.
   const handle = ledger.begin({ producer: agent });

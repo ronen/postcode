@@ -1,3 +1,4 @@
+import { selectNativeContributions } from './contributions/native-selection.js';
 import { mechanicalAnswerIdentity } from './answer-identity.js';
 import { selectResolvedModules } from './module-selection.js';
 import { methods, recordId } from './identity.js';
@@ -40,6 +41,7 @@ function project(store: ProgramRecordStore, evaluation: EvaluationRecord, subjec
   const payload: Omit<ProjectionRecord, 'id'> = {
     kind: 'projection', method, session: evaluation.session,
     lens, subject: subjects === null ? 'configured-project' : 'selected-modules',
+    contributions: selectNativeContributions(store, evaluation.session, [...claims.map(claim => claim.id), ...expansionClaims], relevantExpansions),
     parameters: {}, modules, claims: claims.map(claim => claim.id),
     contexts: [...new Set([...evaluation.contexts, ...claims.map(claim => claim.context)])],
     evaluations: [evaluation.id, ...relevantExpansions.map(outcome => outcome.id)],

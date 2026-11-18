@@ -317,6 +317,12 @@ export class ContributionLedger {
       }
     }
 
+    // Index the immutable submission pool once; native-family batches can contain
+    // many findings from the same production and must not rescan its evidence per item.
+    const stagedById = new Map([...pool.values()].map(staged => [staged.id, staged]));
+    const suppliedByHandle = new Map([...handles].map(handle => [handle, new Set(handle.evidence)]));
+    const providerKeys = new Set<string>();
+
     // Resolve known identities before allocating new Session identities.
     const localEntities = new Map<string, EntityId>(), created = new Map<EntityId, Entity>(), natives = new Map<string, EntityId>();
     for (const staged of pool.values()) for (const entry of optional(staged.raw.entities, 'entity')) {
@@ -366,7 +372,7 @@ export class ContributionLedger {
       return { investigram: owner.id, declaration };
     };
     const itemType = (address: ItemAddress): string => this.#items.get(itemKey(address))?.type
-      ?? String([...pool.values()].find(staged => staged.id === address.investigram)!.items.get(address.item)!.type);
+      ?? String(stagedById.get(address.investigram)!.items.get(address.item)!.type);
     const distinct = <T>(values: readonly T[], key: (value: T) => string, what: string): T[] => {
       if (new Set(values.map(key)).size !== values.length) fail(`Duplicate ${what}.`);
       return [...values];
@@ -391,7 +397,7 @@ export class ContributionLedger {
     const built: Investigram[] = [], stagedDeclarations = new Map<string, Declaration>(), stagedComponents = new Map<string, readonly string[]>();
     const componentChecks: { item: ItemAddress; component: string }[] = [], designationChecks: AssociationAddress[] = [];
     for (const staged of pool.values()) {
-      const { handle, raw } = staged, producer = handle.producer, supplied = new Set(handle.evidence);
+      const { handle, raw } = staged, producer = handle.producer, supplied = suppliedByHandle.get(handle)!;
       const evidence = (value: unknown): RecordId[] => optional(value, 'evidence').map(entry => {
         const id = text(entry, 'evidence reference') as RecordId;
         // Evidence must identify program material actually supplied to this production; a bare reference is not delivery.
@@ -514,7 +520,10 @@ export class ContributionLedger {
       });
       if (!items.length && !declarations.length && !options.length && !illustrations.length && !inconsistencies.length) fail('An investigram must contribute content, declarations or qualified metadata.');
       const providerKey = raw.providerKey === undefined || raw.providerKey === null ? null : text(raw.providerKey, 'provider key');
-      if (providerKey !== null && (this.#providerKeys.has(providerKey) || built.some(item => item.providerKey === providerKey))) fail('This provider contribution is already established; equivalent recomputation reuses it.');
+      if (providerKey !== null) {
+        if (this.#providerKeys.has(providerKey) || providerKeys.has(providerKey)) fail('This provider contribution is already established; equivalent recomputation reuses it.');
+        providerKeys.add(providerKey);
+      }
       for (const declaration of declarations) stagedDeclarations.set(addressKey({ investigram: staged.id, declaration: declaration.key }), declaration);
       for (const option of options) for (const entry of [...option.request.subjects.map(item => item.subject), ...option.request.context]) {
         if (entry.kind === 'content' && entry.component !== null) componentChecks.push({ item: entry.item, component: entry.component });
