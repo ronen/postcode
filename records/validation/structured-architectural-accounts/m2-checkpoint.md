@@ -199,3 +199,8 @@ Both new findings are accepted and corrected:
 Verification: TypeScript compilation into a separate verification build passed under Node 22.13.1. The measurement regression executed from that separate build and passed **1/1**, no skips, including its report-directory protection and unchanged-journey assertions. Both child runs reported the separate build, so this check did not merely pass against the checkout's default build. The documentation was checked against application Lens registrations, Session contribution evaluation and the detailed architecture account; local links and `git diff --check` passed. The full suite was not rerun for this test/documentation-only correction. No production source, measurement script, instruction/schema or method version changed, and no live inference ran; cumulative M2 requests remain 110.
 
 The corrections are available for independent review under the existing handoff. M2 remains unaccepted and M3 has not begun.
+
+
+## Human checkpoint acceptance — 2026-11-18
+
+The human accepted M2 and authorized M3 in task follow-up `6732185`, after corrections through `bb8e340`. The [M2 disposition](../../reviews/structured-architectural-accounts/2026-11-18-m2-vertical-disposition.md) closes this review assignment, links all preserved rounds and carries forward the remaining limitations and migration obligations. Earlier “unaccepted” statements above retain their historical meaning. The task remains active; later M3 and final review gates still apply.
