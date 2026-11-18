@@ -192,8 +192,9 @@ export function renderUnicode(view: QualifiedView, placement: 'standalone' | 'em
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`
       : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population}${lookupDescription(view.resolution, selection.matches) ? ` · ${lookupDescription(view.resolution, selection.matches)}` : ''}`];
-  if (placement === 'standalone') lines.push(...answerLines(view), ...continuationLines(view));
-  lines.push(...nativeConcernLines(view.contributionConcerns), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
+  // The enclosing organization view renders the common concerns for embedded detail.
+  if (placement === 'standalone') lines.push(...answerLines(view), ...continuationLines(view), ...nativeConcernLines(view.contributionConcerns));
+  lines.push(...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
   if (selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!selection.populationEstablished) lines.push('Module population is not established.');
   const outcomeGroups = new Map<string, number>();

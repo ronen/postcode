@@ -1,26 +1,129 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { cpSync, mkdtempSync, rmSync } from 'node:fs';
+import { appendFileSync, cpSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { test } from 'node:test';
+import type { TestContext } from 'node:test';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { evaluateDependencyOrganization } from '../src/lib/dependencies/organization.js';
-import { dependencyStructure } from '../src/lib/dependencies/projections.js';
+import { dependencyChildren, dependencyParents, dependencyStructure } from '../src/lib/dependencies/projections.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
-import { organization } from '../src/lib/organization/projections.js';
+import { inspectOrganization, organization } from '../src/lib/organization/projections.js';
+import { createOrganizationView, renderOrganizationView } from '../src/lib/organization/presentation.js';
 import { modules } from '../src/lib/projections.js';
-import { nativeEntity, nativeFindingRecords, nativeItem } from '../src/lib/contributions/native.js';
+import { contributeNativeFindings, nativeEntity, nativeFindingRecords, nativeItem } from '../src/lib/contributions/native.js';
 import { nativeConcerns, nativeConcernLines } from '../src/lib/contributions/native-presentation.js';
 import { sessionLedger } from '../src/lib/contributions/modules.js';
 import { addressKey, InvalidContribution, itemKey } from '../src/lib/contributions/model.js';
 import type { AssociationAddress } from '../src/lib/contributions/model.js';
-import type { EvaluationRecord } from '../src/lib/records.js';
+import type { EvaluationRecord, RecordId } from '../src/lib/records.js';
 import { discover } from './helpers.js';
 
 const agent = { mechanism: 'agentic' as const, method: 'test/native-review@1', agent: { model: 'controlled' } };
 const qualification = { limitations: ['Controlled organizing judgment; no change to provider guarantees.'] };
+
+async function dependencyFixture(t: TestContext) {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'postcode-native-dependencies-'));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  cpSync(path.resolve('fixtures/dependency-journey'), root, { recursive: true });
+  writeFileSync(path.join(root, 'README.md'), 'Recorded repository documentation.\n');
+  appendFileSync(path.join(root, 'src/entry.ts'), "\nimport './missing.js';\n");
+  execFileSync('git', ['init', '--quiet', root]);
+  const found = await discover(path.join(root, 'tsconfig.json'));
+  const dependency = evaluateDependencies(found.store, found.analysis);
+  const basis = found.store.get(dependency.moduleEvaluation) as EvaluationRecord;
+  const layout = evaluateOrganization(found.store, basis);
+  return { ...found, dependency, layout };
+}
+
+test('dependency children and parents exclude concerns about unrelated organization classifications', async t => {
+  const { store, dependency, layout } = await dependencyFixture(t);
+  const expansion = evaluateDependencyOrganization(store, dependency, layout), ledger = sessionLedger(store, dependency.session);
+  const module = dependency.relationships.map(id => store.get(id)).find(record => record.kind === 'claim'
+    && record.information.type === 'dependency')!;
+  assert.ok(module.kind === 'claim' && module.information.type === 'dependency');
+  const parentSubject = module.information.child;
+  const answers = [dependencyChildren(store, dependency, [module.subject], expansion.id), dependencyParents(store, dependency, [parentSubject], expansion.id)];
+  assert.ok(answers.every(answer => answer.relationships.length > 0));
+  const selectedEdges = new Set(answers.flatMap(answer => answer.relationships));
+  const unrelated = expansion.claims.filter(id => { const claim = store.get(id); return claim.kind === 'claim' && !selectedEdges.has(claim.subject); });
+  assert.ok(unrelated.length >= 2, 'Fixture has classifications outside both selections');
+  const production = ledger.begin({ producer: agent });
+  ledger.accept([{ production, contribution: { investigrams: [{ key: 'report', qualification,
+    inconsistencies: [{ key: 'unrelated', endpoints: unrelated.slice(0, 2).map(id => ({ kind: 'item', item: nativeItem(store, id)! })),
+      grounds: { text: 'Unrelated classifications disagree.' } }] }] } }]);
+  const fresh = [dependencyChildren(store, dependency, [module.subject], expansion.id), dependencyParents(store, dependency, [parentSubject], expansion.id)];
+  for (const [index, answer] of fresh.entries()) {
+    assert.equal(answer.id, answers[index]!.id);
+    assert.doesNotMatch(nativeConcernLines(nativeConcerns(answer.contributions)).join('\n'), /Unrelated classifications/);
+    const classifications = answer.contributions.findings.flatMap(finding => {
+      const record = finding.record && store.get(finding.record);
+      return record && record.kind === 'claim' && record.information.type === 'dependency-organization' ? [record.subject] : [];
+    });
+    assert.deepEqual(new Set(classifications), new Set(answer.relationships));
+  }
+  const whole = dependencyStructure(store, dependency, expansion.id);
+  assert.match(nativeConcernLines(nativeConcerns(whole.contributions)).join('\n'), /Unrelated classifications/);
+});
+
+test('dependency organization delivers only the exact retained findings it reads', async t => {
+  const { store, dependency, layout } = await dependencyFixture(t);
+  const expansion = evaluateDependencyOrganization(store, dependency, layout), ledger = sessionLedger(store, dependency.session);
+  const output = nativeItem(store, expansion.claims[0]!)!;
+  const production = ledger.production(ledger.investigram(output.investigram).production);
+  const delivered = new Set(production.deliveries.flatMap(value => value.kind === 'item' ? [itemKey(value.item)] : []));
+  const expected = new Set<string>();
+  const input = (id: RecordId) => { const key = itemKey(nativeItem(store, id)!); expected.add(key); assert.ok(delivered.has(key)); };
+  dependency.relationships.forEach(input);
+  for (const type of ['group', 'group-containment', 'artifact-placement', 'module-placement']) {
+    const claims = layout.claims.filter(id => { const claim = store.get(id); return claim.kind === 'claim' && claim.information.type === type; });
+    assert.ok(claims.length, type);
+    claims.forEach(input);
+  }
+  for (const type of ['group-properties', 'group-documentation']) {
+    const claims = layout.claims.filter(id => { const claim = store.get(id); return claim.kind === 'claim' && claim.information.type === type; });
+    assert.ok(claims.length, type);
+    for (const id of claims) assert.ok(!delivered.has(itemKey(nativeItem(store, id)!)), type);
+  }
+  let nonEdges = 0;
+  for (const id of dependency.occurrences) {
+    const occurrence = store.get(id);
+    assert.ok(occurrence.kind === 'dependency-occurrence');
+    if (occurrence.targetStatus !== 'resolved') nonEdges++;
+    else input(id);
+    assert.equal(delivered.has(itemKey(nativeItem(store, id)!)), occurrence.targetStatus === 'resolved');
+  }
+  assert.ok(nonEdges, 'Unresolved request is present but not delivered');
+  assert.deepEqual(delivered, expected, 'References within a supplied record do not deliver extra findings');
+});
+
+test('a deriving producer refuses an input whose common finding was never contributed', async () => {
+  const { store, analysis, evaluation } = await discover(path.resolve('fixtures/exports/tsconfig.json'));
+  const raw = analysis.discover(store, ['exports', 'documentation']);
+  const findings = nativeFindingRecords(store, raw.expansions!.flatMap(value => value.claims));
+  const assertion = findings.find(value => value.kind === 'recorded-assertion')!;
+  const symbol = findings.find(value => value.kind === 'claim' && value.information.type === 'symbol')!;
+  assert.ok(assertion && symbol);
+  const ledger = sessionLedger(store, evaluation.session), before = [ledger.position, ledger.productions().length, ledger.investigrams().length];
+  assert.throws(() => contributeNativeFindings(store, evaluation.session, [assertion.id], [evaluation.modules[0]!, symbol.id]), /Expected contributed native input/);
+  assert.deepEqual([ledger.position, ledger.productions().length, ledger.investigrams().length], before);
+});
+
+test('organization inspection renders module concerns once and retains both structured captures', async t => {
+  const { store, dependency, layout } = await dependencyFixture(t);
+  const basis = store.get(dependency.moduleEvaluation) as EvaluationRecord, subject = basis.modules[0]!;
+  const ledger = sessionLedger(store, dependency.session), use = ledger.identifications(nativeEntity(store, subject)!)[0]!.address;
+  const production = ledger.begin({ producer: agent });
+  ledger.accept([{ production, contribution: { investigrams: [{ key: 'withdraw', qualification,
+    declarations: [{ key: 'use', operation: 'withdraw', displaces: [use], grounds: { text: 'Controlled module identification withdrawal.' } }] }] } }]);
+  const projection = inspectOrganization(store, layout, [subject]);
+  const view = createOrganizationView(store, projection, { format: 'unicode', moreDetails: false }, 'Inspection');
+  assert.ok(view.contributionConcerns.changes.length);
+  assert.ok(view.moduleDetail!.contributionConcerns.changes.length);
+  assert.equal(renderOrganizationView(view).split('Controlled module identification withdrawal.').length - 1, 1);
+});
 
 test('all module expansions retain exact symbols, exports, assertions and composition through contributions', async () => {
   const { store, analysis, evaluation } = await discover(path.resolve('fixtures/exports/tsconfig.json'));

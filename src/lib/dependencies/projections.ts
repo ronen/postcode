@@ -74,17 +74,24 @@ function project(store: ProgramRecordStore, evaluation: DependencyEvaluationReco
     const record = store.get(id);
     if (record.kind === 'claim' || record.kind === 'dependency-occurrence' || record.kind === 'dependency-coverage') contexts.add(record.context);
   }
+  const organizationClaims: RecordId[] = [];
   if (organization !== null) {
     const expansion = store.get(organization);
     if (expansion.kind !== 'dependency-organization-evaluation' || expansion.dependencyEvaluation !== evaluation.id) throw new Error('Expected matching dependency organization expansion');
     expansion.contexts.forEach(id => contexts.add(id));
+    const selectedEdges = new Set(relationships.map(edge => edge.id));
+    for (const id of expansion.claims) {
+      const claim = store.get(id);
+      if (claim.kind !== 'claim' || claim.information.type !== 'dependency-organization') throw new Error('Expected dependency organization claim');
+      if (selectedEdges.has(claim.subject)) organizationClaims.push(id);
+    }
   }
   const method = methods.dependencyProjection;
   const payload: Omit<DependencyProjectionRecord, 'id'> = {
     kind: 'dependency-projection', method, session: evaluation.session,
     lens, subject: resolved === null ? 'configured-project' : 'selected-modules', subjectRole, coverageScope, parameters: {},
     contributions: selectNativeContributions(store, evaluation.session, [...included, ...relationships.map(edge => edge.id), ...occurrences, ...nonEdgeRequests, ...coverage, ...moduleExpansionClaims,
-      ...(organization ? (store.get(organization) as import('./records.js').DependencyOrganizationEvaluation).claims : [])], outcomes),
+      ...organizationClaims], outcomes),
     evaluation: evaluation.id, subjects, modules: [...included].sort(compare), relationships: relationships.map(edge => edge.id),
     occurrences, nonEdgeRequests, coverage, contexts: [...contexts],
     opaqueSubjects: subjects.filter(id => !projectModules.has(id)),

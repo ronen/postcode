@@ -123,9 +123,10 @@ export function contributeNativeFindings(store: ProgramRecordStore, session: Ses
     if (result.kind !== 'claim-context') throw new Error('Expected native Claim context');
     return result;
   };
-  const inputItems = [...new Map(nativeFindingRecords(store, inputs).flatMap(value => {
-    const item = nativeItem(store, value.id);
-    return item ? [[JSON.stringify(item), item] as const] : [];
+  const inputItems = [...new Map(inputs.map(id => {
+    const item = nativeItem(store, id);
+    if (!item) throw new Error(`Expected contributed native input: ${id}`);
+    return [JSON.stringify(item), item] as const;
   })).values()];
   const productions = new Map<string, { production: ProductionHandle; investigrams: SubmittedInvestigram[] }>();
   const batch = (method: string) => {

@@ -43,16 +43,23 @@ equivalent later records resolve to that same item.
 
 Compiler-derived findings are obtained independently from source. Repository layout
 uses captured repository evidence. Placement and group properties consume a fixed
-retained module population; dependency organization consumes retained relationship,
-occurrence and organization findings. Those derivations record exact item deliveries
+retained module population; dependency organization consumes retained relationships,
+occurrences attached to relationships, and the placement, containment, group and artifact-placement
+findings it reads. It does not receive group properties, documentation or non-edge requests
+merely because they are retained in the supplied evaluations. Those derivations record exact item deliveries
 without claiming an evolving inventory or delivery through an organizing association.
 Mapping identities and constructing answers record no delivery. Internal computation
 within a provider pass does not manufacture an extra invocation or acquired input.
+Every declared retained input must already resolve to a contributed item; missing input
+contributions fail before opening a producing execution. Mapping an input to its exact
+item does not recursively deliver other findings named in its provider record.
 
 Module, organization, dependency and internal export answers capture their selected
 native items, uses and full qualified support. Selection follows the family's existing
-population and expansion rules, including partial and unavailable results. Method-specific
-findings stay selected after a use is displaced. Fresh answers capture changed standing,
+population and expansion rules, including partial and unavailable results.
+Dependency-organization selections contain only classifications of the answer's own
+relationships. Unrelated classifications and their concerns do not enter the snapshot.
+Method-specific findings stay selected after a use is displaced. Fresh answers capture changed standing,
 exact causes and inconsistency reports; exact answers retain the old snapshot.
 Presentation discloses concerns with attributable grounds and qualifications, preserving
 precise references in structured output without exporting raw source bodies.

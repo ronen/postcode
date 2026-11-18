@@ -197,6 +197,15 @@ test('a withdrawn use of a method\'s finding is captured by a fresh answer, show
   assert.match(render(after), /^barrel \(module-test\)$/m);
   assert.match(render(after), /use of this module identification as information about the module was withdrawn by later analysis: The file name does not describe the responsibility\. The finding itself/);
   assert.match(render(after), /use of this export listing .* was withdrawn by later analysis: The listing omits the dynamic registrations\./);
+  assert.equal(render(after).split('The file name does not describe the responsibility.').length - 1, 1);
+  assert.equal(render(after).split('The listing omits the dynamic registrations.').length - 1, 1);
+  const structured = arrangeModuleExports(resolveModuleExports(store, after), 'module-test', unicode, 'Exports');
+  assert.equal(structured.nativeConcerns.changes.length, 2, 'Structured native displacement detail remains complete');
+  const nativeUse = after.native.findings.find(finding => finding.record && finding.uses.length
+    && store.get(finding.record).kind === 'claim' && (store.get(finding.record) as { information: { type: string } }).information.type === 'export')!.uses[0]!;
+  ledger.accept([{ production: ledger.begin({ producer: agent }), contribution: { investigrams: [{ key: 'native', qualification: caveat,
+    declarations: [{ key: 'withdraw', operation: 'withdraw', displaces: [nativeUse], grounds: { text: 'Independent individual-export use withdrawn.' } }] }] } }]);
+  assert.equal(render(answer()).split('Independent individual-export use withdrawn.').length - 1, 1);
   assert.doesNotMatch(render(before), /later analysis/);
 });
 

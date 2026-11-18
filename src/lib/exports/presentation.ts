@@ -77,9 +77,20 @@ export function arrangeModuleExports(content: ModuleExportsContent, reference: s
 export type ModuleExportsView = ReturnType<typeof arrangeModuleExports>;
 export function renderModuleExports(view: ModuleExportsView): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
+  // These exact uses and displacement details have the more specific rendering below.
+  // Keep all native support in the structured View, including independent concerns.
+  const specificUses = [...view.contributions.naming, ...view.contributions.surface?.uses ?? []];
+  const displacements = specificUses.flatMap(use => use.displacements);
+  const renderedUses = new Set(specificUses.map(use => addressKey(use.association)));
+  const renderedChanges = new Set(displacements.flatMap(change => [addressKey(change.change), ...change.producing.map(cause => addressKey(cause.change))]));
+  const renderedOwners = new Set(displacements.map(change => change.change.investigram));
+  const remainingConcerns = { ...view.nativeConcerns,
+    uses: view.nativeConcerns.uses.filter(use => !renderedUses.has(addressKey(use.address))),
+    changes: view.nativeConcerns.changes.filter(change => !renderedChanges.has(addressKey(change.address))),
+    owners: view.nativeConcerns.owners.filter(owner => !renderedOwners.has(owner.investigram)) };
   const lines = [inlineText(view.title), `Session ${view.projection.session.replace(/^session:/, '')}`,
     `${inlineText(view.module.name ?? view.module.handle)} (${inlineText(view.module.reference)})`,
-    ...nativeConcernLines(view.nativeConcerns), ...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution),
+    ...nativeConcernLines(remainingConcerns), ...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution),
     view.completeness === 'complete' ? `${view.exports.length + view.omittedExports} exports established; ${view.exports.length} shown.`
       : 'Export completeness is not established; an empty listing does not establish no exports.',
     ...(view.outsidePopulation ? ['The subject is outside the supplied evaluation population.'] : []),
