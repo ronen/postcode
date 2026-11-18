@@ -56,3 +56,26 @@ Measurement found repeated per-investigram evidence-set construction and linear 
 ## Review gate
 
 The approved plan requires separate remaining-mechanical and agentic/caller checkpoints. Submit this result for human-arranged independent mechanical review before continuing the remaining migration. No legacy failure is being waived, no family is moved to another plan, and this checkpoint does not satisfy M4's integrated review or authorize task closure.
+
+## Round 1 corrections — 2026-11-18
+
+The [round 1 findings](../../reviews/structured-architectural-accounts/2026-11-18-m3-mechanical-round-1-findings.md), preserved in `473602e`, reviewed the original target above. All four actionable findings are accepted. Correction target: `8e06c5c74ba6679dd7e030dbb28162503b6235aa`. The original handoff remains the assignment for focused rereview.
+
+| Finding | Correction and regression evidence |
+| --- | --- |
+| F1: Unrelated dependency-organization selection | Children/parents capture only classifications whose subjects are selected relationships. A real fixture supplies nonempty children and parents selections; a controlled inconsistency between two unrelated classifications leaves both answer IDs and human concerns unchanged, while the whole-project answer still discloses it. |
+| F2: Overstated derived input exposure | The provider records the exact relationships, their resolved occurrences, and the placement, containment, group and artifact-placement findings it reads. Group properties, group documentation and non-edge requests are excluded. Input mapping no longer recursively delivers other findings referenced by those records. The test compares the complete delivered-item set against the expected inputs, with documentation, properties and an unresolved request present as negative controls. This implements the reviewer's narrower-input correction under the existing actual-exposure contract; it does not adopt a broader meaning of supplied input. |
+| F3: Missing input contribution silently dropped | Every declared native input must resolve to an established common item. A missing item throws before any production opens or accepts content. A mixed known/missing-input test checks unchanged ledger position, production count and retained investigrams. The synthetic partial/ambiguous dependency-placement fixture now contributes its constructed inputs through the normal boundary before invoking the deriving provider. |
+| F4: Duplicate warning display | Exports retain the specific naming/export-listing disclosure and omit those exact uses, changes and already-disclosed producing concerns from the additional generic text. Independent native concerns remain visible. Embedded module detail leaves native warning text to the enclosing organization view. Both structured captures remain complete. Tests require each withdrawal's grounds once, retain structured details, and confirm an independent individual-export withdrawal is still shown. |
+
+Responsible dependency-organization, dependency-Projection and Presentation method versions advance. Descriptive architecture documents the narrowed selection, exact input mapping and fail-closed boundary. No governing material, task scope or agentic/caller checkpoint was changed.
+
+Verification by the implementing agent:
+
+- Before correction, the new regression assertions reproduced five failing tests covering F1–F3 and both F4 presentation paths.
+- `npm run check`, `npm run build` and `git diff --check` passed.
+- Targeted contribution/native/dependency/organization/presentation checks: **49/49 passed**. An earlier targeted run exposed the synthetic input fixture addressed under F3; its original semantic assertions remain intact.
+- Complete offline suite on Node 22.13.1, concurrency 2: **773/773 passed**, no failures or skips. The checkout was held unchanged throughout. Local callback and native credential-lock tests ran outside the sandbox.
+- No live inference was used. The large-repository measurement was not repeated for these corrections; its earlier exact target and representation-cost limitations remain explicit. No performance improvement beyond the verified narrowing of selected findings is claimed.
+
+The review's non-defect snapshot-size observation remains a limitation; these corrections do not redesign immutable answer support. Other non-defect observations do not require a scope change. Focused independent rereview of F1–F4 remains pending, followed by the human's mechanical-gate judgment. The task is active; agentic/caller migration and final integrated review remain outstanding.
