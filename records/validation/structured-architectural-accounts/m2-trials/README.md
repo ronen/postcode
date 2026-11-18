@@ -111,3 +111,8 @@ The [report-only verification record](report-only-verification.md) reports a nar
 ## Follow-up contract evidence: scope clarification after round 10
 
 The [contract-evidence reconciliation](follow-up-contract-evidence.md) confirms that original run 6, trial 2 did invoke an option promising `postcode/state-diagram-answer@1`; its accepted answer was projected as fulfilled. That historical result used dialog `@3` / wire `@2` and an elicitation supplying operation names and subject signatures. Later focused option chains promised no contract, while the latest report-only check invoked no option. Thus “no non-null follow-up demonstrated live” applies to the later focused/current-revision evidence, not to all M2 trials. The clarification preserves the revision and elicitation limits and adds current application-level offline coverage for forwarding, fulfilled/unfulfilled outcomes, and unknown-contract refusal. No new inference was run.
+
+
+## Current promised-contract verification after round 10
+
+The [promised-contract live record](promised-contract-verification.md) supplies the previously missing current-revision sample on `4267a05`: natural-language elicitation produced an `examine-content` option explicitly promising the state-diagram contract. Exact option identity, meaning and contract reached the subsequent investigator; its contribution was accepted and the contract fulfilled. Both steps succeeded without repair using 7 of a new 20-request cap (110 cumulative M2 dispatches). The objective was met and no retry was made. The generated account’s accuracy was not independently verified; negative contract enforcement remains covered offline. M2 remains unaccepted.

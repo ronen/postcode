@@ -80,3 +80,8 @@ The retrospective capture audit is retained in ignored `_verification/m2-contrac
 | `exchanges.jsonl` | 1,184,246 | `ef13fa4953ba555016b8e3d4129683b54934eec080101b77195152d668098332` |
 | `attempts.jsonl` | 56,845 | `f4147eb598a7d3bb05772f9c66b8a5bec86660c783eec08695af512b0e594097` |
 | `usage.json` | 75,856 | `d1483da78eb4cad416921617a04ae06f25fac14383b483ee91b417ec493c304f` |
+
+
+## Subsequent authorized live evidence — 2026-11-18
+
+After this reconciliation, the human authorized a focused current-revision trial. The [promised-contract verification](promised-contract-verification.md) now supplies the live sample identified as missing above: an explicitly promised non-null contract, exact-option question identity, current production guidance, accepted contribution and fulfilled contract. It used 7 requests without repair or retry. The preceding gap statement records the evidence available when the reconciliation was written; this later evidence does not change the original run’s revision/elicitation limits or the preserved reviews. Live nonconforming-contract behavior and broad reliability/accuracy remain unverified.
