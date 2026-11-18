@@ -241,6 +241,7 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
       return { tool: 'contribution', kind: tool.kind, value };
     });
     work?.acquiredContributions(handle.deliveries.slice(start.deliveries), response.tool === 'unavailable' ? response.limitations : [], response.tool !== 'unavailable');
+    if (response.tool === 'unavailable') work?.withheld(response.limitations.join(' '));
     if (work) deliveryWork.push(work);
     return response;
   };

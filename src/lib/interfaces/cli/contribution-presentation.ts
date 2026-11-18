@@ -116,8 +116,16 @@ export type ContributionView = ReturnType<typeof arrangeContributionView>['view'
 export function renderContributionView(view: ContributionView): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
   const lines = [view.mechanical ? renderMechanicalView(view.mechanical, true) : inlineText(view.title), ...answerLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution), ...view.notices.map(inlineText)];
-  if (view.reporting?.unavailable) lines.push(inlineText(view.reporting.unavailable.diagnostic));
-  if (view.reporting?.contribution?.outcome.kind && view.reporting.contribution.outcome.kind !== 'accepted') lines.push(`Attempt: ${inlineText(view.reporting.contribution.outcome.kind)}`);
+  if (view.reporting) {
+    lines.push(view.reporting.reused ? 'Retained outcome; no new investigation.' : 'New investigation request.');
+    const outcome = view.reporting.contribution?.outcome ?? view.reporting.unavailable;
+    if (outcome) {
+      const detail = 'reason' in outcome ? outcome.reason : 'diagnostic' in outcome ? outcome.diagnostic : null;
+      lines.push(`Attempt: ${inlineText(outcome.kind)}${'code' in outcome ? ` (${inlineText(outcome.code)})` : ''}${detail ? `: ${inlineText(detail)}` : ''}`);
+      if ('problems' in outcome) lines.push(...outcome.problems.map(problem => `Submission problem: ${inlineText(problem)}`));
+    }
+    lines.push(...ownerReport(view.reporting.contribution?.report ?? null).map(statement => `Attempt report: ${inlineText(statement)}`));
+  }
   if (view.summary) {
     if (view.summary.noCurrentAnswer) lines.push(view.summary.noCurrentAnswer.explanation);
     lines.push(...view.summary.notices.map(inlineText));

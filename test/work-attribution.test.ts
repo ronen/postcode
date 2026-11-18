@@ -218,6 +218,37 @@ test('continuations consume an established page without claiming another acquisi
   assert.equal(stopped.attribution.completeness, 'complete');
 });
 
+test('over-bound common content is withheld while a subsequent bounded excerpt is actually delivered', async t => {
+  let item!: import('../src/lib/contributions/model.js').ItemAddress;
+  const agent = new ScriptedContributionAgent([
+    input => input.request.operation === 'functionality'
+      ? { kind: 'submit', contribution: proseContribution(input, 'x'.repeat(70_000)) }
+      : { kind: 'tools', requests: [{ kind: 'item', item }] },
+    input => {
+      assert.equal(input.responses[0]!.tool, 'unavailable');
+      return { kind: 'tools', requests: [{ kind: 'item', item, excerptCharacters: 200 }] };
+    },
+    input => {
+      assert.equal(input.responses[0]!.tool, 'contribution');
+      return { kind: 'submit', contribution: proseContribution(input, 'An excerpt was available.') };
+    },
+  ]);
+  const opened = await openSession({ configPath: fixture(t).configPath }, { investigation: { agent } });
+  assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
+  const first = view(await opened.session.execute(summary)); item = first.rows[0]!.address;
+  const follow = await opened.session.execute({ ...summary, lens: 'explain', selector: item.investigram, reference: true });
+  const common = follow.attribution.evidence.filter(entry => entry.query.kind === 'contribution');
+  assert.equal(common.length, 3, 'initial whole subject, explicit full item, then excerpt');
+  for (const entry of common.slice(0, 2)) {
+    assert.equal(entry.delivery, 'withheld'); assert.equal(entry.outcome!.status, 'unavailable');
+    assert.deepEqual(entry.outcome!.records, []); assert.deepEqual(entry.outcome!.contributions, []);
+    assert.match(entry.reason!, /Response omitted.*Nothing was delivered/);
+  }
+  assert.equal(common[2]!.delivery, 'delivered'); assert.equal(common[2]!.outcome!.status, 'available');
+  const supplied = view(follow).usage.attempts.at(-1)!.contributionDeliveries!.filter(delivery => delivery.kind === 'item');
+  assert.equal(supplied.length, 1); assert.deepEqual(supplied[0]!.item, item); assert.equal(supplied[0]!.coverage, 'excerpt');
+});
+
 test('worker interruption seals received work and observations independently of a View and sink success', { timeout: 30_000 }, async t => {
   let ready!: () => void;
   const waiting = new Promise<void>(resolve => { ready = resolve; });
