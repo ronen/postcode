@@ -211,6 +211,10 @@ to begin the substantive implementation task described by that plan.
 
 > ok, unless you can think of anything else, i think we're good to move on to M3
 
+2026-11-18, continuing on the existing branch after M2 acceptance:
+
+> Please continue task `2026-11-15-structured-architectural-accounts` in `../app-worktrees/structured-architectural-accounts-impl` on its existing branch. M2 is accepted; its disposition is `records/reviews/structured-architectural-accounts/2026-11-18-m2-vertical-disposition.md`. Begin M3 under the approved plan, starting with remaining mechanical-family migration. Preserve the separate mechanical and agentic/caller review checkpoints. No additional live inference is authorized.
+
 ## Outcome
 
 ## Verification
