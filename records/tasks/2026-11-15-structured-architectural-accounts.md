@@ -195,6 +195,18 @@ to begin the substantive implementation task described by that plan.
 
 > ok do it
 
+2026-11-18, resolving the round 11 observation about capability availability in retained follow-up options.
+
+> review round is complete.  Please record the resolution of the reviewer’s observation about unknown result contracts in follow-up options:
+>
+> Keep capability-availability validation at invocation time, consistently for both operations and result contracts. A well-formed option may be retained even when its operation or contract is unsupported; invocation must refuse it with a clear explanation.
+>
+> Continue rejecting structurally malformed options at authoring. Agent instructions should direct authors to the supplied catalogue when creating executable options, without turning catalogue availability into a retention-validity requirement.
+>
+> Follow the task and review-response workflow. Confirm that existing tests cover retention followed by explicit invocation refusal for an unknown contract and an unsupported operation; add focused coverage only if missing. No additional live inference is needed.
+>
+> This records the design choice; it does not accept the M2 checkpoint or authorize M3.
+
 ## Outcome
 
 ## Verification
