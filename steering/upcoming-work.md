@@ -1,6 +1,6 @@
 # Upcoming work
 
-Last considered: 2026-11-13
+Last considered: 2026-11-18
 
 A living document for keeping track of upcoming work and deciding what order to
 do it in. Major checkpoints are useful occasions to reconsider it in strategy
@@ -76,6 +76,9 @@ Codes identify items independently of ordering.
 flowchart TD
     ACCOUNT["✦ ⚠️ ACCOUNT — Structured architectural accounts"] --> SLICE["⚠️ SLICE — First usable graphical investigation scope"]
     SLICE --> PRESENT["⚠️ ✦ PRESENT — Account presentation and navigation"]
+    ACCOUNT --> ORGANIZE["✦ ⚠️ ORGANIZE — Architectural reference organization"]
+    SLICE -. If reference organization is selected .-> ORGANIZE
+    ORGANIZE -. Framework for the selected experience .-> PRESENT
     PRESENT --> MINIGUI["✦ MINIGUI — Minimal graphical investigation"]
     MINIGUI -. Needs demonstrated through use .-> GUI["✦ GUI — Broader graphical investigation 🧱"]
     AGENT["✦ ⚠️ AGENT — External-agent investigation and exchange"]
@@ -90,6 +93,7 @@ flowchart TD
 | --- | --- | --- |
 | Next: plan and implement | [ACCOUNT — Structured architectural accounts](#account) | Exercise the account mechanism through representative, plausibly useful investigations and diagrams. Admission → trial → correction is a candidate; composition can test extension across accounts. |
 | After ACCOUNT | [SLICE — First usable graphical investigation scope](#slice) | Select a coherent first offering using the journey exploration and ACCOUNT's demonstrated capabilities and limitations. Identify any additional capability work needed. |
+| Conditional, scoped through SLICE | [ORGANIZE — Architectural reference organization](#organize) | Construct a useful reference framework if the selected experience needs one. Preliminary exploration can inform SLICE; implementation builds on ACCOUNT and precedes presentation work that depends on it. |
 | After SLICE | [PRESENT — Account presentation and navigation](#present) | Build representations, qualifications, and navigation for the selected experience, using implemented accounts. Any additional capability prerequisites depend on SLICE's selection. |
 | After PRESENT | [MINIGUI — Minimal graphical investigation](#minigui) | Build a small graphical surface for actual human investigation using the available account and presentation capabilities. |
 | Movable, when a concrete exchange needs it | [AGENT — External-agent investigation and exchange](#agent) | Support external design or implementation agents requesting investigations or using retained accounts. Assess reusable investigation and exchange capabilities; neither retaining the interactive CLI, structured accounts, nor a preceding human GUI journey is a prerequisite. |
@@ -202,6 +206,23 @@ Alphabetical by code.
   [journey outputs: investigation script](../notes/initial-journey/cockatiel-investigation-script.md),
   [journey findings: implementation-validation checks](../notes/initial-journey/design-findings.md#implementation-validation).
 
+<a id="organize"></a>
+### ORGANIZE — Architectural reference organization
+
+- **Kind:** ✦ ⚠️
+- **Outcome:** a navigable framework for understanding a project or architectural
+  concern through its accumulated accounts.
+- **Scope:** construct and revise useful groupings, entry points, cross-references
+  and reading paths, using retained accounts and additional investigation where
+  needed. Build on ACCOUNT; SLICE selects whether and how much of this capability
+  the first offering needs. Preliminary exploration can inform that selection.
+- **Boundary:** distinguish editorial organization from claims about the software.
+  Partial and alternative organizations need not imply comprehensive coverage or
+  one canonical hierarchy. Ordinary indexing and display grouping may be mechanical;
+  inferred relationships, synthesis and coverage judgments require core investigation.
+  PRESENT and MINIGUI make the supplied framework readable and navigable.
+- **Source:** [exploratory notes: architectural reference organization](../notes/architectural-reference-organization.md).
+
 <a id="present"></a>
 ### PRESENT — Account presentation and navigation
 
@@ -256,12 +277,15 @@ Alphabetical by code.
   journey exploration and ACCOUNT's demonstrated capabilities and limitations;
   this selects an initial offering rather than restarting the journey exercise.
   ACCOUNT's capabilities may be selected, modified, supplemented, or left out.
+  Explore an architectural-reference experience: browsing retained understanding
+  and investigating gaps, with ORGANIZE supplying a framework if needed.
   Identify needed changes and missing capabilities, drawing on the backlog and
   candidate inventories, and place that work before the work that depends on it.
 - **Boundary:** selects the offering and its acceptance criteria. Detailed
   presentation and interface design belong to PRESENT and MINIGUI; additional
   investigation capabilities have their own implementation scope.
-- **Sources:** [journey outputs: investigation script](../notes/initial-journey/cockatiel-investigation-script.md),
+- **Sources:** [exploratory notes: first graphical slice](../notes/first-graphical-slice.md),
+  [journey outputs: investigation script](../notes/initial-journey/cockatiel-investigation-script.md),
   [journey outputs: connected account examples](../notes/initial-journey/cockatiel-account-examples.md),
   [journey findings: capability-planning inputs](../notes/initial-journey/design-findings.md#capability-planning-inputs),
   strategy discussion: separate mechanism validation from selection of the first offering.

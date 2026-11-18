@@ -121,6 +121,31 @@ dependency tracking (including negative lookups and configuration), subject
 correspondence, selective re-evaluation, and whether continuity belongs within
 one session or across sessions.
 
+<a id="investigator-contributions-to-reference-organization"></a>
+## Investigator contributions to reference organization
+
+An interpreting agent could receive a current index, table of contents or other
+reference framework as context and suggest where its contribution belongs. It
+could associate parts of its answer with existing entries, suggest cross-references,
+or propose new entries when the material does not fit. This could help develop
+an organized architectural reference as investigations accumulate, alongside
+investigations dedicated to organizing the retained information.
+
+Categorizing a contribution and proposing a change to the framework are distinct
+actions. Neither implies automatic acceptance of the proposed placement or edit.
+The framework is an aid to organization, not a constraint on what the agent may
+discover: information may fit several entries or none. Editorial placement does
+not itself assert a relationship in the software.
+
+Questions include which framework or relevant portion to supply, how proposals
+refer to the version actually received, and how competing placements or changes
+would be considered. The supplied framework's origin and qualifications matter
+if it also influences the substantive interpretation.
+
+Whether existing entity, content and association mechanisms can express these
+suggestions is a question to test through concrete use. The representation of
+entries and proposed organizational changes remains open.
+
 ## Visual and structured qualification
 
 A graphical interface could use a consistent visual vocabulary for

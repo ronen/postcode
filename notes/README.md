@@ -10,6 +10,8 @@ A document whose lifecycle prevents later editorial repair must not link to note
 
 ## Current notes
 
+- [First graphical investigation slice](first-graphical-slice.md): reference-oriented experience and choices for the first offering.
+- [Architectural reference organization](architectural-reference-organization.md): candidate framework-generation capability, its boundaries and open questions.
 - Review consolidation: [resolution map and aligned probes](structured-account-example/review-alignment.md) records the fresh review discussions, production-update timing, precise inconsistency reports and referent discovery.
 - Structured architectural accounts: [working proposal](structured-architectural-accounts-proposal.md) consolidates the emerging design; [discussion notes](structured-architectural-accounts.md) retain exploration, alternatives and research.
 - Investigram structure: [consolidation checkpoint](structured-architectural-accounts-consolidation.md) maps immutable contributions, association declarations, entity/query-result context, guidance ownership and concept/content/diagram contracts, including the [agreed vocabulary](structured-architectural-accounts-consolidation.md#working-vocabulary).
