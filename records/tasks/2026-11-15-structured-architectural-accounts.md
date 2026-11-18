@@ -207,6 +207,10 @@ to begin the substantive implementation task described by that plan.
 >
 > This records the design choice; it does not accept the M2 checkpoint or authorize M3.
 
+2026-11-18, accepting the M2 checkpoint and authorizing progression to M3, subject to any remaining blocking concern identified before transition. The task remains active and later review gates remain applicable.
+
+> ok, unless you can think of anything else, i think we're good to move on to M3
+
 ## Outcome
 
 ## Verification
