@@ -1,5 +1,4 @@
-import { ScriptedInvestigator } from './investigator-double.js';
-import type { EvidenceResponse } from '../src/lib/evidence-access.js';
+import { ScriptedContributionAgent, moduleRecord, proseContribution } from './contribution-agent.js';
 import { withDiagnosticMeanings } from '../src/lib/diagnostic-view.js';
 import type { ViewRequest } from '../src/lib/requests.js';
 import assert from 'node:assert/strict';
@@ -66,14 +65,15 @@ const broken = ;`);
         assert.ok(batch.records.some(record => record.kind === 'representation-limit'));
       }
       const { moreDetails: _detail, ...noDetail } = result.view;
-      const jsonDiagnostic = { ...noDetail, presentation: { ...noDetail.presentation, format: 'json' as const } } as typeof result.view;
+      const jsonDiagnostic = { ...noDetail, ...(noDetail.schema === 'postcode-contribution-view/1-experimental' ? { mechanical: { ...noDetail.mechanical, moreDetails: undefined } } : {}), presentation: { ...noDetail.presentation, format: 'json' as const } } as typeof result.view;
       const diagnosticBatch = observationBatch(jsonDiagnostic, JSON.stringify(jsonDiagnostic), { configPath: root, repositoryRoot: root, methods: [] }, result.context);
       assert.ok(diagnosticBatch.events.some(event => event.type === 'attribution-disclosed' && event.sourceLevel === 'diagnostic-locations'));
       // Controlled code-only diagnostic exercises the shared wording for each family.
       if (result.view.schema === 'postcode-investigation-view/1-experimental') throw new Error('Unexpected interpretation');
-      const context = result.view.qualifications[0]!;
+      const base = result.view.schema === 'postcode-contribution-view/1-experimental' ? result.view.mechanical! : result.view;
+      const context = base.qualifications[0]!;
       const qualified = presentQualification({ ...context, scope: 'configured-project', kind: 'claim-context', evidence: [], diagnostics: [{ code: 2307, category: 'error', message: "Cannot find module './missing'." }] });
-      const view = withDiagnosticMeanings({ ...result.view, qualifications: [qualified] });
+      const view = withDiagnosticMeanings({ ...base, qualifications: [qualified] });
       const rendered = view.schema === 'postcode-view/1-experimental' ? renderView(view)
         : view.schema === 'postcode-organization-view/1-experimental' ? renderOrganizationView(view)
           : view.schema === 'postcode-dependency-view/1-experimental' ? renderDependencyView(view) : renderModuleExports(view);
@@ -135,9 +135,10 @@ for (const format of ['unicode', 'json'] as const) test(`many diagnostics stay b
       } else {
         assert.equal((shown.rendered.match(/Information affected by this diagnostic/g) ?? []).length, 1, lens);
         const data = JSON.parse(shown.rendered);
+        const qualifications = data.schema === 'postcode-contribution-view/1-experimental' ? data.diagnostics : data.qualifications;
         assert.equal(data.diagnosticMeanings[0].code, 1109);
-        assert.equal(Math.max(...data.qualifications.map((q: { diagnostics: unknown[] }) => q.diagnostics.length)), 25);
-        assert.ok(data.qualifications.every((q: { diagnostics: object[] }) => q.diagnostics.every(d => !('explanation' in d))));
+        assert.equal(Math.max(...qualifications.map((q: { diagnostics: unknown[] }) => q.diagnostics.length)), 25);
+        assert.ok(qualifications.every((q: { diagnostics: object[] }) => q.diagnostics.every(d => !('explanation' in d))));
       }
       if (shown.view.schema === 'postcode-view/1-experimental') {
         const doc = shown.view.modules.flatMap(module => module.exports.flatMap(exported => exported.documentation))[0];
@@ -174,32 +175,30 @@ for (const format of ['unicode', 'json'] as const) test(`investigation support b
   writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
   writeFileSync(path.join(root, 'entry.ts'), '/** Coordinates work.\n * @see Architecture ```read(1)``` reference\n */\nexport const entry = 1;\n'
     + Array.from({ length: 25 }, (_, i) => `const z${i} = ;`).join('\n'));
-  const agent = new ScriptedInvestigator([
-    input => ({ kind: 'tools', requests: [{ kind: 'exports', subject: input.request.subject }, { kind: 'modules' }] }),
+  const agent = new ScriptedContributionAgent([
+    input => ({ kind: 'tools', requests: [{ kind: 'exports', subject: moduleRecord(input) }, { kind: 'modules' }] }),
     input => {
-      const response = input.responses[0] as EvidenceResponse;
+      const first = input.responses[0]!; assert.equal(first.tool, 'evidence'); const response = first.response;
+      const second = input.responses[1]!; assert.equal(second.tool, 'evidence');
       const assertion = response.records.find(item => item.kind === 'recorded-assertion')!;
-      const claim = (input.responses[1] as EvidenceResponse).records.find(item => item.kind === 'claim' && item.information.type === 'module')!;
+      const claim = second.response.records.find(item => item.kind === 'claim' && item.information.type === 'module')!;
       assert.ok(assertion); assert.ok(claim);
       assert.match(JSON.stringify(assertion), /read\(1\)/, 'machine evidence retains the original tag');
-      return { kind: 'submit', result: { localId: 'root', prose: 'Coordinates work.',
-        referent: { description: 'Entry module.', subjects: [input.request.subject] }, qualifications: ['Interpretation.'],
-        evidence: [assertion.id, claim.id], associations: [], children: [], corrections: [], inconsistencies: [] } };
+      return { kind: 'submit', contribution: proseContribution(input, 'Coordinates work.', { evidence: [assertion.id, claim.id] }) };
     },
   ]);
   const opened = await openSession({ configPath: path.join(root, 'tsconfig.json') }, { investigation: { agent } });
   assert.equal(opened.status, 'opened');
   t.after(() => opened.session.close());
   const generated = requireView(await opened.session.execute({ lens: 'summarize', selector: 'entry', presentation: { format, moreDetails: false } }));
-  assert.equal(generated.view.schema, 'postcode-investigation-view/1-experimental');
-  if (generated.view.schema !== 'postcode-investigation-view/1-experimental') throw new Error('Expected investigation');
-  const account = generated.view.accounts[0]!.id;
-  const reference = generated.view.references.find(item => item.id === account)!.reference;
+  assert.equal(generated.view.schema, 'postcode-contribution-view/1-experimental');
+  if (generated.view.schema !== 'postcode-contribution-view/1-experimental') throw new Error('Expected investigation');
+  const reference = generated.view.rows[0]!.reference;
   const inspected = requireView(await opened.session.execute({ lens: 'inspect', selector: reference, reference: true, presentation: { format, moreDetails: true } }));
   const retained = requireView(await opened.session.execute({ kind: 'present', target: inspected.view.projection.id, presentation: { format, moreDetails: true } }));
   for (const result of [inspected, retained]) {
-    assert.equal(result.view.schema, 'postcode-investigation-view/1-experimental');
-    if (result.view.schema !== 'postcode-investigation-view/1-experimental') throw new Error('Expected investigation');
+    assert.equal(result.view.schema, 'postcode-contribution-view/1-experimental');
+    if (result.view.schema !== 'postcode-contribution-view/1-experimental') throw new Error('Expected investigation');
     assert.doesNotMatch(result.rendered, /read\(1\)/);
     assert.match(result.rendered, /Architecture  reference/);
     assert.match(result.rendered, /Representation limit/);
@@ -211,7 +210,7 @@ for (const format of ['unicode', 'json'] as const) test(`investigation support b
       assert.match(result.rendered, /22 diagnostic occurrence\(s\) omitted/);
       assert.doesNotMatch(result.rendered, /"diagnostics":/);
     } else {
-      assert.equal(Math.max(...result.view.support.map(item => item.qualification?.diagnostics.length ?? 0)), 25);
+      assert.equal(Math.max(...result.view.diagnostics.map(item => item.diagnostics.length)), 25);
       assert.equal((JSON.parse(result.rendered).diagnosticMeanings as unknown[]).length, 1);
     }
     const batch = observationBatch(result.view, result.rendered, { configPath: root, repositoryRoot: root, methods: [] }, result.context);

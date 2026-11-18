@@ -1,3 +1,5 @@
+import { lenses } from '../src/lib/requests.js';
+import type { LensDefinition } from '../src/lib/requests.js';
 import { contributeModuleFindings } from '../src/lib/contributions/modules.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
@@ -13,14 +15,32 @@ import type { Correction, Investigram, InvestigationProvenance, Inconsistency } 
 import type { InvestigationEvaluationRecord, InvestigationSelection } from '../src/lib/investigation/evaluation.js';
 import type { InvestigationSelectionProjection } from '../src/lib/investigation/selection-record.js';
 import { selectionIdentity } from '../src/lib/investigation/selection-record.js';
-import { selectAssociatedInspection, selectInvestigation } from '../src/lib/investigation/selection.js';
+import { selectAssociatedInspection, selectInvestigation as selectLegacyInvestigation } from '../src/lib/investigation/selection.js';
 import { resolveInvestigationContent } from '../src/lib/investigation/content.js';
 import { revisionPage } from '../src/lib/investigation/revision-page.js';
-import { arrangeInvestigationView, createInvestigationView, finalizeInvestigationUsage, renderInvestigationView } from '../src/lib/investigation/presentation.js';
+import { arrangeInvestigationView, createInvestigationView as createLegacyInvestigationView, finalizeInvestigationUsage, renderInvestigationView } from '../src/lib/investigation/presentation.js';
 import { arrangeAssociatedInspection, associationContinuation } from '../src/lib/investigation/associations.js';
 import { createView } from '../src/lib/presentation.js';
 import { usageSummary } from '../src/lib/investigation/reporting.js';
 import { sourceDisclosure } from '../src/lib/source-disclosure.js';
+
+// These isolated tests cover the retired mechanism until M4 removes it. They do
+// not register a legacy Lens in the supported application catalog.
+function legacyDefinition(lens: string): LensDefinition | undefined {
+  const definition = (lenses as Readonly<Record<string, LensDefinition>>)[lens];
+  if (!definition) return undefined;
+  const operation = ({ summarize: 'functionality', explain: 'clarification', decompose: 'decomposition', examine: 'examination' } as const)[lens as 'summarize'];
+  return operation ? { ...definition, subjects: lens === 'summarize' ? ['module'] : ['investigram'], results: ['investigation'], requirements: { kind: 'interpretation', operation } }
+    : lens === 'inspect' ? { ...definition, subjects: ['module', 'group', 'investigram'] } : definition;
+}
+function selectInvestigation(...args: Parameters<typeof selectLegacyInvestigation>) {
+  const [store, session, request, selected, result] = args, definition = request.definition ?? legacyDefinition(request.lens);
+  return selectLegacyInvestigation(store, session, { ...request, ...(definition ? { definition } : {}) }, selected, result);
+}
+function createInvestigationView(...args: Parameters<typeof createLegacyInvestigationView>) {
+  const [store, session, request, selected, result, usage, content] = args, definition = request.definition ?? legacyDefinition(request.lens);
+  return createLegacyInvestigationView(store, session, { ...request, ...(definition ? { definition } : {}) }, selected, result, usage, content);
+}
 
 interface AccountSpec {
   name: string;

@@ -6,6 +6,7 @@ import path from 'node:path';
 import { temporaryDirectory } from './cli-helpers.js';
 import { ScriptedInvestigator, syntheticUsage } from './investigator-double.js';
 import { ScriptedContributionAgent, proseContribution } from './contribution-agent.js';
+import { contributionOperationMethod } from '../src/lib/contributions/operations.js';
 import type { ContributionOperation } from '../src/lib/contributions/operations.js';
 import { requireResolution, requireView } from './request-helpers.js';
 import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
@@ -101,7 +102,7 @@ test('a nonpublic module Lens shares interpretation machinery and original prove
   assert.equal(first.context.request.kind, 'lens');
   assert.equal(first.context.request.lens, 'risks');
   assert.equal(first.view.rows[0]!.origin!.request.operation, 'risks');
-  assert.equal(first.view.rows[0]!.producer.method, risks.method);
+  assert.equal(first.view.rows[0]!.producer.method, contributionOperationMethod(risks, catalog().operations));
   assert.ok(investigator.inputs[0]![0]!.instructions.startsWith(risks.objective));
   assert.ok(investigator.inputs[0]![0]!.responses.length > 0, 'The selected module receives its qualified common baseline');
   const reference = first.view.resolution!.subjects[0]!;

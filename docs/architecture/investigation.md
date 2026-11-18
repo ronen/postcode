@@ -1,5 +1,7 @@
 # Investigation execution
 
+**Migration note (2026-11-18):** Supported summary, clarification, decomposition and examination now use the [common contribution dialog](contributions.md), including its exact selection, declaration, exposure and attempt/answer contracts. Hosted transport, credentials, usage and cancellation remain shared infrastructure. The legacy tree/correction description below documents helpers awaiting retirement in M4; it does not describe the supported caller route. Historical live assessments cited here do not validate the revised common-dialog guidance.
+
 This describes the implemented portion of [module investigation](../plans/module-investigation.md),
 including the hosted adapter, progressive shell lenses, correction-aware selection
 and citation-based reconsideration. The domain boundary, session retention and

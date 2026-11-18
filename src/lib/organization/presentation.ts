@@ -239,14 +239,14 @@ const annotation = (group: GroupReference) => [group.documented ? 'documented' :
     : group.modulePresence === 'none' ? 'no project modules' : 'module presence unknown'].filter(Boolean).join(' · ');
 const label = (entity: EntityReference) => `${inlineText(entity.label)}  ${entity.entityId}`;
 
-export function renderOrganizationView(view: QualifiedOrganizationView): string {
+export function renderOrganizationView(view: QualifiedOrganizationView, enclosed = false): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
   const inspection = organizationDisplayPolicy(view.projection.subject, view.presentation).layout === 'cards';
   const lines = [`${inlineText(view.title)} · ${inspection ? 'groups and modules' : view.projection.subject === 'repository' ? 'repository' : 'configured project'}`,
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inspection ? `${view.projection.selection.matches} ${lookupDescription(view.resolution, view.projection.selection.matches) ?? 'selected subjects'}`
       : `${view.display.selectedGroups} selected groups · ${view.repository.groups} repository groups`];
-  lines.push(...nativeConcernLines(view.contributionConcerns), ...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
+  lines.push(...nativeConcernLines(view.contributionConcerns), ...(enclosed ? [] : [...answerLines(view), ...continuationLines(view)]), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
   if (view.projection.selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!view.projection.selection.populationEstablished) lines.push('Selection population is not fully established.');
   for (const [name, state] of Object.entries(view.evaluations)) {
@@ -277,7 +277,7 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
         ? `  Other artifacts: ${group.artifacts.unanalyzed} unanalyzed · ${group.artifacts.opaqueBoundaries} opaque boundaries`
         : `  Other captured artifacts: ${group.artifacts.unanalyzed} · ${group.artifacts.opaqueBoundaries} opaque boundaries (classification incomplete)`);
     }
-    if (view.moduleDetail?.modules.length) lines.push('', 'Modules', renderUnicode(view.moduleDetail, 'embedded').trimEnd());
+    if (view.moduleDetail?.modules.length) lines.push('', 'Modules', renderUnicode(view.moduleDetail, enclosed ? 'contribution' : 'embedded').trimEnd());
   } else {
     lines.push('');
     const width = Math.min(36, Math.max(0, ...view.display.rows.map(row => {
@@ -326,6 +326,6 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     `  Repository-layout evidence left ${view.repository.unestablishedRelationships} relationships unestablished.`,
     `  Exclusion policies: ${view.repository.exclusions.repository} repository, ${view.repository.exclusions.local} local, ${view.repository.exclusions.global} global; ${view.repository.exclusions.outputLocations} output locations excluded.`,
     '  Inputs are first-observed, not atomic; sparse-checkout completeness remains unresolved.');
-  lines.push(...diagnosticLines(view.qualifications, '  '));
+  if (!enclosed) lines.push(...diagnosticLines(view.qualifications, '  '));
   return `${lines.join('\n')}\n${renderAssociatedInvestigations(view.investigations)}`;
 }

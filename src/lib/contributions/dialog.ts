@@ -224,20 +224,26 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
     handle.discard(mark);
     return { tool: 'unavailable', limitations: [`Response omitted: ${size} serialized characters exceed the ${responseCharacters}-character bound. Nothing was delivered. Request a narrower item, an excerpt or a single association.`] };
   };
-  const contribution = (tool: ContributionTool): DialogResponse => bounded(() => {
-    const value = tool.kind === 'baseline' ? handle.baseline(tool.entity)
-      : tool.kind === 'inventory' ? handle.inventory(tool.scope, tool.inventory)
-      : tool.kind === 'association' ? handle.association(tool.association, { content: tool.content === true })
-      : tool.kind === 'declaration' ? handle.declaration(tool.declaration)
-      : tool.kind === 'item' ? handle.item(tool.item, tool.excerptCharacters === undefined ? {} : { excerptCharacters: tool.excerptCharacters })
-      : tool.kind === 'member' ? handle.member(tool.association, tool.item, tool.excerptCharacters === undefined ? {} : { excerptCharacters: tool.excerptCharacters })
-      : tool.kind === 'contribution' ? handle.investigram(tool.investigram)
-      : tool.kind === 'designations' ? handle.designations(tool.result, { content: tool.content === true })
-      : tool.kind === 'metadata' ? handle.metadata(tool.address)
-      : { referent: tool.entity, handles: handle.discover(tool.entity), limitation: 'Discovery handles only; no content was delivered.' };
-    return { tool: 'contribution', kind: tool.kind, value };
-  });
   let deliveryWork: EvidenceWorkHandle[] = [];
+  const contribution = (tool: ContributionTool): DialogResponse => {
+    const work = options.work?.evidence({ kind: 'contribution', request: tool }, attempt), start = handle.checkpoint();
+    const response = bounded(() => {
+      const value = tool.kind === 'baseline' ? handle.baseline(tool.entity)
+        : tool.kind === 'inventory' ? handle.inventory(tool.scope, tool.inventory)
+        : tool.kind === 'association' ? handle.association(tool.association, { content: tool.content === true })
+        : tool.kind === 'declaration' ? handle.declaration(tool.declaration)
+        : tool.kind === 'item' ? handle.item(tool.item, tool.excerptCharacters === undefined ? {} : { excerptCharacters: tool.excerptCharacters })
+        : tool.kind === 'member' ? handle.member(tool.association, tool.item, tool.excerptCharacters === undefined ? {} : { excerptCharacters: tool.excerptCharacters })
+        : tool.kind === 'contribution' ? handle.investigram(tool.investigram)
+        : tool.kind === 'designations' ? handle.designations(tool.result, { content: tool.content === true })
+        : tool.kind === 'metadata' ? handle.metadata(tool.address)
+        : { referent: tool.entity, handles: handle.discover(tool.entity), limitation: 'Discovery handles only; no content was delivered.' };
+      return { tool: 'contribution', kind: tool.kind, value };
+    });
+    work?.acquiredContributions(handle.deliveries.slice(start.deliveries), response.tool === 'unavailable' ? response.limitations : [], response.tool !== 'unavailable');
+    if (work) deliveryWork.push(work);
+    return response;
+  };
   const evidence = async (query: EvidenceQuery): Promise<DialogResponse> => {
     const work = options.work?.evidence(query, attempt);
     const response = await options.evidence.query(query, controller.signal, work?.scope);
@@ -336,7 +342,7 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
         undelivered = handle.checkpoint();
         deliveryWork.forEach(work => work.delivered()); deliveryWork = [];
         const recordUsage = usage.start(attempt, ++calls, identity);
-        const progress = () => options.onProgress?.({ ...report(), termination: 'running', deliveries: [], suppliedEvidence: handle.evidence, summarizedEvidence: [] });
+        const progress = () => options.onProgress?.({ ...report(), termination: 'running', deliveries: [], contributionDeliveries: handle.deliveries, suppliedEvidence: handle.evidence, summarizedEvidence: [] });
         progress();
         return conversation!.exchange(input, controller.signal, value => { if (activeUsage) { recordUsage(value); progress(); } });
       });
@@ -388,7 +394,7 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
     options.signal?.removeEventListener('abort', interrupt);
     controller.abort();
     try { conversation?.close(); } finally {
-      options.onReport?.({ ...report(), termination, deliveries: [], suppliedEvidence: handle.evidence, summarizedEvidence: [] });
+      options.onReport?.({ ...report(), termination, deliveries: [], contributionDeliveries: handle.deliveries, suppliedEvidence: handle.evidence, summarizedEvidence: [] });
     }
   }
 }

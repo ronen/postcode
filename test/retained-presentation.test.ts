@@ -1,4 +1,6 @@
-import { ScriptedInvestigator, syntheticUsage } from './investigator-double.js';
+import { ScriptedContributionAgent } from './contribution-agent.js';
+import { presentationMethods } from '../src/lib/interfaces/cli/methods.js';
+import { syntheticUsage } from './investigator-double.js';
 import { investigationBounds } from '../src/lib/investigation/bounds.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
@@ -70,7 +72,9 @@ test('exact mechanical presentation covers every family and composite without se
       else assert.equal(JSON.parse(oneShot.rendered).referenceNotice, oneShot.view.referenceNotice);
     }
   }
-  const mixed = fresh[3]!.view;
+  const mixedView = fresh[3]!.view;
+  assert.equal(mixedView.schema, 'postcode-contribution-view/1-experimental');
+  const mixed = mixedView.mechanical!;
   assert.equal(mixed.schema, 'postcode-organization-view/1-experimental');
   assert.ok(mixed.groups.length && mixed.moduleDetail?.modules.length);
   const group = requireView(await active.execute({ lens: 'inspect', selector: mixed.groups[0]!.entityId, reference: true, presentation: json }));
@@ -98,8 +102,8 @@ test('exact mechanical presentation covers every family and composite without se
     assert.equal(text.rendered.split(text.view.referenceNotice).length - 1, 1);
   }
   const composite = fresh[4]!.view;
-  assert.ok('mechanical' in composite.projection);
-  const mechanical = String(composite.projection.mechanical);
+  assert.equal(composite.schema, 'postcode-contribution-view/1-experimental');
+  const mechanical = composite.mechanical!.projection.id;
   const bare = requireView(await active.execute({ kind: 'present', target: mechanical, presentation: { ...json, moreDetails: true } }));
   assert.equal(bare.view.projection.id, mechanical);
   assert.notEqual(bare.view.answerReference, composite.answerReference);
@@ -142,23 +146,26 @@ test('documentation-only group presentation uses selected modules rather than th
   assert.equal(inventory.view.schema, 'postcode-view/1-experimental');
   assert.equal(inventory.view.modules.length, 2, 'unrelated project modules must not require support in the selected group');
   const fresh = requireView(await active.execute({ lens: 'inspect', selector: 'manual', presentation: json }));
-  assert.equal(fresh.view.schema, 'postcode-organization-view/1-experimental');
-  const selected = fresh.view.groups.filter(group => group.selected);
+  assert.equal(fresh.view.schema, 'postcode-contribution-view/1-experimental');
+  const base = fresh.view.mechanical!;
+  assert.equal(base.schema, 'postcode-organization-view/1-experimental');
+  const selected = base.groups.filter(group => group.selected);
   assert.equal(selected.length, 1);
   assert.equal(selected[0]!.documentationCount, 1);
   assert.deepEqual(selected[0]!.modules, []);
-  assert.deepEqual(fresh.view.moduleDetail!.modules, []);
-  assert.ok('mechanical' in fresh.view.projection);
+  assert.deepEqual(base.moduleDetail!.modules, []);
+  assert.ok(fresh.view.mechanical);
   for (const method of ['put', 'evaluations', 'investigations', 'boundEntity'] as const) t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw new Error(`present must not call ${method}`); });
-  for (const target of [fresh.view.answerReference!, String(fresh.view.projection.mechanical)]) {
+  for (const target of [fresh.view.answerReference!, base.projection.id]) {
     for (const format of ['json', 'unicode'] as const) {
       const retained = requireView(await active.execute({ kind: 'present', target, presentation: { format, moreDetails: false } }));
-      assert.equal(retained.view.schema, 'postcode-organization-view/1-experimental');
+      const retainedBase = retained.view.schema === 'postcode-contribution-view/1-experimental' ? retained.view.mechanical! : retained.view;
+      assert.equal(retainedBase.schema, 'postcode-organization-view/1-experimental');
       assert.equal(retained.view.projection.id, target === fresh.view.answerReference ? fresh.view.projection.id : target);
       assert.equal(retained.view.selectionMode, 'retained');
-      assert.deepEqual(retained.view.groups, fresh.view.groups);
-      assert.deepEqual(retained.view.moduleDetail!.modules, []);
-      assert.deepEqual(retained.view.qualifications, fresh.view.qualifications);
+      assert.deepEqual(retainedBase.groups, base.groups);
+      assert.deepEqual(retainedBase.moduleDetail!.modules, []);
+      assert.deepEqual(retainedBase.qualifications, base.qualifications);
       assert.equal(retained.failed, false);
       assert.deepEqual(retained.attribution.work.map(item => [item.boundary, item.disposition]), [['content', 'consumed']]);
       if (format === 'unicode') assert.match(retained.rendered, /Retained answer; selection unchanged/);
@@ -221,7 +228,7 @@ test('target refusals preserve the target without claiming expiry or selecting a
 
 for (const outcome of ['configuration-unavailable', 'investigation-failure', 'limit-stop'] as const) for (const worker of [false, true]) test(`retained ${outcome} outcome completes presentation and publication (${worker ? 'worker' : 'direct'})`, async t => {
   const options = fixture(t);
-  const agent = new ScriptedInvestigator([(_input, _signal, report) => { report(syntheticUsage); return outcome === 'limit-stop' ? { kind: 'tools', requests: [] } : { kind: 'ended' }; }]);
+  const agent = new ScriptedContributionAgent([(_input, _signal, report) => { report(syntheticUsage); return outcome === 'limit-stop' ? { kind: 'tools', requests: [] } : { kind: 'ended' }; }]);
   const investigation = outcome === 'configuration-unavailable' ? {} : { agent, bounds: { ...investigationBounds, calls: 1 } };
   const opened = worker ? interactiveSession(options, outcome === 'configuration-unavailable' ? {} : { investigator: agent, investigationBounds: { ...investigationBounds, calls: 1 } }) : null;
   if (opened) t.after(() => opened.close());
@@ -233,8 +240,8 @@ for (const outcome of ['configuration-unavailable', 'investigation-failure', 'li
   const id = opening?.id ?? direct!.session.id;
   const fresh = requireView(await active.execute({ lens: 'summarize', selector: 'entry', presentation: json }));
   assert.equal(fresh.failed, true);
-  assert.equal(fresh.view.schema, 'postcode-investigation-view/1-experimental');
-  assert.equal(fresh.view.outcome?.kind, outcome);
+  assert.equal(fresh.view.schema, 'postcode-contribution-view/1-experimental');
+  assert.equal(fresh.view.reporting?.contribution?.outcome.kind, outcome);
   const batches: ObservationBatch[] = []; let stdout = '', stderr = '';
   const request = { kind: 'present' as const, target: fresh.view.projection.id, presentation: json };
   const code = await publishCommand({ id, execute: active.execute, check: active.check, usage: active.usage, work: active.work }, request,
@@ -243,14 +250,15 @@ for (const outcome of ['configuration-unavailable', 'investigation-failure', 'li
   assert.equal(code, 0); assert.match(stderr, /observation not recorded/);
   const retained = requireView(await active.execute(request));
   assert.equal(retained.failed, false); assert.equal(retained.attribution.status, 'completed');
-  assert.equal(retained.view.schema, 'postcode-investigation-view/1-experimental');
-  assert.equal(retained.view.result, null);
-  assert.deepEqual(retained.view.outcome, fresh.view.outcome);
+  assert.equal(retained.view.schema, 'postcode-contribution-view/1-experimental');
+  assert.equal(retained.view.reporting, null);
+  assert.deepEqual(retained.view.summary, fresh.view.summary);
   assert.deepEqual(retained.view.usage, fresh.view.usage);
   assert.equal(retained.view.projection.id, fresh.view.projection.id);
-  assert.equal(retained.view.id, finalizeInvestigationUsage(retained.view, retained.view.usage, retained.investigationArrangementKey!).id);
+  assert.equal(retained.view.id, finalizeInvestigationUsage(retained.view, retained.view.usage, retained.investigationArrangementKey!, presentationMethods.contributionPresentation).id);
   const text = requireView(await active.execute({ ...request, presentation: { format: 'unicode', moreDetails: false } }));
-  assert.match(text.rendered, new RegExp(outcome));
+  assert.match(text.rendered, /No answer has been designated/i);
+  assert.doesNotMatch(text.rendered, /No investigating agent is configured|ended without an accepted submission|Provider call guard reached/);
   assert.equal(agent.inputs.length, outcome === 'configuration-unavailable' ? 0 : 1);
   assert.match(text.rendered, /Retained answer; selection unchanged/);
   const batch = batches[0]!;

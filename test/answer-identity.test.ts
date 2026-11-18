@@ -28,7 +28,13 @@ test('mechanical names and references share answers while exposed resolution cha
   for (const lens of ['inspect', 'children', 'parents'] as const) {
     const named = requireView(await opened.session.execute({ lens, selector: module.handle, presentation }));
     const precise = requireView(await opened.session.execute({ lens, selector: module.entityId, reference: true, presentation }));
-    assert.deepEqual(named.view.projection, precise.view.projection);
+    if (lens === 'inspect') {
+      assert.equal(named.view.schema, 'postcode-contribution-view/1-experimental');
+      assert.equal(precise.view.schema, 'postcode-contribution-view/1-experimental');
+      assert.deepEqual(named.view.mechanical!.projection, precise.view.mechanical!.projection);
+      assert.notEqual(named.view.projection.id, precise.view.projection.id, 'general name lookup also selects the separately identified exported symbol named left');
+      assert.ok(named.view.rows.length > precise.view.rows.length);
+    } else assert.deepEqual(named.view.projection, precise.view.projection);
     assert.deepEqual(named.view.projection.parameters, {});
     assert.notEqual(named.view.id, precise.view.id, 'exposed lookup context belongs to the View');
     assert.notDeepEqual(named.view.resolution, precise.view.resolution);
@@ -42,9 +48,11 @@ test('mechanical names and references share answers while exposed resolution cha
   const named = requireView(await opened.session.execute({ lens: 'inspect', selector: group.name!, presentation })).view;
   const precise = requireView(await opened.session.execute({ lens: 'inspect', selector: group.entityId, reference: true, presentation })).view;
   assert.deepEqual(named.projection, precise.projection);
-  assert.equal(named.schema, 'postcode-organization-view/1-experimental');
-  assert.equal(precise.schema, 'postcode-organization-view/1-experimental');
-  assert.deepEqual(named.moduleDetail, precise.moduleDetail, 'legitimate empty embedded detail is retained for both routes');
+  assert.equal(named.schema, 'postcode-contribution-view/1-experimental');
+  assert.equal(precise.schema, 'postcode-contribution-view/1-experimental');
+  assert.equal(named.mechanical!.schema, 'postcode-organization-view/1-experimental');
+  assert.equal(precise.mechanical!.schema, 'postcode-organization-view/1-experimental');
+  assert.deepEqual(named.mechanical!.moduleDetail, precise.mechanical!.moduleDetail, 'legitimate empty embedded detail is retained for both routes');
   assert.notEqual(named.id, precise.id);
 });
 

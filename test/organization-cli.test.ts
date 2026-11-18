@@ -34,7 +34,10 @@ async function fixture(run: (root: string, write: (name: string, text: string) =
 function invoke(root: string, args: string[], options: { sink?: ObservationSink; expectedWarning?: boolean } = {}) {
   return invokeCli([...args, '--project', path.join(root, 'tsconfig.json')], { cwd: root, ...options });
 }
-const viewOf = (result: { stdout: string }) => JSON.parse(result.stdout) as QualifiedOrganizationView;
+const viewOf = (result: { stdout: string }): QualifiedOrganizationView => {
+  const value = JSON.parse(result.stdout);
+  return value.schema === 'postcode-contribution-view/1-experimental' ? value.mechanical : value;
+};
 
 test('representative organization journey selects, inspects, navigates, and escapes to captured paths only', async () => {
   await fixture(async root => {
@@ -62,7 +65,7 @@ test('representative organization journey selects, inspects, navigates, and esca
     const childGroup = child.groups.find(group => group.selected)!;
     assert.equal(childGroup.modulePresence, 'direct');
     assert.equal(childGroup.documented, false);
-    const module = JSON.parse((await invoke(root, ['inspect', childGroup.modules[0]!.handle, '--json'])).stdout) as QualifiedView;
+    const module = JSON.parse((await invoke(root, ['inspect', childGroup.modules[0]!.handle, '--json'])).stdout).mechanical as QualifiedView;
     assert.equal(module.modules.length, 1);
     assert.equal(module.modules[0]!.entityId, childGroup.modules[0]!.entityId);
     assert.ok(module.modules[0]!.exports.some(item => item.exportedName === 'child'));

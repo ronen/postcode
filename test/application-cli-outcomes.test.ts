@@ -31,7 +31,7 @@ for (const host of ['in-process', 'worker'] as const) test(`unknown continuation
   { stdout: text => { stdout += text; }, stderr: text => assert.fail(text) },
   { async submit(value) { batch = value; return { accepted: true }; } });
   assert.equal(code, 3);
-  assert.equal(JSON.parse(stdout).investigations.status, 'unknown-continuation');
+  assert.equal(JSON.parse(stdout).listing.status, 'unknown-continuation');
   assert.equal(session.work()!.status, 'completed');
   assert.equal((batch!.records.find(item => item.kind === 'request-work')!.value as WorkReport).status, 'completed');
   assert.equal(batch!.events.at(-1)!.type, 'command-failed');

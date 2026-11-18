@@ -266,10 +266,11 @@ test('external dependency endpoints remain valid inspection and summary subjects
   const external = dependencies.view.modules.find(module => !module.discoveryFacets.includes('project'));
   assert.ok(external, 'fixture exposes an opaque external endpoint');
   const inspected = requireView(await opened.session.execute({ lens: 'inspect', selector: external.entityId, reference: true, presentation }));
-  assert.equal(inspected.view.schema, 'postcode-view/1-experimental');
-  assert.equal(inspected.view.modules[0]!.id, external.id);
+  assert.equal(inspected.view.schema, 'postcode-contribution-view/1-experimental');
+  assert.equal(inspected.view.mechanical!.schema, 'postcode-view/1-experimental');
+  assert.equal(inspected.view.mechanical!.modules[0]!.id, external.id);
   const summary = requireView(await opened.session.execute({ lens: 'summarize', selector: external.entityId, reference: true, presentation }));
-  assert.equal(summary.view.schema, 'postcode-investigation-view/1-experimental');
-  assert.deepEqual(summary.view.selected, [external.id]);
-  assert.equal(summary.view.result!.unavailable!.kind, 'configuration-unavailable');
+  assert.equal(summary.view.schema, 'postcode-contribution-view/1-experimental');
+  assert.equal(summary.view.reporting!.unavailable!.kind, 'configuration-unavailable');
+  assert.deepEqual(summary.view.summary!.alternatives, []);
 });

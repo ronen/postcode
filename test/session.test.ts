@@ -1,4 +1,4 @@
-import { requireView, programOutput } from './request-helpers.js';
+import { requireNativeView as requireView, programOutput, mechanicalView } from './request-helpers.js';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { test } from 'node:test';
@@ -54,9 +54,8 @@ test('published navigation observations distinguish session references from exac
         assert.equal(observed!.events.some(event => event.type === 'view-produced'), false);
         continue;
       }
-      const view = observed!.records.find(record => record.kind === 'qualified-view')!.value as {
-        projection: { selection: { matches: number } };
-      };
+      const view = mechanicalView(observed!.records.find(record => record.kind === 'qualified-view')!.value as Parameters<typeof mechanicalView>[0]);
+      assert.ok('selection' in view.projection);
       assert.equal(view.projection.selection.matches, item.matches, item.command);
       if (item.reference) assert.doesNotMatch(observed!.records.find(record => record.kind === 'rendered-output')!.value as string, / · current/);
     }

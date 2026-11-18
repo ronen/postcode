@@ -10,7 +10,8 @@ import { configuredInvestigator } from '../src/lib/application/accounts.js';
 import { InvestigationUsage } from '../src/lib/investigation/usage.js';
 import { usageSummary } from '../src/lib/investigation/reporting.js';
 import { usageLines } from '../src/lib/investigation/presentation.js';
-import type { InvestigationView } from '../src/lib/investigation/presentation.js';
+import type { ContributionView as InvestigationView } from '../src/lib/interfaces/cli/contribution-presentation.js';
+import { openAIDialogAgent, chatGPTDialogAgent } from '../src/lib/investigation/openai/contribution-protocol.js';
 import type { AgentInput, AttemptReport, ReportedUsage } from '../src/lib/investigation/contracts.js';
 import type { RecordId } from '../src/lib/records.js';
 import type { ObservationBatch } from '../src/lib/application/observations.js';
@@ -207,13 +208,13 @@ test('SDK service failure after evidence retains usage and acquisition, but a la
   writeFileSync(path.join(root, 'entry.ts'), 'export function entry() { return 7; }');
   let calls = 0;
   const captures: OpenAIExchange[] = [];
-  const agent = openAIInvestigator(sentinel, { onExchange: item => captures.push(item), fetch: async (_url, options) => {
+  const agent = openAIDialogAgent(sentinel, { onExchange: item => captures.push(item), fetch: async (_url, options) => {
     calls++;
     const body = JSON.parse(String(options?.body));
     if (calls % 2 === 0) return http({ error: { code: 'insufficient_quota', message: sentinel } }, 429);
     assert.equal(body.input.length, 1, 'retry is a fresh dialogue, not resumption');
-    const subject = JSON.parse(body.input[0].content).request.subject;
-    return http(response({ output: [call('request_evidence', { requests: [{ kind: 'source', subject }] })] }));
+    const subject = JSON.parse(body.input[0].content).request.subjects[0].moduleRecord;
+    return http(response({ output: [call('request_information', { requests: [{ kind: 'source', subject }] })] }));
   } });
   const opened = await openSession({ configPath }, { investigation: { agent } });
   assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
@@ -221,7 +222,7 @@ test('SDK service failure after evidence retains usage and acquisition, but a la
   const command = { lens: 'summarize' as const, selector: 'entry', presentation: { format: 'json' as const, moreDetails: false } };
   const first = requireView(await opened.session.execute(command)).view as InvestigationView;
   const second = requireView(await opened.session.execute(command)).view as InvestigationView;
-  assert.equal(calls, 4); assert.equal(second.accounts.length, 0); assert.equal(second.result!.reused, false);
+  assert.equal(calls, 4); assert.equal(second.rows.length, 0); assert.equal(second.reporting!.reused, false);
   assert.equal(first.usage.missingCalls, 1); assert.equal(second.usage.missingCalls, 2);
   assert.equal(second.usage.totals[0]!.categories.find(c => c.category === 'total')!.value, 300);
   assert.ok(first.usage.attempts[0]!.suppliedEvidence.length > 0);
@@ -237,7 +238,7 @@ for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode'
   const driver = interactionDriver(() => inputStream.end());
   const batches: ObservationBatch[] = [], captures: OpenAIExchange[] = [];
   let calls = 0, stdout = '', stderr = '', prompts = 0, subject = '';
-  const createAgent = (options: Parameters<typeof openAIInvestigator>[1]) => route === 'api-key' ? openAIInvestigator(sentinel, options) : chatGPTInvestigator({ token: async () => sentinel, watch: () => () => {} }, options);
+  const createAgent = (options: Parameters<typeof openAIDialogAgent>[1]) => route === 'api-key' ? openAIDialogAgent(sentinel, options) : chatGPTDialogAgent({ token: async () => sentinel, watch: () => () => {} }, options);
   const transportResponse = (body: ReturnType<typeof response>) => {
     if (route === 'api-key') return http(body);
     const envelope = { ...body, model: 'gpt-5.6-sol', output: [] };
@@ -252,11 +253,11 @@ for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode'
     calls++;
     const body = JSON.parse(String(options?.body));
     const latest = body.input.filter((item: { role: string }) => item.role === 'user').at(-1);
-    subject = JSON.parse(latest.content).request.subject;
-    if (calls === 1) return transportResponse(response({ output: [call('request_evidence', { requests: [{ kind: 'source', subject }] })] }));
+    subject = JSON.parse(latest.content).request.subjects[0].moduleRecord;
+    if (calls === 1) return transportResponse(response({ output: [call('request_information', { requests: [{ kind: 'source', subject }] })] }));
     const result = JSON.parse(body.input.find((item: { type: string }) => item.type === 'function_call_output').output)[0];
-    assert.equal(result.status, 'available');
-    return transportResponse(response({ output: [call('submit_investigram', draft(subject, result.selected))] }));
+    assert.equal(result.response.status, 'available');
+    return transportResponse(response({ output: [call('submit_contribution', { investigrams: [{ key: 'answer', qualification: { limitations: ['Offline controlled interpretation.'] }, items: [{ key: 'text', type: 'prose', body: { text: 'Returns seven.' }, evidence: result.response.selected }], declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: JSON.parse(latest.content).request.result }, members: [{ kind: 'item', item: { investigram: { local: 'answer' }, item: 'text' } }] }] }] })] }));
   } });
   const exit = await runCli(['shell', '--project', path.join(root, 'tsconfig.json'), ...(format === 'json' ? ['--json'] : [])], {
     cwd: root, checkout: root, input: inputStream,
@@ -275,7 +276,7 @@ for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode'
   assert.equal('projection' in usage, false);
   assert.ok(!batches[2]!.events.some(event => event.type === 'view-produced'));
   for (const view of views) { assert.equal(view.usage.calls, 2); assert.equal(view.usage.totals[0]!.categories.find(c => c.category === 'total')!.value, 300); }
-  assert.equal(views[1]!.result!.reused, true);
+  assert.equal(views[1]!.reporting!.reused, true);
   assert.equal(captures[0]!.request.model, route === 'api-key' ? 'gpt-6-sol' : 'gpt-5.6-sol');
   assert.equal(views[0]!.usage.totals[0]!.agent.configuration.billingRoute, route === 'api-key' ? 'openai-api' : 'chatgpt-plan');
   if (route === 'chatgpt-plan') { assert.match(stderr, /ChatGPT plan usage/); assert.match(JSON.stringify(views[0]!.usage.limitations), /monetary attribution is unavailable/); }

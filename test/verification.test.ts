@@ -1,3 +1,4 @@
+import type { ContributionView } from '../src/lib/interfaces/cli/contribution-presentation.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { normalizeSession } from './comparison.js';
@@ -111,13 +112,17 @@ test('comparison retains complete mixed group/module inspection and embedded ses
     const args = ['inspect', 'mixed', '--more-details', '--project', path.join(root, 'tsconfig.json'), ...format];
     const first = await invokeCli(args), second = await invokeCli(args);
     assert.equal(first.exit, 0, first.stderr); assert.equal(second.exit, 0, second.stderr);
-    const view = (result: typeof first) => result.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as {
-      schema: string; groups: { name: string | null; selected: boolean }[]; moduleDetail: { modules: unknown[] };
+    const view = (result: typeof first) => {
+      const common = result.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as ContributionView;
+      assert.equal(common.schema, 'postcode-contribution-view/1-experimental');
+      const base = common.mechanical!;
+      assert.equal(base.schema, 'postcode-organization-view/1-experimental');
+      return base;
     };
     assert.equal(view(first).schema, 'postcode-organization-view/1-experimental');
     assert.deepEqual(view(first).groups.map(({ name, selected }) => ({ name, selected })),
       [{ name: 'mixed', selected: true }, { name: null, selected: false }]);
-    assert.equal(view(first).moduleDetail.modules.length, 1);
+    assert.equal(view(first).moduleDetail!.modules.length, 1);
     assert.deepEqual(normalizeSession(view(first)), normalizeSession(view(second)));
     assert.equal(normalizeSession(first.stdout), normalizeSession(second.stdout));
   }

@@ -174,8 +174,14 @@ test('without a configured agent the investigation is unavailable and fabricates
   if (opened.status !== 'opened') return;
   t.after(() => opened.session.close());
   const unavailable = answer(await opened.session.execute({ kind: 'lens', lens: 'state-behavior', designation: { kind: 'name', value: 'breaker' } }));
-  assert.deepEqual([unavailable.result.failed, unavailable.result.reporting, unavailable.projection.alternatives, unavailable.projection.fulfillment],
-    [true, { reused: false, attempt: null, contribution: null, unavailable: { kind: 'configuration-unavailable', code: 'investigating-agent-not-configured', diagnostic: 'No investigating agent is configured for contribution investigations.' } }, [], 'no-designated-answer']);
+  assert.deepEqual([unavailable.result.failed, unavailable.projection.alternatives, unavailable.projection.fulfillment], [true, [], 'no-designated-answer']);
+  assert.ok(unavailable.result.reporting?.attempt, 'An unavailable attempt is retained even when no agent can be opened');
+  assert.equal(unavailable.result.reporting?.contribution?.outcome.kind, 'configuration-unavailable');
+  assert.equal(unavailable.result.reporting?.unavailable?.code, 'investigating-agent-not-configured');
+  const retry = answer(await opened.session.execute({ kind: 'lens', lens: 'state-behavior', designation: { kind: 'name', value: 'breaker' } }));
+  assert.equal(retry.result.reporting?.reused, false);
+  assert.notEqual(retry.result.reporting?.attempt, unavailable.result.reporting?.attempt);
+  assert.deepEqual(retry.projection, unavailable.projection);
   const view = arrangeContributionAnswer(unavailable.content, unavailable.result.title);
   assert.equal(view.noCurrentAnswer?.explanation, 'No answer has been designated for this question.');
 });

@@ -40,7 +40,7 @@ test('representative journey preserves direct intermediates, shared parents, com
   assert.ok(parents.limitations.some(text => text.includes('cannot produce a parent result')));
   assert.equal('navigation' in view.presentation, false);
   const inspected = await invoke(config, ['inspect', module('forward').handle, '--json']);
-  const detail = JSON.parse(inspected.stdout) as QualifiedView;
+  const detail = JSON.parse(inspected.stdout).mechanical as QualifiedView;
   assert.equal(detail.modules.length, 1);
   assert.equal(detail.modules[0]!.composition.claims[0]!.property, 're-exports-only');
   assert.deepEqual(viewOf(await invoke(config, ['children', module('left').handle, '--json'])).resolution?.designation, { kind: 'name', value: module('left').handle });
@@ -141,7 +141,7 @@ test('inspection by handle works independently of additional CommonJS dependency
   const config = path.resolve('fixtures/dependency-contract/tsconfig.json');
   const initial = viewOf(await invoke(config, ['dependencies', '--json']));
   const selected = initial.modules.find(module => module.handle === 'requests')!;
-  const inspected = JSON.parse((await invoke(config, ['inspect', selected.handle, '--json'])).stdout) as QualifiedView;
+  const inspected = JSON.parse((await invoke(config, ['inspect', selected.handle, '--json'])).stdout).mechanical as QualifiedView;
   assert.equal(inspected.projection.selection.matches, 1);
   assert.notEqual(inspected.projection.session, initial.projection.session);
 });

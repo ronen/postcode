@@ -155,11 +155,28 @@ test('production exact inspection preserves change and association continuations
   const after = historical.view.listing.next!;
   assert.ok(after);
   denyAcquisition(t);
+  const groups = [...historical.view.qualification];
+  let next: number | null = historical.view.status.next;
+  while (next !== null) {
+    const page = await session.execute({ kind: 'present', target: historical.view.answerReference!, presentation: { ...json, revisionPage: next } });
+    assert.equal(page.kind, 'view'); assert.equal(page.view.schema, 'postcode-contribution-view/1-experimental');
+    assert.deepEqual(page.view.projection, frozen);
+    assert.ok(page.view.qualification.length <= 24);
+    assert.equal(page.view.status.omitted, page.view.status.total - page.view.status.changes.length);
+    groups.push(...page.view.qualification);
+    assert.ok(page.view.status.next === null || page.view.status.next > next);
+    next = page.view.status.next;
+  }
+  assert.equal(groups.length, historical.view.details.qualifications);
+  assert.equal(new Set(groups.map(group => group.source)).size, groups.length);
   for (const format of ['json', 'unicode'] as const) {
     const retained = await session.execute({ kind: 'present', target: historical.view.answerReference!, presentation: { ...json, format, moreDetails: true, revisionPage: 2, after } });
     assert.equal(retained.kind, 'view'); assert.equal(retained.view.schema, 'postcode-contribution-view/1-experimental');
     assert.deepEqual(retained.view.projection, frozen);
-    assert.equal(retained.view.status.changes.length, 2); assert.equal(retained.view.status.next, null);
+    assert.equal(retained.view.status.changes.length, 2);
+    assert.equal(retained.view.status.omitted, 24);
+    assert.ok(retained.view.qualification.length <= 24);
+    assert.ok(retained.view.details.omittedQualifications > 0);
     assert.ok(retained.view.listing.shown > 0); assert.equal(retained.view.listing.omitted, 0);
     assert.equal(retained.failed, false);
     const unknown = await session.execute({ kind: 'present', target: frozen.id, presentation: { ...json, format, revisionPage: 2, after: 'investigram-00000000' } });

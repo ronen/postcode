@@ -1,5 +1,6 @@
 import { identityReference, methods, recordId } from '../identity.js';
 import type { ProgramRecordStore, RecordContext, RecordId } from '../records.js';
+import { answerSupportIdentity } from './support-identity.js';
 import { answerSupport } from './answer-support.js';
 import type { AnswerSupport } from './answer-support.js';
 import type { ContributionLedger } from './ledger.js';
@@ -50,7 +51,16 @@ export function selectContributionInspection(store: ProgramRecordStore, ledger: 
     method: methods.contributionInspection, lens: 'inspect', parameters: {}, subjects, mechanical, uses: [...uses.values()], items: [...items.values()],
     support: support.finish(), investigations: [...new Map(subjects.flatMap(subject => ledger.investigationsOf(subject)).map(invocation => [invocation.id, invocation])).values()],
     coverage: subjects.every(subject => subject.kind === 'entity') ? 'all-retained-associated-uses' : 'exact-selection' });
-  const identity = JSON.parse(JSON.stringify(payload).replaceAll(ledger.session, 'session')) as unknown;
+  // Immutable exact references identify selected content. Hash captured standing,
+  // not operational input-exclusion metadata or literal source text rewritten as IDs.
+  const ref = (id: RecordId | null) => identityReference(ledger.session, id);
+  const address = <T extends { investigram: ItemAddress['investigram'] }>(value: T) => ({ ...value, investigram: ref(value.investigram) });
+  const identity = { kind: payload.kind, method: payload.method, lens: payload.lens, parameters: payload.parameters,
+    subjects: subjects.map(subject => subject.kind === 'entity' ? { ...subject, entity: ref(subject.entity) }
+      : subject.kind === 'investigram' ? { ...subject, investigram: ref(subject.investigram) }
+        : subject.kind === 'content' ? { ...subject, item: address(subject.item) } : { ...subject, association: address(subject.association) }),
+    mechanical: ref(mechanical), uses: payload.uses.map(address), items: payload.items.map(address),
+    support: answerSupportIdentity(ledger.session, payload.support), investigations: payload.investigations.map(value => ref(value.id)), coverage: payload.coverage };
   const answer = { ...payload, id: recordId(ledger.session, payload.kind, [identityReference(ledger.session, ledger.session), identity]) };
   store.put([answer]);
   return store.get(answer.id) as ContributionInspection;

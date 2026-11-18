@@ -6,12 +6,11 @@ import path from 'node:path';
 import { PassThrough } from 'node:stream';
 import { temporaryDirectory, interactionDriver } from './cli-helpers.js';
 import { runCli } from '../src/lib/cli.js';
-import { ScriptedInvestigator } from './investigator-double.js';
-import type { EvidenceResponse } from '../src/lib/evidence-access.js';
+import { ScriptedContributionAgent, moduleRecord, proseContribution, caveat } from './contribution-agent.js';
 import type { ObservationBatch } from '../src/lib/application/observations.js';
 import { observationBatch } from '../src/lib/interfaces/cli/observations.js';
-import type { InvestigationView } from '../src/lib/investigation/presentation.js';
-import { renderInvestigationView } from '../src/lib/investigation/presentation.js';
+import type { ContributionView as InvestigationView } from '../src/lib/interfaces/cli/contribution-presentation.js';
+import { renderContributionView as renderInvestigationView } from '../src/lib/interfaces/cli/contribution-presentation.js';
 import type { QualifiedView } from '../src/lib/presentation.js';
 import { renderView } from '../src/lib/presentation.js';
 import type { QualifiedOrganizationView } from '../src/lib/organization/presentation.js';
@@ -33,10 +32,13 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
   const config = path.join(root, 'tsconfig.json');
   writeFileSync(config, JSON.stringify({ compilerOptions: { noLib: true, types: [] }, files: ['src/entry.ts', 'src/other.ts', 'empty.ts'] }));
   execFileSync('git', ['init', '--quiet', root]);
-  const agent = new ScriptedInvestigator([
-    item => ({ kind: 'tools', requests: [{ kind: 'source', subject: item.request.subject }] }),
-    item => ({ kind: 'submit', result: { localId: 'root', prose: 'Uses the other value.', referent: { description: 'Entry module.', subjects: [item.request.subject] },
-      qualifications: ['Interpretation.'], evidence: (item.responses[0] as EvidenceResponse).selected, associations: [], children: [{ localId: 'child', prose: 'An unsupported inference.', referent: { description: 'Entry module.', subjects: [item.request.subject] }, qualifications: ['No source support supplied.'], evidence: [], associations: [], children: [], corrections: [], inconsistencies: [] }], corrections: [], inconsistencies: [] } }),
+  const agent = new ScriptedContributionAgent([
+    item => ({ kind: 'tools', requests: [{ kind: 'source', subject: moduleRecord(item) }] }),
+    item => { const supplied = item.responses[0]!; assert.equal(supplied.tool, 'evidence');
+      const root = proseContribution(item, 'Uses the other value.', { evidence: supplied.response.selected, key: 'root' });
+      return { kind: 'submit', contribution: { investigrams: [{ ...root.investigrams[0]!, declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: item.request.result },
+        members: [{ kind: 'item', item: { investigram: { local: 'root' }, item: 'prose' } }, { kind: 'item', item: { investigram: { local: 'unsupported' }, item: 'prose' } }] }] },
+        { key: 'unsupported', qualification: caveat, items: [{ key: 'prose', type: 'prose', body: { text: 'An unsupported inference.' } }] }] } }; },
   ]);
   const commands = [
     'inspect @investigram-00000000 --more-details',
@@ -56,7 +58,7 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
     stdout: text => { stdout += text; if (!started && text.includes('postcode> ')) { started = true; setImmediate(() => input.write('summarize entry\n')); } },
     stderr: text => { stderr += text; },
     sink: { async submit(batch) { batches.push(batch); driver.run(() => {
-      if (batches.length === 1) { const data = dataOf(batch) as InvestigationView; answerReference = data.answerReference!; reference = data.references.find(item => item.id === data.accounts[0]!.id)!.reference; emptyReference = data.references.find(item => item.id === data.accounts[1]!.id)!.reference; }
+      if (batches.length === 1) { const data = dataOf(batch) as InvestigationView; answerReference = data.answerReference!; reference = data.rows[0]!.reference; emptyReference = data.rows[1]!.reference; }
       const command = commands[batches.length - 1];
       if (command) input.write(command.replace('REFERENCE', reference).replace('EMPTY', emptyReference).replace('ANSWER', answerReference) + '\n'); else input.end();
     }); return { accepted: true }; } },
@@ -87,27 +89,28 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
       if (index === 9) assert.equal(actual[0]!.sourceLevel, 'organization-paths');
       if (format === 'json') assert.ok(JSON.parse(rendered).moreDetails);
     }
-    if (view.schema === 'postcode-view/1-experimental' && index === 8) {
-      assert.ok(view.moreDetails!.items.flatMap(item => item.evidence).every(item => !('excerpt' in item.location)));
-      const nonconforming = { ...view, moreDetails: { ...view.moreDetails!, items: view.moreDetails!.items.map(item => ({ ...item,
+    const native = view.schema === 'postcode-contribution-view/1-experimental' ? view.mechanical : view;
+    if (native?.schema === 'postcode-view/1-experimental' && index === 8) {
+      assert.ok(native.moreDetails!.items.flatMap(item => item.evidence).every(item => !('excerpt' in item.location)));
+      const nonconforming = { ...native, moreDetails: { ...native.moreDetails!, items: native.moreDetails!.items.map(item => ({ ...item,
         evidence: item.evidence.map(evidence => ({ ...evidence, location: { ...evidence.location, excerpt: { text: 'export const unexpected = 1;' } } })) })) } };
       const unexpectedBatch = observationBatch(nonconforming, renderView(nonconforming), { configPath: config, repositoryRoot: root, methods: [] }, request);
       assert.equal(unexpectedBatch.events.some(event => event.type === 'source-displayed'), format === 'json',
         'truthful exposure follows the renderer: JSON serializes an unexpected excerpt, text does not');
-      const hidden = { ...view, modules: [] };
+      const hidden = { ...native, modules: [] };
       assert.equal(escapes(observationBatch(hidden, renderView(hidden), { configPath: config, repositoryRoot: root, methods: [] }, request)).length,
         format === 'json' ? 1 : 0, 'Unicode does not render source items for omitted modules; JSON serializes them');
     }
-    if (view.schema === 'postcode-dependency-view/1-experimental' && index === 10) {
-      const embedded = { ...view, moreDetails: { ...view.moreDetails!, items: [], organizationEvidence: view.moreDetails!.items.map(item => item.evidence) } };
+    if (native?.schema === 'postcode-dependency-view/1-experimental' && index === 10) {
+      const embedded = { ...native, moreDetails: { ...native.moreDetails!, items: [], organizationEvidence: native.moreDetails!.items.map(item => item.evidence) } };
       assert.equal(escapes(observationBatch(embedded, renderDependencyView(embedded), { configPath: config, repositoryRoot: root, methods: [] }, request)).length,
         format === 'json' ? 1 : 0, 'organization-support source records are embedded only by JSON');
     }
-    if (view.schema === 'postcode-investigation-view/1-experimental' && view.moreDetails?.items.some(item => item.kind === 'source-evidence')) {
-      const nonconforming = { ...view, moreDetails: { ...view.moreDetails, items: view.moreDetails.items.map(item => item.kind === 'source-evidence'
-        ? { ...item, location: { ...item.location, excerpt: { text: 'export const unexpected = 1;' } } } : item) } };
+    if (view.schema === 'postcode-contribution-view/1-experimental' && view.moreDetails.items.length) {
+      const nonconforming = { ...view, moreDetails: { items: view.moreDetails.items.map(item => ({ ...item,
+        location: { ...item.location, excerpt: { text: 'export const unexpected = 1;' } } })) } };
       const unexpectedBatch = observationBatch(nonconforming, renderInvestigationView(nonconforming), { configPath: config, repositoryRoot: root, methods: [] }, request);
-      assert.ok(unexpectedBatch.events.some(event => event.type === 'source-displayed'), 'investigation text and JSON both serialize supporting detail');
+      assert.equal(unexpectedBatch.events.some(event => event.type === 'source-displayed'), format === 'json', 'only JSON serializes an unexpected extra source field');
     }
     // Exercise present-but-empty containers and metadata-only containers through
     // the real renderers and shared observation boundary for every view family.
@@ -119,8 +122,8 @@ for (const format of ['unicode', 'json'] as const) test(`source observations fol
         empty = { ...view, moduleDetail: null, moreDetails: { ...view.moreDetails!, repositoryRoot: null, groups: [], modules: null } }; render = renderOrganizationView; break;
       case 'postcode-dependency-view/1-experimental':
         empty = { ...view, moreDetails: { ...view.moreDetails!, items: [], organizationEvidence: (view.moreDetails?.organizationEvidence ?? []).filter(item => item.kind === 'claim' || item.kind === 'claim-context') } }; render = renderDependencyView; break;
-      case 'postcode-investigation-view/1-experimental':
-        empty = { ...view, moreDetails: { level: 'investigation-support', items: [] } }; render = renderInvestigationView; break;
+      case 'postcode-contribution-view/1-experimental':
+        empty = { ...view, mechanical: null, moreDetails: { items: [] } }; render = renderInvestigationView; break;
     }
     if (view.moreDetails) assert.deepEqual(escapes(observationBatch(empty, render(empty as never), { configPath: config, repositoryRoot: root, methods: [] }, request)), [], `empty ${view.schema}`);
   }

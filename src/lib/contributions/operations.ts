@@ -1,5 +1,5 @@
 import { componentSelectorGuidance } from './catalog.js';
-import { methods } from '../identity.js';
+import { digest, methods } from '../identity.js';
 import { freezeOwned } from '../immutable.js';
 import type { DialogOperation } from './dialog.js';
 import type { ResultContract } from './outcomes.js';
@@ -11,6 +11,10 @@ import { stateBehaviorGuidance, stateDiagramContract } from './state-model.js';
  */
 export interface ContributionOperation extends Omit<DialogOperation, 'contract'> { readonly subject: 'module' | 'selected-content' }
 export type ContributionOperationCatalog = Readonly<Record<string, ContributionOperation>>;
+/** The authored method and actual fixed operation guidance both qualify reusable work. */
+export function contributionOperationMethod(operation: ContributionOperation, catalog: ContributionOperationCatalog = contributionOperations): string {
+  return `${operation.method} definition:${digest({ operation, catalog })}`;
+}
 export const contributionOperations: Readonly<Record<string, ContributionOperation>> = freezeOwned({
   functionality: { id: 'functionality', subject: 'module', method: `${methods.contributionDialog} postcode/functionality@2`,
     objective: 'Give a deliberately terse account of apparent module functionality and division of responsibility. Explain significant mechanisms, cases and delegation. Follow useful delegation across multiple modules; avoid structural labels as a substitute for functionality. Do not invent a unifying role for mixed responsibilities.' },
@@ -41,6 +45,7 @@ export function followUpInstructions(catalog: ContributionOperationCatalog = con
       ? 'one discovered module Entity, { kind: "entity", entity }. A newly invented Entity is not a discovered module.'
       : 'one exact content item { kind: "content", item: { investigram, item }, component?: string }, result designation { kind: "designation", association: { investigram, declaration } }, or contribution { kind: "investigram", investigram }. Submission-local references are allowed.'} ${operation.objective}`),
     componentSelectorGuidance,
+    'For state-model content, components are state:<key> for each state key and transition:<key> for each transition key.',
     'SUPPORTED OPTIONAL RESULT CONTRACTS: omit resultContract when no specialized form is promised.',
     ...Object.values(contributionResultContracts).map(contract => `${contract.id}: ${contract.requirements.map(requirement => requirement.description).join(' ')}`),
     'Set the option meaning to the specific question being proposed. Invoking that exact owner/key preserves its meaning as the delegated question; another option is a different question even if operation and subjects match.',

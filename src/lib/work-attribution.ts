@@ -122,7 +122,8 @@ export class WorkReportState {
 
 export interface EvidenceWork {
   readonly current: WorkOrigin;
-  readonly query: InvestigatorTool | { readonly kind: 'initial-context'; readonly subject: RecordId } | { readonly kind: 'invalid' };
+  readonly query: InvestigatorTool | { readonly kind: 'initial-context'; readonly subject: RecordId } | { readonly kind: 'invalid' }
+    | { readonly kind: 'contribution'; readonly request: import('./contributions/dialog.js').ContributionTool };
   readonly outcome: {
     readonly status: 'available' | 'partial' | 'unavailable';
     readonly records: readonly RecordId[];
@@ -136,6 +137,7 @@ export interface EvidenceWork {
     readonly repositories?: EvidenceResponse['repositories'];
     readonly omittedAccounts?: readonly RecordId[];
     readonly omittedCorrections?: readonly RecordId[];
+    readonly contributions?: readonly import('./contributions/model.js').Delivery[];
   } | null;
   readonly delivery: 'not-delivered' | 'delivered' | 'withheld';
   readonly reason: string | null;
@@ -144,6 +146,7 @@ export interface EvidenceWork {
 export interface EvidenceWorkHandle {
   readonly scope: WorkScope;
   acquired(response: ToolResponse): void;
+  acquiredContributions(deliveries: readonly import('./contributions/model.js').Delivery[], limitations: readonly string[], available: boolean): void;
   withheld(reason: string): void;
   delivered(): void;
 }
@@ -239,6 +242,12 @@ export class RequestWork {
         records: [...new Set([...(this.evidenceWork[index]?.outcome?.records ?? []),
           ...(this.evidenceWork[index]?.outcome?.evaluations.map(item => item.id) ?? [])])], limitations: response.limitations,
       });
+    }, acquiredContributions: (deliveries, limitations, available) => {
+      const records = [...new Set(deliveries.flatMap(delivery => delivery.kind === 'item' ? [delivery.item.investigram]
+        : delivery.kind === 'association' ? [delivery.association.investigram] : delivery.kind === 'declaration' ? [delivery.declaration.investigram]
+          : delivery.kind === 'metadata' ? [delivery.address.investigram] : []))];
+      update({ outcome: { status: available ? 'available' : 'unavailable', records, selected: records, limitations, evaluations: [], contributions: deliveries } });
+      scope.record('evidence-retrieval', available ? 'consumed' : 'unavailable', { records, limitations });
     }, withheld: reason => update({ delivery: 'withheld', reason }), delivered: () => {
       if (this.evidenceWork[index]?.delivery !== 'withheld') update({ delivery: 'delivered' });
     } };

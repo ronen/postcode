@@ -222,7 +222,7 @@ export function arrangeDependencyView(content: DependencyProjectionContent, ids:
   return withDiagnosticMeanings(result);
 }
 
-export function renderDependencyView(view: QualifiedDependencyView): string {
+export function renderDependencyView(view: QualifiedDependencyView, enclosed = false): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
   const counted = (count: number, noun: string) => `${count} ${noun}${count === 1 ? '' : 's'}`;
   const modules = new Map(view.modules.map(module => [module.id, module]));
@@ -238,7 +238,7 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
     'Analysis outcomes below describe supported source requests, not complete runtime behavior.',
     `Display bounds: ${counted(view.display.omittedModules, 'module')} and ${counted(view.display.omittedRelationships, 'relationship')} omitted; ${counted(view.display.prunedComponents, 'further descent')} pruned.`];
   for (const [name, outcome] of Object.entries(view.evaluations)) if (outcome) lines.push(`${name}: ${outcome.availability}, ${outcome.execution}, materialization ${outcome.materialization}${outcome.reason ? ` · ${inlineText(outcome.reason)}` : ''}`);
-  lines.push(...nativeConcernLines(view.contributionConcerns), ...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
+  lines.push(...nativeConcernLines(view.contributionConcerns), ...(enclosed ? [] : [...answerLines(view), ...continuationLines(view)]), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
   if (view.projection.subject === 'selected-modules') {
     if (view.projection.selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; dependency detail is unavailable in this answer.');
     lines.push(`${view.projection.selection.matches} ${lookupDescription(view.resolution, view.projection.selection.matches) ?? 'selected modules'}`);
@@ -300,6 +300,6 @@ export function renderDependencyView(view: QualifiedDependencyView): string {
   lines.push('', 'Display', `  ${counted(view.display.omittedModules, 'module')} omitted · ${counted(view.display.omittedRelationships, 'relationship')} omitted · ${counted(view.display.prunedComponents, 'descent')} pruned`,
     `  ${counted(view.display.omittedOccurrences, 'supporting occurrence')} omitted · ${counted(view.display.omittedRequestResults, 'request result')} summarized/omitted · ${counted(view.display.omittedCoverageOutcomes, 'recognition outcome')} summarized/omitted`,
     '  Display bounds do not reduce analysis coverage.', '', 'Qualifications', ...view.limitations.map(item => `  ${item}`));
-  lines.push(...diagnosticLines(view.qualifications, '  '));
+  if (!enclosed) lines.push(...diagnosticLines(view.qualifications, '  '));
   return `${lines.join('\n')}\n`;
 }

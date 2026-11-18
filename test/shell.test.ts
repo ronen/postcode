@@ -1,3 +1,5 @@
+import { mechanicalView } from './request-helpers.js';
+import type { ContributionView } from '../src/lib/interfaces/cli/contribution-presentation.js';
 import type { QualifiedOrganizationView } from '../src/lib/organization/presentation.js';
 import { interactionDriver } from './cli-helpers.js';
 import assert from 'node:assert/strict';
@@ -68,7 +70,7 @@ test('adaptive shell uses prior references, records syntax refusals, finishes on
   assert.deepEqual(batches.map(batch => batch.command), [1, 2, 3, 4]);
   assert.deepEqual(batches[0]!.events.map(event => event.type), ['command-refused']);
   assert.ok(!batches[0]!.records.some(item => item.kind === 'qualified-view'));
-  const inspection = batches[2]!.records.find(item => item.kind === 'qualified-view')!.value as QualifiedView;
+  const inspection = mechanicalView(batches[2]!.records.find(item => item.kind === 'qualified-view')!.value as ContributionView) as QualifiedView;
   assert.equal(inspection.projection.selection.matches, 1);
   assert.ok(inspection.moreDetails);
   const navigation = batches[2]!.records.find(item => item.kind === 'request')!.value as { request: { designation: { kind: string } } };
@@ -101,7 +103,7 @@ test('ambiguous one-shot lookup recovers through an in-session lookup and precis
     sink: { async submit(batch) {
       batches.push(batch);
       driver.run(() => {
-        const view = batch.records.find(item => item.kind === 'qualified-view')!.value as { groups: { entityId: string }[] };
+        const view = mechanicalView(batch.records.find(item => item.kind === 'qualified-view')!.value as ContributionView) as QualifiedOrganizationView;
         if (batches.length === 1) input.write(`inspect @${view.groups[0]!.entityId}\n`);
         else input.end();
       });
@@ -110,18 +112,17 @@ test('ambiguous one-shot lookup recovers through an in-session lookup and precis
   }), 0);
   driver.verify();
   assert.equal(batches.length, 2);
-  const views = batches.map(batch => batch.records.find(item => item.kind === 'qualified-view')!.value as {
-    projection: { selection: { matches: number } };
-  });
-  assert.ok(views[0]!.projection.selection.matches > 1);
-  const oneShot = normalizeSession(original as QualifiedOrganizationView);
-  const inSession = normalizeSession(views[0] as QualifiedOrganizationView);
-  assert.equal(oneShot.investigations!.referenceLifetime, 'command');
-  assert.equal(inSession.investigations!.referenceLifetime, 'session');
-  assert.notEqual(inSession.id, oneShot.id, 'reference lifetime changes the view identity, not its projection');
-  assert.deepEqual(inSession, { ...oneShot, id: inSession.id, referenceLifetime: 'session', referenceNotice: inSession.referenceNotice,
-    moduleDetail: oneShot.moduleDetail ? { ...oneShot.moduleDetail, id: inSession.moduleDetail!.id, referenceLifetime: 'session', referenceNotice: inSession.moduleDetail!.referenceNotice } : null, investigations: { ...oneShot.investigations, referenceLifetime: 'session' } });
-  assert.equal(views[1]!.projection.selection.matches, 1);
+  const views = batches.map(batch => batch.records.find(item => item.kind === 'qualified-view')!.value as ContributionView);
+  const bases = views.map(view => mechanicalView(view) as QualifiedOrganizationView);
+  assert.ok(bases[0]!.projection.selection.matches > 1);
+  const oneShot = normalizeSession(original as ContributionView), inSession = normalizeSession(views[0]!);
+  assert.equal(oneShot.referenceLifetime, 'command'); assert.equal(inSession.referenceLifetime, 'session');
+  assert.notEqual(inSession.id, oneShot.id, 'reference lifetime changes the View identity, not its projection');
+  assert.deepEqual(inSession.projection, oneShot.projection);
+  assert.deepEqual(inSession.rows, oneShot.rows);
+  assert.deepEqual(inSession.uses, oneShot.uses);
+  assert.equal(bases[1]!.projection.selection.matches, 1);
+
 });
 
 for (const terminal of ['dumb', 'xterm']) test(`idle Ctrl-C discards its input line and EOF finishes the next accepted command (${terminal})`, { timeout: 30000 }, async t => {

@@ -8,6 +8,7 @@ import type { DialogAgent, DialogEvidence, DialogExecution, DialogOutcome } from
 import type { ContributionLedger } from './ledger.js';
 import type { Invocation, InvocationRequest, MetadataAddress, Production, ProducerReport, QueryResultId } from './model.js';
 import type { ContributionOperation, ContributionOperationCatalog } from './operations.js';
+import { contributionOperationMethod } from './operations.js';
 import type { ResultContract } from './outcomes.js';
 import { assessFulfillment, attemptAnswers } from './outcomes.js';
 
@@ -23,7 +24,7 @@ export interface ContributionEvaluated {
   /** True when a compatible retained outcome answered the request and no dialog ran. */
   readonly reused: boolean;
   readonly execution: DialogExecution | null;
-  /** The retained attempt that was reused, when one was. */
+  /** The retained attempt selected without a dialog execution, including configuration failure. */
   readonly attempt: Production | null;
   readonly unavailable: AgentFailure | null;
 }
@@ -51,9 +52,10 @@ export function contributionEvaluation(store: ProgramRecordStore, ledger: Contri
   return { async evaluate(request: InvocationRequest, operation: ContributionOperation, contract: ResultContract | null,
     options: { readonly fresh?: boolean; readonly context?: readonly MetadataAddress[]; readonly subject: RecordId; readonly work?: RequestWork }): Promise<ContributionEvaluated> {
     await check();
+    const method = contributionOperationMethod(operation, dependencies.operations);
     const { invocation, result } = ledger.invoke(request, { fresh: options.fresh === true });
     if (!options.fresh) {
-      const candidates = ledger.productions().filter(production => production.invocation !== null && ledger.invocation(production.invocation).result === result.id
+      const candidates = ledger.productions().filter(production => production.producer.method === method && production.invocation !== null && ledger.invocation(production.invocation).result === result.id
         && (production.outcome.kind === 'accepted' || !transient.includes(production.outcome.failure.kind)));
       // A completed accepted investigation remains reusable even if an earlier attempt failed.
       // This selects execution reporting only; every standing claim is still selected independently.
@@ -67,14 +69,23 @@ export function contributionEvaluation(store: ProgramRecordStore, ledger: Contri
       }
     }
     const agent = dependencies.selectDialogAgent ? await dependencies.selectDialogAgent(request) : dependencies.dialogAgent ?? dependencies.agent;
-    if (!agent) return { invocation, result: result.id, reused: false, execution: null, attempt: null, attemptResult: null, unavailable: { kind: 'configuration-unavailable',
-      code: 'investigating-agent-not-configured', diagnostic: 'No investigating agent is configured for contribution investigations.' } };
-    const execution = await conductDialog({ ledger, store, evidence, operation: { ...operation, contract }, invocation: invocation.id, agent, ...(options.work ? { work: options.work } : {}), ...(dependencies.operations ? { operations: dependencies.operations } : {}), usage, check, signal,
-      ...Object.fromEntries((['onReport', 'onProgress'] as const).map(kind => [kind, (report: Omit<AttemptReport, 'session' | 'request'>) => dependencies[kind]?.({ ...report, session: ledger.session,
+    if (!agent) {
+      const unavailable: AgentFailure = { kind: 'configuration-unavailable', code: 'investigating-agent-not-configured',
+        diagnostic: 'No investigating agent is configured for contribution investigations.' };
+      const attempt = ledger.abandon(ledger.begin({ producer: { mechanism: 'agentic', method, agent: null }, invocation: invocation.id }), unavailable.kind, unavailable);
+      const attemptResult = { outcome: unavailable, fulfillment: null, report: null };
+      completed.set(attempt.id, attemptResult);
+      options.work?.scope('Retain the unavailable investigation attempt; no agent was opened.', attempt.id).record('interpretation', 'established', {
+        records: [attempt.id], limitations: [unavailable.diagnostic] });
+      return { invocation, result: result.id, reused: false, execution: null, attempt, attemptResult, unavailable };
+    }
+    const report = (value: Omit<AttemptReport, 'session' | 'request'>): AttemptReport => ({ ...value, session: ledger.session,
         ...(options.work ? { parent: options.work.context } : {}),
         request: { operation: operation.id, subject: options.subject, parameters: {} },
         ...(request.option ? { followUp: { owner: request.option.investigram, key: request.option.key,
-          meaning: ledger.investigram(request.option.investigram).options.find(option => option.key === request.option!.key)!.meaning } } : {}) })])),
+          meaning: ledger.investigram(request.option.investigram).options.find(option => option.key === request.option!.key)!.meaning } } : {}) });
+    const execution = await conductDialog({ ledger, store, evidence, operation: { ...operation, method, contract }, invocation: invocation.id, agent, ...(options.work ? { work: options.work } : {}), ...(dependencies.operations ? { operations: dependencies.operations } : {}), usage, check, signal,
+      onReport: value => dependencies.onReport?.(report(value)), onProgress: value => dependencies.onProgress?.(report(value)),
       ...(dependencies.bounds ? { bounds: dependencies.bounds } : {}), ...(options.context ? { context: options.context } : {}) });
     if (signal.aborted) throw signal.reason;
     const { outcome } = execution;

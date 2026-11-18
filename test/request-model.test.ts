@@ -186,7 +186,7 @@ test('missing and inapplicable designation modes are refused before Evaluation',
     if (result.kind !== 'resolution') throw new Error('Expected resolution');
     assert.equal(result.report.resolution.reason, 'invalid-designation');
     if (request.selector === 'foo') {
-      assert.match(result.report.resolution.explanation, /requires a precise investigram reference/);
+      assert.match(result.report.resolution.explanation, /requires a precise contribution reference/);
       assert.doesNotMatch(result.report.resolution.explanation, /population|matches/);
       assert.deepEqual(result.report.context.request.kind === 'lens' && result.report.context.request.designation, { kind: 'name', value: 'foo' });
     }

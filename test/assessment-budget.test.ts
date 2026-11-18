@@ -55,10 +55,11 @@ test('controlled earlier interpretation is explicitly scripted and never sends a
   const captures: unknown[] = [], usage: unknown[] = [];
   const agent = injectedSetup({ id: 'controlled', prose: 'Earlier root.', childProse: 'Earlier part.', qualifications: ['Injected test context.'] }, (value: unknown) => captures.push(value));
   const dialogue = agent.open();
-  const reply = await dialogue.exchange({ request: { subject: 'module:test' } }, new AbortController().signal, (value: unknown) => usage.push(value));
+  const reply = await dialogue.exchange({ request: { result: 'result:test', subjects: [{ subject: { kind: 'entity', entity: 'entity:test' } }] }, responses: [] }, new AbortController().signal, (value: unknown) => usage.push(value));
   assert.equal(agent.identity.origin, 'scripted'); assert.equal(agent.identity.configuration.providerRequests, false);
-  assert.equal(reply.kind, 'submit'); assert.equal(reply.result.children[0].prose, 'Earlier part.');
-  assert.deepEqual(reply.result.referent.subjects, ['module:test']);
+  assert.equal(reply.kind, 'submit'); assert.equal(reply.contribution.investigrams[1].items[0].body.text, 'Earlier part.');
+  assert.equal(reply.contribution.investigrams[0].declarations[0].target.result, 'result:test');
+  assert.equal(reply.contribution.investigrams[0].declarations[0].members.length, 2);
   assert.deepEqual(usage, [{ source: 'synthetic', categories: [] }]); assert.equal(captures.length, 1);
   dialogue.close(); await assert.rejects(dialogue.exchange({}, new AbortController().signal, () => {}), /Closed/);
 });
@@ -67,17 +68,20 @@ test('controlled setup can acquire source before a mistaken account and retain e
   const { injectedSetup } = await import(new URL('../../scripts/module-investigation/injected-setup.mjs', import.meta.url).href);
   const captures: any[] = [];
   const source = injectedSetup({ id: 'source-first', prose: 'One label only.', acquireSource: true, qualifications: ['Scripted static interpretation.'] }, (value: unknown) => captures.push(value)).open();
-  assert.deepEqual(await source.exchange({ request: { subject: 'module:A' }, responses: [] }, new AbortController().signal, () => {}), { kind: 'tools', requests: [{ kind: 'source', subject: 'module:A' }] });
-  const result = await source.exchange({ request: { subject: 'module:A' }, responses: [{ records: [{}], selected: ['capture:A'] }] }, new AbortController().signal, () => {});
-  assert.equal(result.kind, 'submit'); assert.deepEqual(result.result.evidence, ['capture:A']);
+  assert.deepEqual(await source.exchange({ request: { result: 'result:A', subjects: [{ moduleRecord: 'module:A', subject: { kind: 'entity', entity: 'entity:A' } }] }, responses: [] }, new AbortController().signal, () => {}), { kind: 'tools', requests: [{ kind: 'source', subject: 'module:A' }] });
+  const result = await source.exchange({ request: { result: 'result:A', subjects: [{ moduleRecord: 'module:A', subject: { kind: 'entity', entity: 'entity:A' } }] }, responses: [{ tool: 'evidence', response: { records: [{}], selected: ['capture:A'] } }] }, new AbortController().signal, () => {});
+  assert.equal(result.kind, 'submit'); assert.deepEqual(result.contribution.investigrams[0].items[0].evidence, ['capture:A']);
   assert.equal(captures.length, 2); assert.ok(captures.every(item => item.providerRequests === 0));
   const correction = injectedSetup({ id: 'branch', prose: 'Alternative follows.', citeSubject: true,
     qualifications: ['Scripted alternative.'], correction: { reason: 'Alternative reason.', prose: 'Replacement.' } }, () => {}).open();
-  const reply = await correction.exchange({ request: { subject: 'account:A' }, responses: [{ accounts: [{ id: 'account:A', originatingModule: 'module:A' }] }] }, new AbortController().signal, () => {});
-  assert.deepEqual(reply.result.referent.subjects, ['module:A']);
-  assert.equal(reply.result.corrections[0].target, 'account:A');
-  assert.deepEqual(reply.result.corrections[0].correctedSubjects, ['module:A']);
-  assert.deepEqual(reply.result.corrections[0].evidence, ['account:A']);
+  const subject = { kind: 'designation', association: { investigram: 'account:A', declaration: 'answer' } };
+  const reply = await correction.exchange({ request: { result: 'result:B', subjects: [{ subject }] }, responses: [{ tool: 'contribution', kind: 'association', value: { address: subject.association, declaration: { target: { kind: 'result', result: 'result:A' } } } }] }, new AbortController().signal, () => {});
+  const change = reply.contribution.investigrams[1].declarations[0];
+  assert.deepEqual(change.displaces, [subject.association]);
+  assert.deepEqual(change.target, { kind: 'result', result: 'result:A' });
+  assert.equal(change.grounds.text, 'Alternative reason.');
+  assert.equal(reply.contribution.investigrams[0].declarations[0].target.result, 'result:B');
+
 });
 
 test('frozen setup sequence selects attributed participants in order and refuses an unexpected operation', async t => {

@@ -6,21 +6,32 @@ import type { Qualification } from '../../contributions/model.js';
 import { answerDisplay, answerIdentity, answerLines, answerContinuations, continuationLines } from './answer-presentation.js';
 import type { AnswerContext } from './answer-presentation.js';
 import { presentationMethods } from './methods.js';
-import { finalizeInvestigationUsage } from '../../investigation/presentation.js';
+import { finalizeInvestigationUsage, usageLines } from '../../investigation/presentation.js';
+import { usageSummary } from '../../investigation/reporting.js';
 import type { InvestigationUsageReport } from '../../investigation/reporting.js';
 import type { AnswerDelivery } from '../../application/contracts.js';
 import { identityReference, recordId } from '../../identity.js';
 import type { RecordId } from '../../records.js';
+import { presentationChanges } from '../../presentation-contracts.js';
 import type { PresentedOptions } from '../../presentation-contracts.js';
 import type { ResolutionContext } from '../../resolution-context.js';
-import { resolutionContextIdentity } from '../../resolution-context.js';
+import { lookupQualifications, resolutionContextIdentity } from '../../resolution-context.js';
 import { inlineText, terminalText } from '../../terminal-text.js';
 import { sourceAttribution } from '../../evidence-view.js';
-import { diagnosticLines, withDiagnosticMeanings } from '../../diagnostic-view.js';
+import { presentAssertion } from '../../documentation-view.js';
+import { presentQualification } from '../../qualification-view.js';
+import { diagnosticContexts, diagnosticLines, withDiagnosticMeanings } from '../../diagnostic-view.js';
 import { renderMechanicalView } from '../../program-presentation.js';
 import type { createMechanicalView } from '../../program-presentation.js';
 
 type MechanicalView = ReturnType<typeof createMechanicalView>;
+function nestedMechanical(view: MechanicalView): MechanicalView {
+  if (!('diagnosticMeanings' in view)) return view;
+  const { diagnosticMeanings: _meanings, ...body } = view;
+  return body;
+}
+const ownerReport = (value: { readonly inability?: string | null; readonly statement?: string | null } | null): readonly string[] => value ? [
+  ...(value.inability ? [`Producer-reported inability: ${value.inability}`] : []), ...(value.statement ? [value.statement] : [])] : [];
 const qualified = (value: Qualification | null): readonly string[] => value ? [
   `${value.status} (${value.method})${value.scope ? `; scope: ${value.scope}` : ''}.`,
   ...(value.guarantee ? [value.guarantee] : []), ...value.limitations,
@@ -48,7 +59,7 @@ export function arrangeContributionView(content: ContributionAnswerContent | Con
     const item = value.item, owner = support.owners.find(owner => owner.investigram === value.address.investigram)!;
     const prose = item.type === 'prose' ? (item.body as { text: string }).text : null;
     return { address: value.address, reference: references.get(value.address.investigram)!, type: item.type,
-      prose, names: value.identifyingNames, components: item.components, qualifications: [...qualified(owner.qualification), ...qualified(item.qualification)],
+      prose, names: value.identifyingNames, components: item.components, qualifications: [...qualified(owner.qualification), ...ownerReport(owner.report), ...qualified(item.qualification)],
       producer: owner.producer, origin: owner.origin, evidence: item.evidence,
       concerns: owner.producing, inconsistencies: value.inconsistencies,
       unpresented: prose !== null || value.identifyingNames.length ? null : `The exact ${item.type} body is available through application content. This listing does not render it.` };
@@ -59,45 +70,52 @@ export function arrangeContributionView(content: ContributionAnswerContent | Con
     producing: value.status.producing, inconsistencies: value.status.inconsistencies,
   }));
   // Display all material qualification for selected support, separately attributed. No raw bodies or captured inputs.
-  const qualification = [
-    ...support.owners.map(owner => ({ source: owner.investigram, statements: qualified(owner.qualification), concerns: owner.producing })),
+  const qualificationGroups = [
+    ...support.owners.map(owner => ({ source: owner.investigram, statements: [...qualified(owner.qualification), ...ownerReport(owner.report)], concerns: owner.producing })),
     ...support.items.map(item => ({ source: itemKey(item.address), statements: qualified(item.item.qualification), concerns: [] })),
     ...support.uses.map(use => ({ source: addressKey(use.address), statements: qualified(use.declaration.qualification), concerns: [...use.status.membership, ...use.status.producing] })),
-  ];
+  ].filter(group => group.statements.length || group.concerns.length);
   const page = options.revisionPage ?? 1;
+  const qualification = qualificationGroups.slice((page - 1) * 24, page * 24);
   const changes = support.changes.map(change => ({ address: change.address, operation: change.declaration.operation,
     displaces: 'displaces' in change.declaration ? change.declaration.displaces : [], grounds: change.declaration.grounds, qualification: change.declaration.qualification, standing: change.standing }));
-  const status = { total: changes.length, page, changes: changes.slice((page - 1) * 24, page * 24), omitted: Math.max(0, changes.length - 24),
-    next: changes.length > page * 24 ? page + 1 : null };
-  const conflicts = support.metadata.filter(value => 'endpoints' in value.value).map(value => ({ address: value.address, value: value.value }));
+  const allConflicts = support.metadata.filter(value => 'endpoints' in value.value).map(value => ({ address: value.address, value: value.value }));
+  const conflicts = allConflicts.slice((page - 1) * 24, page * 24);
+  const details = { page, qualifications: qualificationGroups.length, omittedQualifications: qualificationGroups.length - qualification.length,
+    conflicts: allConflicts.length, omittedConflicts: allConflicts.length - conflicts.length };
+  const shownChanges = changes.slice((page - 1) * 24, page * 24);
+  const status = { total: changes.length, page, changes: shownChanges, omitted: changes.length - shownChanges.length,
+    next: Math.max(changes.length, qualificationGroups.length, allConflicts.length) > page * 24 ? page + 1 : null };
   const omitted = inspection ? valid ? Math.max(0, owners.length - index - 1 - shownOwners.length) : owners.length : 0;
   const next = omitted && shownOwners.length ? references.get(shownOwners.at(-1)!)! : null;
   const summary = projection.kind === 'contribution-projection' ? arrangeContributionAnswer({ projection }, options.title) : null;
-  const details = options.presentation.moreDetails ? support.evidence.flatMap(record => record.kind === 'source-evidence' ? [sourceAttribution(record)] : []) : [];
+  const sourceDetails = options.presentation.moreDetails ? support.evidence.flatMap(record => record.kind === 'source-evidence' ? [sourceAttribution(record)] : []) : [];
   const diagnostics = support.evidence.filter(record => record.kind === 'claim-context');
+  const evidenceSupport = (mechanical && support.owners.every(owner => owner.producer.mechanism === 'mechanical') ? [] : support.evidence).flatMap(record => record.kind === 'recorded-assertion' ? [{ id: record.id, status: record.status,
+    assertion: presentAssertion(record, options.presentation, true), qualification: presentQualification(diagnostics.find(context => context.id === record.context)!) }] : []);
   const continuation = after === undefined ? { none: true } : index >= 0 ? { reference: identityReference(session, owners[index]!) } : { literal: after };
   const key = recordId(session, 'contribution-arrangement', [presentationMethods.contributionPresentation, identityReference(session, projection.id),
     mechanical ? identityReference(session, mechanical.id) : null, options.title, options.presentation, answerIdentity(options), continuation, page,
     resolutionContextIdentity(session, options.resolution), reporting]);
   const view = finalizeInvestigationUsage(withDiagnosticMeanings({ ...answerDisplay(options), schema: 'postcode-contribution-view/1-experimental' as const,
     id: key, projection: { id: projection.id, session, lens: projection.lens, method: projection.method, parameters: projection.parameters }, title: options.title,
-    presentation: options.presentation, mechanical, summary, rows, uses, qualification, conflicts, status,
+    presentation: options.presentation, mechanical: mechanical ? nestedMechanical(mechanical) : null, summary, rows, uses, qualification, conflicts, status, details,
     listing: { total: owners.length, shown: shownOwners.length, omitted, next, status: valid ? 'available' as const : 'unknown-continuation' as const },
-    references: [...references], diagnostics, moreDetails: { items: details }, reporting, usage,
+    references: [...references], diagnostics, support: evidenceSupport, moreDetails: { items: sourceDetails }, reporting, usage,
     ...(options.resolution ? { resolution: options.resolution } : {}),
     continuations: answerContinuations(projection.id, options, options.presentation, { after: options.after, revisionPage: page, next, nextPage: status.next, unknownContinuation: !valid }),
     notices: [inspection ? 'Exact selected content and all retained explicit associated uses, with their captured standing. Listing order implies no authority.' : 'Current designated answers; equally standing alternatives remain separate.',
       'Inspect a contribution reference for a new status selection. Present this answer to preserve its captured selection and status.',
       ...(omitted ? [`${omitted} contribution(s) omitted from this page; use the supplied continuation.`] : []),
       ...(!valid ? ['The continuation is not in this answer’s fixed listing. This presentation retains failed status.'] : []),
-      ...(status.omitted ? ['Some change grounds are on other status pages; all exact causes remain in the application answer.'] : [])],
+      ...(status.omitted || details.omittedQualifications || details.omittedConflicts ? [`Status pages omit ${status.omitted} change(s), ${details.omittedQualifications} qualification group(s) and ${details.omittedConflicts} inconsistency report(s) from this page. Use --revision-page for the fixed details; all exact support remains in the application answer.`] : [])],
   }), usage, key, presentationMethods.contributionPresentation);
   return { view, investigationArrangementKey: key };
 }
 export type ContributionView = ReturnType<typeof arrangeContributionView>['view'];
 export function renderContributionView(view: ContributionView): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
-  const lines = [view.mechanical ? renderMechanicalView(view.mechanical) : inlineText(view.title), ...answerLines(view), ...view.notices.map(inlineText)];
+  const lines = [view.mechanical ? renderMechanicalView(view.mechanical, true) : inlineText(view.title), ...answerLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution), ...view.notices.map(inlineText)];
   if (view.reporting?.unavailable) lines.push(inlineText(view.reporting.unavailable.diagnostic));
   if (view.reporting?.contribution?.outcome.kind && view.reporting.contribution.outcome.kind !== 'accepted') lines.push(`Attempt: ${inlineText(view.reporting.contribution.outcome.kind)}`);
   if (view.summary) {
@@ -123,7 +141,15 @@ export function renderContributionView(view: ContributionView): string {
   for (const change of view.status.changes) lines.push(`${inlineText(addressKey(change.address))}: ${change.operation}; ${inlineText(change.grounds?.text ?? '')}`,
     ...qualified(change.qualification).map(text => `Qualification: ${inlineText(text)}`));
   for (const conflict of view.conflicts) if ('grounds' in conflict.value) lines.push(`Unresolved inconsistency (${inlineText(JSON.stringify(conflict.address))}): ${inlineText(conflict.value.grounds.text)}`);
+  for (const item of view.support) lines.push('Recorded assertion; truth and currency are not established.', terminalText(item.assertion.text),
+    ...(item.assertion.omittedTextCharacters ? [`${item.assertion.omittedTextCharacters} assertion character(s) omitted.`] : []),
+    ...(item.assertion.omittedTags ? [`${item.assertion.omittedTags} structured tag(s) omitted.`] : []),
+    ...item.assertion.tags.map(tag => `@${inlineText(tag.name)} ${inlineText(tag.text)}${tag.omittedTextCharacters ? ` (${tag.omittedTextCharacters} characters omitted)` : ''}`),
+    ...item.assertion.representationLimits.map(inlineText));
   for (const item of view.moreDetails.items) lines.push(`Evidence: ${inlineText(item.path)}${item.location.association === 'span' ? `:${item.location.from.line}:${item.location.from.column}` : ''}`);
-  lines.push(...diagnosticLines(view.diagnostics), ...continuationLines(view));
+  lines.push(...diagnosticLines(diagnosticContexts(view)), ...continuationLines(view));
+  const attempt = view.usage.attempts.find(value => value.attempt === view.reporting?.attempt);
+  if (attempt) lines.push(...usageLines(usageSummary([attempt]), `Attempt ${attempt.attempt} (${attempt.termination})`));
+  lines.push(...usageLines(view.usage, 'Session'), ...view.usage.limitations.map(inlineText));
   return `${lines.join('\n')}\n`;
 }

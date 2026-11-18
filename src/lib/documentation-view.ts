@@ -21,35 +21,41 @@ function wrapText(text: string, indent: string, width = 88, continuation = inden
 
 export function presentDocumentation(associations: readonly DocumentationContent[], maximumDocs: number,
   presentation: Presentation, detailed: boolean, onShown?: (association: DocumentationContent['association']) => void) {
-  const excerpt = (text: string, maximum: number) => boundedText(text, maximum, presentation.format === 'unicode');
   const shown = associations.slice(0, maximumDocs);
   const items: Documentation[] = shown.map(({ association, assertion: supported }) => {
     const claim = association.record, assertion = supported.record;
     onShown?.(association);
-    const maximumTags = detailed ? 20 : 5;
-    const represented = assertionContent(assertion);
-    const prose = represented.text, representationLimits = represented.representationLimits;
-    let proseExcerpt = excerpt(prose, detailed ? 2000 : 400);
-    let remainingLines = presentation.format === 'unicode'
-      ? Math.max(0, 8 - representationLimits.flatMap(limit => wrapText(limit, '       ')).length) : Infinity;
-    if (Number.isFinite(remainingLines)) proseExcerpt = excerpt(prose, codePointLength(fitText(proseExcerpt.text, '', remainingLines)));
-    remainingLines -= proseExcerpt.text ? wrapText(proseExcerpt.text, '       ').length : 0;
-    const conceptualTags = represented.tags;
-    const tags: Documentation['tags'][number][] = [];
-    for (const tag of conceptualTags.slice(0, maximumTags)) {
-      if (remainingLines <= 0) break;
-      const bounded = excerpt(tag.text, 300);
-      const text = Number.isFinite(remainingLines) ? fitText(bounded.text, `@${inlineText(tag.name)} `, remainingLines) : bounded.text;
-      if (Number.isFinite(remainingLines) && wrapText(`@${inlineText(tag.name)} ${text}`, '       ').length > remainingLines) break;
-      tags.push({ name: tag.name, text, omittedTextCharacters: tag.omittedTextCharacters + codePointLength(tag.text) - codePointLength(text) });
-      remainingLines -= wrapText(`@${inlineText(tag.name)} ${text}`, '       ').length;
-    }
-    return { id: assertion.id, status: assertion.status,
-      text: proseExcerpt.text, representationLimits, omittedTextCharacters: codePointLength(assertion.text) - codePointLength(proseExcerpt.text),
-      tags, omittedTags: assertion.tags.length - tags.length,
+    return { id: assertion.id, status: assertion.status, ...presentAssertion(assertion, presentation, detailed),
       association: claim.information.association, qualification: presentQualification(association.context) };
   });
   return { documentation: items, omittedDocumentation: associations.length - shown.length };
+}
+
+/** The same human text/tag limits apply to assertions supporting common answers. */
+export function presentAssertion(assertion: Pick<RecordedAssertion, 'text' | 'tags'>, presentation: Presentation, detailed: boolean) {
+  const excerpt = (text: string, maximum: number) => boundedText(text, maximum, presentation.format === 'unicode');
+  const maximumTags = detailed ? 20 : 5;
+  const represented = assertionContent(assertion);
+  const prose = represented.text, representationLimits = represented.representationLimits;
+  let proseExcerpt = excerpt(prose, detailed ? 2000 : 400);
+  let remainingLines = presentation.format === 'unicode'
+    ? Math.max(0, 8 - representationLimits.flatMap(limit => wrapText(limit, '       ')).length) : Infinity;
+  if (Number.isFinite(remainingLines)) proseExcerpt = excerpt(prose, codePointLength(fitText(proseExcerpt.text, '', remainingLines)));
+  remainingLines -= proseExcerpt.text ? wrapText(proseExcerpt.text, '       ').length : 0;
+  const conceptualTags = represented.tags;
+  const tags: Documentation['tags'][number][] = [];
+  for (const tag of conceptualTags.slice(0, maximumTags)) {
+    if (remainingLines <= 0) break;
+    const bounded = excerpt(tag.text, 300);
+    const text = Number.isFinite(remainingLines) ? fitText(bounded.text, `@${inlineText(tag.name)} `, remainingLines) : bounded.text;
+    if (Number.isFinite(remainingLines) && wrapText(`@${inlineText(tag.name)} ${text}`, '       ').length > remainingLines) break;
+    tags.push({ name: tag.name, text, omittedTextCharacters: tag.omittedTextCharacters + codePointLength(tag.text) - codePointLength(text) });
+    remainingLines -= wrapText(`@${inlineText(tag.name)} ${text}`, '       ').length;
+  }
+  return {
+    text: proseExcerpt.text, representationLimits, omittedTextCharacters: codePointLength(assertion.text) - codePointLength(proseExcerpt.text),
+    tags, omittedTags: assertion.tags.length - tags.length,
+  };
 }
 
 export const documentationNotice = 'Documentation entries are recorded assertions; truth, currency, and completeness are not established.';

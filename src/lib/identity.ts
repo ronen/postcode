@@ -27,8 +27,8 @@ export const methods = {
   nativeFindingPolicy: 'postcode/native-finding-policy@1',
   moduleExportsPolicy: 'postcode/module-exports-policy@1',
   contributionProjection: 'postcode/contribution-projection@7',
-  contributionInspection: 'postcode/contribution-inspection@1',
-  contributionDialog: 'postcode/contribution-dialog@10',
+  contributionInspection: 'postcode/contribution-inspection@2',
+  contributionDialog: 'postcode/contribution-dialog@11',
 } as const;
 
 /** Stable key order without locale, clock, random IDs, or storage identity. */

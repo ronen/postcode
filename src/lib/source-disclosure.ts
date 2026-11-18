@@ -63,10 +63,12 @@ export function sourceDisclosure(view: QualifiedView | QualifiedOrganizationView
         if (json || item.kind === 'repository-region' || item.kind === 'repository-artifact') record(item);
       }
       level = 'dependency-occurrences-and-organization-evidence'; break;
-    case 'postcode-contribution-view/1-experimental':
-      view.moreDetails.items.forEach(source);
-      if (view.mechanical) { const base = sourceDisclosure(view.mechanical, rendered); base?.forms.forEach(form => forms.add(form)); }
-      level = 'investigation-support'; break;
+    case 'postcode-contribution-view/1-experimental': {
+      view.moreDetails?.items.forEach(source);
+      const base = view.mechanical ? sourceDisclosure(view.mechanical, rendered) : null;
+      base?.forms.forEach(form => forms.add(form));
+      level = base && view.rows.every(row => row.producer.mechanism === 'mechanical') ? base.level : 'investigation-support'; break;
+    }
     case 'postcode-investigation-view/1-experimental':
       view.moreDetails?.items.forEach(record);
       level = 'investigation-support'; break;

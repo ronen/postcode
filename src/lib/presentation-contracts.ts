@@ -60,7 +60,7 @@ export function validatePresentations(definitions: readonly PresentationDefiniti
       || definition.requirements.groups.some(item => !groupStandardExpansions.includes(item))) throw new Error('Invalid Presentation definition');
     if (definition.contract === 'organization' && !definition.requirements.groups.includes('group-details')
       || ['modules', 'module-exports'].includes(definition.contract) && definition.requirements.groups.length
-      || definition.contract === 'investigation' && (definition.requirements.modules.length || definition.requirements.groups.length)) throw new Error('Unsupported Presentation requirements');
+      || ['investigation', 'contribution', 'contribution-inspection'].includes(definition.contract) && (definition.requirements.modules.length || definition.requirements.groups.length)) throw new Error('Unsupported Presentation requirements');
     if (['modules', 'organization'].includes(definition.contract) && definition.source === 'supported'
       || !['modules', 'organization', 'investigation', 'contribution', 'contribution-inspection'].includes(definition.contract) && definition.revisionPage
       || ['dependencies', 'module-exports'].includes(definition.contract) && definition.associationPage) throw new Error('Unsupported Presentation options');

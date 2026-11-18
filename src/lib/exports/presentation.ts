@@ -75,7 +75,7 @@ export function arrangeModuleExports(content: ModuleExportsContent, reference: s
     presentation, identityReference(session, subject), answerIdentity(context), resolutionContextIdentity(session, resolution)]) }));
 }
 export type ModuleExportsView = ReturnType<typeof arrangeModuleExports>;
-export function renderModuleExports(view: ModuleExportsView): string {
+export function renderModuleExports(view: ModuleExportsView, enclosed = false): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
   // These exact uses and displacement details have the more specific rendering below.
   // Keep all native support in the structured View, including independent concerns.
@@ -90,7 +90,7 @@ export function renderModuleExports(view: ModuleExportsView): string {
     owners: view.nativeConcerns.owners.filter(owner => !renderedOwners.has(owner.investigram)) };
   const lines = [inlineText(view.title), `Session ${view.projection.session.replace(/^session:/, '')}`,
     `${inlineText(view.module.name ?? view.module.handle)} (${inlineText(view.module.reference)})`,
-    ...nativeConcernLines(remainingConcerns), ...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution),
+    ...nativeConcernLines(remainingConcerns), ...(enclosed ? [] : [...answerLines(view), ...continuationLines(view)]), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution),
     view.completeness === 'complete' ? `${view.exports.length + view.omittedExports} exports established; ${view.exports.length} shown.`
       : 'Export completeness is not established; an empty listing does not establish no exports.',
     ...(view.outsidePopulation ? ['The subject is outside the supplied evaluation population.'] : []),
@@ -124,7 +124,7 @@ export function renderModuleExports(view: ModuleExportsView): string {
   if (view.omittedExports) lines.push(`${view.omittedExports} exports omitted.`);
   const contexts = [view.module.qualification, ...view.qualifications, ...view.exports.flatMap(item => [item.qualification, ...item.documentation.map(doc => doc.qualification)])];
   for (const limitation of new Set(contexts.flatMap(item => item.limitations))) lines.push(inlineText(limitation));
-  lines.push(...diagnosticLines(contexts));
+  if (!enclosed) lines.push(...diagnosticLines(contexts));
   if (view.moreDetails) {
     lines.push('MORE DETAILS — attribution and implementation mappings');
     for (const source of view.moreDetails.items) {

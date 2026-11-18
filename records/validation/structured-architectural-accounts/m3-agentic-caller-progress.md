@@ -40,3 +40,7 @@ A clarification was requested before completing failure capture: either explicit
 ## Remaining before the caller checkpoint
 
 Resolve that semantic choice, complete test migration and the coverage mapping, audit bounded presentation and qualification visibility, verify all common acquisition/work-attribution paths and operation-definition identity, run the full suite under the reference runtime, repeat the representative memory workload as appropriate for the changed inspection contract, and finish implementation/capability documentation. Then commit a distinct caller review handoff. M4 integrated review remains a later gate.
+
+## Subsequent resolution and checkpoint
+
+The human resolved the conflict through accepted decision `investigation-attempts-and-answer-outcomes.md` at `bd9f581`. Implementation direction was recorded before the affected changes in task follow-up `fc9d909`. The earlier progress report above remains historical evidence. The completed caller implementation and verification are recorded in [the caller checkpoint](m3-agentic-caller-checkpoint.md), with [test migration coverage](m3-agentic-caller-coverage.md). Mechanical acceptance does not accept this separate checkpoint.

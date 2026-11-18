@@ -16,3 +16,14 @@ export function requireResolution(result: ExecutedRequest) {
   assert.equal(result.kind, 'resolution');
   return result.report;
 }
+
+/** Native-family tests inspect the native component of a mixed common answer. */
+export function mechanicalView(view: ReturnType<typeof requireView>['view']) {
+  if (view.schema !== 'postcode-contribution-view/1-experimental') return view;
+  assert.ok(view.mechanical, 'Expected a mechanical component');
+  return view.mechanical;
+}
+export function requireNativeView(result: ExecutedRequest) {
+  const delivered = requireView(result);
+  return { ...delivered, view: mechanicalView(delivered.view) };
+}

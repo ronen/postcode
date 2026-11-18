@@ -1,3 +1,4 @@
+import { contributionOperationMethod } from '../src/lib/contributions/operations.js';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { test } from 'node:test';
@@ -329,7 +330,7 @@ test('retained failures preserve their domain kind and details when evaluation i
   ];
   for (const scenario of cases) {
     const { invocation } = invoke(entity('barrel'), scenario.kind);
-    const { execution } = await run(scenario.script, invocation, scenario.extra);
+    const { execution } = await run(scenario.script, invocation, { ...scenario.extra, operation: { ...operation, method: contributionOperationMethod({ ...operation, subject: 'module' }) } });
     assert.equal(execution.outcome.kind, scenario.kind);
     const rebuilt = contributionEvaluation(store, ledger,
       { lookup: id => store.lookup(id), query: async () => { throw new Error('Reuse must acquire nothing'); } },
@@ -521,4 +522,24 @@ test('report-only returns need no placeholder investigram; the observed empty re
     assert.equal(execution.production.investigrams.length, mode === 'repair-to-note' ? 1 : 0);
     assert.equal(ledger.investigrams().length, count + (mode === 'repair-to-note' ? 1 : 0));
   }
+});
+
+test('common operation reuse fingerprints the complete definition and fixed follow-up catalog', async () => {
+  const { store, ledger, record, entity, invoke } = await setup();
+  const request = invoke(entity('barrel')).invocation.request;
+  const original = { ...operation, subject: 'module' as const };
+  const agent = new ScriptedDialogAgent([() => ({ kind: 'submit', contribution: { investigrams: [], report: { inability: 'Controlled empty answer.' } } })]);
+  const evaluate = (definition: typeof original, catalog = { functionality: definition }) => contributionEvaluation(store, ledger,
+    { lookup: id => store.lookup(id), query: async () => { throw Error('No evidence query expected'); } }, new InvestigationUsage(),
+    { agent, operations: catalog }, async () => {}, new AbortController().signal).evaluate(request, definition, null, { subject: record('barrel') });
+  const first = await evaluate(original);
+  assert.equal((await evaluate(original)).attempt!.id, first.execution!.production.id);
+  const changed = { ...original, objective: 'A materially different requested explanation.' };
+  const second = await evaluate(changed);
+  assert.equal(second.reused, false);
+  assert.notEqual(second.execution!.production.producer.method, first.execution!.production.producer.method);
+  const third = await evaluate(changed, { functionality: { ...changed, guidance: 'A different advertised follow-up.' } });
+  assert.equal(third.reused, false);
+  assert.equal(agent.closes, 3);
+  assert.equal(ledger.productions().filter(value => value.producer.mechanism === 'agentic').length, 3);
 });

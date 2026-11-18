@@ -96,4 +96,57 @@ for (const worker of [false, true]) test(`summary and exact presentation retain 
   const exact = await session.execute({ kind: 'present', target: first.view.answerReference!, presentation: { format: 'unicode', moreDetails: false } });
   assert.equal(exact.kind, 'view'); assert.equal(exact.view.schema, 'postcode-contribution-view/1-experimental');
   assert.deepEqual(exact.view.projection, first.view.projection); assert.match(exact.rendered, /A small module/); assert.equal(agent.inputs.length, 1); assert.equal(agent.closes, 1);
+  let subject = first.view.rows[0]!.reference;
+  for (const lens of ['explain', 'decompose', 'examine']) {
+    const follow = await session.execute({ lens, selector: subject, reference: true, presentation: { format: 'json', moreDetails: false } });
+    assert.equal(follow.kind, 'view'); assert.equal(follow.view.schema, 'postcode-contribution-view/1-experimental');
+    assert.equal(follow.view.reporting!.contribution!.outcome.kind, 'accepted');
+    assert.deepEqual(structuredClone(follow), follow);
+    subject = follow.view.rows[0]!.reference;
+  }
+  assert.deepEqual(agent.inputs.map(inputs => inputs[0]!.request.operation), ['functionality', 'clarification', 'decomposition', 'examination']);
+  assert.equal(agent.closes, 4);
+});
+
+test('historical identifying names resolve their Entity with displaced standing, without changing native handles', async t => {
+  let old!: AssociationAddress, phase = 0;
+  const agent = new ScriptedContributionAgent([input => {
+    const entity = entitySubject(input), name = phase++ ? 'New architectural name' : 'Old architectural name';
+    const base = proseContribution(input, name).investigrams[0]!;
+    return { kind: 'submit', contribution: { investigrams: [{ ...base,
+      items: [...base.items!, { key: 'name', type: 'identification', body: { name, nameOrigin: 'assigned', designation: 'A controlled architectural designation.' } }],
+      declarations: [...base.declarations!, { key: 'identify', target: { kind: 'entity', entity, role: 'identification' },
+        members: [{ kind: 'item', item: { investigram: { local: 'answer' }, item: 'name' } }],
+        ...(old ? { operation: 'supersede', displaces: [old], grounds: { text: 'Changed naming judgment.' } } : { operation: 'add' }) }] }] } };
+  }]);
+  const opened = await openApplication(fixture(t), { investigation: { agent } }); assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
+  const first = contributed(await opened.session.execute(request)); old = { investigram: first.projection.alternatives[0]!.designation.investigram, declaration: 'identify' };
+  const before = answer(await opened.session.execute({ kind: 'lens', lens: 'inspect', designation: { kind: 'name', value: 'Old architectural name' } }));
+  const saved = structuredClone(before.answer);
+  await opened.session.execute({ ...request, fresh: true });
+  for (const name of ['Old architectural name', 'New architectural name']) {
+    const found = answer(await opened.session.execute({ kind: 'lens', lens: 'inspect', designation: { kind: 'name', value: name } }));
+    assert.equal(found.answer.content.contract, 'contribution-inspection');
+    assert.equal(found.resolution!.identifications![0]!.standing.state, name.startsWith('Old') ? 'displaced' : 'standing');
+    assert.equal(found.answer.mechanical!.contract, 'modules');
+    assert.equal(found.answer.mechanical!.value.modules[0]!.claim.record.information.handle, 'entry');
+  }
+  assert.deepEqual(answer(await opened.session.execute({ kind: 'present', target: before.answer.id })).answer, saved);
+  assert.equal(agent.inputs.length, 2);
+});
+
+test('invalid common submission cannot partially displace a standing public answer', async t => {
+  let original!: AssociationAddress, invalid = false;
+  const agent = new ScriptedContributionAgent([input => invalid ? { kind: 'submit', contribution: { investigrams: [{ key: 'bad', qualification: { limitations: ['Controlled invalid batch.'] },
+    declarations: [{ key: 'withdraw', operation: 'withdraw', displaces: [original], grounds: { text: 'MUST_NOT_BE_ACCEPTED' } },
+      { key: 'dangling', operation: 'add', target: { kind: 'result', result: input.request.result }, members: [{ kind: 'item', item: { investigram: { local: 'bad' }, item: 'absent' } }] }] }] } }
+    : { kind: 'submit', contribution: proseContribution(input) }, () => ({ kind: 'ended' })]);
+  const opened = await openApplication(fixture(t), { investigation: { agent } }); assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
+  const first = contributed(await opened.session.execute(request)); original = first.projection.alternatives[0]!.designation;
+  const historical = structuredClone(first.projection); invalid = true;
+  const failed = contributed(await opened.session.execute({ ...request, fresh: true }));
+  assert.equal(failed.result.failed, true); assert.deepEqual(failed.projection, historical);
+  assert.doesNotMatch(JSON.stringify(failed.projection), /MUST_NOT_BE_ACCEPTED/);
+  assert.deepEqual(contributed(await opened.session.execute({ kind: 'present', target: first.projection.id })).projection, historical);
+  assert.equal(agent.inputs[1]![1]!.responses[0]!.tool, 'invalid-submission');
 });

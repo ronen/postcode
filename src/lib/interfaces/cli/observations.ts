@@ -87,7 +87,7 @@ function representedLimits(value: unknown): string[] {
       limits = artifact.exports.flatMap(item => item.documentation.flatMap(doc => doc.representationLimits)); break;
     case 'postcode-organization-view/1-experimental':
       limits = representedLimits(artifact.moduleDetail); break;
-    case 'postcode-contribution-view/1-experimental': limits = representedLimits(artifact.mechanical); break;
+    case 'postcode-contribution-view/1-experimental': limits = [...representedLimits(artifact.mechanical), ...artifact.support.flatMap(item => item.assertion.representationLimits)]; break;
     case 'postcode-investigation-view/1-experimental':
       limits = artifact.support.flatMap(item => item.assertion?.representationLimits ?? []); break;
     case 'postcode-resolution/1-experimental':

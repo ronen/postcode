@@ -193,6 +193,8 @@ export interface AttemptReport {
   readonly elapsedMilliseconds: number;
   readonly usage: readonly CallUsage[];
   readonly deliveries: readonly ContextDelivery[];
+  /** Common contribution deliveries actually dispatched, independent of the legacy context shape. */
+  readonly contributionDeliveries?: readonly import('../contributions/model.js').Delivery[];
   /** Full records delivered during this attempt. */
   readonly suppliedEvidence: readonly RecordId[];
   /** Summaries delivered during this attempt; an ID may also have been delivered in full. */
