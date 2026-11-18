@@ -215,6 +215,19 @@ to begin the substantive implementation task described by that plan.
 
 > Please continue task `2026-11-15-structured-architectural-accounts` in `../app-worktrees/structured-architectural-accounts-impl` on its existing branch. M2 is accepted; its disposition is `records/reviews/structured-architectural-accounts/2026-11-18-m2-vertical-disposition.md`. Begin M3 under the approved plan, starting with remaining mechanical-family migration. Preserve the separate mechanical and agentic/caller review checkpoints. No additional live inference is authorized.
 
+2026-11-18, requesting investigation of memory at the corrected M3 mechanical revision, with exact historical answers preserved:
+
+> Can you investigate the high memory? &#x20;
+>
+> - Profile the **current corrected revision**, separating canonical retained information, duplicated answer support, and temporary allocations.
+> - Measure repeated identical requests versus distinct answers over overlapping information. Check whether retained memory stabilizes where expected.
+> - Investigate sharing immutable content/evidence while separately capturing each answer’s time-dependent standing and reconsideration causes.
+> - Explain the elevated post-close heap on the representative workload; the small-fixture collection test doesn’t settle that.
+>
+> The constraint is **preserving exact historical answers**. Replacing copies with references must not make an old answer acquire today’s standing or require fresh analysis. Sharing immutable records may achieve that without changing semantics; you should establish which representation fits the existing lifetime and delivery contracts.
+>
+> We're not necessarily trying to return to the old memory footprint; but we should  resolve whether the dominant growth is necessary information or avoidable duplication
+
 ## Outcome
 
 ## Verification
