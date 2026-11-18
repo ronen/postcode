@@ -228,6 +228,30 @@ to begin the substantive implementation task described by that plan.
 >
 > We're not necessarily trying to return to the old memory footprint; but we should  resolve whether the dominant growth is necessary information or avoidable duplication
 
+2026-11-18, after the corrected-revision memory investigation was committed as `9683fea`:
+
+> Please implement the ownership-aware sharing recommended in:\
+> \
+> records/validation/structured-architectural-accounts/m3-memory-investigation.md\
+> \
+> This is authorized M3 implementation work. Record this direction under the task protocol.\
+> \
+> Share internally owned immutable content and evidence at retention/capture boundaries, while preserving each answer’s independently captured selection, standing, reconsideration causes and other time-dependent state.\
+> \
+> Preserve the existing contracts:\
+> \- Historical answers remain self-contained and immutable. Exact presentation must not consult current ledger state or require a live Session.\
+> \- Untrusted external input remains isolated from caller mutation; an arbitrary frozen object is not proof of deep ownership.\
+> \- Sharing neither creates nor removes exposure records.\
+> \- Session validation, collision checks, atomic acceptance and plain structured worker delivery remain intact.\
+> \
+> Use the prototype as evidence, not production code to adopt unchanged. Bound ownership bookkeeping to the appropriate lifetime; avoid its module-global registry-capacity problem. Leave the concrete implementation to your judgment.\
+> \
+> Verify multiple simultaneous Sessions, retained answers after close, ownership-bookkeeping disposal, mutation isolation, historical snapshot preservation, collision/atomic validation and worker delivery. Run the full suite and repeat the representative memory measurement against the corrected baseline, recording memory, answer identities and retained counts.\
+> \
+> Keep temporary canonicalization/allocation optimization separate from this change.\
+> \
+> Update the implementation documentation and validation records, and prepare the change for independent review. This does not accept the M3 checkpoint
+
 ## Outcome
 
 ## Verification
