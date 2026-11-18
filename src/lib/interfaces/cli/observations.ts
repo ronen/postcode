@@ -1,3 +1,4 @@
+import type { ContributionView } from './contribution-presentation.js';
 import type { WorkReport } from '../../work-attribution.js';
 import type { SubjectResolution } from '../../subject-resolution.js';
 import type { RequestContext, ResolutionReport, UsageReport } from './report-contracts.js';
@@ -15,7 +16,7 @@ import { deliverObservation } from '../../application/observations.js';
 import type { ObservationBatch, ObservationSink } from '../../application/observations.js';
 
 /** No UUID registry, historical reads, producer retention policy, or operational-store dependency. */
-export function observationBatch(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView | ModuleExportsView, rendered: string, context: {
+export function observationBatch(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView | ContributionView | ModuleExportsView, rendered: string, context: {
   readonly configPath: string; readonly repositoryRoot: string | null; readonly methods: readonly string[];
 }, requestValue: RequestContext, command = 1, resolution?: SubjectResolution): ObservationBatch {
   if (!Number.isSafeInteger(command) || command < 1) throw new Error('Invalid command order');
@@ -75,7 +76,7 @@ export function commandObservation(session: string, command: number, requestValu
 /** Only owned presentation disclosures are recognized; request and attribution data are not limits. */
 function representedLimits(value: unknown): string[] {
   if (!value || typeof value !== 'object') return [];
-  const artifact = value as QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView
+  const artifact = value as QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView | ContributionView
     | ModuleExportsView | ResolutionReport | UsageReport;
   let limits: readonly string[];
   switch (artifact.schema) {
@@ -86,6 +87,7 @@ function representedLimits(value: unknown): string[] {
       limits = artifact.exports.flatMap(item => item.documentation.flatMap(doc => doc.representationLimits)); break;
     case 'postcode-organization-view/1-experimental':
       limits = representedLimits(artifact.moduleDetail); break;
+    case 'postcode-contribution-view/1-experimental': limits = representedLimits(artifact.mechanical); break;
     case 'postcode-investigation-view/1-experimental':
       limits = artifact.support.flatMap(item => item.assertion?.representationLimits ?? []); break;
     case 'postcode-resolution/1-experimental':

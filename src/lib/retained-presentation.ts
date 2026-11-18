@@ -10,7 +10,8 @@ import { arrangeInvestigationView, renderInvestigationView } from './investigati
 import { arrangeAssociatedInspection } from './investigation/associations.js';
 import { createMechanicalView, renderMechanicalView } from './program-presentation.js';
 import { retainedPresentation, presentedOptions, materializationLimitations } from './presentation-contracts.js';
-import type { PresentationContent } from './presentation-contracts.js';
+import type { PresentationContent as AllPresentationContent } from './presentation-contracts.js';
+type PresentationContent = Exclude<AllPresentationContent, { contract: 'contribution' | 'contribution-inspection' }>;
 import type { ProgramRecordStore, RecordId, SessionId } from './records.js';
 import type { CapturedCatalog } from './request-catalog.js';
 import type { NormalizedRequest } from './requests.js';
@@ -19,7 +20,7 @@ import type { WorkScope } from './work-attribution.js';
 
 type RetentionStore = Pick<ProgramRecordStore, 'get' | 'lookup'>;
 /** Fixed-reference resolution has no selection, population enumeration or Evaluation capability. */
-export function resolveRetainedContent(store: RetentionStore, answer: Exclude<RetainedAnswer, { kind: 'contribution-projection' }>): PresentationContent {
+export function resolveRetainedContent(store: RetentionStore, answer: Exclude<RetainedAnswer, { kind: 'contribution-projection' | 'contribution-inspection-projection' }>): PresentationContent {
   switch (answer.kind) {
     case 'projection': return { contract: 'modules', value: resolveModuleProjection(store, answer) };
     case 'organization-projection': return { contract: 'organization', value: resolveOrganizationProjection(store, answer) };
@@ -57,7 +58,7 @@ export function presentRetained(store: ProgramRecordStore, session: SessionId,
   const answer = store.lookup(id);
   if (!answer) return refuse('unknown-answer', 'This target is not retained in this Session.');
   if (!isAnswer(answer)) return refuse('unsupported-answer', 'This retained record is not a supported Projection.');
-  if (answer.kind === 'contribution-projection') return refuse('presentation-unavailable', 'No Presentation of this interface accepts this retained answer. It remains exactly available through the application interface.', [answer.id]);
+  if (answer.kind === 'contribution-projection' || answer.kind === 'contribution-inspection-projection') return refuse('presentation-unavailable', 'No Presentation of this interface accepts this retained answer. It remains exactly available through the application interface.', [answer.id]);
   const answerReference = store.answerIds([answer.id]).get(answer.id)!;
   const associated = answer.kind === 'investigation-selection-projection' && answer.variant === 'associated-inspection';
   const mechanical = associated ? store.get(answer.mechanical) : null;

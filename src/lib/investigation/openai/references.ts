@@ -98,7 +98,7 @@ export class InvestigatorReferences {
     switch (record.kind) {
       case 'session': fields = this.#fields(['repository']); break;
       // Contribution answers are application answers, never evidence delivered to an agent.
-      case 'analysis-inputs': case 'repository-evidence': case 'contribution-projection': fields = {}; break;
+      case 'analysis-inputs': case 'repository-evidence': case 'contribution-projection': case 'contribution-inspection-projection': fields = {}; break;
       case 'module': case 'symbol': case 'group': fields = this.#fields(['claim']); break;
       case 'claim': fields = this.#fields(['subject', 'context'], [], { information: object(this.#information(record.information)) }); break;
       case 'recorded-assertion': fields = this.#fields(['context']); break;
@@ -156,6 +156,7 @@ export class InvestigatorReferences {
     this.#alive(); this.#resolutions = [];
     return { request: this.#request()(input.request, '$.request'), responses: list(this.#response)(input.responses, '$.responses') };
   }
+  programRecord(value: ProgramRecord, path: string): unknown { this.#alive(); return this.#record(value, path); }
   tools(value: unknown): unknown {
     this.#alive();
     return object({ requests: list(object(this.#fields(['subject', 'cursor'], [], {}, this.#decode))) })(value, '$');

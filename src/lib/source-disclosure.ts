@@ -1,3 +1,4 @@
+import type { ContributionView } from './interfaces/cli/contribution-presentation.js';
 import { inlineText } from './terminal-text.js';
 import { diagnosticContexts } from './diagnostic-view.js';
 import type { SourceAttribution, DetailRecord } from './evidence-view.js';
@@ -13,7 +14,7 @@ export type { SourceDisclosureLevel, SourceDisclosureForm } from './application/
 /** Classify the bounded source fields actually rendered by each presentation.
  * Requests, empty containers, evidence IDs and omission counts are not disclosure.
  */
-export function sourceDisclosure(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView | ModuleExportsView, rendered?: string): {
+export function sourceDisclosure(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView | ContributionView | ModuleExportsView, rendered?: string): {
   level: SourceDisclosureLevel; forms: SourceDisclosureForm[];
 } | null {
   const forms = new Set<SourceDisclosureForm>();
@@ -62,6 +63,10 @@ export function sourceDisclosure(view: QualifiedView | QualifiedOrganizationView
         if (json || item.kind === 'repository-region' || item.kind === 'repository-artifact') record(item);
       }
       level = 'dependency-occurrences-and-organization-evidence'; break;
+    case 'postcode-contribution-view/1-experimental':
+      view.moreDetails.items.forEach(source);
+      if (view.mechanical) { const base = sourceDisclosure(view.mechanical, rendered); base?.forms.forEach(form => forms.add(form)); }
+      level = 'investigation-support'; break;
     case 'postcode-investigation-view/1-experimental':
       view.moreDetails?.items.forEach(record);
       level = 'investigation-support'; break;

@@ -10,7 +10,16 @@ import { stateBehaviorGuidance, stateDiagramContract } from './state-model.js';
  * subject signature: one discovered module, or exact selected retained content.
  */
 export interface ContributionOperation extends Omit<DialogOperation, 'contract'> { readonly subject: 'module' | 'selected-content' }
+export type ContributionOperationCatalog = Readonly<Record<string, ContributionOperation>>;
 export const contributionOperations: Readonly<Record<string, ContributionOperation>> = freezeOwned({
+  functionality: { id: 'functionality', subject: 'module', method: `${methods.contributionDialog} postcode/functionality@2`,
+    objective: 'Give a deliberately terse account of apparent module functionality and division of responsibility. Explain significant mechanisms, cases and delegation. Follow useful delegation across multiple modules; avoid structural labels as a substitute for functionality. Do not invent a unifying role for mixed responsibilities.' },
+  clarification: { id: 'clarification', subject: 'selected-content', method: `${methods.contributionDialog} postcode/clarification@2`,
+    objective: 'Make the exact selected program aspect more understandable, adding useful clarification omitted for brevity. New findings are not required. Preserve its qualifications and underlying program context. Avoid a general programming tutorial.' },
+  decomposition: { id: 'decomposition', subject: 'selected-content', method: `${methods.contributionDialog} postcode/decomposition@2`,
+    objective: 'Identify smaller, tersely described selectable aspects of the exact selected functionality. Supply independently addressable qualified items or contributions and designate the answer explicitly; there is no parent/child contribution tree. Preserve necessary qualifications on each aspect. Do not imply the aspects are exhaustive or mutually exclusive without support.' },
+  examination: { id: 'examination', subject: 'selected-content', method: `${methods.contributionDialog} postcode/examination@2`,
+    objective: 'Investigate the exact selected aspect more deeply. Supply substantive findings, sharper limitations, explicit organizing changes, or a candid report that no useful addition was established. Preserve the selected information even when its uses have been displaced; do not retarget it to a current answer.' },
   'state-behavior': { id: 'state-behavior', subject: 'module', method: `${methods.contributionDialog} postcode/state-behavior@1`,
     objective: 'Establish whether the behavior of the subject module depends on state and, if it does, explain that state-dependent behavior: what bears the state, the states, how each is entered and left, and what each transition does. Follow the behavior into other modules only where the evidence requires it.',
     guidance: stateBehaviorGuidance },
@@ -25,10 +34,10 @@ export function resultContract(id: string | null): ResultContract | null | undef
 }
 
 /** Current executable follow-ups, derived from the same operation and contract registrations as invocation. */
-export function followUpInstructions(): string {
+export function followUpInstructions(catalog: ContributionOperationCatalog = contributionOperations): string {
   return [
     'SUPPORTED FOLLOW-UP OPERATIONS (exactly one subject):',
-    ...Object.values(contributionOperations).map(operation => `${operation.id}: ${operation.subject === 'module'
+    ...Object.values(catalog).map(operation => `${operation.id}: ${operation.subject === 'module'
       ? 'one discovered module Entity, { kind: "entity", entity }. A newly invented Entity is not a discovered module.'
       : 'one exact content item { kind: "content", item: { investigram, item }, component?: string }, result designation { kind: "designation", association: { investigram, declaration } }, or contribution { kind: "investigram", investigram }. Submission-local references are allowed.'} ${operation.objective}`),
     componentSelectorGuidance,

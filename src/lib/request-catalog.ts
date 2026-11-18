@@ -3,8 +3,8 @@ import type { PresentationDefinition } from './presentation-contracts.js';
 import { commandLenses, lenses } from './requests.js';
 import type { CommandLens, LensDefinition } from './requests.js';
 import { captureApplicationCatalog } from './application/catalog.js';
-import { operations } from './investigation/operations.js';
-import type { OperationCatalog } from './investigation/operations.js';
+import { contributionOperations as operations } from './contributions/operations.js';
+import type { ContributionOperationCatalog as OperationCatalog } from './contributions/operations.js';
 import { freezeOwned } from './immutable.js';
 
 /** Internal assembly seam. Definitions are captured before opening a Session;

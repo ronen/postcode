@@ -1,7 +1,7 @@
 import { validateContent as validatePresentationContent, materializationLimitations } from './application/content.js';
 import type { QualifiedContent } from './application/content.js';
-/** Content families this client can arrange. Contribution answers have no CLI Presentation. */
-export type PresentationContent = Exclude<QualifiedContent, { contract: 'contribution' }>;
+/** Qualified content families arranged by this client. */
+export type PresentationContent = QualifiedContent;
 export { validateContent as validatePresentationContent, materializationLimitations } from './application/content.js';
 import { freezeOwned } from './immutable.js';
 import { moduleStandardExpansions } from './records.js';
@@ -35,12 +35,14 @@ export interface PresentationDecision {
 export interface PresentedOptions extends Presentation { readonly decision?: PresentationDecision }
 const standard = { default: true, formats: ['unicode', 'json'] as const, precondition: 'qualified' as const };
 export const presentations: readonly PresentationDefinition[] = freezeOwned([
-  { ...standard, id: 'module', contract: 'modules', source: 'selected-subjects', associationPage: true, revisionPage: false,
+  { ...standard, id: 'module', contract: 'modules', source: 'selected-subjects', associationPage: true, revisionPage: true,
     requirements: { modules: moduleStandardExpansions, groups: [] } },
-  { ...standard, id: 'organization', contract: 'organization', source: 'selected-subjects', associationPage: true, revisionPage: false,
+  { ...standard, id: 'organization', contract: 'organization', source: 'selected-subjects', associationPage: true, revisionPage: true,
     requirements: { modules: moduleStandardExpansions, groups: groupStandardExpansions } },
   { ...standard, id: 'dependency', contract: 'dependencies', source: 'supported', associationPage: false, revisionPage: false,
     requirements: { modules: moduleStandardExpansions, groups: groupStandardExpansions } },
+  { ...standard, id: 'contribution', contract: 'contribution', source: 'supported', associationPage: false, revisionPage: true, requirements: { modules: [], groups: [] } },
+  { ...standard, id: 'contribution-inspection', contract: 'contribution-inspection', source: 'supported', associationPage: true, revisionPage: true, requirements: { modules: [], groups: [] } },
   { ...standard, id: 'interpretation', contract: 'investigation', source: 'supported', associationPage: true, revisionPage: true,
     requirements: { modules: [], groups: [] } },
 ]);
@@ -50,7 +52,7 @@ export function validatePresentations(definitions: readonly PresentationDefiniti
   if (ids.size !== definitions.length) throw new Error('Duplicate Presentation identity');
   const defaults = new Set<ResultContract>();
   for (const definition of definitions) {
-    if (!definition.id || !['modules', 'organization', 'dependencies', 'investigation', 'module-exports'].includes(definition.contract)
+    if (!definition.id || !['modules', 'organization', 'dependencies', 'investigation', 'module-exports', 'contribution', 'contribution-inspection'].includes(definition.contract)
       || !['qualified', 'complete-materialization'].includes(definition.precondition)
       || !['supported', 'selected-subjects', 'none'].includes(definition.source)
       || !definition.formats.length || definition.formats.some(format => !['unicode', 'json'].includes(format))
@@ -60,7 +62,7 @@ export function validatePresentations(definitions: readonly PresentationDefiniti
       || ['modules', 'module-exports'].includes(definition.contract) && definition.requirements.groups.length
       || definition.contract === 'investigation' && (definition.requirements.modules.length || definition.requirements.groups.length)) throw new Error('Unsupported Presentation requirements');
     if (['modules', 'organization'].includes(definition.contract) && definition.source === 'supported'
-      || definition.contract !== 'investigation' && definition.revisionPage
+      || !['modules', 'organization', 'investigation', 'contribution', 'contribution-inspection'].includes(definition.contract) && definition.revisionPage
       || ['dependencies', 'module-exports'].includes(definition.contract) && definition.associationPage) throw new Error('Unsupported Presentation options');
     if (definition.default && defaults.has(definition.contract)) throw new Error('Duplicate default Presentation for a contract');
     if (definition.default) defaults.add(definition.contract);
@@ -80,7 +82,7 @@ export function compatiblePresentation(definition: PresentationDefinition, reque
   return definition.formats.includes(options.format)
     && (!options.moreDetails || definition.source === 'supported' || definition.source === 'selected-subjects' && lens.cardinality !== 'population')
     && (options.after === undefined || definition.associationPage && lens.requirements.kind === 'inspection')
-    && (options.revisionPage === undefined || definition.revisionPage);
+    && (options.revisionPage === undefined || definition.revisionPage && (!['modules', 'organization'].includes(definition.contract) || lens.requirements.kind === 'inspection'));
 }
 
 /** A bounded default and its declared fallbacks, filtered without changing choices.
@@ -140,7 +142,7 @@ export function retainedPresentation(definitions: readonly PresentationDefinitio
       case 'dependencies': return (!content.value.basis.modules.length || requirements.modules.every(item => content.value.moduleEvaluations.some(outcome => outcome.requirement === item)))
         && (!requirements.groups.length || content.value.expanded !== null);
       case 'module-exports': return requirements.modules.every(item => content.value.evaluations.some(outcome => outcome.requirement === item));
-      case 'investigation': return true;
+      case 'investigation': case 'contribution': case 'contribution-inspection': return true;
     }
   };
   const initial = definitions.find(item => item.default && item.contract === content.contract);

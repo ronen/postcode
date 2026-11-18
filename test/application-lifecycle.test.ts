@@ -8,14 +8,14 @@ import { openApplication, guardPublication, SessionBusy, SessionClosed, SessionI
 import type { ApplicationRequest, ExecutionContext, PresentationDeclaration } from '../src/lib/application/index.js';
 import { withCliOperation } from '../src/lib/application/operation-scope.js';
 import { lenses } from '../src/lib/application/lenses.js';
-import { operations } from '../src/lib/investigation/operations.js';
+import { contributionOperations as operations } from '../src/lib/contributions/operations.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { arrangeModuleView } from '../src/lib/presentation.js';
 import { MessageChannel } from 'node:worker_threads';
 import { once } from 'node:events';
 import type { ReferenceBinding } from '../src/lib/reference-binding.js';
 import type { ProgramRecord, RecordId } from '../src/lib/records.js';
-import { ScriptedInvestigator } from './investigator-double.js';
+import { ScriptedContributionAgent } from './contribution-agent.js';
 
 function fixture(t: TestContext) {
   const root = temporaryDirectory(t, 'postcode-application-lifecycle-');
@@ -141,7 +141,7 @@ test('direct boundary rejects malformed data without invoking accessors and pres
 });
 
 test('one operation guard spans arrangement, expires bindings and preserves completed application work after client failure', async t => {
-  const opened = await openApplication(fixture(t), { investigation: { agent: new ScriptedInvestigator([() => ({ kind: 'ended' })]) } });
+  const opened = await openApplication(fixture(t), { investigation: { agent: new ScriptedContributionAgent([() => ({ kind: 'ended' })]) } });
   assert.equal(opened.status, 'opened'); const session = opened.session; t.after(() => session.close());
   let escaped!: ReferenceBinding;
   let escapedCheck!: () => Promise<void>;
@@ -160,13 +160,12 @@ test('one operation guard spans arrangement, expires bindings and preserves comp
   await withCliOperation(session, async scope => {
     const result = await scope.execute({ kind: 'lens', lens: 'summarize', question: lenses.summarize.question,
       designation: { kind: 'name', value: 'entry' }, parameters: {}, programInput: 'session-configured-project' });
-    assert.equal(result.kind, 'answer'); assert.equal(result.answer.content.contract, 'investigation');
+    assert.equal(result.kind, 'answer'); assert.equal(result.answer.content.contract, 'contribution');
     escaped = scope.bindings; escapedCheck = scope.check;
-    const reference = result.answer.content.value.references.find(item => item.kind === 'module')!;
-    assert.ok(reference);
-    assert.throws(() => scope.bindings.bind([reference.id, 'foreign' as RecordId], 'module'), /outside/);
-    assert.throws(() => scope.bindings.bind([reference.id], 'investigram'), /different kind/);
-    assert.ok(scope.bindings.bind([reference.id], 'module').get(reference.id));
+    const reference = result.resolution!.candidates[0]!.id;
+    assert.ok(result.resolution!.candidates[0]!.reference);
+    assert.throws(() => scope.bindings.bind([reference, 'foreign' as RecordId], 'module'), /No investigation binding population/);
+
   });
   assert.throws(() => escaped.bind([], 'module'), /expired/);
   await assert.rejects(escapedCheck(), /expired/);
@@ -194,7 +193,7 @@ test('closing from completed work refuses scoped delivery with SessionClosed and
   assert.equal(opened.status, 'opened'); const session = opened.session;
   t.after(() => session.close());
   const retained = await session.execute({ kind: 'lens', lens: 'summarize', designation: { kind: 'name', value: 'entry' } });
-  assert.equal(retained.kind, 'answer'); assert.equal(retained.answer.content.contract, 'investigation');
+  assert.equal(retained.kind, 'answer'); assert.equal(retained.answer.content.contract, 'contribution');
   close = () => session.close();
   let delivered = false;
   let escaped!: ReferenceBinding;

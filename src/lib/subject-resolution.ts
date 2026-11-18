@@ -1,3 +1,8 @@
+import { sessionLedger } from './contributions/modules.js';
+import { availableSubject, contributionReference, entityRecord, subjectOwner } from './contributions/subjects.js';
+import type { ExactSubject } from './contributions/subjects.js';
+import type { EntityId } from './contributions/model.js';
+import type { NameMatch } from './contributions/ledger.js';
 import { isAnswerReference } from './answer-references.js';
 import { freezeOwned } from './immutable.js';
 import { completedMaterialization } from './evaluation-state.js';
@@ -6,11 +11,12 @@ import type { ClaimContextRecord, EvaluationRecord, EvaluationState, ProgramReco
 import type { OrganizationEvaluationRecord } from './organization/records.js';
 import type { LensDefinition, SubjectDesignation } from './application/lenses.js';
 
-export type EntityKind = 'module' | 'group' | 'investigram';
+export type EntityKind = 'module' | 'group' | 'investigram' | 'contribution' | 'content' | 'designation' | 'entity';
 export interface ResolvedSubject {
   readonly id: RecordId;
   readonly kind: EntityKind;
   readonly reference: string;
+  readonly selected?: ExactSubject;
   readonly name: string | null;
 }
 export interface LookupSupport extends Pick<EvaluationState, 'applicability' | 'availability' | 'execution' | 'materialization' | 'reason'> {
@@ -27,11 +33,14 @@ export interface SubjectResolution {
   readonly qualifications: readonly string[];
   readonly prerequisites: readonly RecordId[];
   readonly support: readonly LookupSupport[];
+  readonly identifications?: readonly NameMatch[];
 }
 
 /** Lookup consumes qualified populations. A precise binding needs no population acquisition. */
 export function resolveSubjects(store: ProgramRecordStore, session: SessionId, definition: LensDefinition,
   designation: SubjectDesignation, populations: { modules?: EvaluationRecord; organization?: OrganizationEvaluationRecord } = {}): SubjectResolution {
+  const ledger = sessionLedger(store, session);
+  const identifications: NameMatch[] = [];
   const modules = populations.modules ? store.get(populations.modules.id) : undefined;
   const organization = populations.organization ? store.get(populations.organization.id) : undefined;
   if (modules && (modules.kind !== 'evaluation' || modules.requirement !== 'modules' || modules.session !== session)) throw new Error('Expected same-Session module lookup population');
@@ -54,7 +63,7 @@ export function resolveSubjects(store: ProgramRecordStore, session: SessionId, d
     ...item.contexts.flatMap(id => { const context = store.get(id); return context.kind === 'claim-context' ? context.limitations : []; }),
   ]))];
   const finish = (status: SubjectResolution['status'], candidates: readonly ResolvedSubject[] = []): SubjectResolution => freezeOwned({
-    status, candidates, criteria, qualifications, prerequisites: outcomes.map(item => item.id), support,
+    status, candidates, criteria, qualifications, prerequisites: outcomes.map(item => item.id), support, ...(identifications.length ? { identifications } : {}),
   });
   const candidate = (id: RecordId, reference: string): ResolvedSubject => {
     const entity = store.get(id);
@@ -62,11 +71,26 @@ export function resolveSubjects(store: ProgramRecordStore, session: SessionId, d
     const claim = entity.kind === 'investigram' ? null : store.get(entity.claim);
     return { id, kind: entity.kind, reference, name: claim?.kind === 'claim' && (claim.information.type === 'module' || claim.information.type === 'group') ? claim.information.name : null };
   };
+  const commonCandidate = (subject: ExactSubject, reference: string): ResolvedSubject => {
+    const native = subject.kind === 'entity' ? entityRecord(store, ledger, subject.entity) : undefined;
+    if (native && ['module', 'group'].includes(store.get(native).kind)) return { ...candidate(native, reference), selected: subject };
+    return { id: subjectOwner(subject), kind: subject.kind === 'investigram' ? 'contribution' : subject.kind,
+      reference, name: null, selected: subject };
+  };
+  if (designation.kind === 'selection') {
+    if (!availableSubject(ledger, designation.subject)) return finish('unknown-reference');
+    const target = commonCandidate(designation.subject, subjectOwner(designation.subject));
+    return finish(definition.subjects.includes(target.kind) ? 'resolved' : 'unsupported-subject', [target]);
+  }
   if (designation.kind === 'reference') {
     if (isAnswerReference(designation.value)) return finish('answer-as-subject');
-    const id = store.boundEntity(session, designation.value);
-    if (!id) return finish('unknown-reference');
-    const target = candidate(id, designation.value);
+    const raw = designation.value.replace(/^@/, '');
+    const id = store.boundEntity(session, raw);
+    const owner = !id ? contributionReference(ledger, raw) : undefined;
+    const subject: ExactSubject | undefined = owner ? { kind: 'investigram', investigram: owner }
+      : ledger.hasEntity(raw as EntityId) ? { kind: 'entity', entity: raw as EntityId } : undefined;
+    if (!id && !subject) return finish('unknown-reference');
+    const target = id ? candidate(id, designation.value) : commonCandidate(subject!, designation.value);
     return finish(definition.subjects.includes(target.kind) ? 'resolved' : 'unsupported-subject', [target]);
   }
   if (designation.kind !== 'name') return finish(definition.cardinality === 'population' ? 'resolved' : 'missing');
@@ -81,6 +105,20 @@ export function resolveSubjects(store: ProgramRecordStore, session: SessionId, d
       if (moduleMatches(store, id, designation.value)) matches.push(id);
     }
   }
+  const commonMatches: ResolvedSubject[] = [];
+  for (const match of ledger.lookupName(designation.value, { history: true }).matches) {
+    const target = commonCandidate({ kind: 'entity', entity: match.entity }, match.entity);
+    if (!definition.subjects.includes(target.kind)) continue;
+    identifications.push(match);
+    if (match.standing.state === 'displaced') qualifications.push('A matched identification is historical/displaced; this match does not establish a current or canonical name.');
+    if (target.kind === 'module' || target.kind === 'group') {
+      if (!matches.includes(target.id)) matches.push(target.id);
+    } else if (!commonMatches.some(item => item.id === target.id)) commonMatches.push(target);
+  }
+  if (commonMatches.length) {
+    const targets = [...matches.map(id => candidate(id, store.entityIds([id], store.get(id).kind as 'module' | 'group').get(id)!)), ...commonMatches];
+    return finish(definition.cardinality === 'one' && targets.length !== 1 ? 'ambiguous' : 'resolved', targets);
+  }
   if (matches.length) {
     const status = definition.cardinality === 'one' && matches.length !== 1 ? 'ambiguous' : 'resolved';
     const bindings = new Map<RecordId, string>();
@@ -90,7 +128,7 @@ export function resolveSubjects(store: ProgramRecordStore, session: SessionId, d
       if (!definition.subjects.includes(kind)) continue;
       const population = kind === 'group' ? populations.organization?.groups : populations.modules?.modules;
       if (!population) continue;
-      const ids = status === 'resolved' ? population : matches.filter(id => store.get(id).kind === kind);
+      const ids = status === 'resolved' ? [...new Set([...population, ...matches.filter(id => store.get(id).kind === kind)])] : matches.filter(id => store.get(id).kind === kind);
       for (const [id, reference] of store.entityIds(ids, kind)) bindings.set(id, reference);
     }
     return finish(status, matches.map(id => candidate(id, bindings.get(id)!)));

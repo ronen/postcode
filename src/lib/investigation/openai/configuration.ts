@@ -1,9 +1,9 @@
 import { execFile } from 'node:child_process';
-import type { InvestigatorAgent } from '../contracts.js';
+import type { DialogAgent as InvestigatorAgent } from '../../contributions/dialog.js';
 import { productionChatGPTCredentials } from './accounts.js';
 import { CredentialError } from './credential-store.js';
 import type { ChatGPTCredentials } from './chatgpt-credentials.js';
-import { chatGPTInvestigator, openAIInvestigator } from './adapter.js';
+import { chatGPTDialogAgent as chatGPTInvestigator, openAIDialogAgent as openAIInvestigator } from './contribution-protocol.js';
 
 export type ConfigurationReason = { readonly kind: 'api-key-unavailable' | 'unknown-provider' | 'chatgpt-unavailable' }
   | { readonly kind: 'credential-error'; readonly code: string; readonly message: string };

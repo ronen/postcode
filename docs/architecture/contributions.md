@@ -10,7 +10,11 @@ Export evaluation is the second real producer. Each module's export finding is c
 
 The internal exports answer is the first consumer. It selects the discovery method's own identifying finding and the export method's own finding from the ledger, and captures each use's standing and qualified displacement context in the retained answer. Fixed support retains each displacing declaration, its producer and owner/declaration qualifications, grounds evidence and supporting content. Export presentation labels these organizing judgments separately from the mechanical finding's qualification; raw evidence bodies stay in internal support, while optional source detail exposes declaration locations. Captured producing-context concerns are shown under the displacing production, with exact cause references, routes, grounds and qualifications in the structured View. The warning does not reverse the displacement, reinstate an earlier use or qualify the mechanical finding as erroneous. Earlier exact answers keep their captured concerns. This is read-only assembly and records no producer exposure. A finding stays selected after a use of it is displaced; a fresh answer then shows the displacement with its grounds, and an earlier answer keeps what it captured. The answer fails if a finding it needs was never contributed, so a producer that bypasses the ledger is detected.
 
-An agentic dialog over the ledger is reachable through the application interface for two Lenses, described under [Application route](#application-route). The hosted transports can carry its protocol, as described under [Hosted transport](#hosted-transport), and the M2 live trials exercised that path against a real model. No application or CLI configuration path selects the hosted agent; a caller constructs it. The existing `summarize`, `explain`, `decompose` and `examine` operations still run on the earlier dialog and retention structures, while mechanical CLI answers now capture and disclose contribution status. The separate agentic/caller cut-over remains incomplete.
+The M3 mechanical checkpoint is accepted. The separate agentic/caller migration is in progress and is not review-ready. Its working implementation routes `summarize`, `explain`, `decompose` and `examine`, together with the M2 contribution Lenses, through the common dialog. Application and CLI configuration select the common hosted protocol; verification of this migration is offline only. The earlier M2 live trials do not verify the revised M3 guidance.
+
+The working caller path accepts exact contribution, item/component and result-designation subjects. Inspection captures explicit associated uses and their standing, or an exact selected contribution, without running a dialog. A mixed inspection retains a separate native answer alongside its common selection. Name lookup also considers accumulated identifying contributions, including historical names with their standing disclosed; a match is not a claim of canonical naming or a complete program-wide Entity population. The CLI arranges fixed content under `postcode-contribution-view/1-experimental`, with separate association and change-ground continuations, without serializing native finding bodies. Exact replay and detached arrangement use the captured selection and support.
+
+The migration still needs legacy caller-test conversion, complete presentation/attribution verification and full-suite validation. Failed-attempt retention has an unresolved contract question: accepted M2 empty contribution answers omit failure diagnostics, while the migration decision requires retained unavailable selections to preserve kind/code/diagnostic. See the [caller progress record](../../records/validation/structured-architectural-accounts/m3-agentic-caller-progress.md). This working implementation is not a claim of completed M3 conformance.
 
 ## Mechanical families and retained inputs
 
@@ -72,9 +76,9 @@ native-use lookup indexes each selected Entity once rather than rescanning all i
 associations for every selected item.
 
 The historical-name index now includes native symbol and group identifications as well
-as modules. General application subject resolution, earlier agentic evidence delivery,
-associated inspection, and hosted native-content reference translation remain part of
-the separate caller cut-over; these are not claims of complete M3 conformance.
+as modules. General application subject resolution, agentic evidence delivery,
+associated inspection, and hosted native-content reference translation are being migrated in
+the separate caller checkpoint; these are not claims of complete M3 conformance.
 
 ## Immutable capture and ownership lifetime
 

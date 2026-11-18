@@ -1,3 +1,4 @@
+import type { ProgramRecord } from '../../records.js';
 import { contributionSubmissionGuidance, reportAnswerGuidance } from '../../contributions/outcomes.js';
 import { componentSelectorGuidance } from '../../contributions/catalog.js';
 import type { FunctionTool } from 'openai/resources/responses/responses.js';
@@ -7,7 +8,7 @@ import { hostedAgent } from './adapter.js';
 import type { OpenAIExchange, WireProtocol } from './adapter.js';
 import { InvestigatorReferences } from './references.js';
 
-export const contributionWireProtocol = 'postcode/contribution-dialog-wire@7';
+export const contributionWireProtocol = 'postcode/contribution-dialog-wire@8';
 
 /**
  * Reference positions of the contribution dialog. A string at one of these keys is an exact
@@ -21,7 +22,7 @@ const depthLimit = 64;
 
 function translate(value: unknown, key: string, path: string, map: (value: string, path: string) => string, special: (value: Record<string, unknown>, path: string) => unknown, depth = 0): unknown {
   // Request parameters are opaque literal question context, even when their keys resemble references.
-  if (key === 'parameters') return value;
+  if (key === 'parameters' || key === 'body') return value;
   if (typeof value === 'string') return referenceKeys.has(key) ? map(value, path) : value;
   // Domain validation rejects whatever lies beyond the structural bound, untouched.
   if (depth > depthLimit || value === null || typeof value !== 'object') return value;
@@ -102,11 +103,32 @@ export const contributionProtocol: WireProtocol<DialogInput, DialogReply> = {
   description: 'PostCode qualified information acquisition and explicit contribution submission', protocol: contributionWireProtocol,
   codec() {
     const references = new InvestigatorReferences();
+    const item = (object: Record<string, unknown>, path: string, map: (value: string, path: string) => string, encodeNative: boolean): unknown => {
+      if (typeof object.type !== 'string' || !Object.hasOwn(object, 'body')) return undefined;
+      const { body, ...rest } = object;
+      const fields = translate(rest, '', path, map, () => undefined) as Record<string, unknown>;
+      if (!body || typeof body !== 'object' || Array.isArray(body)) return { ...fields, body };
+      const value = body as Record<string, unknown>;
+      const reference = (value: unknown, at: string) => typeof value === 'string' ? map(value, at) : value;
+      if (object.type === 'native-finding' && encodeNative) return { ...fields, body: { ...value,
+        record: reference(value.record, `${path}.body.record`), finding: references.programRecord(value.finding as ProgramRecord, `${path}.body.finding`) } };
+      if (object.type === 'module-identification') return { ...fields, body: { ...value, claim: reference(value.claim, `${path}.body.claim`) } };
+      if (object.type === 'state-model') {
+        const entity = (value: unknown, at: string) => value && typeof value === 'object' && !Array.isArray(value)
+          ? { ...value, ...(Object.hasOwn(value, 'entity') ? { entity: reference((value as Record<string, unknown>).entity, `${at}.entity`) } : {}) } : value;
+        return { ...fields, body: { ...value, bearer: entity(value.bearer, `${path}.body.bearer`),
+          states: Array.isArray(value.states) ? value.states.map((state, index) => entity(state, `${path}.body.states[${index}]`)) : value.states } };
+      }
+      // Unknown content types and literal bodies have no inferred reference positions.
+      return { ...fields, body };
+    };
     const encode = (value: unknown, path: string): unknown => translate(value, '', path, reference => references.handle(reference),
       // A program-evidence response is translated by its typed record structure; the wrapper's own fields by key.
       (object, at): unknown => object.tool === 'evidence' && 'response' in object ? { ...object, response: references.evidenceResponse(object.response, `${at}.response`),
-        entities: encode(object.entities, `${at}.entities`), retained: encode(object.retained, `${at}.retained`), retainedOmitted: encode(object.retainedOmitted, `${at}.retainedOmitted`) } : undefined);
-    const decode = (value: unknown, path: string) => translate(value, '', path, (handle, at) => references.resolve(handle, at), () => undefined);
+        entities: encode(object.entities, `${at}.entities`), retained: encode(object.retained, `${at}.retained`), retainedOmitted: encode(object.retainedOmitted, `${at}.retainedOmitted`) }
+        : item(object, at, reference => references.handle(reference), true));
+    const decode = (value: unknown, path: string) => translate(value, '', path, (handle, at) => references.resolve(handle, at),
+      (object, at) => item(object, at, (handle, where) => references.resolve(handle, where), false));
     return {
       message(input) {
         references.begin();

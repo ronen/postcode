@@ -18,7 +18,7 @@ const input = { attempt: id('production', 'f') as RecordId, instructions: 'Expla
   notices: [{ change: { investigram, declaration: 'use' }, operation: 'withdraw', displaces: [{ investigram, declaration: 'old' }], establishes: null }],
   responses: [{ tool: 'contribution', kind: 'baseline', value: { entity, entityKind: 'module', identifications: [{ address: { investigram, declaration: 'identify' },
     owner: { investigram, production: id('production', '2'), qualification: { status: 'mechanically-derived', method: 'm', scope: `session:module:${'c'.repeat(64)}`, limitations: [literal], contexts: [claim] } },
-    content: [{ address: { investigram, item: 'name' }, type: 'module-identification', item: { key: 'name', body: { claim, name: 'breaker.ts', handle: 'breaker' }, evidence: [claim] } }] }] } }],
+    content: [{ address: { investigram, item: 'name' }, type: 'module-identification', item: { key: 'name', type: 'module-identification', body: { claim, name: 'breaker.ts', handle: 'breaker' }, evidence: [claim] } }] }] } }],
   remaining: { milliseconds: 10_000, calls: 5, toolCalls: 10, repairs: 1 } } as unknown as DialogInput;
 const usage = { input_tokens: 10, output_tokens: 5, total_tokens: 15 };
 const response = (output: unknown[]) => new Response(JSON.stringify({ id: 'resp', object: 'response', status: 'completed', model: 'gpt-6-sol', service_tier: 'default', usage, output }),
@@ -140,5 +140,40 @@ test('originating questions keep exact wire references and literal parameters se
   assert.equal(encoded.request.option.key, origin.request.option.key);
   const request = codec.tools({ requests: [{ kind: 'designations', result: encoded.result }] });
   assert.deepEqual(request, { kind: 'tools', requests: [{ kind: 'designations', result: origin.result }] });
+  codec.close();
+});
+
+test('common native findings translate typed references while literal and unknown bodies stay exact', () => {
+  const codec = contributionProtocol.codec();
+  const native = (information: unknown) => ({ key: 'finding', type: 'native-finding', body: { record: claim,
+    finding: { kind: 'claim', id: claim, session, method: 'controlled', subject: module, context: result, information } }, evidence: [claim] });
+  const items = [
+    native({ type: 'export', exportedName: entity, symbol: entity, origin: module, roles: null, routes: [{ via: module, kind: 'star' }] }),
+    native({ type: 'module-placement', groups: [entity], candidates: [entity], artifacts: [module], reason: entity }),
+    native({ type: 'group-containment', child: entity, reason: entity }),
+    { key: 'opaque', type: 'future-type', body: { record: claim, finding: { subject: entity }, entity, evidence: [claim], text: literal }, evidence: [claim] },
+    { key: 'prose', type: 'prose', body: { text: entity }, evidence: [claim] },
+  ];
+  const message = codec.message({ ...input, responses: [{ tool: 'contribution', kind: 'contribution', value: { items } }] });
+  const encoded = (message.responses as { value: { items: typeof items } }[])[0]!.value.items;
+  for (let index = 0; index < 3; index++) {
+    const value = encoded[index]! as ReturnType<typeof native>;
+    assert.notEqual(value.body.record, claim);
+    assert.equal(value.body.record, value.body.finding.id);
+    assert.equal(value.body.finding.subject, (message.content.request as { subjects: { moduleRecord: string }[] }).subjects[0]!.moduleRecord);
+  }
+  const information = (encoded[0]! as ReturnType<typeof native>).body.finding.information as { exportedName: string; symbol: string; origin: string; routes: { via: string }[] };
+  assert.equal(information.exportedName, entity);
+  assert.notEqual(information.symbol, entity);
+  assert.equal(information.origin, information.routes[0]!.via);
+  const placement = (encoded[1]! as ReturnType<typeof native>).body.finding.information as { groups: string[]; artifacts: string[]; reason: string };
+  assert.notEqual(placement.groups[0], entity); assert.notEqual(placement.artifacts[0], module); assert.equal(placement.reason, entity);
+  assert.deepEqual(encoded[3]!.body, items[3]!.body);
+  assert.deepEqual(encoded[4]!.body, items[4]!.body);
+  const decoded = codec.submission({ investigrams: [{ key: 'x', items: encoded.slice(3) }] }, false);
+  assert.equal(decoded.kind, 'submit');
+  const decodedItems = (decoded.contribution as { investigrams: { items: typeof items }[] }).investigrams[0]!.items;
+  assert.deepEqual(decodedItems.map(item => item.body), items.slice(3).map(item => item.body));
+  assert.ok(decodedItems.every(item => item.evidence[0] === claim));
   codec.close();
 });

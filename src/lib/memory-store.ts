@@ -21,6 +21,7 @@ function references(record: ProgramRecord): readonly RecordId[] {
       ...record.completeTargets, ...record.completeCorrections, ...record.suppliedEvidence, ...record.summarizedEvidence];
     // A contribution answer carries its selected content; its references are ledger identities, not program records.
     case 'contribution-projection': return [];
+    case 'contribution-inspection-projection': return record.mechanical ? [record.mechanical] : [];
     case 'session': return record.repository ? [record.repository] : [];
     case 'analysis-inputs': return [];
     case 'captured-content': return [record.subject, record.inputs, record.mapping];
@@ -126,6 +127,12 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
         }
       }
       switch (record.kind) {
+        case 'contribution-inspection-projection':
+          if (record.mechanical) {
+            const base = pending.get(record.mechanical) ?? this.#records.get(record.mechanical);
+            if (base?.kind !== 'projection' && base?.kind !== 'organization-projection') throw new Error('Invalid inspection mechanical basis');
+          }
+          break;
         case 'module-exports-projection': {
           const get = (id: RecordId) => (pending.get(id) ?? this.#records.get(id))!;
           requireKind(record.subject, 'module'); requireKind(record.evaluation, 'evaluation');

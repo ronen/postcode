@@ -5,7 +5,7 @@ export interface ResolutionInformation {
   readonly reason: 'unknown-answer' | 'foreign-answer' | 'unsupported-answer' | 'presentation-unavailable' | 'invalid-parameters' | 'invalid-designation' | 'invalid-report-inputs' | 'invalid-request' | Exclude<SubjectResolution['status'], 'resolved'>;
   readonly explanation: string;
   readonly guidance?: string;
-  readonly candidates: readonly { readonly id: RecordId; readonly kind: 'module' | 'group' | 'investigram'; readonly reference: string }[];
+  readonly candidates: readonly { readonly id: RecordId; readonly kind: import('../subject-resolution.js').EntityKind; readonly reference: string }[];
   readonly criteria: readonly string[];
   readonly qualifications: readonly string[];
   readonly prerequisites: readonly RecordId[];

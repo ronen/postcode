@@ -1,3 +1,4 @@
+import { exactSubjectShape } from '../contributions/subjects.js';
 import { freezeOwned } from '../immutable.js';
 import { representationProblem } from './input.js';
 import { lenses } from './lenses.js';
@@ -104,9 +105,10 @@ export function captureApplicationRequest(value: unknown, catalog: Readonly<Reco
     if (typeof input.lens !== 'string' || !Object.hasOwn(catalog, input.lens)) problem('lens', 'The supplied name does not identify a registered Lens.');
     const designation = input.designation as Record<string, ParameterValue> | undefined;
     if (!designation || typeof designation !== 'object' || Array.isArray(designation)
-      || !['default', 'configured-project', 'repository', 'missing', 'name', 'reference'].includes(designation.kind as string)
+      || !['default', 'configured-project', 'repository', 'missing', 'name', 'reference', 'selection'].includes(designation.kind as string)
       || (designation.kind === 'name' || designation.kind === 'reference') && typeof designation.value !== 'string'
-      || Object.keys(designation).some(key => !['kind', ...(['name', 'reference'].includes(designation.kind as string) ? ['value'] : [])].includes(key))) {
+      || designation.kind === 'selection' && !exactSubjectShape(designation.subject)
+      || Object.keys(designation).some(key => !['kind', ...(['name', 'reference'].includes(designation.kind as string) ? ['value'] : designation.kind === 'selection' ? ['subject'] : [])].includes(key))) {
       problem('designation', 'Supply one explicit subject designation.');
     }
     if (input.parameters !== undefined && (!input.parameters || typeof input.parameters !== 'object' || Array.isArray(input.parameters))) problem('parameters', 'Lens parameters must be an object.');
@@ -161,7 +163,7 @@ export function invalidDesignation(request: SemanticRequest, catalog: Readonly<R
   if (request.designation.kind === 'configured-project' || request.designation.kind === 'repository') {
     if (!definition.subjects.includes(request.designation.kind)) return `Lens ${definition.id} does not apply to ${request.designation.kind}.`;
   }
-  if ((request.designation.kind === 'name' || request.designation.kind === 'reference') && definition.cardinality === 'population') return `Lens ${definition.id} requires a project or repository subject, not a selector.`;
+  if ((request.designation.kind === 'name' || request.designation.kind === 'reference' || request.designation.kind === 'selection') && definition.cardinality === 'population') return `Lens ${definition.id} requires a project or repository subject, not a selector.`;
   if (request.designation.kind === 'name' && !definition.subjects.some(kind => kind === 'module' || kind === 'group')) return `Lens ${definition.id} requires a precise ${definition.subjects.includes('contribution') ? 'contribution' : 'investigram'} reference; ${definition.subjects.includes('contribution') ? 'contributions' : 'investigrams'} cannot be designated by name.`;
   return null;
 }

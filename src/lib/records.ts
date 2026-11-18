@@ -6,6 +6,7 @@ import type { DependencyRecords, DependencyRelationshipClaim, DependencyOrganiza
 import type { OrganizationClaims, OrganizationRecords } from './organization/records.js';
 import type { CapturedContentRecord } from './evidence-access.js';
 import type { ModuleExportsProjection } from './exports/records.js';
+import type { ContributionInspection } from './contributions/inspection.js';
 import type { ContributionAnswer } from './contributions/answers.js';
 
 /** Logical records; no compiler objects or storage-native identifiers cross this boundary. */
@@ -216,7 +217,7 @@ export interface ProjectionRecord extends RecordContext {
 }
 
 export type ProgramRecord = SessionRecord | AnalysisInputsRecord | ModuleRecord | SymbolRecord | Claim | RecordedAssertion
-  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | ModuleExportsProjection | OrganizationRecords | DependencyRecords | CapturedContentRecord | Investigram | Correction | InvestigationProvenance | InvestigationEvaluationRecord | InvestigationSelectionProjection | ContributionAnswer;
+  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | ModuleExportsProjection | OrganizationRecords | DependencyRecords | CapturedContentRecord | Investigram | Correction | InvestigationProvenance | InvestigationEvaluationRecord | InvestigationSelectionProjection | ContributionInspection | ContributionAnswer;
 
 /** Only the domain operations currently used by discovery and lenses. */
 export interface ProgramRecordStore {

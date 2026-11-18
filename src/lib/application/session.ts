@@ -1,7 +1,9 @@
 import { freezeOwned } from '../immutable.js';
 import { initiation, RequestWork } from '../work-attribution.js';
 import type { WorkReport, WorkProgress } from '../work-attribution.js';
-import { investigationEvaluation } from '../investigation/evaluation.js';
+import { evidenceAccess } from '../evidence-access.js';
+import { contributionReference } from '../contributions/subjects.js';
+import { moduleEntity } from '../contributions/modules.js';
 import { InvestigationUsage } from '../investigation/usage.js';
 import { usageSummary } from '../investigation/reporting.js';
 import type { AttemptReport } from '../investigation/contracts.js';
@@ -34,7 +36,7 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
   const usage = new InvestigationUsage();
   const usageReport = () => usageSummary([...reports.values()]);
   let state: { store: MemoryProgramRecordStore; execute: ReturnType<typeof requestExecutor>;
-    evaluate: ReturnType<typeof investigationEvaluation>['evaluate']; changed: () => Promise<boolean> } | undefined;
+    evaluate: (request: import('../investigation/contracts.js').InvestigationRequest, work?: RequestWork) => Promise<import('../contributions/evaluation.js').ContributionEvaluated>; changed: () => Promise<boolean> } | undefined;
   let disposed: Error | undefined, busy = false, invalid = false;
   const dispose = (reason: Error) => { disposed ??= reason; state?.store.releaseOwnership(); controller.abort(reason); return owner?.close(reason) ?? Promise.resolve(); };
   const interrupt = () => { void dispose(new CommandInterrupted()).catch(() => {}); };
@@ -68,18 +70,20 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
   // attempt accounting may arrive during cancellation; progress cannot revive work.
   const initialize = (project: Extract<typeof opened, { status: 'opened' }>) => {
     const store = new MemoryProgramRecordStore();
-    const integration = investigationEvaluation(store, project.analysis, id, usage, { ...investigation,
-      onReport: report => { if (!currentWork) return; const captured = freezeOwned(structuredClone(report)); reports.set(report.attempt, captured); investigation.onReport?.(captured); },
-      onProgress: report => { if (!currentWork || controller.signal.aborted) return; const captured = freezeOwned(structuredClone(report)); reports.set(report.attempt, captured); investigation.onProgress?.(captured); },
-    }, check, controller.signal, catalog.operations);
-    // Contribution investigations share the Session's evidence boundary, usage ledger, validity check and cancellation.
+    const evidence = evidenceAccess(store, project.analysis, id);
     const report = (value: AttemptReport) => { if (!currentWork) return; const captured = freezeOwned(structuredClone(value)); reports.set(value.attempt, captured); investigation.onReport?.(captured); };
-    const contributions = contributionEvaluation(store, sessionLedger(store, id), integration.evidence, usage,
-      { ...(investigation.dialogAgent ? { dialogAgent: investigation.dialogAgent } : {}), ...(investigation.bounds ? { bounds: investigation.bounds } : {}), onReport: report }, check, controller.signal);
-    return { store, execute: requestExecutor(store, project.analysis, id, integration, usageReport, catalog, contributions), changed: project.changed,
-      evaluate: (request: Parameters<typeof integration.evaluate>[0], work?: RequestWork) => {
-        evaluateModules(store, project.analysis, [], work?.scope('Establish the module basis for direct interpretation.'));
-        return integration.evaluate(request, work);
+    const contributions = contributionEvaluation(store, sessionLedger(store, id), evidence, usage,
+      { ...investigation, operations: catalog.operations, onReport: report, onProgress: value => { if (!currentWork || controller.signal.aborted) return; const captured = freezeOwned(structuredClone(value)); reports.set(value.attempt, captured); investigation.onProgress?.(captured); } }, check, controller.signal);
+    return { store, execute: requestExecutor(store, project.analysis, id, usageReport, catalog, contributions), changed: project.changed,
+      evaluate: (request: import('../investigation/contracts.js').InvestigationRequest, work?: RequestWork) => {
+        evaluateModules(store, project.analysis, [], work?.scope('Establish the module basis for direct investigation.'));
+        const operation = catalog.operations[request.operation];
+        if (!operation) throw new Error('Unknown contribution operation');
+        const entity = operation.subject === 'module' ? moduleEntity(store, request.subject) : undefined;
+        const owner = operation.subject === 'selected-content' ? contributionReference(sessionLedger(store, id), request.subject) : undefined;
+        if (!entity && !owner) throw new Error('Unsupported exact operation subject');
+        return contributions.evaluate({ operation: operation.id, subjects: [{ role: null, subject: entity ? { kind: 'entity', entity } : { kind: 'investigram', investigram: owner! } }],
+          parameters: request.parameters, context: [], resultContract: null }, operation, null, { subject: request.subject, ...(work ? { work } : {}) });
       } };
   };
   state = initialize(opened);
@@ -163,7 +167,7 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
           await check();
           const result = await state!.evaluate(context.request.operation, work);
           await check(); alive();
-          return freezeOwned({ ...result, context, attribution: finishWork(work, result.unavailable || result.evaluation?.outcome.kind !== 'accepted' ? 'failed' : 'completed') });
+          return freezeOwned({ ...result, context, attribution: finishWork(work, result.unavailable || (result.execution?.outcome ?? result.attempt?.outcome)?.kind !== 'accepted' ? 'failed' : 'completed') });
         } catch (error) { failWork(work, error); throw error; }
       });
     },

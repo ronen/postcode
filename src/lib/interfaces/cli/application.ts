@@ -1,3 +1,4 @@
+import { arrangeContributionView, renderContributionView } from './contribution-presentation.js';
 import { openApplication } from '../../application/index.js';
 import type { ApplicationDependencies, AnswerDelivery, ProjectOptions, PresentationDeclaration, ParameterValue } from '../../application/index.js';
 import type { SemanticRequest } from '../../application/requests.js';
@@ -17,7 +18,6 @@ import { arrangeOrganizationView } from '../../organization/presentation.js';
 import { arrangeDependencyView } from '../../dependencies/presentation.js';
 import { arrangeModuleExports } from '../../exports/presentation.js';
 import { renderMechanicalView } from '../../program-presentation.js';
-import { arrangeAssociatedInspection } from '../../investigation/associations.js';
 import { arrangeInvestigationView, renderInvestigationView } from '../../investigation/presentation.js';
 import { finalizeRequestReport, renderRequestReport } from './request-reporting.js';
 import type { RequestContext, ResolutionReport, UsageReport } from './report-contracts.js';
@@ -42,7 +42,7 @@ export function applicationPresentation(definition: PresentationDefinition): Pre
       { option: 'moreDetails', when: 'truthy', label: '--more-details', ...(definition.source === 'none' ? { values: [false] }
         : definition.source === 'selected-subjects' ? { requires: ['selected-subjects' as const] } : {}) },
       { option: 'after', when: 'present', label: '--after', ...(definition.associationPage ? { requires: ['association' as const] } : { values: [] }) },
-      { option: 'revisionPage', when: 'present', label: '--revision-page', ...(definition.revisionPage ? { requires: ['revision' as const] } : { values: [] }) },
+      { option: 'revisionPage', when: 'present', label: '--revision-page', ...(definition.revisionPage ? { requires: ['revision' as const, ...(['modules', 'organization'].includes(definition.contract) ? ['association' as const] : [])] } : { values: [] }) },
     ] };
 }
 
@@ -80,21 +80,26 @@ function arrange(result: AnswerDelivery, context: RequestContext, port: Referenc
   const display = { selectionMode: result.selectionMode, referenceLifetime: result.referenceLifetime, answerReference: result.answerReference };
   const resolution = result.resolution && result.context.request.kind === 'lens' ? resolutionContext(result.context.request.designation, result.resolution) : undefined;
   const content = result.answer.mechanical ?? result.answer.content;
-  // No CLI Presentation is declared for contribution answers, so coordination never selects one for them.
-  if (content.contract === 'contribution') throw new Error('No CLI Presentation accepts a contribution answer');
+  const commonOptions = { ...display, title: result.title, presentation, ...(resolution ? { resolution } : {}),
+    ...(choices.after === undefined ? {} : { after: choices.after }), revisionPage: choices.revisionPage ?? 1 };
+  if (content.contract === 'contribution' || content.contract === 'contribution-inspection') {
+    const arranged = arrangeContributionView(content.value, commonOptions, result.reporting, result.usage, new Map(result.bindings.associations));
+    return { ...arranged, rendered: renderContributionView(arranged.view), failed: result.failed || arranged.view.listing.status === 'unknown-continuation' };
+  }
   if (content.contract === 'investigation') {
     const arranged = arrangeInvestigationView(content.value, { ...display, title: result.title, presentation,
       ...(resolution ? { resolution } : {}), ...(choices.after === undefined ? {} : { after: choices.after }), revisionPage: choices.revisionPage ?? 1 }, result.reporting, result.usage, port);
     return { ...arranged, rendered: renderInvestigationView(arranged.view), failed: result.failed || arranged.view.investigations?.status === 'unknown-continuation' };
   }
   const bindings = result.bindings;
-  let view = content.contract === 'modules' ? arrangeModuleView(content.value, new Map(bindings.modules), presentation, result.title, resolution, display)
+  const view = content.contract === 'modules' ? arrangeModuleView(content.value, new Map(bindings.modules), presentation, result.title, resolution, display)
     : content.contract === 'organization' ? arrangeOrganizationView(content.value, { groups: new Map(bindings.groups), modules: new Map(bindings.modules), detail: new Map(bindings.detail) }, presentation, result.title, resolution, display)
       : content.contract === 'dependencies' ? arrangeDependencyView(content.value, new Map(bindings.modules), presentation, resolution, display)
         : arrangeModuleExports(content.value, new Map(bindings.modules).get(content.value.projection.subject)!, presentation, result.title, resolution, display);
   if (result.answer.mechanical) {
-    if (result.answer.content.contract !== 'investigation' || view.schema !== 'postcode-view/1-experimental' && view.schema !== 'postcode-organization-view/1-experimental') throw new Error('Broken associated inspection contract');
-    view = arrangeAssociatedInspection(view, result.answer.content.value, new Map(bindings.associations), choices.after, result.referenceLifetime);
+    if (result.answer.content.contract !== 'contribution-inspection') throw new Error('Broken associated inspection contract');
+    const arranged = arrangeContributionView(result.answer.content.value, commonOptions, result.reporting, result.usage, new Map(bindings.associations), view);
+    return { ...arranged, rendered: renderContributionView(arranged.view), failed: result.failed || arranged.view.listing.status === 'unknown-continuation' };
   }
   return { view, investigationArrangementKey: null, rendered: renderMechanicalView(view),
     failed: result.failed || 'investigations' in view && (view.investigations as { status: string }).status === 'unknown-continuation' };

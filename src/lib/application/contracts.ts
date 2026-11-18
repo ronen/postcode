@@ -2,7 +2,7 @@ import type { SessionId, RecordId } from '../records.js';
 import type { SubjectResolution } from '../subject-resolution.js';
 import type { InitiationContext, WorkReport, WorkProgress } from '../work-attribution.js';
 import type { InvestigationUsageReport } from '../investigation/reporting.js';
-import type { InvestigationSelection, InvestigationDependencies } from '../investigation/evaluation.js';
+import type { InvestigationSelection } from '../investigation/evaluation.js';
 import type { InvestigationRequest } from '../investigation/contracts.js';
 import type { ProjectOptions } from '../typescript/project.js';
 import type { RunGit } from '../git-execution.js';
@@ -66,7 +66,7 @@ export interface CapturedInvocation {
 export interface ApplicationDependencies {
   readonly runGit?: RunGit;
   readonly signal?: AbortSignal;
-  readonly investigation?: InvestigationDependencies;
+  readonly investigation?: import('../contributions/evaluation.js').ContributionDependencies;
   readonly onWork?: (progress: WorkProgress) => void;
   readonly referenceLifetime?: 'session' | 'command';
 }

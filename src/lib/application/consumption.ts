@@ -41,6 +41,7 @@ export const standardRequirements: Readonly<Record<ResultContract, InformationRe
   'module-exports': { modules: ['exports', 'documentation'], groups: [] },
   investigation: { modules: [], groups: [] },
   contribution: { modules: [], groups: [] },
+  'contribution-inspection': { modules: [], groups: [] },
 });
 export function supportedRequirements(contract: ResultContract, requirements: InformationRequirements): boolean {
   const supported = standardRequirements[contract];
@@ -88,8 +89,8 @@ export function retainedFacts(content: QualifiedContent, associated: boolean): r
   const selected = content.contract === 'modules' ? content.value.projection.subject === 'selected-modules'
     : content.contract === 'organization' ? content.value.projection.subject === 'selected-entities' : true;
   return [...(selected ? ['selected-subjects' as const] : []), 'inspection',
-    ...(associated || content.contract === 'investigation' && content.value.projection.variant === 'historical-inspection' ? ['association' as const] : []),
-    ...(content.contract === 'investigation' && content.value.projection.variant !== 'associated-inspection' ? ['revision' as const] : [])];
+    ...(associated || content.contract === 'contribution-inspection' || content.contract === 'investigation' && content.value.projection.variant === 'historical-inspection' ? ['association' as const] : []),
+    ...(['contribution', 'contribution-inspection'].includes(content.contract) || content.contract === 'investigation' && content.value.projection.variant !== 'associated-inspection' ? ['revision' as const] : [])];
 }
 export function consumptionPlan(declarations: readonly PresentationDeclaration[], contract: ResultContract, choice: ConsumptionChoice,
   facts: readonly ConsumptionFact[]): readonly PresentationDeclaration[] {
@@ -120,6 +121,6 @@ export function suppliedRequirements(content: QualifiedContent, requirements: In
     case 'dependencies': return (!content.value.basis.modules.length || requirements.modules.every(item => content.value.moduleEvaluations.some(outcome => outcome.requirement === item)))
       && (!requirements.groups.length || content.value.expanded !== null);
     case 'module-exports': return requirements.modules.every(item => content.value.evaluations.some(outcome => outcome.requirement === item));
-    case 'investigation': case 'contribution': return !requirements.modules.length && !requirements.groups.length;
+    case 'investigation': case 'contribution': case 'contribution-inspection': return !requirements.modules.length && !requirements.groups.length;
   }
 }

@@ -216,9 +216,9 @@ export function arrangeInvestigationView(content: InvestigationProjectionContent
 }
 /** Usage is view reporting, independent of the retained interpretation projection. */
 export function finalizeInvestigationUsage<T extends { readonly id: RecordId;
-  readonly projection: { readonly id: RecordId; readonly session: SessionId }; readonly usage: InvestigationUsageReport }>(view: T, usage: InvestigationUsageReport, arrangementKey: RecordId): T {
+  readonly projection: { readonly id: RecordId; readonly session: SessionId }; readonly usage: InvestigationUsageReport }>(view: T, usage: InvestigationUsageReport, arrangementKey: RecordId, method: string = presentationMethods.investigationPresentation): T {
   const session = view.projection.session;
-  const id = recordId(session, 'investigation-view', [presentationMethods.investigationPresentation, identityReference(session, arrangementKey), usage]);
+  const id = recordId(session, 'investigation-view', [method, identityReference(session, arrangementKey), usage]);
   return freezeOwned(withDiagnosticMeanings({ ...view, id, usage }));
 }
 export type InvestigationView = ReturnType<typeof arrangeInvestigationView>['view'];

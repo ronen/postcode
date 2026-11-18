@@ -13,6 +13,7 @@ export interface AnswerOwner {
   readonly investigram: InvestigramId;
   readonly producer: Producer;
   readonly production: ProductionId;
+  readonly execution: import('./model.js').Production;
   readonly qualification: Qualification | null;
   readonly origin: OriginatingQuestion | null;
   readonly report: ProducerReport | null;
@@ -47,7 +48,7 @@ export function answerSupport(store: ProgramRecordStore, ledger: ContributionLed
   function owner(id: InvestigramId): void {
     if (owners.has(id)) return;
     const source = ledger.investigram(id), production = ledger.production(source.production);
-    const value: AnswerOwner = { investigram: id, production: production.id, producer: production.producer, qualification: source.qualification,
+    const value: AnswerOwner = { investigram: id, production: production.id, execution: production, producer: production.producer, qualification: source.qualification,
       origin: production.invocation ? originatingQuestion(ledger, production.invocation) : null, report: production.report,
       producing: ledger.status.production(production.id) };
     owners.set(id, value);
@@ -102,7 +103,7 @@ export function answerSupport(store: ProgramRecordStore, ledger: ContributionLed
     status.standing.displacedBy.forEach(change); causes(status.membership); causes(status.producing);
     status.content.forEach(value => causes(value.producing)); status.inconsistencies.forEach(meta);
   }
-  return { use, item, change, metadata: meta,
+  return { owner, use, item, change, metadata: meta,
     finish(): AnswerSupport {
       // Shared evidence traversal preserves record-specific support. Capture inputs and repository
       // bodies too: this is internal resolved support, not the agent's bounded evidence page.

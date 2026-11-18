@@ -24,7 +24,7 @@ import { resolveDependencyProjection } from './dependencies/content.js';
 import { moduleExports, resolveModuleExports } from './exports/content.js';
 
 type Expansions = { readonly modules: readonly ModuleExpansion[]; readonly groups: readonly GroupExpansion[] };
-export type MechanicalContent = Exclude<PresentationContent, { contract: 'investigation' | 'contribution' }>;
+export type MechanicalContent = Exclude<PresentationContent, { contract: 'investigation' | 'contribution' | 'contribution-inspection' }>;
 interface Construction {
   readonly content: MechanicalContent;
   readonly retainedAnswers: readonly RecordId[];
@@ -85,7 +85,7 @@ const implementations: Readonly<Record<string, MechanicalImplementation>> = free
       organization(store, outcome, designation === 'repository' ? 'repository' : 'configured-project')) });
   } },
   inspection: { definition: lenses.inspect, lookup, required: { modules: [], groups: groupStandardExpansions },
-    contract: resolution => resolution.candidates[0]?.kind === 'investigram' ? 'investigation'
+    contract: resolution => resolution.candidates.every(item => !['module', 'group'].includes(item.kind)) ? 'contribution-inspection'
       : resolution.candidates.some(item => item.kind === 'group') ? 'organization' : 'modules',
     construct: ({ store, analysis, expansions, work, subjects }) => {
       const basis = evaluateModules(store, analysis, expansions.modules, work);

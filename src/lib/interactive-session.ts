@@ -1,3 +1,6 @@
+import { renderContributionView } from './interfaces/cli/contribution-presentation.js';
+import type { DialogAgent as InvestigatorAgent, DialogAgentConversation as AgentDialogue, DialogReply as AgentReply } from './contributions/dialog.js';
+import type { InvocationRequest as InvestigationRequest } from './contributions/model.js';
 import { initiation, incompleteWork, WorkReportState } from './work-attribution.js';
 import type { WorkReport } from './work-attribution.js';
 import { captureRequest } from './requests.js';
@@ -5,7 +8,7 @@ import { captureCatalog, defaultCatalog } from './request-catalog.js';
 import type { RequestCatalog } from './request-catalog.js';
 import { finalizeRequestReport, renderRequestReport, rejectedRequestResult } from './interfaces/cli/request-reporting.js';
 import { freezeOwned } from './immutable.js';
-import type { InvestigationRequest, AgentIdentity, InvestigatorAgent, AgentDialogue, AgentReply, AttemptReport, CallUsage } from './investigation/contracts.js';
+import type { AgentIdentity, AttemptReport, CallUsage } from './investigation/contracts.js';
 import { finalizeInvestigationUsage, renderInvestigationView } from './investigation/presentation.js';
 import type { InvestigationBounds } from './investigation/execute.js';
 import type { RecordId } from './records.js';
@@ -188,12 +191,15 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
           const report = finalizeRequestReport(reply.result.report, usageReport());
           return { ...reply.result, report, rendered: renderRequestReport(report) };
         }
+        if (reply.result.view.schema === 'postcode-contribution-view/1-experimental') {
+          if (!reply.result.investigationArrangementKey) throw new Error('Missing contribution arrangement identity');
+          const view = finalizeInvestigationUsage(reply.result.view, usageReport(), reply.result.investigationArrangementKey, presentationMethods.contributionPresentation);
+          return { ...reply.result, view, rendered: renderContributionView(view) };
+        }
         if (reply.result.view.schema === 'postcode-investigation-view/1-experimental') {
-          // The close message precedes the result. Finalize from those sealed call
-          // snapshots, which also feed observations and subsequent usage requests.
           if (!reply.result.investigationArrangementKey) throw new Error('Missing investigation arrangement identity');
           const view = finalizeInvestigationUsage(reply.result.view, usageReport(), reply.result.investigationArrangementKey);
-          return { ...reply.result, view, rendered: renderInvestigationView(view), methods: [...reply.result.methods], failed: reply.result.failed ?? false };
+          return { ...reply.result, view, rendered: renderInvestigationView(view) };
         }
         return reply.result;
       } catch (error) {
@@ -208,3 +214,4 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
     close() { return dispose(new SessionClosed()); },
   };
 }
+import { presentationMethods } from './interfaces/cli/methods.js';
