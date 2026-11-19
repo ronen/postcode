@@ -264,6 +264,10 @@ to begin the substantive implementation task described by that plan.
 
 > ok, M3 called acceptance is good, continue with M3
 
+2026-11-19, resolving full integrated-review round 3 finding F3: explicitly selected input context in retained follow-up requests is to be delivered using the existing acquisition, bounds and actual-dispatch exposure rules. This follows the review-workflow request to choose delivery versus rejection; no new hosted authoring capability or live inference is authorized.
+
+> Deliver context using the existing acquisition, bounds and exposure rules (recommended)
+
 ## Outcome
 
 ## Verification
