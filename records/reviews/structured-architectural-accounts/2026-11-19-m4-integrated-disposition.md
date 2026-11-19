@@ -4,8 +4,8 @@ Record type: disposition
 Date: 2026-11-19
 Task: [Implement structured architectural accounts](../../tasks/2026-11-15-structured-architectural-accounts.md)
 Handoff: [Final integrated review](2026-11-19-m4-integrated-handoff.md)
-Findings: [Round 1](2026-11-19-m4-integrated-round-1-findings.md), [round 2](2026-11-19-m4-integrated-round-2-findings.md), [round 3, full branch](2026-11-19-m4-integrated-round-3-claude-findings.md)
-Corrected target: `d724192871ab15510630e8a52374db8e313b21db`
+Findings: [Round 1](2026-11-19-m4-integrated-round-1-findings.md), [round 2](2026-11-19-m4-integrated-round-2-findings.md), [round 3, full branch](2026-11-19-m4-integrated-round-3-claude-findings.md), [round 4](2026-11-19-m4-integrated-round-4-claude-findings.md)
+Current implementation target: `801e2dd19603455947f32b9936d8f033b1feb5fc`
 Gate status: further human-arranged review pending
 
 ## Findings and dispositions
@@ -79,3 +79,21 @@ Representative memory was not rerun: the ownership/retention representation is u
 Round 3's non-defect observations remain limitations rather than new scope: change notices are capped at 24 per exchange without advertising a pending count, with undelivered changes correctly remaining causes; supported callers validate selected subjects before the lower-level plain-Error paths; and native batches use provider-derived local keys within the shared pool namespace. No additional policy, namespace redesign or notice interface is introduced.
 
 All actionable findings from rounds 1–3 are now corrected. The full-branch review strengthens the evidence for the core mechanism, but it did not review these latest corrections. Appropriate rereview remains warranted, particularly for F3's newly delivered input and dispatch accounting. The original final integrated handoff still applies: correction delta `2963c35..d724192871ab15510630e8a52374db8e313b21db`, or full scope `bd92670e4e0db1c9d9804e6d7797f38678ab9bf1..d724192871ab15510630e8a52374db8e313b21db`. Human review-sufficiency determination remains pending. The task remains active and the PR draft; no closure, merge or further inference is inferred.
+
+## Round 4 and authorized context-authoring completion
+
+[Round 4](2026-11-19-m4-integrated-round-4-claude-findings.md), committed at `b998992`, rereviewed the round 3 corrections at `d724192` with disposition `0bfb9b7`. It found all three findings resolved and **no new findings**. It reproduced the type check, build digest and an uninterrupted **725/725** test run on macOS Node 22.13.1, with zero failures/cancellations/skips, in an isolated checkout with a fixed build. It is correction rereview, not another complete branch derivation; its stated residual limits remain.
+
+The reviewer noted that the hosted schema still omitted optional context and that the new delivery guidance had only offline evidence. The human explicitly directed completion of the authoring path and a focused live trial. Task follow-up `d5c33d2` preserves that extension before implementation, including the new finite request budget. It supersedes the earlier no-inference restriction only for this focused verification; it is not acceptance of the integrated gate.
+
+**The authorized extension is implemented in `801e2dd19603455947f32b9936d8f033b1feb5fc`.** The hosted submission schema exposes optional `request.context` with existing supported reference forms. Option-authoring instructions explain additional selected input, distinct from the investigation subjects, direct reference syntax and optional omission. Scope-only input retains its existing unavailable behavior. Acceptance, request identity, acquisition, limits, exposure, ownership and historical answers retain their existing semantics. Dialog method `@13` and wire protocol `@9` distinguish the changed authoring instructions and schema. The architecture documentation now describes the completed path.
+
+Type check/build and **92/92 focused offline tests** passed on a fixed build, with zero failures/skips/cancellations. The checks cover schema optionality, reference decoding, rejection/atomicity, hosted authoring through application invocation, reuse, historical preservation and existing delivery/bounds/exposure behavior. The [validation record](../../validation/structured-architectural-accounts/m4-option-context-authoring.md) records commands, digest, initial test-expectation corrections, live execution basis, audit and limits. No current-target full-suite or memory repetition is claimed.
+
+Live verification used the committed build, pinned Cockatiel fixture, established ChatGPT-plan route/model and unchanged production limits. The first authoring succeeded and its context was delivered on invocation; that broader diagram follow-up then timed out during repair of a malformed state-model submission. A targeted retry requested a smaller prose follow-up and completed both authoring and invocation without repair. The audit confirmed exact retained selections, delivered body and qualification, resulting question and exposure. **14 of 30 requests were used**, including one interrupted request with unknown usage; the objective was met and inference stopped. Both runs and the failed submission diagnostic are preserved. The validation record does not present the timeout as a successful invocation or claim independent truth of generated content.
+
+### Current review scope and gate
+
+All round 3 findings remain resolved according to round 4. The new authoring extension requires independent assessment under the existing integrated assignment, whose scope and intended gate remain applicable. Review `d724192871ab15510630e8a52374db8e313b21db..801e2dd19603455947f32b9936d8f033b1feb5fc` for the extension, or `bd92670e4e0db1c9d9804e6d7797f38678ab9bf1..801e2dd19603455947f32b9936d8f033b1feb5fc` for the complete implementation. Inspect the implementation and new evidence independently rather than treating the live success or earlier reviews as proof. The original handoff and findings remain unchanged; a succeeding round should name its actual target and scope.
+
+The task stays active and the PR draft. Further human-arranged review and human sufficiency determination remain pending; no closure or merge is authorized by these results.
