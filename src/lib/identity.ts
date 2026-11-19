@@ -25,7 +25,7 @@ export const methods = {
   moduleExportsPolicy: 'postcode/module-exports-policy@1',
   contributionProjection: 'postcode/contribution-projection@7',
   contributionInspection: 'postcode/contribution-inspection@2',
-  contributionDialog: 'postcode/contribution-dialog@11',
+  contributionDialog: 'postcode/contribution-dialog@12',
 } as const;
 
 /** Stable key order without locale, clock, random IDs, or storage identity. */

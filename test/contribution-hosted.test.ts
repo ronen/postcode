@@ -177,3 +177,18 @@ test('common native findings translate typed references while literal and unknow
   assert.ok(decodedItems.every(item => item.evidence[0] === claim));
   codec.close();
 });
+
+
+test('explicit input context uses the same scoped wire handles as delivered content', () => {
+  const codec = contributionProtocol.codec();
+  const context = [{ kind: 'content' as const, item: { investigram, item: 'model' }, component: 'state:idle' }];
+  const message = codec.message({ ...input, request: { ...input.request, context }, responses: [
+    { tool: 'contribution', kind: 'item', value: { address: { investigram, item: 'model' }, coverage: 'complete' } }] } as unknown as DialogInput);
+  const encoded = (message.content as { request: { context: typeof context } }).request.context[0]!;
+  const delivered = (message.responses as { value: { address: { investigram: string } } }[])[0]!;
+  assert.notEqual(encoded.item.investigram, investigram);
+  assert.equal(encoded.item.investigram, delivered.value.address.investigram);
+  assert.equal(encoded.component, 'state:idle');
+  assert.deepEqual(codec.tools({ requests: [{ kind: 'item', item: encoded.item }] }), { kind: 'tools', requests: [{ kind: 'item', item: context[0]!.item }] });
+  codec.close();
+});

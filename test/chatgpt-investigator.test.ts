@@ -12,7 +12,7 @@ import { CredentialError } from '../src/lib/investigation/openai/credential-stor
 
 const secret = 'test-secret-quote"backslash\\token';
 const session = { token: async () => secret, watch: () => () => {} };
-const input: DialogInput = { attempt: 'attempt:test' as RecordId, instructions: 'Test instructions', request: { invocation: 'invocation:test' as InvocationId, result: 'result:test' as QueryResultId, operation: 'functionality', subjects: [{ role: null, subject: { kind: 'entity', entity: 'entity:test' } }], parameters: {}, fresh: true, resultContract: null }, responses: [], notices: [], remaining: { milliseconds: 10000, calls: 5, toolCalls: 10, repairs: 1 } };
+const input: DialogInput = { attempt: 'attempt:test' as RecordId, instructions: 'Test instructions', request: { invocation: 'invocation:test' as InvocationId, result: 'result:test' as QueryResultId, operation: 'functionality', subjects: [{ role: null, subject: { kind: 'entity', entity: 'entity:test' } }], parameters: {}, fresh: true, resultContract: null, context: [] }, responses: [], notices: [], remaining: { milliseconds: 10000, calls: 5, toolCalls: 10, repairs: 1 } };
 const usage = { input_tokens: 12, output_tokens: 3, total_tokens: 15, input_tokens_details: { cached_tokens: 2 }, output_tokens_details: { reasoning_tokens: 1 } };
 const call = (name: string, args: unknown) => ({ type: 'function_call', call_id: 'call', name, namespace: 'postcode', arguments: JSON.stringify(args) });
 const response = (output: unknown[], status = 'completed') => ({ id: 'resp_test', model: 'gpt-5.6-sol', status, output, usage });

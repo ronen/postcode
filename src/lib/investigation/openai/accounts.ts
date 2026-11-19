@@ -31,7 +31,7 @@ export async function checkChatGPTConnection(credentials: ChatGPTCredentials, si
   const agent = chatGPTDialogAgent(session, { fetch: fetcher, onExchange: exchange => {
     if (exchange.response && typeof exchange.response === 'object' && 'model' in exchange.response) returnedModel = exchange.response.model;
   } }), dialogue = agent.open();
-  const input: DialogInput = { attempt: 'attempt:connection-check' as RecordId, request: { invocation: 'invocation:connection-check' as InvocationId, result: 'result:connection-check' as QueryResultId, operation: 'connection-check', subjects: [], parameters: {}, resultContract: null, fresh: true },
+  const input: DialogInput = { attempt: 'attempt:connection-check' as RecordId, request: { invocation: 'invocation:connection-check' as InvocationId, result: 'result:connection-check' as QueryResultId, operation: 'connection-check', subjects: [], parameters: {}, resultContract: null, context: [], fresh: true },
     instructions: 'Connection check only. Call submit_contribution with { investigrams: [] }. Do not request evidence.',
     responses: [], notices: [], remaining: { milliseconds: 30000, calls: 1, toolCalls: 0, repairs: 0 } };
   try {

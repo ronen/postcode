@@ -39,7 +39,7 @@ test('CLI policy restores sign-in guidance when credentials are revoked after se
   assert.equal(setup.kind, 'ready');
   const dialogue = setup.agent.open();
   try {
-    const input: DialogInput = { attempt: 'attempt:test' as RecordId, instructions: 'offline', request: { invocation: 'invocation:test' as InvocationId, result: 'result:test' as QueryResultId, operation: 'functionality', subjects: [], fresh: false, resultContract: null, parameters: {} }, notices: [], responses: [], remaining: { milliseconds: 100, calls: 1, toolCalls: 0, repairs: 1 } };
+    const input: DialogInput = { attempt: 'attempt:test' as RecordId, instructions: 'offline', request: { invocation: 'invocation:test' as InvocationId, result: 'result:test' as QueryResultId, operation: 'functionality', subjects: [], fresh: false, resultContract: null, context: [], parameters: {} }, notices: [], responses: [], remaining: { milliseconds: 100, calls: 1, toolCalls: 0, repairs: 1 } };
     const reply = await dialogue.exchange(input, new AbortController().signal, () => {});
     assert.equal(reply.kind, 'configuration-unavailable');
     assert.equal(reply.code, 'reauthorization_required');

@@ -22,7 +22,7 @@ import { temporaryDirectory, interactionDriver } from './cli-helpers.js';
 
 const sentinel = 'postcode-sentinel-secret-not-a-real-key';
 const input: DialogInput = { attempt: 'attempt:test' as RecordId, instructions: 'Interpret this module using only supplied evidence.',
-  request: { invocation: 'invocation:test' as InvocationId, result: 'result:test' as QueryResultId, operation: 'functionality', subjects: [{ role: null, subject: { kind: 'entity', entity: 'entity:test' } }], parameters: {}, fresh: true, resultContract: null }, responses: [], notices: [], remaining: { milliseconds: 10000, calls: 5, toolCalls: 10, repairs: 1 } };
+  request: { invocation: 'invocation:test' as InvocationId, result: 'result:test' as QueryResultId, operation: 'functionality', subjects: [{ role: null, subject: { kind: 'entity', entity: 'entity:test' } }], parameters: {}, fresh: true, resultContract: null, context: [] }, responses: [], notices: [], remaining: { milliseconds: 10000, calls: 5, toolCalls: 10, repairs: 1 } };
 const providerUsage = { input_tokens: 100, input_tokens_details: { cached_tokens: 20, cache_write_tokens: 30 },
   output_tokens: 50, output_tokens_details: { reasoning_tokens: 10 }, total_tokens: 150 };
 function response(overrides: Record<string, unknown> = {}) {

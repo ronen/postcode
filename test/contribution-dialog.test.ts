@@ -9,7 +9,7 @@ import { contributionEvaluation } from '../src/lib/contributions/evaluation.js';
 import { InvestigationUsage } from '../src/lib/investigation/usage.js';
 import { conductDialog, dialogInstructions } from '../src/lib/contributions/dialog.js';
 import type { DialogAgent, DialogInput, DialogOperation, DialogReply, DialogResponse } from '../src/lib/contributions/dialog.js';
-import type { AssociationAddress, EntityId, InvestigramId, SubmittedInvestigram } from '../src/lib/contributions/model.js';
+import type { AssociationAddress, EntityId, InvestigramId, SubmittedInvestigram, SubjectRef } from '../src/lib/contributions/model.js';
 import { moduleEntity, sessionLedger } from '../src/lib/contributions/modules.js';
 import type { ResultContract } from '../src/lib/contributions/outcomes.js';
 import type { DeliveredAssociation } from '../src/lib/contributions/production.js';
@@ -600,4 +600,62 @@ test('common dialog guards tool count and canonical decoded reply size independe
   assert.equal(result.outcome.kind, 'limit-stop');
   if (result.outcome.kind === 'limit-stop') assert.match(result.outcome.reason, /character/i);
   assert.equal(ledger.investigrams().length, before);
+});
+
+
+test('retained option context is supplied separately from subjects with qualified actual exposure', async () => {
+  const { ledger, entity, run } = await setup();
+  const original = ledger.invoke({ operation: operation.id, subjects: [{ role: null, subject: { kind: 'entity', entity: entity('origin') } }], parameters: {}, context: [], resultContract: null });
+  const production = ledger.begin({ producer: { mechanism: 'agentic', method: 'test/option-context@1', agent: null } });
+  const accepted = ledger.accept([{ production, contribution: { investigrams: [{ key: 'owner', qualification: caveat,
+    items: [{ key: 'model', type: 'state-model', body: { bearer: { role: 'one connection' }, states: [{ key: 'idle', label: 'Idle' }],
+      initial: { kind: 'unknown' }, transitions: [], coverage: { states: 'some', transitions: 'unknown' } } }],
+    declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: original.result.id }, members: [{ kind: 'item', item: { investigram: { local: 'owner' }, item: 'model' } }] }],
+    options: [{ key: 'next', meaning: 'Use these explicit inputs.', request: { operation: operation.id,
+      subjects: [{ subject: { kind: 'entity', entity: entity('barrel') } }], context: [
+        { kind: 'entity', entity: entity('origin') }, { kind: 'content', item: { investigram: { local: 'owner' }, item: 'model' }, component: 'state:idle' },
+        { kind: 'designation', association: { investigram: { local: 'owner' }, declaration: 'answer' } },
+        { kind: 'investigram', investigram: { local: 'owner' } }, { kind: 'scope', scope: 'configured-project' }] } }] }] } }]);
+  const owner = accepted.productions[0]!.investigrams.owner!, option = ledger.investigram(owner).options[0]!;
+  const selected = ledger.invoke({ ...option.request, option: { investigram: owner, key: option.key } });
+  const without = ledger.invoke({ ...option.request, context: [], option: { investigram: owner, key: option.key } });
+  assert.notEqual(selected.result.id, without.result.id);
+  const priorDeliveries = ledger.productions().map(value => value.deliveries);
+  const { execution } = await run([input => {
+    assert.deepEqual(input.request.context, option.request.context);
+    assert.deepEqual(input.request.subjects.map(value => (value as { subject: unknown }).subject), option.request.subjects.map(value => value.subject));
+    assert.deepEqual(input.responses.map(value => value.tool === 'contribution' ? value.kind : value.tool),
+      ['baseline', 'baseline', 'item', 'association', 'contribution', 'unavailable', 'metadata']);
+    const item = input.responses[2] as { value: { item: { key: string }; coverage: string; owner: { qualification: { limitations: readonly string[] } } } };
+    assert.equal(item.value.item.key, 'model'); assert.equal(item.value.coverage, 'complete');
+    assert.deepEqual(item.value.owner.qualification.limitations, caveat.limitations);
+    return { kind: 'ended' };
+  }], selected.invocation);
+  assert.ok(execution.production.deliveries.some(value => value.kind === 'item' && value.item.investigram === owner && value.item.item === 'model'));
+  assert.ok(execution.production.deliveries.some(value => value.kind === 'association' && value.association.investigram === owner));
+  assert.deepEqual(ledger.productions().slice(0, priorDeliveries.length).map(value => value.deliveries), priorDeliveries);
+});
+
+test('oversized explicit context is withheld and undispatched initial context records no exposure', async () => {
+  const { ledger, entity, run } = await setup();
+  const production = ledger.begin({ producer: { mechanism: 'agentic', method: 'test/large-context@1', agent: null } });
+  const accepted = ledger.accept([{ production, contribution: { investigrams: [{ key: 'large', qualification: caveat,
+    items: [{ key: 'body', type: 'prose', body: { text: 'EXPLICIT_CONTEXT_BODY '.repeat(10000) } }] }] } }]);
+  const owner = accepted.productions[0]!.investigrams.large!;
+  const context: readonly SubjectRef[] = [{ kind: 'content', item: { investigram: owner, item: 'body' }, component: null }];
+  const request = { operation: operation.id, subjects: [{ role: null, subject: { kind: 'entity' as const, entity: entity('barrel') } }], parameters: {}, context, resultContract: null };
+  const { execution } = await run([input => {
+    assert.deepEqual(input.request.context, context);
+    assert.equal(input.responses[1]!.tool, 'unavailable');
+    assert.match(JSON.stringify(input.responses[1]), /Nothing was delivered/);
+    assert.ok(!JSON.stringify(input.responses).includes('EXPLICIT_CONTEXT_BODY'));
+    return { kind: 'ended' };
+  }], ledger.invoke(request).invocation);
+  assert.ok(!execution.production.deliveries.some(value => value.kind === 'item' && value.item.investigram === owner));
+  const undispatched = await run([() => { throw Error('The character guard must prevent dispatch'); }],
+    ledger.invoke({ ...request, context: [{ kind: 'entity', entity: entity('origin') }] }, { fresh: true }).invocation,
+    { bounds: { milliseconds: 60_000, calls: 4, toolCalls: 4, characters: 1 } });
+  assert.equal(undispatched.execution.outcome.kind, 'limit-stop');
+  assert.deepEqual(undispatched.execution.production.deliveries, []);
+  assert.deepEqual(undispatched.execution.production.evidence, []);
 });

@@ -13,7 +13,7 @@ import type { ProgramRecord, ProgramRecordStore, RecordId } from '../records.js'
 import type { Acceptance, ContributionLedger } from './ledger.js';
 import { InvalidAcquisition, InvalidContribution, UnknownReference } from './model.js';
 import type { AssociationAddress, DeclarationAddress, EntityId, InvestigramId, InvocationId, ItemAddress, MetadataAddress, Production, QueryResultId,
-  SelectionScope } from './model.js';
+  SelectionScope, SubjectRef } from './model.js';
 import { nativeEntity } from './native.js';
 import { entityRecord } from './subjects.js';
 import type { ContributionOperationCatalog } from './operations.js';
@@ -72,7 +72,7 @@ export interface DialogInput {
   readonly instructions: string;
   readonly request: { readonly invocation: InvocationId; readonly result: QueryResultId; readonly operation: string; readonly fresh: boolean;
     readonly option?: { readonly investigram: InvestigramId; readonly key: string };
-    readonly subjects: readonly unknown[]; readonly parameters: Readonly<Record<string, unknown>>; readonly resultContract: string | null };
+    readonly subjects: readonly unknown[]; readonly context: readonly SubjectRef[]; readonly parameters: Readonly<Record<string, unknown>>; readonly resultContract: string | null };
   readonly responses: readonly DialogResponse[];
   readonly notices: readonly ChangeNotice[];
   readonly remaining: { readonly milliseconds: number; readonly calls: number; readonly toolCalls: number; readonly repairs: number };
@@ -150,6 +150,7 @@ export function dialogInstructions(operation: DialogOperation, operations?: Cont
     'PRESERVE MEANING WHEN REUSING CONTENT. Reference unchanged content by its exact address; it keeps its owner and qualification. Changed wording or meaning is new content with its own support. Do not broaden a claim by dropping a limitation that applies to it.',
     'UPDATE THE EARLIER ANSWER YOU REVISE. When you investigate an earlier result and change its answer, redesignate that exact Query result after understanding its question, subjects and scope. If the designation you were given is already displaced, state whether you supersede its standing successor or add a qualified alternative.',
     'RESPOND TO CHANGE NOTICES. A notice identifies one exact change accepted during this dialog. Consider whether it matters and acquire further information if it does. A notice is not the replacement content and does not oblige agreement.',
+    'EXPLICIT INPUT CONTEXT. request.context identifies additional selected inputs, separate from the subjects being investigated. Their initial responses follow the subject responses and obey the same qualification and delivery limits; an unavailable response supplies no content. A component selector identifies the intended part within its delivered enclosing item.',
     'FOLLOW-UP OPTIONS AND ILLUSTRATIONS. An option proposes a further investigation with its operation, subjects and any promised result form. An illustration names a diagram type and the exact content items of this explanation it pictures. Both belong to the contribution that offers them and need qualification.',
     'Submit one contribution: { investigrams: [ investigram ], report?: { inability?: string, statement?: string, answer?: [ address ] } }. The report belongs to the whole contribution, never inside an investigram. Shapes, exactly:',
     contributionSubmissionGuidance,
@@ -315,12 +316,14 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
   try {
     await wait(options.check);
     // Initial context obeys the same capture and exposure contract as anything requested later.
-    let responses: DialogResponse[] = invocation.request.subjects.map(({ subject }): DialogResponse =>
+    const acquireSubject = (subject: SubjectRef): DialogResponse =>
       subject.kind === 'entity' ? contribution({ kind: 'baseline', entity: subject.entity })
         : subject.kind === 'designation' ? contribution({ kind: 'association', association: subject.association, content: true })
         : subject.kind === 'content' ? contribution({ kind: 'item', item: subject.item })
         : subject.kind === 'investigram' ? contribution({ kind: 'contribution', investigram: subject.investigram })
-        : { tool: 'unavailable', limitations: ['This subject designates a scope, not retained content.'] });
+        : { tool: 'unavailable', limitations: ['This subject designates a scope, not retained content.'] };
+    let responses: DialogResponse[] = [...invocation.request.subjects.map(({ subject }) => acquireSubject(subject)),
+      ...invocation.request.context.map(acquireSubject)];
     const context = [...(options.context ?? []), ...(invocation.request.option ? [{ ...invocation.request.option, metadata: 'option' as const }] : [])];
     for (const address of new Map(context.map(address => [JSON.stringify([address.investigram, address.metadata, address.key]), address])).values()) responses.push(contribution({ kind: 'metadata', address }));
     // A repeated question is supplied with the answers currently designated for it.
@@ -333,7 +336,7 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
       const pending = handle.pending().slice(0, noticesPerExchange);
       const notices: ChangeNotice[] = pending.map(cause => handle.notify(cause.change));
       const input: DialogInput = freezeOwned(structuredClone({ attempt, instructions, responses, notices,
-        request: { invocation: invocation.id, result: invocation.result, operation: operation.id, fresh: invocation.fresh, subjects,
+        request: { invocation: invocation.id, result: invocation.result, operation: operation.id, fresh: invocation.fresh, subjects, context: invocation.request.context,
           parameters: invocation.request.parameters, resultContract: invocation.request.resultContract,
           ...(invocation.request.option ? { option: invocation.request.option } : {}) },
         remaining: { milliseconds: Math.max(0, bounds.milliseconds - (performance.now() - start)), calls: bounds.calls - calls, toolCalls: bounds.toolCalls - toolCalls, repairs: repairs - problems.length } }));

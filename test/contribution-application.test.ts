@@ -441,3 +441,36 @@ test('a follow-up forwards and enforces its promised result contract, including 
   assert.equal(agent.inputs.length, 3, 'unknown contracts and reused/exact answers never open an extra dialog');
   assert.deepEqual(agent.inputs.map(inputs => inputs.length), [1, 1, 1], 'contract shortfalls do not enter structural repair');
 });
+
+
+test('application invocation delivers explicit retained option context and preserves exact earlier answers', async t => {
+  const agent = new ScriptedDialogs([[input => ({ kind: 'submit', contribution: { investigrams: [{ key: 'start', qualification: caveat,
+    items: [{ key: 'answer', type: 'prose', body: { text: 'The initial selected answer.' } },
+      { key: 'context', type: 'prose', body: { text: 'OPTION_CONTEXT_SENTINEL' }, qualification: { limitations: ['CONTEXT_QUALIFICATION'] } }],
+    declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: input.request.result }, members: [{ kind: 'item', item: { investigram: { local: 'start' }, item: 'answer' } }] }],
+    options: [{ key: 'next', meaning: 'Investigate with the selected context.', request: { operation: 'examine-content',
+      subjects: [{ subject: { kind: 'content', item: { investigram: { local: 'start' }, item: 'answer' } } }],
+      context: [{ kind: 'content', item: { investigram: { local: 'start' }, item: 'context' } }] } }] }] } })],
+    [input => {
+      assert.equal(input.request.context.length, 1);
+      const context = input.request.context[0]!; assert.equal(context.kind, 'content');
+      if (context.kind !== 'content') throw Error('Expected selected content context');
+      assert.equal(context.item.item, 'context');
+      const response = input.responses[1] as { value: { item: { body: { text: string }; qualification: { limitations: string[] } } } };
+      assert.equal(response.value.item.body.text, 'OPTION_CONTEXT_SENTINEL');
+      assert.deepEqual(response.value.item.qualification.limitations, ['CONTEXT_QUALIFICATION']);
+      return { kind: 'submit', contribution: proseContribution(input, 'The follow-up consumed its explicit context.') };
+    }]]);
+  const opened = await openApplication(fixture(t), { investigation: { dialogAgent: agent } });
+  assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
+  const session = opened.session; t.after(() => session.close());
+  const first = answer(await session.execute({ kind: 'lens', lens: 'summarize', designation: { kind: 'name', value: 'breaker' } }));
+  const snapshot = JSON.stringify(first.content), owner = first.projection.alternatives[0]!.designation.investigram;
+  const invoked = answer(await session.execute({ kind: 'lens', lens: 'follow-up', designation: { kind: 'reference', value: owner }, parameters: { option: 'next' } }));
+  assert.equal(invoked.result.failed, false);
+  const repeated = answer(await session.execute({ kind: 'lens', lens: 'follow-up', designation: { kind: 'reference', value: owner }, parameters: { option: 'next' } }));
+  assert.deepEqual(repeated.projection, invoked.projection); assert.equal(agent.inputs.length, 2);
+  const exact = await session.execute({ kind: 'present', target: first.projection.id });
+  assert.equal(exact.kind, 'answer'); assert.equal(JSON.stringify(exact.answer.content.value), snapshot);
+  await session.close(); assert.equal(JSON.stringify(first.content), snapshot);
+});
