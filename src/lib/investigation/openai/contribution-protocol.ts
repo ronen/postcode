@@ -8,7 +8,7 @@ import { hostedAgent } from './adapter.js';
 import type { OpenAIExchange, WireProtocol } from './adapter.js';
 import { InvestigatorReferences } from './references.js';
 
-export const contributionWireProtocol = 'postcode/contribution-dialog-wire@8';
+export const contributionWireProtocol = 'postcode/contribution-dialog-wire@9';
 
 /**
  * Reference positions of the contribution dialog. A string at one of these keys is an exact
@@ -64,7 +64,8 @@ const investigram = { type: 'object', additionalProperties: false, required: ['k
   options: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['key', 'meaning', 'request'], properties: {
     key: { type: 'string' }, meaning: { type: 'string' },
     request: { type: 'object', additionalProperties: false, required: ['operation', 'subjects'], properties: {
-      operation: { type: 'string' }, subjects: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['subject'], properties: { subject } } }, resultContract: { type: 'string' } } },
+      operation: { type: 'string' }, subjects: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['subject'], properties: { subject } } }, context: { type: 'array', description: 'Optional additional selected input, distinct from the investigation subjects. Omit when unnecessary. Entries are subject references directly, without a subject wrapper; a scope alone supplies no retained content.', items: { anyOf: [...subject.anyOf, { type: 'object', additionalProperties: false, required: ['kind', 'scope'], properties: { kind: { const: 'scope' }, scope: { type: 'string' } } }] } },
+      resultContract: { type: 'string' } } },
     references: { type: 'array', items: member }, qualification } } },
   illustrations: { type: 'array', items: { type: 'object', additionalProperties: false, required: ['key', 'diagramType', 'inputs'], properties: {
     key: { type: 'string' }, diagramType: { type: 'string' }, inputs: { type: 'array', items: content }, qualification } } },

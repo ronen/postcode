@@ -1,3 +1,4 @@
+import { openAIDialogAgent } from '../src/lib/investigation/openai/contribution-protocol.js';
 import { applicationCatalog } from '../src/lib/application/catalog.js';
 import { exportsLens } from '../src/lib/mechanical-implementations.js';
 import { proseContribution } from './contribution-agent.js';
@@ -472,5 +473,55 @@ test('application invocation delivers explicit retained option context and prese
   assert.deepEqual(repeated.projection, invoked.projection); assert.equal(agent.inputs.length, 2);
   const exact = await session.execute({ kind: 'present', target: first.projection.id });
   assert.equal(exact.kind, 'answer'); assert.equal(JSON.stringify(exact.answer.content.value), snapshot);
+  await session.close(); assert.equal(JSON.stringify(first.content), snapshot);
+});
+
+
+test('hosted authored option context is retained, invoked and reused through the application', async t => {
+  let calls = 0;
+  const agent = openAIDialogAgent('test-not-a-credential', { fetch: async (_url, options) => {
+    const sent = JSON.parse(String(options?.body));
+    const message = JSON.parse(sent.input.at(-1).content);
+    const input = message.request;
+    let contribution;
+    if (++calls === 1) {
+      const schema = sent.tools[1].parameters.properties.investigrams.items.properties.options.items.properties.request;
+      assert.ok(schema.properties.context); assert.ok(!schema.required.includes('context'));
+      assert.match(sent.instructions, /not required on every option/);
+      contribution = { investigrams: [{ key: 'authored', qualification: caveat,
+        items: [{ key: 'subject', type: 'prose', body: { text: 'The selected explanation.' } },
+          { key: 'basis', type: 'prose', body: { text: 'HOSTED_SELECTED_CONTEXT' }, qualification: { limitations: ['HOSTED_CONTEXT_LIMIT'] } }],
+        declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: input.result }, members: [{ kind: 'item', item: { investigram: { local: 'authored' }, item: 'subject' } }] }],
+        options: [{ key: 'deeper', meaning: 'Investigate with additional context.', request: { operation: 'examine-content',
+          subjects: [{ subject: { kind: 'content', item: { investigram: { local: 'authored' }, item: 'subject' } } }],
+          context: [{ kind: 'content', item: { investigram: { local: 'authored' }, item: 'basis' } }] } }] }] };
+    } else {
+      assert.equal(calls, 2);
+      assert.equal(input.subjects[0].subject.item.item, 'subject');
+      assert.equal(input.context[0].item.item, 'basis');
+      assert.equal(message.responses[1].value.address.investigram, input.context[0].item.investigram);
+      assert.equal(message.responses[1].value.item.body.text, 'HOSTED_SELECTED_CONTEXT');
+      assert.deepEqual(message.responses[1].value.item.qualification.limitations, ['HOSTED_CONTEXT_LIMIT']);
+      contribution = { investigrams: [{ key: 'follow', qualification: caveat,
+        items: [{ key: 'answer', type: 'prose', body: { text: 'Used the selected context.' } }],
+        declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: input.result }, members: [{ kind: 'item', item: { investigram: { local: 'follow' }, item: 'answer' } }] }] }] };
+    }
+    return new Response(JSON.stringify({ id: `response-${calls}`, model: 'gpt-6-sol', status: 'completed', output: [
+      { type: 'function_call', name: 'submit_contribution', call_id: `call-${calls}`, arguments: JSON.stringify(contribution) }] }), { headers: { 'content-type': 'application/json' } });
+  } });
+  const opened = await openApplication(fixture(t), { investigation: { dialogAgent: agent } });
+  assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
+  const session = opened.session; t.after(() => session.close());
+  const first = answer(await session.execute({ kind: 'lens', lens: 'summarize', designation: { kind: 'name', value: 'breaker' } }));
+  assert.equal(first.result.failed, false);
+  const offered = first.projection.alternatives[0]!.options[0]!, context = offered.option.request.context[0]!;
+  assert.equal(context.kind, 'content');
+  if (context.kind !== 'content') throw Error('Expected explicit context');
+  assert.deepEqual(context.item, { investigram: offered.address.investigram, item: 'basis' });
+  const snapshot = JSON.stringify(first.content);
+  const request = { kind: 'lens' as const, lens: 'follow-up', designation: { kind: 'reference' as const, value: offered.address.investigram }, parameters: { option: offered.address.key } };
+  const invoked = answer(await session.execute(request)); assert.equal(invoked.result.failed, false);
+  assert.deepEqual(invoked.projection.question.request.context, offered.option.request.context);
+  assert.deepEqual(answer(await session.execute(request)).projection, invoked.projection); assert.equal(calls, 2);
   await session.close(); assert.equal(JSON.stringify(first.content), snapshot);
 });

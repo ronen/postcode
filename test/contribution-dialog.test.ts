@@ -251,6 +251,10 @@ test('the instructions state the exact submission shapes that live agents got wr
   assert.match(text, /grounds: \{ text: string, evidence\?: \[program record handle\], support\?: \[content address\] \}/);
   assert.match(text, /option: \{ key, meaning: string, request: \{ operation, subjects: \[\{ subject \}\]/);
   assert.match(text, /The operation and subjects go inside request/);
+  assert.match(text, /context\?: \[subject\]/);
+  assert.match(text, /Context does not change what is being investigated/);
+  assert.match(text, /not required on every option/);
+  assert.match(text, /without the \{ subject \} wrapper/);
   // Observed in the second live trials: prose bodies given as bare strings, and a report placed inside an investigram.
   assert.match(text, /for type "prose" it is \{ text: string \}/);
   assert.match(text, /The report belongs to the whole contribution, never inside an investigram/);
@@ -261,10 +265,15 @@ test('the instructions state the exact submission shapes that live agents got wr
   const cases: [RegExp, unknown][] = [
     [/Unexpected grounds field: statement/, { ...base, declarations: [{ ...base.declarations![0]!, grounds: { statement: 'Because.' } }] }],
     [/Unexpected follow-up option field: operation/, { ...base, options: [{ key: 'o', meaning: 'm', operation: 'state-behavior', subjects: [{ subject: { kind: 'entity', entity: barrel } }] }] }],
+    [/Unknown Entity reference/, { ...base, options: [{ key: 'o', meaning: 'm', request: { operation: 'examine-content', subjects: [], context: [{ kind: 'entity', entity: 'invalid-investigator-reference:invented-handle' }] } }] }],
+    [/Unexpected.*subject/, { ...base, options: [{ key: 'o', meaning: 'm', request: { operation: 'examine-content', subjects: [], context: [{ subject: { kind: 'entity', entity: barrel } }] } }] }],
+
   ];
   for (const [message, investigram] of cases) {
     const handle = ledger.begin({ producer: { mechanism: 'agentic', method: 'test@1', agent: null } });
+    const position = ledger.position;
     assert.throws(() => ledger.accept([{ production: handle, contribution: { investigrams: [investigram] } }]), message);
+    assert.equal(ledger.position, position);
   }
   const handle = ledger.begin({ producer: { mechanism: 'agentic', method: 'test@1', agent: null } });
   assert.doesNotThrow(() => ledger.accept([{ production: handle, contribution: { investigrams: [{ ...base,

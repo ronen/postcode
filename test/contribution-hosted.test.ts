@@ -89,6 +89,12 @@ test('the hosted transport carries the contribution dialog with exact handles an
   assert.deepEqual([shape.additionalProperties, Object.hasOwn(shape.properties, 'report')], [false, false]);
   const option = shape.properties.options.items;
   assert.deepEqual([option.additionalProperties, option.required, option.properties.request.additionalProperties, option.properties.request.properties.subjects.items.required], [false, ['key', 'meaning', 'request'], false, ['subject']]);
+  const request = option.properties.request;
+  assert.ok(!request.required.includes('context'));
+  assert.equal(request.properties.context.type, 'array');
+  assert.deepEqual(request.properties.context.items.anyOf.map((entry: any) => entry.properties.kind.const), ['investigram', 'designation', 'entity', 'content', 'scope']);
+  assert.deepEqual(request.properties.context.items.anyOf.slice(0, 4), request.properties.subjects.items.properties.subject.anyOf);
+  assert.match(request.properties.context.description, /distinct from the investigation subjects/);
   assert.deepEqual(Object.keys(shape.properties.declarations.items.properties.grounds.properties), ['text', 'evidence', 'support']);
   assert.equal(JSON.stringify([sent, captures]).includes(sentinel), false);
   assert.equal(reported.length, 2);
@@ -190,5 +196,39 @@ test('explicit input context uses the same scoped wire handles as delivered cont
   assert.equal(encoded.item.investigram, delivered.value.address.investigram);
   assert.equal(encoded.component, 'state:idle');
   assert.deepEqual(codec.tools({ requests: [{ kind: 'item', item: encoded.item }] }), { kind: 'tools', requests: [{ kind: 'item', item: context[0]!.item }] });
+  codec.close();
+});
+
+
+test('authored option context decodes existing handles and preserves local references and optional omission', () => {
+  const codec = contributionProtocol.codec();
+  const message = codec.message(input);
+  const request = (message.content as { request: { subjects: { subject: { entity: string } }[] } }).request;
+  const knownEntity = request.subjects[0]!.subject.entity;
+  const supplied = (message.responses as { value: { identifications: { address: { investigram: string } }[] } }[])[0]!.value.identifications[0]!.address.investigram;
+  const option = (context?: unknown[]) => ({ key: 'next', meaning: 'Inspect with optional context.', request: { operation: 'examine-content',
+    subjects: [{ subject: { kind: 'investigram', investigram: supplied } }], ...(context === undefined ? {} : { context }) } });
+  for (const context of [undefined, [], [
+    { kind: 'entity', entity: knownEntity }, { kind: 'investigram', investigram: supplied },
+    { kind: 'content', item: { investigram: supplied, item: 'name' } },
+    { kind: 'designation', association: { investigram: supplied, declaration: 'answer' } },
+    { kind: 'content', item: { investigram: { local: 'new' }, item: 'model' }, component: 'state:idle' },
+    { kind: 'entity', entity: { local: 'local-entity' } }, { kind: 'scope', scope: 'literal scope' },
+  ]]) {
+    const reply = codec.submission({ investigrams: [{ key: 'new', options: [option(context)] }] }, false);
+    assert.equal(reply.kind, 'submit');
+    if (reply.kind !== 'submit') throw Error('Expected submission');
+    const decoded = (reply.contribution as { investigrams: { options: { request: { context?: unknown[] } }[] }[] }).investigrams[0]!.options[0]!.request.context;
+    assert.deepEqual(decoded, context === undefined ? undefined : context.length === 0 ? [] : [
+      { kind: 'entity', entity }, { kind: 'investigram', investigram },
+      { kind: 'content', item: { investigram, item: 'name' } },
+      { kind: 'designation', association: { investigram, declaration: 'answer' } },
+      { kind: 'content', item: { investigram: { local: 'new' }, item: 'model' }, component: 'state:idle' },
+      { kind: 'entity', entity: { local: 'local-entity' } }, { kind: 'scope', scope: 'literal scope' },
+    ]);
+  }
+  const invalid = codec.submission({ investigrams: [{ key: 'bad', options: [option([{ kind: 'entity', entity: 'invented-handle' }])] }] }, false);
+  assert.ok(JSON.stringify(invalid).includes('invalid-investigator-reference:invented-handle'), 'unknown handles remain invalid for atomic domain validation');
+  assert.deepEqual(codec.audit().resolutions.at(-1), { path: '$.investigrams[0].options[0].request.context[0].entity', handle: 'invented-handle', reference: null });
   codec.close();
 });
