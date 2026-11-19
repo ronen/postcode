@@ -1,3 +1,5 @@
+import { stateDiagramContract } from '../src/lib/contributions/state-model.js';
+import type { ResultContract } from '../src/lib/contributions/outcomes.js';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { test } from 'node:test';
@@ -9,12 +11,12 @@ import { agentic, submit } from './contribution-helpers.js';
 
 const statements = (group: ArrangedQualification) => [...group.statements, ...(group.owner?.statements ?? [])];
 const q = (text: string) => ({ limitations: [text] });
-async function setup() {
+async function setup(contract: ResultContract | null = null) {
   const { store, evaluation, claims } = await discover(path.resolve('fixtures', 'exports', 'tsconfig.json'));
   const ledger = sessionLedger(store, evaluation.session), subject = claims.find(claim => claim.information.handle === 'barrel')!.subject;
   const entity = moduleEntity(store, subject)!;
-  const { result, invocation } = ledger.invoke({ operation: 'test-answer', subjects: [{ role: null, subject: { kind: 'entity', entity } }], parameters: {}, context: [], resultContract: null });
-  const select = () => selectContributionAnswer(store, ledger, { lens: 'test-answer', subject, parameters: {}, result: result.id, contract: null });
+  const { result, invocation } = ledger.invoke({ operation: 'test-answer', subjects: [{ role: null, subject: { kind: 'entity', entity } }], parameters: {}, context: [], resultContract: contract?.id ?? null });
+  const select = () => selectContributionAnswer(store, ledger, { lens: 'test-answer', subject, parameters: {}, result: result.id, contract });
   return { store, ledger, subject, entity, result, invocation, select, claims };
 }
 
@@ -169,3 +171,24 @@ test('arrangement discloses every unrendered selected item and preserves incompa
   assert.match(alternative.unpresented[1]!.reason, /retained but has no renderer/);
   assert.equal(alternative.diagramUnavailable, null, 'the summary does not suppress the per-item omission list');
 });
+
+for (const contract of [null, stateDiagramContract, { id: 'test/designated-answer', requirements: [{ kind: 'designated-answer' as const, description: 'A designated answer.' }] }]) {
+  test(`mixed diagram availability reports only retained fulfillment (${contract?.id ?? 'no contract'})`, async () => {
+    const { store, ledger, result, select } = await setup(contract);
+    submit(ledger, agentic(), [{ key: 'alternatives', qualification: q('INTERPRETATION'), items: [
+      { key: 'model', type: 'state-model', body: { bearer: { role: 'one connection' }, states: [{ key: 'idle', label: 'Idle' }],
+        initial: { kind: 'unknown' }, transitions: [], coverage: { states: 'some', transitions: 'unknown' } } },
+      { key: 'prose', type: 'prose', body: { text: 'An alternative explanation without a state model.' } }],
+      declarations: ['model', 'prose'].map(item => ({ key: item, operation: 'add' as const, target: { kind: 'result' as const, result: result.id },
+        members: [{ kind: 'item' as const, item: { investigram: { local: 'alternatives' }, item } }] })) }]);
+    const projection = select(), content = resolveContributionAnswer(store, projection), before = JSON.stringify(content);
+    const view = arrangeContributionAnswer(content, 'Alternatives');
+    assert.equal(projection.fulfillment, contract === null ? null : contract === stateDiagramContract ? 'unfulfilled' : 'fulfilled');
+    assert.deepEqual(view.alternatives.map(alternative => alternative.diagrams.length).sort(), [0, 1]);
+    const notice = view.notices.find(text => text.startsWith('A diagram can be drawn'))!;
+    assert.ok(notice.startsWith('A diagram can be drawn for 1 of 2 alternatives.'));
+    if (contract === stateDiagramContract) assert.match(notice, /requested result is unmet for 1 of 2 alternatives/);
+    else assert.doesNotMatch(notice, /unmet|not fulfilled/);
+    assert.equal(JSON.stringify(content), before);
+  });
+}

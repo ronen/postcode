@@ -251,10 +251,11 @@ export function arrangeContributionAnswer(content: ContributionAnswerContent, ti
       options: alternative.options.map(({ address, option }) => ({ address, meaning: option.meaning, operation: option.request.operation, resultContract: option.request.resultContract })) };
   });
   const drawn = alternatives.filter(item => item.diagrams.length).length;
+  const unmet = projection.fulfillment === null ? 0 : projection.alternatives.filter(item => item.unmet.length).length;
   return freezeOwned({ answer: projection.id, title, alternatives,
     noCurrentAnswer: alternatives.length ? null : { withdrawn: projection.history,
       explanation: projection.history.length ? 'Every designated answer to this question has been withdrawn or superseded without a standing replacement. This is not a finding that nothing can be established, and no earlier answer is restored. Historical answers remain exactly accessible; a fresh investigation can be requested explicitly.'
         : 'No answer has been designated for this question.' },
     notices: [...(alternatives.length > 1 ? [`${alternatives.length} equally standing alternative answers are shown separately. Their order implies no preference, and they are not reconciled.`] : []),
-      ...(alternatives.length > 1 && drawn > 0 && drawn < alternatives.length ? [`A diagram can be drawn for ${drawn} of ${alternatives.length} alternatives; the request is not fulfilled for the others.`] : [])] });
+      ...(alternatives.length > 1 && drawn > 0 && drawn < alternatives.length ? [`A diagram can be drawn for ${drawn} of ${alternatives.length} alternatives.${unmet ? ` The requested result is unmet for ${unmet} of ${alternatives.length} alternatives; see their qualifications.` : ''}`] : [])] });
 }
