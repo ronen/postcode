@@ -14,7 +14,7 @@ import { arrangeModuleExports, exportsPresentation, renderModuleExports } from '
 import { exportsLens } from '../src/lib/mechanical-implementations.js';
 import { captureCatalog, defaultCatalog } from '../src/lib/request-catalog.js';
 import type { RequestCatalog } from '../src/lib/request-catalog.js';
-import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
+import { openCliSession as openSession, applicationPresentation } from '../src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
@@ -22,7 +22,7 @@ import { contributeModuleFindings } from '../src/lib/contributions/modules.js';
 import { methods, recordId } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { sourceDisclosure } from '../src/lib/source-disclosure.js';
-import { settlePresentation } from '../src/lib/presentation-contracts.js';
+import { settleConsumption } from '../src/lib/application/consumption.js';
 import type { EvaluationRecord } from '../src/lib/records.js';
 import type { ObservationBatch } from '../src/lib/application/observations.js';
 import type { RequestContext } from '../src/lib/interfaces/cli/report-contracts.js';
@@ -188,8 +188,8 @@ test('qualified exports preserve partial, unavailable, unrequested and outside-p
     assert.equal(content.complete, false);
     assert.equal(content.exports.length, state === 'partial' ? 1 : 0);
     const pair = { contract: 'module-exports' as const, value: content };
-    assert.ok(settlePresentation([exportsPresentation], pair));
-    assert.equal(settlePresentation([{ ...exportsPresentation, precondition: 'complete-materialization' }], pair), null);
+    assert.ok(settleConsumption([applicationPresentation(exportsPresentation)], pair));
+    assert.equal(settleConsumption([applicationPresentation({ ...exportsPresentation, precondition: 'complete-materialization' })], pair), null);
     const view = arrangeModuleExports(content, store.entityIds([subject], 'module').get(subject)!, unicode, 'Module exports');
     assert.match(renderModuleExports(view), /empty listing does not establish no exports/);
     assert.match(renderModuleExports(view), new RegExp(`Controlled ${state}`));
@@ -204,11 +204,6 @@ test('qualified exports preserve partial, unavailable, unrequested and outside-p
     assert.match(JSON.stringify(retained.view), new RegExp(`Controlled ${state}`));
 
   }
-  const { retainedPresentation } = await import('../src/lib/presentation-contracts.js');
-  const missing = retainedPresentation(captureCatalog(catalog()).presentations, { contract: 'module-exports', value: unrequested }, json);
-  assert.ok('explanation' in missing);
-  assert.match(missing.explanation, /support not selected by this retained answer/);
-  assert.match(missing.explanation, /new information request/);
   const narrowed = { ...complete, id: recordId(complete.session, 'evaluation', 'narrowed'), modules: [] };
   store.put([narrowed]);
   const outsider = resolveModuleExports(store, moduleExports(store, narrowed, [subject], 'exports'));

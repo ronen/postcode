@@ -1,3 +1,5 @@
+import { consumptionPlan, freshFacts } from '../src/lib/application/consumption.js';
+import { applicationPresentation } from '../src/lib/interfaces/cli/application.js';
 import { presentationMethods } from '../src/lib/interfaces/cli/methods.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -22,8 +24,8 @@ import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { evaluateDependencyOrganization } from '../src/lib/dependencies/organization.js';
 import { arrangeDependencyView, createDependencyView, renderDependencyView } from '../src/lib/dependencies/presentation.js';
 import { dependencyChildren, dependencyParents, dependencyStructure } from './projection-helpers.js';
-import { compatiblePresentation, presentations, validatePresentationContent } from '../src/lib/presentation-contracts.js';
-import { captureRequest, lenses } from '../src/lib/requests.js';
+import { presentations, validatePresentationContent } from '../src/lib/presentation-contracts.js';
+import { lenses } from '../src/lib/requests.js';
 import type { LensDefinition } from '../src/lib/requests.js';
 import { temporaryDirectory } from './cli-helpers.js';
 import { discover } from './helpers.js';
@@ -60,10 +62,11 @@ test('the shared module Presentation accepts another question with population an
   const bindings = store.entityIds(basis.modules, 'module');
   const definition: LensDefinition = { ...lenses.modules, id: 'fixture-compatible-question', question: 'Fixture qualified module information?',
     title: 'Fixture information', subjects: ['module'], cardinality: 'collection' };
-  const captured = captureRequest({ lens: definition.id, selector: 'large', presentation: { format: 'json', moreDetails: true } }, { [definition.id]: definition });
-  assert.equal(captured.normalized.kind, 'lens');
-  assert.ok(compatiblePresentation(presentations.find(item => item.contract === 'modules')!, captured.normalized, definition),
+  const declaration = applicationPresentation(presentations.find(item => item.contract === 'modules')!);
+  const choice = { presentations: [declaration.id], options: { format: 'json', moreDetails: true } };
+  assert.deepEqual(consumptionPlan([declaration], 'modules', choice, freshFacts(definition)), [declaration],
     'source policy depends on selected subjects, not inspection implementation identity');
+  assert.deepEqual(consumptionPlan([declaration], 'modules', choice, freshFacts({ ...definition, cardinality: 'population' })), []);
   const population = resolveModuleProjection(store, modules(store, basis));
   const selection = resolveModuleProjection(store, inspect(store, basis, 'large'));
   for (const content of [population, selection]) {

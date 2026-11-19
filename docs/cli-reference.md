@@ -90,9 +90,9 @@ Each produced Projection retains its selected information and qualification. Rep
 
 ### Common contribution integration
 
-The [structured architectural accounts plan](plans/structured-architectural-accounts.md) has migrated supported investigation and inspection callers to common contributions. The M3 mechanical and caller checkpoints are accepted. M4 removes the obsolete tree/correction path; final integrated review remains pending. No new CLI commands or live-inference authorization follow from that migration.
+The [structured architectural accounts plan](plans/structured-architectural-accounts.md) has migrated supported investigation and inspection callers to common contributions. The M3 mechanical and caller checkpoints are accepted. The obsolete tree/correction path has been removed; final integrated review remains pending. No new CLI commands or live-inference authorization follow from that migration.
 
-The task updates affected command behavior, exact-answer/history guidance, terminology and supported input/output descriptions as implementation proceeds. No new state-diagram or follow-up-option command is promised solely because those capabilities are provided through the internal application API. At completion, remove this notice and document the actual supported routes and limitations. Exact retained presentation and reference-lifetime guarantees remain in force throughout supported operation.
+The CLI exposes `summarize`, `explain`, `decompose`, `examine`, inspection and exact retained presentation through its existing commands. State-dependent behavior, state-diagram requests and retained follow-up-option invocation are available through the application API; this CLI has no corresponding commands. Exact retained presentation and Session-local reference lifetimes apply to all supported routes.
 
 ### Present an exact retained answer
 
@@ -126,7 +126,7 @@ Association paging uses the answer's frozen listing. Revision paging applies to 
 shown statuses; a status with no rows on that page reports exhaustion. An unknown
 association token remains unknown when paging revisions and retains failed status.
 A separately labelled restart clears only the association token. Subject navigation
-such as `inspect @investigram-…` makes a fresh selection with current revision context.
+such as `inspect @investigram-…` selects the exact immutable contribution with newly captured standing and change context.
 Fresh Lens requests reject `--after` and `--revision-page` with guidance to `present`.
 
 All program Views expose `selectionMode` (`fresh` or `retained`), `answerReference`,

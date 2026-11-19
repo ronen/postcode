@@ -1,3 +1,4 @@
+import { settleConsumption } from '../src/lib/application/consumption.js';
 import assert from 'node:assert/strict';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -10,10 +11,10 @@ import { modules } from './projection-helpers.js';
 import { recordId } from '../src/lib/identity.js';
 import { resolveModuleProjection } from '../src/lib/module-content.js';
 import { finalizeInvestigationUsage } from '../src/lib/investigation/usage-presentation.js';
-import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
+import { openCliSession as openSession, applicationPresentation } from '../src/lib/interfaces/cli/application.js';
 import { renderRequestReport } from '../src/lib/interfaces/cli/request-reporting.js';
 import { captureCatalog, defaultCatalog } from '../src/lib/request-catalog.js';
-import { presentations, settlePresentation, validatePresentationContent } from '../src/lib/presentation-contracts.js';
+import { presentations, validatePresentationContent } from '../src/lib/presentation-contracts.js';
 import type { PresentationDefinition } from '../src/lib/presentation-contracts.js';
 
 const json = { format: 'json' as const, moreDetails: false };
@@ -146,13 +147,13 @@ test('qualified partial module content remains usable, empty populations remain 
   const empty = { ...evaluation, id: recordId(evaluation.session, 'evaluation', 'controlled-empty'), modules: [] };
   store.put([partial, empty]);
   const partialContent = { contract: 'modules' as const, value: resolveModuleProjection(store, modules(store, partial)) };
-  assert.equal(settlePresentation([qualified], partialContent)!.selected, qualified.id);
-  assert.equal(settlePresentation([strict], partialContent), null);
-  assert.ok(settlePresentation([strict], { contract: 'modules', value: resolveModuleProjection(store, modules(store, empty)) }));
+  assert.equal(settleConsumption([applicationPresentation(qualified)], partialContent)!.selected.id, qualified.id);
+  assert.equal(settleConsumption([applicationPresentation(strict)], partialContent), null);
+  assert.ok(settleConsumption([applicationPresentation(strict)], { contract: 'modules', value: resolveModuleProjection(store, modules(store, empty)) }));
   const malformed = { ...partialContent, value: { ...partialContent.value, modules: [] } };
   assert.throws(() => validatePresentationContent(malformed), /Malformed module/);
-  assert.throws(() => settlePresentation([strict], malformed), /Malformed module/);
-  assert.throws(() => settlePresentation([interpretation], partialContent), /does not match/);
+  assert.throws(() => settleConsumption([applicationPresentation(strict)], malformed), /Malformed module/);
+  assert.throws(() => settleConsumption([applicationPresentation(interpretation)], partialContent), /does not match/);
 });
 
 test('Presentation catalog rejects cycles, cross-contract fallbacks and unsupported requirements', () => {

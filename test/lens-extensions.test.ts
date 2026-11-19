@@ -1,3 +1,4 @@
+import { captureApplicationCatalog } from '../src/lib/application/catalog.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import type { TestContext } from 'node:test';
@@ -48,6 +49,18 @@ for (const { name, definition, reason } of invalidDefinitions) {
     // No project is required: unsupported assembly must fail before acquisition,
     // not become a request, open failure, or mislabelled program answer.
     await assert.rejects(openSession({ configPath: '/catalog-rejection-must-not-open/tsconfig.json' }, {}, supplied), reason);
+  });
+}
+
+for (const id of ['summarize', 'legacy-custom']) {
+  test(`catalog rejects legacy interpretation requirements for ${id} before acquisition`, async () => {
+    const supplied = catalog();
+    const legacy = { ...riskLens, id, requirements: { kind: 'interpretation', operation: 'risks' } } as unknown as LensDefinition;
+    const definitions = { ...supplied, lenses: { ...supplied.lenses, [id]: legacy } };
+    const reason = /Legacy interpretation operations are not supported/;
+    assert.throws(() => captureApplicationCatalog({ lenses: definitions.lenses, operations: definitions.operations }), reason);
+    assert.throws(() => captureCatalog(definitions), reason);
+    await assert.rejects(openSession({ configPath: '/catalog-rejection-must-not-open/tsconfig.json' }, {}, definitions), reason);
   });
 }
 

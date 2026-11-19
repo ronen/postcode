@@ -165,11 +165,14 @@ test('an oversized qualified listing item is explicit and does not hide later it
 test('realistic dialogue follows delegation and group documentation through bounded tools', async t => {
   const f = await fixture(t, 160);
   let middle: RecordId, leaf: RecordId, group: RecordId, artifact: RecordId;
+  const fullRecords = new Set<RecordId>(), summarizedEvaluations = new Set<RecordId>();
   const response = (value: unknown): EvidenceResponse => {
     const result = evidenceResponse(value as DialogResponse);
     checkQualified(result, f.store);
     assert.ok(JSON.stringify(result).length < evidenceResponseCharacters);
     assert.notEqual(result.status, 'unavailable');
+    result.records.forEach(record => fullRecords.add(record.id));
+    result.evaluations?.forEach(evaluation => summarizedEvaluations.add(evaluation.id));
     return result;
   };
   const agent = new ScriptedContributionAgent([
@@ -204,7 +207,11 @@ test('realistic dialogue follows delegation and group documentation through boun
     evidence: f.evidence,
     agent, usage: new InvestigationUsage(), check: async () => { assert.equal(await f.opened.changed(), false); } });
   assert.equal(result.outcome.kind, 'accepted');
-  assert.ok(result.production.deliveries.length > 0);
+  assert.deepEqual(new Set(result.production.evidence), fullRecords);
+  const summaryOnly = [...summarizedEvaluations].filter(id => !fullRecords.has(id));
+  assert.ok(summaryOnly.some(id => f.store.get(id).kind === 'dependency-evaluation'));
+  for (const id of summaryOnly) assert.equal(result.production.evidence.includes(id), false,
+    'summary metadata is attributable without claiming full-record delivery');
 });
 
 
