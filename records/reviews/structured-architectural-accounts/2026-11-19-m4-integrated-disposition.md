@@ -4,8 +4,8 @@ Record type: disposition
 Date: 2026-11-19
 Task: [Implement structured architectural accounts](../../tasks/2026-11-15-structured-architectural-accounts.md)
 Handoff: [Final integrated review](2026-11-19-m4-integrated-handoff.md)
-Findings: [Round 1, Claude](2026-11-19-m4-integrated-round-1-findings.md)
-Corrected target: `feabbb5d4fef990b0fa9a3c4ca83dd2a802bfdb9`
+Findings: [Round 1](2026-11-19-m4-integrated-round-1-findings.md), [round 2](2026-11-19-m4-integrated-round-2-findings.md), [round 3, full branch](2026-11-19-m4-integrated-round-3-claude-findings.md)
+Corrected target: `d724192871ab15510630e8a52374db8e313b21db`
 Gate status: further human-arranged review pending
 
 ## Findings and dispositions
@@ -44,3 +44,38 @@ The human requested corrections before arranging rereview or further complete re
 ## Gate conclusion
 
 All five round 1 findings are accepted, corrected and locally verified. Independent rereview/further full review and human sufficiency judgment remain pending. The task stays active and the PR stays draft. No task closure, merge or further inference is inferred.
+
+## Round 2 and full-branch round 3
+
+[Round 2](2026-11-19-m4-integrated-round-2-findings.md), committed at `7ff17bc`, reviewed `feabbb5` against all five round 1 findings and found them resolved, with no new findings. Its Linux run passed 717 of 718 tests with one filesystem-specific skip and reproduced the corrected build digest. The round 1 limitations on full-mechanism re-derivation still applied.
+
+[Round 3](2026-11-19-m4-integrated-round-3-claude-findings.md), committed at `2963c35`, reviewed the complete branch through `feabbb5` and independently traced atomic acceptance, cause derivation, dispatch versus acquisition, reuse/fresh outcomes and immutable ownership. It reported no defect in those mechanisms. On macOS Node 22.13.1 it obtained 718 passing tests in aggregate: the full run passed 692 but lost one test file at module load because the reviewer's separate probe compilation rewrote the build during execution; that file then passed 26/26 in isolation. It reproduced the source digest. This is not treated as one uninterrupted 718-pass run. Mechanical providers, hosted transport and CLI rendering were spot-read, and representative memory was not remeasured.
+
+### Round 3 findings and dispositions
+
+**F1 — accepted and corrected in `b8b1b6d`.** Mixed diagram availability now has a neutral notice. Its fulfillment clause is derived only from the retained alternatives' actual unmet requirements when a result contract applies. Lack of a drawable diagram alone cannot imply failure of an unrequested diagram contract. Three regressions cover no contract, an unmet diagram contract and a fulfilled designated-answer contract that does not require diagrams. They also check that arrangement leaves retained content unchanged. The CLI artifact method advances to `postcode/contribution-presentation@4`; answer selection, fulfillment assessment and answer identity are unchanged by this presentation correction.
+
+**F2 — accepted and corrected in `b8b1b6d`.** The architecture overview now describes designated content, independently captured standing/change context and application-coordinated bindings, with no retired binding-only port or revision-snapshot mechanism. The capability reference describes module and selected-content investigations, including application invocation of retained follow-up options, and exact historical state.
+
+**F3 — accepted; human direction recorded; corrected in `d724192871ab15510630e8a52374db8e313b21db`.** The finding identified a real gap between retained `InvocationRequest.context` and actual dialog inputs. The human chose delivery using the existing acquisition, bounds and exposure rules; task follow-up `0e32c08` preserves that direction before implementation. The dialog now acquires explicit context after the initial subjects using their same production acquisition function. Entity identification, exact content/component, designation and whole-contribution context keep their existing qualification and capture rules; scope-only entries receive an explicit unavailable response. Request context remains separately identified in the immutable dialog input, including component selectors, and the existing hosted codec translates its addresses consistently with delivered content. Option metadata remains its own separate delivery.
+
+Response limits can withhold individual context entries; the total character guard and interruption/dispatch checkpoint retain their existing behavior. Context addresses alone do not establish content exposure. Tests exercise actual option invocation through the application API, reuse and exact history after close; direct option-context acquisition across all supported subject kinds; oversized omission and a pre-dispatch guard with zero exposure; and hosted handle round-trip. The hosted option-authoring schema is unchanged. No new CLI command or broader context authoring interface is introduced. The dialog method advances to `postcode/contribution-dialog@12` because its initial inputs and guidance change. This version participates in operation identity and compatible-work reuse; these are intentionally new method-qualified attempts, not a claim that older attempts consumed the added context.
+
+### Verification of the combined corrections
+
+Implementing-agent verification of `d724192871ab15510630e8a52374db8e313b21db`:
+
+- Type check and build passed.
+- F1/F2 focused verification: 42/42 passed on a fixed build, zero failures/skips/cancellations, in 34.23 seconds. Files: `contribution-answers`, `contribution-application`, `contribution-results`, `application-exact-compatibility`, `m3-agentic-cutover`, `method-provenance`. An earlier 42-pass run began before build completion had been confirmed, so it was repeated with the build fixed; the fixed-build result is the evidence used here.
+- F3 focused verification: 33/33 passed, zero failures/skips/cancellations, in 38.25 seconds. Files: `contribution-dialog`, `contribution-application`, `contribution-hosted`.
+- Full offline suite, macOS Node 22.13.1, `node --test --test-concurrency=2 _build/test/*.test.js`: **725/725 passed**, zero failures, skips or cancellations, in 449.38 seconds. Local loopback and native credential-lock access were enabled; no inference was performed.
+- Compiled-source SHA-256: `190e2c60866149a95aa65ea39a0f8f87791b0a0aef16d14cfbe14fd1c33a944b`; the digest remained fixed through the full suite. Reproduce with the existing `buildIdentity("_build")` function. No build or tracked checkout mutation occurred during that run.
+- `git diff --check` and changed documentation link checks passed. Initial type checks caught missing context arrays in internal connection/test fixtures and incorrect use of the acceptance result in the new tests; these were corrected before runtime verification. No product behavior was weakened to satisfy a test.
+
+Representative memory was not rerun: the ownership/retention representation is unchanged, and the earlier measurements remain attributed to their original targets. Explicit context now intentionally records the additional information actually dispatched. The dialog method bump changes agentic method-qualified identity, so this record does not claim unchanged answer identities against the earlier memory run. No additional live inference was authorized or performed; changed guidance has offline evidence only.
+
+### Other observations and current gate
+
+Round 3's non-defect observations remain limitations rather than new scope: change notices are capped at 24 per exchange without advertising a pending count, with undelivered changes correctly remaining causes; supported callers validate selected subjects before the lower-level plain-Error paths; and native batches use provider-derived local keys within the shared pool namespace. No additional policy, namespace redesign or notice interface is introduced.
+
+All actionable findings from rounds 1–3 are now corrected. The full-branch review strengthens the evidence for the core mechanism, but it did not review these latest corrections. Appropriate rereview remains warranted, particularly for F3's newly delivered input and dispatch accounting. The original final integrated handoff still applies: correction delta `2963c35..d724192871ab15510630e8a52374db8e313b21db`, or full scope `bd92670e4e0db1c9d9804e6d7797f38678ab9bf1..d724192871ab15510630e8a52374db8e313b21db`. Human review-sufficiency determination remains pending. The task remains active and the PR draft; no closure, merge or further inference is inferred.
