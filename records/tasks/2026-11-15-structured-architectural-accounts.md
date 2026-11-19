@@ -268,6 +268,16 @@ to begin the substantive implementation task described by that plan.
 
 > Deliver context using the existing acquisition, bounds and exposure rules (recommended)
 
+2026-11-19, after clean integrated rereview round 4, authorizing completion of hosted follow-up-option context authoring and focused live verification. This supersedes the earlier no-additional-inference restriction only for this focused verification. Under `dev/workflow.md` verification policy, the implementing agent estimates 8–16 requests for authoring and invocation and chooses a new hard cap of 30, including failures, structural repair and targeted retries. Use the established ChatGPT-plan route, `gpt-5.6-sol` with medium reasoning, pinned Cockatiel fixture and unchanged production execution limits; stop when the objective is met. Final independent review and human sufficiency remain separate.
+
+> The re-review is in; as you will see it doesn't find any new major issues.  But I do have a request re the minor note regarding the instructions to agents about context:  Please complete the follow-up-option context authoring path.\
+> \
+> The retained option model already accepts explicitly selected context, request identity includes it, and invocation delivers it under the existing acquisition, bounds and exposure rules. However, the hosted submission schema and option-authoring instructions omit it.\
+> \
+> Let agents supply optional request.context and explain its purpose in the authoring instructions. Use the existing semantics and supported reference types: context is additional selected input, distinct from the investigation’s subjects, and need not be supplied on every option.\
+> \
+> Follow the task and review-response workflow, add appropriate offline verification, and verify authoring and invocation with a focused live trial under the established inference policy. Record the results for independent review.
+
 ## Outcome
 
 ## Verification
