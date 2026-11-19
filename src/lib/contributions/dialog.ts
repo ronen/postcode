@@ -343,7 +343,7 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
         undelivered = handle.checkpoint();
         deliveryWork.forEach(work => work.delivered()); deliveryWork = [];
         const recordUsage = usage.start(attempt, ++calls, identity);
-        const progress = () => options.onProgress?.({ ...report(), termination: 'running', deliveries: [], contributionDeliveries: handle.deliveries, suppliedEvidence: handle.evidence, summarizedEvidence: [] });
+        const progress = () => options.onProgress?.({ ...report(), termination: 'running', contributionDeliveries: handle.deliveries, suppliedEvidence: handle.evidence });
         progress();
         return conversation!.exchange(input, controller.signal, value => { if (activeUsage) { recordUsage(value); progress(); } });
       });
@@ -395,7 +395,7 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
     options.signal?.removeEventListener('abort', interrupt);
     controller.abort();
     try { conversation?.close(); } finally {
-      options.onReport?.({ ...report(), termination, deliveries: [], contributionDeliveries: handle.deliveries, suppliedEvidence: handle.evidence, summarizedEvidence: [] });
+      options.onReport?.({ ...report(), termination, contributionDeliveries: handle.deliveries, suppliedEvidence: handle.evidence });
     }
   }
 }

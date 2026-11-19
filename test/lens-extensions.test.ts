@@ -4,7 +4,7 @@ import type { TestContext } from 'node:test';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { temporaryDirectory } from './cli-helpers.js';
-import { ScriptedInvestigator, syntheticUsage } from './investigator-double.js';
+import { syntheticUsage } from './investigator-double.js';
 import { ScriptedContributionAgent, proseContribution } from './contribution-agent.js';
 import { contributionOperationMethod } from '../src/lib/contributions/operations.js';
 import type { ContributionOperation } from '../src/lib/contributions/operations.js';
@@ -16,14 +16,8 @@ import type { ObservationBatch } from '../src/lib/application/observations.js';
 import type { RequestContext } from '../src/lib/interfaces/cli/report-contracts.js';
 import { captureCatalog, defaultCatalog } from '../src/lib/request-catalog.js';
 import type { RequestCatalog } from '../src/lib/request-catalog.js';
-import type { OperationDefinition } from '../src/lib/investigation/operations.js';
 import { lenses } from '../src/lib/requests.js';
 import type { LensDefinition } from '../src/lib/requests.js';
-import { openTypeScriptProject } from '../src/lib/typescript/project.js';
-import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import { evaluateModules } from '../src/lib/evaluation.js';
-import { investigationEvaluation } from '../src/lib/investigation/evaluation.js';
-import { InvestigationUsage } from '../src/lib/investigation/usage.js';
 
 const risks: ContributionOperation = { id: 'risks', objective: 'Identify apparent module risks, their evidence and limitations.',
   subject: 'module', method: 'test/module-risks@1' };
@@ -82,14 +76,7 @@ function agent() {
     return { kind: 'submit', contribution: proseContribution(input, 'No behavioral risk established from the supplied context.') };
   }]);
 }
-function legacyAgent() {
-  return new ScriptedInvestigator([(input, _signal, usage) => {
-    usage(syntheticUsage);
-    return { kind: 'submit', result: { localId: 'root', prose: 'No behavioral risk established from the supplied context.',
-      referent: { description: 'Selected subject', subjects: [input.request.subject] },
-      qualifications: ['Controlled interpretation with limited evidence.'], evidence: [], associations: [], children: [], corrections: [], inconsistencies: [] } };
-  }]);
-}
+
 
 test('a nonpublic module Lens shares interpretation machinery and original provenance across consumers', async t => {
   const investigator = agent();
@@ -178,36 +165,6 @@ test('Session captures definitions before opening and ignores later caller mutat
   assert.equal(result.view.schema, 'postcode-contribution-view/1-experimental');
   assert.equal(result.view.title, 'Module risks');
   assert.ok(investigator.inputs[0]![0]!.instructions.startsWith(risks.objective));
-});
-
-test('different objectives, methods and initial context cannot consume incompatible retained work', async t => {
-  const opened = await openTypeScriptProject(fixture(t));
-  assert.equal(opened.status, 'opened');
-  const store = new MemoryProgramRecordStore();
-  const basis = evaluateModules(store, opened.analysis, []);
-  const investigator = legacyAgent(), usage = new InvestigationUsage();
-  const run = (definition: OperationDefinition, subject = basis.modules[0]!) => investigationEvaluation(store, opened.analysis, opened.session,
-    usage, { agent: investigator }, async () => {}, new AbortController().signal, { [definition.id]: definition })
-    .evaluate({ operation: definition.id, subject, parameters: {} });
-  const legacyRisks: OperationDefinition = { ...risks, subject: 'module', initialContext: 'subject-reference' };
-  const first = await run(legacyRisks);
-  assert.equal(first.evaluation!.outcome.kind, 'accepted');
-  assert.equal((await run(legacyRisks)).reused, true);
-  const changedObjective = await run({ ...legacyRisks, objective: 'A different investigation objective.' });
-  const changedMethod = await run({ ...legacyRisks, method: 'test/module-risks@2' });
-  assert.equal(changedObjective.reused, false);
-  assert.equal(changedMethod.reused, false);
-  assert.notEqual(changedObjective.evaluation!.method, first.evaluation!.method);
-  assert.notEqual(changedMethod.evaluation!.method, first.evaluation!.method);
-  const root = first.evaluation!.investigrams[0]!;
-  const follow: OperationDefinition = { ...risks, id: 'follow', subject: 'investigram', initialContext: 'prior-interpretation' };
-  const contextual = await run(follow, root);
-  const bare = await run({ ...follow, initialContext: 'subject-reference' }, root);
-  assert.equal(contextual.reused, false);
-  assert.equal(bare.reused, false);
-  assert.ok(investigator.inputs[3]![0]!.responses.length > 0);
-  assert.deepEqual(investigator.inputs[4]![0]!.responses, []);
-  assert.notEqual(contextual.evaluation!.method, bare.evaluation!.method);
 });
 
 

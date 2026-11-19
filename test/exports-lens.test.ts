@@ -1,5 +1,4 @@
 import { presentationMethods } from '../src/lib/interfaces/cli/methods.js';
-import { usageSummary } from '../src/lib/investigation/reporting.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -194,21 +193,20 @@ test('qualified exports preserve partial, unavailable, unrequested and outside-p
     const view = arrangeModuleExports(content, store.entityIds([subject], 'module').get(subject)!, unicode, 'Module exports');
     assert.match(renderModuleExports(view), /empty listing does not establish no exports/);
     assert.match(renderModuleExports(view), new RegExp(`Controlled ${state}`));
-    const { presentRetained } = await import('../src/lib/retained-presentation.js');
+    const { resolveRetainedTarget } = await import('../src/lib/application/retained.js');
     // A fuller answer already exists in the store. Exact presentation cannot enrich this one.
-    const retained = presentRetained(store, basis.session, { kind: 'present', target: content.projection.id, presentation: json, referenceLifetime: 'session' },
-      captureCatalog(catalog()), usageSummary([]), { check() {}, record() {} });
-    assert.equal(retained.kind, 'view'); assert.equal(retained.view.schema, 'postcode-module-exports-view/1-experimental');
-    assert.equal(retained.view.projection.id, content.projection.id); assert.equal(retained.failed, false);
+    const exact = resolveRetainedTarget(store, basis.session, content.projection.id);
+    assert.equal(exact.kind, 'answer'); assert.equal(exact.content.contract, 'module-exports');
+    const retained = { view: arrangeModuleExports(exact.content.value, store.entityIds([subject], 'module').get(subject)!, json, 'Module exports') };
+    assert.equal(retained.view.schema, 'postcode-module-exports-view/1-experimental');
+    assert.equal(retained.view.projection.id, content.projection.id);
     assert.deepEqual(retained.view.exports.map(item => item.id), content.exports.map(item => item.claim.record.id));
     assert.match(JSON.stringify(retained.view), new RegExp(`Controlled ${state}`));
 
   }
-  const { presentRetained } = await import('../src/lib/retained-presentation.js');
-  const missing = presentRetained(store, discovery.session, { kind: 'present', target: unrequested.projection.id, presentation: json, referenceLifetime: 'session' },
-    captureCatalog(catalog()), usageSummary([]), { check() {}, record() {} });
-  assert.equal(missing.kind, 'refusal'); assert.equal(missing.reason, 'presentation-unavailable');
-  assert.deepEqual(missing.retainedAnswers, [unrequested.projection.id]);
+  const { retainedPresentation } = await import('../src/lib/presentation-contracts.js');
+  const missing = retainedPresentation(captureCatalog(catalog()).presentations, { contract: 'module-exports', value: unrequested }, json);
+  assert.ok('explanation' in missing);
   assert.match(missing.explanation, /support not selected by this retained answer/);
   assert.match(missing.explanation, /new information request/);
   const narrowed = { ...complete, id: recordId(complete.session, 'evaluation', 'narrowed'), modules: [] };

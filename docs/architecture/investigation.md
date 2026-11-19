@@ -1,362 +1,32 @@
 # Investigation execution
 
-**Migration note (2026-11-18):** Supported summary, clarification, decomposition and examination now use the [common contribution dialog](contributions.md), including its exact selection, declaration, exposure and attempt/answer contracts. Hosted transport, credentials, usage and cancellation remain shared infrastructure. The legacy tree/correction description below documents helpers awaiting retirement in M4; it does not describe the supported caller route. Historical live assessments cited here do not validate the revised common-dialog guidance.
+All supported agentic operations use the [common contribution dialog](contributions.md#agentic-dialog). The accepted mechanical and caller checkpoints migrated the producers and consumers; integrated retirement removes the old tree, whole-investigram correction, citation-closure and primary-replacement machinery. The final integrated review remains a separate gate. Historical assessment records describe their recorded code and instructions; no new live inference was used for this migration.
 
-This describes the implemented portion of [module investigation](../plans/module-investigation.md),
-including the hosted adapter, progressive shell lenses, correction-aware selection
-and citation-based reconsideration. The domain boundary, session retention and
-summary/follow-up/inspection paths are exercised through a deterministic agent
-double and the real SDK with offline provider responses. The
-[integrated assessment](../../records/validation/module-investigation/pass-05/report.md)
-retains live evidence and its limitations. The governing contracts are
-[investigator execution](../decisions/investigator-execution-and-evidence-access.md),
-[investigrams](../decisions/investigrams-and-progressive-investigation.md), and
-[operations and lenses](../decisions/investigation-operations-and-lenses.md).
+## Responsibilities and lifetime
 
-## Request context and work attribution
+`contributions/dialog.ts` coordinates one fresh agent conversation over a Session-owned ledger. `contributions/evaluation.ts` owns operation reuse and attempt results; `contributions/answers.ts` and `inspection.ts` capture answer selection, standing and reconsideration causes. These are distinct from the hosted communication participant, which owns SDK history, reference translation and credentials. The [attempt/answer decision](../decisions/investigation-attempts-and-answer-outcomes.md) separates a failed attempt from the answer currently designated for its question.
 
-Session entry supplies [request-scoped attribution](README.md#request-work-attribution)
-separately from the operation's semantic inputs. The accepted interpretation and its
-reusable key remain unchanged. Original generating context is retained alongside
-Session outcomes; current consumption reports preserve that origin. Attempt reports
-carry the parent context, including actual guards, on success, failure and interruption.
-Direct operation calls establish a parent without needing observation delivery.
+Each accepted contribution owns immutable content, qualification and support. The ledger and program store share only content they deeply own, using lifetime-scoped capture bookkeeping. An externally frozen object is copied and validated. Each answer independently captures its selected uses and time-dependent standing/causes, while sharing immutable owned evidence and items. Retained answer content remains renderable after Session close without looking up current standing or reopening analysis. Close clears ownership bookkeeping and releases execution state; retaining an answer keeps only its own reachable support. See [ownership and capture](contributions.md) and the [representative memory measurements](../../records/validation/structured-architectural-accounts/m3-agentic-caller-memory.md).
 
-Evidence queries and initial prior-account context record their purpose, triggering
-attempt, qualified outcome and delivery state. Provider/evaluator reports distinguish
-actual acquisition/derivation from retained work and pure retrieval. A response omitted
-by the 60,000-character bound retains its acquired record references and reason but
-never enters the exposure sets. Evidence acquired before another guard stops dispatch
-remains marked not delivered. A query that never returns has an unknown outcome;
-a late completion cannot alter the sealed report or authorize more work. Worker
-termination exposes only received facts and explicitly discloses incompleteness.
+Application coordination supplies all reference bindings with the selected content. The CLI arranges plain immutable inputs under one operation guard; it has no store-backed allocation port. Worker messages are structured data. Exact presentation resolves only fixed retained support, without population discovery, acquisition or inference. Neither answer capture nor presentation records exposure.
 
-## Evaluation and evidence
+## Native evidence and actual delivery
 
-Existing module, dependency and organization evaluators continue to own mechanical
-evaluation and its reuse. A shared evidence-access boundary dispatches declared
-subject queries to those evaluators, returning selected stored records with their
-own contexts, methods, evidence and limitations. It constructs neither projections
-nor human-command observations. It can materialize missing exports, documentation,
-dependencies, dependents and organization information.
+`evidence-access.ts` dispatches exact subject queries to the existing module, export, dependency and organization evaluators. Their algorithms, evidence, scope and guarantees remain unchanged. The evaluators also contribute qualified native findings to the common ledger. A response identifies its selected records, relevant qualification, support references and any omissions; paths supplied by an agent never authorize reads.
 
-Evaluation-wide results are delivered as explicitly separate summaries: identity,
-method, applicability, availability, execution, materialization, reason and the
-relevant basis reference. Organization summaries retain separate placement state.
-Evaluation-wide contexts retain scope, guarantees, limitations, input references
-and diagnostic code/category counts; their evidence populations are represented
-by counts, not recursively embedded. A selected claim's own context and evidence
-remain unchanged. Repository evidence reached through a context is separately
-summarized by identity, method, availability and limitations, rather than embedding
-its entire artifact census. Summaries are delivery metadata, not modified stored
-records. Attempt reports and accepted provenance distinguish `suppliedEvidence`
-(full records delivered) from `summarizedEvidence` (summaries delivered, including
-evaluation-wide qualification contexts). Both are accumulated only when dispatched
-to the investigator. A citation to a summary-only identity supports only the
-summary content, not omitted diagnostics, evidence populations or artifact census.
-An identity can appear in both sets if both forms were delivered, preserving the
-summary exposure without denying subsequent or earlier full delivery. Neither set
-claims comprehension. References alone enter neither set and cannot be cited as
-evidence until substantive content is delivered. Internal raw session/input
-snapshots remain outside the inspection tool.
+Module and organization listings, exports, dependencies, dependents, membership and group navigation use stable pages over retained selections. A page covers at most 24 entries and targets 55,000 serialized UTF-16 code units. Opaque continuations belong to the evidence boundary and exact query; later acquisition does not refresh that selection. Large support can be represented by inspectable references, with partial status and explicit omissions. A reference is available navigation, not delivered content. Evaluation and repository summaries qualify the returned selection without embedding unrelated populations. These summary objects do not make the omitted full records eligible evidence.
 
-Module listings embed each module, its naming claim and unchanged own context;
-source support is supplied by explicit inspectable references from the first page.
-This keeps inventory navigation lighter without treating uninspected source as
-supplied evidence or dropping naming qualification. The listing remains partial
-while support bodies are referenced, including on its final page. Complete
-inventory traversal is not a prerequisite for investigation, and a bounded page
-does not guarantee arbitrary inventories fit one dialogue's cumulative guards.
+Module source requests follow retained source mappings; artifact requests follow captured repository evidence. Multiple mappings remain distinct. Reads pass through the first-observed input host and its generated-output exclusions and validity probes. Module inspection exposes qualified local and ancestor documentation references, without inferring applicability or reading sibling content. Requested source content is then acquired separately.
 
-Module and organization listings, exports, dependencies, dependents, membership
-and group navigation use stable pages over retained selections. Each page covers
-at most 24 selected entries and targets 55,000 serialized UTF-16 code units,
-including their support and qualification. Continuations are opaque, scoped to
-the evidence boundary and exact query, and refer to the original selection even
-if later acquisition enables another evaluation. They neither refresh nor merge
-that selection. Responses identify the covered interval, total selected population,
-next continuation and oversized omitted entries. Continuations live in memory in
-one evidence-access instance. Session integration must retain that instance for
-at least the entire evaluation; recreating it between tool requests loses the
-continuations and returns explicit unknown-continuation responses.
-Total selection size does not assert that the underlying analysis is complete.
-Full qualification that itself exceeds delivery bounds remains explicitly unavailable rather than silently
-truncated. If an individual entry has extensive source support, its claim and own
-context remain embedded while explicit source-support references replace the support
-bodies. Those references can be inspected individually; the page is partial and
-the references alone do not count as supplied evidence. If even that qualified
-entry cannot fit (for example, an enormous documentation assertion), it is
-explicitly omitted; continuation can still reach later entries. Per-page partial
-status and omissions must be considered across the whole traversal, not replaced by the last page's
-status.
+The dialog supplies both native evidence and the common retained findings actually obtained by a query. It records dispatched full program records as `suppliedEvidence` and common exposure as `contributionDeliveries`; obsolete tree deliveries and the always-empty legacy summary-citation report are removed. Common delivery records distinguish scopes, exact association uses, content portions, metadata, members and exact change notices. A record assembled by the host but withheld by a response/character guard is not exposure. A known address is not a substantive acquisition.
 
-Organization lists groups. Group navigation supplies direct containment,
-module-placement claims, artifacts and documentation references; content is then
-requested by artifact reference. Membership exposes a module's qualified groups
-without pulling in unrelated placements. Outgoing dependency queries include
-recognized requests without established edges and owner-specific coverage records.
-Incoming queries report established incoming edges and explicitly qualify that
-unresolved requests or unattributed coverage cannot establish absence of dependents.
-External interiors remain opaque. Each relationship's own evidence accompanies it;
-evaluation-wide qualification does not turn bounded recognition into a claim of
-runtime completeness. Missing provider expansions remain explicitly unavailable
-or partial, not empty complete exports.
+Request-scoped work reporting separately records what was acquired, unavailable, withheld or actually delivered. Acquired-but-undispatched facts remain attributable without granting citation eligibility. A query still awaiting its result has an unknown outcome; cancellation seals that report and a late result cannot rewrite it. The 60,000-character response guard and canonical dialog guards remain separate from selected-answer retention.
 
-Content acquisition is a provider capability behind that same boundary. Module
-references resolve through their retained source mappings; organization artifacts
-resolve through captured repository evidence. Multiple module file mappings are
-preserved. The TypeScript provider reads through the existing first-observed input
-host, using the shared generated-output policy and registering new content with
-the existing validity probes. There is no investigator filesystem or path-reading
-interface.
+## Acceptance and answer history
 
-The captured input basis is a conservative shared acquisition basis, not an exact
-list of inputs used by the compiler or to derive an individual mechanical claim.
-Reading an artifact such as README registers its content for session validity
-and advances the shared acquisition revision. Membership in a later input-basis
-record means “captured in the shared basis”; it does not assert that the compiler
-used that content or that it contributed to the claim's derivation.
+The common acceptance boundary validates same-Session references, content structure, qualifications, exact organizing declarations and collisions atomically. Additions, supersessions, withdrawals, inconsistency reports and result designations keep their distinct meanings. Supersession operates on exact uses; it neither rewrites shared content nor chooses a preferred alternative. Failed or repaired submissions cannot partially update the ledger. Current-only and all-history acquisition have explicit scope and timing.
 
-Advancing that revision makes incomplete mechanical work eligible for another
-attempt. This conservative retry can do unnecessary work without changing the
-qualification of its outcome. Work that remains partial is reused on the same
-stable basis; completed work remains reusable across acquisition revisions.
-Earlier evaluations, claim-context attribution and input snapshots remain
-unchanged. The README regression covers these interactions, and F7 is accepted
-as current behavior for this slice. Separating acquisition revisions by relevance
-could be a later optimization if unnecessary re-evaluation becomes significant;
-no such separation is part of this milestone.
-
-Opaque artifacts, unresolved links, excluded targets, unavailable text
-and providers without acquisition support return qualified unavailability.
-
-Immutable content records retain full mapped files, their input basis, digest and
-source mapping. They do not apply human excerpt limits. A mapped file may include
-code outside the selected subject; artifact placement alone does not establish
-documentation applicability or truth. Module content must match its established
-source digest, and the store validates mappings before atomic publication.
-Retained contents supply subsequent evidence; input changes invalidate through the
-caller's shared validity check rather than refresh the account. Capture remains
-non-atomic. Full-file acquisition has no streaming or range selector at this
-checkpoint, and the existing synchronous compiler/filesystem operations cannot
-be preempted mid-operation.
-
-Before delivery, each mechanical/source tool response is limited to 60,000
-serialized UTF-16 code units. An oversized response becomes an explicit
-unavailable response identifying the omitted size and record/reference counts;
-it does not claim an empty result, create supplied-evidence references or terminate
-the dialogue. Evidence already acquired remains retained. Collection continuations
-and group navigation support narrower access; an individually oversized source or
-qualified item can still require finishing with an explicit coverage limitation. This
-delivery bound does not bound acquisition memory or introduce range retrieval.
-Inspection is also unpaged: a broad claim or global context can exceed the bound
-when its evidence is traversed. Individually addressable source-support references
-can still be inspected separately; their existence does not guarantee that a
-broader inspection response will fit.
-The separate cumulative dialogue guard can still stop an operation after
-multiple bounded responses.
-
-## Dialogue, acceptance and ownership
-
-An investigation request names an operation, exact subject and semantic parameters,
-independently of its future consuming Lens. The production operations remain
-functionality, clarification, decomposition and examination, with no semantic
-parameters. Operation definitions declare their objective, supported subject kind,
-initial context policy and versioned method. The functionality operation starts
-with a module reference; the other production operations start with the exact
-earlier investigram and correction-aware context. The Session captures its Lens
-and operation catalog before opening and does not accept live registration or
-replacement. An internal assembly seam permits nonpublic interpretation fixtures
-using the same definitions and coordination; additional mechanical definitions
-remain unsupported until their construction/Presentation integration is complete.
-Assembly therefore requires unchanged built-in mechanical definitions, including
-their question and applicability, and rejects mechanical replacements of
-interpretation Lenses or interpretation replacements of mechanical Lenses.
-Command aliases and the `usage` report name cannot be shadowed by Lens entries.
-Interpretation definitions must declare an empty parameter object; parameterized
-operations are not implemented. Invalid assembly fails before project acquisition.
-
-Reuse compares the operation request and an effective method containing the common
-execution version, authored operation method and a fingerprint of the actual
-operation definition. An objective or context-policy change therefore changes
-compatibility even if an author forgets a version bump. Accepted provenance and
-interpretation records retain that method; evaluation records retain the evaluation
-version with the operation method. Consuming Lens, supplied designation and current
-request occurrence remain outside the reuse key. Retained selections carry the
-actual operation request even when configuration or communication is unavailable.
-Arrangement receives a supplied title and complete selection content; it does not
-reconstruct operations or titles from Lens names. Titles participate in View
-identity, and initial-context delivery follows the declared policy. Every new operation execution opens a fresh agent dialogue; retained outcomes do not open one. The communication contract
-contains provider identity/configuration, context exchanges, explicit submission,
-failure signals, cancellation and usage reporting. No provider SDK types cross it.
-
-The coordinator supplies instructions treating source and earlier interpretation
-as evidence rather than authority. It dispatches only the declared evidence/context
-tools, supplies remaining limits, validates the submitted unit and returns one
-outcome. Unexpected defects propagate. Provider adapters are responsible for
-translating transport/authentication errors and credential-safe diagnostics at the
-communication boundary; a scripted adapter exercises the same contract in tests.
-The hosted adapter uses the official OpenAI SDK behind that communication boundary.
-
-The execution guard currently permits 180 seconds, 32 agent exchanges, 96 tool
-requests and 2,000,000 serialized UTF-16 code units across sent/received exchanges.
-It covers initial validity checks, dialogue and tool-triggered work. These are
-runaway-containment limits, not spending allowances or coverage definitions.
-Each exchange receives the remaining time and call counts to permit completion
-within the guard. Synchronous work may delay deadline detection; its returned
-content is checked before delivery. Abort signals reach asynchronous work, but
-ignored cancellation cannot forcibly terminate it. No late submission is accepted.
-Hosted cancellation cannot promise that remote work or billing has stopped.
-
-Submission is a single explicit `submit` exchange containing the assembled forest.
-Submission before the guard stops execution enters synchronous whole-result
-validation, followed by a shared input-validity check before returning acceptance.
-That validation/publication check does not start another model turn or spend more
-generation time. There is no repair loop or truncation recovery at this checkpoint.
-Malformed submissions, missing submission, refusal and unrecovered truncation
-return investigation failure; guard stops remain separate. Communication/service
-failure and configuration unavailability remain distinct returned outcomes. The
-evaluation/session integration owns the prescribed retention policy.
-Interruption and invalidation propagate their existing termination errors.
-
-Acceptance validates required prose, referents, attributable qualifications,
-supplied evidence references, supported subject references, unique local IDs,
-composition ownership, and earlier correction targets. The structural backstop is
-256 investigrams and 32 nesting edges, including replacement trees. Every new
-investigram is marked interpretation by PostCode, regardless of prose confidence
-or mechanical citations. Each correction constructs a disjoint replacement tree;
-recursive corrections and conflicting alternatives are valid. Unresolved
-inconsistencies target earlier investigrams in the same session and retain their
-qualifications. Every target must have substantive exposure recorded in the
-reporting evaluation's citations; bare references and acquired-but-undelivered
-content do not qualify. An excerpt can suffice without complete target context,
-which remains required for replacement corrections. No semantic inconsistency is
-established by this validation. Operation instructions and the provider tool schema make that
-restriction explicit: documentation-versus-implementation discrepancies belong in
-attributed prose and qualification with supplied support, not in structured
-inconsistencies targeting program subjects or source records. Reference copying
-remains exact; unknown or mistyped identities reject the unit without repair or
-inference retry. Associations
-distinguish explicit description, the investigation subject and corrected subjects.
-Each correction explicitly names distinct modules, symbols, groups or repository
-artifacts whose accounts it corrects. Claims, source evidence and content captures
-are evidence rather than eligible corrected subjects;
-its target separately identifies the corrected investigram. Replacement roots
-receive those qualified corrected-subject associations. They are never inferred
-from the original request or copied from all earlier associations.
-
-PostCode assigns identities and freezes the complete accepted unit, including
-operation provenance and every replacement. Acceptance does not insert
-investigrams or corrections into the program store. Evaluation retains the
-unit atomically alongside its outcome before view construction. Mechanical evidence already acquired is
-independent of whether interpretation is accepted. Rendering and projection code
-do not participate in investigation execution.
-
-## Context exposure and usage
-
-Earlier accounts are supplied through a read-only history boundary over retained
-program records; domain tests also use fixtures produced through ordinary acceptance. Context retrieval preserves
-the exact original, explicit revision notices, replacement accounts, reasons and
-qualifications, including chains, alternatives and accompanying corrections.
-It does not recursively embed earlier delivery payloads or automatically expand
-composition children. Bounded responses disclose omitted references and allow
-separate retrieval: at most 24 accounts and 60,000 code units of substantive
-content/reasons per request, with the overall dialogue-volume guard also covering
-metadata. Prose, referent and qualifications can be requested separately; excerpts
-do not establish complete prose delivery.
-
-Only dispatched substantive context enters the conservative citation index.
-Identifiers alone and empty or whitespace-only prose excerpts do not. Delivered
-correction reasons and qualifications cite their reporting investigram as
-substantive accompanying content, without making its own account fields complete.
-Complete target eligibility accumulates across exchanges; complete correction
-context requires the target and replacement's own prose,
-referent and qualifications plus the correction's reasons and qualifications.
-Completeness is recorded per correction identity. It does not imply comprehension
-or require subordinate trees. Every accepted investigram shares this execution's
-exposure provenance. The derived revision snapshot supplies reconsideration and replacement selection without changing those exposure records.
-
-Usage is held by an independently owned attempt/call ledger. Calls are registered
-before dispatch; absent reports remain explicitly unknown. Identical repeated
-reports do not double count, and category subset relationships remain explicit.
-Every distinct report is preserved with accounting anomalies. Missing parents,
-cycles, duplicate categories, impossible amounts and differing updates do not
-fail the investigation. Calls with unresolved accounting have no trusted report;
-consumers must not silently sum or select their uncertain values.
-Synthetic test usage is distinguished from provider usage. A final report callback
-runs on success, failure, interruption, invalidation or defect and retains received
-usage, instructions, termination classification and supplied-context identities.
-Late callbacks after termination are ignored; remote billed usage may therefore
-remain unknown. Session aggregation and presentation preserve these distinctions.
-
-## Retention, selection and presentation
-
-The investigation evaluator owns one evidence-access instance per session, so
-continuations survive successive tool requests. It selects work by operation,
-exact subject and semantic parameters before execution. A successful accepted
-forest, its provenance, accompanying corrections and evaluation outcome enter the
-shared program record store in one atomic batch. Investigation failures and limit
-stops retain an outcome with no result. Configuration and communication failures
-retain diagnostics/usage but no reusable outcome. Presentation changes, additional
-evidence and later interpretations do not regenerate retained requests.
-
-Module summary selection resolves exactly one module name, handle or bound
-reference before starting work. Missing and ambiguous selections expose their
-status and candidates without generation. Summary and exact investigram inspection
-select retained records through core construction. Inspection never invokes investigation.
-Known investigram references supplied to `children`, `parents` or `summarize`
-produce an unsupported-subject resolution report and refusal status, without
-coercion, requested-application Projection retention or generation. Missing references remain distinct.
-Investigram bindings use the existing append-only session allocator with a distinct
-`investigram-` prefix. Originals, composition children and replacements remain
-addressable. Fresh selection chooses explicit replacements; exact inspection retains originals. Public follow-up lenses and associated discovery use the same evaluation
-and correction-aware investigator context over earlier retained results.
-
-Core construction retains an immutable investigation selection Projection for each
-qualified answer. It fixes the selected subjects and outcome, original-to-selected
-account relationships, displacement, navigation, associated population and complete
-revision snapshots. Its identity excludes format, display limits, continuation,
-reference lifetime, usage, designation spelling and invocation reporting. A name and
-precise reference selecting the same subject/outcome and revision snapshot share
-this answer. Lookup context is supplied separately to arrangement and enters the
-View identity when exposed. Unresolved or unsupported subjects do not create
-selection records; a valid associated inspection can still have no accounts.
-Unavailable outcomes retain
-kind, code and diagnostic; provider status, body and request ID remain reporting.
-The store validates references and the selection's variant-specific invariants.
-
-Resolution follows only that Projection's fixed references and produces immutable,
-cloneable content with complete support and qualification. CLI arrangement consumes
-that content, applies display and page bounds, and obtains compact references
-through a capability restricted to the supplied reference population. It cannot
-retrieve records or refresh history. Later session work requires a new core
-selection; resolving or arranging an earlier selection preserves its answer.
-The [construction boundary decision](../decisions/qualified-construction-under-the-request-model.md)
-also governs future Presentations of these families. Holding captured source in
-core content is not disclosure; each View classifies and records the source it
-actually exposes.
-
-The experimental investigation view includes selected operation/outcome and reuse,
-immutable accounts, corrections, generating provenance, evidence exposure, stable
-references and attempt/session usage.
-Human correction displays identify each correction's corrected subjects and own
-evidence references alongside its reporter, target, replacement, reason and
-qualifications; the shared support list does not replace that attribution.
-Standard support details distinguish full,
-summary and earlier-interpretation exposure per generating provenance, including
-the provenance of incoming corrections. `--more-details` reveals captured support
-names, locations and metadata, excluding source excerpts from both text and JSON.
-The attribution adapter preserves captured source for investigator queries. Observation
-format 4 distinguishes detail requests, actual attribution disclosure, explicit
-representation limits and subjective inadequacy reports. A nonconforming excerpt-bearing
-payload is recorded as source display; arbitrary prose is not syntax-classified.
-Diagnostic locations outside detail fields, including non-View resolution reports,
-are classified when actually rendered. Investigator source acquisition alone emits
-no human exposure event. One-shot views
-disclose that their references expire when the command ends. A settled summary with
-configuration unavailability retains an unavailable answer and produces a View with
-an expected failure status. Unsettled subject selection produces a resolution
-report with candidates and qualification; the shell can continue after either. No automatic mechanical substitute is presented as a summary.
+Fresh selection captures current uses and concerns. Exact retained selection keeps its earlier snapshot, including selected owner reports, without acquiring today's standing or replaying attempt diagnostics. Failed attempt kind/code/diagnostic remains in invocation reporting and does not manufacture a different empty answer. Common operation guidance covers functionality, clarification, decomposition, examination, state behavior and retained follow-up options; the state diagram and option invocation are application capabilities, with no new CLI command implied.
 
 ## Worker communication and reporting lifetime
 
@@ -489,52 +159,11 @@ the domain continues validating capabilities, references, qualifications and
 submissions. Closing aborts local transport and releases history, without claiming
 remote computation, allowance use or charges have stopped.
 
-Under the accepted [reference transport decision](../decisions/investigator-reference-transport.md),
-both hosted transports use a private per-dialogue reference table
-(`postcode/investigator-references@3`, adapter versions `@6`). Canonical domain
-IDs, public Entity bindings, worker messages and retained records are unchanged.
-The model receives short exact handles with a random dialogue namespace and an
-append-only ordinal. A fresh dialogue gets a fresh table; close releases it.
-Handles identify available references, not supplied evidence. In particular,
-issuing a handle for a bare support reference, omitted record or cursor does not
-add anything to the full-record, summary or prior-account exposure ledgers.
+## Reference protocol
 
-Translation follows designated fields in the record union, evidence responses,
-qualification summaries and prior-account deliveries. Incoming evidence subjects
-and cursors, nested accounts, associations, inconsistencies and correction
-replacements are decoded structurally before domain validation. Names, source,
-paths, assertions, tags, opaque analysis values, prose, local IDs and qualification
-text remain literal, even when they contain an ID or handle. There is no string
-substitution over content, approximate matching or inference repair. Unknown,
-foreign-dialogue and raw canonical spellings in incoming reference fields become
-explicitly unresolvable references, preserving their full spelling for volume
-accounting; ordinary tool unavailability or atomic submission rejection follows.
-Only successful terminal tool calls are decoded; partial streamed output is never
-an accepted result.
+The common hosted protocol exposes `request_information` and `submit_contribution`. Its typed codec translates only designated references in program records, native findings, questions, exact subjects, content addresses, organizing declarations and replies. Source, names, paths, opaque payloads, prose and qualifications remain literal. Each conversation owns a random namespace and append-only short-handle table; close releases it. Unknown, canonical or foreign-dialogue spellings in a reference field remain explicitly unresolvable, with their full spelling preserved for the canonical character guard.
 
-The transport appends instructions explaining handles, exposure and the guard to
-the domain instructions. Agent configuration records the reference version and
-guard representation. The character guard continues to measure serialized
-**canonical domain inputs and decoded replies in UTF-16 code units**, including
-all domain input fields. Evidence pagination and response bounds likewise run
-before compaction. It does not measure compact wire messages, repeated provider
-history, transport-only instructions, SDK envelopes or audit metadata. Invalid
-result trees beyond the existing depth/count bounds remain invalid; translation
-stops at those bounds. This is an execution backstop, not a token or price ceiling.
-
-Assessment captures retain the exact sanitized wire request, raw terminal body
-(and separately finalized stream items when used), plus a snapshot of available
-handle-to-canonical bindings and path-indexed reply resolutions. Failed resolutions
-are explicit nulls. The table is capture metadata, never extra provider context.
-Capture consumers must use delivered records/summaries and canonical exposure
-provenance to establish disclosure, not count table membership as delivery.
-Canonical provenance retains domain instructions; captures retain the actual
-transport instructions. Regression coverage in `investigator-references.test.ts`,
-`investigation.test.ts` and both transport suites checks structural translation,
-exposure separation, guards, fresh histories, cancellation and credential exclusion.
-A deterministic fixture crawl also checks all evidence-query kinds and retained
-investigram context for unencoded canonical references; its source/prose contain
-no literal IDs, whose preservation is covered separately.
+The transport measures no domain acceptance itself. The dialog's volume guard counts canonical domain inputs and decoded replies, including fields that compact wire handles would shorten. It is not a token or price ceiling. Available handle bindings do not establish exposure. Captures contain sanitized requests, terminal responses, separately finalized stream items when applicable, and auditable path-indexed reference resolutions. Domain history records actual deliveries independently of that transport metadata.
 
 Received terminal usage is reported before outcome classification, including
 failed, refused and incomplete responses. Missing usage after interruption is
@@ -568,7 +197,7 @@ Completed stream items with an explicit non-completed status are inconsistent
 with terminal success and cannot supply tool calls or submissions. Missing item
 status remains supported; successful terminal completion and consistent item
 identity are still required. Malformed function arguments count as an invalid
-submission only when the function explicitly names `submit_investigram`; malformed
+submission only when the function explicitly names `submit_contribution`; malformed
 evidence calls or unknown functions end without a submission, retaining usage.
 
 Module inspection now includes bounded, paginated organization context: retained
@@ -581,154 +210,6 @@ count as full exposure; evaluation/repository summaries and undelivered content
 retain their separate treatment. General investigation instructions describe how
 relevant documentation assertions can be compared with implementation; they do
 not prescribe exhaustive reading or supply assessment answers.
-
-The human presentation no longer advertises correction links in a generic
-milestone footer when a view may contain no correction or interpretation.
-
-## Progressive shell navigation
-
-The shell maps `explain`, `decompose` and `examine` to clarification,
-decomposition and examination requirements on exact investigram references.
-Missing or unsupported subjects do not start a dialogue. The same operation
-retention and failure policy applies as for functionality; formatting, additional
-context and repeated commands do not change request identity. Each new result
-has a separate root. Inspection and rendering do not invoke an investigator.
-
-Result views distinguish fixed composition from the generating investigation's
-selected subject. Inspection exposes the composition parent and precise
-provenance subject as navigation references; inspecting a linked child or earlier
-subject reaches its original account. Evidence support keeps its original
-qualification; additional attribution detail remains explicitly requested. Display substitution follows explicit correction chains while retaining each account’s original composition separately. Derived revision status accompanies both original and replacement accounts.
-
-Subject inspection adds a history-dependent section selected only through
-explicit qualified associations, including the investigation-subject and
-corrected-subject roles. Incidental mentions, referents and originating module
-context do not create associations. This section does not change mechanical
-information or turn interpretation into an intrinsic subject property. The
-inspection Projection fixes the shown mechanical Projection, inspected subjects,
-complete associated population and their revision snapshots. The continuation,
-including an invalid token, belongs to View identity; pages of the same selection
-share a Projection. A resolved continuation identifies its account independently
-of compact spelling. Unknown tokens remain literal View inputs, and reference
-lifetime also distinguishes Views.
-Pages contain at most 24 accounts, 400 prose code units each and 55,000 code units
-of detail with complete qualification. An oversized qualified entry keeps its
-selectable reference and an explicit omission. `present @answer-reference --after`
-continues the frozen listing in its retained order; newly retained accounts appear
-only when selected by a subsequent fresh inspection.
-An invalid continuation is explicit. Direct investigram inspection lists later
-results explicitly associated with it, so reverse provenance is also navigable.
-
-Investigators use `investigations(subject)` to obtain up to 24 associated account
-references and a continuation, then `investigram(reference)` to acquire content,
-provenance, composition links, evidence and correction context. Bare listing
-references never create citations or correction eligibility. Actual account
-retrieval uses the existing delivery ledger and bounds. Typed reference transport
-maps listing subjects, selected accounts and continuations structurally; listing
-availability cannot confer evidence exposure.
-
-A private assessment dependency selects the communication participant only after
-evaluation determines that work is missing. In CLI execution the worker requests
-an identity from the parent for that evaluation; credentials and agent instances
-remain in the parent. The selected identity follows provenance, observations and
-both usage ledgers. Ordinary configured operation uses its single explicit route.
-The controlled fixture injects its earlier account through ordinary submission
-and retention, then selects the live participant for later evaluations. It is
-marked scripted in user-facing views and contributes only explicitly synthetic
-setup accounting, with no provider request. This is not a public configuration
-option or a billing fallback.
-
-Selection completes before an investigation attempt or dialogue starts. A selector
-failure closes the CLI session as an internal failure; interruption while identity
-is pending terminates the worker. Neither adds attempt usage, and earlier usage
-remains available for final reporting. Operation and selection identifiers prevent
-stale replies from resolving another selection. Offline regressions exercise
-these boundaries with the real worker, including late messages after closure.
-
-
-## Correction selection and reconsideration
-
-`investigation/revisions.ts` derives a snapshot from accepted session evaluations.
-It indexes correction links and reverse citations without changing stored accounts,
-composition, provenance, citation indexes or earlier projections. Corrections take
-effect at retention, independently of presentation. The context coordinator caches
-this derived snapshot only until another evaluation is retained.
-
-The domain result contains every ordered correction/cause row, the complete
-proximal-citation lists and every qualified incoming inconsistency with its
-reporter and ordinal. A separate delivery adapter applies the existing row and
-proximal-citation bounds for human Views and investigator context. Paging does
-not alter the domain derivation or its provenance exemptions.
-
-Primary selection considers every reachable branch, using accepted evaluation
-order and then correction array order within a simultaneous result as its stable
-tie-break. Recency does not establish credibility or resolve a conflict. A branch
-remains conflicting after a later descendant is selected. The qualified overview
-links every competing account through paged correction relationships; inspecting
-a reference always supplies that exact original. Family-primary metadata supplies
-navigation across competing branches without redirecting the chosen subject.
-
-Fresh result selection follows replacement chains and then the selected replacement’s
-own composition, with explicit original-to-displayed placement metadata. Corrected
-children can appear under an unchanged root. Replacing the root displaces its old
-subtree. Corrections targeting it remain in revision context; corrections reported
-by displaced accounts are separately listed by reporter, target and replacement
-references, without incorporating their replacements into the new tree. If an accompanying correction has already displayed a primary before traversal
-reaches a deeper corrected original, that original and its subtree still count as
-displaced; the primary body is not duplicated. No display placement is stored as composition.
-At most 256 accounts are materialized per view, with omitted references identified.
-Displaced-account, displaced accompanying-correction and revision-status listings
-are each limited to 256 entries, with separate omitted counts. Revision statuses
-prioritize the selected investigram and displayed original/current accounts. Exact
-inspection exposes each account’s own bounded context; omitted display entries do
-not trigger displaced-subtree expansion. Retained history is still traversed to
-count omissions; the bound limits output, not session memory or traversal time.
-Follow-ups retain their exact subject and request identity, including superseded
-subjects; repeated results show current subject revisions without further inference.
-
-For each correction, the citation worklist starts at its target. A citer is affected
-unless its generating provenance either produced that correction or records its
-complete correction context. The exemption applies to the whole evaluation,
-including composition children and every replacement, and blocks propagation
-through that account. Other paths and later causes remain independent. No complete
-paths are enumerated: each account is visited at most once per cause. The work is
-bounded by corrections times the retained citation graph, rather than the number
-of possible citation paths. These domain worklists retain correction-specific
-exemptions; they do not add a generic graph framework. Composition and provenance
-subjects alone never propagate reconsideration. Warnings do not establish error,
-clear automatically, invalidate a session or trigger inference.
-
-Human and investigator revision pages each contain at most 24 correction/cause
-rows and 24 incoming unresolved inconsistencies. Each cause identifies up to eight
-proximal citations, with an omitted count and the complete immutable citation index
-available in provenance. Shell `present @answer-reference --revision-page N` pages
-all shown statuses for the exact answer; `investigram(subject, revisionPage: N)`
-continues to expose further pages to the investigator. Rows preserve cause
-identity, distinguishing direct and transitive exposure without duplicating a cause
-for revised-subject disclosure. Core construction retains the complete relevant
-revision snapshots in Projection identity, including associated-account inspections
-over unchanged mechanical data. Paging consumes those snapshots without changing
-the retained selection or consulting newer session history.
-
-Context retains the exact requested account plus bounded correction-family and
-cause context. Automatically included accounts carry their own content and a
-revision summary with an explicit page-1 continuation; their automatic correction
-link follows the path to the current primary. Incoming inconsistency omissions
-distinguish summary policy (with the full count) from the character bound; the requested account’s
-relationship/cause page is expanded once, avoiding quadratic metadata repetition. Correction reasons and incoming inconsistency content create
-citations to their reporters; metadata and bare navigation references do not.
-Instructions, tool schemas and supplied context make the citation rule explicit:
-correction reasons and qualifications are content of the reporting investigram.
-The investigator cites `correction.reporter`; the correction handle identifies the
-relationship and is never eligible evidence. Metadata alone does not supply that
-content. Validation neither substitutes the reporter for an invalid correction ID
-nor opens a repair dialogue. Context pages report omitted accounts/corrections and further accompanying-correction
-pages. Only actual complete delivery of target and replacement fields plus
-correction reasons/qualifications establishes an exemption. Recursive children are
-not required. Reference transport maps these new fields structurally; prose is
-unchanged. The existing character guard continues to measure canonical domain
-exchanges before private handle translation. Captured deliveries remain the audit
-of actual exposure, including citation indexes and per-correction completeness.
 
 ## Inadequacy feedback delivery
 

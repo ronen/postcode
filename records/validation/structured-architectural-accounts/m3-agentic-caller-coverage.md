@@ -46,3 +46,8 @@ The following names identify the removed legacy cases in `investigation-integrat
 ## Remaining retirement work
 
 Legacy low-level `investigation`, `investigation-selection`, `investigation-revisions` and old protocol tests still exercise unreachable helpers; they are not evidence for the new caller route. `investigation-selection` uses explicit test-local definitions rather than restoring legacy production registration. The supported application catalog rejects the legacy interpretation requirement. M4 must remove the unused evaluator/tree/correction/citation machinery and associated tests after its reachability audit, update remaining descriptive architecture, and reconcile this inventory at integrated review. No new live instruction-usability trial was run; existing M2 trials cover their recorded instruction revision only.
+
+
+## M4 retirement closure (2026-11-18)
+
+After human acceptance of both M3 checkpoints, the remaining unreachable legacy machinery and representation-specific tests were retired. The [integrated coverage inventory](m4-retirement-coverage.md) maps those cases to current checks or explicitly retired semantics and records the remaining shared boundaries. The separate final integrated gate remains open.

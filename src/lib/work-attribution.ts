@@ -2,10 +2,11 @@ import { randomUUID } from 'node:crypto';
 import { freezeOwned } from './immutable.js';
 import { investigationBounds } from './investigation/bounds.js';
 import type { InvestigationBounds } from './investigation/bounds.js';
-import type { InvestigationRequest, InvestigatorTool, ToolResponse, AccountContext, ContextDelivery } from './investigation/contracts.js';
+import type { InvestigationRequest } from './investigation/contracts.js';
 import type { SemanticRequest, InputProblem } from './application/requests.js';
 import type { ParameterValue } from './application/lenses.js';
 import type { EvidenceResponse } from './evidence-delivery.js';
+import type { EvidenceQuery } from './evidence-access.js';
 import type { EvaluationState, ProgramRecordStore, RecordId } from './records.js';
 
 export interface InitiationContext {
@@ -122,7 +123,7 @@ export class WorkReportState {
 
 export interface EvidenceWork {
   readonly current: WorkOrigin;
-  readonly query: InvestigatorTool | { readonly kind: 'initial-context'; readonly subject: RecordId } | { readonly kind: 'invalid' }
+  readonly query: EvidenceQuery | { readonly kind: 'invalid' }
     | { readonly kind: 'contribution'; readonly request: import('./contributions/dialog.js').ContributionTool };
   readonly outcome: {
     readonly status: 'available' | 'partial' | 'unavailable';
@@ -131,12 +132,8 @@ export interface EvidenceWork {
     readonly limitations: readonly string[];
     readonly evaluations: NonNullable<EvidenceResponse['evaluations']>;
     readonly supportReferences?: EvidenceResponse['supportReferences'];
-    readonly accounts?: readonly Pick<AccountContext, 'id' | 'qualifications' | 'completeParts' | 'omissions' | 'revision' | 'nextCorrectionPage'>[];
-    readonly listing?: ContextDelivery['listing'];
     readonly page?: EvidenceResponse['page'];
     readonly repositories?: EvidenceResponse['repositories'];
-    readonly omittedAccounts?: readonly RecordId[];
-    readonly omittedCorrections?: readonly RecordId[];
     readonly contributions?: readonly import('./contributions/model.js').Delivery[];
   } | null;
   readonly delivery: 'not-delivered' | 'delivered' | 'withheld';
@@ -145,7 +142,7 @@ export interface EvidenceWork {
 
 export interface EvidenceWorkHandle {
   readonly scope: WorkScope;
-  acquired(response: ToolResponse): void;
+  acquired(response: EvidenceResponse): void;
   acquiredContributions(deliveries: readonly import('./contributions/model.js').Delivery[], limitations: readonly string[], available: boolean): void;
   withheld(reason: string): void;
   delivered(): void;
@@ -209,8 +206,7 @@ export class RequestWork {
   }
 
   evidence(query: EvidenceWork['query'], attempt: RecordId): EvidenceWorkHandle {
-    const purpose = query.kind === 'initial-context' ? 'Supply the selected prior interpretation as initial context.'
-      : `Satisfy the investigator's ${query.kind} evidence query.`;
+    const purpose = `Satisfy the investigator's ${query.kind} evidence query.`;
     const index = this.evidenceWork.length;
     const current: WorkOrigin = { parent: 0, initiator: 'PostCode', role: 'interpretation-evidence', purpose, attempt, trigger: query, sequence: index };
     const update = (fields: Partial<EvidenceWork>) => {
@@ -221,23 +217,9 @@ export class RequestWork {
     update({ current, query, outcome: null, delivery: 'not-delivered', reason: null });
     const scope = this.scope(purpose, attempt, 'interpretation-evidence', query, index);
     return { scope, acquired: response => {
-      const accounts = 'accounts' in response;
-      update({ outcome: {
-        status: accounts ? response.omittedAccounts.length || response.omittedCorrections.length ? 'partial'
-          : response.accounts.length || response.listing ? 'available' : 'unavailable' : response.status,
-        records: accounts ? [...response.accounts.map(item => item.id), ...response.corrections.map(item => item.id)] : response.records.map(item => item.id),
-        selected: accounts ? response.listing?.selected ?? (response.accounts.some(item => item.id === response.requested)
-          || response.omittedAccounts.includes(response.requested) ? [response.requested] : []) : response.selected,
-        limitations: response.limitations,
-        ...(accounts ? { omittedAccounts: response.omittedAccounts, omittedCorrections: response.omittedCorrections,
-          ...(response.listing ? { listing: response.listing } : {}),
-          accounts: response.accounts.map(({ id, qualifications, completeParts, omissions, revision, nextCorrectionPage }) => ({ id, completeParts, omissions,
-            ...(qualifications ? { qualifications } : {}), ...(revision ? { revision } : {}),
-            ...(nextCorrectionPage !== undefined ? { nextCorrectionPage } : {}) })) }
-          : { ...(response.page ? { page: response.page } : {}), ...(response.repositories ? { repositories: response.repositories } : {}),
-            ...(response.supportReferences ? { supportReferences: response.supportReferences } : {}) }),
-        evaluations: accounts ? [] : response.evaluations ?? [],
-      } });
+      update({ outcome: { status: response.status, records: response.records.map(item => item.id), selected: response.selected, limitations: response.limitations, evaluations: response.evaluations ?? [],
+        ...(response.page ? { page: response.page } : {}), ...(response.repositories ? { repositories: response.repositories } : {}),
+        ...(response.supportReferences ? { supportReferences: response.supportReferences } : {}) } });
       scope.record('evidence-retrieval', this.evidenceWork[index]?.outcome?.status === 'unavailable' ? 'unavailable' : 'consumed', {
         records: [...new Set([...(this.evidenceWork[index]?.outcome?.records ?? []),
           ...(this.evidenceWork[index]?.outcome?.evaluations.map(item => item.id) ?? [])])], limitations: response.limitations,

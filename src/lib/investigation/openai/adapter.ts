@@ -3,10 +3,9 @@ import { Stream } from 'openai/core/streaming';
 import { CredentialError } from './credential-store.js';
 import type { ChatGPTSession } from './chatgpt-credentials.js';
 import type { Response, ResponseCreateParams, ResponseInputItem } from 'openai/resources/responses/responses.js';
-import type { AgentFailure, AgentIdentity, AgentInput, AgentReply, InvestigatorAgent, InvestigatorTool, ReportedUsage, UsageCategory } from '../contracts.js';
+import type { AgentFailure, AgentIdentity, ReportedUsage, UsageCategory } from '../contracts.js';
 import type { FunctionTool } from 'openai/resources/responses/responses.js';
-import { investigatorFunctions } from './protocol.js';
-import { InvestigatorReferences, referenceInstructions, type ReferenceAudit } from './references.js';
+import { referenceInstructions, type ReferenceAudit } from './references.js';
 export type { ReferenceAudit } from './references.js';
 import { CompletedStreamOutput } from './stream-output.js';
 
@@ -38,7 +37,7 @@ export interface WireProtocol<I extends { readonly instructions: string }, R> {
   readonly requestFunction: string;
   readonly submitFunction: string;
   readonly description: string;
-  /** Recorded in the agent identity when it differs from the original investigator protocol. */
+  /** Recorded in the agent identity to identify the typed protocol. */
   readonly protocol?: string;
   codec(): {
     message(input: I): { readonly content: Readonly<Record<string, unknown>>; readonly responses: unknown };
@@ -49,27 +48,6 @@ export interface WireProtocol<I extends { readonly instructions: string }, R> {
     audit(): ReferenceAudit;
     close(): void;
   };
-}
-const investigatorProtocol: WireProtocol<AgentInput, AgentReply> = {
-  functions: investigatorFunctions, requestFunction: 'request_evidence', submitFunction: 'submit_investigram', description: 'PostCode evidence and explicit result submission',
-  codec() {
-    const references = new InvestigatorReferences();
-    return {
-      message(input) { const encoded = references.encode(input); return { content: { request: encoded.request, remaining: input.remaining }, responses: encoded.responses }; },
-      tools: args => !args || typeof args !== 'object' || !('requests' in args) || !Array.isArray(args.requests) ? null
-        // Domain coordination validates every requested capability and reference.
-        : { kind: 'tools', requests: (references.tools(args) as { requests: InvestigatorTool[] }).requests },
-      submission: (args, malformed) => ({ kind: 'submit', result: malformed ? null : references.submission(args) }),
-      audit: () => references.audit(), close: () => references.close(),
-    };
-  },
-};
-export function openAIInvestigator(apiKey: string, options: TransportOptions = {}): InvestigatorAgent {
-  if (!apiKey || /\s/.test(apiKey)) throw new Error('Invalid OpenAI credential');
-  return hosted({ token: async () => apiKey, watch: () => () => {} }, false, options, investigatorProtocol);
-}
-export function chatGPTInvestigator(session: ChatGPTSession, options: TransportOptions = {}): InvestigatorAgent {
-  return hosted(session, true, options, investigatorProtocol);
 }
 /** The same hosted transports carrying another typed dialog protocol. */
 export function hostedAgent<I extends { readonly instructions: string }, R>(credentials: { readonly apiKey: string } | { readonly session: ChatGPTSession },

@@ -17,8 +17,6 @@ import { resolveModuleProjection } from './module-content.js';
 import type { DocumentationContent, ModuleProjectionContent } from './module-content.js';
 import { presentQualification } from './qualification-view.js';
 import type { QualifiedRecord } from './projection-content.js';
-import { renderAssociatedInvestigations } from './investigation/associations.js';
-import type { AssociatedInvestigations } from './investigation/associations.js';
 import { displayWidth, layoutText, padDisplay } from './terminal-layout.js';
 import { moduleLimitations, isCompositionContext } from './qualification-policy.js';
 import { completedMaterialization } from './evaluation-state.js';
@@ -47,7 +45,6 @@ type ExportView = ExportClaim['information'] & {
 };
 
 export interface QualifiedView extends AnswerDisplay {
-  readonly investigations?: AssociatedInvestigations;
   readonly schema: 'postcode-view/1-experimental';
   readonly id: RecordId;
   readonly resolution?: ResolutionContext;
@@ -365,7 +362,7 @@ export function renderUnicode(view: QualifiedView, placement: 'standalone' | 'em
     if (exceptional.length) { lines.push(`- Collapsed ${inlineText(collapsed.handle)}:`); local(exceptional, '  '); }
   }
   lines.push('', 'Entity references belong to this session. One-shot queries accept exact names or handles.');
-  return `${lines.map(terminalText).join('\n')}\n${renderAssociatedInvestigations(view.investigations)}`;
+  return `${lines.map(terminalText).join('\n')}\n`;
 }
 
 export function renderView(view: QualifiedView): string {

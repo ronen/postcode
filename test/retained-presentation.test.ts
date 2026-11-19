@@ -17,7 +17,7 @@ import { captureRequest } from '../src/lib/requests.js';
 import type { LensViewRequest, ViewRequest } from '../src/lib/requests.js';
 import { parseCommand } from '../src/lib/commands.js';
 import { publishCommand } from '../src/lib/command-execution.js';
-import { finalizeInvestigationUsage } from '../src/lib/investigation/presentation.js';
+import { finalizeInvestigationUsage } from '../src/lib/investigation/usage-presentation.js';
 import type { ObservationBatch } from '../src/lib/application/observations.js';
 import type { RequestContext } from '../src/lib/interfaces/cli/report-contracts.js';
 import { SessionClosed, SessionInvalidated } from '../src/lib/execution-errors.js';
@@ -79,7 +79,7 @@ test('exact mechanical presentation covers every family and composite without se
   assert.ok(mixed.groups.length && mixed.moduleDetail?.modules.length);
   const group = requireView(await active.execute({ lens: 'inspect', selector: mixed.groups[0]!.entityId, reference: true, presentation: json }));
   fresh.push(group);
-  for (const method of ['put', 'evaluations', 'investigations', 'boundEntity'] as const) t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw new Error(`present must not call ${method}`); });
+  for (const method of ['put', 'evaluations', 'boundEntity'] as const) t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw new Error(`present must not call ${method}`); });
   for (const first of fresh) {
     assert.equal(first.view.selectionMode, 'fresh');
     assert.match(first.view.answerReference!, /^answer-[a-f0-9]{8,64}$/);
@@ -155,7 +155,7 @@ test('documentation-only group presentation uses selected modules rather than th
   assert.deepEqual(selected[0]!.modules, []);
   assert.deepEqual(base.moduleDetail!.modules, []);
   assert.ok(fresh.view.mechanical);
-  for (const method of ['put', 'evaluations', 'investigations', 'boundEntity'] as const) t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw new Error(`present must not call ${method}`); });
+  for (const method of ['put', 'evaluations', 'boundEntity'] as const) t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw new Error(`present must not call ${method}`); });
   for (const target of [fresh.view.answerReference!, base.projection.id]) {
     for (const format of ['json', 'unicode'] as const) {
       const retained = requireView(await active.execute({ kind: 'present', target, presentation: { format, moreDetails: false } }));

@@ -2,10 +2,13 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import type { TestContext } from 'node:test';
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, rmSync, symlinkSync } from 'node:fs';
 import path from 'node:path';
 import { temporaryDirectory } from './cli-helpers.js';
-import { ScriptedInvestigator } from './investigator-double.js';
+import { ScriptedContributionAgent, proseContribution } from './contribution-agent.js';
+import { conductDialog, responseCharacters as evidenceResponseCharacters } from '../src/lib/contributions/dialog.js';
+import type { DialogInput, DialogReply, DialogResponse, DialogOptions } from '../src/lib/contributions/dialog.js';
+import { sessionLedger, moduleEntity } from '../src/lib/contributions/modules.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
@@ -13,12 +16,17 @@ import type { ModuleAnalysis } from '../src/lib/evaluation.js';
 import { evidenceAccess } from '../src/lib/evidence-access.js';
 import type { EvidenceQuery, EvidenceResponse } from '../src/lib/evidence-access.js';
 import { evidencePageCharacters } from '../src/lib/evidence-delivery.js';
-import { investigate, evidenceResponseCharacters } from '../src/lib/investigation/execute.js';
 import { InvestigationUsage } from '../src/lib/investigation/usage.js';
-import type { AgentInput, AgentReply } from '../src/lib/investigation/contracts.js';
 import type { RecordId } from '../src/lib/records.js';
 
-async function fixture(t: TestContext, unrelated: number, hugeDocumentation = false, wideSupport = false, ancestorDocumentation = 0) {
+function evidenceResponse(value: DialogResponse): EvidenceResponse { assert.equal(value.tool, 'evidence'); return value.response; }
+async function runDialog(f: Awaited<ReturnType<typeof fixture>>, subject: RecordId, options: Omit<DialogOptions, 'ledger' | 'store' | 'invocation' | 'operation'>) {
+  const ledger = sessionLedger(f.store, f.opened.session), entity = moduleEntity(f.store, subject)!;
+  const invocation = ledger.invoke({ operation: 'functionality', subjects: [{ role: null, subject: { kind: 'entity', entity } }], parameters: {}, context: [], resultContract: null });
+  return conductDialog({ ledger, store: f.store, invocation: invocation.invocation.id, operation: { id: 'functionality', method: 'test/evidence-dialog@1', objective: 'Inspect the supplied evidence.' }, repairs: 0, ...options });
+}
+
+async function fixture(t: TestContext, unrelated: number, hugeDocumentation = false, wideSupport = false, ancestorDocumentation = 0, excludeOutput = false) {
   const root = temporaryDirectory(t, 'postcode-evidence-');
   execFileSync('git', ['init', '--quiet', root]);
   mkdirSync(path.join(root, 'feature'));
@@ -32,7 +40,8 @@ async function fixture(t: TestContext, unrelated: number, hugeDocumentation = fa
     wideSupport ? `declare module 'wide' { export const item${index}: number; }` : `export const item${index} = ${index};`);
   for (let index = 0; index < ancestorDocumentation; index++) writeFileSync(path.join(root, `README.${index}.md`), 'Repository intent assertion.');
   if (ancestorDocumentation) writeFileSync(path.join(root, 'unrelated/README.md'), 'Sibling documentation must not be selected.');
-  const opened = await openTypeScriptProject({ configPath: path.join(root, 'tsconfig.json') });
+  if (excludeOutput) { mkdirSync(path.join(root, 'output')); writeFileSync(path.join(root, 'output/private.md'), 'Excluded sentinel.'); }
+  const opened = await openTypeScriptProject({ configPath: path.join(root, 'tsconfig.json'), ...(excludeOutput ? { excludedOutputDirectories: [path.join(root, 'output')] } : {}) });
   if (opened.status !== 'opened') throw new Error('Expected fixture');
   const store = new MemoryProgramRecordStore();
   const evaluation = evaluateModules(store, opened.analysis);
@@ -157,13 +166,13 @@ test('realistic dialogue follows delegation and group documentation through boun
   const f = await fixture(t, 160);
   let middle: RecordId, leaf: RecordId, group: RecordId, artifact: RecordId;
   const response = (value: unknown): EvidenceResponse => {
-    const result = value as EvidenceResponse;
+    const result = evidenceResponse(value as DialogResponse);
     checkQualified(result, f.store);
     assert.ok(JSON.stringify(result).length < evidenceResponseCharacters);
     assert.notEqual(result.status, 'unavailable');
     return result;
   };
-  const agent = new ScriptedInvestigator([
+  const agent = new ScriptedContributionAgent([
     () => ({ kind: 'tools', requests: [{ kind: 'dependencies', subject: f.module('entry') }, { kind: 'membership', subject: f.module('entry') }, { kind: 'modules' }] }),
     input => {
       const dependency = response(input.responses[0]).records.find(item => item.kind === 'claim' && item.information.type === 'dependency');
@@ -188,16 +197,14 @@ test('realistic dialogue follows delegation and group documentation through boun
     input => {
       const doc = response(input.responses[1]);
       assert.ok(doc.records.some(item => item.kind === 'captured-content' && item.text.includes('delegates entry')));
-      return { kind: 'submit', result: { localId: 'root', prose: 'Entry delegates to middle and leaf.',
-        referent: { description: 'The entry feature.', subjects: [f.module('entry')] }, qualifications: ['Source interpretation.'],
-        evidence: [...response(input.responses[0]).selected, ...doc.selected], associations: [], children: [], corrections: [], inconsistencies: [] } };
+      return { kind: 'submit', contribution: proseContribution(input, 'Entry delegates to middle and leaf.', { evidence: [...response(input.responses[0]).selected, ...doc.selected] }) };
     },
   ]);
-  const result = await investigate({ session: f.opened.session, request: { operation: 'functionality', subject: f.module('entry'), parameters: {} },
-    evidence: f.evidence, history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] },
+  const result = await runDialog(f, f.module('entry'), {
+    evidence: f.evidence,
     agent, usage: new InvestigationUsage(), check: async () => { assert.equal(await f.opened.changed(), false); } });
   assert.equal(result.outcome.kind, 'accepted');
-  assert.ok(result.report.summarizedEvidence.some(id => f.store.get(id).kind === 'dependency-evaluation'), 'delivered summary is attributable without claiming full-record delivery');
+  assert.ok(result.production.deliveries.length > 0);
 });
 
 
@@ -238,22 +245,19 @@ test('a merged module with extensive own support stays selectable through explic
     assert.ok(inspected.records.some(item => item.id === reference.id));
   }
   let withheld: RecordId | undefined;
-  const next = (input: AgentInput): AgentReply => {
-    const response = input.responses[0] as EvidenceResponse;
+  const next = (input: DialogInput): DialogReply => {
+    const response = evidenceResponse(input.responses[0]!);
     if (!response.supportReferences?.length) return { kind: 'tools', requests: [{ kind: 'modules', cursor: response.page!.next! }] };
     withheld = response.supportReferences[0]!.id;
-    return { kind: 'submit', result: { localId: 'root', prose: 'Claims to use undelivered support.',
-      referent: { description: 'The wide module.', subjects: [wide] }, qualifications: ['Interpretation.'], evidence: [withheld],
-      associations: [], children: [], corrections: [], inconsistencies: [] } };
+    return { kind: 'submit', contribution: proseContribution(input, 'Claims to use undelivered support.', { evidence: [withheld!] }) };
   };
-  const execution = await investigate({ session: f.opened.session, request: { operation: 'functionality', subject: wide, parameters: {} },
-    evidence: f.evidence, history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] },
-    agent: new ScriptedInvestigator([() => ({ kind: 'tools', requests: [{ kind: 'modules' }] }), next, next, next]),
+  const execution = await runDialog(f, wide, {
+    evidence: f.evidence,
+    agent: new ScriptedContributionAgent([() => ({ kind: 'tools', requests: [{ kind: 'modules' }] }), next, next, next]),
     usage: new InvestigationUsage(), check: async () => {} });
   assert.ok(withheld);
-  assert.equal(execution.report.suppliedEvidence.includes(withheld), false);
-  assert.equal(execution.outcome.kind, 'investigation-failure');
-  if (execution.outcome.kind === 'investigation-failure') assert.equal(execution.outcome.reason, 'Evidence must identify supplied context in this session.');
+  assert.equal(execution.production.evidence.includes(withheld), false);
+  assert.equal(execution.outcome.kind, 'invalid-submission');
 });
 
 test('a complete 263-module inventory fits one guarded dialogue with qualified support by reference', async t => {
@@ -261,8 +265,8 @@ test('a complete 263-module inventory fits one guarded dialogue with qualified s
   const selected: RecordId[] = [];
   let inspected: RecordId | undefined;
   let pageCount = 0;
-  const next = (input: AgentInput): AgentReply => {
-    const response = input.responses[0] as EvidenceResponse;
+  const next = (input: DialogInput): DialogReply => {
+    const response = evidenceResponse(input.responses[0]!);
     checkQualified(response, f.store);
     if (response.page) {
       pageCount++;
@@ -276,95 +280,34 @@ test('a complete 263-module inventory fits one guarded dialogue with qualified s
       return { kind: 'tools', requests: [{ kind: 'inspect', subject: inspected }] };
     }
     assert.ok(response.records.some(item => item.id === inspected && item.kind === 'source-evidence'));
-    return { kind: 'submit', result: { localId: 'root', prose: 'The qualified module inventory was traversed.',
-      referent: { description: 'Entry.', subjects: [f.module('entry')] }, qualifications: ['Most source support remains uninspected.'],
-      evidence: [inspected], associations: [], children: [], corrections: [], inconsistencies: [] } };
+    return { kind: 'submit', contribution: proseContribution(input, 'The qualified module inventory was traversed.', { evidence: [inspected!] }) };
   };
-  const result = await investigate({ session: f.opened.session, request: { operation: 'functionality', subject: f.module('entry'), parameters: {} },
-    evidence: f.evidence, history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] },
-    agent: new ScriptedInvestigator([() => ({ kind: 'tools', requests: [{ kind: 'modules' }] }), ...Array.from({ length: 31 }, () => next)]),
+  const result = await runDialog(f, f.module('entry'), {
+    evidence: f.evidence,
+    agent: new ScriptedContributionAgent([() => ({ kind: 'tools', requests: [{ kind: 'modules' }] }), ...Array.from({ length: 31 }, () => next)]),
     usage: new InvestigationUsage(), check: async () => {} });
   assert.equal(result.outcome.kind, 'accepted', 'default dialogue call and volume guards must permit full traversal and inspection');
   assert.equal(selected.length, 263);
   assert.deepEqual(new Set(selected), new Set(f.evaluation.modules));
   assert.ok(pageCount < 25, 'leave exchanges for useful follow-up after listing');
-  assert.deepEqual(result.report.suppliedEvidence.filter(id => f.store.get(id).kind === 'source-evidence'), [inspected]);
+  assert.deepEqual(result.production.evidence.filter(id => f.store.get(id).kind === 'source-evidence'), [inspected]);
 });
 
-test('summary citations retain their exposure form, including subsequent full delivery and failed attempts', async t => {
-  const f = await fixture(t, 2);
-  const summaryIds = new Set<RecordId>();
-  const fullIds = new Set<RecordId>();
-  let context: RecordId;
-  const collect = (response: EvidenceResponse) => {
-    response.records.forEach(record => fullIds.add(record.id));
-    response.evaluations?.forEach(item => { summaryIds.add(item.id); item.qualification.forEach(item => summaryIds.add(item.id)); });
-    response.repositories?.forEach(item => summaryIds.add(item.id));
-  };
-  const options = { session: f.opened.session, request: { operation: 'functionality' as const, subject: f.module('entry'), parameters: {} },
-    evidence: f.evidence, history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] },
-    check: async () => {} };
-  const execution = await investigate({ ...options, usage: new InvestigationUsage(), agent: new ScriptedInvestigator([
-    () => ({ kind: 'tools', requests: [{ kind: 'modules' }, { kind: 'membership', subject: f.module('entry') }] }),
-    input => {
-      const modules = input.responses[0] as EvidenceResponse;
-      input.responses.forEach(response => collect(response as EvidenceResponse));
-      context = modules.evaluations![0]!.qualification[0]!.id;
-      assert.ok(!fullIds.has(context));
-      const organization = input.responses[1] as EvidenceResponse;
-      const layoutContext = organization.evaluations![0]!.qualification.find(item => item.scope !== 'configured-project')!.id;
-      return { kind: 'tools', requests: [{ kind: 'inspect', subject: context }, { kind: 'inspect', subject: layoutContext }] };
-    },
-    input => {
-      const response = input.responses[0] as EvidenceResponse;
-      assert.ok(response.records.some(item => item.id === context && item.kind === 'claim-context'));
-      input.responses.forEach(response => collect(response as EvidenceResponse));
-      return { kind: 'submit', result: { localId: 'root', prose: 'An account supported by qualified summaries.',
-        referent: { description: 'Entry.', subjects: [f.module('entry')] }, qualifications: ['Summary citations cover only delivered summary content.'],
-        evidence: [...summaryIds], associations: [], children: [], corrections: [], inconsistencies: [] } };
-    },
-  ]) });
-  assert.equal(execution.outcome.kind, 'accepted');
-  assert.deepEqual(new Set(execution.report.suppliedEvidence), fullIds);
-  assert.deepEqual(new Set(execution.report.summarizedEvidence), summaryIds);
-  for (const kind of ['evaluation', 'organization-evaluation', 'repository-evidence']) {
-    assert.ok([...summaryIds].some(id => f.store.get(id).kind === kind), `expected summary exposure for ${kind}`);
-    assert.ok(![...fullIds].some(id => f.store.get(id).kind === kind));
-  }
-  assert.ok(execution.report.suppliedEvidence.includes(context!));
-  assert.ok(execution.report.summarizedEvidence.includes(context!), 'full delivery does not erase earlier summary exposure');
-  if (execution.outcome.kind === 'accepted') {
-    assert.deepEqual(execution.outcome.result.provenance.suppliedEvidence, execution.report.suppliedEvidence);
-    assert.deepEqual(execution.outcome.result.provenance.summarizedEvidence, execution.report.summarizedEvidence);
-    assert.ok(Object.isFrozen(execution.outcome.result.provenance.summarizedEvidence));
-  }
-  const failed = await investigate({ ...options, usage: new InvestigationUsage(), agent: new ScriptedInvestigator([
-    () => ({ kind: 'tools', requests: [{ kind: 'modules' }] }),
-    () => ({ kind: 'ended' }),
-  ]) });
-  assert.equal(failed.outcome.kind, 'investigation-failure');
-  assert.ok(failed.report.summarizedEvidence.includes(f.evaluation.id));
-  assert.equal(failed.report.suppliedEvidence.includes(f.evaluation.id), false);
-});
 
 test('summaries withheld by the response guard do not grant citation eligibility or exposure', async t => {
   const f = await fixture(t, 2);
-  const execution = await investigate({ session: f.opened.session, request: { operation: 'functionality', subject: f.module('entry'), parameters: {} },
+  const execution = await runDialog(f, f.module('entry'), {
     evidence: { lookup: f.evidence.lookup, query: query => ({ ...f.evidence.query(query), limitations: ['x'.repeat(evidenceResponseCharacters)] }) },
-    history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] },
-    agent: new ScriptedInvestigator([
+
+    agent: new ScriptedContributionAgent([
       () => ({ kind: 'tools', requests: [{ kind: 'modules' }] }),
       input => {
-        assert.equal((input.responses[0] as EvidenceResponse).status, 'unavailable');
-        return { kind: 'submit', result: { localId: 'root', prose: 'Claims to cite an undelivered summary.',
-          referent: { description: 'Entry.', subjects: [f.module('entry')] }, qualifications: ['Interpretation.'], evidence: [f.evaluation.id],
-          associations: [], children: [], corrections: [], inconsistencies: [] } };
+        assert.equal(input.responses[0]!.tool, 'unavailable');
+        return { kind: 'submit', contribution: proseContribution(input, 'Claims to cite an undelivered summary.', { evidence: [f.evaluation.id] }) };
       },
     ]), usage: new InvestigationUsage(), check: async () => {} });
-  assert.deepEqual(execution.report.suppliedEvidence, []);
-  assert.deepEqual(execution.report.summarizedEvidence, []);
-  assert.equal(execution.outcome.kind, 'investigation-failure');
-  if (execution.outcome.kind === 'investigation-failure') assert.equal(execution.outcome.reason, 'Evidence must identify supplied context in this session.');
+  assert.deepEqual(execution.production.evidence, []);
+  assert.equal(execution.outcome.kind, 'invalid-submission');
 });
 
 
@@ -391,10 +334,10 @@ test('normal module inspection lets the investigator acquire documentation and r
   const f = await fixture(t, 2);
   let artifact: RecordId;
   const seen = new Set<RecordId>();
-  const agent = new ScriptedInvestigator([
+  const agent = new ScriptedContributionAgent([
     () => ({ kind: 'tools', requests: [{ kind: 'inspect', subject: f.module('entry') }] }),
     input => {
-      const response = input.responses[0] as EvidenceResponse;
+      const response = evidenceResponse(input.responses[0]!);
       checkQualified(response, f.store);
       response.records.forEach(record => seen.add(record.id));
       assert.ok(!response.records.some(record => record.kind === 'captured-content'));
@@ -404,15 +347,36 @@ test('normal module inspection lets the investigator acquire documentation and r
       return { kind: 'tools', requests: [{ kind: 'source', subject: artifact }] };
     },
     input => {
-      const response = input.responses[0] as EvidenceResponse;
+      const response = evidenceResponse(input.responses[0]!);
       response.records.forEach(record => seen.add(record.id));
       assert.ok(response.records.some(record => record.kind === 'captured-content' && record.text.includes('delegates entry')));
-      return { kind: 'submit', result: { localId: 'root', prose: 'Documentation records a delegation assertion.', referent: { description: 'Entry', subjects: [f.module('entry')] }, qualifications: ['Nearby documentation is not proof of applicability or behavior.'], evidence: response.selected, associations: [], children: [], corrections: [], inconsistencies: [] } };
+      return { kind: 'submit', contribution: proseContribution(input, 'Documentation records a delegation assertion.', { evidence: response.selected }) };
     },
   ]);
-  const result = await investigate({ session: f.opened.session, request: { operation: 'functionality', subject: f.module('entry'), parameters: {} }, evidence: f.evidence,
-    history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] }, agent, usage: new InvestigationUsage(), check: async () => {} });
+  const result = await runDialog(f, f.module('entry'), { evidence: f.evidence,
+     agent, usage: new InvestigationUsage(), check: async () => {} });
   assert.equal(result.outcome.kind, 'accepted');
-  assert.deepEqual(new Set(result.report.suppliedEvidence), seen);
-  assert.ok(result.report.summarizedEvidence.some(id => f.store.get(id).kind === 'organization-evaluation'));
+  assert.deepEqual(new Set(result.production.evidence), seen);
+  assert.ok(result.production.deliveries.length > 0);
+});
+
+
+test('source capture rejects forged mappings and changed artifact aliases invalidate the shared basis', async t => {
+  const f = await fixture(t, 0, false, false, 0, true);
+  const response = f.evidence.query({ kind: 'source', subject: f.module('entry') });
+  const capture = response.records.find(item => item.kind === 'captured-content');
+  assert.ok(capture?.kind === 'captured-content');
+  assert.throws(() => f.store.put([{ ...capture, id: `${capture.id}-forged` as RecordId, subject: f.module('leaf') }]), /module source mapping/);
+  assert.equal(f.evidence.query({ kind: 'inspect', subject: capture.inputs }).status, 'unavailable');
+  const inspected = f.evidence.query({ kind: 'inspect', subject: f.module('entry') });
+  const doc = inspected.records.find(item => item.kind === 'claim' && item.information.type === 'group-documentation');
+  assert.ok(doc?.kind === 'claim' && doc.information.type === 'group-documentation');
+  const old = f.evidence.query({ kind: 'source', subject: doc.information.artifact });
+  assert.ok(old.records.some(item => item.kind === 'captured-content'));
+  const frozen = JSON.stringify(old);
+  rmSync(path.join(f.root, 'feature/README.md'));
+  symlinkSync('../output/private.md', path.join(f.root, 'feature/README.md'));
+  assert.equal(f.evidence.query({ kind: 'source', subject: doc.information.artifact }).status, 'unavailable');
+  assert.equal(await f.opened.changed(), true);
+  assert.equal(JSON.stringify(old), frozen);
 });

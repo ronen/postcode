@@ -2,7 +2,7 @@ import type { DialogAgent as InvestigatorAgent, DialogReply as AgentReply } from
 import type { InvocationRequest as InvestigationRequest } from './contributions/model.js';
 import type { RecordId } from './records.js';
 import type { AgentIdentity, ReportedUsage } from './investigation/contracts.js';
-import type { InvestigationBounds } from './investigation/execute.js';
+import type { InvestigationBounds } from './investigation/bounds.js';
 import { parentPort, workerData } from 'node:worker_threads';
 import { openWorkerCliSession as openSession } from './interfaces/cli/application.js';
 import type { RequestCatalog } from './request-catalog.js';

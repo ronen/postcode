@@ -317,7 +317,7 @@ test('abnormal final usage uses captured presentation without rereading rejected
     request: { operation: 'functionality', subject, parameters: {} },
     agent: { provider: 'postcode-test', model: 'scripted', origin: 'scripted', configuration: {} },
     instructions: 'Controlled prior attempt', termination: 'interrupted', elapsedMilliseconds: 0,
-    usage: [], deliveries: [], suppliedEvidence: [], summarizedEvidence: [] }]);
+    usage: [], suppliedEvidence: [] }]);
   let reads = 0, stderr = '';
   const request = { lens: 'modules', selector: null, get presentation(): never { reads++; throw new Error('Must not reread rejected input'); } } as ViewRequest;
   const batches: ObservationBatch[] = [];

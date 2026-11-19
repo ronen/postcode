@@ -1,3 +1,6 @@
+import { openAIDialogAgent } from '../src/lib/investigation/openai/contribution-protocol.js';
+import type { ReportedUsage } from '../src/lib/investigation/contracts.js';
+import { ScriptedContributionAgent, proseContribution } from './contribution-agent.js';
 import { contributionOperationMethod } from '../src/lib/contributions/operations.js';
 import assert from 'node:assert/strict';
 import path from 'node:path';
@@ -542,4 +545,59 @@ test('common operation reuse fingerprints the complete definition and fixed foll
   assert.equal(third.reused, false);
   assert.equal(agent.closes, 3);
   assert.equal(ledger.productions().filter(value => value.producer.mechanism === 'agentic').length, 3);
+});
+
+const unusualUsage: readonly [string, ReportedUsage][] = [
+  ['subset exceeds', { source: 'provider', categories: [
+    { category: 'output', unit: 'tokens', value: 2, includedIn: null },
+    { category: 'reasoning', unit: 'tokens', value: 4, includedIn: 'output' }] }],
+  ['parent category', { source: 'provider', categories: [{ category: 'reasoning', unit: 'tokens', value: 4, includedIn: 'output' }] }],
+  ['Duplicate', { source: 'provider', categories: [
+    { category: 'output', unit: 'tokens', value: 2, includedIn: null },
+    { category: 'output', unit: 'tokens', value: 3, includedIn: null }] }],
+  ['Cyclic', { source: 'provider', categories: [
+    { category: 'output', unit: 'tokens', value: 2, includedIn: 'reasoning' },
+    { category: 'reasoning', unit: 'tokens', value: 2, includedIn: 'output' }] }],
+];
+test('provider accounting anomalies preserve both accepted and failed common outcomes', async () => {
+  const { store, ledger, record, entity } = await setup();
+  const evidence = { lookup: (id: RecordId) => store.lookup(id), query: () => { throw Error('No evidence request expected'); } };
+  for (const [diagnostic, report] of unusualUsage) for (const submit of [true, false]) {
+    const invocation = ledger.invoke({ operation: operation.id, subjects: [{ role: null, subject: { kind: 'entity', entity: entity('barrel') } }], parameters: {}, context: [], resultContract: null }, { fresh: true });
+    const agent = new ScriptedContributionAgent([(input, _signal, usage) => { usage(report); return submit ? { kind: 'submit', contribution: proseContribution(input) } : { kind: 'refused' }; }]);
+    const execution = await conductDialog({ store, ledger, evidence, operation, invocation: invocation.invocation.id, agent, check: async () => {} });
+    assert.equal(execution.outcome.kind, submit ? 'accepted' : 'investigation-failure');
+    const call = execution.usage[0]!;
+    assert.equal(call.reported, null); assert.deepEqual(call.reports[0]!.reported, report);
+    assert.ok(call.anomalies.some(item => item.includes(diagnostic)));
+  }
+  assert.ok(record('barrel'));
+});
+
+
+test('common dialog guards tool count and canonical decoded reply size independently of wire compaction', async () => {
+  const { store, ledger, entity, invoke, run } = await setup();
+  const requested = invoke(entity('barrel'));
+  const limited = await run([() => ({ kind: 'tools', requests: [{ kind: 'source', subject: 'not-acquired' }, { kind: 'source', subject: 'also-not-acquired' }] })], requested.invocation,
+    { bounds: { milliseconds: 60_000, calls: 4, toolCalls: 1, characters: 1_000_000 } });
+  assert.equal(limited.execution.outcome.kind, 'limit-stop');
+  assert.equal(limited.execution.production.evidence.length, 0);
+  let wireCharacters = 0;
+  const agent = openAIDialogAgent('test-credential', { fetch: async (_url, options) => {
+    const sent = JSON.parse(String(options?.body));
+    const message = JSON.parse(sent.input.at(-1).content);
+    const handle = message.request.subjects[0].subject.entity;
+    const contribution = { investigrams: [{ key: 'large', qualification: caveat, referents: Array.from({ length: 5000 }, () => handle) }] };
+    const args = JSON.stringify(contribution); wireCharacters = args.length;
+    return new Response(JSON.stringify({ id: 'response', model: 'gpt-6-sol', status: 'completed', output: [{ type: 'function_call', name: 'submit_contribution', call_id: 'call', arguments: args }] }), { headers: { 'content-type': 'application/json' } });
+  } });
+  const fresh = invoke(entity('barrel'), null, true);
+  const before = ledger.investigrams().length;
+  const result = await conductDialog({ store, ledger, operation, invocation: fresh.invocation.id, agent, check: async () => {},
+    evidence: { lookup: id => store.lookup(id), query: () => { throw Error('Unexpected evidence acquisition'); } },
+    bounds: { milliseconds: 60_000, calls: 4, toolCalls: 4, characters: 300_000 } });
+  assert.ok(wireCharacters < 300_000);
+  assert.equal(result.outcome.kind, 'limit-stop');
+  if (result.outcome.kind === 'limit-stop') assert.match(result.outcome.reason, /character/i);
+  assert.equal(ledger.investigrams().length, before);
 });

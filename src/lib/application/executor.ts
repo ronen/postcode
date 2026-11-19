@@ -56,17 +56,16 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
       const sessionContext = store.get(session);
       if (sessionContext.kind !== 'session') throw new Error('Expected Session');
       const repository = sessionContext.repository ? store.get(sessionContext.repository) : null;
-      const mechanical = base.contract !== 'investigation' && base.contract !== 'contribution' && base.contract !== 'contribution-inspection' && content !== base ? base : null;
+      const mechanical = base.contract !== 'contribution' && base.contract !== 'contribution-inspection' && content !== base ? base : null;
       const common = content.contract === 'contribution' || content.contract === 'contribution-inspection'
         ? [...contributionBindings(sessionLedger(store, session), content.value.projection.support.owners.map(owner => owner.investigram))] : [];
       return { kind: 'answer', context, usage: usage(), answer: { id: content.value.projection.id, content, mechanical },
         title, selectionMode, referenceLifetime, answerReference, consumption: decision, reporting, failed,
         ...(resolution ? { resolution } : {}),
-        bindings: base.contract === 'investigation' || base.contract === 'contribution' || base.contract === 'contribution-inspection'
+        bindings: base.contract === 'contribution' || base.contract === 'contribution-inspection'
           ? { ...noBindings, associations: common } : { ...coordinateBindings(store, base), associations: common },
         repositoryRoot: repository?.kind === 'repository-evidence' && repository.capture.status === 'available' ? repository.capture.evidence.root : null,
-        methods: selectionMode === 'fresh' && base.contract === 'investigation' ? [...sessionContext.methods, methods.investigationEvaluation]
-          : base.contract === 'contribution' ? [...sessionContext.methods, methods.contributions, methods.contributionStatus, methods.contributionProjection] : sessionContext.methods };
+        methods: base.contract === 'contribution' ? [...sessionContext.methods, methods.contributions, methods.contributionStatus, methods.contributionProjection] : sessionContext.methods };
     };
     if (request.kind === 'rejected') return refusal({ reason: 'invalid-request', explanation: 'The supplied request input could not be accepted.',
       candidates: [], criteria: ['Registered Lens or report', 'Serializable request data', 'Supported designation and reference choices'],

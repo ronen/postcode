@@ -6,7 +6,7 @@ import type { Qualification } from '../../contributions/model.js';
 import { answerDisplay, answerIdentity, answerLines, answerContinuations, continuationLines } from './answer-presentation.js';
 import type { AnswerContext } from './answer-presentation.js';
 import { presentationMethods } from './methods.js';
-import { finalizeInvestigationUsage, usageLines } from '../../investigation/presentation.js';
+import { finalizeInvestigationUsage, usageLines } from '../../investigation/usage-presentation.js';
 import { usageSummary } from '../../investigation/reporting.js';
 import type { InvestigationUsageReport } from '../../investigation/reporting.js';
 import type { AnswerDelivery } from '../../application/contracts.js';

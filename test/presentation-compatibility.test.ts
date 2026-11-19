@@ -9,7 +9,7 @@ import { discover } from './helpers.js';
 import { modules } from './projection-helpers.js';
 import { recordId } from '../src/lib/identity.js';
 import { resolveModuleProjection } from '../src/lib/module-content.js';
-import { finalizeInvestigationUsage } from '../src/lib/investigation/presentation.js';
+import { finalizeInvestigationUsage } from '../src/lib/investigation/usage-presentation.js';
 import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { renderRequestReport } from '../src/lib/interfaces/cli/request-reporting.js';
 import { captureCatalog, defaultCatalog } from '../src/lib/request-catalog.js';

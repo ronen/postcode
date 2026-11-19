@@ -9,8 +9,8 @@ import type { RequestCatalog } from './request-catalog.js';
 import { finalizeRequestReport, renderRequestReport, rejectedRequestResult } from './interfaces/cli/request-reporting.js';
 import { freezeOwned } from './immutable.js';
 import type { AgentIdentity, AttemptReport, CallUsage } from './investigation/contracts.js';
-import { finalizeInvestigationUsage, renderInvestigationView } from './investigation/presentation.js';
-import type { InvestigationBounds } from './investigation/execute.js';
+import { finalizeInvestigationUsage } from './investigation/usage-presentation.js';
+import type { InvestigationBounds } from './investigation/bounds.js';
 import type { RecordId } from './records.js';
 import { InvestigationUsage } from './investigation/usage.js';
 import { usageSummary } from './investigation/reporting.js';
@@ -195,11 +195,6 @@ export function interactiveSession(options: ProjectOptions, dependencies: {
           if (!reply.result.investigationArrangementKey) throw new Error('Missing contribution arrangement identity');
           const view = finalizeInvestigationUsage(reply.result.view, usageReport(), reply.result.investigationArrangementKey, presentationMethods.contributionPresentation);
           return { ...reply.result, view, rendered: renderContributionView(view) };
-        }
-        if (reply.result.view.schema === 'postcode-investigation-view/1-experimental') {
-          if (!reply.result.investigationArrangementKey) throw new Error('Missing investigation arrangement identity');
-          const view = finalizeInvestigationUsage(reply.result.view, usageReport(), reply.result.investigationArrangementKey);
-          return { ...reply.result, view, rendered: renderInvestigationView(view) };
         }
         return reply.result;
       } catch (error) {

@@ -37,11 +37,9 @@ See the [application route](contributions.md#application-route) and
 [hosted transport](contributions.md#hosted-transport) for those boundaries.
 
 The `summarize`, `explain`, `decompose` and `examine` operations and their
-associated-content callers now use this boundary. The mechanical checkpoint is
-accepted; separate caller review and integrated review remain required under the
-[structured-accounts plan](../plans/structured-architectural-accounts.md). Unused
-legacy helpers remain for retirement during integrated verification; supported
-application registration rejects the earlier interpretation requirements.
+associated-content callers now use this boundary. The mechanical and caller checkpoints are
+accepted; final integrated review remains required under the
+[structured-accounts plan](../plans/structured-architectural-accounts.md). The superseded tree/correction helpers and their storage, presentation and wire contracts are removed; application registration rejects earlier interpretation requirements.
 
 ## Implemented subset of the product model
 
@@ -91,8 +89,7 @@ and semantic requirements without implementation registrations or output formats
 `interfaces/cli/application.ts` is the shared adapter for the private worker and
 in-process CLI tests. It supplies captured declarative option constraints, projects
 the application context back to the existing CLI report shape, and arranges
-supplied content and coordinated aliases. Investigation arrangement uses a
-revocable, validated binding port under one operation guard. Application work is
+supplied content and coordinated aliases. All arrangement consumes coordinated aliases without a store-backed binding port, under one operation guard. Application work is
 finalized before arrangement. An unknown continuation or client arrangement
 failure cannot turn completed application work into failed application work.
 The CLI still owns presentation/command failure, output, observation construction

@@ -29,7 +29,7 @@ test('Presentation versions affect artifacts independently of application captur
     assert.equal(session.kind, 'session');
     assert.ok(session.methods.every(method => !method.includes('presentation')));
     assert.ok(artifactMethods(session.methods, changed).includes('test/presentation@2'));
-    assert.ok(!artifactMethods(session.methods, changed).includes(presentationMethods.investigationPresentation));
+    assert.ok(!artifactMethods(session.methods, changed).includes('postcode/investigation-presentation@23'));
     assert.ok(!artifactMethods(session.methods, changed).includes(presentationMethods.exportsPresentation));
     assert.equal('presentation' in methods, false);
   } finally { client.presentation = original; }

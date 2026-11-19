@@ -43,8 +43,6 @@ export const presentations: readonly PresentationDefinition[] = freezeOwned([
     requirements: { modules: moduleStandardExpansions, groups: groupStandardExpansions } },
   { ...standard, id: 'contribution', contract: 'contribution', source: 'supported', associationPage: false, revisionPage: true, requirements: { modules: [], groups: [] } },
   { ...standard, id: 'contribution-inspection', contract: 'contribution-inspection', source: 'supported', associationPage: true, revisionPage: true, requirements: { modules: [], groups: [] } },
-  { ...standard, id: 'interpretation', contract: 'investigation', source: 'supported', associationPage: true, revisionPage: true,
-    requirements: { modules: [], groups: [] } },
 ]);
 
 export function validatePresentations(definitions: readonly PresentationDefinition[]): void {
@@ -52,7 +50,7 @@ export function validatePresentations(definitions: readonly PresentationDefiniti
   if (ids.size !== definitions.length) throw new Error('Duplicate Presentation identity');
   const defaults = new Set<ResultContract>();
   for (const definition of definitions) {
-    if (!definition.id || !['modules', 'organization', 'dependencies', 'investigation', 'module-exports', 'contribution', 'contribution-inspection'].includes(definition.contract)
+    if (!definition.id || !['modules', 'organization', 'dependencies', 'module-exports', 'contribution', 'contribution-inspection'].includes(definition.contract)
       || !['qualified', 'complete-materialization'].includes(definition.precondition)
       || !['supported', 'selected-subjects', 'none'].includes(definition.source)
       || !definition.formats.length || definition.formats.some(format => !['unicode', 'json'].includes(format))
@@ -60,9 +58,9 @@ export function validatePresentations(definitions: readonly PresentationDefiniti
       || definition.requirements.groups.some(item => !groupStandardExpansions.includes(item))) throw new Error('Invalid Presentation definition');
     if (definition.contract === 'organization' && !definition.requirements.groups.includes('group-details')
       || ['modules', 'module-exports'].includes(definition.contract) && definition.requirements.groups.length
-      || ['investigation', 'contribution', 'contribution-inspection'].includes(definition.contract) && (definition.requirements.modules.length || definition.requirements.groups.length)) throw new Error('Unsupported Presentation requirements');
+      || ['contribution', 'contribution-inspection'].includes(definition.contract) && (definition.requirements.modules.length || definition.requirements.groups.length)) throw new Error('Unsupported Presentation requirements');
     if (['modules', 'organization'].includes(definition.contract) && definition.source === 'supported'
-      || !['modules', 'organization', 'investigation', 'contribution', 'contribution-inspection'].includes(definition.contract) && definition.revisionPage
+      || !['modules', 'organization', 'contribution', 'contribution-inspection'].includes(definition.contract) && definition.revisionPage
       || ['dependencies', 'module-exports'].includes(definition.contract) && definition.associationPage) throw new Error('Unsupported Presentation options');
     if (definition.default && defaults.has(definition.contract)) throw new Error('Duplicate default Presentation for a contract');
     if (definition.default) defaults.add(definition.contract);
@@ -123,8 +121,8 @@ export function retainedPresentation(definitions: readonly PresentationDefinitio
   validatePresentationContent(content);
   const selected = content.contract === 'modules' ? content.value.projection.subject === 'selected-modules'
     : content.contract === 'organization' ? content.value.projection.subject === 'selected-entities' : true;
-  const association = associated || content.contract === 'investigation' && content.value.projection.variant === 'historical-inspection';
-  const revision = content.contract === 'investigation' && content.value.projection.variant !== 'associated-inspection';
+  const association = associated;
+  const revision = content.contract === 'contribution' || content.contract === 'contribution-inspection';
   const unsupportedChoices = (definition: PresentationDefinition): string[] => [
     ...(!definition.formats.includes(options.format) ? [`format ${options.format}`] : []),
     ...(options.moreDetails && !(definition.source === 'supported' || definition.source === 'selected-subjects' && selected) ? ['--more-details'] : []),
@@ -142,7 +140,7 @@ export function retainedPresentation(definitions: readonly PresentationDefinitio
       case 'dependencies': return (!content.value.basis.modules.length || requirements.modules.every(item => content.value.moduleEvaluations.some(outcome => outcome.requirement === item)))
         && (!requirements.groups.length || content.value.expanded !== null);
       case 'module-exports': return requirements.modules.every(item => content.value.evaluations.some(outcome => outcome.requirement === item));
-      case 'investigation': case 'contribution': case 'contribution-inspection': return true;
+      case 'contribution': case 'contribution-inspection': return true;
     }
   };
   const initial = definitions.find(item => item.default && item.contract === content.contract);

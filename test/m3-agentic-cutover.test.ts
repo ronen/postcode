@@ -50,7 +50,7 @@ test('all four existing agentic operations use exact flat contributions, reuse a
   assert.equal(inspection.answer.content.value.projection.investigations.length, 1, 'reverse lookup is exact whole-contribution subject only');
   const frozen = structuredClone(initial.result.answer);
   for (const method of ['invoke', 'associations', 'status'] as const) if (method !== 'status') t.mock.method(ContributionLedger.prototype, method, () => { throw Error('Exact access must not consult current ledger'); });
-  for (const method of ['put', 'evaluations', 'investigations'] as const) t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw Error('Exact access must not evaluate or reselect'); });
+  for (const method of ['put', 'evaluations'] as const) t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw Error('Exact access must not evaluate or reselect'); });
   const exact = answer(await opened.session.execute({ kind: 'present', target: initial.result.answer.id }));
   assert.deepEqual(exact.answer, frozen); assert.equal(agent.inputs.length, 4);
   await opened.session.close(); assert.deepEqual(initial.result.answer, frozen);

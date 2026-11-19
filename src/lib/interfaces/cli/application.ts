@@ -18,11 +18,9 @@ import { arrangeOrganizationView } from '../../organization/presentation.js';
 import { arrangeDependencyView } from '../../dependencies/presentation.js';
 import { arrangeModuleExports } from '../../exports/presentation.js';
 import { renderMechanicalView } from '../../program-presentation.js';
-import { arrangeInvestigationView, renderInvestigationView } from '../../investigation/presentation.js';
 import { finalizeRequestReport, renderRequestReport } from './request-reporting.js';
 import type { RequestContext, ResolutionReport, UsageReport } from './report-contracts.js';
 import type { InitiationContext, WorkReport, WorkProgress } from '../../work-attribution.js';
-import type { ReferenceBinding } from '../../reference-binding.js';
 import type { AttemptReport, InvestigationRequest } from '../../investigation/contracts.js';
 import type { InvestigationUsageReport } from '../../investigation/reporting.js';
 import { artifactMethods } from './methods.js';
@@ -71,7 +69,7 @@ function cliProgress(progress: WorkProgress): WorkProgress {
   return progress.kind === 'start' ? freezeOwned({ ...progress, context: cliContext(progress.context) })
     : progress.kind === 'work' ? freezeOwned({ ...progress, parents: progress.parents.map(cliContext) }) : progress;
 }
-function arrange(result: AnswerDelivery, context: RequestContext, port: ReferenceBinding) {
+function arrange(result: AnswerDelivery, context: RequestContext) {
   if (!result.consumption) throw new Error('CLI delivery requires a selected Presentation');
   const decision: PresentationDecision = { contract: result.consumption.contract, initial: result.consumption.initial,
     selected: result.consumption.selected.id, criteria: result.consumption.selected.description as unknown as PresentationDecision['criteria'], changes: result.consumption.changes };
@@ -85,11 +83,6 @@ function arrange(result: AnswerDelivery, context: RequestContext, port: Referenc
   if (content.contract === 'contribution' || content.contract === 'contribution-inspection') {
     const arranged = arrangeContributionView(content.value, commonOptions, result.reporting, result.usage, new Map(result.bindings.associations));
     return { ...arranged, rendered: renderContributionView(arranged.view), failed: result.failed || arranged.view.listing.status === 'unknown-continuation' };
-  }
-  if (content.contract === 'investigation') {
-    const arranged = arrangeInvestigationView(content.value, { ...display, title: result.title, presentation,
-      ...(resolution ? { resolution } : {}), ...(choices.after === undefined ? {} : { after: choices.after }), revisionPage: choices.revisionPage ?? 1 }, result.reporting, result.usage, port);
-    return { ...arranged, rendered: renderInvestigationView(arranged.view), failed: result.failed || arranged.view.investigations?.status === 'unknown-continuation' };
   }
   const bindings = result.bindings;
   const view = content.contract === 'modules' ? arrangeModuleView(content.value, new Map(bindings.modules), presentation, result.title, resolution, display)
@@ -141,7 +134,7 @@ async function compose(options: ProjectOptions, lifetime: ApplicationDependencie
       const context = cliContext(delivered.context) as RequestContext;
       const attribution = cliWork(delivered.attribution);
       if (delivered.kind === 'answer') {
-        const arranged = arrange(delivered, context, operation.bindings);
+        const arranged = arrange(delivered, context);
         return { kind: 'view' as const, context, ...arranged, attribution, ...(delivered.resolution ? { resolution: delivered.resolution } : {}), repositoryRoot: delivered.repositoryRoot,
           methods: artifactMethods(delivered.methods, arranged.view) };
       }

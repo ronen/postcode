@@ -4,12 +4,9 @@ import type { RecordId, SessionId } from './records.js';
 /** Bump the responsible method whenever its analysis/identity/projection semantics change. */
 export const methods = {
   inputs: 'postcode/observed-inputs@7',
-  records: 'postcode/program-records@24',
+  records: 'postcode/program-records@25',
   content: 'postcode/subject-content@1',
   exportsProjection: 'postcode/module-exports-projection@4',
-  investigation: 'postcode/investigation@14',
-  investigationEvaluation: 'postcode/investigation-evaluation@3',
-  investigationProjection: 'postcode/investigation-projection@4',
   discovery: 'postcode/typescript-modules@13',
   evaluation: 'postcode/evaluate-modules@5',
   dependencies: 'postcode/typescript-dependencies@3',

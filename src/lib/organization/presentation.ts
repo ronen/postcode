@@ -8,8 +8,6 @@ import { validatePresentationContent, presentationChanges } from '../presentatio
 import type { PresentedOptions } from '../presentation-contracts.js';
 import { lookupDescription, lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';
 import type { ResolutionContext } from '../resolution-context.js';
-import { renderAssociatedInvestigations } from '../investigation/associations.js';
-import type { AssociatedInvestigations } from '../investigation/associations.js';
 import { displayWidth, padDisplay } from '../terminal-layout.js';
 import { compositionView, compositionAnnotation } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
@@ -65,7 +63,6 @@ interface TreeRow {
 }
 
 export interface QualifiedOrganizationView extends AnswerDisplay {
-  readonly investigations?: AssociatedInvestigations;
   readonly schema: 'postcode-organization-view/1-experimental';
   readonly id: RecordId;
   readonly resolution?: ResolutionContext;
@@ -327,5 +324,5 @@ export function renderOrganizationView(view: QualifiedOrganizationView, enclosed
     `  Exclusion policies: ${view.repository.exclusions.repository} repository, ${view.repository.exclusions.local} local, ${view.repository.exclusions.global} global; ${view.repository.exclusions.outputLocations} output locations excluded.`,
     '  Inputs are first-observed, not atomic; sparse-checkout completeness remains unresolved.');
   if (!enclosed) lines.push(...diagnosticLines(view.qualifications, '  '));
-  return `${lines.join('\n')}\n${renderAssociatedInvestigations(view.investigations)}`;
+  return `${lines.join('\n')}\n`;
 }

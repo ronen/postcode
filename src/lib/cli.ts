@@ -4,7 +4,7 @@ import { runAuthentication } from './interfaces/cli/authentication.js';
 import type { ChatGPTCredentials } from './investigation/openai/chatgpt-credentials.js';
 import type { DialogAgent as InvestigatorAgent } from './contributions/dialog.js';
 import type { InvocationRequest as InvestigationRequest } from './contributions/model.js';
-import type { InvestigationBounds } from './investigation/execute.js';
+import type { InvestigationBounds } from './investigation/bounds.js';
 import path from 'node:path';
 import type { Readable } from 'node:stream';
 import { localFileObservationSink } from './application/observations.js';

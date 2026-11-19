@@ -7,7 +7,7 @@ import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { openCliSession as openSession } from '../_build/src/lib/interfaces/cli/application.js';
 import { configureCliInvestigator as configuredInvestigator } from '../_build/src/lib/interfaces/cli/investigator-policy.js';
-import { renderInvestigationView } from '../_build/src/lib/investigation/presentation.js';
+import { renderContributionView } from '../_build/src/lib/interfaces/cli/contribution-presentation.js';
 const [fixture, output] = process.argv.slice(2).map(item => path.resolve(item));
 if (!fixture || !output) throw new Error('Supply isolated fixture and new output directory');
 mkdirSync(output, { recursive: false });
@@ -33,9 +33,9 @@ if (configured.kind !== 'ready') {
           const result = await session.execute({ lens, selector: lens === 'summarize' ? 'catalog' : root,
             ...(lens !== 'summarize' ? { reference: true } : {}), presentation: { format: 'json', moreDetails: false } });
           save(`${lens}.json`, result); save(`${lens}-usage.json`, session.usage());
-          if (result.kind === 'view' && result.view.schema === 'postcode-investigation-view/1-experimental') {
-            save(`${lens}.txt`, renderInvestigationView({ ...result.view, presentation: { ...result.view.presentation, format: 'unicode' } }));
-            if (lens === 'summarize') root = result.view.accounts[0]?.id;
+          if (result.kind === 'view' && result.view.schema === 'postcode-contribution-view/1-experimental') {
+            save(`${lens}.txt`, renderContributionView({ ...result.view, presentation: { ...result.view.presentation, format: 'unicode' } }));
+            if (lens === 'summarize') root = result.view.rows[0]?.address.investigram;
           }
           console.log(`${lens}: ${result.kind}, ${result.failed ? 'failed' : 'completed'}`);
         } catch {

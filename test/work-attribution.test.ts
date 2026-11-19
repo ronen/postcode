@@ -1,10 +1,10 @@
+import { sessionLedger, moduleEntity } from '../src/lib/contributions/modules.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import type { TestContext } from 'node:test';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { temporaryDirectory } from './cli-helpers.js';
-import { ScriptedInvestigator } from './investigator-double.js';
 import { ScriptedContributionAgent, moduleRecord, proseContribution } from './contribution-agent.js';
 import { openWorkerCliSession, openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
@@ -17,7 +17,7 @@ import { freezeOwned } from '../src/lib/immutable.js';
 import { normalizeRequest } from '../src/lib/requests.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
-import { investigate } from '../src/lib/investigation/execute.js';
+import { conductDialog } from '../src/lib/contributions/dialog.js';
 import { InvestigationUsage } from '../src/lib/investigation/usage.js';
 import { evidenceAccess } from '../src/lib/evidence-access.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
@@ -325,9 +325,10 @@ test('a cancelled asynchronous evidence query retains known acquisition but neve
   const evidence = evidenceAccess(store, opened.analysis, opened.session);
   let release!: () => void, ready!: () => void;
   const started = new Promise<void>(resolve => { ready = resolve; });
-  const agent = new ScriptedInvestigator([input => ({ kind: 'tools', requests: [{ kind: 'source', subject: input.request.subject }] })]);
-  const pending = investigate({ session: opened.session, request, work, agent, signal: controller.signal, usage: new InvestigationUsage(),
-    history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] },
+  const agent = new ScriptedContributionAgent([() => ({ kind: 'tools', requests: [{ kind: 'source', subject: basis.modules[0]! }] })]);
+  const ledger = sessionLedger(store, opened.session), entity = moduleEntity(store, basis.modules[0]!)!;
+  const invoked = ledger.invoke({ operation: 'functionality', subjects: [{ role: null, subject: { kind: 'entity', entity } }], parameters: {}, context: [], resultContract: null });
+  const pending = conductDialog({ ledger, store, invocation: invoked.invocation.id, operation: { id: 'functionality', method: 'test/cancel@1', objective: 'Read evidence.' }, work, agent, signal: controller.signal, usage: new InvestigationUsage(),
     check: async () => {}, evidence: { lookup: evidence.lookup, query(query, signal, scope) {
       const acquired = evidence.query(query, signal, scope);
       return new Promise(resolve => { release = () => resolve(acquired); ready(); });
@@ -337,8 +338,9 @@ test('a cancelled asynchronous evidence query retains known acquisition but neve
   await started; controller.abort(new CommandInterrupted()); await rejected;
   const report = work.finish('interrupted');
   assert.equal(report.completeness, 'incomplete');
-  assert.equal(report.evidence[0]!.outcome, null);
-  assert.equal(report.evidence[0]!.delivery, 'not-delivered');
+  const source = report.evidence.find(item => item.query.kind === 'source')!;
+  assert.ok(source); assert.equal(source.outcome, null);
+  assert.equal(source.delivery, 'not-delivered');
   assert.ok(report.work.some(item => item.boundary === 'content' && item.disposition === 'established'));
   const sealed = JSON.stringify(work.snapshot());
   release(); await new Promise(resolve => setImmediate(resolve));

@@ -67,8 +67,8 @@ export function resolveSubjects(store: ProgramRecordStore, session: SessionId, d
   });
   const candidate = (id: RecordId, reference: string): ResolvedSubject => {
     const entity = store.get(id);
-    if (entity.session !== session || entity.kind !== 'module' && entity.kind !== 'group' && entity.kind !== 'investigram') throw new Error('Expected same-Session subject');
-    const claim = entity.kind === 'investigram' ? null : store.get(entity.claim);
+    if (entity.session !== session || entity.kind !== 'module' && entity.kind !== 'group') throw new Error('Expected same-Session subject');
+    const claim = store.get(entity.claim);
     return { id, kind: entity.kind, reference, name: claim?.kind === 'claim' && (claim.information.type === 'module' || claim.information.type === 'group') ? claim.information.name : null };
   };
   const commonCandidate = (subject: ExactSubject, reference: string): ResolvedSubject => {

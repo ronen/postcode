@@ -4,7 +4,6 @@ import type { QualifiedView } from './presentation.js';
 import type { QualifiedOrganizationView } from './organization/presentation.js';
 import type { QualifiedDependencyView } from './dependencies/presentation.js';
 import type { ModuleExportsView } from './exports/presentation.js';
-import type { InvestigationView } from './investigation/presentation.js';
 import type { ResolutionReport, UsageReport } from './interfaces/cli/report-contracts.js';
 import { inlineText } from './terminal-text.js';
 type Diagnostic = ClaimContextRecord['diagnostics'][number];
@@ -13,7 +12,7 @@ type Diagnostic = ClaimContextRecord['diagnostics'][number];
 export function diagnosticContexts(value: unknown): readonly Pick<ClaimContextRecord, 'diagnostics'>[] {
   if (!value || typeof value !== 'object') return [];
   const artifact = value as QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | ModuleExportsView
-    | InvestigationView | ContributionView | ResolutionReport | UsageReport;
+    | ContributionView | ResolutionReport | UsageReport;
   switch (artifact.schema) {
     case 'postcode-view/1-experimental':
     case 'postcode-module-exports-view/1-experimental': return artifact.qualifications;
@@ -22,8 +21,6 @@ export function diagnosticContexts(value: unknown): readonly Pick<ClaimContextRe
     case 'postcode-dependency-view/1-experimental':
       return [...artifact.qualifications, ...(artifact.moreDetails?.organizationEvidence ?? []).flatMap(item => item.kind === 'claim-context' ? [item] : [])];
     case 'postcode-contribution-view/1-experimental': return [...artifact.diagnostics, ...diagnosticContexts(artifact.mechanical)];
-    case 'postcode-investigation-view/1-experimental':
-      return artifact.support.flatMap(item => item.qualification ? [item.qualification] : []);
     case 'postcode-resolution/1-experimental':
       return (artifact.resolution.support ?? []).flatMap(item => item.qualification);
     default: return [];

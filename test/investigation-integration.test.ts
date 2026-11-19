@@ -17,12 +17,12 @@ import { presentationMethods } from '../src/lib/interfaces/cli/methods.js';
 import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { runCli } from '../src/lib/cli.js';
 import type { ReportedUsage } from '../src/lib/investigation/contracts.js';
-import { finalizeInvestigationUsage } from '../src/lib/investigation/presentation.js';
+import { finalizeInvestigationUsage } from '../src/lib/investigation/usage-presentation.js';
 import type { ContributionView as InvestigationView } from '../src/lib/interfaces/cli/contribution-presentation.js';
 import type { InvestigationUsageReport } from '../src/lib/investigation/reporting.js';
 import type { ObservationBatch } from '../src/lib/application/observations.js';
 import type { RecordId } from '../src/lib/records.js';
-import { investigationBounds } from '../src/lib/investigation/execute.js';
+import { investigationBounds } from '../src/lib/investigation/bounds.js';
 
 function fixture(t: TestContext) {
   const root = temporaryDirectory(t, 'postcode-investigation-integration-');

@@ -108,7 +108,7 @@ const implementations: Readonly<Record<string, MechanicalImplementation>> = free
 });
 
 export function mechanicalImplementation(definition: LensDefinition): MechanicalImplementation | null {
-  if (definition.requirements.kind === 'interpretation' || definition.requirements.kind === 'contribution' || definition.requirements.kind === 'follow-up') return null;
+  if (definition.requirements.kind === 'contribution' || definition.requirements.kind === 'follow-up') return null;
   const implementation = Object.hasOwn(implementations, definition.requirements.implementation) ? implementations[definition.requirements.implementation] : undefined;
   if (!implementation || canonical(definition) !== canonical(implementation.definition)) throw new Error('Unsupported mechanical Lens definitions for registered construction');
   return implementation;

@@ -14,6 +14,9 @@ Agents may update this document only as part of authorized implementation work t
 - Put build output under the Git-ignored `_build/` directory.
 - Use `src/lib/application/index.ts` for direct semantic operations and the separate `application/accounts.ts`, `application/observations.ts` and `application/feedback.ts` companion services. CLI-shaped in-process consumers use `interfaces/cli/application.ts`; both CLI hosts share its runtime assembly. Keep command guidance, terminal rendering and continuation generation under the CLI boundary, separate from request/report data and service reasons. Historical script imports retain their recorded checkpoint assumptions rather than requiring product compatibility shims. [[Internal application API](decisions/internal-application-api.md)]
 
+- For common contribution history, share only deeply owned immutable content/evidence; capture selection, standing and causes independently for every answer. Keep capture bookkeeping scoped to the owning store/ledger and dispose it on Session close. Frozen external input is not ownership proof. Do not introduce display-time ledger reads or record exposure during capture/arrangement. [[Qualified answers](decisions/qualified-answers-over-contributions.md)]
+- Use the common dialog protocol and contribution acceptance for all supported agentic operations. Native evidence records remain qualified provider outputs; legacy tree/correction records, current-primary selection and store-backed presentation binding ports have no compatibility route. Shared hosted transport and usage remain separate from contribution semantics. [[Common contributions](decisions/common-analysis-contributions.md)]
+
 ## TypeScript style
 
 - Use strict checking, explicit type-only imports, `.js` relative import specifiers, two-space indentation, single-quoted TypeScript strings, and semicolons.

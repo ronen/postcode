@@ -88,9 +88,9 @@ The product may suggest a summary View when the human has not expressed a more s
 
 Each produced Projection retains its selected information and qualification. Repeating a Lens command makes a fresh selection: retained content, designation and association changes can yield a different answer. Those supporting selections are distinct from captured program states. Input changes follow the separate [session invalidation contract](#input-stability-and-retained-work).
 
-### Contribution-model migration
+### Common contribution integration
 
-The [structured architectural accounts plan](plans/structured-architectural-accounts.md) has migrated supported investigation and inspection callers to common contributions. The M3 mechanical checkpoint is accepted; separate caller review and M4 integrated review remain pending. No new CLI commands or live-inference authorization follow from that migration.
+The [structured architectural accounts plan](plans/structured-architectural-accounts.md) has migrated supported investigation and inspection callers to common contributions. The M3 mechanical and caller checkpoints are accepted. M4 removes the obsolete tree/correction path; final integrated review remains pending. No new CLI commands or live-inference authorization follow from that migration.
 
 The task updates affected command behavior, exact-answer/history guidance, terminology and supported input/output descriptions as implementation proceeds. No new state-diagram or follow-up-option command is promised solely because those capabilities are provided through the internal application API. At completion, remove this notice and document the actual supported routes and limitations. Exact retained presentation and reference-lifetime guarantees remain in force throughout supported operation.
 

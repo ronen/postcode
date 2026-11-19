@@ -1,5 +1,4 @@
 import { freezeOwned } from '../immutable.js';
-import type { InvestigationOperation } from '../investigation/contracts.js';
 import type { ExactSubject } from '../contributions/subjects.js';
 
 export type PublicLensId = 'modules' | 'inspect' | 'organization' | 'dependency-structure' | 'dependency-children' | 'dependency-parents'
@@ -12,7 +11,7 @@ export type SubjectDesignation = { readonly kind: 'default' | 'configured-projec
   | { readonly kind: 'selection'; readonly subject: ExactSubject };
 /** Request parameters cross the worker boundary as JSON data. */
 export type ParameterValue = null | boolean | number | string | readonly ParameterValue[] | { readonly [key: string]: ParameterValue };
-export type ResultContract = 'modules' | 'organization' | 'dependencies' | 'investigation' | 'module-exports' | 'contribution' | 'contribution-inspection';
+export type ResultContract = 'modules' | 'organization' | 'dependencies' | 'module-exports' | 'contribution' | 'contribution-inspection';
 export interface LensDefinition {
   readonly id: LensId;
   readonly question: string;
@@ -22,7 +21,6 @@ export interface LensDefinition {
   /** Declared parameter names with their meaning. Most Lenses declare none. */
   readonly parameters: Readonly<Record<string, string>>;
   readonly requirements: { readonly kind: 'modules' | 'organization' | 'dependencies' | 'inspection' | 'exports'; readonly implementation: string }
-    | { readonly kind: 'interpretation'; readonly operation: InvestigationOperation }
     /** An agentic investigation retained through common contributions, with an explicit requested result contract. */
     | { readonly kind: 'contribution'; readonly operation: string; readonly resultContract: string | null }
     /** Invocation of an exact retained follow-up option; the option supplies the delegated question. */

@@ -11,7 +11,7 @@ function itemStructure(item) {
   let args;
   try { args = JSON.parse(item.arguments); } catch { /* No arbitrary text escapes. */ }
   return { kind: ['message', 'reasoning', 'function_call'].includes(item.type) ? item.type : 'other',
-    function: ['request_evidence', 'submit_investigram'].includes(item.name) ? item.name : 'other',
+    function: ['request_information', 'submit_contribution'].includes(item.name) ? item.name : 'other',
     namespaceMatches: item.namespace === 'postcode', callIdPresent: typeof item.call_id === 'string' && item.call_id.length > 0,
     argumentsKind: args === undefined ? 'not-json' : kind(args) };
 }

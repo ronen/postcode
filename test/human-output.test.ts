@@ -17,7 +17,8 @@ import { renderOrganizationView } from '../src/lib/organization/presentation.js'
 import { renderDependencyView } from '../src/lib/dependencies/presentation.js';
 import { presentQualification } from '../src/lib/qualification-view.js';
 import { observationBatch, commandObservation } from '../src/lib/interfaces/cli/observations.js';
-import { investigationInstructions } from '../src/lib/investigation/execute.js';
+import { dialogInstructions } from '../src/lib/contributions/dialog.js';
+import { contributionOperations } from '../src/lib/contributions/operations.js';
 import { assertionContent, documentationLines } from '../src/lib/documentation-view.js';
 
 for (const format of ['unicode', 'json'] as const) test(`human detail and diagnostic meaning survive fresh and retained family presentations (${format})`, async t => {
@@ -69,7 +70,6 @@ const broken = ;`);
       const diagnosticBatch = observationBatch(jsonDiagnostic, JSON.stringify(jsonDiagnostic), { configPath: root, repositoryRoot: root, methods: [] }, result.context);
       assert.ok(diagnosticBatch.events.some(event => event.type === 'attribution-disclosed' && event.sourceLevel === 'diagnostic-locations'));
       // Controlled code-only diagnostic exercises the shared wording for each family.
-      if (result.view.schema === 'postcode-investigation-view/1-experimental') throw new Error('Unexpected interpretation');
       const base = result.view.schema === 'postcode-contribution-view/1-experimental' ? result.view.mechanical! : result.view;
       const context = base.qualifications[0]!;
       const qualified = presentQualification({ ...context, scope: 'configured-project', kind: 'claim-context', evidence: [], diagnostics: [{ code: 2307, category: 'error', message: "Cannot find module './missing'." }] });
@@ -105,8 +105,8 @@ test('plain-text documentation blocks and references remain assertions; omitted 
   assert.doesNotMatch(represented.text, /const opaque/); assert.equal(represented.tags[0]!.text, 'Architecture');
   assert.equal(represented.representationLimits.length, 1);
   for (const operation of ['functionality', 'clarification', 'decomposition', 'examination']) {
-    const instructions = investigationInstructions(operation);
-    assert.match(instructions, /not presumed to read or write/); assert.match(instructions, /correction and inconsistency reasons/);
+    const instructions = dialogInstructions(contributionOperations[operation]!);
+    assert.match(instructions, /not presumed to read the implementation language/); assert.match(instructions, /REPORT UNRESOLVED INCONSISTENCY PRECISELY/);
     assert.match(instructions, /Never hide a material qualification/);
   }
 });

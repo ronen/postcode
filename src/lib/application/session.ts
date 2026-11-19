@@ -15,8 +15,6 @@ import { evaluateModules } from '../evaluation.js';
 import { MemoryProgramRecordStore } from '../memory-store.js';
 import { openTypeScriptProject } from '../typescript/project.js';
 import type { ProjectOptions } from '../typescript/project.js';
-import { referenceBinding } from '../reference-binding.js';
-import type { ReferenceBinding, ReferenceKind } from '../reference-binding.js';
 import { captureApplicationRequest, captureFields, InvalidRequestId } from './requests.js';
 import type { SemanticRequest, InputConstraints, InputProblem } from './requests.js';
 import { applicationCatalog, captureApplicationCatalog } from './catalog.js';
@@ -120,7 +118,7 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
   };
   const session: ApplicationSession = {
     id,
-    capabilities: () => freezeOwned(Object.values(catalog.lenses).map(({ requirements, ...lens }) => ({ ...lens, requirements: requirements.kind === 'interpretation' || requirements.kind === 'contribution' || requirements.kind === 'follow-up' ? requirements : { kind: requirements.kind } }))),
+    capabilities: () => freezeOwned(Object.values(catalog.lenses).map(({ requirements, ...lens }) => ({ ...lens, requirements: requirements.kind === 'contribution' || requirements.kind === 'follow-up' ? requirements : { kind: requirements.kind } }))),
     check: () => operation(check), usage: usageReport, work: () => currentWork?.snapshot() ?? latestWork,
     execute(request, execution = {}) {
       const captured = captureApplicationRequest(request, catalog.lenses);
@@ -142,8 +140,8 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
   };
   registerOperationHost(session, {
     run: client => operation(async () => {
-      let active = true, used = false, port: ReferenceBinding | undefined;
-      const allowed = () => { alive(); if (invalid) throw new SessionInvalidated(); if (!active) throw new Error('Operation binding capability expired'); };
+      let active = true, used = false;
+      const allowed = () => { alive(); if (invalid) throw new SessionInvalidated(); if (!active) throw new Error('Operation capability expired'); };
       try {
         return await client({
           async check() { allowed(); await check(); allowed(); },
@@ -151,12 +149,10 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
             allowed(); if (used) throw new Error('An operation scope accepts exactly one request'); used = true;
             const result = await perform(freezeOwned(structuredClone(request)), freezeOwned(structuredClone(execution)), true);
             allowed();
-            if (result.kind === 'answer' && result.answer.content.contract === 'investigation' && result.answer.mechanical === null) port = referenceBinding(state!.store, id, result.answer.content.value.references);
             return result;
           },
-          bindings: Object.freeze({ bind(ids: readonly RecordId[], kind: ReferenceKind) { allowed(); if (!port) throw new Error('No investigation binding population for this operation'); return port.bind(ids, kind); } }),
         });
-      } finally { active = false; port = undefined; }
+      } finally { active = false; }
     }),
     evaluate: request => {
       const captured = freezeOwned(structuredClone(request));

@@ -16,8 +16,8 @@ test('diagnostic retains response structure and numeric usage without arbitrary 
   assert.equal(event.format, 'event-stream'); assert.equal(event.events[0].event, 'response.completed');
   assert.equal(JSON.stringify(event).includes(secret), false);
   const item = diagnostic.bodyStructure(`data: ${JSON.stringify({ type: 'response.output_item.done', output_index: 1,
-    item: { type: 'function_call', name: 'submit_investigram', namespace: 'postcode', call_id: secret, arguments: JSON.stringify({ prose: secret }) } })}\n\n`, true);
-  assert.deepEqual(item.events[0].item, { kind: 'function_call', function: 'submit_investigram', namespaceMatches: true, callIdPresent: true, argumentsKind: 'object' });
+    item: { type: 'function_call', name: 'submit_contribution', namespace: 'postcode', call_id: secret, arguments: JSON.stringify({ prose: secret }) } })}\n\n`, true);
+  assert.deepEqual(item.events[0].item, { kind: 'function_call', function: 'submit_contribution', namespaceMatches: true, callIdPresent: true, argumentsKind: 'object' });
   assert.equal(JSON.stringify(item).includes(secret), false);
 });
 test('diagnostic bounds capture, leaves original body readable, and distinguishes absent headers', async () => {

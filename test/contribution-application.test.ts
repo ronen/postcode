@@ -1,3 +1,6 @@
+import { applicationCatalog } from '../src/lib/application/catalog.js';
+import { exportsLens } from '../src/lib/mechanical-implementations.js';
+import { proseContribution } from './contribution-agent.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
@@ -87,7 +90,7 @@ test('the state-behavior investigation, its diagram, exact access and a retained
       return stateAccount('again', ['closed', 'open', 'half-open'])(input);
     }],
   ]);
-  const opened = await openApplication(fixture(t), { investigation: { dialogAgent: agent } });
+  const opened = await openApplication(fixture(t), { investigation: { dialogAgent: agent } }, { ...applicationCatalog, lenses: { ...applicationCatalog.lenses, exports: exportsLens } });
   assert.equal(opened.status, 'opened');
   if (opened.status !== 'opened') return;
   const session = opened.session;
@@ -166,6 +169,26 @@ test('the state-behavior investigation, its diagram, exact access and a retained
   assert.deepEqual(mechanical.kind === 'resolution' && mechanical.resolution.reason, 'invalid-parameters');
   // Attempts are reported through the Session's usage report.
   assert.equal(session.usage().attempts.length, 4);
+  const retained: ApplicationResult[] = [];
+  for (const lens of ['modules', 'organization', 'dependency-structure', 'dependency-children', 'dependency-parents', 'inspect', 'exports']) {
+    const result = await session.execute({ kind: 'lens', lens, designation: ['modules', 'organization', 'dependency-structure'].includes(lens) ? { kind: 'configured-project' } : { kind: 'name', value: 'breaker' } });
+    assert.equal(result.kind, 'answer'); assert.deepEqual(structuredClone(result), result); retained.push(result);
+  }
+  for (const lens of ['summarize', 'explain', 'decompose', 'examine']) {
+    agent.dialogs.push([input => ({ kind: 'submit', contribution: proseContribution(input, `Qualified ${input.request.operation} answer.`) })]);
+    const result = await session.execute({ kind: 'lens', lens, designation: lens === 'summarize' ? { kind: 'name', value: 'breaker' } : { kind: 'reference', value: owner } });
+    assert.equal(result.kind, 'answer'); assert.equal(result.failed, false); retained.push(result);
+  }
+  for (const original of retained) {
+    assert.equal(original.kind, 'answer');
+    const exact = await session.execute({ kind: 'present', target: original.answer.id });
+    assert.equal(exact.kind, 'answer'); assert.deepEqual(exact.answer, original.answer);
+  }
+  assert.equal(agent.inputs.length, 8);
+  const snapshot = JSON.stringify(first.content);
+  await session.close();
+  assert.equal(JSON.stringify(first.content), snapshot);
+  assert.deepEqual(arrangeContributionAnswer(first.content, first.result.title), view);
 });
 
 test('without a configured agent the investigation is unavailable and fabricates no answer', async t => {

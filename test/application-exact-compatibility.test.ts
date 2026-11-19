@@ -25,7 +25,7 @@ function fixture(t: TestContext, source = 'export const entry = 1;') {
   return { configPath };
 }
 function denyAcquisition(t: TestContext) {
-  for (const method of ['put', 'evaluations', 'investigations', 'boundEntity'] as const) {
+  for (const method of ['put', 'evaluations', 'boundEntity'] as const) {
     t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw Error(`Exact retrieval called ${method}`); });
   }
 }

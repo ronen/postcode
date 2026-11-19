@@ -47,7 +47,7 @@ const project = { kind: 'configured-project' } as const;
  * These are tripwires, not substitute analysis/selection implementations. */
 async function exactAnswers(t: TestContext, session: ApplicationSession, retained: readonly AnswerDelivery[], agent?: InvestigatorAgent) {
   const usage = structuredClone(session.usage());
-  const denied = ['put', 'evaluations', 'investigations', 'boundEntity'] as const;
+  const denied = ['put', 'evaluations', 'boundEntity'] as const;
   const mocks = denied.map(method => t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw Error(`Exact access called ${method}`); }));
   const inference = agent ? t.mock.method(agent, 'open', () => { throw Error('Exact access opened an investigator'); }) : undefined;
   try {

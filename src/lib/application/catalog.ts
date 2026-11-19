@@ -28,6 +28,7 @@ export function captureApplicationCatalog(source: ApplicationCatalog): CapturedA
     if (id !== lens.id || !id || !lens.question.trim() || !lens.title.trim()) throw new Error('Invalid Lens definition');
     const builtin = Object.hasOwn(lenses, id) ? (lenses as Readonly<Record<string, LensDefinition>>)[id] : undefined;
     if (builtin && builtin.requirements.kind !== 'contribution' && canonical(lens) !== canonical(builtin)) throw new Error('Unsupported mechanical Lens definitions for built-in identity');
+    if ((lens.requirements as { kind: string }).kind === 'interpretation') throw new Error('Legacy interpretation operations are not supported; register a contribution operation.');
     mechanicalImplementation(lens);
     if (lens.requirements.kind === 'contribution') {
       if (!lens.parameters || typeof lens.parameters !== 'object' || Array.isArray(lens.parameters) || Object.keys(lens.parameters).length) {
@@ -40,7 +41,6 @@ export function captureApplicationCatalog(source: ApplicationCatalog): CapturedA
     }
     if (lens.requirements.kind === 'follow-up' && (lens.cardinality !== 'one' || lens.subjects.length !== 1 || lens.subjects[0] !== 'contribution'
       || lens.results.length !== 1 || lens.results[0] !== 'contribution' || Object.keys(lens.parameters).join() !== 'option')) throw new Error('Incompatible follow-up Lens definition');
-    if (lens.requirements.kind === 'interpretation') throw new Error('Legacy interpretation operations are not supported; register a contribution operation.');
   }
   return captured;
 }
