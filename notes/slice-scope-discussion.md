@@ -288,10 +288,12 @@ The human explicitly confirmed the current boundary:
 
 > yes. (future versions of postcode might indeed have prose interfaces and be able to answer questions, but explicitly trying to limit that for now.)
 
-For this slice, pursue selection-based exploration rather than a free-form prose
-question/answer or design-conversation interface. Name search remains included in
-the discussion; avoiding prose investigation does not mean banning all textual
-input. This boundary does not rule out prose interfaces in future versions.
+At this point in the discussion, the direction was to pursue selection-based
+exploration rather than a free-form prose question/answer or design-conversation
+interface. Name search remained included; avoiding prose investigation did not
+mean banning all textual input. The subsequent decision below identifies
+prose-directed access to the book as intended capability with deferrable
+implementation, refining this earlier position.
 
 ### Concepts as an extensible vocabulary
 
@@ -374,9 +376,29 @@ The substantive answer would therefore be the account reached in the reference,
 whether already retained or newly investigated. A brief reply could explain the
 destination and relevant passage; the content remains connected, inspectable and
 available through other routes. Prose becomes another means of reaching a useful
-treatment, alongside search, concept selection and offered connections. This is
-an alternative under consideration; the discussion has not yet explicitly selected
-prose for the initial slice or authorized its implementation.
+treatment, alongside search, concept selection and offered connections.
+
+### Intended capability and sequencing
+
+The human subsequently directed:
+
+> yes. i now think it should be identified as an intended capability, but we can decide that it its implementation can be deferred until after the basic "book" features are working.
+
+Prose-directed access to the architectural reference is therefore an intended
+capability in this scope discussion, not merely an unselected future possibility.
+Its implementation can be deferred until the basic book features work. Initial
+selection-based use is a sequencing choice, not a permanent product restriction.
+
+A prose request would primarily open, focus or develop the relevant account(s),
+possibly accompanied by a brief orienting reply. The substantive answer belongs
+in the book and remains accessible through its other routes. PostCode's role
+remains architectural understanding rather than taking charge of the motivating
+task; this direction does not adopt an unrestricted design conversation.
+
+Carry the intended capability and its sequencing into the eventual planning
+package. This records human direction in exploratory notes; no governing document
+has been revised and no implementation has been authorized. The meaning of the
+basic book milestone and the eventual prose interaction still need scoping.
 
 ## Consequences to discuss after that choice
 
