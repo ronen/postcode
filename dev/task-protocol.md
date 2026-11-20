@@ -141,6 +141,8 @@ The agent may conclude a task as `completed` when the approved goal and appropri
 
 Satisfy the applicable review gates before closing the task.
 
+Before closing the task, ensure its durable results and necessary supporting evidence are committed in appropriate repository files rather than left only in untracked or ignored files.
+
 To conclude the task, the executing agent must:
 
 1. set the task status to `completed`, `blocked`, or `abandoned` and set **Closed** to the conclusion date;
