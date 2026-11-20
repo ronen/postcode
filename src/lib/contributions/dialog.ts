@@ -3,7 +3,7 @@ import { performance } from 'node:perf_hooks';
 import { randomUUID } from 'node:crypto';
 import { CommandInterrupted, SessionInvalidated } from '../execution-errors.js';
 import type { EvidenceQuery, EvidenceResponse } from '../evidence-access.js';
-import { recordId } from '../identity.js';
+import { canonical, recordId } from '../identity.js';
 import { freezeOwned } from '../immutable.js';
 import { investigationBounds } from '../investigation/bounds.js';
 import type { InvestigationBounds } from '../investigation/bounds.js';
@@ -150,7 +150,7 @@ export function dialogInstructions(operation: DialogOperation, operations?: Cont
     'PRESERVE MEANING WHEN REUSING CONTENT. Reference unchanged content by its exact address; it keeps its owner and qualification. Changed wording or meaning is new content with its own support. Do not broaden a claim by dropping a limitation that applies to it.',
     'UPDATE THE EARLIER ANSWER YOU REVISE. When you investigate an earlier result and change its answer, redesignate that exact Query result after understanding its question, subjects and scope. If the designation you were given is already displaced, state whether you supersede its standing successor or add a qualified alternative.',
     'RESPOND TO CHANGE NOTICES. A notice identifies one exact change accepted during this dialog. Consider whether it matters and acquire further information if it does. A notice is not the replacement content and does not oblige agreement.',
-    'EXPLICIT INPUT CONTEXT. request.context identifies additional selected inputs, separate from the subjects being investigated. Their initial responses follow the subject responses and obey the same qualification and delivery limits; an unavailable response supplies no content. A component selector identifies the intended part within its delivered enclosing item.',
+    'EXPLICIT INPUT CONTEXT. request.context identifies additional selected inputs, separate from the subjects being investigated. Initial responses cover subjects first, then additional context, once per exact selection in first-occurrence order. Repeated selections retain all their request roles but share that response. Different selection routes remain separate. Responses obey the same qualification and delivery limits; an unavailable response supplies no content. A component selector identifies the intended part within its delivered enclosing item.',
     'FOLLOW-UP OPTIONS AND ILLUSTRATIONS. An option proposes a further investigation with its operation, subjects and any promised result form. An illustration names a diagram type and the exact content items of this explanation it pictures. Both belong to the contribution that offers them and need qualification.',
     'Submit one contribution: { investigrams: [ investigram ], report?: { inability?: string, statement?: string, answer?: [ address ] } }. The report belongs to the whole contribution, never inside an investigram. Shapes, exactly:',
     contributionSubmissionGuidance,
@@ -322,8 +322,15 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
         : subject.kind === 'content' ? contribution({ kind: 'item', item: subject.item })
         : subject.kind === 'investigram' ? contribution({ kind: 'contribution', investigram: subject.investigram })
         : { tool: 'unavailable', limitations: ['This subject designates a scope, not retained content.'] };
-    let responses: DialogResponse[] = [...invocation.request.subjects.map(({ subject }) => acquireSubject(subject)),
-      ...invocation.request.context.map(acquireSubject)];
+    // Only exact initial selections share a delivery. A component, designation, whole owner or
+    // Entity baseline remains its own route even when it reaches the same underlying item.
+    // Keep all roles and repetitions in the immutable request; later tool acquisitions are separate.
+    const initial = new Map<string, SubjectRef>();
+    for (const subject of [...invocation.request.subjects.map(({ subject }) => subject), ...invocation.request.context]) {
+      const key = canonical(subject);
+      if (!initial.has(key)) initial.set(key, subject);
+    }
+    let responses: DialogResponse[] = [...initial.values()].map(acquireSubject);
     const context = [...(options.context ?? []), ...(invocation.request.option ? [{ ...invocation.request.option, metadata: 'option' as const }] : [])];
     for (const address of new Map(context.map(address => [JSON.stringify([address.investigram, address.metadata, address.key]), address])).values()) responses.push(contribution({ kind: 'metadata', address }));
     // A repeated question is supplied with the answers currently designated for it.

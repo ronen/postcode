@@ -8,7 +8,7 @@ import { hostedAgent } from './adapter.js';
 import type { OpenAIExchange, WireProtocol } from './adapter.js';
 import { InvestigatorReferences } from './references.js';
 
-export const contributionWireProtocol = 'postcode/contribution-dialog-wire@9';
+export const contributionWireProtocol = 'postcode/contribution-dialog-wire@10';
 
 /**
  * Reference positions of the contribution dialog. A string at one of these keys is an exact

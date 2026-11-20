@@ -10,8 +10,13 @@ export type Requirement =
   | { readonly kind: 'content'; readonly description: string; readonly type: string; readonly unmet?: (body: unknown) => string | null };
 export interface ResultContract { readonly id: string; readonly requirements: readonly Requirement[] }
 
-export interface AlternativeFulfillment {
+export interface AnswerStanding {
   readonly designation: AssociationAddress;
+  /** Standing captured when fulfillment is assessed; returning an old designation does not re-adopt it. */
+  readonly standing: { readonly state: 'standing' | 'displaced';
+    readonly displacedBy: readonly { readonly change: DeclarationAddress; readonly operation: 'supersede' | 'withdraw' }[] };
+}
+export interface AlternativeFulfillment extends AnswerStanding {
   /** Unmet requirements determined by PostCode's contract checks for this alternative's own selected content. */
   readonly unmet: readonly { readonly requirement: string; readonly reason: string }[];
 }
@@ -33,6 +38,16 @@ export interface Fulfillment {
   readonly alternatives: readonly AlternativeFulfillment[];
   /** Exact historical designations and the changes that displaced them, for qualified historical access. */
   readonly history: readonly { readonly designation: AssociationAddress; readonly displacedBy: readonly DeclarationAddress[] }[];
+}
+
+/** Capture the exact designation's standing without changing it or recording exposure. */
+export function answerStanding(ledger: ContributionLedger, designation: AssociationAddress): AnswerStanding {
+  const standing = ledger.standing(designation);
+  return { designation, standing: { state: standing.state, displacedBy: standing.displacedBy.map(change => {
+    const declaration = ledger.declaration(change);
+    if (declaration.operation === 'add') throw new Error('Expected a displacing declaration');
+    return { change, operation: declaration.operation };
+  }) } };
 }
 
 /** Items selected by a designation, directly and through declaration membership. */
@@ -63,7 +78,7 @@ export function assessFulfillment(ledger: ContributionLedger, contract: ResultCo
       const reasons = candidates.map(item => requirement.unmet?.(item.body) ?? null);
       return reasons.some(reason => reason === null) ? [] : [{ requirement: requirement.description, reason: reasons[0]! }];
     });
-    return { designation, unmet };
+    return { ...answerStanding(ledger, designation), unmet };
   });
   const history = all.flatMap(entry => {
     const displacedBy = ledger.standing(entry.address).displacedBy;
@@ -79,7 +94,7 @@ export function assessFulfillment(ledger: ContributionLedger, contract: ResultCo
 export const contributionSubmissionGuidance = 'investigrams may be empty when a producer report is supplied. For an answer-only return, use { investigrams: [], report: { answer: [address] } }; no placeholder investigram is needed. Every investigram must contribute at least one content item, organizing declaration or qualified metadata entry (option, illustration or inconsistency report). A qualification alone is not a contribution. If you choose to retain an adequacy judgment as content, put it in a qualified prose item; that note does not require a new answer designation.';
 
 /** Shared authoring guidance for the producer report's explicit answer selection. */
-export const reportAnswerGuidance = 'report.answer is optional: this submission’s own answer designations already count as its answer, so you need not repeat them. Use report.answer to explicitly return existing answer designations for this invocation, for example when an earlier answer remains adequate and no new designation is needed. Each entry is { investigram: <retained investigram handle>, declaration: <declaration key> }, or { investigram: { local: <investigram key in this submission> }, declaration: <declaration key> } for a designation in this submission. The declaration must be an add or supersede designation of this invocation’s Query result. Reference the owning investigram and declaration key, not an invocation handle, Query result handle or arbitrary dialogue handle. Repeating an own designation here is allowed but unnecessary; do not list the same address twice. Returning an existing designation does not change its standing or clear its reconsideration causes.';
+export const reportAnswerGuidance = 'report.answer is optional: this submission’s own answer designations already count as its answer, so you need not repeat them. Use report.answer to explicitly return existing answer designations for this invocation, for example when an earlier answer remains adequate and no new designation is needed. Each entry is { investigram: <retained investigram handle>, declaration: <declaration key> }, or { investigram: { local: <investigram key in this submission> }, declaration: <declaration key> } for a designation in this submission. The declaration must be an add or supersede designation of this invocation’s Query result. Reference the owning investigram and declaration key, not an invocation handle, Query result handle or arbitrary dialogue handle. Repeating an own designation here is allowed but unnecessary; do not list the same address twice. Returning an existing designation does not change its standing or clear its reconsideration causes. A withdrawn or superseded designation may be returned with its displaced standing; this is neither endorsement nor re-adoption. Making its content current again requires a new designation declaration.';
 
 /**
  * The answers one concluded attempt supplied for a Query result: the designations its own

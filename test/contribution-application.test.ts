@@ -1,3 +1,5 @@
+import type { AssociationAddress } from '../src/lib/contributions/model.js';
+import { arrangeContributionView, renderContributionView } from '../src/lib/interfaces/cli/contribution-presentation.js';
 import { openAIDialogAgent } from '../src/lib/investigation/openai/contribution-protocol.js';
 import { applicationCatalog } from '../src/lib/application/catalog.js';
 import { exportsLens } from '../src/lib/mechanical-implementations.js';
@@ -524,4 +526,55 @@ test('hosted authored option context is retained, invoked and reused through the
   assert.deepEqual(invoked.projection.question.request.context, offered.option.request.context);
   assert.deepEqual(answer(await session.execute(request)).projection, invoked.projection); assert.equal(calls, 2);
   await session.close(); assert.equal(JSON.stringify(first.content), snapshot);
+});
+
+
+for (const lens of ['state-behavior', 'summarize']) test(`${lens}: returned withdrawn answers disclose standing separately from current answers`, async t => {
+  let original!: AssociationAddress;
+  const agent = new ScriptedDialogs([
+    [stateAccount('original', ['closed', 'open'])],
+    [() => ({ kind: 'submit', contribution: { investigrams: [{ key: 'withdraw', qualification: caveat,
+      declarations: [{ key: 'withdraw', operation: 'withdraw', displaces: [original], grounds: { text: 'Withdraw the earlier account.' } }] }] } })],
+    [() => ({ kind: 'submit', contribution: { investigrams: [], report: { answer: [original] } } })],
+    [input => ({ kind: 'submit', contribution: { investigrams: [{ key: 'readopt', qualification: caveat,
+      declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: input.request.result },
+        members: [{ kind: 'item', item: { investigram: original.investigram, item: 'model' } }] }] }] } })],
+  ]);
+  const opened = await openApplication(fixture(t), { investigation: { dialogAgent: agent } });
+  assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
+  const session = opened.session; t.after(() => session.close());
+  const request = { kind: 'lens' as const, lens, designation: { kind: 'name' as const, value: 'breaker' } };
+  const first = answer(await session.execute(request)); original = first.projection.alternatives[0]!.designation;
+  const historical = structuredClone(first.content);
+  const withdrawn = answer(await session.execute({ ...request, fresh: true }));
+  const returned = answer(await session.execute({ ...request, fresh: true }));
+  assert.equal(returned.result.failed, false);
+  assert.deepEqual(returned.projection, withdrawn.projection, 'attempt reporting does not change no-current-answer identity');
+  assert.equal(returned.projection.fulfillment, lens === 'state-behavior' ? 'no-current-answer' : null);
+  assert.deepEqual(returned.projection.alternatives, []);
+  const reporting = returned.result.reporting!.contribution!;
+  assert.equal(reporting.fulfillment?.status ?? null, lens === 'state-behavior' ? 'fulfilled' : null);
+  assert.deepEqual(reporting.answers, [{ designation: original, standing: { state: 'displaced',
+    displacedBy: returned.projection.history[0]!.displacedBy.map(({ change, operation }) => ({ change, operation })) } }]);
+  assert.equal(reporting.answers[0]!.standing.displacedBy[0]!.operation, 'withdraw');
+  if (reporting.fulfillment) assert.deepEqual(reporting.fulfillment.alternatives, reporting.answers.map(answer => ({ ...answer, unmet: [] })));
+  const reportSnapshot = structuredClone(returned.result.reporting);
+  const view = arrangeContributionView(returned.content, { title: returned.result.title, presentation: { format: 'unicode', moreDetails: false } },
+    returned.result.reporting, returned.result.usage, new Map(returned.result.bindings.associations)).view;
+  const rendered = renderContributionView(view);
+  if (lens === 'state-behavior') assert.match(rendered, /Attempt fulfillment: fulfilled/);
+  else assert.doesNotMatch(rendered, /Attempt fulfillment:/);
+  assert.match(rendered, /Attempt answer standing when assessed: withdrawn by/);
+  assert.match(rendered, /neither endorsement nor re-adoption/);
+  assert.ok(view.summary!.noCurrentAnswer);
+  assert.deepEqual(structuredClone(view.reporting), reportSnapshot);
+  const readopted = answer(await session.execute({ ...request, fresh: true }));
+  assert.equal(readopted.projection.fulfillment, lens === 'state-behavior' ? 'fulfilled' : null);
+  assert.notDeepEqual(readopted.projection.alternatives[0]!.designation, original);
+  assert.deepEqual(readopted.projection.alternatives[0]!.items[0]!.body, first.projection.alternatives[0]!.items[0]!.body);
+  const exact = answer(await session.execute({ kind: 'present', target: first.projection.id }));
+  assert.deepEqual(exact.content, historical); assert.equal(exact.result.reporting, null);
+  await session.close();
+  assert.deepEqual(first.content, historical); assert.deepEqual(returned.result.reporting, reportSnapshot);
+  assert.equal(renderContributionView(view), rendered, 'report presentation needs no live Session or new standing lookup');
 });

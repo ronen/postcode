@@ -186,7 +186,7 @@ test('production outcomes separate no contribution, invalid submission and accep
   const partial = prose.acceptance.productions[0]!.investigrams.partial!;
   const designation: AssociationAddress = { investigram: partial, declaration: 'answer' };
   // The shortfall determined by PostCode's check and the producer's reported inability are separate observations.
-  assert.deepEqual(prose.fulfillment?.alternatives, [{ designation, unmet: [{ requirement: 'A structured table.', reason: 'The selected answer contains no test-table content.' }] }]);
+  assert.deepEqual(prose.fulfillment?.alternatives, [{ designation, standing: { state: 'standing', displacedBy: [] }, unmet: [{ requirement: 'A structured table.', reason: 'The selected answer contains no test-table content.' }] }]);
   assert.equal(prose.fulfillment?.status, 'unfulfilled');
   assert.match(prose.reportedInability ?? '', /could not construct/);
   assert.deepEqual(current(ledger, result.id), [designation]);
@@ -334,4 +334,32 @@ test('explicitly returning an existing designation preserves its exact reconside
   assert.deepEqual(ledger.status.association(designation).producing, before);
   assert.deepEqual(ledger.status.investigram(first.investigram('first')).producing, before);
   assert.equal(ledger.standing(designation).state, 'standing');
+});
+
+
+test('returning a withdrawn answer fulfills the attempt with explicit captured standing, without re-adoption', async () => {
+  const ledger = createLedger(), module = discoverModule(ledger).entity('module');
+  const { invocation, result } = summaryInvocation(ledger, module, tableContract.id);
+  const original = submit(ledger, agentic(), table(result.id, 'first', ['Closed']), { invocation: invocation.id });
+  const designation = original.use('first', 'answer');
+  const withdrawn = submit(ledger, agentic('withdraw'), [{ key: 'withdraw', qualification: caveat,
+    declarations: [{ key: 'change', operation: 'withdraw', displaces: [designation], grounds: { text: 'Withdraw the earlier answer.' } }] }]).use('withdraw', 'change');
+  const before = JSON.stringify(ledger.investigrams());
+  const returned = await produce(ledger, { producer: agentic(), invocation: invocation.id, contract: tableContract },
+    () => ({ investigrams: [], report: { answer: [designation] } }));
+  assert.equal(returned.kind, 'accepted'); if (returned.kind !== 'accepted') return;
+  assert.equal(returned.fulfillment?.status, 'fulfilled');
+  assert.deepEqual(returned.fulfillment?.alternatives, [{ designation, unmet: [], standing: { state: 'displaced',
+    displacedBy: [{ change: withdrawn, operation: 'withdraw' }] } }]);
+  assert.deepEqual(returned.production.investigrams, []);
+  assert.deepEqual(current(ledger, result.id), []);
+  assert.equal(assessFulfillment(ledger, tableContract, result.id).status, 'no-current-answer');
+  assert.equal(JSON.stringify(ledger.investigrams()), before, 'returning a designation adds no organizing declaration');
+  const captured = structuredClone(returned.fulfillment);
+  const replacement = submit(ledger, agentic('readopt'), [{ key: 'readopt', qualification: caveat,
+    declarations: [{ ...answer(result.id, 'readopt', 'unused'), members: [{ kind: 'item', item: original.item('first', 'table') }] }] }]).use('readopt', 'answer');
+  assert.deepEqual(current(ledger, result.id), [replacement]);
+  assert.equal(assessFulfillment(ledger, tableContract, result.id).status, 'fulfilled');
+  assert.deepEqual(returned.fulfillment, captured);
+  assert.deepEqual(ledger.standing(designation), { state: 'displaced', displacedBy: [withdrawn] });
 });

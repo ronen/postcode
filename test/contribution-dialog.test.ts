@@ -668,3 +668,43 @@ test('oversized explicit context is withheld and undispatched initial context re
   assert.deepEqual(undispatched.execution.production.deliveries, []);
   assert.deepEqual(undispatched.execution.production.evidence, []);
 });
+
+
+test('exact initial subject/context duplicates share delivery while roles, components and acquisition routes remain distinct', async () => {
+  const { ledger, entity, run } = await setup();
+  const origin = ledger.invoke({ operation: operation.id, subjects: [], parameters: {}, context: [], resultContract: null });
+  const handle = ledger.begin({ producer: { mechanism: 'agentic', method: 'test/duplicate-inputs@1', agent: null } });
+  const accepted = ledger.accept([{ production: handle, contribution: { investigrams: [{ key: 'owner', qualification: caveat,
+    items: [{ key: 'model', type: 'state-model', body: { bearer: { role: 'one connection' }, states: [{ key: 'idle', label: 'Idle' }],
+      initial: { kind: 'unknown' }, transitions: [], coverage: { states: 'some', transitions: 'unknown' } } }],
+    declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: origin.result.id },
+      members: [{ kind: 'item', item: { investigram: { local: 'owner' }, item: 'model' } }] }] }] } }]);
+  const owner = accepted.productions[0]!.investigrams.owner!;
+  const baseline: SubjectRef = { kind: 'entity', entity: entity('barrel') };
+  const component: SubjectRef = { kind: 'content', item: { investigram: owner, item: 'model' }, component: 'state:idle' };
+  const whole: SubjectRef = { kind: 'content', item: { investigram: owner, item: 'model' }, component: null };
+  const designation: SubjectRef = { kind: 'designation', association: { investigram: owner, declaration: 'answer' } };
+  const context: SubjectRef[] = [baseline, baseline, component, { component: 'state:idle', item: { item: 'model', investigram: owner }, kind: 'content' },
+    whole, designation, designation, { kind: 'investigram', investigram: owner }];
+  const request = { operation: operation.id, subjects: [{ role: 'primary', subject: baseline }, { role: 'comparison', subject: baseline }],
+    parameters: {}, context, resultContract: null };
+  const invocation = ledger.invoke(request).invocation;
+  const { execution, agent } = await run([input => {
+    assert.deepEqual(input.request.subjects.map(value => ({ role: (value as { role: string }).role, subject: (value as { subject: unknown }).subject })), request.subjects);
+    assert.deepEqual(input.request.context, context);
+    assert.deepEqual(input.responses.map(value => value.tool === 'contribution' ? value.kind : value.tool), ['baseline', 'item', 'item', 'association', 'contribution']);
+    return { kind: 'tools', requests: [{ kind: 'item', item: whole.kind === 'content' ? whole.item : undefined }] };
+  }, input => {
+    assert.equal(input.responses.length, 1, 'later deliberate acquisitions are not deduplicated');
+    return { kind: 'ended' };
+  }], invocation);
+  const deliveries = execution.production.deliveries.filter(value => value.kind === 'item' && value.item.investigram === owner);
+  assert.equal(deliveries.length, 5, 'component, whole item, designation, owner, and later acquisition each deliver once');
+  assert.equal(deliveries.filter(value => value.kind === 'item' && value.route !== null).length, 1, 'designation use remains a distinct exposure route');
+  const initialSize = JSON.stringify(agent.inputs[0]).length;
+  const stopped = await run([() => { throw Error('Unexpected dispatch'); }], ledger.invoke(request, { fresh: true }).invocation,
+    { bounds: { milliseconds: 60_000, calls: 4, toolCalls: 4, characters: initialSize - 1000 } });
+  assert.equal(stopped.execution.outcome.kind, 'limit-stop');
+  assert.deepEqual(stopped.execution.production.deliveries, []);
+  assert.deepEqual(stopped.execution.production.evidence, []);
+});

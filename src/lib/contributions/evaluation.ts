@@ -9,11 +9,13 @@ import type { ContributionLedger } from './ledger.js';
 import type { Invocation, InvocationRequest, MetadataAddress, Production, ProducerReport, QueryResultId } from './model.js';
 import type { ContributionOperation, ContributionOperationCatalog } from './operations.js';
 import { contributionOperationMethod } from './operations.js';
-import type { ResultContract } from './outcomes.js';
-import { assessFulfillment, attemptAnswers } from './outcomes.js';
+import type { AnswerStanding, ResultContract } from './outcomes.js';
+import { answerStanding, assessFulfillment, attemptAnswers } from './outcomes.js';
 
 export interface ContributionAttemptResult {
   readonly outcome: Exclude<DialogOutcome, { readonly kind: 'accepted' }> | { readonly kind: 'accepted' };
+  /** Exact supplied designations with standing captured for this attempt report, even without a result contract. */
+  readonly answers: readonly AnswerStanding[];
   readonly fulfillment: import('./outcomes.js').Fulfillment | null;
   readonly report: ProducerReport | null;
 }
@@ -65,6 +67,7 @@ export function contributionEvaluation(store: ProgramRecordStore, ledger: Contri
           records: [attempt.id, ...attempt.investigrams] });
         return { invocation, result: result.id, reused: true, execution: null, attempt, unavailable: null,
         attemptResult: completed.get(attempt.id) ?? { outcome: attempt.outcome.kind === 'accepted' ? { kind: 'accepted' } : attempt.outcome.failure,
+          answers: attempt.outcome.kind === 'accepted' ? attemptAnswers(ledger, attempt, result.id).map(address => answerStanding(ledger, address)) : [],
           fulfillment: contract && attempt.outcome.kind === 'accepted' ? assessFulfillment(ledger, contract, result.id, attemptAnswers(ledger, attempt, result.id)) : null, report: attempt.report } };
       }
     }
@@ -73,7 +76,7 @@ export function contributionEvaluation(store: ProgramRecordStore, ledger: Contri
       const unavailable: AgentFailure = { kind: 'configuration-unavailable', code: 'investigating-agent-not-configured',
         diagnostic: 'No investigating agent is configured for contribution investigations.' };
       const attempt = ledger.abandon(ledger.begin({ producer: { mechanism: 'agentic', method, agent: null }, invocation: invocation.id }), unavailable.kind, unavailable);
-      const attemptResult = { outcome: unavailable, fulfillment: null, report: null };
+      const attemptResult = { outcome: unavailable, answers: [], fulfillment: null, report: null };
       completed.set(attempt.id, attemptResult);
       options.work?.scope('Retain the unavailable investigation attempt; no agent was opened.', attempt.id).record('interpretation', 'established', {
         records: [attempt.id], limitations: [unavailable.diagnostic] });
@@ -92,6 +95,7 @@ export function contributionEvaluation(store: ProgramRecordStore, ledger: Contri
     options.work?.scope('Retain the producing outcome and its accepted contributions.', execution.production.id).record('interpretation', 'established', {
       records: [execution.production.id, ...execution.production.investigrams], limitations: [`Producing outcome: ${outcome.kind}.`] });
     const attemptResult: ContributionAttemptResult = { outcome: outcome.kind === 'accepted' ? { kind: 'accepted' } : outcome,
+      answers: outcome.kind === 'accepted' ? attemptAnswers(ledger, execution.production, result.id).map(address => answerStanding(ledger, address)) : [],
       fulfillment: outcome.kind === 'accepted' ? outcome.fulfillment : null, report: execution.production.report };
     completed.set(execution.production.id, attemptResult);
     return { invocation, result: result.id, reused: false, execution, attempt: null, attemptResult,

@@ -124,6 +124,15 @@ export function renderContributionView(view: ContributionView): string {
       lines.push(`Attempt: ${inlineText(outcome.kind)}${'code' in outcome ? ` (${inlineText(outcome.code)})` : ''}${detail ? `: ${inlineText(detail)}` : ''}`);
       if ('problems' in outcome) lines.push(...outcome.problems.map(problem => `Submission problem: ${inlineText(problem)}`));
     }
+    const fulfillment = view.reporting.contribution?.fulfillment;
+    if (fulfillment) lines.push(`Attempt fulfillment: ${inlineText(fulfillment.status)}.`);
+    for (const alternative of view.reporting.contribution?.answers ?? []) {
+      const standing = alternative.standing;
+      lines.push(`Attempt answer ${inlineText(addressKey(alternative.designation))}: ${standing.state} when assessed.`);
+      for (const displacement of standing.displacedBy) lines.push(
+        `Attempt answer standing when assessed: ${displacement.operation === 'withdraw' ? 'withdrawn' : 'superseded'} by ${inlineText(addressKey(displacement.change))}.`);
+      if (standing.state === 'displaced') lines.push('Returning this designation is neither endorsement nor re-adoption; making its content current again requires a new declaration.');
+    }
     lines.push(...ownerReport(view.reporting.contribution?.report ?? null).map(statement => `Attempt report: ${inlineText(statement)}`));
   }
   if (view.summary) {
