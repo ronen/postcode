@@ -400,6 +400,56 @@ package. This records human direction in exploratory notes; no governing documen
 has been revised and no implementation has been authorized. The meaning of the
 basic book milestone and the eventual prose interaction still need scoping.
 
+## Organization, coherence and consistency
+
+The human distinguished two related questions:
+
+1. Whether looking at several things within one developing reference feels
+   coherent and permits accounts to share/combine information. Its lifetime might
+   be one app invocation or several through persistence.
+2. Whether independently starting fresh references for the same codebase produces
+   reasonably consistent accounts and organizations.
+
+Persistence can extend the first reference's lifetime; it does not establish the
+second kind of consistency. The comparison needs a stated repository basis and
+investigation conditions, rather than assuming that the same repository name
+means unchanged inputs.
+
+Within-reference coherence calls for recognizable subjects, useful shared
+explanations, connections, return to earlier accounts and intelligible differences.
+Arranging complementary accounts and synthesizing a new combined explanation
+remain different operations. Current retention/reuse mechanisms do not themselves
+establish the quality of agents' organizing judgments.
+
+Across fresh references, the agent proposed assessing compatible substantive
+claims and qualifications, recognizable major concepts and mechanisms, and useful
+common landmarks. Identical prose or a single canonical hierarchy is not required.
+The human has not yet selected acceptance thresholds for permissible variation.
+
+The human proposed that some organization be independent of the current reading
+context, potentially starting from the mechanical module inventory. They clarified
+that the inventory alone does not supply a useful architectural inventory: its
+role is to give interpreting agents a stable starting point. The agent agreed.
+
+The resulting hypothesis is a common mechanical foundation for interpretive
+organization, with contextual routes and treatments built on that developing
+reference. “Context-free” here means independent of the reader's immediate
+purpose, not independent of the software or captured evidence. The initial inquiry
+should not arbitrarily determine the entire project's organization.
+
+Architectural responsibilities and relationships can cross module boundaries;
+the hypothesis does not make the module tree the book's table of contents or
+establish cross-session identity merely from similar references. A common input
+population can reduce arbitrary differences without guaranteeing identical
+interpretation. The scope of an initial organizing investigation, its acquisition
+beyond inventory, and upfront versus incremental production remain open.
+
+Candidate evaluation separates developing one reference through different routes
+from independently generating several references over the same basis. The latter
+could hold the mechanical foundation and general organizing purpose constant,
+then compare organizations and explore them through different reader concerns.
+No such trial has yet been run for SLICE.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and
