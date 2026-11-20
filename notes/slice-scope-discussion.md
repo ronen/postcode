@@ -450,6 +450,44 @@ could hold the mechanical foundation and general organizing purpose constant,
 then compare organizations and explore them through different reader concerns.
 No such trial has yet been run for SLICE.
 
+### Shared accumulation as an alternative to independent reconstruction
+
+The human proposed, explicitly as a hypothetical possibility rather than a
+preferred choice, built-in persistence at a shared location so that fresh visits,
+including visits by different users, reuse developing entities and accounts.
+Freshness would then describe a new visit to an existing reference rather than
+independent reconstruction. This could replace much of the independent-consistency
+problem with continuity through reuse.
+
+Both participants noted that global sharing stresses coherence. It does not
+establish account quality or eliminate conflicting interpretations, overlapping
+identifications, acquisition-order effects or changed-software applicability.
+Persistence, sharing across users and sharing one organization are separate
+choices. Shared qualified accounts could support different organizations. No
+shared service, persistence model or global-reference policy has been selected.
+
+### Multiple organizations and codebase-dependent defaults
+
+The human emphasized that multiple organizations/perspectives can be useful even
+within one person's investigation of one topic. ORGANIZE need not expose a single
+view or hierarchy. This refines earlier discussion of a general framework: there
+may be several useful organizations over common subjects and overlapping accounts,
+not one architectural outline with contextual branches.
+
+The working coherence hypothesis is intelligible connection between perspectives,
+with recognizable subjects, reusable accounts, meaningful cross-references and
+qualified differences. It does not require one canonical table of contents or
+automatic reconciliation. Presenting established relationships in different forms
+and investigating a new conceptual organization remain distinct kinds of work.
+
+The human further suggested that the default route could be selected based on
+the codebase. A useful default need not be universal or determined only by the
+reader's immediate concern. Selection may draw on a qualified assessment of the
+software and its useful organizing perspectives. An initial route does not make
+that perspective the uniquely correct architecture, prevent other routes, or
+require a mandatory overview before direct lookup. The selection method and
+quality criteria remain to be scoped and tested.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and
