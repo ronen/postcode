@@ -2,10 +2,11 @@
 
 Record type: disposition
 Date: 2026-11-19
+Updated: 2026-11-20
 Task: [Implement structured architectural accounts](../../tasks/2026-11-15-structured-architectural-accounts.md)
 Handoff: [Final integrated review](2026-11-19-m4-integrated-handoff.md)
-Findings: [Round 1](2026-11-19-m4-integrated-round-1-findings.md), [round 2](2026-11-19-m4-integrated-round-2-findings.md), [round 3, full branch](2026-11-19-m4-integrated-round-3-claude-findings.md), [round 4](2026-11-19-m4-integrated-round-4-claude-findings.md)
-Current implementation target: `801e2dd19603455947f32b9936d8f033b1feb5fc`
+Findings: [Round 1](2026-11-19-m4-integrated-round-1-findings.md), [round 2](2026-11-19-m4-integrated-round-2-findings.md), [round 3, full branch](2026-11-19-m4-integrated-round-3-claude-findings.md), [round 4](2026-11-19-m4-integrated-round-4-claude-findings.md), [round 5, full branch](2026-11-20-m4-integrated-round-5-claude-findings.md)
+Current implementation target: `3ef4e20dec8899b7bbd2b75cc8262ff11791cada`
 Gate status: further human-arranged review pending
 
 ## Findings and dispositions
@@ -97,3 +98,37 @@ Live verification used the committed build, pinned Cockatiel fixture, establishe
 All round 3 findings remain resolved according to round 4. The new authoring extension requires independent assessment under the existing integrated assignment, whose scope and intended gate remain applicable. Review `d724192871ab15510630e8a52374db8e313b21db..801e2dd19603455947f32b9936d8f033b1feb5fc` for the extension, or `bd92670e4e0db1c9d9804e6d7797f38678ab9bf1..801e2dd19603455947f32b9936d8f033b1feb5fc` for the complete implementation. Inspect the implementation and new evidence independently rather than treating the live success or earlier reviews as proof. The original handoff and findings remain unchanged; a succeeding round should name its actual target and scope.
 
 The task stays active and the PR draft. Further human-arranged review and human sufficiency determination remain pending; no closure or merge is authorized by these results.
+
+## Round 5 and directed corrections
+
+[Round 5](2026-11-20-m4-integrated-round-5-claude-findings.md), committed at `6716a7d`, is a fresh full-branch review of `801e2dd19603455947f32b9936d8f033b1feb5fc`. It independently traced acceptance, exposure, cause derivation, reuse, fulfillment and option invocation, reproduced the build digest, and passed **727/727 tests** in one uninterrupted fixed-build run on macOS Node 22.13.1 (492 seconds; zero failures, skips or cancellations). It also reproduced the preserved context-authoring live audit without new inference. Its limits remain explicit: mechanical providers, worker delivery, credentials and ownership were assessed through the suite and earlier records rather than all being re-derived; representative memory was not remeasured and the retirement inventory was spot-checked.
+
+The reviewer reported no blocking defect, but identified a semantic choice for returned withdrawn designations (F1) and duplicate initial subject/context delivery (F2). The human directed both resolutions. Task follow-up `16918ed` preserves that direction before implementation. The corrections are in `0545ae49c9f8d57dba65ca7f67bd8f291784ef0e`, with the remaining exact-shape test expectation updated in `3ef4e20dec8899b7bbd2b75cc8262ff11791cada`.
+
+**F1 — accepted and corrected under the human's chosen semantics.** Returning a withdrawn designation remains valid and can fulfill the attempt's result contract. Reporting now captures each supplied designation's standing and the exact displacing declarations, including whether they withdraw or supersede. This is available for attempts both with and without a result contract, and alongside each fulfillment alternative. CLI text shows fulfillment and standing when assessed, explicitly identifies withdrawal, and explains that returning the designation is neither endorsement nor re-adoption. Making its content current again requires a new designation declaration. Agent instructions preserve the existing guarantee that returning a designation neither changes standing nor clears reconsideration causes and add the same clarification.
+
+The Query result continues to report no current answer when its last designation has been withdrawn. This is distinct from a successful attempt returning that historical designation; acceptance does not silently reinstate it. Reporting is captured plain data, and cached reporting retains its assessment-time standing. A later newly assessed attempt may capture newer standing without rewriting the earlier report or answer. Reporting does not enter retained answer identity. Regressions verify the fulfilled-attempt/no-current-answer distinction, the absence of implicit declarations, explicit re-adoption through a new declaration, unchanged historical answers and reporting after that declaration and Session close, and rendering from the captured data without a live Session.
+
+**F2 — accepted and corrected.** Initial subjects and context now acquire and deliver each exact selected reference once, in first-occurrence order with subjects first. Equality uses the complete canonical reference, including kind, address and component/scope selectors; object-property ordering does not create a distinct selection. All original subjects, their roles and context entries remain in the invocation request, so request identity and authored roles are preserved. Different acquisition routes remain distinct even when they reach the same content: component versus whole item, designation and whole-contribution selection are not collapsed. Later explicit tool acquisitions, option metadata and fresh-current-designation delivery retain their existing behavior.
+
+Exposure continues to describe actual dispatch: eliminating an exact duplicate initial delivery eliminates only the redundant acquisition/delivery, while distinct routes and later deliberate acquisitions retain their exposures. Existing response bounds, total character guard and checkpoint/discard rules apply. Tests exercise duplicate subjects with different roles, duplicate context, property-order equivalence, distinct routes to shared content, later reacquisition, and a pre-dispatch guard with no delivery or exposure. Existing context bounds and hosted delivery tests remain passing.
+
+Dialog method advances to `postcode/contribution-dialog@14`, hosted wire protocol to `@10`, and CLI contribution presentation to `@5`. The architecture documentation records both behaviors. These changes intentionally distinguish new method-qualified work and presentation; no unchanged-identity claim against earlier agentic revisions is made.
+
+### Corrected-target verification
+
+Implementing-agent verification of `3ef4e20dec8899b7bbd2b75cc8262ff11791cada`:
+
+- `npm run check` and `npm run build` passed.
+- **68/68 focused tests passed**, zero failures, skips or cancellations, in 49.20 seconds. Files: `contribution-results`, `contribution-dialog`, `contribution-application`, `investigation-answer-outcomes`, `contribution-hosted`, and `method-provenance`. This run covered the production correction at `0545ae4`; the only subsequent implementation-target change was the existing state-contract assertion described below.
+- Full offline suite: **731/731 passed**, zero failures, skips or cancellations, in **477.18 seconds**, using macOS Node 22.13.1 and `node --test --test-concurrency=2 _build/test/*.test.js`. Local loopback and native credential-lock access were enabled; no inference was performed. The tracked checkout and compiled build remained fixed throughout the run, and the worktree was clean afterwards. Existing worker, collision/atomic-acceptance, mutation-isolation and lifetime suites passed along with the new cases.
+- Compiled-source SHA-256: `5ad660bc9cdbb6b99b66c2cb90e8c70ed27dc02be76991e7283f433f8b2d9bde`, unchanged before and after the full run. Reproduce with `buildIdentity("_build")` from `scripts/comparison-fixtures.mjs`.
+- `git diff --check` and changed Markdown file-link checks passed.
+
+Initial type checks caught test construction/import errors, corrected before runtime verification. The first focused run passed 67/68: an existing instruction assertion caught removal of the explicit unchanged-standing/causes sentence during the guidance rewrite. That guarantee was restored alongside the new clarification, and the focused run then passed. The first full run passed 730/731 (467.73 seconds): one existing state-contract deep-equality assertion lacked the new captured-standing field. Only that expected shape was updated, then type check, build and the entire suite were repeated successfully on the final target. No product behavior or validation was weakened to satisfy these assertions.
+
+No additional live inference was authorized or performed. The earlier live authoring/delivery evidence remains attributed to `801e2dd`; the changed `@14` guidance has offline evidence only. Representative memory was not rerun: immutable ownership and retention representation are unchanged, and temporary canonicalization/allocation optimization remains separate. Earlier memory measurements retain their original targets and limitations.
+
+### Current review scope and gate
+
+Both round 5 findings are implemented and locally verified. Their corrections warrant independent rereview under the unchanged original integrated handoff. Correction delta: `801e2dd19603455947f32b9936d8f033b1feb5fc..3ef4e20dec8899b7bbd2b75cc8262ff11791cada`; complete scope: `bd92670e4e0db1c9d9804e6d7797f38678ab9bf1..3ef4e20dec8899b7bbd2b75cc8262ff11791cada`. The original handoff and returned findings remain unchanged. Further human-arranged review and the human's sufficiency determination remain pending. The task stays active and the PR draft; no closure, merge or additional inference is inferred.
