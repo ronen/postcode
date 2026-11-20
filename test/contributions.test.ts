@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import type { EntityId, InvestigramId, SubmittedInvestigram } from '../src/lib/contributions/model.js';
-import { agentic, caveat, contextRecord, createLedger, derived, discoverModule, evidenceRecord, mechanical, rejects, snapshot, submit, submitted } from './contribution-helpers.js';
+import { agentic, caveat, contextRecord, createLedger, derived, discoverModule, evidenceRecord, fixtureIdentityAuthority, mechanical, rejects, snapshot, submit, submitted } from './contribution-helpers.js';
 
 const prose = (key: string, body: string) => ({ key, type: 'prose', body: { text: body } });
 const local = (investigram: string, item: string) => ({ kind: 'item' as const, item: { investigram: { local: investigram }, item } });
@@ -15,11 +15,9 @@ test('provider identity resolves within its rule and scope before a common ident
   const other = discoverModule(ledger, 'breaker.ts', 'project-2').entity('module');
   assert.notEqual(other, module);
   assert.equal(ledger.lookupName('breaker.ts').matches.length, 2);
-  // A later producer naming the same native identity refers to the retained Entity and need not identify it again.
+  // Another producer reuses the common Entity ID and need not identify it again.
   const reused = submit(ledger, mechanical('test/dependencies@1'), [{ key: 'deps', qualification: derived,
-    entities: [{ key: 'again', entityKind: 'module', native: { provider: 'typescript', rule: 'source-file', scope: 'project-1', key: 'breaker.ts' } }],
-    items: [{ key: 'edges', type: 'test-table', body: { rows: ['imports timer'], about: { local: 'again' } } }] }]);
-  assert.equal(reused.entity('again'), module);
+    items: [{ key: 'edges', type: 'test-table', body: { rows: ['imports timer'], about: module } }] }]);
   assert.equal(ledger.entities().length, 2);
   assert.deepEqual(ledger.referencing(module), [reused.item('deps', 'edges')]);
   assert.equal(ledger.entity(module).introducedBy, first.investigram('discovery'));
@@ -42,6 +40,7 @@ test('an explicitly introduced Entity receives a new identity and independent di
 test('invalid submissions are rejected atomically with no partial accepted contribution', () => {
   const ledger = createLedger(), module = discoverModule(ledger).entity('module');
   const discovery = ledger.investigrams()[0]!.id;
+  assert.throws(() => submit(ledger, agentic(), [{ key: 'collision', qualification: caveat, entities: [{ key: 'm', entityKind: 'group', native: { provider: 'typescript', rule: 'source-file', scope: 'project-1', key: 'breaker.ts' } }] }], { nativeIdentityAuthority: fixtureIdentityAuthority }), /cannot be reidentified/);
   const valid: SubmittedInvestigram = { key: 'a', qualification: caveat, items: [prose('p', 'Valid content.')] };
   const cases: [RegExp, readonly unknown[], ReturnType<typeof agentic>?][] = [
     [/Unknown Entity reference/, [valid, { key: 'b', qualification: caveat, referents: ['session:none:entity'], items: [prose('p', 'x')] }]],
@@ -59,7 +58,6 @@ test('invalid submissions are rejected atomically with no partial accepted contr
     [/explicit epistemic status/, [{ ...valid, qualification: { limitations: ['x'] } }], mechanical()],
     [/Evidence must identify program material supplied/, [{ ...valid, items: [{ ...prose('p', 'x'), evidence: [evidenceRecord] }] }]],
     [/requires an identification association/, [{ ...valid, entities: [{ key: 'state', entityKind: 'state' }] }]],
-    [/cannot be reidentified/, [{ ...valid, entities: [{ key: 'm', entityKind: 'group', native: { provider: 'typescript', rule: 'source-file', scope: 'project-1', key: 'breaker.ts' } }] }]],
     [/requires identifying content/, [{ ...valid, declarations: [{ key: 'd', operation: 'add', target: { kind: 'entity', entity: module, role: 'identification' }, members: [local('a', 'p')] }] }]],
     [/Invalid Entity information role/, [{ ...valid, declarations: [{ key: 'd', operation: 'add', target: { kind: 'entity', entity: module, role: 'result' }, members: [local('a', 'p')] }] }]],
     [/never an Entity role/, [{ ...valid, declarations: [{ key: 'd', operation: 'add', target: { kind: 'result', entity: module, result: 'x' }, members: [local('a', 'p')] }] }]],

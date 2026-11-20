@@ -27,8 +27,9 @@ export const tableContract: ContentTypeContract = {
   },
 };
 
+export const fixtureIdentityAuthority = Symbol('Controlled fixture provider');
 export function createLedger(): ContributionLedger {
-  return new ContributionLedger({ session, catalog: new ContentCatalog([proseContract, identificationContract, tableContract]),
+  return new ContributionLedger({ session, authorizesNativeIdentity: (authority, native) => authority === fixtureIdentityAuthority && native.provider === 'typescript' && native.rule === 'source-file' && ['project-1', 'project-2'].includes(native.scope), catalog: new ContentCatalog([proseContract, identificationContract, tableContract]),
     resolvesRecord: id => id === evidenceRecord || id === contextRecord });
 }
 export const mechanical = (method = 'test/module-discovery@1'): Producer => ({ mechanism: 'mechanical', method, agent: null });
@@ -46,8 +47,8 @@ export interface Submitted {
 }
 /** One producing execution: optional acquisitions, then one submitted contribution. */
 export function submit(ledger: ContributionLedger, producer: Producer, investigrams: readonly SubmittedInvestigram[] | ((handle: ProductionHandle) => readonly SubmittedInvestigram[]),
-  options: { readonly invocation?: InvocationId; readonly report?: SubmittedContribution['report'] } = {}): Submitted {
-  const handle = ledger.begin({ producer, invocation: options.invocation ?? null });
+  options: { readonly invocation?: InvocationId; readonly report?: SubmittedContribution['report']; readonly nativeIdentityAuthority?: unknown } = {}): Submitted {
+  const handle = ledger.begin({ producer, invocation: options.invocation ?? null, nativeIdentityAuthority: options.nativeIdentityAuthority });
   const contribution: SubmittedContribution = { investigrams: typeof investigrams === 'function' ? investigrams(handle) : investigrams,
     ...(options.report ? { report: options.report } : {}) };
   return submitted(ledger.accept([{ production: handle, contribution }]), handle);
@@ -66,7 +67,7 @@ export function discoverModule(ledger: ContributionLedger, name = 'breaker.ts', 
     entities: [{ key: 'module', entityKind: 'module', native: { provider: 'typescript', rule: 'source-file', scope, key: name } }],
     items: [{ key: 'name', type: 'identification', body: { name, nameOrigin: 'system-under-study', designation: `Source module ${name}` } }],
     declarations: [{ key: 'identify', operation: 'add', target: { kind: 'entity', entity: { local: 'module' }, role: 'identification' },
-      members: [{ kind: 'item', item: { investigram: { local: 'discovery' }, item: 'name' } }] }] }]);
+      members: [{ kind: 'item', item: { investigram: { local: 'discovery' }, item: 'name' } }] }] }], { nativeIdentityAuthority: fixtureIdentityAuthority });
 }
 
 export function summaryInvocation(ledger: ContributionLedger, subject: EntityId, resultContract: string | null = null, fresh = false) {

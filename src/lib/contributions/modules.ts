@@ -1,4 +1,4 @@
-import { nativeIdentity } from './native-identity.js';
+import { authorizesNativeIdentity, nativeIdentity, nativeRecordEntity, programProviderIdentityAuthority } from './native-identity.js';
 import { entityRecord } from './subjects.js';
 import { canonical, identityReference, methods, recordId } from '../identity.js';
 import type { ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleRecord, ProgramRecordStore, RecordId, SessionId } from '../records.js';
@@ -42,6 +42,7 @@ export function sessionLedger(store: ProgramRecordStore, session: SessionId): Co
   let ledger = bySession.get(session);
   if (!ledger) {
     ledger = new ContributionLedger({ session, capture: value => store.capture(value), catalog: new ContentCatalog([proseContract, identificationContract, moduleIdentificationContract, moduleExportsContract, nativeFindingContract(store, session), stateModelContract]),
+      authorizesNativeIdentity: (authority, native) => authorizesNativeIdentity(store, session, authority, native),
       resolvesRecord: id => store.lookup(id)?.session === session,
       qualifiesContext: (id, producer) => { const context = store.lookup(id); return context?.kind === 'claim-context' && context.session === session && context.method === producer.method; } });
     bySession.set(session, ledger);
@@ -56,7 +57,7 @@ export function moduleNativeIdentity(module: ModuleRecord): NativeIdentity {
 /** The one common Entity of a module record, once its identification has been contributed. Host identity bookkeeping; no exposure. */
 export function moduleEntity(store: ProgramRecordStore, module: RecordId): EntityId | undefined {
   const value = store.lookup(module);
-  return value?.kind === 'module' ? sessionLedger(store, value.session).native(moduleNativeIdentity(value)) : undefined;
+  return value?.kind === 'module' ? nativeRecordEntity(sessionLedger(store, value.session), value) : undefined;
 }
 /** The module record a common Entity was mapped from, if it is a discovered module. */
 export function entityModule(store: ProgramRecordStore, session: SessionId, entity: EntityId): RecordId | undefined {
@@ -103,7 +104,7 @@ function contribute(store: ProgramRecordStore, session: SessionId, purpose: stri
   for (const method of [...new Set(pending.map(item => item.method))]) {
     const items = pending.filter(item => item.method === method), policyMethod = items[0]!.policyMethod;
     const production = (producer: string) => recordId(session, 'production', [producer, purpose, method, reference(basis)]);
-    const finder = ledger.begin({ producer: { mechanism: 'mechanical', method, agent: null }, id: production(method) });
+    const finder = ledger.begin({ nativeIdentityAuthority: programProviderIdentityAuthority, producer: { mechanism: 'mechanical', method, agent: null }, id: production(method) });
     finder.supplied(items.flatMap(item => [...item.item.evidence, ...item.item.qualification.contexts]));
     const policy = ledger.begin({ producer: { mechanism: 'mechanical', method: policyMethod, agent: null }, id: production(policyMethod) });
     const entity = (module: ModuleRecord) => `module ${reference(module.id)}`;

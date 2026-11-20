@@ -1,4 +1,4 @@
-import { nativeIdentity } from './native-identity.js';
+import { nativeRecordCandidate, nativeRecordEntity } from './native-identity.js';
 import { EntityBindings } from '../identity.js';
 import type { ProgramRecordStore, RecordId } from '../records.js';
 import type { ContributionLedger } from './ledger.js';
@@ -62,8 +62,6 @@ export function subjectOwner(subject: ExactSubject): RecordId {
 export function entityRecord(store: ProgramRecordStore, ledger: ContributionLedger, entity: EntityId): RecordId | undefined {
   const retained = ledger.entity(entity), native = retained.native;
   if (retained.modality !== 'implemented' || !native || !/^session:(module|symbol|group):/.test(native.key)) return undefined;
-  const id = `${ledger.session}${native.key.slice('session'.length)}` as RecordId;
-  const value = store.lookup(id);
-  if (!value || value.session !== ledger.session || value.kind !== 'module' && value.kind !== 'symbol' && value.kind !== 'group') return undefined;
-  return retained.entityKind === value.kind && ledger.native(nativeIdentity(value)) === entity ? value.id : undefined;
+  const value = nativeRecordCandidate(store, ledger.session, native.key);
+  return value && nativeRecordEntity(ledger, value) === entity ? value.id : undefined;
 }

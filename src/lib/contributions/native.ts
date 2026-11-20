@@ -1,4 +1,4 @@
-import { nativeIdentity } from './native-identity.js';
+import { nativeIdentity, nativeRecordEntity, programProviderIdentityAuthority } from './native-identity.js';
 import { digest, identityReference, methods, recordId } from '../identity.js';
 import type { ClaimContextRecord, ProgramRecord, ProgramRecordStore, RecordId, SessionId } from '../records.js';
 import { sessionLedger } from './modules.js';
@@ -10,7 +10,7 @@ type NativeEntity = Extract<ProgramRecord, { kind: 'module' | 'symbol' | 'group'
 export function nativeEntity(store: ProgramRecordStore, id: RecordId): EntityId | undefined {
   const value = store.get(id);
   return value.kind === 'module' || value.kind === 'symbol' || value.kind === 'group'
-    ? sessionLedger(store, value.session).native(nativeIdentity(value)) : undefined;
+    ? nativeRecordEntity(sessionLedger(store, value.session), value) : undefined;
 }
 /** Derived providers retain attempt-specific support records. Equality uses their statement,
  * actual qualification and fixed input population, not incidental evaluation record identity. */
@@ -127,7 +127,7 @@ export function contributeNativeFindings(store: ProgramRecordStore, session: Ses
   const batch = (method: string) => {
     let found = productions.get(method);
     if (!found) {
-      const production = ledger.begin({ producer: { mechanism: 'mechanical', method, agent: null },
+      const production = ledger.begin({ nativeIdentityAuthority: programProviderIdentityAuthority, producer: { mechanism: 'mechanical', method, agent: null },
         id: recordId(session, 'production', ['native-findings', method, pending.map(value => identityReference(session, value.id))]) });
       inputItems.forEach(item => production.item(item));
       production.supplied(inputs);

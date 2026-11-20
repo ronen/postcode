@@ -18,7 +18,7 @@ export const methods = {
   expansions: 'postcode/typescript-expansions@3',
   handles: 'postcode/module-handles@5',
   organization: 'postcode/organization@3',
-  contributions: 'postcode/contributions@1',
+  contributions: 'postcode/contributions@2',
   contributionStatus: 'postcode/contribution-status@1',
   moduleIdentificationPolicy: 'postcode/module-identification-policy@1',
   nativeFindingPolicy: 'postcode/native-finding-policy@1',

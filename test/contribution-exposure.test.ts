@@ -106,9 +106,7 @@ test('a mechanical producer that consumes retained information records it; indep
   });
   // Independently analyses source; host identity mapping alone delivers nothing.
   const independent = submit(ledger, mechanical('test/dependencies@1'), [{ key: 'deps2', qualification: derived,
-    entities: [{ key: 'm', entityKind: 'module', native: { provider: 'typescript', rule: 'source-file', scope: 'project-1', key: 'breaker.ts' } }],
-    items: [{ key: 'edges', type: 'test-table', body: { rows: ['imports timer'], about: { local: 'm' } } }] }]);
-  assert.equal(independent.entity('m'), module);
+    items: [{ key: 'edges', type: 'test-table', body: { rows: ['imports timer'], about: module } }] }]);
   withdraw(ledger, 'w', identify);
   assert.equal(causes(ledger, consumer.investigram('deps')).length, 1);
   assert.deepEqual(causes(ledger, independent.investigram('deps2')), []);

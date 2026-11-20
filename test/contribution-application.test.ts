@@ -614,24 +614,27 @@ test('offered option qualifications survive direct and JSON arrangement and exac
   assert.deepEqual(arrangeContributionAnswer(structuredClone(first.content), first.result.title), direct);
 });
 
-test('a different native identity is inspectable as itself but cannot invoke module investigations directly or through options', async t => {
-  const agent = new ScriptedDialogs([[input => {
+test('a dialog cannot claim native identity and can repair with an independently inspectable Entity', async t => {
+  const offer = (input: DialogInput, claimNative: boolean): DialogReply => {
     const module = (input.request.subjects[0] as { moduleRecord: string }).moduleRecord;
     return { kind: 'submit', contribution: { investigrams: [{ key: 'distinct', qualification: caveat,
-      entities: [{ key: 'distinct', entityKind: 'module', native: { provider: 'typescript', rule: 'different-discovery@1', scope: 'configured-project',
-        key: module.replace(/^session:[^:]+/, 'session') } }],
-      items: [{ key: 'name', type: 'identification', body: { name: 'Distinct module', nameOrigin: 'assigned', designation: 'A distinct identity under another discovery rule.' } }],
+      entities: [{ key: 'distinct', entityKind: 'module', ...(claimNative ? { native: { provider: 'typescript', rule: 'different-discovery@1', scope: 'configured-project',
+        key: module.replace(/^session:[^:]+/, 'session') } } : {}) }],
+      items: [{ key: 'name', type: 'identification', body: { name: 'Distinct module', nameOrigin: 'assigned', designation: 'An independently identified module.' } }],
       declarations: [{ key: 'identify', operation: 'add', target: { kind: 'entity', entity: { local: 'distinct' }, role: 'identification' },
         members: [{ kind: 'item', item: { investigram: { local: 'distinct' }, item: 'name' } }] },
       { key: 'answer', operation: 'add', target: { kind: 'result', result: input.request.result },
         members: [{ kind: 'item', item: { investigram: { local: 'distinct' }, item: 'name' } }] }],
       options: [{ key: 'investigate', meaning: 'Investigate this distinct Entity.', request: { operation: 'summarize',
         subjects: [{ subject: { kind: 'entity', entity: { local: 'distinct' } } }] } }] }] } };
-  }]]);
+  };
+  const agent = new ScriptedDialogs([[input => offer(input, true), input => offer(input, false)]]);
   const opened = await openApplication(fixture(t), { investigation: { dialogAgent: agent } });
   assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
   const session = opened.session; t.after(() => session.close());
   const seed = answer(await session.execute({ kind: 'lens', lens: 'summarize', designation: { kind: 'name', value: 'breaker' } }));
+  assert.equal(agent.inputs[0]!.length, 2);
+  assert.match(JSON.stringify(agent.inputs[0]![1]!.responses), /host-established authority/);
   const owner = seed.projection.alternatives[0]!.designation.investigram;
   const selected = seed.projection.alternatives[0]!.options[0]!.option.request.subjects[0]!.subject;
   assert.equal(selected.kind, 'entity'); if (selected.kind !== 'entity') return;

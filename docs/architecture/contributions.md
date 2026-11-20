@@ -46,6 +46,31 @@ dialog module references. A distinct native identity remains independently
 inspectable without receiving the candidate module’s mechanical content. Mapping
 is identity bookkeeping and creates no exposure.
 
+Provider-native identity claims require host-established namespace authority at the
+ledger's atomic acceptance boundary, including reassertions of an existing native
+tuple. Ordinary producers reuse the common Entity ID or introduce a separately
+identified Entity without a native tuple. Being mechanical, naming a provider's
+method, or submitting an object that resembles a credential grants no authority.
+This restriction does not limit another producer's qualified additions,
+identifications, challenges or withdrawals concerning that common Entity.
+
+The host installs a default-deny authorization policy when constructing a ledger and
+supplies an opaque credential only when opening an authorized provider production.
+The credential is kept in a ledger-local weak map keyed by that exact production
+handle, removed at conclusion, and omitted from retained records and delivery.
+Another production in the same acceptance pool cannot borrow it. The built-in
+TypeScript and repository-layout adapters share a host credential; the Session
+policy additionally requires the exact native tuple of a retained provider record,
+so it cannot introduce a different provider, rule, scope or native key. No growing
+module-global authority registry is used. This is a host adapter boundary, not a
+permission inferred from producer-declared metadata or the hosted submission schema.
+
+Forward and reverse mapping both require the expected Entity kind and implemented
+modality. A host-authorized but incompatible mapping therefore cannot become a
+module-operation subject. Contribution acceptance advances to
+`postcode/contributions@2`; the native tuple and common-ID formulas are unchanged.
+
+
 Organization providers can emit new record IDs when a requested module requirement
 set changes without changing the finding. Their contribution keys therefore compare
 the statement, its qualification and relevant fixed population, excluding incidental

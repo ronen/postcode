@@ -41,6 +41,8 @@ export interface LedgerOptions {
   /** Share the host store's immutable capture boundary. Standalone ledgers own their own. */
   readonly capture?: <T>(value: T) => T;
   readonly catalog?: ContentCatalog;
+  /** Host policy for an opaque credential supplied when opening a production. Denies all by default. */
+  readonly authorizesNativeIdentity?: (authority: unknown, native: NativeIdentity) => boolean;
   /** Whether a program record reference resolves in this Session. Defaults to accepting none. */
   readonly resolvesRecord?: (id: RecordId) => boolean;
   /**
@@ -83,6 +85,8 @@ export class ContributionLedger {
   readonly status: ContributionStatus;
   readonly #resolvesRecord: (id: RecordId) => boolean;
   readonly #qualifiesContext: (id: RecordId, producer: Producer) => boolean;
+  readonly #authorizesNativeIdentity: (authority: unknown, native: NativeIdentity) => boolean;
+  readonly #nativeAuthorities = new WeakMap<ProductionHandle, unknown>();
   #position = 0;
   #sequence = 0;
   readonly #entities = new Map<EntityId, Entity>();
@@ -111,6 +115,7 @@ export class ContributionLedger {
     this.catalog = options.catalog ?? new ContentCatalog();
     this.#resolvesRecord = options.resolvesRecord ?? (() => false);
     this.#qualifiesContext = options.qualifiesContext ?? (id => this.#resolvesRecord(id));
+    this.#authorizesNativeIdentity = options.authorizesNativeIdentity ?? (() => false);
     this.status = new ContributionStatus(this);
   }
 
@@ -265,11 +270,13 @@ export class ContributionLedger {
   }
 
   /** Open one producing execution. Its acquisitions are the only source of recorded exposure. */
-  begin(init: { readonly producer: Producer; readonly invocation?: InvocationId | null; readonly id?: RecordId }): ProductionHandle {
+  begin(init: { readonly producer: Producer; readonly invocation?: InvocationId | null; readonly id?: RecordId; readonly nativeIdentityAuthority?: unknown }): ProductionHandle {
     if (init.invocation) this.invocation(init.invocation);
     const id = (init.id ?? recordId(this.session, 'production', [randomUUID()])) as ProductionId;
     if (this.#productions.has(id)) throw new Error('Production identity already concluded');
-    return new ProductionHandle(this, { id, producer: this.capture(init.producer), invocation: init.invocation ?? null });
+    const handle = new ProductionHandle(this, { id, producer: this.capture(init.producer), invocation: init.invocation ?? null });
+    if (init.nativeIdentityAuthority !== undefined) this.#nativeAuthorities.set(handle, init.nativeIdentityAuthority);
+    return handle;
   }
 
   /** Conclude an attempt that returned no contribution. Its actual deliveries remain attributable; nothing unsubmitted is accepted. */
@@ -285,6 +292,7 @@ export class ContributionLedger {
     const production: Production = this.capture({ kind: 'production', id: handle.id, session: this.session, producer: handle.producer,
       invocation: handle.invocation, opened: handle.opened, concluded: this.#position, outcome, deliveries: handle.deliveries,
       evidence: handle.evidence, report, investigrams });
+    this.#nativeAuthorities.delete(handle);
     this.#productions.set(production.id, production);
     return production;
   }
@@ -341,6 +349,9 @@ export class ContributionLedger {
       if (raw.native !== undefined && raw.native !== null) {
         const value = record(raw.native, ['provider', 'rule', 'scope', 'key'], 'native identity');
         native = { provider: text(value.provider, 'provider'), rule: text(value.rule, 'identity rule'), scope: text(value.scope, 'identity scope'), key: text(value.key, 'native key') };
+        if (!this.#nativeAuthorities.has(staged.handle) || !this.#authorizesNativeIdentity(this.#nativeAuthorities.get(staged.handle), native)) {
+          fail('Provider-native identity requires host-established authority for its namespace; reuse a common Entity ID instead.');
+        }
         const nativeKey = canonical(native), known = this.#natives.get(nativeKey) ?? natives.get(nativeKey);
         if (known) {
           const existing = this.#entities.get(known) ?? created.get(known)!;
