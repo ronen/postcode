@@ -141,6 +141,11 @@ Verification should be proportional to the risk and scope of the change. Before 
 
 Report what was verified, what was not verified, and any residual uncertainty. Never imply that an unperformed check passed. Raise unresolved risks or questions, and identify useful follow-up work outside the current scope.
 
+<a id="live-inference-verification"></a>
+### Live inference verification
+
+Whenever instructions supplied to PostCode's inference agents change, test the revised instructions through focused live trials using the actual integration. This includes prompt text and instructions in agent-facing tool or response-schema descriptions. Exercise the behavior affected by the change; offline tests and scripted responses complement but do not replace live verification. Use the changed production instructions and record the tested version, outcome, and any failures or repairs. If live verification cannot be completed, record the gap and obtain explicit human acceptance before treating verification as sufficient. If task, plan, or review instructions say that no live inference is needed for such a change, challenge that exemption and obtain explicit human resolution rather than silently treating the change as exempt.
+
 For authorized live-agent trials, estimate the inference requests needed for the planned scenarios, including multi-request interactions, normal repair, and reasonable retries. Choose a finite request cap with sufficient headroom to complete those trials; its purpose is to prevent runaway requests, not to impose an arbitrary testing allowance. Count failed attempts and retries toward the cap, and stop when the verification objective is met rather than spending the remaining allowance. If the cap is reached, assess why before proposing an extension. Respect any explicit human-set limit; do not increase it without authorization.
 
 <a id="intermediate-review"></a>
