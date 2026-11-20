@@ -11,6 +11,78 @@ The human requested discussion of the first useful graphical investigation
 experience, using actual structured-account outputs alongside the authored journey,
 with working notes here and a plan only after scope has been worked out.
 
+## Current scope checkpoint
+
+This checkpoint distinguishes working directions established in discussion from
+capability hypotheses and unresolved boundaries. It is not a formal adopted
+specification, approved plan or implementation authorization.
+
+### Directions established
+
+- PostCode helps people understand the software through qualified architectural
+  accounts. Their motivating task can focus attention; solving that task or
+  choosing a design direction is not the required endpoint.
+- Explore the magic-reference-book content concept: coherent explanations,
+  surrounding context, substantive related-topic previews and open-ended routes
+  through a developing reference. The magic is adaptation and continued
+  exploration, not universal answerability or exhaustive existing knowledge.
+- People may enter with a concrete purpose and no project knowledge. Direct
+  lookup and gaining surrounding context can happen together; no mandatory
+  overview-first sequence has been selected.
+- Architectural concepts supply an extensible vocabulary, not a template. Useful
+  concepts depend on subject and context. Investigations can identify relevant
+  concepts and then examine a subject through a selected concept, including
+  reporting ambiguity or inadequate evidence.
+- Selection, search, standard investigations and offered connections are the
+  initial interaction direction. Exact parts of retained accounts can be subjects.
+  The operation catalogue, including challenge behavior, remains to be selected.
+- Prose-directed access is an intended capability: primarily open or develop the
+  relevant book accounts, with a brief reply where useful. Its implementation
+  can follow the basic book features. Prose exclusion is not a permanent principle.
+- Organization need not produce one hierarchy; several perspectives can coexist
+  even for one reader and topic. A default route may depend on the codebase.
+- Select a content concept plausibly useful under plain competent presentation;
+  detailed UI design and an interactive prototype are not prerequisites to scope
+  discussion. Actual use will still be needed to establish usefulness.
+
+### Supporting hypotheses, not yet specified capabilities
+
+- A lightly structured vocabulary, drawing on agent knowledge and accessible
+  reference works, may improve concept selection, explanations and guidance.
+- PostCode can anticipate useful neighboring topics and produce previews without
+  a separate explicit request for each. One investigation may supply several.
+- Some reader-independent organization beginning with the mechanical inventory
+  may provide a stable footing for interpretation. The inventory itself is not
+  the architectural organization, and repeated interpretation need not be identical.
+- Shared higher-level accounts may provide common landmarks across reading routes.
+  Their adequacy and the appropriate degree of convergence remain to be tested.
+
+### Decisions still needed
+
+- Concrete first scenario(s), available starting material and what understanding
+  would count as a useful endpoint. Cockatiel remains a strong example, not a
+  selected full-slice acceptance script or permanent concept catalogue.
+- What a useful basic book contains: account scope/depth, diagrams, relationships,
+  navigable subjects, supporting detail and the initial operation meanings.
+- ORGANIZE's first responsibilities, initial versus incremental work, alternative
+  perspectives, defaults and preservation/revision of organizing choices.
+- How selection-based exploration continues from incomplete, misleading or
+  unsuccessful accounts, including the scope of a challenge operation.
+- Coherence expectations within a developing reference and reasonable consistency
+  across independently generated references. These are separate evaluation questions.
+- Persistence, continuation across repository changes and any cross-user sharing.
+  Shared persistence is an unselected alternative, not the current plan.
+- Bounds on anticipatory work and the usability implications of latency/failure,
+  without prematurely prescribing how investigations are partitioned or scheduled.
+- Evidence and acceptance criteria for fidelity, discoverability, understanding,
+  continuity, guidance and consistency; additional capability prerequisites and
+  their sequencing before PRESENT/MINIGUI.
+
+The next useful scope decision is what qualifies as the first basic book: a
+concrete body of understanding and traversable connections substantial enough to
+test the agreed hypothesis. Existing account/diagram/follow-up trials support
+mechanism feasibility, not the usefulness or coherence of that whole experience.
+
 ## Working context
 
 Branch: `codex/first-graphical-experience`.
