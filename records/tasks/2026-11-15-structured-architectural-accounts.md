@@ -287,6 +287,11 @@ to begin the substantive implementation task described by that plan.
 > For F2, avoid repeated delivery of exact duplicate subject/context inputs while preserving their roles and exposure semantics. Do not conflate different acquisition routes merely because they reach the same content.\
 > \
 
+
+2026-11-20, after clean integrated rereview round 6, authorizing focused live verification of dialog `@14` with exact duplicate subject/context inputs and address-based response matching. This supersedes the no-additional-inference restriction only for this regression trial. Under `dev/workflow.md`, estimate 3–8 requests for a focused invocation and any normal repair or targeted retry, with a new hard cap of 20 counting every dispatched request, failure and retry. Use the established ChatGPT-plan route, `gpt-5.6-sol` with medium reasoning, pinned Cockatiel fixture and unchanged production limits/instructions. A controlled retained-option fixture may establish duplicate selections through normal acceptance; distinguish its scripted setup from live behavior. Stop once the objective is met, preserving unsuccessful outcomes and repairs. Final independent review and human sufficiency remain separate.
+
+> The re-review is complete.  Re dialog 14 -- please verify dialog version 14 with a focused live regression trial exercising the revised instructions for matching deduplicated subject/context responses by address. Use the production instructions and the established inference policy, and record the outcome, failures and repairs for review.
+
 ## Outcome
 
 ## Verification
