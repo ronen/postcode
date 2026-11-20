@@ -118,7 +118,7 @@ test('an explicit state-diagram request is fulfilled only by state-model content
   assert.equal(assessFulfillment(store, stateDiagramContract, result.id).status, 'no-designated-answer');
   // Prose placed under a key does not fulfil the diagram requirement.
   const prose = answer('prose', 'prose', { text: 'It has three states: closed, open and half-open.' });
-  assert.deepEqual(assessFulfillment(store, stateDiagramContract, result.id).alternatives, [{ designation: prose,
+  assert.deepEqual(assessFulfillment(store, stateDiagramContract, result.id).alternatives, [{ designation: prose, standing: { state: 'standing', displacedBy: [] },
     unmet: [{ requirement: 'A state model from which a state-transition diagram can be drawn.', reason: 'The selected answer contains no state-model content.' }] }]);
   const model = { ...breaker({ entity }), states: breaker({ entity }).states.map(state => ({ key: state.key, label: state.label })) };
   const structured = answer('model', 'state-model', model);
