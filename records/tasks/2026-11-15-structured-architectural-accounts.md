@@ -278,6 +278,15 @@ to begin the substantive implementation task described by that plan.
 > \
 > Follow the task and review-response workflow, add appropriate offline verification, and verify authoring and invocation with a focused live trial under the established inference policy. Record the results for independent review.
 
+2026-11-20, resolving integrated review round 5 findings F1 and F2 before implementation. Returned withdrawn designations remain acceptable as attempt answers, with their captured standing explicitly disclosed alongside attempt fulfillment; returning one is neither endorsement nor re-adoption. Exact duplicate subject/context acquisitions are to be delivered once while preserving request roles and distinct acquisition routes. This direction authorizes these corrections and offline verification, not additional live inference or integrated-gate acceptance.
+
+> The review is complete.  Regarding its findings:\
+> \
+> For F1, accept a returned withdrawn designation, but make its withdrawn standing explicit alongside the attempt’s fulfillment reporting. Returning it is not endorsement or re-adoption; making it current again requires a new declaration. Preserve the distinction between attempt fulfillment and the question having no current answer, and test it.\
+> \
+> For F2, avoid repeated delivery of exact duplicate subject/context inputs while preserving their roles and exposure semantics. Do not conflate different acquisition routes merely because they reach the same content.\
+> \
+
 ## Outcome
 
 ## Verification
