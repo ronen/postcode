@@ -5,7 +5,7 @@ Date: 2026-11-19
 Updated: 2026-11-20
 Task: [Implement structured architectural accounts](../../tasks/2026-11-15-structured-architectural-accounts.md)
 Handoff: [Final integrated review](2026-11-19-m4-integrated-handoff.md)
-Findings: [Round 1](2026-11-19-m4-integrated-round-1-findings.md), [round 2](2026-11-19-m4-integrated-round-2-findings.md), [round 3, full branch](2026-11-19-m4-integrated-round-3-claude-findings.md), [round 4](2026-11-19-m4-integrated-round-4-claude-findings.md), [round 5, full branch](2026-11-20-m4-integrated-round-5-claude-findings.md)
+Findings: [Round 1](2026-11-19-m4-integrated-round-1-findings.md), [round 2](2026-11-19-m4-integrated-round-2-findings.md), [round 3, full branch](2026-11-19-m4-integrated-round-3-claude-findings.md), [round 4](2026-11-19-m4-integrated-round-4-claude-findings.md), [round 5, full branch](2026-11-20-m4-integrated-round-5-claude-findings.md), [round 6](2026-11-20-m4-integrated-round-6-claude-findings.md)
 Current implementation target: `3ef4e20dec8899b7bbd2b75cc8262ff11791cada`
 Gate status: further human-arranged review pending
 
@@ -132,3 +132,15 @@ No additional live inference was authorized or performed. The earlier live autho
 ### Current review scope and gate
 
 Both round 5 findings are implemented and locally verified. Their corrections warrant independent rereview under the unchanged original integrated handoff. Correction delta: `801e2dd19603455947f32b9936d8f033b1feb5fc..3ef4e20dec8899b7bbd2b75cc8262ff11791cada`; complete scope: `bd92670e4e0db1c9d9804e6d7797f38678ab9bf1..3ef4e20dec8899b7bbd2b75cc8262ff11791cada`. The original handoff and returned findings remain unchanged. Further human-arranged review and the human's sufficiency determination remain pending. The task stays active and the PR draft; no closure, merge or additional inference is inferred.
+
+## Round 6 and authorized dialog 14 live regression
+
+[Round 6](2026-11-20-m4-integrated-round-6-claude-findings.md), committed at `f63abdf`, rereviewed `801e2dd..3ef4e20` and the round 5 disposition. It found **both findings resolved as directed and no new findings**. It reproduced the build digest and an uninterrupted **731/731** offline run on macOS Node 22.13.1, zero failures/skips/cancellations, in 487 seconds. This is correction rereview; round 5's full-branch assessment and residual limits remain applicable outside the delta.
+
+The reviewer noted that deduplicated initial responses no longer align position-for-position with the original request, but have addresses/Entities for matching and instructions describing the rule. Dialog `@14` still had only offline evidence. The human authorized a focused live regression for this point; task follow-up `c27b9ba` preserves that direction and its finite cap before execution.
+
+**The focused live trial passed using unchanged production instructions and source.** Harness `5216855` supplies a clearly identified controlled setup through real acceptance, then invokes its retained follow-up option through the supported application boundary with the production hosted agent. One subject plus six context entries select three distinct prose items, including repetitions across subject/context and within context. Only three addressed content responses plus option metadata are delivered. The live answer preserves their distinct meanings and qualifications and references all three exact retained items as support. It is accepted on the first submission, with no additional acquisition, failure, repair or retry. The new budget used **1/20 requests**, with **8,646 reported tokens**; inference stopped at the achieved objective.
+
+The [validation record](../../validation/structured-architectural-accounts/m4-dialog14-live-regression.md) records the scenario, exact delegated question, execution basis, unchanged instruction/schema audit, exposure and request accounting, generated behavior, empty failure/repair lists, evidence manifest and limits. The application counts one scripted setup communication separately from the one hosted request; no provider usage is missing. The trial verifies a controlled whole-item case, not every acquisition route or live duplicate-option authoring, and does not independently establish the truth of the input notes. Returned-withdrawn instructions are still not live-tested by this trial.
+
+Production implementation target remains `3ef4e20dec8899b7bbd2b75cc8262ff11791cada`, with source digest `5ad660bc9cdbb6b99b66c2cb90e8c70ed27dc02be76991e7283f433f8b2d9bde`. Only the verification harness/audit and records were added. No new full-suite or memory result is claimed. The original handoff and findings remain unchanged. Further human-arranged evidence review and human sufficiency determination remain pending; the task stays active and the PR draft, without closure, merge or further inference authorization.
