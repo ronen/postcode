@@ -5,9 +5,9 @@ Date: 2026-11-19
 Updated: 2026-11-20
 Task: [Implement structured architectural accounts](../../tasks/2026-11-15-structured-architectural-accounts.md)
 Handoff: [Final integrated review](2026-11-19-m4-integrated-handoff.md)
-Findings: [Round 1](2026-11-19-m4-integrated-round-1-findings.md), [round 2](2026-11-19-m4-integrated-round-2-findings.md), [round 3, full branch](2026-11-19-m4-integrated-round-3-claude-findings.md), [round 4](2026-11-19-m4-integrated-round-4-claude-findings.md), [round 5, full branch](2026-11-20-m4-integrated-round-5-claude-findings.md), [round 6](2026-11-20-m4-integrated-round-6-claude-findings.md), [round 7, live evidence](2026-11-20-m4-integrated-round-7-claude-findings.md), [round 8, independent full branch](2026-11-20-m4-integrated-round-8-codex-findings.md)
+Findings: [Round 1](2026-11-19-m4-integrated-round-1-findings.md), [round 2](2026-11-19-m4-integrated-round-2-findings.md), [round 3, full branch](2026-11-19-m4-integrated-round-3-claude-findings.md), [round 4](2026-11-19-m4-integrated-round-4-claude-findings.md), [round 5, full branch](2026-11-20-m4-integrated-round-5-claude-findings.md), [round 6](2026-11-20-m4-integrated-round-6-claude-findings.md), [round 7, live evidence](2026-11-20-m4-integrated-round-7-claude-findings.md), [round 8, independent full branch](2026-11-20-m4-integrated-round-8-codex-findings.md), [round 9](2026-11-20-m4-integrated-round-9-codex-findings.md)
 Current implementation target: `25e9361b12580cd6440fcff38b6f7b44907a86fd`
-Gate status: further human-arranged review pending
+Gate status: clean correction rereview; human review-sufficiency determination pending
 
 ## Findings and dispositions
 
@@ -183,3 +183,13 @@ No additional live inference or representative memory measurement was run. Earli
 ### Current review scope and gate
 
 Round 7's evidence review is clean within the clarified discrimination limit. Round 8's three independent counterexamples have been reproduced, corrected and locally verified; its recommendation requiring changes is not treated as acceptance of the new target. Independent correction rereview is warranted under the unchanged original handoff. Use `8a0551e29467aa13fc5b6fc6aebfa35973cb429a..25e9361b12580cd6440fcff38b6f7b44907a86fd` for the correction delta, or `bd92670e4e0db1c9d9804e6d7797f38678ab9bf1..25e9361b12580cd6440fcff38b6f7b44907a86fd` for the complete implementation. Both returned reviews remain unmodified. Further human-arranged review and human sufficiency determination remain pending. The task stays active and the PR draft; no closure, merge or further inference is inferred.
+
+## Round 9: clean correction rereview
+
+[Round 9](2026-11-20-m4-integrated-round-9-codex-findings.md), committed at `e8450c3`, reviewed the round 8 corrections through `cbd3c91722cdab21a35cac6bd05f2c47528fc09a`, with production implementation `25e9361b12580cd6440fcff38b6f7b44907a86fd`. The returning independent reviewer found **all three round 8 findings resolved and no new actionable findings** in the correction delta or affected integration paths. This is correction rereview following round 8's independent full review, not another complete baseline-to-tip review.
+
+The reviewer independently reran the original probes with corrected-behavior assertions. These confirmed preservation of the offered option's narrower qualification, usable export-body handles and their round trip, distinct literal parameter identities with repeated-selection reuse, and output-exclusion identity stability. It also traced historical selection, captured standing/causes, competing answers, withdrawal, failed fresh attempts, exact presentation and worker delivery. The documentation cleanup is confirmed resolved, including the distinction between earlier live evidence and offline verification of wire `@11`.
+
+Independent type check/build passed. **46/46 focused tests** passed in 56.23 seconds and **40/40 additional integration tests** passed in 8.71 seconds, all without failures, skips or cancellations, on Node 22.13.1 at concurrency 2. The latter files were `contribution-results`, `investigation-answer-outcomes`, `m3-agentic-cutover` and `immutable-capture`. The reviewer reproduced source digest `9b716ef3a97fc8a39ec39ea1630096bdc39bf2119adaa5fbdcd8ac856bd3a637`. It did not repeat the full suite; the implementing agent's uninterrupted **735/735** result remains separately attributed above. No live inference, representative memory rerun or new SVG visual inspection occurred, and the broader full-review limits remain.
+
+No correction is required in response to round 9. The production target is unchanged; only this disposition is updated, with file-link and diff-whitespace checks. The returned findings and original handoff remain unchanged. The correction review cycle is clean and there are no unresolved round 8 blockers. Human determination of integrated review sufficiency remains pending under the task protocol; the task stays active and the PR draft. This clean result does not authorize closure, merge or further inference.
