@@ -1,3 +1,4 @@
+import { entityRecord } from '../src/lib/contributions/subjects.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { appendFileSync, cpSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
@@ -150,6 +151,7 @@ test('all module expansions retain exact symbols, exports, assertions and compos
     if (record.kind === 'claim' && record.information.type === 'symbol') {
       const entity = nativeEntity(store, record.subject)!;
       assert.equal(ledger.entity(entity).entityKind, 'symbol');
+      assert.equal(entityRecord(store, ledger, entity), record.subject);
       assert.ok(ledger.identifications(entity).length);
     }
   }
@@ -212,6 +214,7 @@ test('organization and dependency families preserve qualified findings and actua
   for (const id of layout.groups) {
     const entity = nativeEntity(store, id)!;
     assert.equal(ledger.entity(entity).entityKind, 'group');
+    assert.equal(entityRecord(store, ledger, entity), id);
     assert.equal(ledger.identifications(entity).length, 1);
   }
   const placement = layout.claims.map(id => store.get(id)).find(record => record.kind === 'claim' && record.information.type === 'module-placement')!;

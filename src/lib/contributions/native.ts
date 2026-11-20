@@ -1,17 +1,12 @@
+import { nativeIdentity } from './native-identity.js';
 import { digest, identityReference, methods, recordId } from '../identity.js';
 import type { ClaimContextRecord, ProgramRecord, ProgramRecordStore, RecordId, SessionId } from '../records.js';
-import { moduleNativeIdentity, sessionLedger } from './modules.js';
-import type { EntityId, ItemAddress, NativeIdentity, SubmittedInvestigram } from './model.js';
+import { sessionLedger } from './modules.js';
+import type { EntityId, ItemAddress, SubmittedInvestigram } from './model.js';
 import type { ProductionHandle } from './production.js';
 import { isNativeFinding } from './native-contract.js';
 
 type NativeEntity = Extract<ProgramRecord, { kind: 'module' | 'symbol' | 'group' }>;
-export function nativeIdentity(value: NativeEntity): NativeIdentity {
-  return value.kind === 'module' ? moduleNativeIdentity(value) : {
-    provider: value.kind === 'group' ? 'repository-layout' : 'typescript', rule: value.method,
-    scope: value.kind === 'group' ? 'captured-repository' : 'configured-project', key: identityReference(value.session, value.id)!,
-  };
-}
 export function nativeEntity(store: ProgramRecordStore, id: RecordId): EntityId | undefined {
   const value = store.get(id);
   return value.kind === 'module' || value.kind === 'symbol' || value.kind === 'group'

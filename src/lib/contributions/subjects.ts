@@ -1,3 +1,4 @@
+import { nativeIdentity } from './native-identity.js';
 import { EntityBindings } from '../identity.js';
 import type { ProgramRecordStore, RecordId } from '../records.js';
 import type { ContributionLedger } from './ledger.js';
@@ -57,11 +58,12 @@ export function subjectOwner(subject: ExactSubject): RecordId {
     case 'designation': return subject.association.investigram;
   }
 }
-/** Native/common mapping uses the retained provider identity, never a name. */
+/** The key locates a candidate; only the complete native identity, kind and modality establish correspondence. */
 export function entityRecord(store: ProgramRecordStore, ledger: ContributionLedger, entity: EntityId): RecordId | undefined {
-  const native = ledger.entity(entity).native;
-  if (!native || !/^session:(module|symbol|group):/.test(native.key)) return undefined;
+  const retained = ledger.entity(entity), native = retained.native;
+  if (retained.modality !== 'implemented' || !native || !/^session:(module|symbol|group):/.test(native.key)) return undefined;
   const id = `${ledger.session}${native.key.slice('session'.length)}` as RecordId;
   const value = store.lookup(id);
-  return value && ['module', 'symbol', 'group'].includes(value.kind) ? value.id : undefined;
+  if (!value || value.session !== ledger.session || value.kind !== 'module' && value.kind !== 'symbol' && value.kind !== 'group') return undefined;
+  return retained.entityKind === value.kind && ledger.native(nativeIdentity(value)) === entity ? value.id : undefined;
 }

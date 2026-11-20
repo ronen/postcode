@@ -1,3 +1,5 @@
+import { nativeIdentity } from './native-identity.js';
+import { entityRecord } from './subjects.js';
 import { canonical, identityReference, methods, recordId } from '../identity.js';
 import type { ClaimContextRecord, EvaluationRecord, ExportClaim, ModuleClaim, ModuleRecord, ProgramRecordStore, RecordId, SessionId } from '../records.js';
 import { ContentCatalog, identificationContract, proseContract, record, text } from './catalog.js';
@@ -49,7 +51,7 @@ export function sessionLedger(store: ProgramRecordStore, session: SessionId): Co
 
 /** The native identity of a discovered module: the discovery method's own module identity, within the configured project. */
 export function moduleNativeIdentity(module: ModuleRecord): NativeIdentity {
-  return { provider: 'typescript', rule: module.method, scope: 'configured-project', key: identityReference(module.session, module.id)! };
+  return nativeIdentity(module);
 }
 /** The one common Entity of a module record, once its identification has been contributed. Host identity bookkeeping; no exposure. */
 export function moduleEntity(store: ProgramRecordStore, module: RecordId): EntityId | undefined {
@@ -58,10 +60,8 @@ export function moduleEntity(store: ProgramRecordStore, module: RecordId): Entit
 }
 /** The module record a common Entity was mapped from, if it is a discovered module. */
 export function entityModule(store: ProgramRecordStore, session: SessionId, entity: EntityId): RecordId | undefined {
-  const native = sessionLedger(store, session).entity(entity).native;
-  if (native?.provider !== 'typescript' || !native.key.startsWith('session:module:')) return undefined;
-  const id = `${session}${native.key.slice('session'.length)}` as RecordId;
-  return store.lookup(id)?.kind === 'module' ? id : undefined;
+  const id = entityRecord(store, sessionLedger(store, session), entity);
+  return id && store.get(id).kind === 'module' ? id : undefined;
 }
 
 /** The export method's finding for one module under one evaluation state: its export claims, or an explicit non-established surface. */

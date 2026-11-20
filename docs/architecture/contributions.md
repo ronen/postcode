@@ -38,7 +38,13 @@ retains assertion status. A separately attributed deterministic policy associate
 Entity-subject findings with their explicit subjects. Provider keys prevent equivalent
 recomputation from adding another use or renewing a withdrawn one. Native record IDs
 remain implementation references, mapped to common identities under the provider's
-rule and scope; names never act as identity keys.
+rule and scope; names never act as identity keys. Reverse mapping treats a native key
+only as a candidate locator: the complete provider/rule/scope/key tuple, Entity kind
+and implemented modality must match the retained provider record. The same check
+governs inspection, module-operation eligibility (including follow-up options) and
+dialog module references. A distinct native identity remains independently
+inspectable without receiving the candidate module’s mechanical content. Mapping
+is identity bookkeeping and creates no exposure.
 
 Organization providers can emit new record IDs when a requested module requirement
 set changes without changing the finding. Their contribution keys therefore compare

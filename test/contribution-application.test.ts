@@ -613,3 +613,43 @@ test('offered option qualifications survive direct and JSON arrangement and exac
   await session.close();
   assert.deepEqual(arrangeContributionAnswer(structuredClone(first.content), first.result.title), direct);
 });
+
+test('a different native identity is inspectable as itself but cannot invoke module investigations directly or through options', async t => {
+  const agent = new ScriptedDialogs([[input => {
+    const module = (input.request.subjects[0] as { moduleRecord: string }).moduleRecord;
+    return { kind: 'submit', contribution: { investigrams: [{ key: 'distinct', qualification: caveat,
+      entities: [{ key: 'distinct', entityKind: 'module', native: { provider: 'typescript', rule: 'different-discovery@1', scope: 'configured-project',
+        key: module.replace(/^session:[^:]+/, 'session') } }],
+      items: [{ key: 'name', type: 'identification', body: { name: 'Distinct module', nameOrigin: 'assigned', designation: 'A distinct identity under another discovery rule.' } }],
+      declarations: [{ key: 'identify', operation: 'add', target: { kind: 'entity', entity: { local: 'distinct' }, role: 'identification' },
+        members: [{ kind: 'item', item: { investigram: { local: 'distinct' }, item: 'name' } }] },
+      { key: 'answer', operation: 'add', target: { kind: 'result', result: input.request.result },
+        members: [{ kind: 'item', item: { investigram: { local: 'distinct' }, item: 'name' } }] }],
+      options: [{ key: 'investigate', meaning: 'Investigate this distinct Entity.', request: { operation: 'summarize',
+        subjects: [{ subject: { kind: 'entity', entity: { local: 'distinct' } } }] } }] }] } };
+  }]]);
+  const opened = await openApplication(fixture(t), { investigation: { dialogAgent: agent } });
+  assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
+  const session = opened.session; t.after(() => session.close());
+  const seed = answer(await session.execute({ kind: 'lens', lens: 'summarize', designation: { kind: 'name', value: 'breaker' } }));
+  const owner = seed.projection.alternatives[0]!.designation.investigram;
+  const selected = seed.projection.alternatives[0]!.options[0]!.option.request.subjects[0]!.subject;
+  assert.equal(selected.kind, 'entity'); if (selected.kind !== 'entity') return;
+  const inspection = await session.execute({ kind: 'lens', lens: 'inspect', designation: { kind: 'selection', subject: selected } });
+  assert.equal(inspection.kind, 'answer');
+  if (inspection.kind !== 'answer') return;
+  assert.equal(inspection.answer.content.contract, 'contribution-inspection');
+  if (inspection.answer.content.contract !== 'contribution-inspection') return;
+  assert.deepEqual(inspection.answer.content.value.projection.subjects, [selected]);
+  assert.equal(inspection.answer.content.value.projection.mechanical, null);
+  assert.equal(inspection.answer.content.value.projection.support.items.some(item => item.item.type === 'module-identification'), false);
+  for (const request of [
+    { kind: 'lens' as const, lens: 'summarize', designation: { kind: 'selection' as const, subject: selected } },
+    { kind: 'lens' as const, lens: 'follow-up', designation: { kind: 'reference' as const, value: owner }, parameters: { option: 'investigate' } },
+  ]) {
+    const result = await session.execute(request);
+    assert.equal(result.kind, 'resolution');
+    if (result.kind === 'resolution') assert.equal(result.resolution.reason, 'unsupported-subject');
+  }
+  assert.equal(agent.inputs.length, 1, 'Neither direct nor follow-up module invocation opens another dialog');
+});
