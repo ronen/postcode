@@ -292,6 +292,18 @@ to begin the substantive implementation task described by that plan.
 
 > The re-review is complete.  Re dialog 14 -- please verify dialog version 14 with a focused live regression trial exercising the revised instructions for matching deduplicated subject/context responses by address. Use the production instructions and the established inference policy, and record the outcome, failures and repairs for review.
 
+2026-11-20, following M4 round 11's clean correction rereview and its native-identity ownership observation, authorizing acceptance-time namespace authority and consistent forward lookup checks. Independent integrated review remains pending; no additional live inference is authorized.
+
+> The review (M4 round 11 Claude) is complete.   Please address the native-identity ownership issue noted in the review:
+>
+> Introducing a provider-native identity must require host-established authority for that provider’s identity namespace. Other producers can reuse the common Entity ID or introduce a separately identified Entity. Enforce this at acceptance rather than relying on the hosted schema. Do not equate authority with merely being a mechanical producer.
+>
+> Also make forward lookup validate the expected Entity kind and modality, consistently with reverse lookup.
+>
+> Implement the smallest coherent change, preserving other producers’ ability to extend or challenge information about native Entities. Verify unauthorized introduction, legitimate provider introduction, cross-producer reuse and lookup integrity.
+>
+> Follow the task and review-response workflow, recording the rule and verification for independent review. If enforcing it requires a consequential choice beyond this direction, bring that choice back for discussion.
+
 ## Outcome
 
 ## Verification
