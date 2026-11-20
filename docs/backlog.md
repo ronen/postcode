@@ -250,80 +250,6 @@ reports. Define when configuration changes take effect and how they interact
 with retained outcomes, without silently regenerating earlier investigations or
 switching billing routes.
 
-## Diagnose execution-ownership cancellations in full-suite runs
-
-Status: diagnosed and corrected under the human-authorized milestone-3 prerequisite
-on 2026-09-30. The [diagnosis and regression record](../records/validation/module-investigation/2026-09-30-execution-ownership-diagnosis.md)
-reproduces the pending-readiness cancellation while confirming owner settlement
-and child exit. All 371 tests pass after correcting the harness. Historical
-results and their original uncertainty below remain preserved; exact historical
-child-startup timing was not captured.
-
-Added: 2026-09-29
-Origin: [Module investigation milestone-1 review](../records/reviews/module-investigation/2026-09-29-milestone-1-disposition.md)
-Area: execution ownership and test reliability
-
-The human deferred diagnosis while retaining this unresolved qualification on
-milestone validation. A bounded comparison reproduced the review's cancellation
-pattern on pre-implementation baseline
-`c15afdd3b03f588534ac386c2453c81da71ffb68` and corrected implementation
-`f5a974d364245a3c19f4afe70d8e5f92c1807729`. The pattern predates investigation
-implementation, but its cause and any production implications remain unknown.
-
-Reproduce in separate checkouts with Node.js 22.13.1 and the pinned dependencies.
-After `npm run build`, run these separately to distinguish isolation from the
-full suite (the symptom is intermittent; a pass does not resolve it):
-
-```sh
-node --test _build/test/execution-ownership.test.js
-node --test _build/test/*.test.js
-```
-
-Captured comparison results:
-
-| Checkout | Isolated execution ownership | Full suite |
-| --- | --- | --- |
-| Pre-implementation baseline | 13 passed, 0 cancelled | 283 passed, 0 failed, 13 cancelled; 296 total |
-| Corrected milestone 1 | 13 passed, 0 cancelled | 318 passed, 0 failed, 13 cancelled; 331 total |
-
-All 13 tests in `test/execution-ownership.test.ts` were affected: Git deadline/
-escalation/exit, unconfirmed cleanup, worker interruption during opening and
-validation, unexpected worker exit, worker send/close/late settlement, opening
-timeout/invalidation, interrupted publication, worker cleanup bounds, Git output
-limits, and failed spawn handling. The first test reported
-`Promise resolution is still pending but the event loop has already resolved`
-after approximately 364 ms on the baseline; the remaining 12 were cancelled by
-the parent. The reviewer also saw 13 cancellations in one full run, followed by
-successful isolated and full runs.
-
-The [validation record](../records/validation/module-investigation/2026-09-29-milestone-1-review-corrections.md)
-preserves runtime, chronology and comparison limits. Local scratch logs are
-`_investigation/baseline-ownership.log`, `baseline-full.log`,
-`current-ownership.log` and `current-full.log` in that directory; the durable
-results above do not depend on those uncommitted files being retained.
-Investigate the unresolved cause without treating isolated passes as a fully
-passing suite or assuming a load-related explanation. This entry does not
-authorize a cancellation-policy change.
-
-Milestone-2 integration development reproduced the same 13 cancellations in a
-359-test full run: 346 passed, zero failed, 13 cancelled, approximately 128.3
-seconds. The first execution-ownership test reported the same pending-promise/
-event-loop error after approximately 349.6 ms; the other 12 were cancelled by the
-parent. An earlier 357-test development run passed all tests. The
-[milestone-2 validation](../records/validation/module-investigation/2026-09-29-milestone-2.md)
-records the later 360/360 complete run and the final 13/13 isolated ownership run
-separately, alongside the final focused integration checks. This is another
-observation of the deferred concern, not a diagnosis or a change in its disposition.
-
-The milestone-2 reviewer ran the pinned target `a396f9b8e9b38ad344554cbe4c0e7677ded1ec0e`
-three times: 360 passed, zero failed or cancelled each time (about 125.5, 121.0
-and 117.4 seconds). These passes do not diagnose the concern. The human renewed
-qualified deferral through milestone 2 after that review, with diagnosis required
-before milestone 3's live, cost-bearing adapter work. The new parent-side dialogue,
-abort and usage state increases the importance of resolving the ownership concern
-before relying on live interruption and cleanup. See the
-[milestone-2 findings](../records/reviews/module-investigation/2026-09-29-milestone-2-round-1-findings.md).
-
 ## Consider grouping investigation operations in one dialogue
 
 Added: 2026-09-29
@@ -401,29 +327,32 @@ The remaining independent assessment covers references in non-View output, inclu
 
 Conformance of those remaining paths is currently unknown. The potential impact is confusion about which displayed references support further navigation, rather than a change to reference binding or underlying program claims. This remains a deferred usability assessment; its broader scope does not block the bounded retained-answer implementation.
 
-## Retry failed or incomplete interpretation without restarting the session
+<a id="retry-failed-or-incomplete-interpretation-without-restarting-the-session"></a>
+<a id="explicitly-rerun-a-successful-interpretation"></a>
+## Expose fresh investigation and attempt history in interfaces
 
 Added: 2026-09-24
 Origin: module investigation planning discussion; [fresh-investigation contract](decisions/qualified-answers-over-contributions.md#answer-identity-and-request-reuse)
-Area: investigation execution and recovery
+Area: investigation interaction and recovery
 
-The application capability is required by the [structured-accounts plan](plans/structured-architectural-accounts.md#scope): explicitly request a fresh investigation of the same question within the supported Session, including after a failed or incomplete attempt. This is no longer contingent on establishing product value. Adoption does not establish delivery; track implementation through [migration conformance](#complete-structured-account-migration-conformance).
+The application now supports explicitly requesting a fresh investigation within the
+supported Session, including after successful, failed or incomplete attempts; see
+the [structured-accounts completion record](../records/tasks/2026-11-15-structured-architectural-accounts.md).
+The remaining work is the interface interaction for requesting a new attempt and
+navigating qualified answer and attempt history, rather than a new retry engine.
 
-Ordinary requests continue to reuse compatible retained outcomes. Communication/service failures without a reusable outcome remain subject to ordinary selection and existing retry rules. An explicit fresh attempt preserves earlier accepted information and actual attempt provenance; it does not automatically displace earlier uses, reinstate withdrawn designations or clear reconsideration. Existing Session validity, execution authorization and resource limits still apply. This does not change mechanical-analysis retry policy.
+Distinguish fresh production from ordinary reuse, exact retained presentation,
+investigation of selected content and invocation of a follow-up option. Make
+execution cost, progress and failure understandable. A reason or reconsideration
+flag is not required to request fresh investigation. Choose controls for the
+interface that needs them; dedicated CLI syntax and model-configuration UI are
+not prerequisites.
 
-The residual candidate is a dedicated CLI or other interface interaction for requesting and navigating the new attempt. New command names or GUI controls are not required by the mechanism plan. Assess that interaction in later interface work, keeping fresh execution distinct from redisplaying a retained outcome and showing the selected answer's qualification. Coordinate it with the successful-rerun interaction below; no separate retry engine is implied.
-
-## Explicitly rerun a successful interpretation
-
-Added: 2026-09-24
-Origin: module investigation planning discussion; [fresh-investigation contract](decisions/qualified-answers-over-contributions.md#answer-identity-and-request-reuse)
-Area: investigation execution and retained results
-
-Explicit fresh investigation after a successful attempt is also required by the [structured-accounts plan](plans/structured-architectural-accounts.md#scope), not an undecided regeneration capability. The user need not supply a reason or wait for a displacement or reconsideration flag; a changed agent model is one possible external motivation. Adoption does not establish that the capability is implemented; its delivery is part of [migration conformance](#complete-structured-account-migration-conformance).
-
-A fresh attempt performs new production while preserving earlier attempts and results. Ordinary requests still reuse compatible work. New answers are organized through explicit designation declarations, without production recency implying priority or automatic clearance. A successful attempt may find no organizing change necessary; it still must satisfy the requested result contract.
-
-The residual candidate is the user-facing interaction, coordinated with retry of failed or incomplete attempts. Distinguish new production from exact retained presentation, investigation of selected content and invocation of a follow-up option. Expose execution cost and qualified answer history under the existing application contracts. Dedicated CLI syntax, GUI controls and model-configuration UI remain outside the mechanism plan.
+Preserve earlier accepted information and actual attempt provenance. Fresh execution
+does not automatically displace earlier uses, reinstate withdrawn designations or
+clear reconsideration; recency does not imply priority. Ordinary requests retain
+their reuse and retry rules, and Session validity, execution authorization and
+resource limits still apply. This does not change mechanical-analysis retry policy.
 
 ## Investigation usage and budgeting support
 
@@ -575,18 +504,3 @@ Area: investigator interaction and validation
 Current inadequacy feedback goes to developers/researchers; it does not challenge retained information or instruct an investigating agent. A user-facing objection/reconciliation mechanism would need an explicit qualified input and resource contract rather than reusing observational feedback silently.
 
 If live experience shows instruction-following problems, consider semantic-policy assistance in the dialog: point out a suspected omission, permit further acquisition or explanation, and then validate the final submission. Decide any completeness or prior-acquisition gates separately. Acknowledging a reminder does not establish understanding. Structural integrity and honest delivery remain mandatory regardless of assistance.
-
-<a id="complete-structured-account-migration-conformance"></a>
-## Complete structured-account migration conformance
-
-Added: 2026-11-15
-Origin: [Adoption and migration conformance](decisions/common-analysis-contributions.md#adoption-and-migration-conformance)
-Area: architecture conformance and migration
-Status: closed, 2026-11-20; migration implemented and final integrated review accepted by the human.
-
-At adoption, common contributions, association declarations, result designations and exposure semantics were not implemented uniformly. Mechanical retention, agentic trees/corrections/citations and application selection/construction therefore had known target-conformance gaps; new diagram and option capabilities are not available merely through adoption. Until each capability is migrated, the decision's limited transitional provision preserves its pre-adoption behavioral contracts and requires honest migration status.
-
-This is required work in the [structured-accounts plan](plans/structured-architectural-accounts.md), not an optional future enhancement. Urgency: track from adoption; verify the early vertical slice, complete the remaining migration and close this entry at final integration. The implementing agent records capability status and restoration milestones; the human reviews checkpoints and authorizes any scope change. Do not finish the plan while retaining a permanent legacy regime. After verified full conformance, the temporary exceptions cease to apply; update current conformance notices and resolve this entry together with the implementation's final documentation updates, preserving historical decision text. Implementation authorization remains separate from adoption.
-
-
-Implementation closure: [M4 integrated verification](../records/validation/structured-architectural-accounts/m4-integrated-checkpoint.md) and its [retirement inventory](../records/validation/structured-architectural-accounts/m4-retirement-coverage.md) account for every migrated family and the removed legacy regime. State behavior, its diagram and retained options are application capabilities. No supported capability remains under the temporary exception. The human accepted the final integrated review gate on 2026-11-20 and directed task closure; the [final disposition](../records/reviews/structured-architectural-accounts/2026-11-19-m4-integrated-disposition.md) records the reviewed target, accumulated verification and limits. Historical decisions remain unchanged. Merge authorization remains separate.
