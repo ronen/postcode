@@ -1,3 +1,4 @@
+import { contributeNativeFindings } from '../contributions/native.js';
 import { workState } from '../work-attribution.js';
 import type { WorkScope } from '../work-attribution.js';
 import { directedGraph } from '../directed-graph.js';
@@ -36,15 +37,20 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
     return retained;
   }
   const claims = organization.claims.map(id => store.get(id));
+  // Capture the exact retained findings read by this execution, not every finding
+  // reachable from the evaluation records supplied by the caller.
+  const inputs = new Set<RecordId>();
   const placements = new Map(claims.filter((claim): claim is ModulePlacementClaim =>
     claim.kind === 'claim' && claim.information.type === 'module-placement').map(claim => [claim.subject, claim]));
   const containment = claims.filter((claim): claim is ContainmentClaim => claim.kind === 'claim' && claim.information.type === 'group-containment');
+  for (const claim of [...placements.values(), ...containment]) inputs.add(claim.id);
   const groupPaths = new Map<string, RecordId>();
   for (const groupId of organization.groups) {
     const group = store.get(groupId);
     if (group.kind !== 'group') throw new Error('Expected group');
     const claim = store.get(group.claim);
     if (claim.kind !== 'claim') throw new Error('Expected group claim');
+    inputs.add(claim.id);
     const context = store.get(claim.context);
     if (context.kind !== 'claim-context') throw new Error('Expected group context');
     for (const sourceId of context.evidence) {
@@ -54,6 +60,7 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
   }
   const artifacts = new Map(claims.flatMap(claim => {
     if (claim.kind !== 'claim' || claim.information.type !== 'artifact-placement') return [];
+    inputs.add(claim.id);
     const artifact = store.get(claim.information.artifact);
     if (artifact.kind !== 'repository-artifact') throw new Error('Expected artifact');
     return [[artifact.artifact.path, artifact.id] as const];
@@ -112,9 +119,11 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
   const expanded: DependencyOrganizationClaim[] = dependency.relationships.map(relationshipId => {
     const relationship = store.get(relationshipId);
     if (relationship.kind !== 'claim' || relationship.information.type !== 'dependency') throw new Error('Expected dependency relationship');
+    inputs.add(relationship.id);
     const occurrences: DependencyOrganizationClaim['information']['occurrences'] = relationship.information.occurrences.map(occurrenceId => {
       const occurrence = store.get(occurrenceId);
       if (occurrence.kind !== 'dependency-occurrence' || !occurrence.target) throw new Error('Expected resolved occurrence');
+      inputs.add(occurrence.id);
       const source = endpoint(occurrence.owner, [occurrence.evidence], 'occurrence');
       const target = endpoint(occurrence.target, occurrence.targetEvidence, 'target-declaration');
       // These sets are narrowed by this occurrence's source/target evidence above.
@@ -170,6 +179,7 @@ export function evaluateDependencyOrganization(store: ProgramRecordStore, depend
   store.put([...records, ...expanded, result]);
   const owned = store.get(result.id);
   if (owned.kind !== 'dependency-organization-evaluation') throw new Error('Expected retained dependency-organization-evaluation');
+  contributeNativeFindings(store, owned.session, owned.claims, [...inputs]);
   work?.record('dependency-organization-evaluation', 'established', { records: [owned.id], state: workState(owned) });
   return owned;
 }

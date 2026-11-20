@@ -8,11 +8,13 @@ import { openApplication, guardPublication, SessionBusy, SessionClosed, SessionI
 import type { ApplicationRequest, ExecutionContext, PresentationDeclaration } from '../src/lib/application/index.js';
 import { withCliOperation } from '../src/lib/application/operation-scope.js';
 import { lenses } from '../src/lib/application/lenses.js';
-import { operations } from '../src/lib/investigation/operations.js';
+import { contributionOperations as operations } from '../src/lib/contributions/operations.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import type { ReferenceBinding } from '../src/lib/reference-binding.js';
-import type { RecordId } from '../src/lib/records.js';
-import { ScriptedInvestigator } from './investigator-double.js';
+import { arrangeModuleView } from '../src/lib/presentation.js';
+import { MessageChannel } from 'node:worker_threads';
+import { once } from 'node:events';
+import type { ProgramRecord } from '../src/lib/records.js';
+import { ScriptedContributionAgent } from './contribution-agent.js';
 
 function fixture(t: TestContext) {
   const root = temporaryDirectory(t, 'postcode-application-lifecycle-');
@@ -22,6 +24,49 @@ function fixture(t: TestContext) {
   return { configPath, source };
 }
 const inventory = { kind: 'lens', lens: 'modules', designation: { kind: 'configured-project' } } as const;
+
+test('simultaneous Sessions dispose only their own capture bookkeeping and detached historical output survives close and worker delivery', async t => {
+  const f = fixture(t), stores = new Map<string, MemoryProgramRecordStore>();
+  const put = MemoryProgramRecordStore.prototype.put;
+  t.mock.method(MemoryProgramRecordStore.prototype, 'put', function(this: MemoryProgramRecordStore, records: readonly ProgramRecord[]) {
+    put.call(this, records); for (const record of records) stores.set(record.session, this);
+  });
+  const a = await openApplication(f), b = await openApplication(f);
+  assert.equal(a.status, 'opened'); assert.equal(b.status, 'opened');
+  t.after(() => Promise.all([a.session.close(), b.session.close()]));
+  const first = await a.session.execute(inventory), other = await b.session.execute(inventory);
+  assert.equal(first.kind, 'answer'); assert.equal(other.kind, 'answer');
+  assert.equal(first.answer.content.contract, 'modules');
+  const content = first.answer.content.value, before = structuredClone(first.answer);
+  const ids = new Map(content.discovery.modules.map(id => [id, String(id)]));
+  const view = arrangeModuleView(content, ids, { format: 'json', moreDetails: false }, 'Modules');
+  const firstStore = stores.get(a.session.id)!, secondStore = stores.get(b.session.id)!;
+  const one = firstStore.get(first.answer.id), two = secondStore.get(other.answer.id);
+  assert.equal(firstStore.capture(one), one); assert.equal(secondStore.capture(two), two);
+  await a.session.close();
+  assert.notEqual(firstStore.capture(one), one, 'Close releases the first ownership table');
+  assert.equal(secondStore.capture(two), two, 'The second Session keeps its own ownership proof');
+  await assert.rejects(a.session.execute(inventory), SessionClosed);
+  const repeated = await b.session.execute(inventory); assert.equal(repeated.kind, 'answer');
+  assert.equal(repeated.answer.id, other.answer.id);
+  const foreign = await b.session.execute({ kind: 'present', target: first.answer.id });
+  assert.equal(foreign.kind, 'resolution'); assert.equal(foreign.resolution.reason, 'foreign-answer');
+  await b.session.close();
+  assert.notEqual(secondStore.capture(two), two);
+  for (const store of [firstStore, secondStore]) for (const method of ['get', 'lookup', 'capture'] as const) {
+    t.mock.method(store, method, () => { throw Error('Closed output consulted retained state'); });
+  }
+  assert.deepEqual(first.answer, before);
+  assert.deepEqual(arrangeModuleView(content, ids, { format: 'json', moreDetails: false }, 'Modules'), view);
+  assert.throws(() => Object.assign(content.projection.contributions.support.evidence[0]!, { method: 'changed' }), TypeError);
+  const { port1, port2 } = new MessageChannel(); t.after(() => { port1.close(); port2.close(); });
+  const received = once(port2, 'message'); port1.postMessage(first.answer);
+  const [delivered] = await received;
+  assert.deepEqual(delivered, before);
+  assert.equal(delivered.content.contract, 'modules');
+  assert.notEqual(delivered.content.value.projection, content.projection);
+  assert.deepEqual(arrangeModuleView(delivered.content.value, ids, { format: 'json', moreDetails: false }, 'Modules'), view);
+});
 
 test('direct requests capture caller data and declarations, honor subsets and refuse unsupported exact expansion', async t => {
   const f = fixture(t);
@@ -46,7 +91,7 @@ test('direct requests capture caller data and declarations, honor subsets and re
   assert.equal(refused.kind, 'resolution'); assert.equal(refused.resolution.reason, 'presentation-unavailable');
   const bound = await session.execute({ ...inventory, consumption: { presentations: ['summary'], options: { detail: false } } });
   assert.equal(bound.kind, 'answer'); assert.equal(bound.consumption!.selected.id, 'summary');
-  for (const method of ['put', 'evaluations', 'investigations', 'boundEntity'] as const) t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw Error(`Exact access called ${method}`); });
+  for (const method of ['put', 'evaluations', 'boundEntity'] as const) t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw Error(`Exact access called ${method}`); });
   const exact = await session.execute({ kind: 'present', target: result.answer.id });
   assert.equal(exact.kind, 'answer'); assert.deepEqual(exact.answer, before);
 });
@@ -94,37 +139,31 @@ test('direct boundary rejects malformed data without invoking accessors and pres
   assert.equal(wrong.kind, 'resolution'); assert.equal(wrong.resolution.reason, 'invalid-designation');
 });
 
-test('one operation guard spans arrangement, expires bindings and preserves completed application work after client failure', async t => {
-  const opened = await openApplication(fixture(t), { investigation: { agent: new ScriptedInvestigator([() => ({ kind: 'ended' })]) } });
+test('one operation guard spans arrangement, expires its capabilities and preserves completed application work after client failure', async t => {
+  const opened = await openApplication(fixture(t), { investigation: { agent: new ScriptedContributionAgent([() => ({ kind: 'ended' })]) } });
   assert.equal(opened.status, 'opened'); const session = opened.session; t.after(() => session.close());
-  let escaped!: ReferenceBinding;
   let escapedCheck!: () => Promise<void>;
   await assert.rejects(withCliOperation(session, async scope => {
     const result = await scope.execute({ kind: 'lens', lens: 'modules', question: lenses.modules.question,
       designation: { kind: 'configured-project' }, parameters: {}, programInput: 'session-configured-project' });
     assert.equal(result.attribution.status, 'completed');
-    escaped = scope.bindings; escapedCheck = scope.check;
+    escapedCheck = scope.check;
     await assert.rejects(session.execute({ kind: 'report', report: 'usage' }), SessionBusy);
     await assert.rejects(session.check(), SessionBusy);
     throw Error('Client arrangement failed');
   }), /Client arrangement failed/);
   assert.equal(session.work()!.status, 'completed');
-  assert.throws(() => escaped.bind([], 'module'), /expired/);
   await assert.rejects(escapedCheck(), /expired/);
   await withCliOperation(session, async scope => {
     const result = await scope.execute({ kind: 'lens', lens: 'summarize', question: lenses.summarize.question,
       designation: { kind: 'name', value: 'entry' }, parameters: {}, programInput: 'session-configured-project' });
-    assert.equal(result.kind, 'answer'); assert.equal(result.answer.content.contract, 'investigation');
-    escaped = scope.bindings; escapedCheck = scope.check;
-    const reference = result.answer.content.value.references.find(item => item.kind === 'module')!;
-    assert.ok(reference);
-    assert.throws(() => scope.bindings.bind([reference.id, 'foreign' as RecordId], 'module'), /outside/);
-    assert.throws(() => scope.bindings.bind([reference.id], 'investigram'), /different kind/);
-    assert.ok(scope.bindings.bind([reference.id], 'module').get(reference.id));
+    assert.equal(result.kind, 'answer'); assert.equal(result.answer.content.contract, 'contribution');
+    escapedCheck = scope.check;
+    assert.ok(result.resolution!.candidates[0]!.reference);
+
   });
-  assert.throws(() => escaped.bind([], 'module'), /expired/);
   await assert.rejects(escapedCheck(), /expired/);
-  await session.close(); assert.throws(() => escaped.bind([], 'module'), SessionClosed);
+  await session.close(); await assert.rejects(escapedCheck(), SessionClosed);
 });
 
 test('publication distinguishes withheld, output failure and invalidation after output', async () => {
@@ -148,12 +187,12 @@ test('closing from completed work refuses scoped delivery with SessionClosed and
   assert.equal(opened.status, 'opened'); const session = opened.session;
   t.after(() => session.close());
   const retained = await session.execute({ kind: 'lens', lens: 'summarize', designation: { kind: 'name', value: 'entry' } });
-  assert.equal(retained.kind, 'answer'); assert.equal(retained.answer.content.contract, 'investigation');
+  assert.equal(retained.kind, 'answer'); assert.equal(retained.answer.content.contract, 'contribution');
   close = () => session.close();
   let delivered = false;
-  let escaped!: ReferenceBinding;
+  let escapedCheck!: () => Promise<void>;
   await assert.rejects(withCliOperation(session, async scope => {
-    escaped = scope.bindings;
+    escapedCheck = scope.check;
     await scope.execute({ kind: 'present', target: retained.answer.id });
     delivered = true;
   }), SessionClosed);
@@ -161,7 +200,7 @@ test('closing from completed work refuses scoped delivery with SessionClosed and
   assert.equal(delivered, false);
   assert.equal(finished, 1);
   assert.equal(session.work()!.status, 'completed');
-  assert.throws(() => escaped.bind([], 'module'), SessionClosed);
+  await assert.rejects(escapedCheck(), SessionClosed);
   await assert.rejects(session.execute({ kind: 'report', report: 'usage' }), SessionClosed);
 });
 

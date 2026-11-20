@@ -10,6 +10,8 @@ Substantive changes require explicit human agreement and a corresponding accepte
 
 The common-contribution, association and exposure rules establish the target architecture. Apply the [temporary adoption and migration contract](decisions/common-analysis-contributions.md#adoption-and-migration-conformance) to unmigrated capabilities: their pre-adoption behavioral contracts remain applicable within its limited scope. Record migration status and expected gaps; do not claim target conformance before implementation. Migrated capabilities follow the new contracts, and plan completion requires removal of the temporary exceptions. Foundation, method guarantees and unaffected protections remain binding throughout.
 
+Implementation status (2026-11-20): the [integrated migration record](../records/validation/structured-architectural-accounts/m4-integrated-checkpoint.md) accounts for all supported families and retirement of the legacy regime. No supported capability remains under the temporary exception. The human accepted the [final integrated review gate](../records/reviews/structured-architectural-accounts/2026-11-19-m4-integrated-disposition.md) on 2026-11-20; the rules above are unchanged.
+
 ## Claims and qualification
 
 - Preserve each claim's evidence or source references, provenance and method, scope, epistemological guarantee, and limitations throughout evaluation, projection construction, transformation, storage, comparison, caching, and presentation. Shared context must remain attributable, and narrower qualification must not be erased. [[Preserve claim qualification](decisions/adopt-qualification-and-evaluation-constraints.md#preserve-claim-qualification-throughout-processing-and-presentation)]
@@ -30,6 +32,8 @@ The common-contribution, association and exposure rules establish the target arc
 
 <a id="evaluation-and-failure"></a>
 ## Evaluation and failure
+
+- Retain investigation-attempt failure/unavailability kind, code and diagnostic with the attempt and deliver them through attributed request reporting. Do not include attempt-only diagnostics in answer identity or replay them on exact presentation merely because no answer was supplied. Preserve selected content's qualifications and answer-relevant outcomes, including mechanical unavailable/partial distinctions. Apply the same separation to new and migrated investigation families. [[Attempt and answer outcomes](decisions/investigation-attempts-and-answer-outcomes.md#separate-attempt-reporting-and-answer-meaning)]
 
 - Keep reusable investigation operations distinct from their consuming lenses. The evaluation layer selects retained outcomes and missing operations and coordinates execution through the appropriate producer boundaries; projections consume materialized results. [[Investigation operations and lenses](decisions/common-analysis-contributions.md#production-and-execution)]
 - Keep analysis applicability and availability, execution state, result materialization, and epistemological status distinct. Additional work or successful execution does not inherently make a produced claim truer or more exact. [[Evaluation and failure distinctions](decisions/adopt-qualification-and-evaluation-constraints.md#keep-evaluation-materialization-and-failure-distinctions-explicit)]

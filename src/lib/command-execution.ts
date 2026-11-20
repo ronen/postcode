@@ -5,7 +5,7 @@ import type { WorkReport } from './work-attribution.js';
 import { normalizeRequest } from './requests.js';
 import type { RequestContext } from './interfaces/cli/report-contracts.js';
 import { usageSummary } from './investigation/reporting.js';
-import { usageLines } from './investigation/presentation.js';
+import { usageLines } from './investigation/usage-presentation.js';
 import type { InvestigationUsageReport } from './investigation/reporting.js';
 import { commandObservation, observationBatch, submitObservation } from './interfaces/cli/observations.js';
 import type { ObservationSink } from './application/observations.js';

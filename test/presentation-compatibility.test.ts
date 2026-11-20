@@ -1,3 +1,4 @@
+import { settleConsumption } from '../src/lib/application/consumption.js';
 import assert from 'node:assert/strict';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -9,15 +10,15 @@ import { discover } from './helpers.js';
 import { modules } from './projection-helpers.js';
 import { recordId } from '../src/lib/identity.js';
 import { resolveModuleProjection } from '../src/lib/module-content.js';
-import { finalizeInvestigationUsage } from '../src/lib/investigation/presentation.js';
-import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
+import { finalizeInvestigationUsage } from '../src/lib/investigation/usage-presentation.js';
+import { openCliSession as openSession, applicationPresentation } from '../src/lib/interfaces/cli/application.js';
 import { renderRequestReport } from '../src/lib/interfaces/cli/request-reporting.js';
 import { captureCatalog, defaultCatalog } from '../src/lib/request-catalog.js';
-import { presentations, settlePresentation, validatePresentationContent } from '../src/lib/presentation-contracts.js';
+import { presentations, validatePresentationContent } from '../src/lib/presentation-contracts.js';
 import type { PresentationDefinition } from '../src/lib/presentation-contracts.js';
 
 const json = { format: 'json' as const, moreDetails: false };
-const interpretation = presentations.find(item => item.contract === 'investigation')!;
+const interpretation = presentations.find(item => item.contract === 'contribution')!;
 function fixture(t: TestContext) {
   const root = temporaryDirectory(t, 'postcode-presentation-contracts-');
   const configPath = path.join(root, 'tsconfig.json');
@@ -45,11 +46,10 @@ test('incompatible prospective Presentation refuses before lookup or requested E
 });
 
 test('resolved subject contract refusal preserves actual prerequisite qualification', async t => {
-  const active = await session(t, [interpretation]);
+  const active = await session(t, [presentations.find(item => item.contract === 'organization')!]);
   const report = requireResolution(await active.execute({ lens: 'inspect', selector: 'entry', presentation: json }));
   assert.equal(report.resolution.reason, 'presentation-unavailable');
-  assert.equal(report.resolution.candidates.length, 1);
-  assert.equal(report.resolution.candidates[0]!.kind, 'module');
+  assert.deepEqual(report.resolution.candidates.map(candidate => candidate.kind).sort(), ['entity', 'module']);
   assert.ok(report.resolution.prerequisites.length);
   assert.ok(report.resolution.support!.length);
   assert.deepEqual(report.resolution.retainedAnswers, []);
@@ -73,7 +73,7 @@ test('materialization refusal retains its answer and reports it without a View',
     assert.match(noCandidates, /Use present @answer-reference|All references expire/);
     assert.match(noCandidates, referenceLifetime === 'command' ? /Open postcode shell/ : /Use present @answer-reference/);
   }
-  assert.match(result.rendered, /Interpretation: configuration-unavailable/);
+  assert.match(result.rendered, /No answer is currently designated/);
   assert.equal(report.resolution.candidates.length, 1);
   assert.equal(report.attribution!.status, 'refused');
   const repeat = requireResolution(await active.execute({ lens: 'summarize', selector: report.resolution.candidates[0]!.reference,
@@ -97,8 +97,8 @@ test('declared fallback preserves explicit format and source choices and explain
   const active = await session(t, [strict, fallback]);
   for (const format of ['json', 'unicode'] as const) {
     const result = requireView(await active.execute({ lens: 'summarize', selector: 'entry', presentation: { format, moreDetails: true } }));
-    assert.equal(result.view.schema, 'postcode-investigation-view/1-experimental');
-    assert.equal(result.view.result!.unavailable!.kind, 'configuration-unavailable');
+    assert.equal(result.view.schema, 'postcode-contribution-view/1-experimental');
+    assert.equal(result.view.reporting!.unavailable!.kind, 'configuration-unavailable');
     assert.equal(result.view.presentation.format, format);
     assert.equal(result.view.presentation.moreDetails, true);
     assert.equal(result.view.presentation.decision!.selected, fallback.id);
@@ -147,13 +147,13 @@ test('qualified partial module content remains usable, empty populations remain 
   const empty = { ...evaluation, id: recordId(evaluation.session, 'evaluation', 'controlled-empty'), modules: [] };
   store.put([partial, empty]);
   const partialContent = { contract: 'modules' as const, value: resolveModuleProjection(store, modules(store, partial)) };
-  assert.equal(settlePresentation([qualified], partialContent)!.selected, qualified.id);
-  assert.equal(settlePresentation([strict], partialContent), null);
-  assert.ok(settlePresentation([strict], { contract: 'modules', value: resolveModuleProjection(store, modules(store, empty)) }));
+  assert.equal(settleConsumption([applicationPresentation(qualified)], partialContent)!.selected.id, qualified.id);
+  assert.equal(settleConsumption([applicationPresentation(strict)], partialContent), null);
+  assert.ok(settleConsumption([applicationPresentation(strict)], { contract: 'modules', value: resolveModuleProjection(store, modules(store, empty)) }));
   const malformed = { ...partialContent, value: { ...partialContent.value, modules: [] } };
   assert.throws(() => validatePresentationContent(malformed), /Malformed module/);
-  assert.throws(() => settlePresentation([strict], malformed), /Malformed module/);
-  assert.throws(() => settlePresentation([interpretation], partialContent), /does not match/);
+  assert.throws(() => settleConsumption([applicationPresentation(strict)], malformed), /Malformed module/);
+  assert.throws(() => settleConsumption([applicationPresentation(interpretation)], partialContent), /does not match/);
 });
 
 test('Presentation catalog rejects cycles, cross-contract fallbacks and unsupported requirements', () => {

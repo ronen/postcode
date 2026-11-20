@@ -1,3 +1,4 @@
+import { nativeSelectionIdentity } from './contributions/native-selection.js';
 import { identityReference } from './identity.js';
 import type { ProjectionRecord, RecordId } from './records.js';
 import type { OrganizationProjectionRecord } from './organization/records.js';
@@ -11,6 +12,7 @@ export function mechanicalAnswerIdentity(answer: WithoutId<Answer>): unknown {
   const ref = (id: RecordId | null) => identityReference(answer.session, id);
   const refs = (ids: readonly RecordId[]) => ids.map(ref);
   const common = { ...answer, session: identityReference(answer.session, answer.session),
+    contributions: nativeSelectionIdentity(answer.session, answer.contributions),
     modules: refs(answer.modules), contexts: refs(answer.contexts),
     selection: { ...answer.selection, ...(answer.selection.outsidePopulation ? { outsidePopulation: refs(answer.selection.outsidePopulation) } : {}) } };
   switch (answer.kind) {

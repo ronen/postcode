@@ -1,5 +1,5 @@
 import type { AnswerContext } from './interfaces/cli/answer-presentation.js';
-import { createView, renderView } from './presentation.js';
+import { createView, renderView, renderUnicode } from './presentation.js';
 import { createOrganizationView, renderOrganizationView } from './organization/presentation.js';
 import { createDependencyView, renderDependencyView } from './dependencies/presentation.js';
 import { arrangeModuleExports, renderModuleExports } from './exports/presentation.js';
@@ -23,11 +23,11 @@ export function createMechanicalView(store: ProgramRecordStore, content: Mechani
     }
   }
 }
-export function renderMechanicalView(view: ReturnType<typeof createMechanicalView>): string {
+export function renderMechanicalView(view: ReturnType<typeof createMechanicalView>, enclosed = false): string {
   switch (view.schema) {
-    case 'postcode-view/1-experimental': return renderView(view);
-    case 'postcode-organization-view/1-experimental': return renderOrganizationView(view);
-    case 'postcode-dependency-view/1-experimental': return renderDependencyView(view);
-    case 'postcode-module-exports-view/1-experimental': return renderModuleExports(view);
+    case 'postcode-view/1-experimental': return enclosed ? renderUnicode(view, 'contribution') : renderView(view);
+    case 'postcode-organization-view/1-experimental': return renderOrganizationView(view, enclosed);
+    case 'postcode-dependency-view/1-experimental': return renderDependencyView(view, enclosed);
+    case 'postcode-module-exports-view/1-experimental': return renderModuleExports(view, enclosed);
   }
 }

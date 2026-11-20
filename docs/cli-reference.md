@@ -86,13 +86,13 @@ A product View may coordinate multiple independently qualified Projections, and 
 
 The product may suggest a summary View when the human has not expressed a more specific information need; it does not require a summary-first default, and a summary View need not use a summary Lens. The current no-argument command remains `modules`, and `summarize` requests a module interpretation. No automatic general summary selection is implemented.
 
-Each produced Projection retains its selected information and qualification. Repeating a Lens command makes a fresh selection: retained interpretation, correction and association changes can yield a different answer. Those supporting selections are distinct from captured program states. Input changes follow the separate [session invalidation contract](#input-stability-and-retained-work).
+Each produced Projection retains its selected information and qualification. Repeating a Lens command makes a fresh selection: retained content, designation and association changes can yield a different answer. Those supporting selections are distinct from captured program states. Input changes follow the separate [session invalidation contract](#input-stability-and-retained-work).
 
-### Contribution-model migration
+### Common contribution integration
 
-The [structured architectural accounts plan](plans/structured-architectural-accounts.md) changes retained analysis organization and migrates existing CLI capabilities, including inspection and investigations of selected content. Adoption of that plan does not by itself change the commands documented here. Current descriptions of investigram composition and whole-investigram correction remain implementation descriptions until the migration replaces them.
+The [structured architectural accounts plan](plans/structured-architectural-accounts.md) has migrated supported investigation and inspection callers to common contributions. The obsolete tree/correction path has been removed. State-behavior and retained-option invocation are application APIs; this migration adds no new CLI commands.
 
-The task updates affected command behavior, exact-answer/history guidance, terminology and supported input/output descriptions as implementation proceeds. No new state-diagram or follow-up-option command is promised solely because those capabilities are provided through the internal application API. At completion, remove this notice and document the actual supported routes and limitations. Exact retained presentation and reference-lifetime guarantees remain in force throughout supported operation.
+The CLI exposes `summarize`, `explain`, `decompose`, `examine`, inspection and exact retained presentation through its existing commands. State-dependent behavior, state-diagram requests and retained follow-up-option invocation are available through the application API; this CLI has no corresponding commands. Exact retained presentation and Session-local reference lifetimes apply to all supported routes.
 
 ### Present an exact retained answer
 
@@ -106,12 +106,12 @@ present @answer-… --revision-page 2
 ```
 
 `present` accepts the Session-local answer alias or precise Projection ID. It uses
-only that answer and its fixed retained support: it does not select newer corrections
+only that answer and its fixed retained support: it does not select newer designations
 or associations, perform Evaluation, acquire evidence or retry an investigation.
 It covers mechanical inventories, organization, inspections and dependencies,
 operation results and historical investigation inspection. An associated inspection
-is one composite answer; JSON identifies its `associated-inspection` variant and
-precise `mechanical` support. Presenting that support ID alone shows the mechanical
+is one composite answer; common View JSON identifies its precise `mechanical`
+component when native findings are selected. Presenting that support ID alone shows the mechanical
 answer without its association listing.
 
 Omitted choices use normal defaults: the shell's format, no additional detail, no
@@ -126,7 +126,7 @@ Association paging uses the answer's frozen listing. Revision paging applies to 
 shown statuses; a status with no rows on that page reports exhaustion. An unknown
 association token remains unknown when paging revisions and retains failed status.
 A separately labelled restart clears only the association token. Subject navigation
-such as `inspect @investigram-…` makes a fresh selection with current revision context.
+such as `inspect @investigram-…` selects the exact immutable contribution with newly captured standing and change context.
 Fresh Lens requests reject `--after` and `--revision-page` with guidance to `present`.
 
 All program Views expose `selectionMode` (`fresh` or `retained`), `answerReference`,
@@ -139,7 +139,7 @@ references expire at command end. It provides no executable present continuation
 open a shell and request the information there first. One-shot `present` is refused
 before project opening.
 
-Retained failure or unavailable outcomes remain visible as answer semantics.
+Mechanical unavailability and selected partial-content limitations remain answer semantics. Investigation-attempt failures are retained and reported separately; exact presentation does not replay the latest attempt or attach its diagnostic to an empty answer.
 Successfully presenting one completes the current command (exit 0), without reporting
 a new investigation attempt or adding provider usage. An unknown continuation remains
 a failed presentation/command (exit 3), while the application work that retrieved
@@ -737,48 +737,15 @@ mechanical or investigation commands. Runtime provider failures are reported in
 the investigation view. Tests inject the agent/transport through the production
 CLI/session/worker path; there is no public injection flag.
 
-With an investigator enabled, a summary presents a root and any composition
-children as qualified interpretations, each with a stable `investigram-…` reference.
-Repeating a summary selects its retained outcome without generating again.
-Successful results, investigation failures (including refusals and invalid
-submissions) and execution-limit stops are retained. More evidence does not reset
-those outcomes. Communication and configuration failures leave no reusable outcome,
-so a later request can execute in the same session. There is no automatic retry.
-Recovery from a retained failure/stop requires reopening and loses accumulated work.
+With an investigator enabled, a summary selects explicitly designated qualified content. Contributions form a flat pool of separately owned items and declarations, with stable `investigram-…` references. There is no fixed parent/child investigram tree or authoritative last writer. Every standing alternative is retained distinctly. An investigation may explicitly supersede or withdraw a use after acquiring the needed content; this changes organizing standing without deleting the original content.
 
-Within a shell, `inspect @investigram-…` displays the exact original account,
-referent, qualification, evidence support, fixed composition, generating operation
-and accompanying correction links. Targets and replacements are separately
-selectable. Each correction lists its corrected subjects and its own evidence
-references in human output. Known investigram references supplied to `children`,
-`parents` or `summarize` report an unsupported subject/lens combination without
-generation; an absent reference remains a missing selection. `--more-details` discloses captured support names, locations and metadata and
-records that disclosure. Source sent only to the investigator does not count as
-human source disclosure. Inspection does not generate a missing account or redirect
-to a replacement. Fresh result selection follows explicit replacement chains using acceptance recency, with unresolved conflicts and citation-based reconsideration warnings. Exact inspection and follow-up subjects are never redirected. Use `present @answer-reference --revision-page N` for additional correction and cause details from the selected answer.
+Repeating a request can reuse a compatible completed attempt while selecting the current designations for its question. Accepted outcomes, failures, invalid submissions and execution-limit stops remain retained. Communication/configuration failures remain eligible for another execution; no automatic retry occurs. Failure of a fresh investigation does not erase an earlier standing answer. If no designation exists, output says so without treating that condition as an established empty architectural result. The invocation's failure details remain request reporting. Unicode reporting shows the applicable attempt kind, code and reason/diagnostic or submission problems, producer-reported inability/statement, and whether the outcome was reused or newly requested. These lines are absent from exact historical presentation. The application API supports explicit fresh execution; this CLI adds no rerun flag.
 
-`explain @investigram-…`, `decompose @investigram-…` and `examine @investigram-…`
-require an exact reference in the shell. Explanation clarifies the selected
-program aspect; decomposition creates finer selectable aspects without implying
-an exhaustive or disjoint partition; examination pursues deeper findings or
-reports useful limits. Each produces a separate root with provenance naming its
-exact selected subject. All three accept results of any earlier investigation.
-Repeated requests reuse the retained outcome. Known module/group references are
-unsupported follow-up subjects; unbound references are missing. Names and
-one-shot follow-ups are refused because investigrams belong to the active session.
+`inspect @investigram-…` selects the exact retained contribution with its content, qualifications, originating question, explicit uses, standing and reconsideration causes. It does not run an investigation or redirect the subject to a successor. Native/module/group inspection combines its method-specific finding with explicit common associations; general lookup also discloses historical identifying names. Matching a name does not establish a canonical name or complete architectural population.
 
-Inspection shows composition-parent and investigation-subject links separately.
-`inspect MODULE`, `inspect @group-…` and `inspect @investigram-…` also list explicitly
-associated retained accounts (up to 24 per page). Use the displayed reference to
-inspect complete content, or use `present @answer-reference --after @investigram-…`
-with the continuation shown to page the exact selected listing. Listing prose is bounded to 400 UTF-16 code units;
-qualifications are preserved together or the entire detail is explicitly omitted
-under the 55,000-unit page bound. Fresh listings select current retained associations,
-not all possible functionality or authority. A newly retained account can extend
-a subsequent fresh listing without changing the mechanical inspection. Exact
-presentation preserves the earlier listing and its selected revision status. Fresh
-result selection chooses replacements; inspection preserves the original and exposes
-alternatives and reconsideration causes.
+`explain @investigram-…`, `decompose @investigram-…` and `examine @investigram-…` retain their existing meanings: clarification, finer selectable aspects without an exhaustive/disjoint-partition claim, and deeper findings or candid limits. Each accepts the exact contribution produced by any earlier operation, retains its own question and provenance, and designates its answer explicitly. Module/group references remain unsupported follow-up subjects. Names and one-shot follow-ups remain refused because these references belong to the active Session. Item/component and result-designation subjects are additionally available through the internal application API, without new CLI selector syntax.
+
+Common content uses `postcode-contribution-view/1-experimental`, with a native `mechanical` component when applicable. Inspection lists 24 contribution owners per page, with exact `present @answer-reference --after @investigram-…` continuations. `--revision-page N` pages captured change grounds, qualification groups and inconsistency reports in groups of 24, disclosing omitted counts. Selected rows keep their owner/item limitations. Complete selected support remains in the application answer; source-bearing native bodies are not serialized into human output. `--more-details` discloses captured support locations, without source excerpts. Unknown continuations remain failed presentations, with a separately labeled restart. Exact presentation preserves the old selection and its status even after later organizing changes.
 
 `usage` and `usage --json` expose per-attempt and session reported usage without
 inference, including failed attempts. Usage is a subjectless report, with no Lens or Projection descriptor. Summary views also include their attempt and
@@ -797,11 +764,10 @@ including reports received after the worker finished but before parent closure.
 Subsequent `usage` reports use the same accepted reports, without counting duplicates
 or incorporating reports that arrived after closure.
 
-Investigation JSON uses `postcode-investigation-view/1-experimental`, containing
-selection, operation/outcome reuse, accounts, correction links, provenance,
-full-record versus summarized evidence exposure, support and usage. Summarized
-identities support only the delivered summaries. Evidence references alone cannot
-be cited until inspected. One-shot summaries disclose `referenceLifetime: command`;
+Investigation JSON uses `postcode-contribution-view/1-experimental`, containing
+selected alternatives, exact items and uses, provenance, captured qualification
+and status, request reporting and usage. Common acquisition reporting distinguishes
+exact content, excerpts, inventories and notices; a reference alone is not content delivery. One-shot summaries disclose `referenceLifetime: command`;
 their references expire when the command ends. Shell references last only for that
 session and cannot restore work in a later invocation. Abnormal final JSON usage is
 reported on stderr using `postcode-investigation-usage/1-experimental` and retained
@@ -840,8 +806,4 @@ can also be `invalidated`. The work report preserves what completed; it does not
 claim that presentation or publication succeeded. Direct application clients receive
 these operational reports without configuring a renderer or observation sink.
 
-Correction metadata listings are bounded separately from account bodies: at most
-256 displaced accounts, 256 accompanying correction references and 256 revision
-statuses appear, with explicit omitted counts. Inspect exact original or reporter
-references to navigate their own bounded context. Corrections reported by displaced
-accounts remain linked without inserting their replacements into the displayed tree.
+Status-detail pagination covers captured changes, qualification groups and inconsistency reports, with explicit omitted counts. Exact retained content remains available through the application answer. Whole-investigram correction lists and displaced composition trees are retired from the supported caller path.

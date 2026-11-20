@@ -1,7 +1,5 @@
 import type { InitiationContext } from '../work-attribution.js';
-import type { RevisionStatus } from './revisions.js';
-import type { EvidenceQuery, EvidenceResponse } from '../evidence-access.js';
-import type { RecordContext, RecordId, SessionId } from '../records.js';
+import type { RecordId, SessionId } from '../records.js';
 
 export type InvestigationOperation = string;
 export interface InvestigationRequest {
@@ -9,123 +7,6 @@ export interface InvestigationRequest {
   readonly subject: RecordId;
   readonly parameters: Readonly<Record<string, never>>;
 }
-
-export interface QualifiedSupport {
-  readonly qualifications: readonly string[];
-  readonly evidence: readonly RecordId[];
-}
-export interface Referent {
-  readonly description: string;
-  readonly subjects: readonly RecordId[];
-}
-export interface Association extends QualifiedSupport {
-  readonly subject: RecordId;
-  readonly role: 'described' | 'investigation-subject' | 'corrected-subject';
-}
-export interface Inconsistency extends QualifiedSupport { readonly targets: readonly RecordId[]; readonly reason: string }
-
-/** Local IDs belong only to one submitted unit. PostCode allocates retained identities. */
-export interface SubmittedInvestigram extends QualifiedSupport {
-  readonly localId: string;
-  readonly prose: string;
-  readonly referent: Referent;
-  readonly associations: readonly Omit<Association, 'role'>[];
-  readonly children: readonly SubmittedInvestigram[];
-  readonly corrections: readonly (QualifiedSupport & { readonly target: RecordId; readonly correctedSubjects: readonly RecordId[];
-    readonly reason: string; readonly replacement: SubmittedInvestigram })[];
-  readonly inconsistencies: readonly Inconsistency[];
-}
-
-export interface Investigram extends RecordContext, QualifiedSupport {
-  readonly kind: 'investigram';
-  readonly status: 'interpretation';
-  readonly prose: string;
-  readonly referent: Referent;
-  readonly originatingModule: RecordId;
-  readonly associations: readonly Association[];
-  readonly children: readonly RecordId[];
-  readonly corrections: readonly RecordId[];
-  readonly inconsistencies: readonly Inconsistency[];
-  readonly provenance: RecordId;
-}
-export interface Correction extends RecordContext, QualifiedSupport {
-  readonly kind: 'investigram-correction';
-  readonly reporter: RecordId;
-  readonly target: RecordId;
-  readonly correctedSubjects: readonly RecordId[];
-  readonly replacement: RecordId;
-  readonly reason: string;
-  readonly provenance: RecordId;
-}
-export interface InvestigationProvenance extends RecordContext {
-  readonly kind: 'investigation-provenance';
-  readonly request: InvestigationRequest;
-  readonly originatingModule: RecordId;
-  readonly instructions: string;
-  readonly agent: AgentIdentity;
-  readonly citations: readonly RecordId[];
-  readonly completeTargets: readonly RecordId[];
-  readonly completeCorrections: readonly RecordId[];
-  /** Full records delivered during this attempt. */
-  readonly suppliedEvidence: readonly RecordId[];
-  /** Summaries delivered during this attempt; an ID may also have been delivered in full. */
-  readonly summarizedEvidence: readonly RecordId[];
-  readonly deliveries: readonly ContextDelivery[];
-}
-export interface AcceptedInvestigation {
-  readonly root: RecordId;
-  readonly investigrams: readonly Investigram[];
-  readonly corrections: readonly Correction[];
-  readonly provenance: InvestigationProvenance;
-}
-
-/** Read-only retained context. M1 supplies fixtures; session retention is coordinated by evaluation. */
-export interface InvestigationHistory {
-  revision?(id: RecordId, page?: number): RevisionStatus;
-  get(id: RecordId): Investigram | undefined;
-  provenance(id: RecordId): InvestigationProvenance | undefined;
-  correction(id: RecordId): Correction | undefined;
-  corrections(id: RecordId): readonly Correction[];
-  /** Explicit associations only; undefined means unsupported or unavailable subject. */
-  associated?(subject: RecordId): readonly RecordId[] | undefined;
-}
-export type ContextPart = 'prose' | 'referent' | 'qualifications';
-export interface AccountContext {
-  readonly id: RecordId;
-  readonly status: 'prior-interpretation';
-  readonly revision?: RevisionStatus;
-  readonly nextCorrectionPage?: number | null;
-  readonly prose?: string;
-  readonly referent?: Referent;
-  readonly qualifications?: readonly string[];
-  readonly associations?: readonly Association[];
-  readonly inconsistencies?: readonly Inconsistency[];
-  readonly completeParts: readonly ContextPart[];
-  readonly evidence: readonly RecordId[];
-  readonly originatingModule: RecordId;
-  readonly children: readonly RecordId[];
-  readonly provenance: Omit<InvestigationProvenance, 'deliveries'>;
-  readonly corrections: readonly RecordId[];
-  readonly revisionNotices: readonly { readonly id: RecordId; readonly target: RecordId; readonly replacement: RecordId }[];
-  readonly omissions: readonly string[];
-}
-export interface ContextDelivery {
-  /** Bare references are navigation availability, never substantive exposure. */
-  readonly listing?: { readonly subject: RecordId; readonly selected: readonly RecordId[]; readonly total: number; readonly next: RecordId | null };
-  readonly requested: RecordId;
-  readonly accounts: readonly AccountContext[];
-  readonly corrections: readonly Correction[];
-  readonly omittedAccounts: readonly RecordId[];
-  readonly omittedCorrections: readonly RecordId[];
-  readonly limitations: readonly string[];
-}
-export type InvestigatorTool = EvidenceQuery | { readonly kind: 'investigations'; readonly subject: RecordId; readonly cursor?: RecordId } | {
-  readonly kind: 'investigram'; readonly subject: RecordId;
-  readonly parts?: readonly ContextPart[];
-  readonly excerptCharacters?: number;
-  readonly revisionPage?: number;
-};
-export type ToolResponse = EvidenceResponse | ContextDelivery;
 
 export interface AgentIdentity {
   readonly provider: string;
@@ -158,46 +39,20 @@ export interface CallUsage {
   readonly anomalies: readonly string[];
 }
 export type AgentFailure = { readonly kind: 'communication-failure' | 'configuration-unavailable'; readonly code: string; readonly diagnostic: string; readonly provider?: { readonly status: number | null; readonly body: unknown; readonly requestId: string | null } };
-export type AgentReply =
-  | { readonly kind: 'tools'; readonly requests: readonly InvestigatorTool[] }
-  | { readonly kind: 'submit'; readonly result: unknown }
-  | { readonly kind: 'ended' | 'refused' | 'truncated' }
-  | AgentFailure;
-export interface AgentInput {
-  readonly attempt: RecordId;
-  readonly instructions: string;
-  readonly request: InvestigationRequest;
-  readonly responses: readonly ToolResponse[];
-  readonly remaining: { readonly milliseconds: number; readonly calls: number; readonly toolCalls: number };
-}
-export interface AgentDialogue {
-  exchange(input: AgentInput, signal: AbortSignal, reportUsage: (usage: ReportedUsage) => void): Promise<AgentReply>;
-  /** Must release local resources synchronously; remote cancellation is best effort. */
-  close(): void;
-}
-/** Provider exceptions must be translated here. Unexpected defects remain thrown errors. */
-export interface InvestigatorAgent {
-  readonly identity: AgentIdentity;
-  open(): AgentDialogue;
-}
 export interface AttemptReport {
+  /** The retained option that delegated this attempt's question, when invoked through follow-up. */
+  readonly followUp?: { readonly owner: RecordId; readonly key: string; readonly meaning: string };
   readonly parent?: InitiationContext;
   readonly attempt: RecordId;
   readonly session: SessionId;
   readonly request: InvestigationRequest;
   readonly agent: AgentIdentity;
   readonly instructions: string;
-  readonly termination: InvestigationOutcome['kind'] | 'interrupted' | 'invalidated' | 'defect' | 'running';
+  readonly termination: 'accepted' | 'limit-stop' | 'investigation-failure' | AgentFailure['kind'] | 'interrupted' | 'invalidated' | 'defect' | 'running';
   readonly elapsedMilliseconds: number;
   readonly usage: readonly CallUsage[];
-  readonly deliveries: readonly ContextDelivery[];
+  /** Contribution deliveries actually dispatched. */
+  readonly contributionDeliveries?: readonly import('../contributions/model.js').Delivery[];
   /** Full records delivered during this attempt. */
   readonly suppliedEvidence: readonly RecordId[];
-  /** Summaries delivered during this attempt; an ID may also have been delivered in full. */
-  readonly summarizedEvidence: readonly RecordId[];
 }
-export type InvestigationOutcome =
-  | { readonly kind: 'accepted'; readonly result: AcceptedInvestigation }
-  | { readonly kind: 'limit-stop' | 'investigation-failure'; readonly reason: string }
-  | AgentFailure;
-export interface InvestigationExecution { readonly outcome: InvestigationOutcome; readonly report: AttemptReport }

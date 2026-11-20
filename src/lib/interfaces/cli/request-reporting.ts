@@ -8,7 +8,7 @@ import { usageSummary } from '../../investigation/reporting.js';
 import { freezeOwned } from '../../immutable.js';
 import { completedMaterialization } from '../../evaluation-state.js';
 import { inlineText } from '../../terminal-text.js';
-import { usageLines } from '../../investigation/presentation.js';
+import { usageLines } from '../../investigation/usage-presentation.js';
 import type { InvestigationUsageReport } from '../../investigation/reporting.js';
 import type { SessionId } from '../../records.js';
 

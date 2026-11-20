@@ -7,7 +7,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { verifyConfiguration } from './verify-configuration.mjs';
 import { runCli } from '../../_build/src/lib/cli.js';
-import { chatGPTInvestigator } from '../../_build/src/lib/investigation/openai/adapter.js';
+import { chatGPTDialogAgent } from '../../_build/src/lib/investigation/openai/contribution-protocol.js';
 import { productionChatGPTCredentials } from '../../_build/src/lib/application/accounts.js';
 import { injectedSetup } from './injected-setup.mjs';
 import { requestBudget } from './request-budget.mjs';
@@ -34,7 +34,7 @@ controls?.on('line', line => { commands.push(line); send(); });
 try {
   budget = requestBudget(spec.budget);
   const session = await (dependencies.session ? dependencies.session() : (await productionChatGPTCredentials()).session());
-  const agent = chatGPTInvestigator(session, {
+  const agent = chatGPTDialogAgent(session, {
     fetch: async (url, options) => {
       if (String(url) !== 'https://api.openai.com/v1/responses') throw new Error('Unexpected inference endpoint');
       ordinal = budget.reserve(spec.id);

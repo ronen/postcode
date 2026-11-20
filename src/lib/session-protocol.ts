@@ -1,6 +1,8 @@
+import type { DialogInput as AgentInput, DialogReply as AgentReply } from './contributions/dialog.js';
+import type { InvocationRequest as InvestigationRequest } from './contributions/model.js';
 import type { WorkProgress } from './work-attribution.js';
 import type { RecordId, SessionId } from './records.js';
-import type { AgentInput, AgentReply, AgentIdentity, InvestigationRequest, AttemptReport, ReportedUsage } from './investigation/contracts.js';
+import type { AgentIdentity, AttemptReport, ReportedUsage } from './investigation/contracts.js';
 import type { openCliSession as openSession, ViewRequest, ExecutionOptions } from './interfaces/cli/application.js';
 import type { GitRequest, GitResult } from './git-execution.js';
 import { AnalysisFailure, SessionInvalidated, CleanupIncomplete, GitFailure } from './execution-errors.js';

@@ -3,9 +3,10 @@ import { Stream } from 'openai/core/streaming';
 import { CredentialError } from './credential-store.js';
 import type { ChatGPTSession } from './chatgpt-credentials.js';
 import type { Response, ResponseCreateParams, ResponseInputItem } from 'openai/resources/responses/responses.js';
-import type { AgentFailure, AgentIdentity, AgentReply, InvestigatorAgent, InvestigatorTool, ReportedUsage, UsageCategory } from '../contracts.js';
-import { investigatorFunctions } from './protocol.js';
-import { InvestigatorReferences, referenceInstructions, type ReferenceAudit } from './references.js';
+import type { AgentFailure, AgentIdentity, ReportedUsage, UsageCategory } from '../contracts.js';
+import type { FunctionTool } from 'openai/resources/responses/responses.js';
+import { referenceInstructions, type ReferenceAudit } from './references.js';
+export type { ReferenceAudit } from './references.js';
 import { CompletedStreamOutput } from './stream-output.js';
 
 export const openAIIdentity: AgentIdentity = Object.freeze({ provider: 'openai', model: 'gpt-6-sol', origin: 'hosted',
@@ -26,16 +27,42 @@ export const chatGPTIdentity: AgentIdentity = Object.freeze({ provider: 'openai'
   configuration: Object.freeze({ adapter: 'postcode/chatgpt-responses@7', sdk: 'openai@7.25.0', authenticationRoute: 'chatgpt-sign-in',
     billingRoute: 'chatgpt-plan', reasoningEffort: 'medium', store: false, streaming: true, references: 'postcode/investigator-references@3', characterGuard: 'canonical-domain-exchanges', retries: 0 }) });
 interface TransportOptions { fetch?: typeof fetch; onExchange?: (exchange: OpenAIExchange) => void }
-export function openAIInvestigator(apiKey: string, options: TransportOptions = {}): InvestigatorAgent {
-  if (!apiKey || /\s/.test(apiKey)) throw new Error('Invalid OpenAI credential');
-  return investigator({ token: async () => apiKey, watch: () => () => {} }, false, options);
+type Terminal = { readonly kind: 'ended' | 'refused' | 'truncated' } | AgentFailure;
+/**
+ * A typed dialog protocol carried by the hosted transport: its two functions and the
+ * structural translation of its reference fields. The transport defines no investigation semantics.
+ */
+export interface WireProtocol<I extends { readonly instructions: string }, R> {
+  readonly functions: FunctionTool[];
+  readonly requestFunction: string;
+  readonly submitFunction: string;
+  readonly description: string;
+  /** Recorded in the agent identity to identify the typed protocol. */
+  readonly protocol?: string;
+  codec(): {
+    message(input: I): { readonly content: Readonly<Record<string, unknown>>; readonly responses: unknown };
+    /** Null when the arguments are not a well-formed request. */
+    tools(args: unknown): R | null;
+    /** `malformed` when the submission arguments could not be parsed at all. */
+    submission(args: unknown, malformed: boolean): R;
+    audit(): ReferenceAudit;
+    close(): void;
+  };
 }
-export function chatGPTInvestigator(session: ChatGPTSession, options: TransportOptions = {}): InvestigatorAgent {
-  return investigator(session, true, options);
+/** The same hosted transports carrying another typed dialog protocol. */
+export function hostedAgent<I extends { readonly instructions: string }, R>(credentials: { readonly apiKey: string } | { readonly session: ChatGPTSession },
+  protocol: WireProtocol<I, R>, options: TransportOptions = {}) {
+  if ('apiKey' in credentials) {
+    if (!credentials.apiKey || /\s/.test(credentials.apiKey)) throw new Error('Invalid OpenAI credential');
+    const apiKey = credentials.apiKey;
+    return hosted({ token: async () => apiKey, watch: () => () => {} }, false, options, protocol);
+  }
+  return hosted(credentials.session, true, options, protocol);
 }
 /** Parent-only transport owns credentials. Only sanitized replies and usage leave this boundary. */
-function investigator(session: ChatGPTSession, subscription: boolean, options: TransportOptions): InvestigatorAgent {
-  const identity = subscription ? chatGPTIdentity : openAIIdentity;
+function hosted<I extends { readonly instructions: string }, R>(session: ChatGPTSession, subscription: boolean, options: TransportOptions, protocol: WireProtocol<I, R>) {
+  const base = subscription ? chatGPTIdentity : openAIIdentity;
+  const identity: AgentIdentity = protocol.protocol ? Object.freeze({ ...base, configuration: Object.freeze({ ...base.configuration, protocol: protocol.protocol }) }) : base;
   const secrets = new Set<string>();
   const redact = (value: string) => { for (const secret of secrets) value = value.split(secret).join('[redacted credential]'); return value; };
   const safe = <T>(value: T): T => {
@@ -59,19 +86,19 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
     identity,
     open() {
       const controller = new AbortController();
-      const references = new InvestigatorReferences();
+      const references = protocol.codec();
       const stopWatching = session.watch(controller);
       let history: ResponseInputItem[] = [], pending: string | undefined, closed = false;
       return {
-        async exchange(input, signal, reportUsage): Promise<AgentReply> {
+        async exchange(input: I, signal: AbortSignal, reportUsage: (usage: ReportedUsage) => void): Promise<R | Terminal> {
           try {
             if (closed) throw new Error('OpenAI dialogue is closed');
             const requestSignal = AbortSignal.any([signal, controller.signal]);
             requestSignal.throwIfAborted();
-            const encoded = references.encode(input);
+            const encoded = references.message(input);
             if (pending) history.push({ type: 'function_call_output', call_id: pending, output: JSON.stringify(encoded.responses) });
             else if (history.length) throw new Error('OpenAI dialogue has no pending evidence request');
-            history.push({ role: 'user', content: JSON.stringify({ request: encoded.request, remaining: input.remaining,
+            history.push({ role: 'user', content: JSON.stringify({ ...encoded.content,
               ...(pending ? {} : { responses: encoded.responses }) }) });
             pending = undefined;
             let token: string;
@@ -93,7 +120,7 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
               maxRetries: 0, timeout: 180000, logLevel: 'off', fetch: transport });
             const request: ResponseCreateParams = safe({ model: identity.model, reasoning: { effort: 'medium' },
               ...(subscription ? { stream: true as const } : { service_tier: 'default' as const, stream: false as const, max_output_tokens: 16000 }), store: false, include: ['reasoning.encrypted_content'],
-              instructions: `${input.instructions}\n\n${referenceInstructions}`, input: history, tools: subscription ? [{ type: 'namespace', name: 'postcode', description: 'PostCode evidence and explicit result submission', tools: investigatorFunctions }] : investigatorFunctions, parallel_tool_calls: false, tool_choice: 'auto' });
+              instructions: `${input.instructions}\n\n${referenceInstructions}`, input: history, tools: subscription ? [{ type: 'namespace', name: 'postcode', description: protocol.description, tools: protocol.functions }] : protocol.functions, parallel_tool_calls: false, tool_choice: 'auto' });
             let wire: globalThis.Response;
             try { wire = await client.responses.create(request, { signal: requestSignal }).asResponse(); }
             catch (error) {
@@ -178,20 +205,28 @@ function investigator(session: ChatGPTSession, subscription: boolean, options: T
               if ('status' in call && call.status !== 'completed') return { kind: 'ended' };
               if (subscription && call.namespace !== 'postcode') return { kind: 'ended' };
               if (typeof call.call_id !== 'string' || !call.call_id || typeof call.arguments !== 'string') return { kind: 'ended' };
-              if (call.name !== 'submit_investigram' && call.name !== 'request_evidence') return { kind: 'ended' };
+              if (call.name !== protocol.submitFunction && call.name !== protocol.requestFunction) return { kind: 'ended' };
               let args: unknown;
-              try { args = JSON.parse(call.arguments); } catch {
-                return call.name === 'submit_investigram' ? { kind: 'submit', result: null } : { kind: 'ended' };
+              let parsed = true;
+              try { args = JSON.parse(call.arguments); } catch { parsed = false; }
+              if (call.name === protocol.submitFunction) {
+                // A protocol with bounded repair answers a rejected submission in the next exchange, as this call's
+                // output. Keep the call in history as the pending one; a protocol without repair simply closes.
+                if (response.output.every(item => item.type === 'function_call' || item.type === 'message' || item.type === 'reasoning')) {
+                  for (const item of response.output) history.push(item);
+                  pending = call.call_id;
+                }
+                return references.submission(parsed ? args : null, !parsed);
               }
-              if (call.name === 'submit_investigram') return { kind: 'submit', result: references.submission(args) };
-              if (call.name !== 'request_evidence' || !args || typeof args !== 'object' || !('requests' in args) || !Array.isArray(args.requests)) return { kind: 'ended' };
+              if (!parsed) return { kind: 'ended' };
+              const requested = references.tools(args);
+              if (requested === null) return { kind: 'ended' };
               for (const item of response.output) {
                 if (item.type !== 'function_call' && item.type !== 'message' && item.type !== 'reasoning') return { kind: 'ended' };
                 history.push(item);
               }
               pending = call.call_id;
-              // Domain coordination validates every requested capability and reference.
-              return { kind: 'tools', requests: (references.tools(args) as { requests: InvestigatorTool[] }).requests };
+              return requested;
             } finally {
               options.onExchange?.({ request, references: safe(references.audit()), response: body, ...(streamOutput ? { streamOutput } : {}) });
             }

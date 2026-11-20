@@ -1,0 +1,1023 @@
+{
+  "implementation": "f4e8a386de51eda7483227dd386b9d6f265b730a",
+  "baseline": "8e06c5c74ba6679dd7e030dbb28162503b6235aa",
+  "fixture": {
+    "revision": "bd92670e4e0db1c9d9804e6d7797f38678ab9bf1",
+    "modules": 741
+  },
+  "units": "bytes; serialized sizes are not heap sizes; allocation groups are sampling estimates",
+  "all18ApplicationAnswerKeysMatch": true,
+  "preCloseRecordAndLedgerCountsMatch": true,
+  "verification": {
+    "fullSuite": {
+      "node": "22.13.1",
+      "passed": 779,
+      "failed": 0,
+      "skipped": 0
+    },
+    "ownershipRegistryGCControl": {
+      "node": "26.11.0",
+      "disposedRegistryCollectedWithOwnerAndOutputHeld": true,
+      "secondRegistryStayedLiveUntilItsOwnDisposal": true,
+      "lateCaptureDidNotRecreateRegistry": true
+    }
+  },
+  "runs": {
+    "baseline": {
+      "at": "2026-11-18T16:42:24.441Z",
+      "node": "26.11.0",
+      "compiledSourceSha256": "6113c623dc0d3df39d2a05b89fa98a88580518f56604da9c94b1467aca9e16b4",
+      "ownershipAware": false,
+      "history": {
+        "preserved": true,
+        "changedFreshId": true
+      },
+      "journey": [
+        {
+          "label": "1 modules",
+          "answerKey": "projection:45a662e7308c52dcb45775a1749580cc5be2c88138becbfba5f8829685725c84"
+        },
+        {
+          "label": "1 organization",
+          "answerKey": "organization-projection:e0ef1c2d9848a288e0191af99d17312fd65e4e432f8d52bd1fcbe1e59e5ac705"
+        },
+        {
+          "label": "1 dependency-structure",
+          "answerKey": "dependency-projection:c787c63596a49d2cb1504ce76fcdf56e0ef5772130621c5c543e499855084a09"
+        },
+        {
+          "label": "1 inspect work-attribution",
+          "answerKey": "investigation-selection-projection:060962acb6dd55284725e623fff929ce5df4e8fff8da0a4076c234d37b1ec70f"
+        },
+        {
+          "label": "1 children work-attribution",
+          "answerKey": "dependency-projection:a27e2dc48cc74e8d6ce341e232fcce358097a6e5f5240d4b282a8225cfec436e"
+        },
+        {
+          "label": "1 inspect memory-store",
+          "answerKey": "investigation-selection-projection:d253df9bc1f00868231effcd5b9e241265ebe0593cc99d7b6ca602dba733ac17"
+        },
+        {
+          "label": "1 children memory-store",
+          "answerKey": "dependency-projection:65a7c87ed1be89d894033c705765bc49f89ac8b45a46ea198d63f8272ba55864"
+        },
+        {
+          "label": "1 inspect executor",
+          "answerKey": "investigation-selection-projection:3a9334a5214d441cc2d38bfe2de62d0f4cdb073b5c892b9b1c564a018dce62a8"
+        },
+        {
+          "label": "1 children executor",
+          "answerKey": "dependency-projection:d875a302347a625c1d91b7d9a4745c515e59d897781ac629fb5472d28d69940c"
+        },
+        {
+          "label": "2 modules",
+          "answerKey": "projection:45a662e7308c52dcb45775a1749580cc5be2c88138becbfba5f8829685725c84"
+        },
+        {
+          "label": "2 organization",
+          "answerKey": "organization-projection:e0ef1c2d9848a288e0191af99d17312fd65e4e432f8d52bd1fcbe1e59e5ac705"
+        },
+        {
+          "label": "2 dependency-structure",
+          "answerKey": "dependency-projection:c787c63596a49d2cb1504ce76fcdf56e0ef5772130621c5c543e499855084a09"
+        },
+        {
+          "label": "2 inspect work-attribution",
+          "answerKey": "investigation-selection-projection:060962acb6dd55284725e623fff929ce5df4e8fff8da0a4076c234d37b1ec70f"
+        },
+        {
+          "label": "2 children work-attribution",
+          "answerKey": "dependency-projection:a27e2dc48cc74e8d6ce341e232fcce358097a6e5f5240d4b282a8225cfec436e"
+        },
+        {
+          "label": "2 inspect memory-store",
+          "answerKey": "investigation-selection-projection:d253df9bc1f00868231effcd5b9e241265ebe0593cc99d7b6ca602dba733ac17"
+        },
+        {
+          "label": "2 children memory-store",
+          "answerKey": "dependency-projection:65a7c87ed1be89d894033c705765bc49f89ac8b45a46ea198d63f8272ba55864"
+        },
+        {
+          "label": "2 inspect executor",
+          "answerKey": "investigation-selection-projection:3a9334a5214d441cc2d38bfe2de62d0f4cdb073b5c892b9b1c564a018dce62a8"
+        },
+        {
+          "label": "2 children executor",
+          "answerKey": "dependency-projection:d875a302347a625c1d91b7d9a4745c515e59d897781ac629fb5472d28d69940c"
+        }
+      ],
+      "samples": [
+        {
+          "label": "loaded",
+          "heapUsedAfterGC": 15504840,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 0
+          }
+        },
+        {
+          "label": "opened",
+          "heapUsedAfterGC": 227916024,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 215539960
+          }
+        },
+        {
+          "label": "journey canonical and answer audit",
+          "heapUsedAfterGC": 1182911040,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 501027008,
+            "cloneCanonicalRecord": 23201016,
+            "cloneLedgerRecord": 239007672,
+            "cloneAnswerRecord": 484641568,
+            "cloneOther": 7418080
+          },
+          "audit": {
+            "canonicalBytes": 99403686,
+            "answerBytes": 377386972,
+            "answerCount": 15,
+            "evidenceOccurrences": 138695,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48361,
+            "uniqueItems": 35025,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "deliveries": 7787,
+              "serializedBytes": 180250152
+            },
+            "recordCounts": {
+              "session": 1,
+              "analysis-inputs": 1,
+              "repository-evidence": 1,
+              "source-evidence": 21537,
+              "claim-context": 32353,
+              "module": 741,
+              "claim": 29041,
+              "recorded-assertion": 3890,
+              "symbol": 7501,
+              "evaluation": 2224,
+              "projection": 4,
+              "repository-region": 158,
+              "group": 158,
+              "repository-artifact": 1718,
+              "organization-evaluation": 1,
+              "organization-projection": 4,
+              "dependency-occurrence": 1889,
+              "dependency-evaluation": 1,
+              "dependency-organization-evaluation": 1,
+              "dependency-projection": 4,
+              "investigation-selection-projection": 3
+            }
+          }
+        },
+        {
+          "label": "overlap baseline",
+          "heapUsedAfterGC": 1168702936,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 501258168,
+            "cloneCanonicalRecord": 23201016,
+            "cloneLedgerRecord": 239007672,
+            "cloneAnswerRecord": 487078288,
+            "cloneOther": 7418080
+          },
+          "audit": {
+            "canonicalBytes": 99403686,
+            "answerBytes": 379021030,
+            "answerCount": 16,
+            "evidenceOccurrences": 139070,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48468,
+            "uniqueItems": 35025,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "deliveries": 7787,
+              "serializedBytes": 180250152
+            },
+            "recordCounts": {
+              "session": 1,
+              "analysis-inputs": 1,
+              "repository-evidence": 1,
+              "source-evidence": 21537,
+              "claim-context": 32353,
+              "module": 741,
+              "claim": 29041,
+              "recorded-assertion": 3890,
+              "symbol": 7501,
+              "evaluation": 2224,
+              "projection": 5,
+              "repository-region": 158,
+              "group": 158,
+              "repository-artifact": 1718,
+              "organization-evaluation": 1,
+              "organization-projection": 4,
+              "dependency-occurrence": 1889,
+              "dependency-evaluation": 1,
+              "dependency-organization-evaluation": 1,
+              "dependency-projection": 4,
+              "investigation-selection-projection": 3
+            }
+          }
+        },
+        {
+          "label": "identical 8",
+          "heapUsedAfterGC": 1168624088,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 501262016,
+            "cloneCanonicalRecord": 23201016,
+            "cloneLedgerRecord": 239007672,
+            "cloneAnswerRecord": 487078288,
+            "cloneOther": 7418080
+          },
+          "audit": {
+            "canonicalBytes": 99403686,
+            "answerBytes": 379021030,
+            "answerCount": 16,
+            "evidenceOccurrences": 139070,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48468,
+            "uniqueItems": 35025,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "deliveries": 7787,
+              "serializedBytes": 180250152
+            },
+            "recordCounts": {
+              "session": 1,
+              "analysis-inputs": 1,
+              "repository-evidence": 1,
+              "source-evidence": 21537,
+              "claim-context": 32353,
+              "module": 741,
+              "claim": 29041,
+              "recorded-assertion": 3890,
+              "symbol": 7501,
+              "evaluation": 2224,
+              "projection": 5,
+              "repository-region": 158,
+              "group": 158,
+              "repository-artifact": 1718,
+              "organization-evaluation": 1,
+              "organization-projection": 4,
+              "dependency-occurrence": 1889,
+              "dependency-evaluation": 1,
+              "dependency-organization-evaluation": 1,
+              "dependency-projection": 4,
+              "investigation-selection-projection": 3
+            }
+          }
+        },
+        {
+          "label": "distinct overlapping 8",
+          "heapUsedAfterGC": 1188943048,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 501258952,
+            "cloneCanonicalRecord": 23201016,
+            "cloneLedgerRecord": 239007672,
+            "cloneAnswerRecord": 506728152,
+            "cloneOther": 7418080
+          },
+          "audit": {
+            "canonicalBytes": 99403686,
+            "answerBytes": 393078807,
+            "answerCount": 24,
+            "evidenceOccurrences": 142560,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 49435,
+            "uniqueItems": 35025,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "deliveries": 7787,
+              "serializedBytes": 180250152
+            },
+            "recordCounts": {
+              "session": 1,
+              "analysis-inputs": 1,
+              "repository-evidence": 1,
+              "source-evidence": 21537,
+              "claim-context": 32353,
+              "module": 741,
+              "claim": 29041,
+              "recorded-assertion": 3890,
+              "symbol": 7501,
+              "evaluation": 2224,
+              "projection": 13,
+              "repository-region": 158,
+              "group": 158,
+              "repository-artifact": 1718,
+              "organization-evaluation": 1,
+              "organization-projection": 4,
+              "dependency-occurrence": 1889,
+              "dependency-evaluation": 1,
+              "dependency-organization-evaluation": 1,
+              "dependency-projection": 4,
+              "investigation-selection-projection": 3
+            }
+          }
+        },
+        {
+          "label": "after historical change",
+          "heapUsedAfterGC": 1191175600,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 501565688,
+            "cloneCanonicalRecord": 23201016,
+            "cloneLedgerRecord": 239040504,
+            "cloneAnswerRecord": 509234296,
+            "cloneOther": 7418080
+          },
+          "audit": {
+            "canonicalBytes": 99403686,
+            "answerBytes": 394714130,
+            "answerCount": 25,
+            "evidenceOccurrences": 142935,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 49542,
+            "uniqueItems": 35025,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65584,
+              "productions": 16,
+              "deliveries": 7787,
+              "serializedBytes": 180251730
+            },
+            "recordCounts": {
+              "session": 1,
+              "analysis-inputs": 1,
+              "repository-evidence": 1,
+              "source-evidence": 21537,
+              "claim-context": 32353,
+              "module": 741,
+              "claim": 29041,
+              "recorded-assertion": 3890,
+              "symbol": 7501,
+              "evaluation": 2224,
+              "projection": 14,
+              "repository-region": 158,
+              "group": 158,
+              "repository-artifact": 1718,
+              "organization-evaluation": 1,
+              "organization-projection": 4,
+              "dependency-occurrence": 1889,
+              "dependency-evaluation": 1,
+              "dependency-organization-evaluation": 1,
+              "dependency-projection": 4,
+              "investigation-selection-projection": 3
+            }
+          }
+        },
+        {
+          "label": "closed inside journey",
+          "heapUsedAfterGC": 352679808,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": true
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 126963136,
+            "cloneAnswerRecord": 251789312,
+            "cloneOther": 1904792,
+            "cloneCanonicalRecord": 2275880
+          },
+          "audit": {
+            "canonicalBytes": 67230657,
+            "answerBytes": 193347002,
+            "answerCount": 1,
+            "evidenceOccurrences": 77785,
+            "uniqueEvidence": 77785,
+            "itemOccurrences": 27412,
+            "uniqueItems": 27412,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": null,
+            "recordCounts": {
+              "session": 1,
+              "analysis-inputs": 1,
+              "source-evidence": 19648,
+              "claim-context": 24202,
+              "claim": 22781,
+              "recorded-assertion": 3890,
+              "evaluation": 2224,
+              "projection": 1
+            }
+          }
+        },
+        {
+          "label": "closed after journey returns, session facade held",
+          "heapUsedAfterGC": 50637056,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 33660496,
+            "cloneAnswerRecord": 98464,
+            "cloneOther": 1083816
+          },
+          "audit": {
+            "canonicalBytes": 0,
+            "answerBytes": 0,
+            "answerCount": 0,
+            "evidenceOccurrences": 0,
+            "uniqueEvidence": 0,
+            "itemOccurrences": 0,
+            "uniqueItems": 0,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": null,
+            "recordCounts": {}
+          }
+        },
+        {
+          "label": "closed facade released",
+          "heapUsedAfterGC": 49323024,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 33555536,
+            "cloneAnswerRecord": 98464
+          },
+          "audit": {
+            "canonicalBytes": 0,
+            "answerBytes": 0,
+            "answerCount": 0,
+            "evidenceOccurrences": 0,
+            "uniqueEvidence": 0,
+            "itemOccurrences": 0,
+            "uniqueItems": 0,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": null,
+            "recordCounts": {}
+          }
+        },
+        {
+          "label": "instrument registry cleared",
+          "heapUsedAfterGC": 24041000,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 6780496
+          }
+        }
+      ]
+    },
+    "implementation": {
+      "at": "2026-11-18T16:43:50.259Z",
+      "node": "26.11.0",
+      "compiledSourceSha256": "102070264e3e21052e081fd4af5bb7eed2632e63e7004b60b02c99318482a738",
+      "ownershipAware": true,
+      "history": {
+        "preserved": true,
+        "changedFreshId": true
+      },
+      "journey": [
+        {
+          "label": "1 modules",
+          "answerKey": "projection:45a662e7308c52dcb45775a1749580cc5be2c88138becbfba5f8829685725c84"
+        },
+        {
+          "label": "1 organization",
+          "answerKey": "organization-projection:e0ef1c2d9848a288e0191af99d17312fd65e4e432f8d52bd1fcbe1e59e5ac705"
+        },
+        {
+          "label": "1 dependency-structure",
+          "answerKey": "dependency-projection:c787c63596a49d2cb1504ce76fcdf56e0ef5772130621c5c543e499855084a09"
+        },
+        {
+          "label": "1 inspect work-attribution",
+          "answerKey": "investigation-selection-projection:060962acb6dd55284725e623fff929ce5df4e8fff8da0a4076c234d37b1ec70f"
+        },
+        {
+          "label": "1 children work-attribution",
+          "answerKey": "dependency-projection:a27e2dc48cc74e8d6ce341e232fcce358097a6e5f5240d4b282a8225cfec436e"
+        },
+        {
+          "label": "1 inspect memory-store",
+          "answerKey": "investigation-selection-projection:d253df9bc1f00868231effcd5b9e241265ebe0593cc99d7b6ca602dba733ac17"
+        },
+        {
+          "label": "1 children memory-store",
+          "answerKey": "dependency-projection:65a7c87ed1be89d894033c705765bc49f89ac8b45a46ea198d63f8272ba55864"
+        },
+        {
+          "label": "1 inspect executor",
+          "answerKey": "investigation-selection-projection:3a9334a5214d441cc2d38bfe2de62d0f4cdb073b5c892b9b1c564a018dce62a8"
+        },
+        {
+          "label": "1 children executor",
+          "answerKey": "dependency-projection:d875a302347a625c1d91b7d9a4745c515e59d897781ac629fb5472d28d69940c"
+        },
+        {
+          "label": "2 modules",
+          "answerKey": "projection:45a662e7308c52dcb45775a1749580cc5be2c88138becbfba5f8829685725c84"
+        },
+        {
+          "label": "2 organization",
+          "answerKey": "organization-projection:e0ef1c2d9848a288e0191af99d17312fd65e4e432f8d52bd1fcbe1e59e5ac705"
+        },
+        {
+          "label": "2 dependency-structure",
+          "answerKey": "dependency-projection:c787c63596a49d2cb1504ce76fcdf56e0ef5772130621c5c543e499855084a09"
+        },
+        {
+          "label": "2 inspect work-attribution",
+          "answerKey": "investigation-selection-projection:060962acb6dd55284725e623fff929ce5df4e8fff8da0a4076c234d37b1ec70f"
+        },
+        {
+          "label": "2 children work-attribution",
+          "answerKey": "dependency-projection:a27e2dc48cc74e8d6ce341e232fcce358097a6e5f5240d4b282a8225cfec436e"
+        },
+        {
+          "label": "2 inspect memory-store",
+          "answerKey": "investigation-selection-projection:d253df9bc1f00868231effcd5b9e241265ebe0593cc99d7b6ca602dba733ac17"
+        },
+        {
+          "label": "2 children memory-store",
+          "answerKey": "dependency-projection:65a7c87ed1be89d894033c705765bc49f89ac8b45a46ea198d63f8272ba55864"
+        },
+        {
+          "label": "2 inspect executor",
+          "answerKey": "investigation-selection-projection:3a9334a5214d441cc2d38bfe2de62d0f4cdb073b5c892b9b1c564a018dce62a8"
+        },
+        {
+          "label": "2 children executor",
+          "answerKey": "dependency-projection:d875a302347a625c1d91b7d9a4745c515e59d897781ac629fb5472d28d69940c"
+        }
+      ],
+      "samples": [
+        {
+          "label": "loaded",
+          "heapUsedAfterGC": 15516224,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 98640
+          }
+        },
+        {
+          "label": "opened",
+          "heapUsedAfterGC": 227881040,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 220438344
+          }
+        },
+        {
+          "label": "journey canonical and answer audit",
+          "heapUsedAfterGC": 643369336,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 500437424,
+            "cloneCanonicalRecord": 3512744,
+            "cloneOther": 524800,
+            "cloneLedgerRecord": 21672040,
+            "cloneAnswerRecord": 113511736
+          },
+          "audit": {
+            "canonicalBytes": 99403752,
+            "answerBytes": 377387676,
+            "answerCount": 15,
+            "evidenceOccurrences": 138695,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48361,
+            "uniqueItems": 35025,
+            "evidenceShared": 138695,
+            "itemShared": 48361,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "deliveries": 7787,
+              "serializedBytes": 180250152
+            },
+            "recordCounts": {
+              "session": 1,
+              "analysis-inputs": 1,
+              "repository-evidence": 1,
+              "source-evidence": 21537,
+              "claim-context": 32353,
+              "module": 741,
+              "claim": 29041,
+              "recorded-assertion": 3890,
+              "symbol": 7501,
+              "evaluation": 2224,
+              "projection": 4,
+              "repository-region": 158,
+              "group": 158,
+              "repository-artifact": 1718,
+              "organization-evaluation": 1,
+              "organization-projection": 4,
+              "dependency-occurrence": 1889,
+              "dependency-evaluation": 1,
+              "dependency-organization-evaluation": 1,
+              "dependency-projection": 4,
+              "investigation-selection-projection": 3
+            }
+          }
+        },
+        {
+          "label": "overlap baseline",
+          "heapUsedAfterGC": 643681656,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 500635048,
+            "cloneCanonicalRecord": 3512744,
+            "cloneOther": 524800,
+            "cloneLedgerRecord": 21672040,
+            "cloneAnswerRecord": 113611128
+          },
+          "audit": {
+            "canonicalBytes": 99403752,
+            "answerBytes": 379021778,
+            "answerCount": 16,
+            "evidenceOccurrences": 139070,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48468,
+            "uniqueItems": 35025,
+            "evidenceShared": 139070,
+            "itemShared": 48468,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "deliveries": 7787,
+              "serializedBytes": 180250152
+            },
+            "recordCounts": {
+              "session": 1,
+              "analysis-inputs": 1,
+              "repository-evidence": 1,
+              "source-evidence": 21537,
+              "claim-context": 32353,
+              "module": 741,
+              "claim": 29041,
+              "recorded-assertion": 3890,
+              "symbol": 7501,
+              "evaluation": 2224,
+              "projection": 5,
+              "repository-region": 158,
+              "group": 158,
+              "repository-artifact": 1718,
+              "organization-evaluation": 1,
+              "organization-projection": 4,
+              "dependency-occurrence": 1889,
+              "dependency-evaluation": 1,
+              "dependency-organization-evaluation": 1,
+              "dependency-projection": 4,
+              "investigation-selection-projection": 3
+            }
+          }
+        },
+        {
+          "label": "identical 8",
+          "heapUsedAfterGC": 643672768,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 500634184,
+            "cloneCanonicalRecord": 3512744,
+            "cloneOther": 524800,
+            "cloneLedgerRecord": 21672040,
+            "cloneAnswerRecord": 113611128
+          },
+          "audit": {
+            "canonicalBytes": 99403752,
+            "answerBytes": 379021778,
+            "answerCount": 16,
+            "evidenceOccurrences": 139070,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48468,
+            "uniqueItems": 35025,
+            "evidenceShared": 139070,
+            "itemShared": 48468,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "deliveries": 7787,
+              "serializedBytes": 180250152
+            },
+            "recordCounts": {
+              "session": 1,
+              "analysis-inputs": 1,
+              "repository-evidence": 1,
+              "source-evidence": 21537,
+              "claim-context": 32353,
+              "module": 741,
+              "claim": 29041,
+              "recorded-assertion": 3890,
+              "symbol": 7501,
+              "evaluation": 2224,
+              "projection": 5,
+              "repository-region": 158,
+              "group": 158,
+              "repository-artifact": 1718,
+              "organization-evaluation": 1,
+              "organization-projection": 4,
+              "dependency-occurrence": 1889,
+              "dependency-evaluation": 1,
+              "dependency-organization-evaluation": 1,
+              "dependency-projection": 4,
+              "investigation-selection-projection": 3
+            }
+          }
+        },
+        {
+          "label": "distinct overlapping 8",
+          "heapUsedAfterGC": 644714576,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 500630392,
+            "cloneCanonicalRecord": 3512744,
+            "cloneOther": 524800,
+            "cloneLedgerRecord": 21672040,
+            "cloneAnswerRecord": 114664152
+          },
+          "audit": {
+            "canonicalBytes": 99403752,
+            "answerBytes": 393079907,
+            "answerCount": 24,
+            "evidenceOccurrences": 142560,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 49435,
+            "uniqueItems": 35025,
+            "evidenceShared": 142560,
+            "itemShared": 49435,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "deliveries": 7787,
+              "serializedBytes": 180250152
+            },
+            "recordCounts": {
+              "session": 1,
+              "analysis-inputs": 1,
+              "repository-evidence": 1,
+              "source-evidence": 21537,
+              "claim-context": 32353,
+              "module": 741,
+              "claim": 29041,
+              "recorded-assertion": 3890,
+              "symbol": 7501,
+              "evaluation": 2224,
+              "projection": 13,
+              "repository-region": 158,
+              "group": 158,
+              "repository-artifact": 1718,
+              "organization-evaluation": 1,
+              "organization-projection": 4,
+              "dependency-occurrence": 1889,
+              "dependency-evaluation": 1,
+              "dependency-organization-evaluation": 1,
+              "dependency-projection": 4,
+              "investigation-selection-projection": 3
+            }
+          }
+        },
+        {
+          "label": "after historical change",
+          "heapUsedAfterGC": 644834864,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 500564880,
+            "cloneCanonicalRecord": 3512744,
+            "cloneOther": 524800,
+            "cloneLedgerRecord": 21672040,
+            "cloneAnswerRecord": 114729728
+          },
+          "audit": {
+            "canonicalBytes": 99403752,
+            "answerBytes": 394715274,
+            "answerCount": 25,
+            "evidenceOccurrences": 142935,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 49542,
+            "uniqueItems": 35025,
+            "evidenceShared": 142935,
+            "itemShared": 49542,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65584,
+              "productions": 16,
+              "deliveries": 7787,
+              "serializedBytes": 180251730
+            },
+            "recordCounts": {
+              "session": 1,
+              "analysis-inputs": 1,
+              "repository-evidence": 1,
+              "source-evidence": 21537,
+              "claim-context": 32353,
+              "module": 741,
+              "claim": 29041,
+              "recorded-assertion": 3890,
+              "symbol": 7501,
+              "evaluation": 2224,
+              "projection": 14,
+              "repository-region": 158,
+              "group": 158,
+              "repository-artifact": 1718,
+              "organization-evaluation": 1,
+              "organization-projection": 4,
+              "dependency-occurrence": 1889,
+              "dependency-evaluation": 1,
+              "dependency-organization-evaluation": 1,
+              "dependency-projection": 4,
+              "investigation-selection-projection": 3
+            }
+          }
+        },
+        {
+          "label": "closed inside journey",
+          "heapUsedAfterGC": 157601128,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": true
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 104936824,
+            "cloneLedgerRecord": 9124656,
+            "cloneAnswerRecord": 27023824,
+            "cloneCanonicalRecord": 1259416
+          },
+          "audit": {
+            "canonicalBytes": 70396297,
+            "answerBytes": 193347046,
+            "answerCount": 1,
+            "evidenceOccurrences": 77785,
+            "uniqueEvidence": 77785,
+            "itemOccurrences": 27412,
+            "uniqueItems": 27412,
+            "evidenceShared": 77785,
+            "itemShared": 0,
+            "ledger": null,
+            "recordCounts": {
+              "session": 1,
+              "analysis-inputs": 1,
+              "source-evidence": 19648,
+              "claim-context": 24202,
+              "module": 588,
+              "claim": 22781,
+              "recorded-assertion": 3890,
+              "symbol": 7501,
+              "evaluation": 2224,
+              "projection": 1
+            }
+          }
+        },
+        {
+          "label": "closed after journey returns, session facade held",
+          "heapUsedAfterGC": 50698520,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 33951424,
+            "cloneLedgerRecord": 32960
+          },
+          "audit": {
+            "canonicalBytes": 0,
+            "answerBytes": 0,
+            "answerCount": 0,
+            "evidenceOccurrences": 0,
+            "uniqueEvidence": 0,
+            "itemOccurrences": 0,
+            "uniqueItems": 0,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": null,
+            "recordCounts": {}
+          }
+        },
+        {
+          "label": "closed facade released",
+          "heapUsedAfterGC": 49384904,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 32290864,
+            "cloneLedgerRecord": 32960
+          },
+          "audit": {
+            "canonicalBytes": 0,
+            "answerBytes": 0,
+            "answerCount": 0,
+            "evidenceOccurrences": 0,
+            "uniqueEvidence": 0,
+            "itemOccurrences": 0,
+            "uniqueItems": 0,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": null,
+            "recordCounts": {}
+          }
+        },
+        {
+          "label": "instrument registry cleared",
+          "heapUsedAfterGC": 24093376,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledLiveAllocationBytes": {
+            "other": 6927576,
+            "cloneLedgerRecord": 32960
+          }
+        }
+      ]
+    }
+  }
+}

@@ -5,7 +5,8 @@ import { prepareFeedback, feedbackObservation } from '../src/lib/application/fee
 import { deliverObservation } from '../src/lib/application/observations.js';
 import { configureCliInvestigator, configurationDiagnostic } from '../src/lib/interfaces/cli/investigator-policy.js';
 import type { ChatGPTCredentials } from '../src/lib/application/accounts.js';
-import type { AgentInput } from '../src/lib/investigation/contracts.js';
+import type { DialogInput } from '../src/lib/contributions/dialog.js';
+import type { InvocationId, QueryResultId } from '../src/lib/contributions/model.js';
 import type { RecordId } from '../src/lib/records.js';
 
 test('account setup returns typed reasons without reading other routes or starting a connection check', async () => {
@@ -38,7 +39,7 @@ test('CLI policy restores sign-in guidance when credentials are revoked after se
   assert.equal(setup.kind, 'ready');
   const dialogue = setup.agent.open();
   try {
-    const input: AgentInput = { attempt: 'attempt:test' as RecordId, instructions: 'offline', request: { operation: 'functionality', subject: 'module:test' as RecordId, parameters: {} }, responses: [], remaining: { milliseconds: 100, calls: 1, toolCalls: 0 } };
+    const input: DialogInput = { attempt: 'attempt:test' as RecordId, instructions: 'offline', request: { invocation: 'invocation:test' as InvocationId, result: 'result:test' as QueryResultId, operation: 'functionality', subjects: [], fresh: false, resultContract: null, context: [], parameters: {} }, notices: [], responses: [], remaining: { milliseconds: 100, calls: 1, toolCalls: 0, repairs: 1 } };
     const reply = await dialogue.exchange(input, new AbortController().signal, () => {});
     assert.equal(reply.kind, 'configuration-unavailable');
     assert.equal(reply.code, 'reauthorization_required');

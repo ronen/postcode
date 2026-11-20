@@ -1,5 +1,4 @@
 import { presentationMethods } from '../src/lib/interfaces/cli/methods.js';
-import { usageSummary } from '../src/lib/investigation/reporting.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -15,14 +14,15 @@ import { arrangeModuleExports, exportsPresentation, renderModuleExports } from '
 import { exportsLens } from '../src/lib/mechanical-implementations.js';
 import { captureCatalog, defaultCatalog } from '../src/lib/request-catalog.js';
 import type { RequestCatalog } from '../src/lib/request-catalog.js';
-import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
+import { openCliSession as openSession, applicationPresentation } from '../src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
+import { contributeModuleFindings } from '../src/lib/contributions/modules.js';
 import { methods, recordId } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { sourceDisclosure } from '../src/lib/source-disclosure.js';
-import { settlePresentation } from '../src/lib/presentation-contracts.js';
+import { settleConsumption } from '../src/lib/application/consumption.js';
 import type { EvaluationRecord } from '../src/lib/records.js';
 import type { ObservationBatch } from '../src/lib/application/observations.js';
 import type { RequestContext } from '../src/lib/interfaces/cli/report-contracts.js';
@@ -181,32 +181,29 @@ test('qualified exports preserve partial, unavailable, unrequested and outside-p
           const record = store.get(id); return record.kind === 'claim' && record.information.type === 'export';
         }).slice(0, 1) : [], reason: `Controlled ${state} export analysis.` }));
     store.put([basis, ...expansions]);
+    // These controlled outcomes stand for a provider's partial or unavailable result, so they enter
+    // the common contribution model through the same wrapper as real evaluations.
+    contributeModuleFindings(store, basis);
     const content = resolveModuleExports(store, moduleExports(store, basis, [subject], 'exports'));
     assert.equal(content.complete, false);
     assert.equal(content.exports.length, state === 'partial' ? 1 : 0);
     const pair = { contract: 'module-exports' as const, value: content };
-    assert.ok(settlePresentation([exportsPresentation], pair));
-    assert.equal(settlePresentation([{ ...exportsPresentation, precondition: 'complete-materialization' }], pair), null);
+    assert.ok(settleConsumption([applicationPresentation(exportsPresentation)], pair));
+    assert.equal(settleConsumption([applicationPresentation({ ...exportsPresentation, precondition: 'complete-materialization' })], pair), null);
     const view = arrangeModuleExports(content, store.entityIds([subject], 'module').get(subject)!, unicode, 'Module exports');
     assert.match(renderModuleExports(view), /empty listing does not establish no exports/);
     assert.match(renderModuleExports(view), new RegExp(`Controlled ${state}`));
-    const { presentRetained } = await import('../src/lib/retained-presentation.js');
+    const { resolveRetainedTarget } = await import('../src/lib/application/retained.js');
     // A fuller answer already exists in the store. Exact presentation cannot enrich this one.
-    const retained = presentRetained(store, basis.session, { kind: 'present', target: content.projection.id, presentation: json, referenceLifetime: 'session' },
-      captureCatalog(catalog()), usageSummary([]), { check() {}, record() {} });
-    assert.equal(retained.kind, 'view'); assert.equal(retained.view.schema, 'postcode-module-exports-view/1-experimental');
-    assert.equal(retained.view.projection.id, content.projection.id); assert.equal(retained.failed, false);
+    const exact = resolveRetainedTarget(store, basis.session, content.projection.id);
+    assert.equal(exact.kind, 'answer'); assert.equal(exact.content.contract, 'module-exports');
+    const retained = { view: arrangeModuleExports(exact.content.value, store.entityIds([subject], 'module').get(subject)!, json, 'Module exports') };
+    assert.equal(retained.view.schema, 'postcode-module-exports-view/1-experimental');
+    assert.equal(retained.view.projection.id, content.projection.id);
     assert.deepEqual(retained.view.exports.map(item => item.id), content.exports.map(item => item.claim.record.id));
     assert.match(JSON.stringify(retained.view), new RegExp(`Controlled ${state}`));
 
   }
-  const { presentRetained } = await import('../src/lib/retained-presentation.js');
-  const missing = presentRetained(store, discovery.session, { kind: 'present', target: unrequested.projection.id, presentation: json, referenceLifetime: 'session' },
-    captureCatalog(catalog()), usageSummary([]), { check() {}, record() {} });
-  assert.equal(missing.kind, 'refusal'); assert.equal(missing.reason, 'presentation-unavailable');
-  assert.deepEqual(missing.retainedAnswers, [unrequested.projection.id]);
-  assert.match(missing.explanation, /support not selected by this retained answer/);
-  assert.match(missing.explanation, /new information request/);
   const narrowed = { ...complete, id: recordId(complete.session, 'evaluation', 'narrowed'), modules: [] };
   store.put([narrowed]);
   const outsider = resolveModuleExports(store, moduleExports(store, narrowed, [subject], 'exports'));

@@ -1,8 +1,8 @@
 import { representationProblem } from './input.js';
-import { lenses } from './lenses.js';
+import { contributionLenses, lenses } from './lenses.js';
+import { contributionOperations, resultContract } from '../contributions/operations.js';
 import type { LensDefinition } from './lenses.js';
-import { operations, requireOperation } from '../investigation/operations.js';
-import type { OperationCatalog } from '../investigation/operations.js';
+import type { ContributionOperationCatalog as OperationCatalog } from '../contributions/operations.js';
 import { freezeOwned } from '../immutable.js';
 import { canonical } from '../identity.js';
 import { mechanicalImplementation } from '../mechanical-implementations.js';
@@ -14,7 +14,7 @@ export interface ApplicationCatalog {
   readonly operations: OperationCatalog;
   readonly presentations?: readonly PresentationDeclaration[];
 }
-export const applicationCatalog: ApplicationCatalog = freezeOwned({ lenses, operations });
+export const applicationCatalog: ApplicationCatalog = freezeOwned({ lenses: { ...lenses, ...contributionLenses }, operations: contributionOperations });
 export type CapturedApplicationCatalog = ApplicationCatalog & { readonly presentations: readonly PresentationDeclaration[] };
 export function captureApplicationCatalog(source: ApplicationCatalog): CapturedApplicationCatalog {
   const problem = representationProblem(source, 'catalog');
@@ -22,22 +22,25 @@ export function captureApplicationCatalog(source: ApplicationCatalog): CapturedA
   const captured = freezeOwned(structuredClone({ ...source, presentations: capturePresentations(source.presentations ?? []) }));
   for (const [id, operation] of Object.entries(captured.operations)) {
     if (id !== operation.id || !id || !operation.objective.trim() || !operation.method.trim()
-      || !['module', 'investigram'].includes(operation.subject)
-      || !['subject-reference', 'prior-interpretation'].includes(operation.initialContext)
-      || operation.initialContext === 'prior-interpretation' && operation.subject !== 'investigram') throw new Error('Invalid operation definition');
+      || !['module', 'selected-content'].includes(operation.subject)) throw new Error('Invalid operation definition');
   }
   for (const [id, lens] of Object.entries(captured.lenses)) {
     if (id !== lens.id || !id || !lens.question.trim() || !lens.title.trim()) throw new Error('Invalid Lens definition');
     const builtin = Object.hasOwn(lenses, id) ? (lenses as Readonly<Record<string, LensDefinition>>)[id] : undefined;
-    if (builtin && builtin.requirements.kind !== 'interpretation' && canonical(lens) !== canonical(builtin)) throw new Error('Unsupported mechanical Lens definitions for built-in identity');
+    if (builtin && builtin.requirements.kind !== 'contribution' && canonical(lens) !== canonical(builtin)) throw new Error('Unsupported mechanical Lens definitions for built-in identity');
+    if ((lens.requirements as { kind: string }).kind === 'interpretation') throw new Error('Legacy interpretation operations are not supported; register a contribution operation.');
     mechanicalImplementation(lens);
-    if (lens.requirements.kind === 'interpretation') {
-      if (!lens.parameters || typeof lens.parameters !== 'object' || Array.isArray(lens.parameters)
-        || Object.getPrototypeOf(lens.parameters) !== Object.prototype || Object.keys(lens.parameters).length) throw new Error('Interpretation Lens definitions must declare an empty parameter object');
-      const operation = requireOperation(captured.operations, lens.requirements.operation);
-      if (lens.cardinality !== 'one' || lens.subjects.length !== 1 || lens.subjects[0] !== operation.subject
-        || lens.results.length !== 1 || lens.results[0] !== 'investigation') throw new Error('Incompatible interpretation Lens definition');
+    if (lens.requirements.kind === 'contribution') {
+      if (!lens.parameters || typeof lens.parameters !== 'object' || Array.isArray(lens.parameters) || Object.keys(lens.parameters).length) {
+        throw new Error('Contribution Lens parameters must be an empty parameter object');
+      }
+      const operation = Object.hasOwn(captured.operations, lens.requirements.operation) ? captured.operations[lens.requirements.operation] : undefined;
+      const subjects = operation?.subject === 'module' ? ['module'] : ['contribution', 'content', 'designation'];
+      if (!operation || resultContract(lens.requirements.resultContract) === undefined || lens.cardinality !== 'one'
+        || canonical(lens.subjects) !== canonical(subjects) || lens.results.length !== 1 || lens.results[0] !== 'contribution') throw new Error('Incompatible contribution Lens definition');
     }
+    if (lens.requirements.kind === 'follow-up' && (lens.cardinality !== 'one' || lens.subjects.length !== 1 || lens.subjects[0] !== 'contribution'
+      || lens.results.length !== 1 || lens.results[0] !== 'contribution' || Object.keys(lens.parameters).join() !== 'option')) throw new Error('Incompatible follow-up Lens definition');
   }
   return captured;
 }

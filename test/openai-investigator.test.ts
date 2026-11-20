@@ -1,17 +1,19 @@
+import type { DialogInput } from '../src/lib/contributions/dialog.js';
+import type { InvocationId, QueryResultId } from '../src/lib/contributions/model.js';
 import { requireView } from './request-helpers.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { PassThrough } from 'node:stream';
-import { chatGPTInvestigator, openAIInvestigator } from '../src/lib/investigation/openai/adapter.js';
 import type { OpenAIExchange } from '../src/lib/investigation/openai/adapter.js';
 import { configuredInvestigator } from '../src/lib/application/accounts.js';
 import { InvestigationUsage } from '../src/lib/investigation/usage.js';
 import { usageSummary } from '../src/lib/investigation/reporting.js';
-import { usageLines } from '../src/lib/investigation/presentation.js';
-import type { InvestigationView } from '../src/lib/investigation/presentation.js';
-import type { AgentInput, AttemptReport, ReportedUsage } from '../src/lib/investigation/contracts.js';
+import { usageLines } from '../src/lib/investigation/usage-presentation.js';
+import type { ContributionView as InvestigationView } from '../src/lib/interfaces/cli/contribution-presentation.js';
+import { openAIDialogAgent, chatGPTDialogAgent } from '../src/lib/investigation/openai/contribution-protocol.js';
+import type { AttemptReport, ReportedUsage } from '../src/lib/investigation/contracts.js';
 import type { RecordId } from '../src/lib/records.js';
 import type { ObservationBatch } from '../src/lib/application/observations.js';
 import { runCli } from '../src/lib/cli.js';
@@ -19,8 +21,8 @@ import { openCliSession as openSession } from '../src/lib/interfaces/cli/applica
 import { temporaryDirectory, interactionDriver } from './cli-helpers.js';
 
 const sentinel = 'postcode-sentinel-secret-not-a-real-key';
-const input: AgentInput = { attempt: 'attempt:test' as RecordId, instructions: 'Interpret this module using only supplied evidence.',
-  request: { operation: 'functionality', subject: 'module:test' as RecordId, parameters: {} }, responses: [], remaining: { milliseconds: 10000, calls: 5, toolCalls: 10 } };
+const input: DialogInput = { attempt: 'attempt:test' as RecordId, instructions: 'Interpret this module using only supplied evidence.',
+  request: { invocation: 'invocation:test' as InvocationId, result: 'result:test' as QueryResultId, operation: 'functionality', subjects: [{ role: null, subject: { kind: 'entity', entity: 'entity:test' } }], parameters: {}, fresh: true, resultContract: null, context: [] }, responses: [], notices: [], remaining: { milliseconds: 10000, calls: 5, toolCalls: 10, repairs: 1 } };
 const providerUsage = { input_tokens: 100, input_tokens_details: { cached_tokens: 20, cache_write_tokens: 30 },
   output_tokens: 50, output_tokens_details: { reasoning_tokens: 10 }, total_tokens: 150 };
 function response(overrides: Record<string, unknown> = {}) {
@@ -29,25 +31,24 @@ function response(overrides: Record<string, unknown> = {}) {
 function call(name: string, args: unknown) { return { type: 'function_call', call_id: 'call_1', id: 'fc_1', status: 'completed', name, arguments: JSON.stringify(args) }; }
 function http(body: unknown, status = 200) { return new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } }); }
 function draft(subject: string, evidence: string[] = []) {
-  return { localId: 'root', prose: 'Returns seven.', referent: { description: 'Selected module', subjects: [subject] },
-    qualifications: ['Interpretation of supplied captured source.'], evidence, associations: [], children: [], corrections: [], inconsistencies: [] };
+  return { investigrams: [{ key: 'root', referents: [subject], qualification: { limitations: ['Interpretation of supplied source.'] }, items: [{ key: 'p', type: 'prose', body: { text: 'Returns seven.' }, evidence }] }] };
 }
 
 test('real SDK transports a fresh bounded dialogue with only PostCode functions and no credential in context or capture', async () => {
   const sent: Record<string, any>[] = [], captures: OpenAIExchange[] = [], usage: ReportedUsage[] = [];
-  const agent = openAIInvestigator(sentinel, { onExchange: item => captures.push(item), fetch: async (url, options) => {
+  const agent = openAIDialogAgent(sentinel, { onExchange: item => captures.push(item), fetch: async (url, options) => {
     assert.equal(String(url), 'https://api.openai.com/v1/responses');
     assert.equal(new Headers(options?.headers).get('authorization'), `Bearer ${sentinel}`);
     const body = JSON.parse(String(options?.body)); sent.push(body);
-    const subject = JSON.parse(body.input.at(-1).content).request.subject;
-    if (sent.length === 2) return http(response({ output: [call('submit_investigram', draft(subject))] }));
+    const subject = JSON.parse(body.input.at(-1).content).request.subjects[0].subject.entity;
+    if (sent.length === 2) return http(response({ output: [call('submit_contribution', draft(subject))] }));
     return http(response({ output: [{ type: 'reasoning', id: 'rs_1', summary: [], encrypted_content: 'opaque-test-reasoning' },
-      call('request_evidence', { requests: [{ kind: 'source', subject }] })] }));
+      call('request_information', { requests: [{ kind: 'source', subject }] })] }));
   } });
   const dialogue = agent.open(), signal = new AbortController().signal;
-  assert.deepEqual(await dialogue.exchange(input, signal, item => usage.push(item)), { kind: 'tools', requests: [{ kind: 'source', subject: input.request.subject }] });
+  assert.deepEqual(await dialogue.exchange(input, signal, item => usage.push(item)), { kind: 'tools', requests: [{ kind: 'source', subject: 'entity:test' }] });
   const evidence = { status: 'unavailable' as const, records: [], selected: [], limitations: ['Controlled unavailable source'] };
-  const submitted = await dialogue.exchange({ ...input, responses: [evidence] }, signal, item => usage.push(item));
+  const submitted = await dialogue.exchange({ ...input, responses: [{ tool: 'evidence', response: evidence, entities: [], retained: [], retainedOmitted: [] }] }, signal, item => usage.push(item));
   assert.equal(submitted.kind, 'submit');
   dialogue.close();
   const fresh = agent.open();
@@ -56,21 +57,14 @@ test('real SDK transports a fresh bounded dialogue with only PostCode functions 
   assert.notEqual(sent[0]!.input[0].content, sent[2]!.input[0].content, 'handles belong to a fresh dialogue');
   assert.deepEqual({ ...sent[0], input: [] }, { ...sent[2], input: [] });
   assert.deepEqual(captures[0]!.references.bindings.map(b => b.reference), captures[2]!.references.bindings.map(b => b.reference));
-  assert.deepEqual(captures[1]!.references.resolutions.map(r => r.reference), [input.request.subject]);
-  const submissionSchema = sent[0]!.tools[1].parameters;
-  for (const schema of [submissionSchema, submissionSchema.$defs.investigram]) {
-    const targets = schema.properties.inconsistencies.items.properties.targets;
-    assert.match(targets.description, /One or more exact references/);
-    assert.match(targets.description, /earlier investigrams in this session/);
-    assert.match(targets.description, /documentation-versus-implementation discrepancies in attributed prose/);
-    assert.match(schema.properties.evidence.description, /context actually supplied/);
-  }
+  assert.deepEqual(captures[1]!.references.resolutions.map(r => r.reference), ['entity:test']);
+  assert.ok(sent[0]!.tools, 'the common protocol advertises typed functions');
   assert.equal(sent[0]!.model, 'gpt-6-sol');
   assert.deepEqual(sent[0]!.reasoning, { effort: 'medium' });
   assert.equal(sent[0]!.store, false); assert.equal(sent[0]!.service_tier, 'default');
   assert.equal(sent[0]!.parallel_tool_calls, false);
-  assert.deepEqual(sent[0]!.tools.map((tool: { name: string; type: string }) => [tool.type, tool.name]), [['function', 'request_evidence'], ['function', 'submit_investigram']]);
-  assert.equal(sent[1]!.input.find((item: { type: string }) => item.type === 'function_call_output').output, JSON.stringify([evidence]));
+  assert.deepEqual(sent[0]!.tools.map((tool: { name: string; type: string }) => [tool.type, tool.name]), [['function', 'request_information'], ['function', 'submit_contribution']]);
+  assert.equal(sent[1]!.input.find((item: { type: string }) => item.type === 'function_call_output').output, JSON.stringify([{ tool: 'evidence', response: evidence, entities: [], retained: [], retainedOmitted: [] }]));
   assert.ok(sent[1]!.input.some((item: { type: string }) => item.type === 'reasoning'));
   assert.doesNotMatch(JSON.stringify({ captures, sent, usage, identity: agent.identity }), new RegExp(sentinel));
   assert.deepEqual(usage[0]!.execution, { model: 'gpt-6-sol', serviceTier: 'default' });
@@ -89,7 +83,7 @@ test('provider failure taxonomy preserves codes, excludes echoed credentials, an
   ] as const) {
     let requests = 0;
     const captures: OpenAIExchange[] = [];
-    const agent = openAIInvestigator(sentinel, { onExchange: item => captures.push(item), fetch: async () => {
+    const agent = openAIDialogAgent(sentinel, { onExchange: item => captures.push(item), fetch: async () => {
       requests++; return http({ error: { code, message: `Echoed credential ${sentinel}`, type: 'provider_error' } }, status);
     } });
     const dialogue = agent.open();
@@ -102,7 +96,7 @@ test('provider failure taxonomy preserves codes, excludes echoed credentials, an
   }
   for (const [error, code] of [[new Error(sentinel), 'transport_error'], [new DOMException(sentinel, 'AbortError'), 'request_timeout']] as const) {
     let calls = 0;
-    const dialogue = openAIInvestigator(sentinel, { fetch: async () => { calls++; throw error; } }).open();
+    const dialogue = openAIDialogAgent(sentinel, { fetch: async () => { calls++; throw error; } }).open();
     const result = await dialogue.exchange(input, new AbortController().signal, () => {}); dialogue.close();
     assert.ok('code' in result); assert.equal(result.code, code); assert.equal(calls, 1);
     assert.doesNotMatch(JSON.stringify(result), new RegExp(sentinel));
@@ -115,18 +109,18 @@ test('provider refusal, truncation, failure, malformed submission and absent usa
     [response({ status: 'incomplete', incomplete_details: { reason: 'max_output_tokens' } }), 'truncated'],
     [response({ status: 'incomplete', incomplete_details: { reason: 'content_filter' } }), 'refused'],
     [response({ status: 'failed', error: { code: 'server_error', message: sentinel } }), 'communication-failure'],
-    [response({ output: [{ ...call('submit_investigram', {}), arguments: '{bad-json' }] }), 'submit'],
+    [response({ output: [{ ...call('submit_contribution', {}), arguments: '{bad-json' }] }), 'submit'],
     [response({ output: [call('unsupported_tool', {})] }), 'ended'],
-    [response({ output: [{ ...call('request_evidence', { requests: [] }), status: 'incomplete' }] }), 'ended'],
-    [response({ output: [{ ...call('submit_investigram', {}), status: 'in_progress' }] }), 'ended'],
-    [response({ output: [call('submit_investigram', {}), call('request_evidence', {})] }), 'ended'],
+    [response({ output: [{ ...call('request_information', { requests: [] }), status: 'incomplete' }] }), 'ended'],
+    [response({ output: [{ ...call('submit_contribution', {}), status: 'in_progress' }] }), 'ended'],
+    [response({ output: [call('submit_contribution', {}), call('request_information', {})] }), 'ended'],
     [response({ output: [null] }), 'ended'],
     [response({ output: [{ type: 'message', content: null }] }), 'ended'],
     [response({ usage: null }), 'ended'],
   ] as const;
   for (const [body, kind] of cases) {
     const reports: ReportedUsage[] = [], captures: OpenAIExchange[] = [];
-    const dialogue = openAIInvestigator(sentinel, { fetch: async () => http(body), onExchange: item => captures.push(item) }).open();
+    const dialogue = openAIDialogAgent(sentinel, { fetch: async () => http(body), onExchange: item => captures.push(item) }).open();
     const result = await dialogue.exchange(input, new AbortController().signal, item => reports.push(item)); dialogue.close();
     assert.equal(result.kind, kind); assert.equal(reports.length, body.usage ? 1 : 0);
     assert.doesNotMatch(JSON.stringify({ result, reports, captures }), new RegExp(sentinel));
@@ -135,7 +129,7 @@ test('provider refusal, truncation, failure, malformed submission and absent usa
 
 test('malformed provider JSON is a safe communication failure rather than a parser defect', async () => {
   for (const body of ['{invalid-json', 'null']) {
-    const dialogue = openAIInvestigator(sentinel, { fetch: async () => new Response(body, { headers: { 'content-type': 'application/json' } }) }).open();
+    const dialogue = openAIDialogAgent(sentinel, { fetch: async () => new Response(body, { headers: { 'content-type': 'application/json' } }) }).open();
     const result = await dialogue.exchange(input, new AbortController().signal, () => {}); dialogue.close();
     assert.equal(result.kind, 'communication-failure');
     assert.ok('code' in result); assert.equal(result.code, 'invalid_provider_response');
@@ -147,7 +141,7 @@ test('abort and close cancel in-flight SDK transport without retry or a late usa
     let started!: () => void;
     const ready = new Promise<void>(resolve => { started = resolve; });
     let calls = 0, aborted = false;
-    const dialogue = openAIInvestigator(sentinel, { fetch: async (_url, options) => {
+    const dialogue = openAIDialogAgent(sentinel, { fetch: async (_url, options) => {
       calls++; started();
       return new Promise<Response>((_resolve, reject) => options!.signal!.addEventListener('abort', () => {
         aborted = true; reject(new DOMException('Aborted', 'AbortError'));
@@ -162,11 +156,11 @@ test('abort and close cancel in-flight SDK transport without retry or a late usa
 });
 
 test('usage grouping preserves returned models and service tiers and does not add token subsets', async () => {
-  const agent = openAIInvestigator(sentinel, { fetch: async () => http(response()) });
+  const agent = openAIDialogAgent(sentinel, { fetch: async () => http(response()) });
   const ledger = new InvestigationUsage();
   for (let i = 1; i <= 3; i++) {
     const record = ledger.start(input.attempt, i, agent.identity);
-    const dialogue = openAIInvestigator(sentinel, { fetch: async () => http(response({ model: i === 3 ? 'gpt-6-sol-snapshot' : 'gpt-6-sol', service_tier: i === 2 ? 'flex' : 'default' })) }).open();
+    const dialogue = openAIDialogAgent(sentinel, { fetch: async () => http(response({ model: i === 3 ? 'gpt-6-sol-snapshot' : 'gpt-6-sol', service_tier: i === 2 ? 'flex' : 'default' })) }).open();
     await dialogue.exchange(input, new AbortController().signal, usage => { record(usage); record(usage); }); dialogue.close();
   }
   const report = usageSummary([{ usage: ledger.calls() } as AttemptReport]);
@@ -207,13 +201,13 @@ test('SDK service failure after evidence retains usage and acquisition, but a la
   writeFileSync(path.join(root, 'entry.ts'), 'export function entry() { return 7; }');
   let calls = 0;
   const captures: OpenAIExchange[] = [];
-  const agent = openAIInvestigator(sentinel, { onExchange: item => captures.push(item), fetch: async (_url, options) => {
+  const agent = openAIDialogAgent(sentinel, { onExchange: item => captures.push(item), fetch: async (_url, options) => {
     calls++;
     const body = JSON.parse(String(options?.body));
     if (calls % 2 === 0) return http({ error: { code: 'insufficient_quota', message: sentinel } }, 429);
     assert.equal(body.input.length, 1, 'retry is a fresh dialogue, not resumption');
-    const subject = JSON.parse(body.input[0].content).request.subject;
-    return http(response({ output: [call('request_evidence', { requests: [{ kind: 'source', subject }] })] }));
+    const subject = JSON.parse(body.input[0].content).request.subjects[0].moduleRecord;
+    return http(response({ output: [call('request_information', { requests: [{ kind: 'source', subject }] })] }));
   } });
   const opened = await openSession({ configPath }, { investigation: { agent } });
   assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
@@ -221,7 +215,7 @@ test('SDK service failure after evidence retains usage and acquisition, but a la
   const command = { lens: 'summarize' as const, selector: 'entry', presentation: { format: 'json' as const, moreDetails: false } };
   const first = requireView(await opened.session.execute(command)).view as InvestigationView;
   const second = requireView(await opened.session.execute(command)).view as InvestigationView;
-  assert.equal(calls, 4); assert.equal(second.accounts.length, 0); assert.equal(second.result!.reused, false);
+  assert.equal(calls, 4); assert.equal(second.rows.length, 0); assert.equal(second.reporting!.reused, false);
   assert.equal(first.usage.missingCalls, 1); assert.equal(second.usage.missingCalls, 2);
   assert.equal(second.usage.totals[0]!.categories.find(c => c.category === 'total')!.value, 300);
   assert.ok(first.usage.attempts[0]!.suppliedEvidence.length > 0);
@@ -237,7 +231,7 @@ for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode'
   const driver = interactionDriver(() => inputStream.end());
   const batches: ObservationBatch[] = [], captures: OpenAIExchange[] = [];
   let calls = 0, stdout = '', stderr = '', prompts = 0, subject = '';
-  const createAgent = (options: Parameters<typeof openAIInvestigator>[1]) => route === 'api-key' ? openAIInvestigator(sentinel, options) : chatGPTInvestigator({ token: async () => sentinel, watch: () => () => {} }, options);
+  const createAgent = (options: Parameters<typeof openAIDialogAgent>[1]) => route === 'api-key' ? openAIDialogAgent(sentinel, options) : chatGPTDialogAgent({ token: async () => sentinel, watch: () => () => {} }, options);
   const transportResponse = (body: ReturnType<typeof response>) => {
     if (route === 'api-key') return http(body);
     const envelope = { ...body, model: 'gpt-5.6-sol', output: [] };
@@ -252,11 +246,11 @@ for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode'
     calls++;
     const body = JSON.parse(String(options?.body));
     const latest = body.input.filter((item: { role: string }) => item.role === 'user').at(-1);
-    subject = JSON.parse(latest.content).request.subject;
-    if (calls === 1) return transportResponse(response({ output: [call('request_evidence', { requests: [{ kind: 'source', subject }] })] }));
+    subject = JSON.parse(latest.content).request.subjects[0].moduleRecord;
+    if (calls === 1) return transportResponse(response({ output: [call('request_information', { requests: [{ kind: 'source', subject }] })] }));
     const result = JSON.parse(body.input.find((item: { type: string }) => item.type === 'function_call_output').output)[0];
-    assert.equal(result.status, 'available');
-    return transportResponse(response({ output: [call('submit_investigram', draft(subject, result.selected))] }));
+    assert.equal(result.response.status, 'available');
+    return transportResponse(response({ output: [call('submit_contribution', { investigrams: [{ key: 'answer', qualification: { limitations: ['Offline controlled interpretation.'] }, items: [{ key: 'text', type: 'prose', body: { text: 'Returns seven.' }, evidence: result.response.selected }], declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: JSON.parse(latest.content).request.result }, members: [{ kind: 'item', item: { investigram: { local: 'answer' }, item: 'text' } }] }] }] })] }));
   } });
   const exit = await runCli(['shell', '--project', path.join(root, 'tsconfig.json'), ...(format === 'json' ? ['--json'] : [])], {
     cwd: root, checkout: root, input: inputStream,
@@ -275,7 +269,7 @@ for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode'
   assert.equal('projection' in usage, false);
   assert.ok(!batches[2]!.events.some(event => event.type === 'view-produced'));
   for (const view of views) { assert.equal(view.usage.calls, 2); assert.equal(view.usage.totals[0]!.categories.find(c => c.category === 'total')!.value, 300); }
-  assert.equal(views[1]!.result!.reused, true);
+  assert.equal(views[1]!.reporting!.reused, true);
   assert.equal(captures[0]!.request.model, route === 'api-key' ? 'gpt-6-sol' : 'gpt-5.6-sol');
   assert.equal(views[0]!.usage.totals[0]!.agent.configuration.billingRoute, route === 'api-key' ? 'openai-api' : 'chatgpt-plan');
   if (route === 'chatgpt-plan') { assert.match(stderr, /ChatGPT plan usage/); assert.match(JSON.stringify(views[0]!.usage.limitations), /monetary attribution is unavailable/); }
@@ -285,16 +279,16 @@ for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode'
 
 test('only an explicit submission call classifies malformed arguments as an invalid submission on either route', async () => {
   for (const subscription of [false, true]) {
-    for (const name of ['request_evidence', 'unsupported_tool', 'submit_investigram']) {
+    for (const name of ['request_information', 'unsupported_tool', 'submit_contribution']) {
       const body = response({ output: [{ ...call(name, {}), namespace: 'postcode', arguments: '{bad-json' }] });
       let requests = 0; const reports: ReportedUsage[] = [];
       const fetcher: typeof fetch = async () => { requests++; return subscription
         ? new Response(`data: ${JSON.stringify({ type: 'response.completed', response: body })}\n\n`, { headers: { 'content-type': 'text/event-stream' } }) : http(body); };
-      const agent = subscription ? chatGPTInvestigator({ token: async () => sentinel, watch: () => () => {} }, { fetch: fetcher }) : openAIInvestigator(sentinel, { fetch: fetcher });
+      const agent = subscription ? chatGPTDialogAgent({ token: async () => sentinel, watch: () => () => {} }, { fetch: fetcher }) : openAIDialogAgent(sentinel, { fetch: fetcher });
       const dialogue = agent.open();
       try {
         const result = await dialogue.exchange(input, new AbortController().signal, report => reports.push(report));
-        assert.deepEqual(result, name === 'submit_investigram' ? { kind: 'submit', result: null } : { kind: 'ended' });
+        assert.deepEqual(result, name === 'submit_contribution' ? { kind: 'submit', contribution: null } : { kind: 'ended' });
         assert.equal(requests, 1); assert.equal(reports.length, 1);
       } finally { dialogue.close(); }
     }

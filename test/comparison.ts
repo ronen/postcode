@@ -11,6 +11,8 @@ const references = new Set([
   'module', 'symbol', 'origin', 'via', 'assertion', 'target', 'owner', 'parent', 'child',
   'groups', 'candidates', 'artifacts', 'containment', 'placements', 'occurrence', 'occurrences',
   'relationships', 'members', 'internalRelationships', 'coverage', 'nonEdgeRequests',
+  // Common contribution identities and the investigram part of content, association and declaration addresses.
+  'entity', 'investigram', 'production', 'record', 'referents', 'references', 'invocation', 'result', 'answer',
   'population', 'prerequisites', 'outsidePopulation', 'subjects', 'opaqueSubjects', 'projectModules', 'source', 'commonAncestors', 'entries', 'values', 'targetEvidence', 'moduleClaims', 'moduleEvaluations',
 ]);
 
@@ -55,6 +57,8 @@ export function normalizeSession<T>(value: T, declaredSession?: string): T {
         // Captured input values are opaque evidence, including arbitrary field names.
         (object.kind === 'analysis-inputs' && key === 'value') || ['capture', 'layout', 'artifact', 'link', 'links', 'location', 'dependencyResolution'].includes(key) ? child
           : object.kind === 'module-exports-projection' && ['exports', 'documentation'].includes(key) ? visit(child, '$references')
+          : field === 'module-exports-body' && key === 'exports' ? visit(child, '$references')
+          : object.type === 'module-exports' && key === 'body' ? visit(child, 'module-exports-body')
           : field === 'designation' && object.kind === 'reference' && key === 'value' && typeof child === 'string' ? reference(child)
           : object.kind === 'rendered-output' && key === 'value' && typeof child === 'string' ? normalizeRendered(child, session) : visit(child, key)]));
     }
@@ -77,6 +81,8 @@ function normalizeRendered(text: string, session?: string): string {
   // evidence in labels/documentation is never substituted, even if it resembles it.
   const producer = session ?? `session:${text.match(/^Session ([a-f0-9-]{36})$/m)?.[1]}`;
   const normalizedAnswers = text.replace(/^(Answer: (?:@answer-[a-f0-9]+ · )?)(session:[a-f0-9-]{36})(:[^\n]+)$/gm, (line, label: string, id: string, suffix: string) => id === producer ? `${label}session:normalized${suffix}` : line);
-  return normalizedAnswers.replace(/^Session ([a-f0-9-]{36})$/gm, (heading, uuid: string) =>
+  const normalizedUses = normalizedAnswers.replace(/^(Use |Qualification \()(session:[a-f0-9-]{36})(:investigram:[a-f0-9]+(?:#[^\s:)]+)?)(?=[:)])/gm,
+    (line, label: string, id: string, suffix: string) => id === producer ? `${label}session:normalized${suffix}` : line);
+  return normalizedUses.replace(/^Session ([a-f0-9-]{36})$/gm, (heading, uuid: string) =>
     producer === `session:${uuid}` ? 'Session normalized' : heading);
 }

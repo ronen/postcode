@@ -1,3 +1,4 @@
+import { nativeConcerns, nativeConcernLines } from '../contributions/native-presentation.js';
 import { presentationMethods } from '../interfaces/cli/methods.js';
 import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
 import { sourceAttribution } from '../evidence-view.js';
@@ -14,6 +15,9 @@ import { presentationChanges, validatePresentationContent } from '../presentatio
 import type { PresentedOptions, PresentationDefinition } from '../presentation-contracts.js';
 import { inlineText } from '../terminal-text.js';
 import type { ProgramRecord, RecordId, SourceEvidenceRecord } from '../records.js';
+import { addressKey } from '../contributions/model.js';
+import type { Qualification } from '../contributions/model.js';
+import type { UseSnapshot } from './records.js';
 import type { ModuleExportsContent } from './content.js';
 
 /** Internal extension pairing; production catalogs do not expose this Lens. */
@@ -36,6 +40,20 @@ export function arrangeModuleExports(content: ModuleExportsContent, reference: s
       symbolInformation: item.symbol?.record.information ?? null, originHandle: item.origin?.record.information.handle ?? null,
       ...presentDocumentation(item.documentation, presentation.format === 'unicode' ? 3 : Infinity, presentation, true, doc => collect(doc.evidence)) };
   });
+  const { support, ...contributions } = content.projection.contributions;
+  collect(support.evidence);
+  const changes = new Map(support.changes.map(change => [addressKey(change.address), change]));
+  const owners = new Map(support.owners.map(owner => [owner.investigram, owner]));
+  const use = (value: UseSnapshot) => ({ ...value, displacements: value.displacements.map(change => {
+    const { declaration } = changes.get(addressKey(change.change))!, owner = owners.get(change.change.investigram)!;
+    return { ...change, producer: owner.producer, production: owner.production,
+      producing: owner.producing.map(cause => {
+        const source = changes.get(addressKey(cause.change))!, sourceOwner = owners.get(cause.change.investigram)!;
+        return { ...cause, grounds: source.declaration.grounds, qualification: source.declaration.qualification,
+          producer: sourceOwner.producer, ownerQualification: sourceOwner.qualification };
+      }), ownerQualification: owner.qualification, qualification: declaration.qualification,
+      evidence: declaration.grounds!.evidence, support: declaration.grounds!.support };
+  }) });
   const { id, session, lens, subject, parameters } = content.projection;
   const view = { ...answerDisplay(context), schema: 'postcode-module-exports-view/1-experimental' as const, projection: { id, session, lens, subject, parameters },
     title, presentation, ...(resolution ? { resolution } : {}),
@@ -43,6 +61,11 @@ export function arrangeModuleExports(content: ModuleExportsContent, reference: s
       qualification: presentQualification(content.module.context) },
     exports, completeness: content.complete ? 'complete' as const : 'not-established' as const,
     outsidePopulation: content.projection.outsidePopulation,
+    nativeConcerns: nativeConcerns(content.projection.native),
+    // Resolved raw evidence remains internal; presentation carries attributed displacement
+    // qualifications and exact support references, not an unclassified source-body export.
+    contributions: { ...contributions, naming: contributions.naming.map(use),
+      surface: contributions.surface ? { ...contributions.surface, uses: contributions.surface.uses.map(use) } : null },
     evaluations: [content.basis, ...content.evaluations].map(({ id, requirement, applicability, availability, execution, materialization, reason }) =>
       ({ id, requirement, applicability, availability, execution, materialization, reason })),
     qualifications: content.contexts.map(item => presentQualification(item.context)),
@@ -52,14 +75,41 @@ export function arrangeModuleExports(content: ModuleExportsContent, reference: s
     presentation, identityReference(session, subject), answerIdentity(context), resolutionContextIdentity(session, resolution)]) }));
 }
 export type ModuleExportsView = ReturnType<typeof arrangeModuleExports>;
-export function renderModuleExports(view: ModuleExportsView): string {
+export function renderModuleExports(view: ModuleExportsView, enclosed = false): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
+  // These exact uses and displacement details have the more specific rendering below.
+  // Keep all native support in the structured View, including independent concerns.
+  const specificUses = [...view.contributions.naming, ...view.contributions.surface?.uses ?? []];
+  const displacements = specificUses.flatMap(use => use.displacements);
+  const renderedUses = new Set(specificUses.map(use => addressKey(use.association)));
+  const renderedChanges = new Set(displacements.flatMap(change => [addressKey(change.change), ...change.producing.map(cause => addressKey(cause.change))]));
+  const renderedOwners = new Set(displacements.map(change => change.change.investigram));
+  const remainingConcerns = { ...view.nativeConcerns,
+    uses: view.nativeConcerns.uses.filter(use => !renderedUses.has(addressKey(use.address))),
+    changes: view.nativeConcerns.changes.filter(change => !renderedChanges.has(addressKey(change.address))),
+    owners: view.nativeConcerns.owners.filter(owner => !renderedOwners.has(owner.investigram)) };
   const lines = [inlineText(view.title), `Session ${view.projection.session.replace(/^session:/, '')}`,
     `${inlineText(view.module.name ?? view.module.handle)} (${inlineText(view.module.reference)})`,
-    ...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution),
+    ...nativeConcernLines(remainingConcerns), ...(enclosed ? [] : [...answerLines(view), ...continuationLines(view)]), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution),
     view.completeness === 'complete' ? `${view.exports.length + view.omittedExports} exports established; ${view.exports.length} shown.`
       : 'Export completeness is not established; an empty listing does not establish no exports.',
-    ...(view.outsidePopulation ? ['The subject is outside the supplied evaluation population.'] : [])];
+    ...(view.outsidePopulation ? ['The subject is outside the supplied evaluation population.'] : []),
+    // A method's finding stays selected after a use of it is displaced; it must not appear unaffected.
+    ...[['module identification', view.contributions.naming] as const, ['export listing', view.contributions.surface?.uses ?? []] as const].flatMap(([what, uses]) =>
+      uses.flatMap(use => use.displacements.flatMap(change => [
+        `The use of this ${what} as information about the module was ${change.operation === 'withdraw' ? 'withdrawn' : 'superseded'} by later analysis: ${inlineText(change.grounds)} The finding itself, shown here under its own method, is unchanged.`,
+        `  Displacement producer: ${inlineText(change.producer.mechanism)} (${inlineText(change.producer.method)}).`,
+        ...displacementQualification('Displacement owner', change.ownerQualification),
+        ...displacementQualification('Displacement declaration', change.qualification),
+        ...(change.producing.length ? [
+          `  Displacement production needs reconsideration: ${new Set(change.producing.map(cause => addressKey(cause.change))).size} later change(s) to received information. This does not establish an error, reverse the displacement or reinstate the earlier association.`,
+          ...change.producing.flatMap(cause => [
+            `    Reconsideration cause: ${inlineText(cause.operation)}${cause.grounds ? ` — ${inlineText(cause.grounds.text)}` : ''}.`,
+            ...displacementQualification('Cause owner', cause.ownerQualification),
+            ...displacementQualification('Cause declaration', cause.qualification),
+          ]),
+        ] : []),
+      ])))];
   for (const outcome of view.evaluations) lines.push(`${outcome.requirement}: ${outcome.applicability}, ${outcome.availability}, ${outcome.execution}, ${outcome.materialization}${outcome.reason ? `; ${inlineText(outcome.reason)}` : ''}`);
   for (const item of view.exports) {
     const details = exportRoutes(item);
@@ -74,7 +124,7 @@ export function renderModuleExports(view: ModuleExportsView): string {
   if (view.omittedExports) lines.push(`${view.omittedExports} exports omitted.`);
   const contexts = [view.module.qualification, ...view.qualifications, ...view.exports.flatMap(item => [item.qualification, ...item.documentation.map(doc => doc.qualification)])];
   for (const limitation of new Set(contexts.flatMap(item => item.limitations))) lines.push(inlineText(limitation));
-  lines.push(...diagnosticLines(contexts));
+  if (!enclosed) lines.push(...diagnosticLines(contexts));
   if (view.moreDetails) {
     lines.push('MORE DETAILS — attribution and implementation mappings');
     for (const source of view.moreDetails.items) {
@@ -84,4 +134,11 @@ export function renderModuleExports(view: ModuleExportsView): string {
   }
   lines.push('Subject references identify retained records only in this Session; they do not persist after it closes.');
   return `${lines.join('\n')}\n`;
+}
+
+/** These statements qualify the organizing change, never the mechanical finding. */
+function displacementQualification(label: string, qualification: Qualification | null): string[] {
+  if (!qualification) return [];
+  return [`  ${label}: ${inlineText(qualification.status)} (${inlineText(qualification.method)})${qualification.scope ? `; scope: ${inlineText(qualification.scope)}` : ''}.`,
+    ...(qualification.guarantee ? [`    ${inlineText(qualification.guarantee)}`] : []), ...qualification.limitations.map(value => `    ${inlineText(value)}`)];
 }

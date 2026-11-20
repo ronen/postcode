@@ -1,3 +1,4 @@
+import type { NativeSelection } from '../contributions/native-selection.js';
 import type { EvaluationState, RecordContext, RecordId } from '../records.js';
 
 export type DependencyMechanism = 'static-import' | 'side-effect-import' | 're-export'
@@ -87,6 +88,7 @@ export interface DependencyGraph {
 }
 
 export interface DependencyProjectionRecord extends RecordContext {
+  readonly contributions: NativeSelection;
   readonly kind: 'dependency-projection';
   readonly lens: 'dependency-structure' | 'dependency-children' | 'dependency-parents';
   readonly subject: 'configured-project' | 'selected-modules';

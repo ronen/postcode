@@ -184,12 +184,13 @@ ChatGPT and granted plan usage; PostCode never switches routes automatically.
 Credentials use protected macOS storage. Setup and route selection are described
 in the [hosted guide](docs/hosted-investigation.md).
 
-Repeated requests reuse retained outcomes and make a fresh answer selection,
-including accepted corrections and current associations. Warnings preserve unresolved
-alternatives and reconsideration causes; they do not establish that an account is
-wrong. `inspect @investigram-…` selects the original historical account with its
-current revision context. In the shell, `present @answer-…` presents the exact selected
-answer again. Add `--revision-page <n>` for further correction/cause rows or the
+Repeated requests can reuse completed attempts while selecting current answer
+designations and associations, preserving standing alternatives. Warnings identify
+reconsideration causes; they do not establish that an account is wrong.
+`inspect @investigram-…` selects the exact immutable contribution with newly captured
+standing and change context. In the shell, `present @answer-…` presents the exact
+historical answer with its original captured state. Add `--revision-page <n>` for
+further captured change grounds, qualification groups and inconsistency reports, or the
 shown `--after @investigram-…` continuation for its frozen association listing.
 `--json` and supported `--more-details` change presentation without selecting anew.
 Every program View identifies fresh or retained selection and the answer's precise
@@ -197,8 +198,10 @@ ID and Session-local alias. One-shot references expire at command end.
 Interpretations and their evidence remain qualified; they are not established
 program truth or runtime observations.
 
-All four lenses have live formative evidence, including useful corrections and
-recorded failures, omissions and presentation limits. See the
+All four lenses have historical live formative evidence from the earlier
+representation, including useful corrections and recorded failures, omissions and
+presentation limits. [M2 common-contribution trials](records/validation/structured-architectural-accounts/m2-trials/README.md)
+are recorded separately; later migration guidance has been verified offline. See the
 [investigation reference](docs/cli-reference.md#progressive-investigation-and-usage)
 for commands, associations, retention and paging, and [STATUS](STATUS.md) for current
 capabilities and limitations. Follow-up investigations require a live shell;

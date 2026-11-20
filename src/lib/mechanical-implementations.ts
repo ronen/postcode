@@ -24,7 +24,7 @@ import { resolveDependencyProjection } from './dependencies/content.js';
 import { moduleExports, resolveModuleExports } from './exports/content.js';
 
 type Expansions = { readonly modules: readonly ModuleExpansion[]; readonly groups: readonly GroupExpansion[] };
-export type MechanicalContent = Exclude<PresentationContent, { contract: 'investigation' }>;
+export type MechanicalContent = Exclude<PresentationContent, { contract: 'investigation' | 'contribution' | 'contribution-inspection' }>;
 interface Construction {
   readonly content: MechanicalContent;
   readonly retainedAnswers: readonly RecordId[];
@@ -85,7 +85,7 @@ const implementations: Readonly<Record<string, MechanicalImplementation>> = free
       organization(store, outcome, designation === 'repository' ? 'repository' : 'configured-project')) });
   } },
   inspection: { definition: lenses.inspect, lookup, required: { modules: [], groups: groupStandardExpansions },
-    contract: resolution => resolution.candidates[0]?.kind === 'investigram' ? 'investigation'
+    contract: resolution => resolution.candidates.every(item => !['module', 'group'].includes(item.kind)) ? 'contribution-inspection'
       : resolution.candidates.some(item => item.kind === 'group') ? 'organization' : 'modules',
     construct: ({ store, analysis, expansions, work, subjects }) => {
       const basis = evaluateModules(store, analysis, expansions.modules, work);
@@ -108,7 +108,7 @@ const implementations: Readonly<Record<string, MechanicalImplementation>> = free
 });
 
 export function mechanicalImplementation(definition: LensDefinition): MechanicalImplementation | null {
-  if (definition.requirements.kind === 'interpretation') return null;
+  if (definition.requirements.kind === 'contribution' || definition.requirements.kind === 'follow-up') return null;
   const implementation = Object.hasOwn(implementations, definition.requirements.implementation) ? implementations[definition.requirements.implementation] : undefined;
   if (!implementation || canonical(definition) !== canonical(implementation.definition)) throw new Error('Unsupported mechanical Lens definitions for registered construction');
   return implementation;

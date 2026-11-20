@@ -1,0 +1,2068 @@
+{
+  "implementation": "8e06c5c74ba6679dd7e030dbb28162503b6235aa",
+  "fixture": {
+    "revision": "bd92670e4e0db1c9d9804e6d7797f38678ab9bf1",
+    "modules": 741
+  },
+  "units": "bytes; serialized sizes are not heap sizes; allocation groups are sampling estimates",
+  "runs": {
+    "corrected": {
+      "at": "2026-11-18T13:49:00.447Z",
+      "node": "26.11.0",
+      "compiledSourceSha256": "6113c623dc0d3df39d2a05b89fa98a88580518f56604da9c94b1467aca9e16b4",
+      "prototype": false,
+      "journeyLocalIdentitiesEqualCorrected": true,
+      "history": {
+        "preserved": true,
+        "changedFreshId": true
+      },
+      "samples": [
+        {
+          "label": "loaded",
+          "heapUsedAfterGC": 15493992,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 164392
+          },
+          "allocationMode": "live sampled allocations"
+        },
+        {
+          "label": "opened",
+          "heapUsedAfterGC": 227919712,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 215229480,
+            "cloneOther": 32824
+          },
+          "allocationMode": "live sampled allocations"
+        },
+        {
+          "label": "journey canonical and answer audit",
+          "heapUsedAfterGC": 1183266960,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 492485120,
+            "cloneCanonicalRecord": 24686544,
+            "cloneOther": 7712856,
+            "cloneLedgerRecord": 234415600,
+            "cloneAnswerRecord": 484670792
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403416,
+            "answerBytes": 377384092,
+            "answerCount": 15,
+            "support": {
+              "owners": 50395867,
+              "items": 112870171,
+              "uses": 46962100,
+              "changes": 24,
+              "metadata": 24,
+              "bearers": 24,
+              "evidence": 135664575
+            },
+            "evidenceOccurrences": 138695,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48361,
+            "uniqueItems": 35025,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "overlap baseline",
+          "heapUsedAfterGC": 1169062248,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 492748352,
+            "cloneCanonicalRecord": 24686544,
+            "cloneOther": 7712856,
+            "cloneLedgerRecord": 234415600,
+            "cloneAnswerRecord": 487242400
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403416,
+            "answerBytes": 379017970,
+            "answerCount": 16,
+            "support": {
+              "owners": 50513447,
+              "items": 113087986,
+              "uses": 47073728,
+              "changes": 26,
+              "metadata": 26,
+              "bearers": 26,
+              "evidence": 136791600
+            },
+            "evidenceOccurrences": 139070,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48468,
+            "uniqueItems": 35025,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "identical 8",
+          "heapUsedAfterGC": 1168992208,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 492685264,
+            "cloneCanonicalRecord": 24686544,
+            "cloneOther": 7712856,
+            "cloneLedgerRecord": 234415600,
+            "cloneAnswerRecord": 487242400
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403416,
+            "answerBytes": 379017970,
+            "answerCount": 16,
+            "support": {
+              "owners": 50513447,
+              "items": 113087986,
+              "uses": 47073728,
+              "changes": 26,
+              "metadata": 26,
+              "bearers": 26,
+              "evidence": 136791600
+            },
+            "evidenceOccurrences": 139070,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48468,
+            "uniqueItems": 35025,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "distinct overlapping 8",
+          "heapUsedAfterGC": 1189286144,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 492685264,
+            "cloneCanonicalRecord": 24686544,
+            "cloneOther": 7712856,
+            "cloneLedgerRecord": 234415600,
+            "cloneAnswerRecord": 507227496
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403416,
+            "answerBytes": 393074307,
+            "answerCount": 24,
+            "support": {
+              "owners": 51587425,
+              "items": 115086937,
+              "uses": 48101820,
+              "changes": 42,
+              "metadata": 42,
+              "bearers": 42,
+              "evidence": 146209359
+            },
+            "evidenceOccurrences": 142560,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 49435,
+            "uniqueItems": 35025,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "after historical change",
+          "heapUsedAfterGC": 1191517976,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 492552016,
+            "cloneCanonicalRecord": 24686544,
+            "cloneOther": 7712856,
+            "cloneLedgerRecord": 234415600,
+            "cloneAnswerRecord": 509283136
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403416,
+            "answerBytes": 394709450,
+            "answerCount": 25,
+            "support": {
+              "owners": 51705588,
+              "items": 115304752,
+              "uses": 48213613,
+              "changes": 561,
+              "metadata": 44,
+              "bearers": 44,
+              "evidence": 147336384
+            },
+            "evidenceOccurrences": 142935,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 49542,
+            "uniqueItems": 35025,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65584,
+              "productions": 16,
+              "serializedBytes": 180251730
+            }
+          }
+        },
+        {
+          "label": "closed inside journey",
+          "heapUsedAfterGC": 352578944,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 121588424,
+            "cloneOther": 2035240,
+            "cloneAnswerRecord": 249783072,
+            "cloneCanonicalRecord": 3573640
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 67230477,
+            "answerBytes": 193346822,
+            "answerCount": 1,
+            "support": {
+              "owners": 28753657,
+              "items": 59581328,
+              "uses": 26829727,
+              "changes": 2,
+              "metadata": 2,
+              "bearers": 2,
+              "evidence": 63698475
+            },
+            "evidenceOccurrences": 77785,
+            "uniqueEvidence": 77785,
+            "itemOccurrences": 27412,
+            "uniqueItems": 27412,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": null
+          }
+        },
+        {
+          "label": "closed after journey returns, session facade held",
+          "heapUsedAfterGC": 50676664,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 32714968,
+            "cloneOther": 1244456,
+            "cloneAnswerRecord": 164184,
+            "cloneCanonicalRecord": 32960
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 0,
+            "answerBytes": 0,
+            "answerCount": 0,
+            "support": {},
+            "evidenceOccurrences": 0,
+            "uniqueEvidence": 0,
+            "itemOccurrences": 0,
+            "uniqueItems": 0,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": null
+          }
+        },
+        {
+          "label": "closed facade released",
+          "heapUsedAfterGC": 49220824,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 32510368,
+            "cloneAnswerRecord": 164184
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 0,
+            "answerBytes": 0,
+            "answerCount": 0,
+            "support": {},
+            "evidenceOccurrences": 0,
+            "uniqueEvidence": 0,
+            "itemOccurrences": 0,
+            "uniqueItems": 0,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": null
+          }
+        },
+        {
+          "label": "instrument registry cleared",
+          "heapUsedAfterGC": 23921864,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 6358848
+          },
+          "allocationMode": "live sampled allocations",
+          "largestAllocationFrames": [
+            {
+              "bytes": 1830896,
+              "function": "post",
+              "url": "node:inspector",
+              "line": 115,
+              "group": "other"
+            },
+            {
+              "bytes": 196744,
+              "function": "getTypeChecker",
+              "url": "typescript/lib/typescript.js",
+              "line": 128439,
+              "group": "other"
+            },
+            {
+              "bytes": 164128,
+              "function": "#onMessage",
+              "url": "node:inspector",
+              "line": 84,
+              "group": "other"
+            },
+            {
+              "bytes": 137208,
+              "function": "next",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            },
+            {
+              "bytes": 99072,
+              "function": "replace",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            },
+            {
+              "bytes": 99064,
+              "function": "evaluateModules",
+              "url": "lib/evaluation.js",
+              "line": 6,
+              "group": "other"
+            },
+            {
+              "bytes": 67712,
+              "function": "normalizeString",
+              "url": "node:path",
+              "line": 92,
+              "group": "other"
+            },
+            {
+              "bytes": 66040,
+              "function": "resolve",
+              "url": "node:path",
+              "line": 1245,
+              "group": "other"
+            },
+            {
+              "bytes": 65600,
+              "function": "walk",
+              "url": "scripts/profile-contribution-memory.mjs",
+              "line": 88,
+              "group": "other"
+            }
+          ]
+        }
+      ]
+    },
+    "answer-sharing": {
+      "at": "2026-11-18T13:54:58.341Z",
+      "node": "26.11.0",
+      "compiledSourceSha256": "254a3fe4f3b9c1e3aa73abece115d0bb904f73c0f7597091bb67608502c792a3",
+      "prototype": true,
+      "journeyLocalIdentitiesEqualCorrected": true,
+      "history": {
+        "preserved": true,
+        "changedFreshId": true
+      },
+      "samples": [
+        {
+          "label": "loaded",
+          "heapUsedAfterGC": 15508072,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 0
+          },
+          "allocationMode": "live sampled allocations"
+        },
+        {
+          "label": "opened",
+          "heapUsedAfterGC": 227913264,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 216860160
+          },
+          "allocationMode": "live sampled allocations"
+        },
+        {
+          "label": "journey canonical and answer audit",
+          "heapUsedAfterGC": 877940328,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 644025112,
+            "cloneOther": 9740432,
+            "cloneLedgerRecord": 236997064,
+            "cloneCanonicalRecord": 29115840,
+            "cloneAnswerRecord": 33327952
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403656,
+            "answerBytes": 377386652,
+            "answerCount": 15,
+            "support": {
+              "owners": 50395867,
+              "items": 112870171,
+              "uses": 46962100,
+              "changes": 24,
+              "metadata": 24,
+              "bearers": 24,
+              "evidence": 135667135
+            },
+            "evidenceOccurrences": 138695,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48361,
+            "uniqueItems": 35025,
+            "evidenceShared": 138695,
+            "itemShared": 48361,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "overlap baseline",
+          "heapUsedAfterGC": 877661424,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 644090744,
+            "cloneOther": 9740432,
+            "cloneAnswerRecord": 33360752,
+            "cloneLedgerRecord": 236997064,
+            "cloneCanonicalRecord": 29115840
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403656,
+            "answerBytes": 379020690,
+            "answerCount": 16,
+            "support": {
+              "owners": 50513447,
+              "items": 113087986,
+              "uses": 47073728,
+              "changes": 26,
+              "metadata": 26,
+              "bearers": 26,
+              "evidence": 136794320
+            },
+            "evidenceOccurrences": 139070,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48468,
+            "uniqueItems": 35025,
+            "evidenceShared": 139070,
+            "itemShared": 48468,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "identical 8",
+          "heapUsedAfterGC": 877646040,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 644394104,
+            "cloneOther": 9740432,
+            "cloneAnswerRecord": 33360752,
+            "cloneLedgerRecord": 236997064,
+            "cloneCanonicalRecord": 29115840
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403656,
+            "answerBytes": 379020690,
+            "answerCount": 16,
+            "support": {
+              "owners": 50513447,
+              "items": 113087986,
+              "uses": 47073728,
+              "changes": 26,
+              "metadata": 26,
+              "bearers": 26,
+              "evidence": 136794320
+            },
+            "evidenceOccurrences": 139070,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48468,
+            "uniqueItems": 35025,
+            "evidenceShared": 139070,
+            "itemShared": 48468,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "distinct overlapping 8",
+          "heapUsedAfterGC": 878595400,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 644722000,
+            "cloneOther": 9773232,
+            "cloneAnswerRecord": 33886216,
+            "cloneLedgerRecord": 236997064,
+            "cloneCanonicalRecord": 29115840
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403656,
+            "answerBytes": 393078307,
+            "answerCount": 24,
+            "support": {
+              "owners": 51587425,
+              "items": 115086937,
+              "uses": 48101820,
+              "changes": 42,
+              "metadata": 42,
+              "bearers": 42,
+              "evidence": 146213359
+            },
+            "evidenceOccurrences": 142560,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 49435,
+            "uniqueItems": 35025,
+            "evidenceShared": 142560,
+            "itemShared": 49435,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "after historical change",
+          "heapUsedAfterGC": 878689064,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 644647392,
+            "cloneOther": 9773232,
+            "cloneAnswerRecord": 33984592,
+            "cloneLedgerRecord": 236997064,
+            "cloneCanonicalRecord": 29115840
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403656,
+            "answerBytes": 394713610,
+            "answerCount": 25,
+            "support": {
+              "owners": 51705588,
+              "items": 115304752,
+              "uses": 48213613,
+              "changes": 561,
+              "metadata": 44,
+              "bearers": 44,
+              "evidence": 147340544
+            },
+            "evidenceOccurrences": 142935,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 49542,
+            "uniqueItems": 35025,
+            "evidenceShared": 142935,
+            "itemShared": 49542,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65584,
+              "productions": 16,
+              "serializedBytes": 180251730
+            }
+          }
+        },
+        {
+          "label": "closed inside journey",
+          "heapUsedAfterGC": 370060136,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 276726560,
+            "cloneOther": 2718160,
+            "cloneCanonicalRecord": 1817896,
+            "cloneLedgerRecord": 113341928,
+            "cloneAnswerRecord": 19230704
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 70396233,
+            "answerBytes": 193346982,
+            "answerCount": 1,
+            "support": {
+              "owners": 28753657,
+              "items": 59581328,
+              "uses": 26829727,
+              "changes": 2,
+              "metadata": 2,
+              "bearers": 2,
+              "evidence": 63698635
+            },
+            "evidenceOccurrences": 77785,
+            "uniqueEvidence": 77785,
+            "itemOccurrences": 27412,
+            "uniqueItems": 27412,
+            "evidenceShared": 77785,
+            "itemShared": 0,
+            "ledger": null
+          }
+        },
+        {
+          "label": "closed after journey returns, session facade held",
+          "heapUsedAfterGC": 184786344,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 165783864,
+            "cloneOther": 1405728,
+            "cloneCanonicalRecord": 131272
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 0,
+            "answerBytes": 0,
+            "answerCount": 0,
+            "support": {},
+            "evidenceOccurrences": 0,
+            "uniqueEvidence": 0,
+            "itemOccurrences": 0,
+            "uniqueItems": 0,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": null
+          }
+        },
+        {
+          "label": "closed facade released",
+          "heapUsedAfterGC": 183473680,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 165713320,
+            "cloneCanonicalRecord": 131272
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 0,
+            "answerBytes": 0,
+            "answerCount": 0,
+            "support": {},
+            "evidenceOccurrences": 0,
+            "uniqueEvidence": 0,
+            "itemOccurrences": 0,
+            "uniqueItems": 0,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": null
+          }
+        },
+        {
+          "label": "instrument registry cleared",
+          "heapUsedAfterGC": 158173904,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 140971256
+          },
+          "allocationMode": "live sampled allocations",
+          "largestAllocationFrames": [
+            {
+              "bytes": 134217768,
+              "function": "add",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            },
+            {
+              "bytes": 1846432,
+              "function": "post",
+              "url": "node:inspector",
+              "line": 115,
+              "group": "other"
+            },
+            {
+              "bytes": 230344,
+              "function": "getTypeChecker",
+              "url": "typescript/lib/typescript.js",
+              "line": 128439,
+              "group": "other"
+            },
+            {
+              "bytes": 99736,
+              "function": "#onMessage",
+              "url": "node:inspector",
+              "line": 84,
+              "group": "other"
+            },
+            {
+              "bytes": 98352,
+              "function": "evaluateOrganization",
+              "url": "lib/organization/evaluate.js",
+              "line": 9,
+              "group": "other"
+            },
+            {
+              "bytes": 75904,
+              "function": "normalizeString",
+              "url": "node:path",
+              "line": 92,
+              "group": "other"
+            },
+            {
+              "bytes": 74688,
+              "function": "relative",
+              "url": "node:path",
+              "line": 1353,
+              "group": "other"
+            },
+            {
+              "bytes": 71784,
+              "function": "bindParentToChild",
+              "url": "typescript/lib/typescript.js",
+              "line": 23094,
+              "group": "other"
+            },
+            {
+              "bytes": 68352,
+              "function": "construct",
+              "url": "lib/mechanical-implementations.js",
+              "line": 46,
+              "group": "other"
+            }
+          ]
+        }
+      ]
+    },
+    "sharing": {
+      "at": "2026-11-18T13:50:43.481Z",
+      "node": "26.11.0",
+      "compiledSourceSha256": "2762f60ac30fa7c7d2be67145409f9d4720cb4fbb065d78f61c1c5c0e48053bf",
+      "prototype": true,
+      "journeyLocalIdentitiesEqualCorrected": true,
+      "history": {
+        "preserved": true,
+        "changedFreshId": true
+      },
+      "samples": [
+        {
+          "label": "loaded",
+          "heapUsedAfterGC": 15504960,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 0
+          },
+          "allocationMode": "live sampled allocations"
+        },
+        {
+          "label": "opened",
+          "heapUsedAfterGC": 227919464,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 217593664
+          },
+          "allocationMode": "live sampled allocations"
+        },
+        {
+          "label": "journey canonical and answer audit",
+          "heapUsedAfterGC": 638969168,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 525455712,
+            "cloneAnswerRecord": 34174168,
+            "cloneLedgerRecord": 63019872,
+            "cloneCanonicalRecord": 8924480,
+            "cloneOther": 2361200
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403572,
+            "answerBytes": 377385756,
+            "answerCount": 15,
+            "support": {
+              "owners": 50395867,
+              "items": 112870171,
+              "uses": 46962100,
+              "changes": 24,
+              "metadata": 24,
+              "bearers": 24,
+              "evidence": 135666239
+            },
+            "evidenceOccurrences": 138695,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48361,
+            "uniqueItems": 35025,
+            "evidenceShared": 138695,
+            "itemShared": 48361,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "overlap baseline",
+          "heapUsedAfterGC": 639249168,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 525753184,
+            "cloneAnswerRecord": 34272528,
+            "cloneLedgerRecord": 63019872,
+            "cloneCanonicalRecord": 8924480,
+            "cloneOther": 2361200
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403572,
+            "answerBytes": 379019738,
+            "answerCount": 16,
+            "support": {
+              "owners": 50513447,
+              "items": 113087986,
+              "uses": 47073728,
+              "changes": 26,
+              "metadata": 26,
+              "bearers": 26,
+              "evidence": 136793368
+            },
+            "evidenceOccurrences": 139070,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48468,
+            "uniqueItems": 35025,
+            "evidenceShared": 139070,
+            "itemShared": 48468,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "identical 8",
+          "heapUsedAfterGC": 639239824,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 525798688,
+            "cloneAnswerRecord": 34272528,
+            "cloneLedgerRecord": 63019872,
+            "cloneCanonicalRecord": 8924480,
+            "cloneOther": 2361200
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403572,
+            "answerBytes": 379019738,
+            "answerCount": 16,
+            "support": {
+              "owners": 50513447,
+              "items": 113087986,
+              "uses": 47073728,
+              "changes": 26,
+              "metadata": 26,
+              "bearers": 26,
+              "evidence": 136793368
+            },
+            "evidenceOccurrences": 139070,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48468,
+            "uniqueItems": 35025,
+            "evidenceShared": 139070,
+            "itemShared": 48468,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "distinct overlapping 8",
+          "heapUsedAfterGC": 640187648,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 526160400,
+            "cloneAnswerRecord": 34899152,
+            "cloneLedgerRecord": 63019872,
+            "cloneCanonicalRecord": 8924480,
+            "cloneOther": 2361200
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403572,
+            "answerBytes": 393076907,
+            "answerCount": 24,
+            "support": {
+              "owners": 51587425,
+              "items": 115086937,
+              "uses": 48101820,
+              "changes": 42,
+              "metadata": 42,
+              "bearers": 42,
+              "evidence": 146211959
+            },
+            "evidenceOccurrences": 142560,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 49435,
+            "uniqueItems": 35025,
+            "evidenceShared": 142560,
+            "itemShared": 49435,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "after historical change",
+          "heapUsedAfterGC": 640288376,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 525885408,
+            "cloneAnswerRecord": 34931912,
+            "cloneLedgerRecord": 63019872,
+            "cloneCanonicalRecord": 8924480,
+            "cloneOther": 2361200
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403572,
+            "answerBytes": 394712154,
+            "answerCount": 25,
+            "support": {
+              "owners": 51705588,
+              "items": 115304752,
+              "uses": 48213613,
+              "changes": 561,
+              "metadata": 44,
+              "bearers": 44,
+              "evidence": 147339088
+            },
+            "evidenceOccurrences": 142935,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 49542,
+            "uniqueItems": 35025,
+            "evidenceShared": 142935,
+            "itemShared": 49542,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65584,
+              "productions": 16,
+              "serializedBytes": 180251730
+            }
+          }
+        },
+        {
+          "label": "closed inside journey",
+          "heapUsedAfterGC": 223595704,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 162515704,
+            "cloneLedgerRecord": 26921200,
+            "cloneCanonicalRecord": 1156752,
+            "cloneOther": 32832,
+            "cloneAnswerRecord": 19058080
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 70396177,
+            "answerBytes": 193346926,
+            "answerCount": 1,
+            "support": {
+              "owners": 28753657,
+              "items": 59581328,
+              "uses": 26829727,
+              "changes": 2,
+              "metadata": 2,
+              "bearers": 2,
+              "evidence": 63698579
+            },
+            "evidenceOccurrences": 77785,
+            "uniqueEvidence": 77785,
+            "itemOccurrences": 27412,
+            "uniqueItems": 27412,
+            "evidenceShared": 77785,
+            "itemShared": 0,
+            "ledger": null
+          }
+        },
+        {
+          "label": "closed after journey returns, session facade held",
+          "heapUsedAfterGC": 117761424,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 100702728,
+            "cloneOther": 32832
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 0,
+            "answerBytes": 0,
+            "answerCount": 0,
+            "support": {},
+            "evidenceOccurrences": 0,
+            "uniqueEvidence": 0,
+            "itemOccurrences": 0,
+            "uniqueItems": 0,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": null
+          }
+        },
+        {
+          "label": "closed facade released",
+          "heapUsedAfterGC": 116449048,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 99415736
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 0,
+            "answerBytes": 0,
+            "answerCount": 0,
+            "support": {},
+            "evidenceOccurrences": 0,
+            "uniqueEvidence": 0,
+            "itemOccurrences": 0,
+            "uniqueItems": 0,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": null
+          }
+        },
+        {
+          "label": "instrument registry cleared",
+          "heapUsedAfterGC": 91158528,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 73099336
+          },
+          "allocationMode": "live sampled allocations",
+          "largestAllocationFrames": [
+            {
+              "bytes": 67108904,
+              "function": "add",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            },
+            {
+              "bytes": 1866296,
+              "function": "post",
+              "url": "node:inspector",
+              "line": 115,
+              "group": "other"
+            },
+            {
+              "bytes": 295128,
+              "function": "getTypeChecker",
+              "url": "typescript/lib/typescript.js",
+              "line": 128439,
+              "group": "other"
+            },
+            {
+              "bytes": 98992,
+              "function": "#onMessage",
+              "url": "node:inspector",
+              "line": 84,
+              "group": "other"
+            },
+            {
+              "bytes": 83400,
+              "function": "MemoryProgramRecordStore.put",
+              "url": "scripts/profile-contribution-memory.mjs",
+              "line": 46,
+              "group": "other"
+            },
+            {
+              "bytes": 74352,
+              "function": "isListElement2",
+              "url": "typescript/lib/typescript.js",
+              "line": 34252,
+              "group": "other"
+            },
+            {
+              "bytes": 70656,
+              "function": "parseCallExpressionRest",
+              "url": "typescript/lib/typescript.js",
+              "line": 37056,
+              "group": "other"
+            },
+            {
+              "bytes": 67944,
+              "function": "",
+              "url": "lib/identity.js",
+              "line": 36,
+              "group": "other"
+            },
+            {
+              "bytes": 67088,
+              "function": "captureRepository",
+              "url": "lib/repository/capture.js",
+              "line": 22,
+              "group": "other"
+            }
+          ]
+        }
+      ]
+    },
+    "root-sharing": {
+      "at": "2026-11-18T13:56:21.317Z",
+      "node": "26.11.0",
+      "compiledSourceSha256": "a563f818679cf44addfc6d5c245b8c5fcdcf59b13d773809f38e824e72e48a4b",
+      "prototype": true,
+      "journeyLocalIdentitiesEqualCorrected": true,
+      "history": {
+        "preserved": true,
+        "changedFreshId": true
+      },
+      "samples": [
+        {
+          "label": "loaded",
+          "heapUsedAfterGC": 15510104,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 0
+          },
+          "allocationMode": "live sampled allocations"
+        },
+        {
+          "label": "opened",
+          "heapUsedAfterGC": 227914088,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 216738296,
+            "cloneOther": 32800
+          },
+          "allocationMode": "live sampled allocations"
+        },
+        {
+          "label": "journey canonical and answer audit",
+          "heapUsedAfterGC": 598159512,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 466585824,
+            "cloneAnswerRecord": 46016672,
+            "cloneOther": 3738832,
+            "cloneCanonicalRecord": 8614496,
+            "cloneLedgerRecord": 63276368
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403632,
+            "answerBytes": 377386396,
+            "answerCount": 15,
+            "support": {
+              "owners": 50395867,
+              "items": 112870171,
+              "uses": 46962100,
+              "changes": 24,
+              "metadata": 24,
+              "bearers": 24,
+              "evidence": 135666879
+            },
+            "evidenceOccurrences": 138695,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48361,
+            "uniqueItems": 35025,
+            "evidenceShared": 138695,
+            "itemShared": 48361,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "overlap baseline",
+          "heapUsedAfterGC": 598474520,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 466751128,
+            "cloneAnswerRecord": 46016672,
+            "cloneOther": 3738832,
+            "cloneCanonicalRecord": 8614496,
+            "cloneLedgerRecord": 63276368
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403632,
+            "answerBytes": 379020418,
+            "answerCount": 16,
+            "support": {
+              "owners": 50513447,
+              "items": 113087986,
+              "uses": 47073728,
+              "changes": 26,
+              "metadata": 26,
+              "bearers": 26,
+              "evidence": 136794048
+            },
+            "evidenceOccurrences": 139070,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48468,
+            "uniqueItems": 35025,
+            "evidenceShared": 139070,
+            "itemShared": 48468,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "identical 8",
+          "heapUsedAfterGC": 598460712,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 466753408,
+            "cloneAnswerRecord": 46016672,
+            "cloneOther": 3738832,
+            "cloneCanonicalRecord": 8614496,
+            "cloneLedgerRecord": 63276368
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403632,
+            "answerBytes": 379020418,
+            "answerCount": 16,
+            "support": {
+              "owners": 50513447,
+              "items": 113087986,
+              "uses": 47073728,
+              "changes": 26,
+              "metadata": 26,
+              "bearers": 26,
+              "evidence": 136794048
+            },
+            "evidenceOccurrences": 139070,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 48468,
+            "uniqueItems": 35025,
+            "evidenceShared": 139070,
+            "itemShared": 48468,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "distinct overlapping 8",
+          "heapUsedAfterGC": 599588488,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 466951200,
+            "cloneAnswerRecord": 46771872,
+            "cloneOther": 3738832,
+            "cloneCanonicalRecord": 8614496,
+            "cloneLedgerRecord": 63276368
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403632,
+            "answerBytes": 393077907,
+            "answerCount": 24,
+            "support": {
+              "owners": 51587425,
+              "items": 115086937,
+              "uses": 48101820,
+              "changes": 42,
+              "metadata": 42,
+              "bearers": 42,
+              "evidence": 146212959
+            },
+            "evidenceOccurrences": 142560,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 49435,
+            "uniqueItems": 35025,
+            "evidenceShared": 142560,
+            "itemShared": 49435,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65583,
+              "productions": 15,
+              "serializedBytes": 180250152
+            }
+          }
+        },
+        {
+          "label": "after historical change",
+          "heapUsedAfterGC": 599694080,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 466974504,
+            "cloneAnswerRecord": 47035576,
+            "cloneOther": 3738832,
+            "cloneCanonicalRecord": 8614496,
+            "cloneLedgerRecord": 63276368
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 99403632,
+            "answerBytes": 394713194,
+            "answerCount": 25,
+            "support": {
+              "owners": 51705588,
+              "items": 115304752,
+              "uses": 48213613,
+              "changes": 561,
+              "metadata": 44,
+              "bearers": 44,
+              "evidence": 147340128
+            },
+            "evidenceOccurrences": 142935,
+            "uniqueEvidence": 96935,
+            "itemOccurrences": 49542,
+            "uniqueItems": 35025,
+            "evidenceShared": 142935,
+            "itemShared": 49542,
+            "ledger": {
+              "entities": 8400,
+              "investigrams": 65584,
+              "productions": 16,
+              "serializedBytes": 180251730
+            }
+          }
+        },
+        {
+          "label": "closed inside journey",
+          "heapUsedAfterGC": 173316920,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": true
+          },
+          "sampledAllocationBytes": {
+            "other": 106002408,
+            "cloneOther": 131328,
+            "cloneLedgerRecord": 23028544,
+            "cloneCanonicalRecord": 931368,
+            "cloneAnswerRecord": 25026272
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 70396217,
+            "answerBytes": 193346966,
+            "answerCount": 1,
+            "support": {
+              "owners": 28753657,
+              "items": 59581328,
+              "uses": 26829727,
+              "changes": 2,
+              "metadata": 2,
+              "bearers": 2,
+              "evidence": 63698619
+            },
+            "evidenceOccurrences": 77785,
+            "uniqueEvidence": 77785,
+            "itemOccurrences": 27412,
+            "uniqueItems": 27412,
+            "evidenceShared": 77785,
+            "itemShared": 0,
+            "ledger": null
+          }
+        },
+        {
+          "label": "closed after journey returns, session facade held",
+          "heapUsedAfterGC": 67424040,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 50142696,
+            "cloneOther": 65728
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 0,
+            "answerBytes": 0,
+            "answerCount": 0,
+            "support": {},
+            "evidenceOccurrences": 0,
+            "uniqueEvidence": 0,
+            "itemOccurrences": 0,
+            "uniqueItems": 0,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": null
+          }
+        },
+        {
+          "label": "closed facade released",
+          "heapUsedAfterGC": 66111344,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 49013680,
+            "cloneOther": 32928
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 0,
+            "answerBytes": 0,
+            "answerCount": 0,
+            "support": {},
+            "evidenceOccurrences": 0,
+            "uniqueEvidence": 0,
+            "itemOccurrences": 0,
+            "uniqueItems": 0,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": null
+          }
+        },
+        {
+          "label": "instrument registry cleared",
+          "heapUsedAfterGC": 40811352,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 23716904,
+            "cloneOther": 32928
+          },
+          "allocationMode": "live sampled allocations",
+          "largestAllocationFrames": [
+            {
+              "bytes": 16777256,
+              "function": "add",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            },
+            {
+              "bytes": 1823184,
+              "function": "post",
+              "url": "node:inspector",
+              "line": 115,
+              "group": "other"
+            },
+            {
+              "bytes": 262344,
+              "function": "getTypeChecker",
+              "url": "typescript/lib/typescript.js",
+              "line": 128439,
+              "group": "other"
+            },
+            {
+              "bytes": 150088,
+              "function": "getTransformFlagsSubtreeExclusions",
+              "url": "typescript/lib/typescript.js",
+              "line": 29255,
+              "group": "other"
+            },
+            {
+              "bytes": 103208,
+              "function": "errorCode",
+              "url": "lib/execution-errors.js",
+              "line": 32,
+              "group": "other"
+            },
+            {
+              "bytes": 98432,
+              "function": "walk",
+              "url": "scripts/profile-contribution-memory.mjs",
+              "line": 91,
+              "group": "other"
+            },
+            {
+              "bytes": 78160,
+              "function": "contribute",
+              "url": "lib/contributions/modules.js",
+              "line": 83,
+              "group": "other"
+            },
+            {
+              "bytes": 66320,
+              "function": "evaluateDependencyOrganization",
+              "url": "lib/dependencies/organization.js",
+              "line": 9,
+              "group": "other"
+            },
+            {
+              "bytes": 65920,
+              "function": "association",
+              "url": "lib/contributions/status.js",
+              "line": 126,
+              "group": "other"
+            }
+          ]
+        }
+      ]
+    },
+    "allocation-corrected": {
+      "at": "2026-11-18T13:53:37.582Z",
+      "node": "26.11.0",
+      "compiledSourceSha256": "6113c623dc0d3df39d2a05b89fa98a88580518f56604da9c94b1467aca9e16b4",
+      "prototype": false,
+      "identicalAnswer": true,
+      "samples": [
+        {
+          "label": "loaded",
+          "heapUsedAfterGC": 15496576,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 65568
+          },
+          "allocationMode": "live sampled allocations"
+        },
+        {
+          "label": "canonical information before answers",
+          "heapUsedAfterGC": 614690480,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 463608784,
+            "cloneOther": 5677432,
+            "cloneLedgerRecord": 169351528,
+            "cloneCanonicalRecord": 5194160
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 70996145,
+            "answerBytes": 0,
+            "answerCount": 0,
+            "support": {},
+            "evidenceOccurrences": 0,
+            "uniqueEvidence": 0,
+            "itemOccurrences": 0,
+            "uniqueItems": 0,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": {
+              "entities": 8242,
+              "investigrams": 50934,
+              "productions": 7,
+              "serializedBytes": 132568775
+            }
+          }
+        },
+        {
+          "label": "initial 32-module answer",
+          "heapUsedAfterGC": 620171024,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 464335720,
+            "cloneOther": 5677432,
+            "cloneLedgerRecord": 169351528,
+            "cloneCanonicalRecord": 5194160,
+            "cloneAnswerRecord": 5388688
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 70996145,
+            "answerBytes": 4214886,
+            "answerCount": 1,
+            "support": {
+              "owners": 489574,
+              "items": 928390,
+              "uses": 465908,
+              "changes": 2,
+              "metadata": 2,
+              "bearers": 2,
+              "evidence": 2083019
+            },
+            "evidenceOccurrences": 1559,
+            "uniqueEvidence": 1559,
+            "itemOccurrences": 446,
+            "uniqueItems": 446,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": {
+              "entities": 8242,
+              "investigrams": 50934,
+              "productions": 7,
+              "serializedBytes": 132568775
+            }
+          }
+        },
+        {
+          "label": "repeat 32-module answer 4",
+          "heapUsedAfterGC": 619665976,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 882749040,
+            "cloneAnswerRecord": 29802600,
+            "cloneOther": 1214784
+          },
+          "allocationMode": "all sampled allocations since repeat start, including subsequently collected objects",
+          "largestAllocationFrames": [
+            {
+              "bytes": 126124416,
+              "function": "join",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            },
+            {
+              "bytes": 90914896,
+              "function": "join",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            },
+            {
+              "bytes": 67438272,
+              "function": "put",
+              "url": "lib/memory-store.js",
+              "line": 71,
+              "group": "other"
+            },
+            {
+              "bytes": 59034504,
+              "function": "join",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            },
+            {
+              "bytes": 43301344,
+              "function": "sort",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            },
+            {
+              "bytes": 36959912,
+              "function": "canonical",
+              "url": "lib/identity.js",
+              "line": 31,
+              "group": "other"
+            },
+            {
+              "bytes": 29802600,
+              "function": "structuredClone",
+              "url": "node:internal/worker/js_transferable",
+              "line": 101,
+              "group": "cloneAnswerRecord"
+            },
+            {
+              "bytes": 27049712,
+              "function": "",
+              "url": "lib/identity.js",
+              "line": 36,
+              "group": "other"
+            },
+            {
+              "bytes": 22557288,
+              "function": "entries",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            }
+          ]
+        }
+      ]
+    },
+    "allocation-sharing": {
+      "at": "2026-11-18T13:53:37.574Z",
+      "node": "26.11.0",
+      "compiledSourceSha256": "2762f60ac30fa7c7d2be67145409f9d4720cb4fbb065d78f61c1c5c0e48053bf",
+      "prototype": true,
+      "identicalAnswer": true,
+      "samples": [
+        {
+          "label": "loaded",
+          "heapUsedAfterGC": 15507168,
+          "live": {
+            "store": false,
+            "ledger": false,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 0
+          },
+          "allocationMode": "live sampled allocations"
+        },
+        {
+          "label": "canonical information before answers",
+          "heapUsedAfterGC": 520445312,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 463056312,
+            "cloneOther": 1574256,
+            "cloneLedgerRecord": 47831632,
+            "cloneCanonicalRecord": 1202616
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 70996301,
+            "answerBytes": 0,
+            "answerCount": 0,
+            "support": {},
+            "evidenceOccurrences": 0,
+            "uniqueEvidence": 0,
+            "itemOccurrences": 0,
+            "uniqueItems": 0,
+            "evidenceShared": 0,
+            "itemShared": 0,
+            "ledger": {
+              "entities": 8242,
+              "investigrams": 50934,
+              "productions": 7,
+              "serializedBytes": 132568775
+            }
+          }
+        },
+        {
+          "label": "initial 32-module answer",
+          "heapUsedAfterGC": 506368816,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 448538376,
+            "cloneOther": 1607040,
+            "cloneLedgerRecord": 47831632,
+            "cloneCanonicalRecord": 1202616,
+            "cloneAnswerRecord": 262528
+          },
+          "allocationMode": "live sampled allocations",
+          "audit": {
+            "canonicalBytes": 70996301,
+            "answerBytes": 4214990,
+            "answerCount": 1,
+            "support": {
+              "owners": 489574,
+              "items": 928390,
+              "uses": 465908,
+              "changes": 2,
+              "metadata": 2,
+              "bearers": 2,
+              "evidence": 2083123
+            },
+            "evidenceOccurrences": 1559,
+            "uniqueEvidence": 1559,
+            "itemOccurrences": 446,
+            "uniqueItems": 446,
+            "evidenceShared": 1559,
+            "itemShared": 446,
+            "ledger": {
+              "entities": 8242,
+              "investigrams": 50934,
+              "productions": 7,
+              "serializedBytes": 132568775
+            }
+          }
+        },
+        {
+          "label": "repeat 32-module answer 4",
+          "heapUsedAfterGC": 506089456,
+          "live": {
+            "store": true,
+            "ledger": true,
+            "inventory": false
+          },
+          "sampledAllocationBytes": {
+            "other": 878056536,
+            "cloneAnswerRecord": 8765640,
+            "cloneOther": 98432
+          },
+          "allocationMode": "all sampled allocations since repeat start, including subsequently collected objects",
+          "largestAllocationFrames": [
+            {
+              "bytes": 126291880,
+              "function": "join",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            },
+            {
+              "bytes": 90811488,
+              "function": "join",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            },
+            {
+              "bytes": 67439936,
+              "function": "put",
+              "url": "lib/memory-store.js",
+              "line": 72,
+              "group": "other"
+            },
+            {
+              "bytes": 58043904,
+              "function": "join",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            },
+            {
+              "bytes": 44663808,
+              "function": "sort",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            },
+            {
+              "bytes": 35485200,
+              "function": "canonical",
+              "url": "lib/identity.js",
+              "line": 31,
+              "group": "other"
+            },
+            {
+              "bytes": 25770920,
+              "function": "",
+              "url": "lib/identity.js",
+              "line": 36,
+              "group": "other"
+            },
+            {
+              "bytes": 23181800,
+              "function": "entries",
+              "url": "",
+              "line": 0,
+              "group": "other"
+            },
+            {
+              "bytes": 16006008,
+              "function": "canonical",
+              "url": "lib/identity.js",
+              "line": 31,
+              "group": "other"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

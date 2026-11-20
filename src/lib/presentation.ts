@@ -1,3 +1,5 @@
+import { nativeConcerns, nativeConcernLines } from './contributions/native-presentation.js';
+import type { NativeConcerns } from './contributions/native-presentation.js';
 import { presentationMethods } from './interfaces/cli/methods.js';
 import { diagnosticLines, withDiagnosticMeanings } from './diagnostic-view.js';
 import { sourceAttribution } from './evidence-view.js';
@@ -15,8 +17,6 @@ import { resolveModuleProjection } from './module-content.js';
 import type { DocumentationContent, ModuleProjectionContent } from './module-content.js';
 import { presentQualification } from './qualification-view.js';
 import type { QualifiedRecord } from './projection-content.js';
-import { renderAssociatedInvestigations } from './investigation/associations.js';
-import type { AssociatedInvestigations } from './investigation/associations.js';
 import { displayWidth, layoutText, padDisplay } from './terminal-layout.js';
 import { moduleLimitations, isCompositionContext } from './qualification-policy.js';
 import { completedMaterialization } from './evaluation-state.js';
@@ -45,10 +45,10 @@ type ExportView = ExportClaim['information'] & {
 };
 
 export interface QualifiedView extends AnswerDisplay {
-  readonly investigations?: AssociatedInvestigations;
   readonly schema: 'postcode-view/1-experimental';
   readonly id: RecordId;
   readonly resolution?: ResolutionContext;
+  readonly contributionConcerns: NativeConcerns;
   readonly title: string;
   readonly projection: Pick<ModuleProjectionContent['projection'], 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
   readonly presentation: PresentedOptions & { readonly expansions: readonly ModuleExpansion[] };
@@ -144,6 +144,7 @@ export function arrangeModuleView(content: ModuleProjectionContent, entityIds: R
     ...answerDisplay(context), schema: 'postcode-view/1-experimental', id: recordId(projection.session, 'view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: presentationMethods.presentation, ...answerIdentity(context) }),
     title,
     ...(resolution ? { resolution } : {}),
+    contributionConcerns: nativeConcerns(projection.contributions),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: projection.expansions.requested },
@@ -181,14 +182,16 @@ function wrapText(text: string, indent: string, width = 88, continuation = inden
     ? [`${indent}… ${result.omittedCharacters} character(s) omitted because indivisible display text exceeds the available width.`] : [])];
 }
 
-export function renderUnicode(view: QualifiedView, placement: 'standalone' | 'embedded' = 'standalone'): string {
+export function renderUnicode(view: QualifiedView, placement: 'standalone' | 'embedded' | 'contribution' = 'standalone'): string {
   const selection = view.projection.selection;
   const inventory = moduleDisplayPolicy(view.projection.subject, view.presentation).layout === 'table';
   const lines = [`${inlineText(view.title)} · configured TypeScript project`,
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inventory ? `${selection.population} module${selection.population === 1 ? '' : 's'} found · ${view.modules.length} listed${view.display.collapsedModules ? ` · ${view.display.collapsedModules} external module${view.display.collapsedModules === 1 ? '' : 's'} collapsed` : ''}`
       : `${selection.matches} module${selection.matches === 1 ? '' : 's'} selected from ${selection.population}${lookupDescription(view.resolution, selection.matches) ? ` · ${lookupDescription(view.resolution, selection.matches)}` : ''}`];
+  // The enclosing organization view renders the common concerns for embedded detail.
   if (placement === 'standalone') lines.push(...answerLines(view), ...continuationLines(view));
+  if (placement !== 'embedded') lines.push(...nativeConcernLines(view.contributionConcerns));
   lines.push(...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
   if (selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!selection.populationEstablished) lines.push('Module population is not established.');
@@ -345,7 +348,7 @@ export function renderUnicode(view: QualifiedView, placement: 'standalone' | 'em
         : '  Displayed information is derived by TypeScript analysis; module population is not established.',
       `  ${moduleLimitations.population}`);
   } else for (const guarantee of new Set(projectContexts.map(context => context.guarantee))) lines.push(`  ${inlineText(guarantee)}`);
-  lines.push(...diagnosticLines(view.qualifications, '  '));
+  if (placement !== 'contribution') lines.push(...diagnosticLines(view.qualifications, '  '));
   const representedLimitations = view.analysis ? new Set<string>(Object.values(moduleLimitations)) : new Set<string>();
   const extraLimitations = [...sharedLimitations].filter(limitation => !representedLimitations.has(limitation));
   if (view.analysis || extraLimitations.length) {
@@ -359,7 +362,7 @@ export function renderUnicode(view: QualifiedView, placement: 'standalone' | 'em
     if (exceptional.length) { lines.push(`- Collapsed ${inlineText(collapsed.handle)}:`); local(exceptional, '  '); }
   }
   lines.push('', 'Entity references belong to this session. One-shot queries accept exact names or handles.');
-  return `${lines.map(terminalText).join('\n')}\n${renderAssociatedInvestigations(view.investigations)}`;
+  return `${lines.map(terminalText).join('\n')}\n`;
 }
 
 export function renderView(view: QualifiedView): string {

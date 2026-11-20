@@ -240,23 +240,34 @@ keeps the authorization URL out of process arguments, logs and diagnostics.
 
 After a summary in the shell, `explain @investigram-…`, `decompose @investigram-…`
 and `examine @investigram-…` use the same explicitly selected model, reasoning and
-billing route. Each missing operation can incur provider usage; repeating a
-retained outcome or inspecting a linked account does not. There is no automatic
-model upgrade or route fallback. Fresh selection chooses current replacement accounts;
-exact inspection preserves originals. Shell `present @answer-…` uses the selected
-answer and its fixed support without new provider work, including when presenting
-a retained failed or unavailable outcome. Views expose correction links, unresolved
-alternatives and citation-based reconsideration warnings. Exact references retain
-their original targets; the investigator receives bounded correction and cause
-context with further revision pages available. The
+billing route. A new investigation can incur provider usage; reusing a completed
+attempt or inspecting retained content does not. Communication/configuration failures
+remain eligible for another execution. There is no automatic model upgrade or route
+fallback. Fresh selection follows current answer designations and associations,
+preserving standing alternatives. `inspect @investigram-…` selects the exact immutable
+contribution with newly captured standing and change context. Shell `present @answer-…`
+uses the historical answer and its fixed support without new provider work or current
+ledger lookup. Failed-attempt details remain request reporting, separate from answer
+meaning and exact historical presentation.
+
+Views show qualified associations, unresolved alternatives and reconsideration causes
+based on actual producer inputs. Revision pages expose captured change grounds,
+qualification groups and inconsistency reports. Exact references keep their original
+targets; investigators acquire retained content and receive identifiable change notices
+under the common contribution protocol. See the
+[CLI investigation reference](cli-reference.md#progressive-investigation-and-usage)
+for reuse, outcomes and paging.
+
+The following assessments concern the earlier tree/correction representation and
+its guidance, not the current common contribution protocol. The historical
 [integrated assessment](../records/validation/module-investigation/pass-05/report.md)
-uses the same fixed model, reasoning, route and TypeScript configuration. It
-records useful corrections alongside communication failures, a rejected evidence
-reference and controlled-fixture limitations; successful steps do not establish
-a fully successful live sequence.
+used the same fixed model, reasoning, route and TypeScript configuration described
+above. It recorded useful corrections alongside communication failures, a rejected
+evidence reference and controlled-fixture limitations; successful steps did not
+establish a fully successful live sequence.
 
 The [focused dependent-account sequence](../records/validation/module-investigation/pass-06/report.md)
-uses that same configuration after clarifying reporter citation. It records accepted,
+used that same configuration after clarifying reporter citation. It records accepted,
 source-supported corrections to direct and transitive dependent accounts, with
 truthful scripted origin and deliberate examination. A later refinement leaves
 competing alternatives; warnings and selection still do not establish semantic

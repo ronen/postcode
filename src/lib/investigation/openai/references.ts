@@ -1,5 +1,4 @@
 import { randomBytes } from 'node:crypto';
-import type { AgentInput } from '../contracts.js';
 import type { Claim, ProgramRecord } from '../../records.js';
 
 export const referenceInstructions = 'PostCode reference fields use short opaque handles issued in this dialogue. Copy them exactly; never construct a handle or use a canonical ID in place of one. A handle makes a reference available, not its underlying content supplied: bare support references still require acquisition before citation. Use descriptive names in prose; text inside source, assertions, qualifications and prose is literal, not translated. The dialogue character guard measures canonical domain inputs and decoded replies, not compact wire messages or repeated provider history.';
@@ -55,25 +54,6 @@ export class InvestigatorReferences {
     return object({ ...this.#context(), ...this.#fields(['inputs']), scope: (value, path) => value === 'configured-project' ? value : this.#encode(value, path) });
   }
   #support(map = this.#encode): Fields { return this.#fields([], ['evidence'], {}, map); }
-  #referent(map = this.#encode): Transform { return object(this.#fields([], ['subjects'], {}, map)); }
-  #associations(map = this.#encode): Transform { return list(object({ ...this.#support(map), ...this.#fields(['subject'], [], {}, map) })); }
-  #inconsistencies(map = this.#encode): Transform { return list(object({ ...this.#support(map), ...this.#fields([], ['targets'], {}, map) })); }
-  #request(map = this.#encode): Transform { return object(this.#fields(['subject'], [], {}, map)); }
-  #provenance(deliveries = true): Transform {
-    return object({ ...this.#context(), ...this.#fields(['originatingModule'], ['citations', 'completeTargets', 'completeCorrections', 'suppliedEvidence', 'summarizedEvidence']),
-      request: this.#request(), ...(deliveries ? { deliveries: list((value, path) => this.#delivery(value, path)) } : {}) });
-  }
-  #account(): Transform {
-    return object({ ...this.#context(), ...this.#support(), ...this.#fields(['originatingModule'], ['children', 'corrections']),
-      referent: this.#referent(), associations: this.#associations(), inconsistencies: this.#inconsistencies(),
-      revision: object({ ...this.#fields(['original', 'primary', 'familyPrimary'], ['omittedInconsistencyReporters']), inconsistencies: list(object({ ...this.#support(), ...this.#fields(['reporter'], ['targets']) })), rows: list(object({ ...this.#fields(['correction', 'target', 'replacement', 'reporter']), cause: object(this.#fields([], ['via'])) })) }),
-      provenance: this.#provenance(false), revisionNotices: list(object(this.#fields(['id', 'target', 'replacement']))) });
-  }
-  #correction(): Transform {
-    return object({ ...this.#context(), ...this.#support(), ...this.#fields(['reporter', 'target', 'replacement', 'provenance'], ['correctedSubjects']) });
-  }
-  #delivery: Transform = (value, path) => object({ ...this.#fields(['requested'], ['omittedAccounts', 'omittedCorrections']),
-    listing: object(this.#fields(['subject', 'next'], ['selected'])), accounts: list(this.#account()), corrections: list(this.#correction()) })(value, path);
   #endpoint(): Transform { return object(this.#fields([], ['groups', 'candidates', 'artifacts', 'evidence', 'claims'])); }
   #information(information: Claim['information']): Fields {
     switch (information.type) {
@@ -97,7 +77,8 @@ export class InvestigatorReferences {
     let fields: Fields;
     switch (record.kind) {
       case 'session': fields = this.#fields(['repository']); break;
-      case 'analysis-inputs': case 'repository-evidence': fields = {}; break;
+      // Contribution answers are application answers, never evidence delivered to an agent.
+      case 'analysis-inputs': case 'repository-evidence': case 'contribution-projection': case 'contribution-inspection-projection': fields = {}; break;
       case 'module': case 'symbol': case 'group': fields = this.#fields(['claim']); break;
       case 'claim': fields = this.#fields(['subject', 'context'], [], { information: object(this.#information(record.information)) }); break;
       case 'recorded-assertion': fields = this.#fields(['context']); break;
@@ -118,52 +99,26 @@ export class InvestigatorReferences {
         expansions: object(this.#fields(['organization'], ['moduleEvaluations', 'moduleClaims'])) }); break;
       case 'dependency-organization-evaluation': fields = this.#fields(['dependencyEvaluation', 'organizationEvaluation'], ['claims', 'contexts']); break;
       case 'captured-content': fields = this.#fields(['subject', 'inputs', 'mapping']); break;
-      case 'investigram': fields = { ...this.#support(), ...this.#fields(['originatingModule', 'provenance'], ['children', 'corrections']),
-        referent: this.#referent(), associations: this.#associations(), inconsistencies: this.#inconsistencies() }; break;
-      case 'investigram-correction': return this.#correction()(record, path);
-      case 'investigation-provenance': return this.#provenance()(record, path);
-      case 'investigation-evaluation': fields = this.#fields(['attempt'], ['investigrams', 'corrections'], {
-        request: this.#request(), outcome: object(this.#fields(['root'])) }); break;
-      case 'investigation-selection-projection': fields = this.#fields(['mechanical'], ['subjects', 'roots', 'displaced', 'associated'], {
-        operation: this.#request(), outcome: object(this.#fields(['evaluation'])),
-        relations: list(object(this.#fields(['original', 'account']))),
-        navigation: list(object(this.#fields(['account', 'compositionParent', 'investigationSubject']))),
-        revisions: list(object({ ...this.#fields(['original', 'primary', 'familyPrimary']),
-          inconsistencies: list(object({ ...this.#support(), ...this.#fields(['reporter'], ['targets']) })),
-          rows: list(object({ ...this.#fields(['correction', 'target', 'replacement', 'reporter']), cause: object(this.#fields([], ['via'])) })) })) }); break;
       default: return impossible(record);
     }
     return object({ ...this.#context(), ...fields })(record, path);
   };
   #response: Transform = (value, path) => {
-    if (value && typeof value === 'object' && 'accounts' in value) return this.#delivery(value, path);
     return object({ records: list(this.#record), ...this.#fields([], ['selected']),
       evaluations: list(object({ ...this.#context(), ...this.#fields(['basis']), qualification: list(this.#qualification()) })),
       repositories: list(object(this.#context())), supportReferences: list(object(this.#fields(['id']))),
       page: object({ ...this.#fields(['next']), omitted: list(object(this.#fields(['id']))) }) })(value, path);
   };
   #alive(): void { if (this.#closed) throw new Error('Investigator references are closed'); }
-  encode(input: AgentInput): { readonly request: unknown; readonly responses: unknown } {
-    this.#alive(); this.#resolutions = [];
-    return { request: this.#request()(input.request, '$.request'), responses: list(this.#response)(input.responses, '$.responses') };
-  }
-  tools(value: unknown): unknown {
-    this.#alive();
-    return object({ requests: list(object(this.#fields(['subject', 'cursor'], [], {}, this.#decode))) })(value, '$');
-  }
-  submission(value: unknown): unknown {
-    this.#alive();
-    let count = 0;
-    const account = (value: unknown, path: string, depth: number): unknown => {
-      // Domain validation rejects the untouched remainder at its original bounds.
-      if (depth > 32 || ++count > 256) return value;
-      const descend: Transform = (child, p) => account(child, p, depth + 1);
-      return object({ ...this.#support(this.#decode), referent: this.#referent(this.#decode), associations: this.#associations(this.#decode),
-        children: list(descend), inconsistencies: this.#inconsistencies(this.#decode),
-        corrections: list(object({ ...this.#support(this.#decode), ...this.#fields(['target'], ['correctedSubjects'], {}, this.#decode), replacement: descend })) })(value, path);
-    };
-    return account(value, '$', 0);
-  }
+  // Another typed protocol over the same dialogue shares this table; it designates its own reference fields.
+  /** Start recording the resolutions of one exchange. */
+  begin(): void { this.#alive(); this.#resolutions = []; }
+  handle(reference: string): string { this.#alive(); return this.#encode(reference, '') as string; }
+  resolve(handle: string, path: string): string { this.#alive(); return this.#decode(handle, path) as string; }
+  /** Encode one program-evidence response by its typed record structure. */
+  evidenceResponse(value: unknown, path: string): unknown { this.#alive(); return this.#response(value, path); }
+  evidenceRequest(value: unknown, path: string): unknown { this.#alive(); return object(this.#fields(['subject', 'cursor'], [], {}, this.#decode))(value, path); }
+  programRecord(value: ProgramRecord, path: string): unknown { this.#alive(); return this.#record(value, path); }
   audit(): ReferenceAudit {
     this.#alive();
     return { version: 'postcode/investigator-references@3', characterGuard: 'canonical-domain-exchanges',

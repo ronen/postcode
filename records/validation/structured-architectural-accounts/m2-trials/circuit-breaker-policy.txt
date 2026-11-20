@@ -1,0 +1,47 @@
+States of CircuitBreakerPolicy
+  [Closed]  Normal operation. execute() runs the requested action and reports its success or failure to the configured breaker.
+  [Open]  Automatically tripped. Calls are rejected until the current backoff duration has elapsed.
+  [HalfOpen]  Recovery sampling. A configured number of calls are admitted while successes, failures, and calls still in flight are counted.
+  [Isolated]  Manually held open. Calls are rejected, and a reference count records outstanding isolation handles.
+Transitions
+T1  Closed → Open
+      trigger: An executed action produces a failure result.
+      guard: The injected breaker.failure(Closed) call returns true.
+      effect: Stores the failure, obtains the first backoff, records the opening time and attempt 1, and emits break and Open state-change events.
+T2  Open → HalfOpen
+      trigger: execute() is called after the current backoff duration has elapsed.
+      effect: Creates a fresh sampling decision with zero completed or in-flight calls, increments the attempt number, emits half-open and HalfOpen state-change events, and admits the triggering call into the sample.
+T3  HalfOpen → Open
+      trigger: A sampled failure makes failures exceed threshold × configured sample calls.
+      effect: Reports a HalfOpen failure to the injected breaker, advances the backoff, records a new opening time, resolves waiters on the sampling decision, and emits break and Open state-change events.
+T4  HalfOpen → Closed
+      trigger: The configured number of sampled calls has completed and none remains in flight.
+      guard: The failure limit has not already caused reopening.
+      effect: Reports HalfOpen success to the injected breaker, resolves sampling waiters, and emits reset and Closed state-change events.
+T5  Closed → Isolated
+      trigger: isolate() is called.
+      effect: Creates an isolation count and increments it for the returned handle, then emits an isolated break event and an Isolated state-change event.
+T6  Open → Isolated
+      trigger: isolate() is called.
+      effect: Creates an isolation count and increments it for the returned handle, then emits an isolated break event and an Isolated state-change event.
+T7  HalfOpen → Isolated
+      trigger: isolate() is called.
+      effect: Resolves the pending sampling decision, creates and increments an isolation count for the returned handle, then emits an isolated break event and an Isolated state-change event.
+T8  Isolated → Isolated
+      trigger: isolate() is called again.
+      effect: Increments the isolation reference count and returns another independently disposable handle; it does not emit another state-change or break event.
+T9  Isolated → Isolated
+      trigger: An undisposed isolation handle is disposed.
+      guard: At least one other isolation handle remains.
+      effect: Marks that handle disposed and decrements the isolation reference count without emitting events.
+T10  Isolated → Closed
+      trigger: The last undisposed isolation handle is disposed.
+      guard: The policy is still Isolated.
+      effect: Marks the handle disposed, reduces the count to zero, enters Closed, and emits reset and Closed state-change events.
+Entry: Closed, No truthy options.initialState is supplied; otherwise construction hydrates the supplied ownState instead..
+States shown: the account claims these are all the states.
+Transitions shown: the account claims these are all the transitions.
+Applies to: State changes are instance-local. execute(), isolate(), disposal of isolation handles, constructor hydration, and half-open result completion observe or modify the instance state.
+Not representable in this diagram: Concurrent half-open calls share counters and a deferred decision; the flat model summarizes their aggregate completion and does not model each call as a parallel region.
+Not representable in this diagram: Constructor hydration is represented as a qualified initial entry rather than as transitions. Serialization also converts HalfOpen to an Open snapshot and is not a runtime state transition.
+The diagram arranges the supplied account. It adds no state, transition or completeness claim, and the absence of an arrow is not a claim that no transition exists unless stated above.

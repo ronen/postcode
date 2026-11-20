@@ -14,6 +14,9 @@ Agents may update this document only as part of authorized implementation work t
 - Put build output under the Git-ignored `_build/` directory.
 - Use `src/lib/application/index.ts` for direct semantic operations and the separate `application/accounts.ts`, `application/observations.ts` and `application/feedback.ts` companion services. CLI-shaped in-process consumers use `interfaces/cli/application.ts`; both CLI hosts share its runtime assembly. Keep command guidance, terminal rendering and continuation generation under the CLI boundary, separate from request/report data and service reasons. Historical script imports retain their recorded checkpoint assumptions rather than requiring product compatibility shims. [[Internal application API](decisions/internal-application-api.md)]
 
+- For common contribution history, share only deeply owned immutable content/evidence; capture selection, standing and causes independently for every answer. Keep capture bookkeeping scoped to the owning store/ledger and dispose it on Session close. Frozen external input is not ownership proof. Do not introduce display-time ledger reads or record exposure during capture/arrangement. [[Qualified answers](decisions/qualified-answers-over-contributions.md)]
+- Use the common dialog protocol and contribution acceptance for all supported agentic operations. Native evidence records remain qualified provider outputs; legacy tree/correction records, current-primary selection and store-backed presentation binding ports have no compatibility route. Shared hosted transport and usage remain separate from contribution semantics. [[Common contributions](decisions/common-analysis-contributions.md)]
+
 ## TypeScript style
 
 - Use strict checking, explicit type-only imports, `.js` relative import specifiers, two-space indentation, single-quoted TypeScript strings, and semicolons.
@@ -37,6 +40,7 @@ Agents may update this document only as part of authorized implementation work t
 - Include negative and incomplete-analysis cases where they test the epistemological contract.
 - Use the real compiler with small fixtures. Synthetic providers are appropriate for evaluation states that the eager first provider does not normally produce.
 - Automated tests may create ephemeral test projects through Node's operating-system temporary-directory APIs and must clean them up.
+- Test the common contribution mechanism with the controlled producers in `test/contribution-helpers.ts`. They supply uncommon declarations, invalid data and timing; they exercise acceptance, standing and exposure, not the truth of an interpretation. Assert atomic rejection by comparing retained state before and after. [[Common contributions](decisions/common-analysis-contributions.md#production-and-execution)]
 - Run `npm run check` to check types without emitting. Run `npm test` to build and execute the tests. Fresh-process tests resolve their own compiled build through `import.meta.url`, rather than assuming a shared checkout build.
 - Collect observation batches in sink callbacks and assert in the test body. Interaction-driving callbacks capture errors, finish cleanup and rethrow in the test. Use shared CLI collection and explicitly opt into expected sink warnings; register temporary-fixture cleanup immediately after acquisition.
 

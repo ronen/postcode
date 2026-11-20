@@ -1,3 +1,4 @@
+import { contributeNativeFindings } from '../contributions/native.js';
 import { workState } from '../work-attribution.js';
 import type { WorkScope } from '../work-attribution.js';
 import { directedGraph } from '../directed-graph.js';
@@ -172,6 +173,9 @@ export function evaluateOrganization(store: ProgramRecordStore, moduleEvaluation
   store.put([...records, ...claims, result]);
   const owned = store.get(result.id);
   if (owned.kind !== 'organization-evaluation') throw new Error('Expected retained organization-evaluation');
+  // Layout is captured-source work; placement and properties additionally consume the fixed module population.
+  contributeNativeFindings(store, owned.session, claims.filter(claim => claim.information.type !== 'module-placement' && claim.information.type !== 'group-properties').map(claim => claim.id));
+  contributeNativeFindings(store, owned.session, claims.filter(claim => claim.information.type === 'module-placement' || claim.information.type === 'group-properties').map(claim => claim.id), moduleEvaluation.modules);
   work?.record('organization-evaluation', 'established', { records: [owned.id], state: workState(owned) });
   return owned;
 }

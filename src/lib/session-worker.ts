@@ -1,6 +1,8 @@
+import type { DialogAgent as InvestigatorAgent, DialogReply as AgentReply } from './contributions/dialog.js';
+import type { InvocationRequest as InvestigationRequest } from './contributions/model.js';
 import type { RecordId } from './records.js';
-import type { AgentIdentity, AgentReply, InvestigationRequest, InvestigatorAgent, ReportedUsage } from './investigation/contracts.js';
-import type { InvestigationBounds } from './investigation/execute.js';
+import type { AgentIdentity, ReportedUsage } from './investigation/contracts.js';
+import type { InvestigationBounds } from './investigation/bounds.js';
 import { parentPort, workerData } from 'node:worker_threads';
 import { openWorkerCliSession as openSession } from './interfaces/cli/application.js';
 import type { RequestCatalog } from './request-catalog.js';
@@ -94,7 +96,7 @@ port.on('message', async (message: WorkerRequest) => {
 try {
   opened = await openSession(configuration, { runGit, onWork: progress => send({ type: 'work-progress', operation, progress }), investigation: {
     ...(configuration.investigatorIdentity ? { agent: bridge(configuration.investigatorIdentity) } : {}),
-    ...(configuration.selectInvestigator ? { selectAgent: (request: InvestigationRequest) => new Promise<InvestigatorAgent>((resolve, reject) => {
+    ...(configuration.selectInvestigator ? { selectDialogAgent: (request: InvestigationRequest) => new Promise<InvestigatorAgent>((resolve, reject) => {
       const id = ++selectionId; selections.set(id, { operation, resolve, reject });
       send({ type: 'agent-select', operation, id, request });
     }) } : {}), ...(configuration.investigationBounds ? { bounds: configuration.investigationBounds } : {}),

@@ -1,3 +1,4 @@
+import { contributeModuleFindings } from '../src/lib/contributions/modules.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { cpSync, mkdirSync, mkdtempSync, realpathSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
@@ -238,6 +239,7 @@ test('names can match groups and modules together; scoped Entity IDs are precise
     const claim = { ...originalClaim, id: renamed.claim, subject: renamed.id, information: { ...originalClaim.information, name: compactGroup } };
     const synthetic = { ...evaluation, id: recordId(outcome.session, 'evaluation', 'collision'), modules: [renamed.id], attempt: 2 };
     store.put([renamed, claim, synthetic]);
+    contributeModuleFindings(store, synthetic);
     const next = evaluateOrganization(store, synthetic);
     assert.deepEqual(inspectOrganization(store, next, compactGroup).modules, [renamed.id]);
     const precise = inspectOrganization(store, next, compactGroup, true);
@@ -297,6 +299,7 @@ test('placement accepts the destination after 40 directory-link redirects and re
       const aliasClaim = { ...claim, id: module.claim, subject: module.id, context: aliasContext.id };
       const synthetic = { ...evaluation, id: recordId(evaluation.session, 'evaluation', redirects), modules: [module.id], attempt: redirects };
       store.put([module, aliasSource, aliasContext, aliasClaim, synthetic]);
+      contributeModuleFindings(store, synthetic);
       const outcome = evaluateOrganization(store, synthetic);
       const placement = placements(store, outcome)[0]!;
       assert.equal(placement.subject, module.id);
@@ -321,6 +324,7 @@ test('unavailable source evidence preserves usable placements and leaves absent 
     const synthetic = { ...evaluation, id: recordId(evaluation.session, 'evaluation', 'missing-source'),
       modules: [...evaluation.modules, missing.id], attempt: 2 };
     store.put([missing, missingContext, missingClaim, synthetic]);
+    contributeModuleFindings(store, synthetic);
     const outcome = evaluateOrganization(store, synthetic);
     assert.equal(outcome.placement.materialization, 'partial');
     assert.equal(placements(store, outcome).filter(claim => claim.information.outcome === 'established').length, 2);

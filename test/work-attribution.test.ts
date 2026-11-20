@@ -1,10 +1,11 @@
+import { sessionLedger, moduleEntity } from '../src/lib/contributions/modules.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import type { TestContext } from 'node:test';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { temporaryDirectory } from './cli-helpers.js';
-import { ScriptedInvestigator } from './investigator-double.js';
+import { ScriptedContributionAgent, moduleRecord, proseContribution } from './contribution-agent.js';
 import { openWorkerCliSession, openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { publishCommand } from '../src/lib/command-execution.js';
@@ -16,16 +17,15 @@ import { freezeOwned } from '../src/lib/immutable.js';
 import { normalizeRequest } from '../src/lib/requests.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
-import { investigate } from '../src/lib/investigation/execute.js';
+import { conductDialog } from '../src/lib/contributions/dialog.js';
 import { InvestigationUsage } from '../src/lib/investigation/usage.js';
 import { evidenceAccess } from '../src/lib/evidence-access.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { investigationBounds } from '../src/lib/investigation/bounds.js';
 import type { RecordId } from '../src/lib/records.js';
-import type { AgentInput, SubmittedInvestigram, ContextDelivery } from '../src/lib/investigation/contracts.js';
-import type { EvidenceResponse } from '../src/lib/evidence-access.js';
-import type { InvestigationView } from '../src/lib/investigation/presentation.js';
+
+import type { ContributionView as InvestigationView } from '../src/lib/interfaces/cli/contribution-presentation.js';
 
 const presentation = { format: 'json' as const, moreDetails: false };
 const inventory = { lens: 'modules' as const, selector: null, presentation };
@@ -38,13 +38,9 @@ function fixture(t: TestContext, huge = false, many = false) {
   if (many) for (let i = 0; i < 30; i++) writeFileSync(path.join(root, `other${i}.ts`), `export const other${i} = ${i};`);
   return { root, configPath };
 }
-function draft(input: AgentInput): SubmittedInvestigram {
-  return { localId: 'root', prose: 'A qualified account.', referent: { description: 'Selected subject.', subjects: [input.request.subject] },
-    qualifications: ['Controlled interpretation, not a behavioral observation.'], evidence: [], associations: [], children: [], corrections: [], inconsistencies: [] };
-}
 function view(result: Awaited<ReturnType<Extract<Awaited<ReturnType<typeof openSession>>, { status: 'opened' }>['session']['execute']>>) {
   assert.equal(result.kind, 'view');
-  assert.equal(result.view.schema, 'postcode-investigation-view/1-experimental');
+  assert.equal(result.view.schema, 'postcode-contribution-view/1-experimental');
   return result.view as InvestigationView;
 }
 
@@ -127,14 +123,14 @@ test('partial provider outcomes retry without an assurance and retain current ve
 });
 
 test('evidence attribution preserves withheld capture, unavailability, reuse and direct-operation parent context', async t => {
-  const agent = new ScriptedInvestigator([
+  const agent = new ScriptedContributionAgent([
     input => input.request.operation === 'functionality' ? { kind: 'tools', requests: [
-      { kind: 'source', subject: input.request.subject }, { kind: 'source', subject: input.request.subject },
+      { kind: 'source', subject: moduleRecord(input) }, { kind: 'source', subject: moduleRecord(input) },
       { kind: 'source', subject: 'unknown-in-this-session' as RecordId },
-    ] } : { kind: 'tools', requests: [{ kind: 'investigations', subject: (input.responses[0] as ContextDelivery).accounts[0]!.originatingModule }] },
+    ] } : { kind: 'tools', requests: [] },
     input => {
-      if (input.request.operation === 'functionality') assert.ok(input.responses.every(response => 'status' in response && response.status === 'unavailable'));
-      return { kind: 'submit', result: draft(input) };
+      if (input.request.operation === 'functionality') assert.ok(input.responses.every(response => response.tool === 'unavailable' || response.tool === 'evidence' && response.response.status === 'unavailable'));
+      return { kind: 'submit', contribution: proseContribution(input) };
     },
   ]);
   const bounds = { ...investigationBounds, calls: 4 };
@@ -144,20 +140,20 @@ test('evidence attribution preserves withheld capture, unavailability, reuse and
   const first = await opened.session.execute(summary);
   const answer = view(first);
   assert.equal(first.context.constraints.investigation.calls, 4, 'the actual inherited bounds are captured when the Session opens');
-  assert.equal(first.attribution.evidence.length, 3);
-  const [acquired, repeated, unavailable] = first.attribution.evidence;
+  assert.equal(first.attribution.evidence.filter(item => item.query.kind === 'source').length, 3);
+  const [acquired, repeated, unavailable] = first.attribution.evidence.filter(item => item.query.kind === 'source');
   assert.equal(acquired!.outcome!.status, 'available');
   assert.equal(acquired!.delivery, 'withheld');
-  assert.match(acquired!.reason!, /response bound/);
+  assert.match(acquired!.reason!, /delivery bound/);
   assert.equal(repeated!.delivery, 'withheld');
   assert.equal(unavailable!.outcome!.status, 'unavailable');
   assert.equal(unavailable!.delivery, 'delivered');
   const content = first.attribution.work.filter(item => item.boundary === 'content');
   assert.deepEqual(content.map(item => item.disposition), ['established', 'reused']);
-  assert.deepEqual(content[0]!.current.trigger, { kind: 'source', subject: answer.selected[0] });
-  assert.equal(content[0]!.current.sequence, 0);
-  assert.equal(content[1]!.current.sequence, 1);
-  assert.equal(content[1]!.generating[0]!.origin!.sequence, 0);
+  assert.deepEqual(content[0]!.current.trigger, { kind: 'source', subject: answer.resolution!.subjects[0] });
+  assert.equal(content[0]!.current.sequence, 1);
+  assert.equal(content[1]!.current.sequence, 2);
+  assert.equal(content[1]!.generating[0]!.origin!.sequence, 1);
   const capture = content[0]!.outcome.records[0]!;
   assert.ok(acquired!.outcome!.records.includes(capture));
   assert.ok(!answer.usage.attempts[0]!.suppliedEvidence.includes(capture));
@@ -168,65 +164,96 @@ test('evidence attribution preserves withheld capture, unavailability, reuse and
   const reused = second.attribution.work.find(item => item.boundary === 'interpretation')!;
   assert.equal(reused.disposition, 'reused');
   assert.ok(reused.generating.every(item => parentOf(second.attribution, item.origin!.parent).id === first.context.id));
-  const operation = { ...answer.result!.request };
+  const operation = { operation: 'functionality', subject: answer.resolution!.subjects[0]!, parameters: {} };
   const pending = opened.session.evaluateInvestigation(operation);
   operation.subject = 'mutated-after-entry' as RecordId;
   const direct = await pending;
-  assert.equal(direct.request.subject, answer.result!.request.subject, 'entry captures direct operation inputs before asynchronous checks');
+  assert.equal(direct.context.request.kind, 'operation');
+  assert.equal(direct.context.request.operation.subject, answer.resolution!.subjects[0], 'entry captures direct operation inputs before asynchronous checks');
   assert.equal(direct.context.request.kind, 'operation');
   assert.equal(direct.reused, true);
   assert.notEqual(direct.context.id, first.context.id);
   assert.equal(agent.inputs.length, 1);
-  const followup = await opened.session.execute({ ...summary, lens: 'explain', selector: answer.accounts[0]!.id, reference: true });
-  assert.equal(view(followup).result!.evaluation!.outcome.kind, 'accepted');
-  assert.equal(followup.attribution.evidence[0]!.query.kind, 'initial-context');
+  const followup = await opened.session.execute({ ...summary, lens: 'explain', selector: answer.rows[0]!.address.investigram, reference: true });
+  assert.equal(view(followup).reporting!.contribution!.outcome.kind, 'accepted');
+  assert.equal(followup.attribution.evidence[0]!.query.kind, 'contribution');
   assert.equal(followup.attribution.evidence[0]!.delivery, 'delivered');
-  assert.deepEqual(followup.attribution.evidence[1]!.outcome!.listing, { subject: answer.selected[0], selected: [answer.accounts[0]!.id], total: 1, next: null });
-  assert.equal(followup.attribution.evidence[1]!.outcome!.status, 'available', 'an established association listing stays available');
+  assert.ok(followup.attribution.evidence[0]!.outcome!.contributions!.some(delivery => delivery.kind === 'item'));
   assert.equal(followup.attribution.work.find(item => item.boundary === 'evidence-retrieval')!.disposition, 'consumed');
-  const inspected = await opened.session.execute({ ...summary, lens: 'inspect', selector: answer.accounts[0]!.id, reference: true });
+  const inspected = await opened.session.execute({ ...summary, lens: 'inspect', selector: answer.rows[0]!.address.investigram, reference: true });
   const consumption = inspected.attribution.work.find(item => item.boundary === 'interpretation' && item.disposition === 'consumed')!;
-  assert.ok(consumption.generating.some(item => item.records.includes(answer.accounts[0]!.id) && item.origin !== null && parentOf(inspected.attribution, item.origin.parent).id === first.context.id));
+  assert.ok(consumption.generating.some(item => item.records.includes(answer.reporting!.attempt!) && item.origin !== null && parentOf(inspected.attribution, item.origin.parent).id === first.context.id));
   assert.equal(agent.inputs.length, 2, 'historical inspection starts no inference');
 });
 
 test('continuations consume an established page without claiming another acquisition; guarded evidence stays undelivered', async t => {
-  const agent = new ScriptedInvestigator([
+  const agent = new ScriptedContributionAgent([
     () => ({ kind: 'tools', requests: [{ kind: 'modules' }] }),
     input => {
-      const response = input.responses[0] as EvidenceResponse;
+      const supplied = input.responses[0]!; assert.equal(supplied.tool, 'evidence'); const response = supplied.response;
       assert.ok(response.page?.next);
       return { kind: 'tools', requests: [{ kind: 'modules', cursor: response.page.next }] };
     },
-    input => ({ kind: 'submit', result: draft(input) }),
+    input => ({ kind: 'submit', contribution: proseContribution(input) }),
   ]);
   const f = fixture(t, false, true);
   const opened = await openSession({ configPath: f.configPath }, { investigation: { agent } });
   assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
   const result = await opened.session.execute(summary);
-  assert.equal(result.attribution.evidence[0]!.outcome!.page!.total, 31);
-  assert.equal(result.attribution.evidence[1]!.delivery, 'delivered');
-  const continuation = result.attribution.work.filter(item => item.current.sequence === 1);
+  assert.equal(result.attribution.evidence[1]!.outcome!.page!.total, 31);
+  assert.equal(result.attribution.evidence[2]!.delivery, 'delivered');
+  const continuation = result.attribution.work.filter(item => item.current.sequence === 2);
   assert.deepEqual(continuation.map(item => item.boundary), ['evidence-retrieval']);
   assert.equal(continuation[0]!.disposition, 'consumed');
   const limited = await openSession({ configPath: f.configPath }, { investigation: {
-    agent: new ScriptedInvestigator([input => ({ kind: 'tools', requests: [{ kind: 'source', subject: input.request.subject }] })]),
+    agent: new ScriptedContributionAgent([input => ({ kind: 'tools', requests: [{ kind: 'source', subject: moduleRecord(input) }] })]),
     bounds: { ...investigationBounds, calls: 1 },
   } });
   assert.equal(limited.status, 'opened'); t.after(() => limited.session.close());
   const stopped = await limited.session.execute(summary);
-  assert.equal(view(stopped).result!.evaluation!.outcome.kind, 'limit-stop');
-  assert.equal(stopped.attribution.evidence[0]!.outcome!.status, 'available');
-  assert.equal(stopped.attribution.evidence[0]!.delivery, 'not-delivered');
+  assert.equal(view(stopped).reporting!.contribution!.outcome.kind, 'limit-stop');
+  assert.equal(stopped.attribution.evidence[1]!.outcome!.status, 'available');
+  assert.equal(stopped.attribution.evidence[1]!.delivery, 'not-delivered');
   assert.equal(stopped.attribution.status, 'failed');
   assert.equal(stopped.attribution.completeness, 'complete');
+});
+
+test('over-bound common content is withheld while a subsequent bounded excerpt is actually delivered', async t => {
+  let item!: import('../src/lib/contributions/model.js').ItemAddress;
+  const agent = new ScriptedContributionAgent([
+    input => input.request.operation === 'functionality'
+      ? { kind: 'submit', contribution: proseContribution(input, 'x'.repeat(70_000)) }
+      : { kind: 'tools', requests: [{ kind: 'item', item }] },
+    input => {
+      assert.equal(input.responses[0]!.tool, 'unavailable');
+      return { kind: 'tools', requests: [{ kind: 'item', item, excerptCharacters: 200 }] };
+    },
+    input => {
+      assert.equal(input.responses[0]!.tool, 'contribution');
+      return { kind: 'submit', contribution: proseContribution(input, 'An excerpt was available.') };
+    },
+  ]);
+  const opened = await openSession({ configPath: fixture(t).configPath }, { investigation: { agent } });
+  assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
+  const first = view(await opened.session.execute(summary)); item = first.rows[0]!.address;
+  const follow = await opened.session.execute({ ...summary, lens: 'explain', selector: item.investigram, reference: true });
+  const common = follow.attribution.evidence.filter(entry => entry.query.kind === 'contribution');
+  assert.equal(common.length, 3, 'initial whole subject, explicit full item, then excerpt');
+  for (const entry of common.slice(0, 2)) {
+    assert.equal(entry.delivery, 'withheld'); assert.equal(entry.outcome!.status, 'unavailable');
+    assert.deepEqual(entry.outcome!.records, []); assert.deepEqual(entry.outcome!.contributions, []);
+    assert.match(entry.reason!, /Response omitted.*Nothing was delivered/);
+  }
+  assert.equal(common[2]!.delivery, 'delivered'); assert.equal(common[2]!.outcome!.status, 'available');
+  const supplied = view(follow).usage.attempts.at(-1)!.contributionDeliveries!.filter(delivery => delivery.kind === 'item');
+  assert.equal(supplied.length, 1); assert.deepEqual(supplied[0]!.item, item); assert.equal(supplied[0]!.coverage, 'excerpt');
 });
 
 test('worker interruption seals received work and observations independently of a View and sink success', { timeout: 30_000 }, async t => {
   let ready!: () => void;
   const waiting = new Promise<void>(resolve => { ready = resolve; });
-  const agent = new ScriptedInvestigator([
-    input => ({ kind: 'tools', requests: [{ kind: 'source', subject: input.request.subject }] }),
+  const agent = new ScriptedContributionAgent([
+    input => ({ kind: 'tools', requests: [{ kind: 'source', subject: moduleRecord(input) }] }),
     () => { ready(); return new Promise(() => {}); },
   ]);
   const f = fixture(t);
@@ -244,7 +271,7 @@ test('worker interruption seals received work and observations independently of 
   const work = remote.work()!;
   assert.equal(work.status, 'interrupted'); assert.equal(work.completeness, 'incomplete');
   assert.ok(work.work.some(item => item.boundary === 'content' && item.disposition === 'established'));
-  assert.equal(work.evidence[0]!.delivery, 'delivered');
+  assert.equal(work.evidence[1]!.delivery, 'delivered');
   assert.deepEqual(batches[0]!.records.find(item => item.kind === 'request-work')!.value, work);
   assert.ok(!batches[0]!.events.some(item => item.type === 'view-produced'));
   const sealed = JSON.stringify(work);
@@ -298,9 +325,10 @@ test('a cancelled asynchronous evidence query retains known acquisition but neve
   const evidence = evidenceAccess(store, opened.analysis, opened.session);
   let release!: () => void, ready!: () => void;
   const started = new Promise<void>(resolve => { ready = resolve; });
-  const agent = new ScriptedInvestigator([input => ({ kind: 'tools', requests: [{ kind: 'source', subject: input.request.subject }] })]);
-  const pending = investigate({ session: opened.session, request, work, agent, signal: controller.signal, usage: new InvestigationUsage(),
-    history: { get: () => undefined, provenance: () => undefined, correction: () => undefined, corrections: () => [] },
+  const agent = new ScriptedContributionAgent([() => ({ kind: 'tools', requests: [{ kind: 'source', subject: basis.modules[0]! }] })]);
+  const ledger = sessionLedger(store, opened.session), entity = moduleEntity(store, basis.modules[0]!)!;
+  const invoked = ledger.invoke({ operation: 'functionality', subjects: [{ role: null, subject: { kind: 'entity', entity } }], parameters: {}, context: [], resultContract: null });
+  const pending = conductDialog({ ledger, store, invocation: invoked.invocation.id, operation: { id: 'functionality', method: 'test/cancel@1', objective: 'Read evidence.' }, work, agent, signal: controller.signal, usage: new InvestigationUsage(),
     check: async () => {}, evidence: { lookup: evidence.lookup, query(query, signal, scope) {
       const acquired = evidence.query(query, signal, scope);
       return new Promise(resolve => { release = () => resolve(acquired); ready(); });
@@ -310,8 +338,9 @@ test('a cancelled asynchronous evidence query retains known acquisition but neve
   await started; controller.abort(new CommandInterrupted()); await rejected;
   const report = work.finish('interrupted');
   assert.equal(report.completeness, 'incomplete');
-  assert.equal(report.evidence[0]!.outcome, null);
-  assert.equal(report.evidence[0]!.delivery, 'not-delivered');
+  const source = report.evidence.find(item => item.query.kind === 'source')!;
+  assert.ok(source); assert.equal(source.outcome, null);
+  assert.equal(source.delivery, 'not-delivered');
   assert.ok(report.work.some(item => item.boundary === 'content' && item.disposition === 'established'));
   const sealed = JSON.stringify(work.snapshot());
   release(); await new Promise(resolve => setImmediate(resolve));

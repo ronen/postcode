@@ -1,10 +1,14 @@
+import { captureApplicationCatalog } from '../src/lib/application/catalog.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import type { TestContext } from 'node:test';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { temporaryDirectory } from './cli-helpers.js';
-import { ScriptedInvestigator, syntheticUsage } from './investigator-double.js';
+import { syntheticUsage } from './investigator-double.js';
+import { ScriptedContributionAgent, proseContribution } from './contribution-agent.js';
+import { contributionOperationMethod } from '../src/lib/contributions/operations.js';
+import type { ContributionOperation } from '../src/lib/contributions/operations.js';
 import { requireResolution, requireView } from './request-helpers.js';
 import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
 import { interactiveSession } from '../src/lib/interactive-session.js';
@@ -13,20 +17,13 @@ import type { ObservationBatch } from '../src/lib/application/observations.js';
 import type { RequestContext } from '../src/lib/interfaces/cli/report-contracts.js';
 import { captureCatalog, defaultCatalog } from '../src/lib/request-catalog.js';
 import type { RequestCatalog } from '../src/lib/request-catalog.js';
-import { operationMethod } from '../src/lib/investigation/operations.js';
-import type { OperationDefinition } from '../src/lib/investigation/operations.js';
 import { lenses } from '../src/lib/requests.js';
 import type { LensDefinition } from '../src/lib/requests.js';
-import { openTypeScriptProject } from '../src/lib/typescript/project.js';
-import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import { evaluateModules } from '../src/lib/evaluation.js';
-import { investigationEvaluation } from '../src/lib/investigation/evaluation.js';
-import { InvestigationUsage } from '../src/lib/investigation/usage.js';
 
-const risks: OperationDefinition = { id: 'risks', objective: 'Identify apparent module risks, their evidence and limitations.',
-  subject: 'module', initialContext: 'subject-reference', method: 'test/module-risks@1' };
+const risks: ContributionOperation = { id: 'risks', objective: 'Identify apparent module risks, their evidence and limitations.',
+  subject: 'module', method: 'test/module-risks@1' };
 const riskLens: LensDefinition = { id: 'risks', title: 'Module risks', question: 'What risks are apparent in this module?',
-  subjects: ['module'], cardinality: 'one', parameters: {}, requirements: { kind: 'interpretation', operation: 'risks' }, results: ['investigation'] };
+  subjects: ['module'], cardinality: 'one', parameters: {}, requirements: { kind: 'contribution', operation: 'risks', resultContract: null }, results: ['contribution'] };
 function catalog(): RequestCatalog {
   return { lenses: { ...defaultCatalog.lenses, risks: riskLens, 'risk-review': { ...riskLens, id: 'risk-review', title: 'Risk review' } },
     operations: { ...defaultCatalog.operations, risks } };
@@ -55,6 +52,18 @@ for (const { name, definition, reason } of invalidDefinitions) {
   });
 }
 
+for (const id of ['summarize', 'legacy-custom']) {
+  test(`catalog rejects legacy interpretation requirements for ${id} before acquisition`, async () => {
+    const supplied = catalog();
+    const legacy = { ...riskLens, id, requirements: { kind: 'interpretation', operation: 'risks' } } as unknown as LensDefinition;
+    const definitions = { ...supplied, lenses: { ...supplied.lenses, [id]: legacy } };
+    const reason = /Legacy interpretation operations are not supported/;
+    assert.throws(() => captureApplicationCatalog({ lenses: definitions.lenses, operations: definitions.operations }), reason);
+    assert.throws(() => captureCatalog(definitions), reason);
+    await assert.rejects(openSession({ configPath: '/catalog-rejection-must-not-open/tsconfig.json' }, {}, definitions), reason);
+  });
+}
+
 test('catalog accepts unchanged built-ins independent of object key order and supported interpretation additions', () => {
   const supplied = catalog();
   const reordered = Object.fromEntries(Object.entries(lenses.modules).reverse()) as unknown as LensDefinition;
@@ -75,13 +84,12 @@ function fixture(t: TestContext) {
   return { configPath };
 }
 function agent() {
-  return new ScriptedInvestigator([(input, _signal, usage) => {
+  return new ScriptedContributionAgent([(input, _signal, usage) => {
     usage(syntheticUsage);
-    return { kind: 'submit', result: { localId: 'root', prose: 'No behavioral risk established from the supplied context.',
-      referent: { description: 'Selected subject', subjects: [input.request.subject] },
-      qualifications: ['Controlled interpretation with limited evidence.'], evidence: [], associations: [], children: [], corrections: [], inconsistencies: [] } };
+    return { kind: 'submit', contribution: proseContribution(input, 'No behavioral risk established from the supplied context.') };
   }]);
 }
+
 
 test('a nonpublic module Lens shares interpretation machinery and original provenance across consumers', async t => {
   const investigator = agent();
@@ -89,34 +97,34 @@ test('a nonpublic module Lens shares interpretation machinery and original prove
   assert.equal(opened.status, 'opened');
   t.after(() => opened.session.close());
   const first = requireView(await opened.session.execute(request));
-  assert.equal(first.view.schema, 'postcode-investigation-view/1-experimental');
+  assert.equal(first.view.schema, 'postcode-contribution-view/1-experimental');
   assert.equal(first.view.title, 'Module risks');
   assert.equal(first.context.request.kind, 'lens');
   assert.equal(first.context.request.lens, 'risks');
-  assert.equal(first.view.result!.request.operation, 'risks');
-  assert.equal(first.view.provenance[0]!.method, operationMethod(risks));
+  assert.equal(first.view.rows[0]!.origin!.request.operation, 'risks');
+  assert.equal(first.view.rows[0]!.producer.method, contributionOperationMethod(risks, catalog().operations));
   assert.ok(investigator.inputs[0]![0]!.instructions.startsWith(risks.objective));
-  assert.deepEqual(investigator.inputs[0]![0]!.responses, []);
-  const reference = first.view.candidates[0]!.reference;
+  assert.ok(investigator.inputs[0]![0]!.responses.length > 0, 'The selected module receives its qualified common baseline');
+  const reference = first.view.resolution!.subjects[0]!;
   const same = requireView(await opened.session.execute({ ...request, selector: reference, reference: true }));
   assert.equal(same.view.projection.id, first.view.projection.id);
   const other = requireView(await opened.session.execute({ ...request, lens: 'risk-review', selector: reference, reference: true,
     presentation: { format: 'unicode', moreDetails: false } }));
-  assert.equal(other.view.schema, 'postcode-investigation-view/1-experimental');
-  assert.equal(other.view.result!.reused, true);
-  assert.deepEqual(other.view.accounts, first.view.accounts);
-  assert.deepEqual(other.view.provenance, first.view.provenance);
+  assert.equal(other.view.schema, 'postcode-contribution-view/1-experimental');
+  assert.equal(other.view.reporting!.reused, true);
+  assert.deepEqual(other.view.rows, first.view.rows);
+  assert.deepEqual(other.view.rows.map(row => row.origin), first.view.rows.map(row => row.origin));
   assert.equal(other.view.usage.calls, 1);
   assert.equal(investigator.inputs.length, 1);
   assert.match(other.rendered, /^Risk review\n/);
   assert.ok(other.attribution.parents.some(parent => parent.id === first.context.id));
-  const original = requireView(await opened.session.execute({ lens: 'inspect', selector: first.view.accounts[0]!.id, reference: true, presentation }));
-  assert.equal(original.view.schema, 'postcode-investigation-view/1-experimental');
-  assert.deepEqual(original.view.accounts, first.view.accounts);
+  const original = requireView(await opened.session.execute({ lens: 'inspect', selector: first.view.rows[0]!.address.investigram, reference: true, presentation }));
+  assert.equal(original.view.schema, 'postcode-contribution-view/1-experimental');
+  assert.deepEqual(original.view.rows, first.view.rows);
   const retained = requireView(await opened.session.execute({ kind: 'present', target: first.view.projection.id, presentation }));
-  assert.equal(retained.view.schema, 'postcode-investigation-view/1-experimental');
+  assert.equal(retained.view.schema, 'postcode-contribution-view/1-experimental');
   assert.equal(retained.view.title, 'Module risks');
-  assert.deepEqual(retained.view.accounts, first.view.accounts); assert.equal(retained.view.result, null);
+  assert.deepEqual(retained.view.rows, first.view.rows); assert.equal(retained.view.reporting, null);
   const refused = requireResolution(await opened.session.execute({ ...request, selector: first.view.answerReference!, reference: true }));
   assert.equal(refused.resolution.reason, 'answer-as-subject'); assert.match(refused.resolution.explanation, /Use present/);
 
@@ -134,8 +142,8 @@ test('fixture Lens resolution rejects missing, unknown, unsupported and paramete
   ] as const) assert.equal(requireResolution(await opened.session.execute(input)).resolution.reason, reason);
   assert.equal(investigator.inputs.length, 0);
   const first = requireView(await opened.session.execute(request));
-  assert.equal(first.view.schema, 'postcode-investigation-view/1-experimental');
-  assert.equal(requireResolution(await opened.session.execute({ ...request, selector: first.view.accounts[0]!.id, reference: true })).resolution.reason, 'unsupported-subject');
+  assert.equal(first.view.schema, 'postcode-contribution-view/1-experimental');
+  assert.equal(requireResolution(await opened.session.execute({ ...request, selector: first.view.rows[0]!.address.investigram, reference: true })).resolution.reason, 'unsupported-subject');
   assert.equal(investigator.inputs.length, 1);
 });
 
@@ -144,11 +152,11 @@ test('unavailable fixture interpretation retains the actual operation request an
   assert.equal(opened.status, 'opened');
   t.after(() => opened.session.close());
   const result = requireView(await opened.session.execute(request));
-  assert.equal(result.view.schema, 'postcode-investigation-view/1-experimental');
-  assert.equal(result.view.result!.unavailable!.kind, 'configuration-unavailable');
-  assert.equal(result.view.result!.request.operation, 'risks');
+  assert.equal(result.view.schema, 'postcode-contribution-view/1-experimental');
+  assert.equal(result.view.reporting!.unavailable!.kind, 'configuration-unavailable');
+  assert.equal(result.context.request.kind, 'lens'); assert.equal(result.context.request.lens, 'risks');
   assert.equal(result.view.title, 'Module risks');
-  assert.equal(result.view.candidates.length, 1);
+  assert.equal(result.view.resolution!.subjects.length, 1);
   const production = await openSession(fixture(t));
   assert.equal(production.status, 'opened');
   t.after(() => production.session.close());
@@ -167,38 +175,9 @@ test('Session captures definitions before opening and ignores later caller mutat
   assert.equal(opened.status, 'opened');
   t.after(() => opened.session.close());
   const result = requireView(await opened.session.execute(request));
-  assert.equal(result.view.schema, 'postcode-investigation-view/1-experimental');
+  assert.equal(result.view.schema, 'postcode-contribution-view/1-experimental');
   assert.equal(result.view.title, 'Module risks');
   assert.ok(investigator.inputs[0]![0]!.instructions.startsWith(risks.objective));
-});
-
-test('different objectives, methods and initial context cannot consume incompatible retained work', async t => {
-  const opened = await openTypeScriptProject(fixture(t));
-  assert.equal(opened.status, 'opened');
-  const store = new MemoryProgramRecordStore();
-  const basis = evaluateModules(store, opened.analysis, []);
-  const investigator = agent(), usage = new InvestigationUsage();
-  const run = (definition: OperationDefinition, subject = basis.modules[0]!) => investigationEvaluation(store, opened.analysis, opened.session,
-    usage, { agent: investigator }, async () => {}, new AbortController().signal, { [definition.id]: definition })
-    .evaluate({ operation: definition.id, subject, parameters: {} });
-  const first = await run(risks);
-  assert.equal(first.evaluation!.outcome.kind, 'accepted');
-  assert.equal((await run(risks)).reused, true);
-  const changedObjective = await run({ ...risks, objective: 'A different investigation objective.' });
-  const changedMethod = await run({ ...risks, method: 'test/module-risks@2' });
-  assert.equal(changedObjective.reused, false);
-  assert.equal(changedMethod.reused, false);
-  assert.notEqual(changedObjective.evaluation!.method, first.evaluation!.method);
-  assert.notEqual(changedMethod.evaluation!.method, first.evaluation!.method);
-  const root = first.evaluation!.investigrams[0]!;
-  const follow: OperationDefinition = { ...risks, id: 'follow', subject: 'investigram', initialContext: 'prior-interpretation' };
-  const contextual = await run(follow, root);
-  const bare = await run({ ...follow, initialContext: 'subject-reference' }, root);
-  assert.equal(contextual.reused, false);
-  assert.equal(bare.reused, false);
-  assert.ok(investigator.inputs[3]![0]!.responses.length > 0);
-  assert.deepEqual(investigator.inputs[4]![0]!.responses, []);
-  assert.notEqual(contextual.evaluation!.method, bare.evaluation!.method);
 });
 
 
@@ -215,22 +194,22 @@ test('ambiguous fixture lookup returns every candidate and a precise follow-up s
   assert.equal(ambiguous.resolution.candidates.length, 2);
   assert.equal(investigator.inputs.length, 0);
   const precise = requireView(await opened.session.execute({ ...request, selector: ambiguous.resolution.candidates[0]!.reference, reference: true }));
-  assert.equal(precise.view.schema, 'postcode-investigation-view/1-experimental');
-  assert.equal(precise.view.accounts.length, 1);
+  assert.equal(precise.view.schema, 'postcode-contribution-view/1-experimental');
+  assert.equal(precise.view.rows.length, 1);
   assert.equal(investigator.inputs.length, 1);
 });
 
 test('fixture operation preserves retained failure and retryable communication outcomes', async t => {
   for (const kind of ['refused', 'communication-failure'] as const) {
-    const investigator = new ScriptedInvestigator([() => kind === 'refused' ? { kind } : { kind, code: 'fixture', diagnostic: 'Unavailable.' }]);
+    const investigator = new ScriptedContributionAgent([() => kind === 'refused' ? { kind } : { kind, code: 'fixture', diagnostic: 'Unavailable.' }]);
     const opened = await openSession(fixture(t), { investigation: { agent: investigator } }, catalog());
     assert.equal(opened.status, 'opened');
     t.after(() => opened.session.close());
     const first = requireView(await opened.session.execute(request));
     const repeat = requireView(await opened.session.execute({ ...request, lens: 'risk-review' }));
-    assert.equal(first.view.schema, 'postcode-investigation-view/1-experimental');
-    assert.equal(repeat.view.schema, 'postcode-investigation-view/1-experimental');
-    assert.equal(repeat.view.result!.reused, kind === 'refused');
+    assert.equal(first.view.schema, 'postcode-contribution-view/1-experimental');
+    assert.equal(repeat.view.schema, 'postcode-contribution-view/1-experimental');
+    assert.equal(repeat.view.reporting!.reused, kind === 'refused');
     assert.equal(investigator.inputs.length, kind === 'refused' ? 1 : 2);
   }
 });
@@ -242,10 +221,10 @@ test('fixture interpretation catalogs cross worker publication with actual Lens 
   const opening = await remote.opening;
   assert.equal(opening.status, 'opened');
   const first = requireView(await remote.execute(request));
-  assert.equal(first.view.schema, 'postcode-investigation-view/1-experimental');
+  assert.equal(first.view.schema, 'postcode-contribution-view/1-experimental');
   const batches: ObservationBatch[] = [];
   let stdout = '', stderr = '';
-  const code = await publishCommand({ id: opening.id, ...remote }, { ...request, lens: 'risk-review', selector: first.view.candidates[0]!.reference, reference: true },
+  const code = await publishCommand({ id: opening.id, ...remote }, { ...request, lens: 'risk-review', selector: first.view.resolution!.subjects[0]!, reference: true },
     'internal risk fixture', options.configPath, 2, { stdout: text => { stdout += text; }, stderr: text => { stderr += text; } },
     { async submit(batch) { batches.push(batch); return { accepted: true }; } });
   assert.equal(code, 0);
@@ -253,9 +232,9 @@ test('fixture interpretation catalogs cross worker publication with actual Lens 
   assert.equal(investigator.inputs.length, 1);
   const view = JSON.parse(stdout) as typeof first.view;
   assert.equal(view.title, 'Risk review');
-  assert.equal(view.result!.reused, true);
+  assert.equal(view.reporting!.reused, true);
   assert.equal(view.usage.calls, 1);
-  assert.deepEqual(view.provenance, first.view.provenance);
+  assert.deepEqual(view.rows.map(row => row.origin), first.view.rows.map(row => row.origin));
   const context = batches[0]!.records.find(item => item.kind === 'request')!.value as RequestContext;
   assert.equal(context.request.kind, 'lens');
   assert.equal(context.request.lens, 'risk-review');

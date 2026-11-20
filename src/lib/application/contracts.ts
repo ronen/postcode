@@ -2,7 +2,7 @@ import type { SessionId, RecordId } from '../records.js';
 import type { SubjectResolution } from '../subject-resolution.js';
 import type { InitiationContext, WorkReport, WorkProgress } from '../work-attribution.js';
 import type { InvestigationUsageReport } from '../investigation/reporting.js';
-import type { InvestigationSelection, InvestigationDependencies } from '../investigation/evaluation.js';
+import type { AgentFailure } from '../investigation/contracts.js';
 import type { InvestigationRequest } from '../investigation/contracts.js';
 import type { ProjectOptions } from '../typescript/project.js';
 import type { RunGit } from '../git-execution.js';
@@ -18,7 +18,7 @@ export interface SelectedAnswer {
   readonly id: RecordId;
   readonly content: QualifiedContent;
   /** Both exact halves of associated inspection; otherwise null. */
-  readonly mechanical: Exclude<QualifiedContent, { contract: 'investigation' }> | null;
+  readonly mechanical: Exclude<QualifiedContent, { contract: 'contribution' | 'contribution-inspection' }> | null;
 }
 export interface ApplicationDelivery {
   readonly context: ApplicationContext;
@@ -35,8 +35,10 @@ export interface AnswerDelivery extends ApplicationDelivery {
   readonly resolution?: SubjectResolution;
   readonly bindings: CoordinatedBindings;
   readonly consumption: ConsumptionDecision | null;
-  readonly reporting: { readonly reused: boolean; readonly attempt: RecordId | null;
-    readonly provider?: NonNullable<NonNullable<InvestigationSelection['unavailable']>['provider']> } | null;
+  readonly reporting: { readonly contribution?: import('../contributions/evaluation.js').ContributionAttemptResult | null;
+    readonly unavailable?: import('../investigation/contracts.js').AgentFailure | null;
+    readonly reused: boolean; readonly attempt: RecordId | null;
+    readonly provider?: NonNullable<AgentFailure['provider']> } | null;
   readonly repositoryRoot: string | null;
   readonly methods: readonly string[];
   readonly failed: boolean;
@@ -64,7 +66,7 @@ export interface CapturedInvocation {
 export interface ApplicationDependencies {
   readonly runGit?: RunGit;
   readonly signal?: AbortSignal;
-  readonly investigation?: InvestigationDependencies;
+  readonly investigation?: import('../contributions/evaluation.js').ContributionDependencies;
   readonly onWork?: (progress: WorkProgress) => void;
   readonly referenceLifetime?: 'session' | 'command';
 }
@@ -76,8 +78,9 @@ export interface Capability {
   readonly cardinality: LensDefinition['cardinality'];
   readonly parameters: LensDefinition['parameters'];
   readonly results: LensDefinition['results'];
-  readonly requirements: { readonly kind: Exclude<LensDefinition['requirements']['kind'], 'interpretation'> }
-    | Extract<LensDefinition['requirements'], { kind: 'interpretation' }>;
+  /** Mechanical Lenses expose only their kind. Agentic Lenses expose their operation and requested result contract. */
+  readonly requirements: { readonly kind: Exclude<LensDefinition['requirements']['kind'], 'contribution' | 'follow-up'> }
+    | Extract<LensDefinition['requirements'], { kind: 'contribution' | 'follow-up' }>;
 }
 export interface ApplicationSession {
   readonly id: SessionId;

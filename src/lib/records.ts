@@ -1,10 +1,10 @@
-import type { Investigram, Correction, InvestigationProvenance } from './investigation/contracts.js';
-import type { InvestigationEvaluationRecord } from './investigation/evaluation.js';
-import type { InvestigationSelectionProjection } from './investigation/selection-record.js';
+import type { NativeSelection } from './contributions/native-selection.js';
 import type { DependencyRecords, DependencyRelationshipClaim, DependencyOrganizationClaim, DependencyTargetStatus } from './dependencies/records.js';
 import type { OrganizationClaims, OrganizationRecords } from './organization/records.js';
 import type { CapturedContentRecord } from './evidence-access.js';
 import type { ModuleExportsProjection } from './exports/records.js';
+import type { ContributionInspection } from './contributions/inspection.js';
+import type { ContributionAnswer } from './contributions/answers.js';
 
 /** Logical records; no compiler objects or storage-native identifiers cross this boundary. */
 export type RecordId = string & { readonly recordId: unique symbol };
@@ -193,6 +193,7 @@ export interface EvaluationRecord extends RecordContext, EvaluationState {
 }
 
 export interface ProjectionRecord extends RecordContext {
+  readonly contributions: NativeSelection;
   readonly kind: 'projection';
   readonly lens: 'modules' | 'inspect';
   readonly subject: 'configured-project' | 'selected-modules';
@@ -213,16 +214,18 @@ export interface ProjectionRecord extends RecordContext {
 }
 
 export type ProgramRecord = SessionRecord | AnalysisInputsRecord | ModuleRecord | SymbolRecord | Claim | RecordedAssertion
-  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | ModuleExportsProjection | OrganizationRecords | DependencyRecords | CapturedContentRecord | Investigram | Correction | InvestigationProvenance | InvestigationEvaluationRecord | InvestigationSelectionProjection;
+  | SourceEvidenceRecord | ClaimContextRecord | EvaluationRecord | ProjectionRecord | ModuleExportsProjection | OrganizationRecords | DependencyRecords | CapturedContentRecord | ContributionInspection | ContributionAnswer;
 
 /** Only the domain operations currently used by discovery and lenses. */
 export interface ProgramRecordStore {
+  /** Own a frozen value graph, sharing only this store's already-owned immutable values.
+   * This captures data without assigning an identity, retaining a record or recording exposure. */
+  capture<T>(value: T): T;
   put(records: readonly ProgramRecord[]): void;
   get(id: RecordId): ProgramRecord;
   lookup(id: RecordId): ProgramRecord | undefined;
   evaluations(session: SessionId): readonly EvaluationRecord[];
-  investigations(session: SessionId): readonly InvestigationEvaluationRecord[];
-  entityIds(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): ReadonlyMap<RecordId, string>;
+  entityIds(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string>;
   answerIds(ids: readonly RecordId[]): ReadonlyMap<RecordId, string>;
   boundAnswer(session: SessionId, reference: string): RecordId | undefined;
   boundEntity(session: SessionId, reference: string): RecordId | undefined;

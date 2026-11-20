@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { contributeNativeFindings } from '../src/lib/contributions/native.js';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
@@ -204,6 +205,7 @@ test('fallback preserves partial and ambiguous target placement without inventin
       ...relationship.information, occurrences: [fallbackOccurrence.id] } };
     const dependency = { ...evaluation, id: recordId(evaluation.session, 'fallback-dependency', 1), occurrences: [fallbackOccurrence.id], relationships: [fallbackEdge.id] };
     store.put([fallbackOccurrence, fallbackEdge, dependency]);
+    contributeNativeFindings(store, evaluation.session, [fallbackOccurrence.id, fallbackEdge.id]);
     const placement = organization.claims.map(id => store.get(id)).find(claim => claim.kind === 'claim'
       && claim.subject === module('b') && claim.information.type === 'module-placement');
     assert.ok(placement?.kind === 'claim' && placement.information.type === 'module-placement');
@@ -218,6 +220,7 @@ test('fallback preserves partial and ambiguous target placement without inventin
       const changed = { ...organization, id: recordId(evaluation.session, 'fallback-organization', mode),
         claims: organization.claims.map(id => id === placement.id ? replacement.id : id) };
       store.put([replacement, changed]);
+      contributeNativeFindings(store, evaluation.session, [replacement.id]);
       const result = evaluateDependencyOrganization(store, dependency, changed);
       const claim = store.get(result.claims[0]!) as DependencyOrganizationClaim;
       const item = claim.information.occurrences[0]!;

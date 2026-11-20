@@ -1,6 +1,6 @@
 # Qualified application answers over retained contributions
 
-Status: accepted
+Status: partially superseded
 Decided: 2026-11-15
 Arising from: [Structured architectural accounts](../plans/structured-architectural-accounts.md)
 Scope: application/engine mapping, captured bases, exact subjects, answer selection, identity and retained presentation
@@ -13,6 +13,10 @@ Supersedes:
 - [Deliver qualified answers independently of CLI Views](internal-application-api.md#qualified-content-delivery), by [Qualified application access](#qualified-application-access).
 - [Preserve qualified construction and exposure coverage](research-question-driven-observation.md#qualified-construction), by [Qualified construction and retained support](#qualified-construction-and-retained-support), retaining question-driven research capture.
 - [Preserve retained selections and support under the new outcome contract](qualified-construction-under-the-request-model.md#preserve-retained-selections-and-support-under-the-new-outcome-contract) and [Preserve verification obligations for the changed cases](qualified-construction-under-the-request-model.md#preserve-verification-obligations-for-the-changed-cases), by [Qualified construction and retained support](#qualified-construction-and-retained-support). The record's answer/View/report identity decision remains accepted, with its referenced effective-input and retention contracts following these successors.
+
+Superseded in part:
+
+- [Qualified construction and retained support](#qualified-construction-and-retained-support), only the requirement to retain investigation-attempt failure/unavailability kind, code and diagnostic in answer selections, is replaced by [Separate attempt reporting and answer meaning](investigation-attempts-and-answer-outcomes.md#separate-attempt-reporting-and-answer-meaning). Other construction, support and qualification obligations remain accepted.
 
 ## Context
 

@@ -1,3 +1,5 @@
+import { renderContributionView } from '../src/lib/interfaces/cli/contribution-presentation.js';
+import type { ContributionView } from '../src/lib/interfaces/cli/contribution-presentation.js';
 import type { ResolutionReport } from '../src/lib/interfaces/cli/report-contracts.js';
 import { invokeCli, temporaryDirectory } from './cli-helpers.js';
 import assert from 'node:assert/strict';
@@ -13,6 +15,11 @@ import { renderUnicode } from '../src/lib/presentation.js';
 import type { QualifiedView } from '../src/lib/presentation.js';
 import { codePointLength, displayWidth } from '../src/lib/terminal-layout.js';
 
+function nativeView(text: string): QualifiedView {
+  const value = JSON.parse(text);
+  return value.schema === 'postcode-contribution-view/1-experimental' ? value.mechanical : value;
+}
+
 const config = path.resolve('fixtures/exports/tsconfig.json');
 
 test('Unicode layout preserves captured Unicode/control evidence and UTF-16 source positions', async t => {
@@ -24,9 +31,11 @@ test('Unicode layout preserves captured Unicode/control evidence and UTF-16 sour
   writeFileSync(path.join(root, 'sample.ts'), `/** ${prose} */\r\n${sourceLine}\r\n`);
   const result = await invoke(['inspect', 'sample', '--project', project, '--more-details']);
   assert.equal(result.exit, 0);
-  const view = result.batches[0]!.records.find(item => item.kind === 'qualified-view')!.value as QualifiedView;
+  const composite = result.batches[0]!.records.find(item => item.kind === 'qualified-view')!.value as ContributionView;
+  assert.equal(composite.mechanical!.schema, 'postcode-view/1-experimental');
+  const view = composite.mechanical!;
   const original = JSON.stringify(view);
-  assert.equal(renderUnicode(view), result.stdout);
+  assert.equal(renderContributionView(composite), result.stdout);
   assert.equal(JSON.stringify(view), original);
   assert.equal(result.stdout.includes('\t'), false);
   assert.equal(result.stdout.includes('\\u0009'), false);
@@ -52,7 +61,7 @@ test('successful Unicode lookup labels only incomplete coverage while JSON retai
   execFileSync('git', ['init', '--quiet', root]);
   const complete = await invoke(['inspect', 'widget', '--project', project]);
   assert.equal(complete.exit, 0, complete.stderr + complete.stdout);
-  const view = complete.batches[0]!.records.find(item => item.kind === 'qualified-view')!.value as QualifiedView;
+  const view = complete.batches[0]!.records.find(item => item.kind === 'qualified-view')!.value as ContributionView;
   assert.ok(view.resolution!.qualifications.length > 0);
   assert.ok(view.resolution!.populations.every(population => population.availability === 'available' && population.materialization === 'full'));
   assert.doesNotMatch(complete.stdout, /^Lookup /m);
@@ -62,7 +71,7 @@ test('successful Unicode lookup labels only incomplete coverage while JSON retai
   const partial = { ...view, resolution: { ...view.resolution!, populations: view.resolution!.populations.map(population =>
     population.kind === 'evaluation' ? { ...population, execution: 'stopped' as const, materialization: 'partial' as const,
       reason: 'Other matches may be unknown.\u001b' } : population) } };
-  const rendered = renderUnicode(partial);
+  const rendered = renderContributionView({ ...partial, mechanical: null });
   assert.deepEqual(rendered.split('\n').filter(line => line.startsWith('Lookup ')),
     ['Lookup (modules): incomplete · Other matches may be unknown.\\u001b']);
   assert.deepEqual(JSON.parse(JSON.stringify(partial)).resolution.qualifications, view.resolution!.qualifications);
@@ -101,7 +110,7 @@ test('Unicode and experimental JSON use the same qualified projection and automa
   const json = await invoke(['--project', config, '--json']);
   assert.equal(unicode.exit, 0);
   assert.equal(json.exit, 0);
-  const structured = JSON.parse(json.stdout) as QualifiedView;
+  const structured = nativeView(json.stdout);
   const unicodeArtifact = unicode.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as QualifiedView;
   assert.deepEqual(normalizeSession(structured.projection), normalizeSession(unicodeArtifact.projection));
   assert.deepEqual(normalizeSession(structured.modules.map(module => module.id), structured.projection.session), normalizeSession(unicodeArtifact.modules.map(module => module.id), unicodeArtifact.projection.session));
@@ -128,14 +137,14 @@ test('Unicode and experimental JSON use the same qualified projection and automa
 
 test('normal views omit source facets and raw evidence; inspection source escape only discloses displayed claims', async () => {
   const inventory = await invoke(['--project', config, '--json']);
-  const view = JSON.parse(inventory.stdout) as QualifiedView;
+  const view = nativeView(inventory.stdout);
   assert.equal(view.moreDetails, undefined);
   const presentation = view.presentation;
   assert.equal(JSON.stringify({ ...view, presentation }).includes(process.cwd()), false);
   for (const key of ['"path":', '"compilerName":', '"contentDigest":', '"evidence":', '"start":']) assert.equal(inventory.stdout.includes(key), false);
   const selected = view.modules.find(module => module.name === 'documented')!;
   const inspected = await invoke(['inspect', selected.handle, '--project', config, '--more-details', '--json']);
-  const detail = JSON.parse(inspected.stdout) as QualifiedView;
+  const detail = (JSON.parse(inspected.stdout) as ContributionView).mechanical as QualifiedView;
   assert.equal(detail.modules.length, 1);
   assert.ok(detail.moreDetails);
   assert.ok(detail.moreDetails.items.flatMap(claim => claim.evidence).every(evidence => evidence.path.endsWith('/ambient.d.ts')));
@@ -159,7 +168,7 @@ test('delivery rejection and thrown sink failure visibly report the observation 
     const result = await invoke(['--project', config, '--json'], { sink, expectedWarning: true });
     assert.equal(result.exit, 0);
     assert.ok(result.stderr.includes('WARNING: observation not recorded'));
-    assert.equal((JSON.parse(result.stdout) as QualifiedView).projection.selection.populationEstablished, true);
+    assert.equal((nativeView(result.stdout)).projection.selection.populationEstablished, true);
   }
 });
 
@@ -245,7 +254,7 @@ test('end-of-options preserves option-like exact names while keeping one-selecto
     for (const name of names) {
       const result = await invoke(['inspect', '--project', config, '--json', '--', name], { checkout });
       assert.equal(result.exit, 0, result.stderr);
-      const view = JSON.parse(result.stdout) as QualifiedView;
+      const view = (JSON.parse(result.stdout) as ContributionView).mechanical as QualifiedView;
       assert.deepEqual(view.modules.map(module => module.name), [name]);
       assert.equal(result.batches.length, 1);
       assert.equal(view.moreDetails, undefined);
@@ -275,14 +284,14 @@ test('target directories named like PostCode output retain configured sources an
       writeFileSync(config, JSON.stringify({ compilerOptions: { noLib: true, types: [] }, ...selection }));
       const before = await invoke(['modules', '--project', config, '--json']);
       assert.equal(before.exit, 0, before.stderr);
-      const view = JSON.parse(before.stdout) as QualifiedView;
+      const view = nativeView(before.stdout);
       assert.equal(view.modules.length, 3);
       assert.ok(view.evaluations.every(outcome => outcome.materialization === 'full'));
       let changedModules = 0;
       for (const directory of ['_build', '_observations']) {
         const filename = path.join(root, directory, 'legitimate.ts');
         writeFileSync(filename, readFileSync(filename, 'utf8') + '\nexport const extra = 2;');
-        const changed = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+        const changed = nativeView((await invoke(['--project', config, '--json'])).stdout);
         changedModules++;
         assert.equal(changed.modules.filter(module => module.exports.some(item => item.exportedName === 'extra')).length, changedModules);
       }
@@ -358,7 +367,7 @@ test('CLI explicitly excludes actual checkout output directories when analyzing 
     writeFileSync(path.join(root, '_observations/generated.ts'), 'export const fabricated = 1;');
     const after = await invoke(['--project', nested, '--json'], { checkout: root });
     assert.equal(normalizeSession(after.stdout), normalizeSession(before.stdout));
-    assert.equal((JSON.parse(after.stdout) as QualifiedView).modules.length, 1);
+    assert.equal((nativeView(after.stdout)).modules.length, 1);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -370,7 +379,7 @@ test('bounded exports and documentation disclose every material omission in both
     writeFileSync(path.join(root, 'large.ts'), `/** ${'A'.repeat(600)} */\nexport const a = 1;\n${Array.from({ length: 8 }, (_, i) => `export const b${i} = ${i};`).join('\n')}`);
     const json = await invoke(['--project', config, '--json']);
     const unicode = await invoke(['--project', config]);
-    const view = JSON.parse(json.stdout) as QualifiedView;
+    const view = nativeView(json.stdout);
     assert.equal(view.modules[0]!.exports.length, 6);
     assert.equal(view.modules[0]!.omittedExports, 3);
     assert.equal(view.modules[0]!.exports[0]!.documentation[0]!.omittedTextCharacters, 200);
@@ -389,7 +398,7 @@ test('conceptual documentation excerpts omit source examples and source-oriented
     assert.equal(json.stdout.includes('sourceExample'), false);
     assert.equal(json.stdout.includes('otherSourceExample'), false);
     assert.equal(json.stdout.includes('source.ts'), true);
-    const assertion = (JSON.parse(json.stdout) as QualifiedView).modules[0]!.exports[0]!.documentation[0]!;
+    const assertion = (nativeView(json.stdout)).modules[0]!.exports[0]!.documentation[0]!;
     assert.ok(assertion.omittedTextCharacters > 0);
     assert.equal(assertion.omittedTags, 1);
     assert.deepEqual(assertion.tags.map(tag => tag.name), ['see', 'deprecated']);
@@ -422,13 +431,13 @@ test('inventory counts omitted external documentation while exact inspection mak
     writeFileSync(path.join(root, 'entry.ts'), 'import "dependency"; export {};');
     writeFileSync(path.join(root, 'node_modules/dependency/index.d.ts'), '/** External responsibility. */\nexport declare const value: number;');
     const inventory = await invoke(['--project', config, '--json']);
-    const view = JSON.parse(inventory.stdout) as QualifiedView;
+    const view = nativeView(inventory.stdout);
     const external = view.modules.find(module => module.discoveryFacets.includes('external'))!;
     assert.ok(external);
     assert.equal(external.exports[0]!.documentation.length, 0);
     assert.equal(external.exports[0]!.omittedDocumentation, 1);
     const inspected = await invoke(['inspect', external.handle, '--project', config, '--json']);
-    const detail = JSON.parse(inspected.stdout) as QualifiedView;
+    const detail = (JSON.parse(inspected.stdout) as ContributionView).mechanical as QualifiedView;
     assert.equal(detail.modules[0]!.exports[0]!.documentation[0]!.text, 'External responsibility.');
     const unicode = await invoke(['--project', config]);
     assert.ok(unicode.stdout.includes('2 modules found · 1 listed · 1 external module collapsed'));
@@ -459,21 +468,21 @@ test('handles repeat current lookups while IDs do not provide cross-invocation n
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     const entry = path.join(root, 'entry.ts');
     writeFileSync(entry, 'export function runCli() {}');
-    const before = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    const before = nativeView((await invoke(['--project', config, '--json'])).stdout);
     const module = before.modules[0]!;
     assert.equal(module.handle, 'run-cli');
-    const unscoped = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
+    const unscoped = nativeView((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout);
     assert.deepEqual(unscoped.resolution?.designation, { kind: 'name', value: module.handle });
     assert.equal(unscoped.projection.selection.matches, 1);
     writeFileSync(entry, 'export function runCli() { return 1; }');
-    const after = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    const after = nativeView((await invoke(['--project', config, '--json'])).stdout);
     assert.equal(after.modules[0]!.handle, module.handle);
     assert.notEqual(after.projection.session, before.projection.session);
     const stale = JSON.parse((await invoke(['inspect', module.entityId, '--project', config, '--json'])).stdout) as ResolutionReport;
     assert.equal(stale.resolution.reason, 'lookup-unavailable');
     const staleId = JSON.parse((await invoke(['inspect', module.id, '--project', config, '--json'])).stdout) as ResolutionReport;
     assert.equal(staleId.resolution.reason, 'lookup-unavailable');
-    const current = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
+    const current = nativeView((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout);
     assert.equal(current.projection.selection.matches, 1);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -484,7 +493,7 @@ test('inspection suppresses ordinary provenance but preserves aliases and merged
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'export interface Merged {a: string}; export interface Merged {b: string}; export const ordinary = 1; export {ordinary as renamed};');
-    const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    const inventory = nativeView((await invoke(['--project', config, '--json'])).stdout);
     const result = await invoke(['inspect', inventory.modules[0]!.handle, '--project', config]);
     assert.ok(result.stdout.includes('Merged [type] · 2 contributing declarations'));
     assert.ok(result.stdout.includes('renamed [value] · alias'));
@@ -496,7 +505,7 @@ test('inspection suppresses ordinary provenance but preserves aliases and merged
 
 test('common success state is compact but abnormal capability states remain explicit', async () => {
   const result = await invoke(['--project', config, '--json']);
-  const view = JSON.parse(result.stdout) as QualifiedView;
+  const view = nativeView(result.stdout);
   assert.ok(renderUnicode(view).includes('Analysis complete: modules, exports, documentation'));
   for (const execution of ['deferred', 'stopped', 'failed'] as const) {
     const evaluations = view.evaluations.map((outcome, index) => index === 0 ? {
@@ -545,7 +554,7 @@ test('a mostly-type module uses an exported type cue instead of a helper predica
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
     writeFileSync(path.join(root, 'entry.ts'), 'export type Claim=string; export type ClaimContext={}; export type ExportClaim={}; export function isModuleClaim() {return true}');
-    const view = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    const view = nativeView((await invoke(['--project', config, '--json'])).stdout);
     assert.equal(view.modules[0]!.handle, 'claim');
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
@@ -573,8 +582,8 @@ test('one-shot name and handle collisions retain every match and do not accept c
     writeFileSync(config, '{"compilerOptions":{"noLib":true,"types":[]},"files":["widget.ts","ambient.d.ts"]}');
     writeFileSync(path.join(root, 'widget.ts'), 'export const value = 1;');
     writeFileSync(path.join(root, 'ambient.d.ts'), 'declare module "widget" { export const named: number; }');
-    const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
-    const lookedUp = JSON.parse((await invoke(['inspect', 'widget', '--project', config, '--json'])).stdout) as QualifiedView;
+    const inventory = nativeView((await invoke(['--project', config, '--json'])).stdout);
+    const lookedUp = nativeView((await invoke(['inspect', 'widget', '--project', config, '--json'])).stdout);
     assert.equal(lookedUp.projection.selection.matches, 2);
     assert.deepEqual(normalizeSession(lookedUp.modules.map(module => module.id), lookedUp.projection.session), normalizeSession(inventory.modules.map(module => module.id), inventory.projection.session));
     assert.deepEqual(new Set(lookedUp.modules.map(module => module.handleProvenance)), new Set(['language-name', 'source-basename']));
@@ -598,7 +607,7 @@ test('basename mnemonic evidence stays distinct from names and precise scoped En
     const long = 'a-very-long-recognition-handle-that-exceeds-the-padded-column';
     writeFileSync(path.join(root, `${long}.ts`), 'export {};');
     writeFileSync(path.join(root, 'index.ts'), 'export {};');
-    const view = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    const view = nativeView((await invoke(['--project', config, '--json'])).stdout);
     const matching = view.modules.filter(module => module.handle === 'evaluation');
     assert.equal(matching.length, 2);
     for (const module of matching) {
@@ -607,7 +616,7 @@ test('basename mnemonic evidence stays distinct from names and precise scoped En
       assert.match(module.entityId, /^module-[a-f0-9]{8,64}$/);
       const unscoped = JSON.parse((await invoke(['inspect', module.entityId, '--project', config, '--json'])).stdout) as ResolutionReport;
       assert.equal(unscoped.resolution.reason, 'lookup-unavailable');
-      const selected = JSON.parse((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout) as QualifiedView;
+      const selected = nativeView((await invoke(['inspect', module.handle, '--project', config, '--json'])).stdout);
       assert.deepEqual(normalizeSession(selected.modules.map(item => item.id), selected.projection.session), normalizeSession(matching.map(item => item.id), view.projection.session));
     }
     const multiple = await invoke(['inspect', 'evaluation', '--project', config]);
@@ -632,7 +641,7 @@ test('basename mnemonic evidence stays distinct from names and precise scoped En
 });
 
 test('exceptional inspections retain forwarding provenance, qualified failures, and truncated assertions', async t => {
-  const view = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+  const view = nativeView((await invoke(['--project', config, '--json'])).stdout);
   const selected = view.modules.find(module => module.handle === 'chain')!;
   const reexport = await invoke(['inspect', selected.handle, '--project', config]);
   assert.ok(reexport.stdout.includes('wildcard'));
@@ -643,7 +652,7 @@ test('exceptional inspections retain forwarding provenance, qualified failures, 
     const project = path.join(root, 'tsconfig.json');
     writeFileSync(project, '{"compilerOptions":{"noLib":true,"types":[]},"files":["index.ts"]}');
     writeFileSync(path.join(root, 'index.ts'), `/** ${'A'.repeat(2100)} */\nexport const documented=1;\nexport * from './missing.js';`);
-    const inventory = JSON.parse((await invoke(['--project', project, '--json'])).stdout) as QualifiedView;
+    const inventory = nativeView((await invoke(['--project', project, '--json'])).stdout);
     const detail = await invoke(['inspect', inventory.modules[0]!.handle, '--project', project, '--more-details']);
     assert.ok(detail.stdout.includes('materialization partial'));
     assert.ok(detail.stdout.includes('assertion character(s) omitted'));
@@ -655,14 +664,14 @@ test('exceptional inspections retain forwarding provenance, qualified failures, 
 });
 
 test('source expansion groups deduplicated evidence by displayed concepts with precise ranges and excerpts', async () => {
-  const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+  const inventory = nativeView((await invoke(['--project', config, '--json'])).stdout);
   const origin = inventory.modules.find(module => module.handle === 'origin')!;
   const args = ['inspect', origin.handle, '--project', config];
   const plain = await invoke(args);
   assert.equal(plain.stdout.includes('export interface Merged'), false);
   const result = await invoke([...args, '--more-details', '--json']);
   assert.equal(result.exit, 0, result.stderr);
-  const view = JSON.parse(result.stdout) as QualifiedView;
+  const view = nativeView(result.stdout);
   const items = view.moreDetails!.items;
   const module = items.find(item => item.label.startsWith('Module origin'))!;
   assert.equal(module.evidence.length, 1);
@@ -694,8 +703,8 @@ test('documentation wraps without changing stored text and source excerpts stay 
     const prose = Array.from({ length: 160 }, (_, index) => `TEST_SEGMENT_${index}`).join(' ');
     const source = `/** ${prose} */\r\nexport const a = "😀"; export const b = 2;\r\n${Array.from({ length: 50 }, (_, index) => `export const c${String(index).padStart(2, '0')}=${index};`).join('\r\n')}\r\nexport const zzzOmitted = 'DO_NOT_DISCLOSE';`;
     writeFileSync(path.join(root, 'sample.ts'), source);
-    const inventory = JSON.parse((await invoke(['--project', project, '--json'])).stdout) as QualifiedView;
-    const view = JSON.parse((await invoke(['inspect', inventory.modules[0]!.handle, '--project', project, '--more-details', '--json'])).stdout) as QualifiedView;
+    const inventory = nativeView((await invoke(['--project', project, '--json'])).stdout);
+    const view = nativeView((await invoke(['inspect', inventory.modules[0]!.handle, '--project', project, '--more-details', '--json'])).stdout);
     const text = renderUnicode(view);
     const documentation = view.modules[0]!.exports[0]!.documentation[0]!;
     assert.equal(documentation.text, prose.slice(0, 2000));
@@ -719,7 +728,7 @@ test('documentation wraps without changing stored text and source excerpts stay 
 test('source hierarchy preserves forwarding, defining syntax and mixed documentation before the closing sections', async () => {
   const listed = await invoke(['--project', config, '--json']);
   assert.equal(listed.exit, 0, listed.stderr);
-  const inventory = JSON.parse(listed.stdout) as QualifiedView;
+  const inventory = nativeView(listed.stdout);
   for (const handle of ['origin', 'chain']) {
     const module = inventory.modules.find(item => item.handle === handle)!;
     const result = await invoke(['inspect', module.handle, '--project', config, '--more-details']);
@@ -757,17 +766,17 @@ test('Unicode bounds each assertion to eight wrapped content lines with exact ch
     writeFileSync(project, '{"compilerOptions":{"noLib":true,"types":[]},"files":["height.ts"]}');
     const prose = Array.from({ length: 100 }, (_, index) => `TEST_SEGMENT_${index} 😀`).join('\n');
     writeFileSync(path.join(root, 'height.ts'), `/** ${prose.replace(/\n/g, '\n * ')}\n * @deprecated ${'tag '.repeat(100)}\n */\nexport const a=1;`);
-    const inventory = JSON.parse((await invoke(['--project', project, '--json'])).stdout) as QualifiedView;
+    const inventory = nativeView((await invoke(['--project', project, '--json'])).stdout);
     const args = ['inspect', inventory.modules[0]!.handle, '--project', project];
     const unicode = await invoke(args);
-    const view = unicode.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as QualifiedView;
+    const view = (unicode.batches[0]!.records.find(record => record.kind === 'qualified-view')!.value as ContributionView).mechanical as QualifiedView;
     const doc = view.modules[0]!.exports[0]!.documentation[0]!;
     assert.ok(doc.text.split('\n').length <= 8);
     assert.equal([...doc.text].length + doc.omittedTextCharacters, [...prose].length);
     assert.equal(doc.omittedTags, 1);
     assert.ok(unicode.stdout.includes(`${doc.omittedTextCharacters} assertion character(s) omitted`));
     assert.ok(unicode.stdout.includes('1 structured tag(s) omitted'));
-    const json = JSON.parse((await invoke([...args, '--json'])).stdout) as QualifiedView;
+    const json = nativeView((await invoke([...args, '--json'])).stdout);
     assert.ok(json.modules[0]!.exports[0]!.documentation[0]!.text.length > doc.text.length);
     const missing = await invoke(['inspect', 'not-here', '--project', project]);
     assert.equal(missing.stdout.includes('More:'), false);
@@ -783,12 +792,12 @@ test('Unicode inline names and paths cannot inject structure while JSON and wrap
     writeFileSync(config, JSON.stringify({ compilerOptions: { noLib: true, types: [] }, files: [filename, 'ambient.d.ts'] }));
     writeFileSync(path.join(root, filename), `/** First documentation line.\n * Second documentation line. */\nconst value=1; export { value as ${JSON.stringify(name)} };`);
     writeFileSync(path.join(root, 'ambient.d.ts'), `declare module ${JSON.stringify(name)} { export const item:number; }`);
-    const inventory = JSON.parse((await invoke(['--project', config, '--json'])).stdout) as QualifiedView;
+    const inventory = nativeView((await invoke(['--project', config, '--json'])).stdout);
     const file = inventory.modules.find(module => module.exports.some(exported => exported.exportedName === name))!;
     const escaped = 'spoof\\u000aStatus\\u0009marker\\u2028tail\\u061c\\u200e\\u200f\\u202a\\u202b\\u202c\\u202d\\u202e\\u2066\\u2067\\u2068\\u2069';
     for (const module of [file]) {
-      const json = JSON.parse((await invoke(['inspect', module.handle,
-        '--project', config, '--more-details', '--json'])).stdout) as QualifiedView;
+      const json = nativeView((await invoke(['inspect', module.handle,
+        '--project', config, '--more-details', '--json'])).stdout);
       const original = JSON.stringify(json);
       const output = renderUnicode(json);
       assert.equal(output.includes(name), false);
@@ -829,7 +838,7 @@ test('control-bearing invocation paths stay out of conceptual output without gen
       ...['\u061c', '\u200e', '\u200f', '\u202a', '\u202b', '\u202c', '\u202d', '\u202e', '\u2066', '\u2067', '\u2068', '\u2069'].map(control => [ordinaryConfig, path.join(root, `checkout${control}spoof`)])]) {
       const result = await invoke(['--project', selectedConfig!, '--json'], { checkout: checkout! });
       assert.equal(result.exit, 0);
-      const view = JSON.parse(result.stdout) as QualifiedView;
+      const view = nativeView(result.stdout);
       assert.equal('navigation' in view.presentation, false);
       const unicode = renderUnicode(view);
       assert.equal(unicode.includes('config\nStatus\tspoof'), false);
@@ -925,7 +934,7 @@ test('composition remains a separately qualified property in inspection and orga
     writeFileSync(path.join(directory, 'forward.ts'), "export * from './target';");
     writeFileSync(path.join(directory, 'target.ts'), 'export const value = 1;');
     const project = path.join(directory, 'tsconfig.json');
-    const inventory = JSON.parse((await invoke(['modules', '--project', project, '--json'])).stdout) as QualifiedView;
+    const inventory = nativeView((await invoke(['modules', '--project', project, '--json'])).stdout);
     const forward = inventory.modules.find(module => module.handle === 'forward')!;
     assert.equal(forward.composition.claims[0]!.property, 're-exports-only');
     assert.equal(forward.discoveryFacets.includes('re-exports-only'), false);

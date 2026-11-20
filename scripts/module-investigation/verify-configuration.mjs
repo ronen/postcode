@@ -6,7 +6,8 @@ import path from 'node:path';
 import ts from 'typescript';
 import { chatGPTIdentity } from '../../_build/src/lib/investigation/openai/adapter.js';
 import { referenceInstructions } from '../../_build/src/lib/investigation/openai/references.js';
-import { investigationInstructions } from '../../_build/src/lib/investigation/execute.js';
+import { dialogInstructions } from '../../_build/src/lib/contributions/dialog.js';
+import { contributionOperations } from '../../_build/src/lib/contributions/operations.js';
 const hash = file => createHash('sha256').update(readFileSync(file)).digest('hex');
 export function verifyConfiguration(spec) {
   const manifest = JSON.parse(readFileSync(spec.manifest, 'utf8'));
@@ -24,7 +25,7 @@ export function verifyConfiguration(spec) {
   if (subject.baseConfigPackage && hash(path.join(root, 'node_modules/@cycraft/tsconfig/tsconfig.json')) !== subject.baseConfigPackage.sha256) throw new Error('Inherited configuration changed');
   const instructions = JSON.parse(readFileSync(path.join(path.dirname(spec.manifest), 'instructions.json'), 'utf8'));
   for (const operation of ['functionality', 'clarification', 'decomposition', 'examination']) {
-    if (instructions[operation] !== undefined && investigationInstructions(operation) !== instructions[operation]) throw new Error('Built instructions differ from frozen pass');
+    if (instructions[operation] !== undefined && dialogInstructions(contributionOperations[operation], contributionOperations) !== instructions[operation]) throw new Error('Built instructions differ from frozen pass');
   }
   if (instructions.hostedFunctionality !== undefined && `${instructions.functionality}\n\n${referenceInstructions}` !== instructions.hostedFunctionality) throw new Error('Built reference instructions differ from frozen pass');
 }

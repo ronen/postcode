@@ -1,0 +1,45 @@
+States of breaker
+  [Below opening criterion]  The implementation's stored outcome history does not currently satisfy its Closed-circuit opening criterion.
+  [Opening criterion satisfied]  The implementation's stored outcome history currently satisfies its Closed-circuit opening criterion.
+Transitions
+T1  Below opening criterion → Below opening criterion
+      trigger: success(state) or failure(state) records an outcome
+      guard: After the implementation-specific reset, eviction or window rotation and recording, the opening criterion remains unsatisfied.
+      effect: Updates the implementation's persistent statistics. A failure returns false when the supplied circuit state is Closed, except that ConsecutiveBreaker ignores that supplied state; CountBreaker and SamplingBreaker return true for a failure supplied with any non-Closed state.
+T2  Below opening criterion → Opening criterion satisfied
+      trigger: success(state) or failure(state) records an outcome
+      guard: After the implementation-specific reset, eviction or window rotation and recording, the opening criterion becomes satisfied.
+      effect: Updates persistent statistics. A Closed-state failure reports that the circuit should open; CountBreaker and SamplingBreaker also report true for failures supplied with a non-Closed state regardless of the criterion.
+T3  Opening criterion satisfied → Opening criterion satisfied
+      trigger: success(state) or failure(state) records an outcome
+      guard: The updated persistent statistics still satisfy the implementation-specific opening criterion.
+      effect: Updates persistent statistics and applies the same failure return rules as the crossing transition.
+T4  Opening criterion satisfied → Below opening criterion
+      trigger: success(state) or failure(state) records an outcome
+      guard: A reset or replacement/rotation of old samples causes the updated statistics no longer to satisfy the opening criterion.
+      effect: Updates persistent statistics. ConsecutiveBreaker always reaches this category on success because it resets its counter to zero; the windowed implementations can drop below their criteria as old outcomes are replaced or discarded.
+T5  Below opening criterion → Below opening criterion
+      trigger: The public state is assigned from serialized data
+      guard: The restored implementation-specific values fall below the opening criterion.
+      effect: Replaces the stored breaker statistics without validating their semantic consistency.
+T6  Below opening criterion → Opening criterion satisfied
+      trigger: The public state is assigned from serialized data
+      guard: The restored implementation-specific values satisfy the opening criterion.
+      effect: Replaces the stored breaker statistics without validating their semantic consistency.
+T7  Opening criterion satisfied → Below opening criterion
+      trigger: The public state is assigned from serialized data
+      guard: The restored implementation-specific values fall below the opening criterion.
+      effect: Replaces the stored breaker statistics without validating their semantic consistency.
+T8  Opening criterion satisfied → Opening criterion satisfied
+      trigger: The public state is assigned from serialized data
+      guard: The restored implementation-specific values satisfy the opening criterion.
+      effect: Replaces the stored breaker statistics without validating their semantic consistency.
+Entry: not established by this account. No entry marker is drawn.
+States shown: the account claims these are all the states.
+Transitions shown: the account claims these are all the transitions.
+Applies to: This is a common behavioral abstraction over ConsecutiveBreaker, CountBreaker, and SamplingBreaker as exported by the subject module; it is not a claim that the module owns one shared singleton state machine.
+Not representable in this diagram: Exact counter values, circular-buffer contents and indexes, time buckets, and aggregate counts are data state within these categories and are not expanded into infinitely many flat states.
+Not representable in this diagram: The CircuitState argument is caller-owned context, not state borne by the breaker instance, so Closed, HalfOpen, and other circuit modes are not represented as breaker states.
+Not representable in this diagram: The unified initial category is not established: CountBreaker and SamplingBreaker construct empty histories below their validated criteria, but ConsecutiveBreaker initializes its counter to zero without validating its threshold, so unusual thresholds can defeat a common initial classification.
+Not representable in this diagram: The state setters accept unknown serialized data and do not validate invariants; malformed restoration behavior cannot be categorized reliably.
+The diagram arranges the supplied account. It adds no state, transition or completeness claim, and the absence of an arrow is not a claim that no transition exists unless stated above.

@@ -1,7 +1,9 @@
 import { freezeOwned } from '../immutable.js';
 import { initiation, RequestWork } from '../work-attribution.js';
 import type { WorkReport, WorkProgress } from '../work-attribution.js';
-import { investigationEvaluation } from '../investigation/evaluation.js';
+import { evidenceAccess } from '../evidence-access.js';
+import { contributionReference } from '../contributions/subjects.js';
+import { moduleEntity } from '../contributions/modules.js';
 import { InvestigationUsage } from '../investigation/usage.js';
 import { usageSummary } from '../investigation/reporting.js';
 import type { AttemptReport } from '../investigation/contracts.js';
@@ -13,14 +15,14 @@ import { evaluateModules } from '../evaluation.js';
 import { MemoryProgramRecordStore } from '../memory-store.js';
 import { openTypeScriptProject } from '../typescript/project.js';
 import type { ProjectOptions } from '../typescript/project.js';
-import { referenceBinding } from '../reference-binding.js';
-import type { ReferenceBinding, ReferenceKind } from '../reference-binding.js';
 import { captureApplicationRequest, captureFields, InvalidRequestId } from './requests.js';
 import type { SemanticRequest, InputConstraints, InputProblem } from './requests.js';
 import { applicationCatalog, captureApplicationCatalog } from './catalog.js';
 import type { ApplicationCatalog } from './catalog.js';
 import type { ApplicationSession, OpenApplicationResult, ApplicationDependencies, ApplicationContext, ApplicationResult, CapturedInvocation } from './contracts.js';
 import { requestExecutor } from './executor.js';
+import { contributionEvaluation } from '../contributions/evaluation.js';
+import { sessionLedger } from '../contributions/modules.js';
 import { registerOperationHost } from './operation-scope.js';
 
 export async function openApplication(options: ProjectOptions, lifetime: ApplicationDependencies = {}, definitions: ApplicationCatalog = applicationCatalog): Promise<OpenApplicationResult> {
@@ -31,8 +33,10 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
   const controller = new AbortController(), reports = new Map<RecordId, AttemptReport>();
   const usage = new InvestigationUsage();
   const usageReport = () => usageSummary([...reports.values()]);
+  let state: { store: MemoryProgramRecordStore; execute: ReturnType<typeof requestExecutor>;
+    evaluate: (request: import('../investigation/contracts.js').InvestigationRequest, work?: RequestWork) => Promise<import('../contributions/evaluation.js').ContributionEvaluated>; changed: () => Promise<boolean> } | undefined;
   let disposed: Error | undefined, busy = false, invalid = false;
-  const dispose = (reason: Error) => { disposed ??= reason; controller.abort(reason); return owner?.close(reason) ?? Promise.resolve(); };
+  const dispose = (reason: Error) => { disposed ??= reason; state?.store.releaseOwnership(); controller.abort(reason); return owner?.close(reason) ?? Promise.resolve(); };
   const interrupt = () => { void dispose(new CommandInterrupted()).catch(() => {}); };
   lifetime.signal?.addEventListener('abort', interrupt, { once: true });
   if (lifetime.signal?.aborted) interrupt();
@@ -47,8 +51,6 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
   }
   if (opened.status !== 'opened') { lifetime.signal?.removeEventListener('abort', interrupt); await dispose(new SessionClosed()); return opened; }
   const id = opened.session;
-  let state: { store: MemoryProgramRecordStore; execute: ReturnType<typeof requestExecutor>;
-    evaluate: ReturnType<typeof investigationEvaluation>['evaluate']; changed: () => Promise<boolean> } | undefined;
   const check = async () => {
     alive();
     if (!state) throw new SessionClosed();
@@ -60,20 +62,26 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
       }
     }
     alive();
-    if (invalid) { const error = new SessionInvalidated(); controller.abort(error); throw error; }
+    if (invalid) { state.store.releaseOwnership(); const error = new SessionInvalidated(); controller.abort(error); throw error; }
   };
   // Retained domain state is owned by this holder and released on close. Final
   // attempt accounting may arrive during cancellation; progress cannot revive work.
   const initialize = (project: Extract<typeof opened, { status: 'opened' }>) => {
     const store = new MemoryProgramRecordStore();
-    const integration = investigationEvaluation(store, project.analysis, id, usage, { ...investigation,
-      onReport: report => { if (!currentWork) return; const captured = freezeOwned(structuredClone(report)); reports.set(report.attempt, captured); investigation.onReport?.(captured); },
-      onProgress: report => { if (!currentWork || controller.signal.aborted) return; const captured = freezeOwned(structuredClone(report)); reports.set(report.attempt, captured); investigation.onProgress?.(captured); },
-    }, check, controller.signal, catalog.operations);
-    return { store, execute: requestExecutor(store, project.analysis, id, integration, usageReport, catalog), changed: project.changed,
-      evaluate: (request: Parameters<typeof integration.evaluate>[0], work?: RequestWork) => {
-        evaluateModules(store, project.analysis, [], work?.scope('Establish the module basis for direct interpretation.'));
-        return integration.evaluate(request, work);
+    const evidence = evidenceAccess(store, project.analysis, id);
+    const report = (value: AttemptReport) => { if (!currentWork) return; const captured = freezeOwned(structuredClone(value)); reports.set(value.attempt, captured); investigation.onReport?.(captured); };
+    const contributions = contributionEvaluation(store, sessionLedger(store, id), evidence, usage,
+      { ...investigation, operations: catalog.operations, onReport: report, onProgress: value => { if (!currentWork || controller.signal.aborted) return; const captured = freezeOwned(structuredClone(value)); reports.set(value.attempt, captured); investigation.onProgress?.(captured); } }, check, controller.signal);
+    return { store, execute: requestExecutor(store, project.analysis, id, usageReport, catalog, contributions), changed: project.changed,
+      evaluate: (request: import('../investigation/contracts.js').InvestigationRequest, work?: RequestWork) => {
+        evaluateModules(store, project.analysis, [], work?.scope('Establish the module basis for direct investigation.'));
+        const operation = catalog.operations[request.operation];
+        if (!operation) throw new Error('Unknown contribution operation');
+        const entity = operation.subject === 'module' ? moduleEntity(store, request.subject) : undefined;
+        const owner = operation.subject === 'selected-content' ? contributionReference(sessionLedger(store, id), request.subject) : undefined;
+        if (!entity && !owner) throw new Error('Unsupported exact operation subject');
+        return contributions.evaluate({ operation: operation.id, subjects: [{ role: null, subject: entity ? { kind: 'entity', entity } : { kind: 'investigram', investigram: owner! } }],
+          parameters: request.parameters, context: [], resultContract: null }, operation, null, { subject: request.subject, ...(work ? { work } : {}) });
       } };
   };
   state = initialize(opened);
@@ -110,7 +118,7 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
   };
   const session: ApplicationSession = {
     id,
-    capabilities: () => freezeOwned(Object.values(catalog.lenses).map(({ requirements, ...lens }) => ({ ...lens, requirements: requirements.kind === 'interpretation' ? requirements : { kind: requirements.kind } }))),
+    capabilities: () => freezeOwned(Object.values(catalog.lenses).map(({ requirements, ...lens }) => ({ ...lens, requirements: requirements.kind === 'contribution' || requirements.kind === 'follow-up' ? requirements : { kind: requirements.kind } }))),
     check: () => operation(check), usage: usageReport, work: () => currentWork?.snapshot() ?? latestWork,
     execute(request, execution = {}) {
       const captured = captureApplicationRequest(request, catalog.lenses);
@@ -128,12 +136,12 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
       return operation(() => perform(captured, { ...(requestId !== undefined ? { requestId } : {}), ...(invocation ? { invocation: { fields: invocation.input, problems: invocation.problems } } : {}) }, false));
     },
     interrupt: () => dispose(new CommandInterrupted()),
-    async close() { state = undefined; lifetime.signal?.removeEventListener('abort', interrupt); await dispose(new SessionClosed()); },
+    async close() { const closing = dispose(new SessionClosed()); state = undefined; lifetime.signal?.removeEventListener('abort', interrupt); await closing; },
   };
   registerOperationHost(session, {
     run: client => operation(async () => {
-      let active = true, used = false, port: ReferenceBinding | undefined;
-      const allowed = () => { alive(); if (invalid) throw new SessionInvalidated(); if (!active) throw new Error('Operation binding capability expired'); };
+      let active = true, used = false;
+      const allowed = () => { alive(); if (invalid) throw new SessionInvalidated(); if (!active) throw new Error('Operation capability expired'); };
       try {
         return await client({
           async check() { allowed(); await check(); allowed(); },
@@ -141,12 +149,10 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
             allowed(); if (used) throw new Error('An operation scope accepts exactly one request'); used = true;
             const result = await perform(freezeOwned(structuredClone(request)), freezeOwned(structuredClone(execution)), true);
             allowed();
-            if (result.kind === 'answer' && result.answer.content.contract === 'investigation' && result.answer.mechanical === null) port = referenceBinding(state!.store, id, result.answer.content.value.references);
             return result;
           },
-          bindings: Object.freeze({ bind(ids: readonly RecordId[], kind: ReferenceKind) { allowed(); if (!port) throw new Error('No investigation binding population for this operation'); return port.bind(ids, kind); } }),
         });
-      } finally { active = false; port = undefined; }
+      } finally { active = false; }
     }),
     evaluate: request => {
       const captured = freezeOwned(structuredClone(request));
@@ -157,7 +163,7 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
           await check();
           const result = await state!.evaluate(context.request.operation, work);
           await check(); alive();
-          return freezeOwned({ ...result, context, attribution: finishWork(work, result.unavailable || result.evaluation?.outcome.kind !== 'accepted' ? 'failed' : 'completed') });
+          return freezeOwned({ ...result, context, attribution: finishWork(work, result.unavailable || (result.execution?.outcome ?? result.attempt?.outcome)?.kind !== 'accepted' ? 'failed' : 'completed') });
         } catch (error) { failWork(work, error); throw error; }
       });
     },

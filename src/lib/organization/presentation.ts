@@ -1,3 +1,5 @@
+import { nativeConcerns, nativeConcernLines } from '../contributions/native-presentation.js';
+import type { NativeConcerns } from '../contributions/native-presentation.js';
 import { presentationMethods } from '../interfaces/cli/methods.js';
 import { diagnosticLines, withDiagnosticMeanings } from '../diagnostic-view.js';
 import { answerIdentity, answerDisplay, answerLines, continuationLines } from '../interfaces/cli/answer-presentation.js';
@@ -6,8 +8,6 @@ import { validatePresentationContent, presentationChanges } from '../presentatio
 import type { PresentedOptions } from '../presentation-contracts.js';
 import { lookupDescription, lookupQualifications, resolutionContextIdentity } from '../resolution-context.js';
 import type { ResolutionContext } from '../resolution-context.js';
-import { renderAssociatedInvestigations } from '../investigation/associations.js';
-import type { AssociatedInvestigations } from '../investigation/associations.js';
 import { displayWidth, padDisplay } from '../terminal-layout.js';
 import { compositionView, compositionAnnotation } from '../composition-view.js';
 import type { CompositionView } from '../composition-view.js';
@@ -63,10 +63,10 @@ interface TreeRow {
 }
 
 export interface QualifiedOrganizationView extends AnswerDisplay {
-  readonly investigations?: AssociatedInvestigations;
   readonly schema: 'postcode-organization-view/1-experimental';
   readonly id: RecordId;
   readonly resolution?: ResolutionContext;
+  readonly contributionConcerns: NativeConcerns;
   readonly title: string;
   readonly projection: Pick<OrganizationProjectionContent['projection'], 'id' | 'session' | 'lens' | 'subject' | 'parameters' | 'selection'>;
   readonly presentation: PresentedOptions & { readonly expansions: readonly string[] };
@@ -200,6 +200,7 @@ export function arrangeOrganizationView(content: OrganizationProjectionContent,
     id: recordId(projection.session, 'organization-view', { projection: identityReference(projection.session, projection.id), presentation, title, resolution: resolutionContextIdentity(projection.session, resolution), method: presentationMethods.presentation, ...answerIdentity(context) }),
     title,
     ...(resolution ? { resolution } : {}),
+    contributionConcerns: nativeConcerns(projection.contributions),
     projection: { id: projection.id, session: projection.session, lens: projection.lens, subject: projection.subject,
       parameters: projection.parameters, selection: projection.selection },
     presentation: { ...presentation, expansions: [...projection.expansions.requested, ...new Set(content.moduleEvaluations.flatMap(outcome => outcome.requirement !== 'modules' ? [outcome.requirement] : []))] },
@@ -235,14 +236,14 @@ const annotation = (group: GroupReference) => [group.documented ? 'documented' :
     : group.modulePresence === 'none' ? 'no project modules' : 'module presence unknown'].filter(Boolean).join(' · ');
 const label = (entity: EntityReference) => `${inlineText(entity.label)}  ${entity.entityId}`;
 
-export function renderOrganizationView(view: QualifiedOrganizationView): string {
+export function renderOrganizationView(view: QualifiedOrganizationView, enclosed = false): string {
   if (view.presentation.format === 'json') return `${JSON.stringify(view, null, 2)}\n`;
   const inspection = organizationDisplayPolicy(view.projection.subject, view.presentation).layout === 'cards';
   const lines = [`${inlineText(view.title)} · ${inspection ? 'groups and modules' : view.projection.subject === 'repository' ? 'repository' : 'configured project'}`,
     `Session ${view.projection.session.replace(/^session:/, '')}`,
     inspection ? `${view.projection.selection.matches} ${lookupDescription(view.resolution, view.projection.selection.matches) ?? 'selected subjects'}`
       : `${view.display.selectedGroups} selected groups · ${view.repository.groups} repository groups`];
-  lines.push(...answerLines(view), ...continuationLines(view), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
+  lines.push(...nativeConcernLines(view.contributionConcerns), ...(enclosed ? [] : [...answerLines(view), ...continuationLines(view)]), ...presentationChanges(view.presentation), ...lookupQualifications(view.resolution));
   if (view.projection.selection.outsidePopulation?.length) lines.push('Identified subjects are outside the supplied evaluation population; their detail is unavailable in this answer.');
   if (!view.projection.selection.populationEstablished) lines.push('Selection population is not fully established.');
   for (const [name, state] of Object.entries(view.evaluations)) {
@@ -273,7 +274,7 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
         ? `  Other artifacts: ${group.artifacts.unanalyzed} unanalyzed · ${group.artifacts.opaqueBoundaries} opaque boundaries`
         : `  Other captured artifacts: ${group.artifacts.unanalyzed} · ${group.artifacts.opaqueBoundaries} opaque boundaries (classification incomplete)`);
     }
-    if (view.moduleDetail?.modules.length) lines.push('', 'Modules', renderUnicode(view.moduleDetail, 'embedded').trimEnd());
+    if (view.moduleDetail?.modules.length) lines.push('', 'Modules', renderUnicode(view.moduleDetail, enclosed ? 'contribution' : 'embedded').trimEnd());
   } else {
     lines.push('');
     const width = Math.min(36, Math.max(0, ...view.display.rows.map(row => {
@@ -322,6 +323,6 @@ export function renderOrganizationView(view: QualifiedOrganizationView): string 
     `  Repository-layout evidence left ${view.repository.unestablishedRelationships} relationships unestablished.`,
     `  Exclusion policies: ${view.repository.exclusions.repository} repository, ${view.repository.exclusions.local} local, ${view.repository.exclusions.global} global; ${view.repository.exclusions.outputLocations} output locations excluded.`,
     '  Inputs are first-observed, not atomic; sparse-checkout completeness remains unresolved.');
-  lines.push(...diagnosticLines(view.qualifications, '  '));
-  return `${lines.join('\n')}\n${renderAssociatedInvestigations(view.investigations)}`;
+  if (!enclosed) lines.push(...diagnosticLines(view.qualifications, '  '));
+  return `${lines.join('\n')}\n`;
 }

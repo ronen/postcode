@@ -3,16 +3,18 @@ import type { EvaluationState } from '../records.js';
 import type { ModuleProjectionContent } from '../module-content.js';
 import type { OrganizationProjectionContent } from '../organization/content.js';
 import type { DependencyProjectionContent } from '../dependencies/content.js';
-import type { InvestigationProjectionContent } from '../investigation/content.js';
 import type { ModuleExportsContent } from '../exports/content.js';
+import type { ContributionInspectionContent } from '../contributions/inspection.js';
+import type { ContributionAnswerContent } from '../contributions/answers.js';
 
 /** These contracts name qualified meanings, not interchangeable graph shapes. */
 export type QualifiedContent =
   | { readonly contract: 'modules'; readonly value: ModuleProjectionContent }
   | { readonly contract: 'organization'; readonly value: OrganizationProjectionContent }
   | { readonly contract: 'dependencies'; readonly value: DependencyProjectionContent }
-  | { readonly contract: 'investigation'; readonly value: InvestigationProjectionContent }
-  | { readonly contract: 'module-exports'; readonly value: ModuleExportsContent };
+  | { readonly contract: 'module-exports'; readonly value: ModuleExportsContent }
+  | { readonly contract: 'contribution-inspection'; readonly value: ContributionInspectionContent }
+  | { readonly contract: 'contribution'; readonly value: ContributionAnswerContent };
 
 const complete = (state: Pick<EvaluationState, 'applicability' | 'availability' | 'execution' | 'materialization'>) =>
   state.applicability === 'applicable' && state.availability === 'available' && completedMaterialization(state);
@@ -21,9 +23,13 @@ const complete = (state: Pick<EvaluationState, 'applicability' | 'availability' 
  * The family resolvers have already checked support records and their kinds. */
 export function validateContent(content: QualifiedContent): void {
   const projection = content.value.projection;
-  const expected = { modules: 'projection', organization: 'organization-projection', dependencies: 'dependency-projection', investigation: 'investigation-selection-projection', 'module-exports': 'module-exports-projection' };
+  const expected = { modules: 'projection', organization: 'organization-projection', dependencies: 'dependency-projection', 'module-exports': 'module-exports-projection', contribution: 'contribution-projection', 'contribution-inspection': 'contribution-inspection-projection' };
   if (projection.kind !== expected[content.contract] || !projection.id || !projection.session) throw new Error('Malformed Presentation content contract');
-  if (content.contract === 'modules') {
+  if (content.contract === 'contribution-inspection') {
+    if (!content.value.projection.subjects.length) throw new Error('Empty inspection subjects');
+  } else if (content.contract === 'contribution') {
+    if (content.value.projection.alternatives.some(item => !item.items.length)) throw new Error('Malformed contribution answer content');
+  } else if (content.contract === 'modules') {
     if (!['configured-project', 'selected-modules'].includes(content.value.projection.subject)
       || content.value.discovery.kind !== 'evaluation' || content.value.evaluations[0]?.id !== content.value.discovery.id || content.value.session.id !== projection.session
       || content.value.modules.length !== content.value.projection.modules.length
@@ -49,11 +55,6 @@ export function validateContent(content: QualifiedContent): void {
       || content.value.exports.length !== content.value.projection.exports.length
       || content.value.exports.some((item, index) => item.claim.record.id !== content.value.projection.exports[index]
         || item.claim.record.subject !== content.value.projection.subject)) throw new Error('Malformed exports Presentation content');
-  } else {
-    const { projection: selected, evaluation } = content.value;
-    if (selected.variant === 'request' && selected.outcome.kind === 'evaluation' && (!evaluation || evaluation.id !== selected.outcome.evaluation)) throw new Error('Malformed interpretation Presentation content');
-    const accounts = new Set(content.value.accounts.map(item => item.id));
-    if (selected.relations.some(item => !accounts.has(item.original) || !accounts.has(item.account))) throw new Error('Malformed interpretation account content');
   }
 }
 
@@ -63,6 +64,9 @@ export function materializationLimitations(content: QualifiedContent): readonly 
     : [`${label}: ${value.applicability}, ${value.availability}, ${value.execution}, ${value.materialization}${value.reason ? `; ${value.reason}` : ''}`];
   const outsiders = (ids: readonly string[] | undefined) => ids?.length ? ['Selected subjects are outside the supplied evaluation population.'] : [];
   switch (content.contract) {
+    case 'contribution-inspection': return [];
+    case 'contribution': return [...(content.value.projection.alternatives.length ? [] : ['No answer is currently designated for this question.']),
+      ...content.value.projection.alternatives.flatMap(item => item.unmet.map(unmet => `Requested result not met: ${unmet.requirement} ${unmet.reason}`))];
     case 'module-exports': return [...(content.value.complete ? [] : ['A complete export surface is not established.']),
       ...[content.value.basis, ...content.value.evaluations].flatMap(item => state(`Exports (${item.requirement})`, item))];
     case 'modules': return [...outsiders(content.value.projection.selection.outsidePopulation),
@@ -74,12 +78,6 @@ export function materializationLimitations(content: QualifiedContent): readonly 
     case 'dependencies': return [...state('Dependencies', content.value.evaluation), ...state('Modules', content.value.basis),
       ...content.value.moduleEvaluations.flatMap(item => state(`Modules (${item.requirement})`, item)),
       ...(content.value.expanded ? state('Dependency organization', content.value.expanded) : []), ...outsiders(content.value.projection.selection.outsidePopulation)];
-    case 'investigation': {
-      if (content.value.projection.variant !== 'request') return [];
-      const outcome = content.value.evaluation?.outcome ?? (content.value.projection.outcome.kind === 'unavailable' ? content.value.projection.outcome.value : null);
-      if (!outcome) throw new Error('Missing interpretation outcome');
-      return outcome.kind === 'accepted' ? [] : [`Interpretation: ${outcome.kind}${'diagnostic' in outcome && outcome.diagnostic ? `; ${outcome.diagnostic}` : ''}`];
-    }
   }
 }
 

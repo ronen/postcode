@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-11-09
+Last reviewed: 2026-11-20
 
 PostCode is currently available as a development CLI for investigating one
 configured TypeScript project.
@@ -27,6 +27,9 @@ This page summarizes current capabilities and significant limits. The [capabilit
 - **[Dependency investigation](docs/cli-reference.md#dependency-investigation).**
   Dependency structure, cycles, direct dependencies and dependents are available,
   with unresolved requests and analysis limits distinguished.
+- **Qualified retained findings.** Mechanical module, dependency and organization
+  answers preserve exact contribution support. Fresh answers disclose changed uses
+  and their qualified grounds; presenting an earlier answer keeps its captured state.
 - **[Supporting evidence](docs/cli-reference.md#source-detail-and-observations).**
   Inspections can expose qualified detail, names and captured implementation
   locations without source excerpts. Inadequacy feedback is available in the shell
@@ -43,12 +46,18 @@ This page summarizes current capabilities and significant limits. The [capabilit
 - **[Interpretation integration](docs/cli-reference.md#progressive-investigation-and-usage).**
   Summary, explanation, decomposition and examination requests, retained account
   navigation, associated-account inspection and attempt/session usage are
-  integrated with the shell. Fresh selection uses current replacement accounts while
-  exact inspection preserves originals, composition and provenance. Revision views
-  expose unresolved alternatives and citation-based reconsideration warnings.
+  integrated with the shell. Fresh selection preserves all standing alternatives and their
+  displacement/exposure concerns. Exact answers preserve their independently captured
+  content, qualification, provenance and standing; shared immutable support never
+  consults current ledger state during presentation.
   An optional OpenAI adapter supports explicit hosted
   enablement, API-key billing or persistent Sign in with ChatGPT plan use, and
   macOS Keychain credentials. Billing routes are selected explicitly.
+
+- **Structured explanation APIs.** The internal application entry supports state-behavior
+  investigation, a bounded state diagram and invocation of retained follow-up options.
+  These use the same contribution ledger as the existing mechanical and agentic families;
+  there are no new CLI commands for them.
 
 ## Current limits
 
@@ -65,14 +74,19 @@ This page summarizes current capabilities and significant limits. The [capabilit
   examples; public commands remain the supported toolbox. There is no dynamic
   installation, general planner or public Presentation-registration interface.
 
-- **Hosted interpretation:** [formative assessments](records/validation/module-investigation/pass-01/report.md)
+- **Hosted interpretation:** The following historical assessments concern the earlier
+  instruction/representation revisions, not validation of the common dialog. M2
+  [recorded trials](records/validation/structured-architectural-accounts/m2-trials/README.md)
+  and focused M4 trials of [context authoring and invocation](records/validation/structured-architectural-accounts/m4-option-context-authoring.md)
+  and [deduplicated input delivery](records/validation/structured-architectural-accounts/m4-dialog14-live-regression.md)
+  provide live evidence for bounded common-dialog scenarios, not general reliability. [Formative assessments](records/validation/module-investigation/pass-01/report.md)
   show useful source-qualified summaries alongside omitted qualifications. A
   [subsequent reassessment](records/validation/module-investigation/pass-03/report.md)
   produced accepted summaries and an attributed documentation/source discrepancy
   after contract clarification and private reference compaction. Semantic omissions
   and limited assessment coverage remain; earlier rejected results are preserved. The human-selected ChatGPT configuration is
   GPT-5.6 Sol with medium reasoning. Disabled summaries report configuration
-  unavailability; protected hosted credential setup supports macOS only. Reconsideration warnings identify affected citation paths; they do not establish that an account is wrong or automatically reassess it.
+  unavailability; protected hosted credential setup supports macOS only. Reconsideration warnings identify actual exposure causes; they do not establish that an account is wrong or automatically reassess it.
   [Progressive assessments](records/validation/module-investigation/pass-04/report.md)
   show useful clarification, narrower follow-up targets and explicit corrections,
   with dense presentation and gaps in independently assessed evidence.

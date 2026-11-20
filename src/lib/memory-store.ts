@@ -1,8 +1,5 @@
 import { isAnswer } from './answer-references.js';
-import type { InvestigationEvaluationRecord } from './investigation/evaluation.js';
-import { selectionReferences } from './investigation/selection-record.js';
-import { validateInvestigationSelection } from './investigation/selection-validation.js';
-import { freezeOwned } from './immutable.js';
+import { ImmutableCapture } from './immutable.js';
 import path from 'node:path';
 import { completedMaterialization } from './evaluation-state.js';
 import { canonical, digest, EntityBindings } from './identity.js';
@@ -10,15 +7,9 @@ import type { EvaluationRecord, ProgramRecord, ProgramRecordStore, RecordId, Ses
 
 function references(record: ProgramRecord): readonly RecordId[] {
   switch (record.kind) {
-    case 'investigation-selection-projection': return selectionReferences(record).map(item => item.id);
-    case 'investigation-evaluation': return [record.request.subject, ...record.investigrams, ...record.corrections,
-      ...(record.outcome.kind === 'accepted' ? [record.outcome.root, record.attempt] : [])];
-    case 'investigram': return [record.provenance, record.originatingModule, ...record.referent.subjects, ...record.evidence,
-      ...record.children, ...record.corrections, ...record.associations.flatMap(item => [item.subject, ...item.evidence]),
-      ...record.inconsistencies.flatMap(item => [...item.targets, ...item.evidence])];
-    case 'investigram-correction': return [record.provenance, record.reporter, record.target, record.replacement, ...record.correctedSubjects, ...record.evidence];
-    case 'investigation-provenance': return [record.request.subject, record.originatingModule, ...record.citations,
-      ...record.completeTargets, ...record.completeCorrections, ...record.suppliedEvidence, ...record.summarizedEvidence];
+    // A contribution answer carries its selected content; its references are ledger identities, not program records.
+    case 'contribution-projection': return [];
+    case 'contribution-inspection-projection': return record.mechanical ? [record.mechanical] : [];
     case 'session': return record.repository ? [record.repository] : [];
     case 'analysis-inputs': return [];
     case 'captured-content': return [record.subject, record.inputs, record.mapping];
@@ -66,9 +57,12 @@ function references(record: ProgramRecord): readonly RecordId[] {
 
 /** Atomic batches permit mutually referring entity/claim/context records. */
 export class MemoryProgramRecordStore implements ProgramRecordStore {
+  readonly #ownership = new ImmutableCapture();
+  capture<T>(value: T): T { return this.#ownership.capture(value); }
+  /** The application releases ownership bookkeeping on close, independently of retained outputs. */
+  releaseOwnership(): void { this.#ownership.dispose(); }
   readonly #bindings = new Map<SessionId, EntityBindings>();
   readonly #evaluations = new Map<SessionId, Map<RecordId, EvaluationRecord>>();
-  readonly #investigations = new Map<SessionId, InvestigationEvaluationRecord[]>();
   readonly #records = new Map<RecordId, ProgramRecord>();
 
   put(records: readonly ProgramRecord[]): void {
@@ -77,7 +71,7 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
       if (!record.id || !record.session || !record.method) throw new Error('Missing record context');
       const prior = pending.get(record.id) ?? this.#records.get(record.id);
       if (prior && canonical(prior) !== canonical(record)) throw new Error('Immutable record collision');
-      pending.set(record.id, structuredClone(record));
+      pending.set(record.id, this.capture(record));
     }
     const groupMembership = new Map<RecordId, ReadonlySet<RecordId>>();
     for (const record of pending.values()) {
@@ -120,6 +114,12 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
         }
       }
       switch (record.kind) {
+        case 'contribution-inspection-projection':
+          if (record.mechanical) {
+            const base = pending.get(record.mechanical) ?? this.#records.get(record.mechanical);
+            if (base?.kind !== 'projection' && base?.kind !== 'organization-projection') throw new Error('Invalid inspection mechanical basis');
+          }
+          break;
         case 'module-exports-projection': {
           const get = (id: RecordId) => (pending.get(id) ?? this.#records.get(id))!;
           requireKind(record.subject, 'module'); requireKind(record.evaluation, 'evaluation');
@@ -146,41 +146,6 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
           record.contexts.forEach(id => requireKind(id, 'claim-context'));
           break;
         }
-        case 'investigation-selection-projection':
-          for (const reference of selectionReferences(record)) {
-            const target = (pending.get(reference.id) ?? this.#records.get(reference.id))!;
-            if (reference.kinds && !reference.kinds.includes(target.kind)) throw new Error('Invalid investigation selection reference kind');
-          }
-          validateInvestigationSelection(record, id => (pending.get(id) ?? this.#records.get(id))!);
-          break;
-        case 'investigation-evaluation':
-          record.investigrams.forEach(id => requireKind(id, 'investigram'));
-          record.corrections.forEach(id => requireKind(id, 'investigram-correction'));
-          if (record.outcome.kind === 'accepted') {
-            requireKind(record.attempt, 'investigation-provenance');
-            requireKind(record.outcome.root, 'investigram');
-            if (!record.investigrams.includes(record.outcome.root)) throw new Error('Missing accepted root');
-          } else if (record.investigrams.length || record.corrections.length) throw new Error('Failed evaluation cannot retain interpretation');
-          break;
-        case 'investigram':
-          requireKind(record.provenance, 'investigation-provenance');
-          requireKind(record.originatingModule, 'module');
-          record.children.forEach(id => requireKind(id, 'investigram'));
-          record.corrections.forEach(id => requireKind(id, 'investigram-correction'));
-          if (record.status !== 'interpretation' || !record.prose.trim() || !record.qualifications.length) throw new Error('Invalid investigram');
-          break;
-        case 'investigram-correction':
-          [record.reporter, record.target, record.replacement].forEach(id => requireKind(id, 'investigram'));
-          requireKind(record.provenance, 'investigation-provenance');
-          if (this.#records.get(record.target)?.kind !== 'investigram') throw new Error('Correction target must already be retained');
-          if (!record.correctedSubjects.length || record.correctedSubjects.some(id => !['module', 'symbol', 'group', 'repository-artifact'].includes((pending.get(id) ?? this.#records.get(id))!.kind))) throw new Error('Invalid corrected subjects');
-          break;
-        case 'investigation-provenance':
-          requireKind(record.originatingModule, 'module');
-          record.citations.forEach(id => requireKind(id, 'investigram'));
-          record.completeTargets.forEach(id => requireKind(id, 'investigram'));
-          record.completeCorrections.forEach(id => requireKind(id, 'investigram-correction'));
-          break;
         case 'captured-content': {
           requireKind(record.inputs, 'analysis-inputs');
           const subject = pending.get(record.subject) ?? this.#records.get(record.subject);
@@ -455,12 +420,7 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
       // Validation above is never skipped for a resubmission. Preserve the
       // already-owned object when the validated content is identical.
       if (this.#records.has(id)) continue;
-      freezeOwned(record);
       this.#records.set(id, record);
-      if (record.kind === 'investigation-evaluation') {
-        const list = this.#investigations.get(record.session) ?? [];
-        list.push(record); this.#investigations.set(record.session, list);
-      }
       if (record.kind === 'evaluation') {
         let index = this.#evaluations.get(record.session);
         if (!index) { index = new Map(); this.#evaluations.set(record.session, index); }
@@ -491,7 +451,7 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
     return this.#answerBindings.get(session)?.resolve(reference);
   }
 
-  entityIds(ids: readonly RecordId[], kind: 'module' | 'group' | 'investigram'): ReadonlyMap<RecordId, string> {
+  entityIds(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string> {
     const grouped = new Map<SessionId, RecordId[]>();
     // Validate the entire request before allocating even the first binding.
     for (const id of ids) {
@@ -519,7 +479,7 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
   boundEntity(session: SessionId, reference: string): RecordId | undefined {
     const id = this.#bindings.get(session)?.resolve(reference) ?? reference as RecordId;
     const record = this.#records.get(id);
-    return record?.session === session && (record.kind === 'module' || record.kind === 'group' || record.kind === 'investigram')
+    return record?.session === session && (record.kind === 'module' || record.kind === 'group')
       ? record.id : undefined;
   }
 
@@ -529,7 +489,6 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
     return result;
   }
 
-  investigations(session: SessionId): readonly InvestigationEvaluationRecord[] { return [...(this.#investigations.get(session) ?? [])]; }
 
   evaluations(session: SessionId): readonly EvaluationRecord[] {
     return [...(this.#evaluations.get(session)?.values() ?? [])];

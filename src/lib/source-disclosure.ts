@@ -1,10 +1,10 @@
+import type { ContributionView } from './interfaces/cli/contribution-presentation.js';
 import { inlineText } from './terminal-text.js';
 import { diagnosticContexts } from './diagnostic-view.js';
 import type { SourceAttribution, DetailRecord } from './evidence-view.js';
 import type { QualifiedView } from './presentation.js';
 import type { QualifiedOrganizationView } from './organization/presentation.js';
 import type { QualifiedDependencyView } from './dependencies/presentation.js';
-import type { InvestigationView } from './investigation/presentation.js';
 import type { ModuleExportsView } from './exports/presentation.js';
 
 import type { SourceDisclosureLevel, SourceDisclosureForm } from './application/observations.js';
@@ -13,7 +13,7 @@ export type { SourceDisclosureLevel, SourceDisclosureForm } from './application/
 /** Classify the bounded source fields actually rendered by each presentation.
  * Requests, empty containers, evidence IDs and omission counts are not disclosure.
  */
-export function sourceDisclosure(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | InvestigationView | ModuleExportsView, rendered?: string): {
+export function sourceDisclosure(view: QualifiedView | QualifiedOrganizationView | QualifiedDependencyView | ContributionView | ModuleExportsView, rendered?: string): {
   level: SourceDisclosureLevel; forms: SourceDisclosureForm[];
 } | null {
   const forms = new Set<SourceDisclosureForm>();
@@ -21,7 +21,7 @@ export function sourceDisclosure(view: QualifiedView | QualifiedOrganizationView
   const source = (item: SourceAttribution) => {
     if (item.path || item.location.association === 'span') forms.add('locations');
     // Truthfully classify a nonconforming extension payload rather than assuming the declared shape.
-    if ((json || view.schema === 'postcode-investigation-view/1-experimental') && 'excerpt' in item.location && item.location.excerpt && typeof item.location.excerpt === 'object'
+    if (json && 'excerpt' in item.location && item.location.excerpt && typeof item.location.excerpt === 'object'
       && 'text' in item.location.excerpt && typeof item.location.excerpt.text === 'string' && item.location.excerpt.text.length) forms.add('excerpts');
   };
   const record = (item: DetailRecord) => {
@@ -62,9 +62,12 @@ export function sourceDisclosure(view: QualifiedView | QualifiedOrganizationView
         if (json || item.kind === 'repository-region' || item.kind === 'repository-artifact') record(item);
       }
       level = 'dependency-occurrences-and-organization-evidence'; break;
-    case 'postcode-investigation-view/1-experimental':
-      view.moreDetails?.items.forEach(record);
-      level = 'investigation-support'; break;
+    case 'postcode-contribution-view/1-experimental': {
+      view.moreDetails?.items.forEach(source);
+      const base = view.mechanical ? sourceDisclosure(view.mechanical, rendered) : null;
+      base?.forms.forEach(form => forms.add(form));
+      level = base && view.rows.every(row => row.producer.mechanism === 'mechanical') ? base.level : 'investigation-support'; break;
+    }
   }
   const detailDisclosed = forms.size > 0;
   for (const location of diagnosticLocations(view)) if (json || rendered?.includes(inlineText(location))) forms.add('locations');

@@ -1,4 +1,4 @@
-import { requireView, programOutput } from './request-helpers.js';
+import { requireView, mechanicalView, programOutput } from './request-helpers.js';
 import { temporaryDirectory } from './cli-helpers.js';
 import assert from 'node:assert/strict';
 import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
@@ -255,8 +255,9 @@ for (const lens of ['modules', 'inspect', 'dependencies'] as const) {
         const later = (requireView(await session.execute(command)));
         assert.deepEqual(programOutput(later), programOutput(first));
         assert.deepEqual(programOutput(first), programOutput(retained));
-        if (!('modules' in first.view) || !('modules' in later.view)) throw new Error('Expected module selection');
-        assert.deepEqual(later.view.modules.map(item => [item.id, item.entityId]), first.view.modules.map(item => [item.id, item.entityId]));
+        const firstBase = mechanicalView(first.view), laterBase = mechanicalView(later.view);
+        if (!('modules' in firstBase) || !('modules' in laterBase)) throw new Error('Expected module selection');
+        assert.deepEqual(laterBase.modules.map(item => [item.id, item.entityId]), firstBase.modules.map(item => [item.id, item.entityId]));
       } finally { await session.close(); }
     }, true);
   });
@@ -385,8 +386,9 @@ test('session reevaluates partial work after new dependency acquisition, then re
       requireView(await session.execute({ ...request, lens: 'organization' }));
       // The unresolved re-export still supplies the valid generated handle "missing".
       const inspected = requireView(await session.execute({ ...request, lens: 'inspect', selector: 'missing' }));
-      assert.equal(inspected.view.schema, 'postcode-view/1-experimental');
-      assert.equal(inspected.view.modules[0]!.handle, 'missing');
+      const base = mechanicalView(inspected.view);
+      assert.equal(base.schema, 'postcode-view/1-experimental');
+      assert.equal(base.modules[0]!.handle, 'missing');
       assert.deepEqual(programOutput((requireView(await session.execute(request)))), programOutput(later));
       assert.deepEqual(programOutput(first), programOutput(retained));
     } finally { await session.close(); }

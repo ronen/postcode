@@ -29,8 +29,8 @@ export async function exerciseApplication(configPath: string, agent: Investigato
     const children = answer(await session.execute({ kind: 'lens', lens: 'dependency-children', designation }));
     const inspection = answer(await session.execute({ kind: 'lens', lens: 'inspect', designation }));
     const original = answer(await session.execute({ kind: 'lens', lens: 'summarize', designation }, { requestId: 'direct-client-summary' }));
-    assert.equal(original.answer.content.contract, 'investigation');
-    const account = original.answer.content.value.projection.relations[0]!.account;
+    assert.equal(original.answer.content.contract, 'contribution');
+    const account = original.answer.content.value.projection.alternatives[0]!.designation.investigram;
     const follow = answer(await session.execute({ kind: 'lens', lens: 'examine', designation: { kind: 'reference', value: account } }));
     const historical = answer(await session.execute({ kind: 'lens', lens: 'inspect', designation: { kind: 'reference', value: account } }));
     const exact = answer(await session.execute({ kind: 'present', target: original.answer.id }));

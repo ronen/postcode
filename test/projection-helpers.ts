@@ -21,7 +21,7 @@ function subjects(store: ProgramRecordStore, modules: EvaluationRecord, selector
   const result = resolveSubjects(store, modules.session, lenses.inspect, { kind: reference ? 'reference' : 'name', value: selector },
     { modules, ...(organization ? { organization } : {}) });
   if (result.status !== 'resolved') throw new Error(`Unresolved designation (${result.status}) must be handled by request coordination`);
-  return result.candidates.map(item => item.id);
+  return result.candidates.filter(item => item.kind === 'module' || organization && item.kind === 'group').map(item => item.id);
 }
 
 export function inspect(store: ProgramRecordStore, basis: EvaluationRecord, selector: string, reference = false, resolved?: readonly RecordId[]) {

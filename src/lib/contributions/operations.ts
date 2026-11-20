@@ -1,0 +1,54 @@
+import { componentSelectorGuidance } from './catalog.js';
+import { digest, methods } from '../identity.js';
+import { freezeOwned } from '../immutable.js';
+import type { DialogOperation } from './dialog.js';
+import type { ResultContract } from './outcomes.js';
+import { stateBehaviorGuidance, stateDiagramContract } from './state-model.js';
+
+/**
+ * An agentic operation retained through common contributions. `subject` is its hard
+ * subject signature: one discovered module, or exact selected retained content.
+ */
+export interface ContributionOperation extends Omit<DialogOperation, 'contract'> { readonly subject: 'module' | 'selected-content' }
+export type ContributionOperationCatalog = Readonly<Record<string, ContributionOperation>>;
+/** The authored method and actual fixed operation guidance both qualify reusable work. */
+export function contributionOperationMethod(operation: ContributionOperation, catalog: ContributionOperationCatalog = contributionOperations): string {
+  return `${operation.method} definition:${digest({ operation, catalog })}`;
+}
+export const contributionOperations: Readonly<Record<string, ContributionOperation>> = freezeOwned({
+  functionality: { id: 'functionality', subject: 'module', method: `${methods.contributionDialog} postcode/functionality@2`,
+    objective: 'Give a deliberately terse account of apparent module functionality and division of responsibility. Explain significant mechanisms, cases and delegation. Follow useful delegation across multiple modules; avoid structural labels as a substitute for functionality. Do not invent a unifying role for mixed responsibilities.' },
+  clarification: { id: 'clarification', subject: 'selected-content', method: `${methods.contributionDialog} postcode/clarification@2`,
+    objective: 'Make the exact selected program aspect more understandable, adding useful clarification omitted for brevity. New findings are not required. Preserve its qualifications and underlying program context. Avoid a general programming tutorial.' },
+  decomposition: { id: 'decomposition', subject: 'selected-content', method: `${methods.contributionDialog} postcode/decomposition@2`,
+    objective: 'Identify smaller, tersely described selectable aspects of the exact selected functionality. Supply independently addressable qualified items or contributions and designate the answer explicitly; there is no parent/child contribution tree. Preserve necessary qualifications on each aspect. Do not imply the aspects are exhaustive or mutually exclusive without support.' },
+  examination: { id: 'examination', subject: 'selected-content', method: `${methods.contributionDialog} postcode/examination@2`,
+    objective: 'Investigate the exact selected aspect more deeply. Supply substantive findings, sharper limitations, explicit organizing changes, or a candid report that no useful addition was established. Preserve the selected information even when its uses have been displaced; do not retarget it to a current answer.' },
+  'state-behavior': { id: 'state-behavior', subject: 'module', method: `${methods.contributionDialog} postcode/state-behavior@1`,
+    objective: 'Establish whether the behavior of the subject module depends on state and, if it does, explain that state-dependent behavior: what bears the state, the states, how each is entered and left, and what each transition does. Follow the behavior into other modules only where the evidence requires it.',
+    guidance: stateBehaviorGuidance },
+  'examine-content': { id: 'examine-content', subject: 'selected-content', method: `${methods.contributionDialog} postcode/examine-content@1`,
+    objective: 'Investigate the selected retained content more deeply. The subject is exactly the selected information as retained, with its own question and standing, not whatever now answers that question. Supply substantive findings, sharper limitations, explicit organizing changes, or a candid report that nothing useful could be added.',
+    guidance: stateBehaviorGuidance },
+});
+const contributionResultContracts: Readonly<Record<string, ResultContract>> = freezeOwned({ [stateDiagramContract.id]: stateDiagramContract });
+/** The supported result contract with this identity. An unknown identity is not a contract. */
+export function resultContract(id: string | null): ResultContract | null | undefined {
+  return id === null ? null : Object.hasOwn(contributionResultContracts, id) ? contributionResultContracts[id] : undefined;
+}
+
+/** Current executable follow-ups, derived from the same operation and contract registrations as invocation. */
+export function followUpInstructions(catalog: ContributionOperationCatalog = contributionOperations): string {
+  return [
+    'SUPPORTED FOLLOW-UP OPERATIONS (exactly one subject):',
+    ...Object.values(catalog).map(operation => `${operation.id}: ${operation.subject === 'module'
+      ? 'one discovered module Entity, { kind: "entity", entity }. A newly invented Entity is not a discovered module.'
+      : 'one exact content item { kind: "content", item: { investigram, item }, component?: string }, result designation { kind: "designation", association: { investigram, declaration } }, or contribution { kind: "investigram", investigram }. Submission-local references are allowed.'} ${operation.objective}`),
+    'OPTIONAL SELECTED CONTEXT. An option request may include context: [subject, ...] for additional selected input the later investigator should receive alongside its investigation subjects. Context does not change what is being investigated. Omit it when no additional input is needed; it is not required on every option. Entries are direct subject references, without the { subject } wrapper used in subjects. Use an Entity { kind: "entity", entity }, exact item/component { kind: "content", item: { investigram, item }, component?: string }, result designation { kind: "designation", association: { investigram, declaration } }, or contribution { kind: "investigram", investigram }. Existing handles and submission-local references use the same forms as subjects. A scope { kind: "scope", scope } identifies a scope only and yields an unavailable initial-content response. Selected input retains its qualification and is delivered only within the normal acquisition and dispatch bounds.',
+    componentSelectorGuidance,
+    'For state-model content, components are state:<key> for each state key and transition:<key> for each transition key.',
+    'SUPPORTED OPTIONAL RESULT CONTRACTS: omit resultContract when no specialized form is promised.',
+    ...Object.values(contributionResultContracts).map(contract => `${contract.id}: ${contract.requirements.map(requirement => requirement.description).join(' ')}`),
+    'Set the option meaning to the specific question being proposed. Invoking that exact owner/key preserves its meaning as the delegated question; another option is a different question even if operation and subjects match.',
+  ].join('\n');
+}

@@ -11,9 +11,8 @@ import { defaultCatalog } from '../src/lib/request-catalog.js';
 import { exportsLens } from '../src/lib/mechanical-implementations.js';
 import { exportsPresentation } from '../src/lib/exports/presentation.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import { ScriptedInvestigator } from './investigator-double.js';
-import type { RecordId } from '../src/lib/records.js';
-import type { SubmittedInvestigram } from '../src/lib/investigation/contracts.js';
+import { ScriptedContributionAgent, proseContribution, entitySubject, caveat } from './contribution-agent.js';
+import type { EntityId, AssociationAddress, SubmittedInvestigram } from '../src/lib/contributions/model.js';
 
 const json = { format: 'json' as const, moreDetails: false };
 const definitions = { ...defaultCatalog, lenses: { ...defaultCatalog.lenses, exports: exportsLens },
@@ -26,7 +25,7 @@ function fixture(t: TestContext, source = 'export const entry = 1;') {
   return { configPath };
 }
 function denyAcquisition(t: TestContext) {
-  for (const method of ['put', 'evaluations', 'investigations', 'boundEntity'] as const) {
+  for (const method of ['put', 'evaluations', 'boundEntity'] as const) {
     t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw Error(`Exact retrieval called ${method}`); });
   }
 }
@@ -127,44 +126,61 @@ test('exact exports applies retained-support fallback before materialization wit
   assert.match(retained.consumption!.changes[0]!.reason, /support absent from this answer/);
 });
 
-test('production exact investigation preserves revision and association continuations over fixed support', async t => {
-  const draft = (subject: RecordId, localId = 'root'): SubmittedInvestigram => ({ localId, prose: localId,
-    referent: { description: 'Selected module.', subjects: [subject] }, qualifications: ['Controlled interpretation.'],
-    evidence: [], associations: [], children: [], corrections: [], inconsistencies: [] });
-  let module!: RecordId;
-  const agent = new ScriptedInvestigator([input => {
-    if (input.request.operation === 'functionality') { module = input.request.subject; return { kind: 'submit', result: draft(module) }; }
-    return { kind: 'submit', result: { ...draft(module), children: Array.from({ length: 30 }, (_, i) => ({ ...draft(module, `association-${i}`),
-      associations: [{ subject: input.request.subject, qualifications: ['Explicit association.'], evidence: [] }] })),
-    corrections: Array.from({ length: 26 }, (_, i) => ({ target: input.request.subject, correctedSubjects: [module],
-      reason: `Alternative ${i}`, qualifications: ['Controlled correction.'], evidence: [input.request.subject], replacement: draft(module, `replacement-${i}`) })) } };
+test('production exact inspection preserves change and association continuations over fixed support', async t => {
+  let entity!: EntityId, original!: AssociationAddress;
+  const agent = new ScriptedContributionAgent([input => {
+    if (input.request.operation === 'functionality') {
+      entity = entitySubject(input); return { kind: 'submit', contribution: proseContribution(input, 'Original', { associate: entity }) };
+    }
+    const owners: SubmittedInvestigram[] = Array.from({ length: 30 }, (_, i) => ({ key: `account-${i}`, qualification: caveat,
+      items: [{ key: 'text', type: 'prose', body: { text: `Alternative ${i}` } }],
+      declarations: [{ key: 'about', target: { kind: 'entity', entity, role: 'topic', topic: 'functionality' },
+        members: [{ kind: 'item', item: { investigram: { local: `account-${i}` }, item: 'text' } }],
+        ...(i < 26 ? { operation: 'supersede', displaces: [original], grounds: { text: `Reason ${i}` } } : { operation: 'add' }) }] }));
+    return { kind: 'submit', contribution: { investigrams: [...proseContribution(input, 'Follow-up').investigrams, ...owners] } };
   }]);
   const opened = await openCliSession(fixture(t), { investigation: { agent } });
   assert.equal(opened.status, 'opened'); const session = opened.session; t.after(() => session.close());
   const initial = await session.execute({ lens: 'summarize', selector: 'entry', presentation: json });
-  assert.equal(initial.kind, 'view'); assert.equal(initial.view.schema, 'postcode-investigation-view/1-experimental');
-  const root = initial.view.accounts[0]!.id;
+  assert.equal(initial.kind, 'view'); assert.equal(initial.view.schema, 'postcode-contribution-view/1-experimental');
+  const root = initial.view.summary!.alternatives[0]!.designation.investigram; original = { investigram: root, declaration: 'about' };
   const changed = await session.execute({ lens: 'examine', selector: root, reference: true, presentation: json });
-  assert.equal(changed.kind, 'view'); assert.equal(changed.view.schema, 'postcode-investigation-view/1-experimental');
-  assert.equal(changed.view.result!.evaluation!.outcome.kind, 'accepted');
-  const historical = await session.execute({ lens: 'inspect', selector: root, reference: true, presentation: json });
-  assert.equal(historical.kind, 'view'); assert.equal(historical.view.schema, 'postcode-investigation-view/1-experimental');
+  assert.equal(changed.kind, 'view'); assert.equal(changed.view.schema, 'postcode-contribution-view/1-experimental');
+  assert.equal(changed.view.reporting!.contribution!.outcome.kind, 'accepted');
+  const historical = await session.execute({ lens: 'inspect', selector: 'entry', presentation: json });
+  assert.equal(historical.kind, 'view'); assert.equal(historical.view.schema, 'postcode-contribution-view/1-experimental');
   const frozen = structuredClone(historical.view.projection);
-  assert.equal(historical.view.revisions[0]!.rows.length, 24);
-  assert.equal(historical.view.revisions[0]!.nextPage, 2);
-  assert.ok(historical.view.investigations!.total >= 30);
-  const after = historical.view.investigations!.next!;
+  assert.equal(historical.view.status.changes.length, 24); assert.equal(historical.view.status.next, 2);
+  assert.ok(historical.view.listing.total >= 30);
+  const after = historical.view.listing.next!;
+  assert.ok(after);
   denyAcquisition(t);
+  const groups = [...historical.view.qualification];
+  let next: number | null = historical.view.status.next;
+  while (next !== null) {
+    const page = await session.execute({ kind: 'present', target: historical.view.answerReference!, presentation: { ...json, revisionPage: next } });
+    assert.equal(page.kind, 'view'); assert.equal(page.view.schema, 'postcode-contribution-view/1-experimental');
+    assert.deepEqual(page.view.projection, frozen);
+    assert.ok(page.view.qualification.length <= 24);
+    assert.equal(page.view.status.omitted, page.view.status.total - page.view.status.changes.length);
+    groups.push(...page.view.qualification);
+    assert.ok(page.view.status.next === null || page.view.status.next > next);
+    next = page.view.status.next;
+  }
+  assert.equal(groups.length, historical.view.details.qualifications);
+  assert.equal(new Set(groups.map(group => group.source)).size, groups.length);
   for (const format of ['json', 'unicode'] as const) {
     const retained = await session.execute({ kind: 'present', target: historical.view.answerReference!, presentation: { ...json, format, moreDetails: true, revisionPage: 2, after } });
-    assert.equal(retained.kind, 'view'); assert.equal(retained.view.schema, 'postcode-investigation-view/1-experimental');
+    assert.equal(retained.kind, 'view'); assert.equal(retained.view.schema, 'postcode-contribution-view/1-experimental');
     assert.deepEqual(retained.view.projection, frozen);
-    assert.equal(retained.view.revisions[0]!.rows.length, 2);
-    assert.equal(retained.view.revisions[0]!.nextPage, null);
-    assert.equal(retained.view.investigations!.after, after);
+    assert.equal(retained.view.status.changes.length, 2);
+    assert.equal(retained.view.status.omitted, 24);
+    assert.ok(retained.view.qualification.length <= 24);
+    assert.ok(retained.view.details.omittedQualifications > 0);
+    assert.ok(retained.view.listing.shown > 0); assert.equal(retained.view.listing.omitted, 0);
     assert.equal(retained.failed, false);
     const unknown = await session.execute({ kind: 'present', target: frozen.id, presentation: { ...json, format, revisionPage: 2, after: 'investigram-00000000' } });
-    assert.equal(unknown.kind, 'view'); assert.equal(unknown.view.schema, 'postcode-investigation-view/1-experimental');
+    assert.equal(unknown.kind, 'view'); assert.equal(unknown.view.schema, 'postcode-contribution-view/1-experimental');
     assert.equal(unknown.failed, true); assert.equal(unknown.attribution.status, 'completed');
     const restart = unknown.view.continuations.find(item => item.action === 'association-restart')!;
     assert.equal(restart.request.target, frozen.id); assert.equal(restart.request.presentation.revisionPage, 2);
@@ -173,8 +189,7 @@ test('production exact investigation preserves revision and association continua
     assert.deepEqual(restarted.view.projection, frozen);
   }
   const old = await session.execute({ kind: 'present', target: initial.view.projection.id, presentation: json });
-  assert.equal(old.kind, 'view'); assert.equal(old.view.schema, 'postcode-investigation-view/1-experimental');
-  assert.deepEqual(old.view.accounts, initial.view.accounts);
-  assert.deepEqual(old.view.revisions, initial.view.revisions);
+  assert.equal(old.kind, 'view'); assert.equal(old.view.schema, 'postcode-contribution-view/1-experimental');
+  assert.deepEqual(old.view.summary, initial.view.summary); assert.deepEqual(old.view.status, initial.view.status);
   assert.equal(agent.inputs.length, 2, 'exact retrieval does not infer again');
 });

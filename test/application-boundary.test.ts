@@ -27,8 +27,8 @@ test('direct application returns complete module support and exact answers witho
   assert.equal(module.exports.length, 65, 'full selected content exceeds the human View bound');
   assert.ok(module.exports[0]!.documentation.length);
   const inspected = answer(await session.execute({ kind: 'lens', lens: 'inspect', designation: { kind: 'reference', value: module.id } }));
-  assert.equal(inspected.answer.content.contract, 'investigation');
-  assert.equal(inspected.answer.content.value.projection.variant, 'associated-inspection');
+  assert.equal(inspected.answer.content.contract, 'contribution-inspection');
+  assert.equal(inspected.answer.content.value.projection.coverage, 'all-retained-associated-uses');
   assert.equal(inspected.answer.mechanical?.contract, 'modules');
   const exact = answer(await session.execute({ kind: 'present', target: inspected.answer.id }));
   assert.deepEqual(exact.answer, inspected.answer);

@@ -1,3 +1,4 @@
+import { selectNativeContributions } from '../contributions/native-selection.js';
 import { mechanicalAnswerIdentity } from '../answer-identity.js';
 import { orderCollectionSubjects } from '../collection-selection.js';
 import { directedGraph } from '../directed-graph.js';
@@ -86,6 +87,7 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
   const payload: Omit<OrganizationProjectionRecord, 'id'> = {
     kind: 'organization-projection', method, session: evaluation.session,
     lens: subject === 'selected-entities' ? 'inspect' : 'organization', subject, parameters: {},
+    contributions: selectNativeContributions(store, evaluation.session, [...selectedClaims.map(claim => claim.id), ...expandedClaims, ...moduleSubjects, ...moduleExpansions.flatMap(outcome => outcome.claims ?? [])], moduleExpansions),
     evaluation: evaluation.id, moduleProjection, groups, modules: selectedModules, claims: selectedClaims.map(claim => claim.id),
     contexts: [...new Set([...evaluation.contexts, ...selectedClaims.map(claim => claim.context),
       ...claims.filter(claim => expandedClaims.has(claim.id)).map(claim => claim.context)])],

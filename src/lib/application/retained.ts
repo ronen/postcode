@@ -3,7 +3,8 @@ import { resolveModuleProjection } from '../module-content.js';
 import { resolveOrganizationProjection } from '../organization/content.js';
 import { resolveDependencyProjection } from '../dependencies/content.js';
 import { resolveModuleExports } from '../exports/content.js';
-import { resolveInvestigationContent } from '../investigation/content.js';
+import { resolveContributionInspection } from '../contributions/inspection.js';
+import { resolveContributionAnswer } from '../contributions/answers.js';
 import type { ProgramRecordStore, RecordId, SessionId } from '../records.js';
 import { isAnswer } from '../answer-references.js';
 import type { QualifiedContent } from './content.js';
@@ -16,7 +17,8 @@ export function resolveRetainedContent(store: RetentionStore, answer: RetainedAn
     case 'organization-projection': return { contract: 'organization', value: resolveOrganizationProjection(store, answer) };
     case 'dependency-projection': return { contract: 'dependencies', value: resolveDependencyProjection(store, answer) };
     case 'module-exports-projection': return { contract: 'module-exports', value: resolveModuleExports(store, answer) };
-    case 'investigation-selection-projection': return { contract: 'investigation', value: resolveInvestigationContent(store, answer) };
+    case 'contribution-inspection-projection': return { contract: 'contribution-inspection', value: resolveContributionInspection(store, answer) };
+    case 'contribution-projection': return { contract: 'contribution', value: resolveContributionAnswer(store, answer) };
   }
 }
 
@@ -30,9 +32,8 @@ export function supportingWork(content: QualifiedContent): readonly RecordId[] {
     case 'dependencies': return [content.value.evaluation.id, content.value.basis.id,
       ...content.value.moduleEvaluations.map(item => item.id), ...(content.value.expanded ? [content.value.expanded.id] : [])];
     case 'module-exports': return [content.value.basis.id, ...content.value.evaluations.map(item => item.id)];
-    case 'investigation': return [...(content.value.evaluation ? [content.value.evaluation.id] : []),
-      ...content.value.accounts.map(item => item.id), ...content.value.corrections.map(item => item.id),
-      ...content.value.support.map(item => item.record.id)];
+    // Its support is ledger contributions, attributed by exact address in the content itself.
+    case 'contribution-inspection': case 'contribution': return content.value.projection.support.owners.map(owner => owner.production);
   }
 }
 
@@ -47,8 +48,8 @@ export function resolveRetainedTarget(store: ProgramRecordStore, session: Sessio
   if (!answer) return refuse('unknown-answer', 'This target is not retained in this Session.');
   if (!isAnswer(answer)) return refuse('unsupported-answer', 'This retained record is not a supported Projection.');
   const answerReference = store.answerIds([answer.id]).get(answer.id)!;
-  const associated = answer.kind === 'investigation-selection-projection' && answer.variant === 'associated-inspection';
-  const mechanical = associated ? store.get(answer.mechanical) : null;
+  const associated = answer.kind === 'contribution-inspection-projection' && answer.mechanical !== null;
+  const mechanical = associated && answer.kind === 'contribution-inspection-projection' ? store.get(answer.mechanical!) : null;
   if (mechanical && mechanical.kind !== 'projection' && mechanical.kind !== 'organization-projection') throw new Error('Broken mechanical support for retained inspection');
   const content = resolveRetainedContent(store, answer);
   const base = mechanical ? resolveRetainedContent(store, mechanical) : content;

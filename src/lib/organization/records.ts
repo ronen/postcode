@@ -1,3 +1,4 @@
+import type { NativeSelection } from '../contributions/native-selection.js';
 import type { EvaluationState, RecordContext, RecordId } from '../records.js';
 import type { LayoutEvidence, RepositoryArtifact, RepositoryCapture } from '../repository/evidence.js';
 
@@ -88,6 +89,7 @@ export interface OrganizationEvaluationRecord extends RecordContext, Omit<Evalua
 }
 
 export interface OrganizationProjectionRecord extends RecordContext {
+  readonly contributions: NativeSelection;
   readonly kind: 'organization-projection';
   readonly lens: 'organization' | 'inspect';
   readonly subject: 'repository' | 'configured-project' | 'selected-entities';

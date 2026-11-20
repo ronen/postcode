@@ -19,15 +19,36 @@ governs this lifetime boundary. Other governing choices are the accepted [projec
 and [module inventory decisions](../decisions/initial-module-inventory-decisions.md).
 The governing cross-cutting terminology is maintained in [core concepts](../core-concepts.md), and binding cross-cutting rules are maintained in [architectural constraints](../architectural-constraints.md); this document describes how the current implementation realizes them. The [application specification](../app-specification.md) describes the broader intended application design; adopting it does not establish conformance or implement its future capabilities.
 
+## Common contribution mechanism
+
+The [common analysis contribution mechanism](contributions.md) is implemented under
+`src/lib/contributions/` and verified with controlled producers. It retains Session
+identities, immutable investigrams, exact association declarations, Query-result
+designations and recorded producer input, and derives standing and reconsideration
+from them. Module/symbol identification, expansions, dependencies and repository organization
+now contribute their findings to the Session ledger. Mechanical answers capture their
+selected findings with organizing status and exact qualified support. Fresh selections
+show later changes while exact retained answers preserve their earlier snapshots.
+The application interface also exposes `state-behavior` and `follow-up` Lenses over
+this ledger, with contribution evaluation, investigating-agent dialogs and retained
+answers. Application and CLI hosted configuration select the common dialog
+protocol under the existing explicit enablement and credential contracts.
+See the [application route](contributions.md#application-route) and
+[hosted transport](contributions.md#hosted-transport) for those boundaries.
+
+The `summarize`, `explain`, `decompose` and `examine` operations and their
+associated-content callers use this boundary, completing the migration under the
+[structured-accounts plan](../plans/structured-architectural-accounts.md). The superseded tree/correction helpers and their storage, presentation and wire contracts are removed; application registration rejects earlier interpretation requirements.
+
 ## Implemented subset of the product model
 
 The [architectural-investigation decision](../decisions/specialized-architectural-investigation.md) permits architectural accounts over captured bases that can include program states, observations, participant-supplied material and earlier Projections. Its successor to the [coordinated-Views decision](../decisions/coordinated-views-and-qualified-results.md#generalize-lens-results-and-view-composition) preserves multi-Projection coordination and multi-state conceptual scope. The current CLI implements a narrower shape: one configured TypeScript project under the unchanged-input Session contract, family-specific construction and a single top-level Projection descriptor per program View. Embedded module bases and associated-inspection selections are specific compositions within that implementation, not a general facility for coordinating arbitrary Projections.
 
-Current interpretations are prose Investigrams rooted in implemented-module investigation. The content actually delivered in follow-up contributes to its captured basis: retained delivery records identify supplied account portions, correction context, qualifications, completeness and omissions, while citations index exposure. Each new Investigram points to its generating provenance. Immutable selection Projections separately identify the accounts and revision snapshots selected for an answer. These contributions are distinct from captured program-state support; it does not establish general participant-material capture, hypothetical/intended investigation or arbitrary Projection reuse as an input interface. The existing record types, originating-module requirement and concrete request/capture paths describe that supported subset. The broader concepts do not require generalizing them in advance.
+Supported interpretations use [common qualified contributions](contributions.md): flat owned items, explicit associations/result designations and independent producer records. Follow-up can select an exact contribution, item/component or result designation; delivery captures what the producer actually received. Immutable answers capture selected evidence, qualifications, producer/origin reports and standing/cause snapshots. Failed attempt diagnostics remain retained/reportable separately from answer meaning, under the accepted [attempt/answer distinction](../decisions/investigation-attempts-and-answer-outcomes.md). This does not establish participant-material ingestion, multi-state analysis or arbitrary Projection inputs.
 
 The existing construction/arrangement boundary remains applicable to each input. Core supplies selected qualified content and any qualified population summaries; arrangement describes the supplied populations and applies display choices. A display count or a count of omitted items does not independently establish project-wide coverage. New program claims remain core analysis responsibilities.
 
-The CLI does not follow changing inputs, persist workspaces or offer multi-state analysis. It invalidates on detected relevant changes and requires reopening. Retained results remain immutable; later requests can select new interpretation and correction/association snapshots. These selections support the answer but are distinct from its captured program-state basis, and do not acquire following or pinned policies.
+The CLI does not follow changing inputs, persist workspaces or offer multi-state analysis. It invalidates on detected relevant changes and requires reopening. Retained results remain immutable; later requests can select new interpretation and association/standing snapshots. These selections support the answer but are distinct from its captured program-state basis, and do not acquire following or pinned policies.
 
 The `present` request resolves an exact retained Projection and its fixed support before selecting a compatible Presentation. It has no subject designation, Lens parameters or Evaluation plan. Fixed-reference content resolution uses narrow read capabilities; it does not enumerate current histories, select replacements or construct another Projection. Missing support produces a qualified refusal rather than acquisition. Fresh requests retain their existing planning and selection path; paging belongs only to exact presentation. This implements the bounded continuity remedy in the [exact retained-answer plan](../plans/exact-retained-answer-presentation.md).
 
@@ -67,8 +88,7 @@ and semantic requirements without implementation registrations or output formats
 `interfaces/cli/application.ts` is the shared adapter for the private worker and
 in-process CLI tests. It supplies captured declarative option constraints, projects
 the application context back to the existing CLI report shape, and arranges
-supplied content and coordinated aliases. Investigation arrangement uses a
-revocable, validated binding port under one operation guard. Application work is
+supplied content and coordinated aliases. All arrangement consumes coordinated aliases without a store-backed binding port, under one operation guard. Application work is
 finalized before arrangement. An unknown continuation or client arrangement
 failure cannot turn completed application work into failed application work.
 The CLI still owns presentation/command failure, output, observation construction
@@ -90,7 +110,7 @@ group and mixed inspection, interpretation follow-ups, resolution and usage.
 Dependency organization detail is constructed only when group details are
 requested. Direct interpretation journeys use the real evidence, validation and
 retention path with a substituted agent communication participant in tests.
-Fresh selection can expose later corrections, conflicts, associations and
+Fresh selection can expose later displacements, conflicts, associations and
 reconsideration; exact retrieval preserves the earlier answer's full content and
 support, including historical failed or unavailable outcomes, without new analysis or inference.
 Captured catalogs also support the internal interpretation and exports fixtures
@@ -311,7 +331,7 @@ current consumption with original attribution. Evidence reporting preserves qual
 outcomes, page limits and support separately from delivery: captured-but-withheld,
 acquired-but-not-dispatched and actually dispatched information remain distinguishable.
 Pure retrieval/continuation records consumption without claiming new acquisition.
-Exposure and citation eligibility still depend solely on actual dispatch.
+Producer exposure depends on actual dispatch; references and host-side assembly do not create it.
 
 Operation-tagged worker progress sends newly recorded work and indexed evidence
 updates, rather than repeatedly transmitting the accumulated report. Entries are
@@ -330,12 +350,10 @@ request store or post-Session export of captured program inputs.
 
 ## Responsibilities and flow
 
-The [investigation execution and session integration](investigation.md) supplies
+The [common contribution dialog and Session integration](contributions.md) supplies
 subject-based evidence queries, bounded dialogues and atomic retention for summary,
 explanation, decomposition and examination. Stable references support associated
-account inspection and exact historical access. Fresh selection chooses corrections with
-their own composition, preserves conflicts and exposes citation-based reconsideration
-warnings without automatic reassessment. Usage remains attributable across success,
+account inspection and exact historical access. Fresh selection preserves every standing designation as an independent alternative, with explicit displacement, inconsistency and actual-delivery reconsideration causes. Exact answers retain earlier snapshots without automatic reassessment. Usage remains attributable across success,
 failure and cancellation.
 
 Hosted work explicitly selects OpenAI API-key billing or Sign in with ChatGPT and
@@ -370,10 +388,10 @@ and writes an addressable projection. It does not call TypeScript.
 For module, organization, dependency and investigation families, core construction
 resolves immutable qualified content before CLI arrangement. The content includes
 the supporting evaluation populations and qualification used for derived counts.
-Investigation selections are retained Projections with unpaged revision snapshots;
-associated inspection fixes its shown mechanical basis and full associated
-population. Arrangement applies display limits and source choices to that supplied
-content, with coordinated reference bindings or a restricted binding-only port.
+Investigation answers are retained Projections of designated content with independently
+captured standing and change context; associated inspection fixes its shown mechanical
+basis and full associated population. Arrangement applies display limits and source
+choices to that supplied content with application-coordinated reference bindings.
 Rendering consumes the self-contained View. These responsibilities and their scope
 for future Presentations are set by the
 [qualified construction decision](../decisions/qualified-projection-construction.md).

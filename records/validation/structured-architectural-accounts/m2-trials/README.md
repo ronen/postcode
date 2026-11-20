@@ -1,0 +1,118 @@
+# M2 focused live trials
+
+Date: 2026-11-17
+Task: [Implement structured architectural accounts](../../../tasks/2026-11-15-structured-architectural-accounts.md)
+Plan: [Structured architectural accounts](../../../../docs/plans/structured-architectural-accounts.md#verification-coverage), focused live observations
+Harness: [`scripts/structured-accounts/run-trial.mjs`](../../../../scripts/structured-accounts/run-trial.mjs)
+
+## Authority and inputs
+
+The human approved four trials, the route, a 60-request ceiling and elicitation of a follow-up option in trial 1. That approval is recorded verbatim in the task follow-ups.
+
+| Input | Value |
+| --- | --- |
+| Repository | [Cockatiel](https://github.com/connor4312/cockatiel), MIT licence, commit `80b5ed67966dfcc5410a912285fcb3eeb2dc5e5e`. This is the pin used by the earlier module-investigation assessments, and the 53 file digests in their manifest were verified before use. Dependencies were installed with `npm ci --ignore-scripts`. |
+| Route and model | Sign in with ChatGPT, `gpt-5.6-sol` at medium reasoning, adapter `postcode/chatgpt-responses@7` |
+| Subjects | Modules `circuit-breaker-policy` (`src/CircuitBreakerPolicy.ts`) and `consecutive-breaker` (`src/breaker/ConsecutiveBreaker.ts`) |
+| Requests used | 39 of 60 across all runs, each reserved in the ledger before dispatch |
+| Elicitation | Trial 1 only. One appended instruction asked the agent to offer at least one follow-up option, naming a supported operation and its subject. The harness records it with the step and in every captured exchange. |
+
+The raw captures stay in the session scratch directory and the worktree’s ignored `_trials/` directory and are not committed. They hold sanitized provider exchanges, delivered answers and attempt reports, and they contain repository source. What is committed here is the four accepted state models, rendered with the current renderer, `postcode/state-transition-diagram@4`, as SVG pictures and text forms. These contain agent-authored labels and conditions, and no source text.
+
+## Runs
+
+The trials ran several times, because early runs exposed defects and unclear instructions that were fixed in between. Each row names the protocol versions in force for that run.
+
+| Run | Dialog / wire version | Requests | Outcome |
+| --- | --- | --- | --- |
+| 1 | — | 0 | The Keychain item could not be read while no one was present to approve access. |
+| 2 | — | 0 | Harness defect: it excluded the ledger file's directory, which contained the project, from evidence. |
+| 3 | `@1` / `@1` | 2 | Trial 1 submitted, the submission was returned for repair, and the hosted adapter failed. Adapter defect: it did not keep a submission call pending, so the repair turn had nothing to answer. |
+| 4 | `@1` / `@1` | 12 | Trial 4 accepted after one repair. Trials 1 and 3 ended as invalid submissions after their one repair. Trial 2 skipped: no option to invoke. |
+| 5 | `@2` / `@1` | 12 | Trials 3 and 4 accepted after one repair each. Trial 1 ended as an invalid submission. Trial 2 skipped. |
+| 6 | `@3` / `@2` | 7 | Trial 1 accepted after one repair, and trial 2 accepted on its first submission. |
+| 7 | `@3` / `@2` | 6 | Trial 1 and trial 3 in one Session, both accepted on their first submission. |
+
+Each successful trial outcome was reached at least once. The protocol in its final state, dialog `@3` and wire `@2`, produced runs 6 and 7: three of four submissions were accepted first time and the fourth after one repair.
+
+## Instruction and protocol findings
+
+Every rejected submission was a structural mismatch with an undocumented or loosely documented shape. None reflected difficulty with the architectural question. Each finding was fixed and kept as a regression case.
+
+| Observed | Cause | Correction |
+| --- | --- | --- |
+| Declaration grounds given as `{ evidence, statement }` or `{ statement }` | The submission format named `grounds?` without its shape | Exact shape stated; schema closed |
+| Follow-up option with `operation` and `subjects` at its top level | Option shape not stated | Exact shape stated; schema closed |
+| `unsupported` given as one string | The state-model guidance did not say it is a list | Stated as a list of strings |
+| Prose body given as a bare string | Content body shapes not stated | Each built-in type's body shape stated |
+| `report` placed inside an investigram | Report placement implicit | Stated as contribution-level only; schema closed |
+| Stray strings inside an option's subject list | The submission schema left nested structures open | Complete submission schema matching the stated shapes, as the original investigator protocol already has |
+| Unknown investigram reference (run 6, repaired) | Not diagnosed beyond the returned message. The repair succeeded. | None. Recorded as an open observation. |
+
+Validation reports only the first structural problem it finds, so a single repair could fix one mistake and then fail on the next. Bounded repair stays at one attempt. Under the final protocol, no trial needed more.
+
+## Observations against the plan's instruction obligations
+
+| Obligation | Observed live |
+| --- | --- |
+| Honor the requested result contract | All four accepted answers met the state-diagram contract. Trial 4 explained why its two states are threshold categories over a counter and left the entry category unknown with its reason, instead of forcing a single entry. |
+| Maintain identity deliberately | The elicited option in trial 1 referred to the existing `breaker` module Entity by its supplied handle. The fresh investigation in trial 3 referred to the module by its handle and introduced no Entities. No submission introduced an Entity for a state. |
+| Ground and qualify claims | Each answer carries limitations naming its basis: captured source as first observed, with no runtime testing or atomic snapshot claimed, and the scope and abstraction level of its model. Each disclosed semantics its model cannot express, such as hydration as an alternate entry, half-open concurrency, a delegated breaker's own state, a publicly writable counter, and NaN. |
+| Acquire what the action needs | The fresh investigation was supplied the current designated answer with its content before it superseded that answer. Every dialog requested source evidence before submitting. Dialogs that requested exports received the retained mechanical export finding through their own production. |
+| Express organizing changes explicitly | The fresh investigation superseded the earlier designation with qualified grounds: it confirms the earlier four-state account while refining schema, hydration qualification, unchanged-state behavior and the auxiliary state explanation. The displaced designation remains in exact history with those grounds. |
+| Update the earlier answer being revised | The same supersession targeted the repeated question's Query result. |
+| Follow-up options and illustrations | Elicited in trial 1. Invoking the option in trial 2 delivered the option as substantive input with its owner's provenance. The agent acquired further evidence: inspection, exports, dependencies, and the source of three re-exported breakers. It answered under the option's promised state-diagram contract, stating that the module has no module-level mode and describing its implementations' instance state. No illustration was offered. |
+
+### Not observed live
+
+- **Change notices during a dialog.** Covered by deterministic tests only, as approved.
+- **Unresolved inconsistency reports, withdrawals, and reuse or partitioning of existing content.** None of the trial questions called for them, and they were not elicited. Deterministic tests cover their mechanism.
+- **Illustrations.** None were offered. Rendering does not depend on one.
+
+### Judgment for review
+
+In trial 3 the agent chose supersession, not an added alternative, for a fresh account it describes as confirming and refining the earlier one. The decision permits supersession with grounds and requires an explanation of the change, which the agent gave. The earlier answer was also an interpretation, not a mechanical finding. Whether this is the organizing choice a reader would expect is a question for review, not a defect.
+
+## Limits
+
+These are a few focused trials of one model on one repository. They show that the integration can produce and consume useful-shaped qualified content. They establish neither statistical reliability, nor the correctness of the architectural accounts, nor user value. No answer or picture is frozen as an expected output.
+
+## Subsequent review elicitation
+
+The [review follow-up trial record](review-elicitation.md) preserves three additionally authorized scenarios and the observations missing from the original runs: precise inconsistency, withdrawal, content reuse/partitioning and illustrations. It used 10 further requests, bringing the cumulative total to 49 of the original 60. The earlier run descriptions above remain evidence of their original targets and instruction versions.
+
+
+## Round 4 instruction-evidence clarification
+
+Round 4 found that the trial-1 elicitation supplied the supported operation names and subject signatures, while production instructions at the reviewed target did not. The observed option remains evidence that authoring and invoking it worked with that supplied guidance. It does not establish that an agent could author an invocable option without the elicitation’s operation list.
+
+The round 4 correction includes the operation list, subject signatures and optional result-contract identities in production instructions, derived from the application’s registrations. Offline instruction and invocation tests cover this correction. No live trial of the corrected instructions without the earlier elicitation was run, and no additional inference requests were used; the cumulative total remains 49 of 60. Further live verification requires separately confirmed authorization.
+
+## Focused option verification after round 5
+
+The [focused option verification record](focused-option-verification.md) preserves three subsequently authorized runs using the corrected production instructions and an unchanged elicitation that supplies no operation names, subject signatures, shapes or contract IDs. The first timed out; the second accepted and invoked an option but reached its fixed request cap. After the human increased the cumulative ceiling to 70, the third completed the chain: exact option identity and meaning reached the subsequent investigator, whose contribution was accepted and designated. The initial answer fulfilled its state-diagram contract; the option had no optional contract and the follow-up correctly recorded null fulfillment. Both accepted initial accounts needed the normal single repair. These runs used 20 of 21 additional requests, bringing the cumulative total to 69 of 70. The record distinguishes successful execution from architectural correctness and retains both incomplete attempts.
+
+
+## Revised selector instructions: subsequent live verification
+
+The [revised-selector verification record](revised-selector-verification.md) reports one completed chain on implementation `2ed7b5f`, under a new authorization capped at 30 additional requests. It used 13 requests (82 cumulative across M2), leaving 17 unused. The agent authored an option with valid `state:half`, retained that selector through a normal repair of an unrelated report reference, and the application invoked it successfully. Exact option identity, meaning and selector reached the subsequent investigator, whose contribution was accepted without repair. No further attempt was needed to resolve the focused uncertainty. The record preserves the startup failure before inference, repair, usage and limits; generated architectural claims remain unproved, and M2 remains unaccepted.
+
+
+## Explicit answer reporting after round 8
+
+The [report-answer verification record](report-answer-verification.md) records the correction's focused live run on `2b0d0c3`: new answers counted without `report.answer`, and a fresh investigator explicitly returned an existing designation without a replacement designation. All three steps completed using 15 of a new 30-request cap (97 cumulative M2 dispatches). An empty investigram required ordinary repair; the existing-answer reference was correct and unchanged. No further attempt was needed. The record preserves elicitation, usage, the failure and limits, including the distinction between successful execution and architectural correctness.
+
+
+## Report-only return wording after round 9
+
+The [report-only verification record](report-only-verification.md) reports a narrow initial-answer/fresh-review run on `4267a05`. Both submissions were accepted without repair. The fresh investigator used `investigrams: []` and returned the exact existing answer, fulfilling its contract without a new investigram or designation. The run used 6 of a new 20-request cap (103 cumulative M2 dispatches) and stopped once the objective was met. Architectural correctness and broad reliability remain outside this evidence.
+
+
+## Follow-up contract evidence: scope clarification after round 10
+
+The [contract-evidence reconciliation](follow-up-contract-evidence.md) confirms that original run 6, trial 2 did invoke an option promising `postcode/state-diagram-answer@1`; its accepted answer was projected as fulfilled. That historical result used dialog `@3` / wire `@2` and an elicitation supplying operation names and subject signatures. Later focused option chains promised no contract, while the latest report-only check invoked no option. Thus “no non-null follow-up demonstrated live” applies to the later focused/current-revision evidence, not to all M2 trials. The clarification preserves the revision and elicitation limits and adds current application-level offline coverage for forwarding, fulfilled/unfulfilled outcomes, and unknown-contract refusal. No new inference was run.
+
+
+## Current promised-contract verification after round 10
+
+The [promised-contract live record](promised-contract-verification.md) supplies the previously missing current-revision sample on `4267a05`: natural-language elicitation produced an `examine-content` option explicitly promising the state-diagram contract. Exact option identity, meaning and contract reached the subsequent investigator; its contribution was accepted and the contract fulfilled. Both steps succeeded without repair using 7 of a new 20-request cap (110 cumulative M2 dispatches). The objective was met and no retry was made. The generated account’s accuracy was not independently verified; negative contract enforcement remains covered offline. M2 remains unaccepted.

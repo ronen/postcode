@@ -1,0 +1,49 @@
+States of CircuitBreakerPolicy
+  [Closed]  Normal operation: execute() admits an action and reports its outcome to the injected breaker.
+  [Open]  Automatically tripped: execute() rejects calls until the current backoff duration has elapsed.
+  [HalfOpen]  Recovery sampling: a bounded sample of calls is admitted while successes, failures, and calls still in flight are counted.
+  [Isolated]  Manually held open: execute() rejects calls, and a reference count tracks outstanding isolation handles.
+Transitions
+T1  Closed → Open
+      trigger: An admitted action produces a failure result.
+      guard: The injected breaker.failure(Closed) call returns true.
+      effect: Stores the failure, obtains the first backoff, records the opening time and attempt number 1, then emits onBreak and onStateChange(Open).
+T2  Open → HalfOpen
+      trigger: execute() is called after the current backoff duration has elapsed.
+      effect: Creates fresh sample counters and a shared deferred decision, increments the attempt number, emits onHalfOpen and onStateChange(HalfOpen), and admits the triggering call as part of the sample.
+T3  HalfOpen → Open
+      trigger: A sampled failure is recorded.
+      guard: Recorded failures are strictly greater than halfOpenSampling.threshold multiplied by halfOpenSampling.calls.
+      effect: Reports a HalfOpen failure to the injected breaker, advances the existing backoff, records a new opening time, resolves calls waiting on the sample decision, and emits onBreak and onStateChange(Open).
+T4  HalfOpen → Closed
+      trigger: The configured number of sampled calls has completed and no sampled call remains in flight.
+      guard: The failure limit has not already caused reopening.
+      effect: Reports HalfOpen success to the injected breaker, resolves calls waiting on the sample decision, and emits onReset and onStateChange(Closed).
+T5  Closed → Isolated
+      trigger: isolate() is called.
+      effect: Creates an isolation count, increments it for the returned handle, and emits an isolated onBreak and onStateChange(Isolated).
+T6  Open → Isolated
+      trigger: isolate() is called.
+      effect: Creates an isolation count, increments it for the returned handle, and emits an isolated onBreak and onStateChange(Isolated).
+T7  HalfOpen → Isolated
+      trigger: isolate() is called.
+      effect: Resolves the pending sample decision, creates and increments an isolation count for the returned handle, and emits an isolated onBreak and onStateChange(Isolated).
+T8  Isolated → Isolated
+      trigger: isolate() is called again.
+      effect: Increments the isolation reference count and returns another independently disposable handle; no break or state-change event is emitted.
+T9  Isolated → Isolated
+      trigger: An undisposed isolation handle is disposed.
+      guard: At least one other isolation handle remains.
+      effect: Marks that handle disposed and decrements the isolation count; no event is emitted.
+T10  Isolated → Closed
+      trigger: The last undisposed isolation handle is disposed.
+      guard: The instance is still Isolated.
+      effect: Marks the handle disposed, decrements the count to zero, enters Closed, and emits onReset and onStateChange(Closed).
+Entry: Closed, No truthy options.initialState is supplied; when one is supplied, construction instead hydrates its ownState without validating the serialized shape..
+States shown: the account claims these are all the states.
+Transitions shown: the account claims these are all the transitions.
+Applies to: The four modes are held in the instance-private innerState field. execute(), isolate(), isolation-handle disposal, constructor hydration, and completion of admitted HalfOpen calls observe or modify that persistent state.
+Not representable in this diagram: Concurrent HalfOpen calls share counters and a deferred decision. This flat model summarizes their aggregate effect rather than representing each call as a parallel region.
+Not representable in this diagram: Constructor hydration is an alternate entry path, not a runtime transition. Serialization is also not a live transition: a HalfOpen instance is deliberately serialized as Open.
+Not representable in this diagram: Malformed initialState data is outside the established intended model because the constructor trusts the supplied serialized shape.
+The diagram arranges the supplied account. It adds no state, transition or completeness claim, and the absence of an arrow is not a claim that no transition exists unless stated above.

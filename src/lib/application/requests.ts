@@ -1,3 +1,4 @@
+import { exactSubjectShape } from '../contributions/subjects.js';
 import { freezeOwned } from '../immutable.js';
 import { representationProblem } from './input.js';
 import { lenses } from './lenses.js';
@@ -20,7 +21,9 @@ export interface ConsumptionRequirements {
 }
 export type ApplicationRequest = ConsumptionRequirements & (
   | { readonly kind: 'lens'; readonly lens: string; readonly designation: SubjectDesignation;
-      readonly parameters?: Readonly<Record<string, ParameterValue>> }
+      readonly parameters?: Readonly<Record<string, ParameterValue>>;
+      /** Explicitly investigate the same question again instead of reusing a retained outcome. */
+      readonly fresh?: boolean }
   | { readonly kind: 'present'; readonly target: string }
   | { readonly kind: 'report'; readonly report: 'usage' }
 );
@@ -48,7 +51,7 @@ export class InvalidRequestId extends TypeError {
 }
 export type SemanticRequest = ConsumptionRequirements & (
   | { readonly kind: 'lens'; readonly lens: string; readonly question: string; readonly designation: SubjectDesignation;
-      readonly parameters: Readonly<Record<string, ParameterValue>>; readonly programInput: 'session-configured-project' }
+      readonly parameters: Readonly<Record<string, ParameterValue>>; readonly programInput: 'session-configured-project'; readonly fresh?: true }
   | { readonly kind: 'present'; readonly target: string }
   | { readonly kind: 'report'; readonly report: 'usage' }
   | RejectedInput
@@ -95,19 +98,21 @@ export function captureApplicationRequest(value: unknown, catalog: Readonly<Reco
   const captured = captureFields(value), input = captured.input, problems = [...captured.problems];
   const problem = (field: string, reason: string) => problems.push({ field, reason, representation: Object.hasOwn(input, field) ? 'preserved' : 'absent' });
   if (!['lens', 'present', 'report'].includes(input.kind as string)) problem('kind', 'Request kind must be lens, present or report.');
-  const allowed = input.kind === 'lens' ? ['kind', 'lens', 'designation', 'parameters', 'requirements', 'consumption']
+  const allowed = input.kind === 'lens' ? ['kind', 'lens', 'designation', 'parameters', 'requirements', 'consumption', 'fresh']
     : input.kind === 'present' ? ['kind', 'target', 'requirements', 'consumption'] : ['kind', 'report'];
   for (const field of Object.keys(input)) if (!allowed.includes(field)) problem(field, 'This field is not supported for the requested operation.');
   if (input.kind === 'lens') {
     if (typeof input.lens !== 'string' || !Object.hasOwn(catalog, input.lens)) problem('lens', 'The supplied name does not identify a registered Lens.');
     const designation = input.designation as Record<string, ParameterValue> | undefined;
     if (!designation || typeof designation !== 'object' || Array.isArray(designation)
-      || !['default', 'configured-project', 'repository', 'missing', 'name', 'reference'].includes(designation.kind as string)
+      || !['default', 'configured-project', 'repository', 'missing', 'name', 'reference', 'selection'].includes(designation.kind as string)
       || (designation.kind === 'name' || designation.kind === 'reference') && typeof designation.value !== 'string'
-      || Object.keys(designation).some(key => !['kind', ...(['name', 'reference'].includes(designation.kind as string) ? ['value'] : [])].includes(key))) {
+      || designation.kind === 'selection' && !exactSubjectShape(designation.subject)
+      || Object.keys(designation).some(key => !['kind', ...(['name', 'reference'].includes(designation.kind as string) ? ['value'] : designation.kind === 'selection' ? ['subject'] : [])].includes(key))) {
       problem('designation', 'Supply one explicit subject designation.');
     }
     if (input.parameters !== undefined && (!input.parameters || typeof input.parameters !== 'object' || Array.isArray(input.parameters))) problem('parameters', 'Lens parameters must be an object.');
+    if (input.fresh !== undefined && typeof input.fresh !== 'boolean') problem('fresh', 'The fresh-investigation intent is true or false.');
   } else if (input.kind === 'present') {
     if (typeof input.target !== 'string' || !input.target) problem('target', 'An exact retained answer target is required.');
   } else if (input.kind === 'report' && input.report !== 'usage') problem('report', 'Only the subjectless usage report is supported.');
@@ -129,7 +134,7 @@ export function captureApplicationRequest(value: unknown, catalog: Readonly<Reco
   if (input.requirements !== undefined && input.consumption !== undefined) problem('requirements', 'Choose direct requirements or a captured Presentation.');
   if (problems.length) return freezeOwned({ kind: 'rejected', input, problems });
   const request = input as unknown as ApplicationRequest;
-  return freezeOwned({ ...(request.kind === 'lens' ? normalizeInformation(request.lens, request.designation, request.parameters ?? {}, catalog) : request),
+  return freezeOwned({ ...(request.kind === 'lens' ? { ...normalizeInformation(request.lens, request.designation, request.parameters ?? {}, catalog), ...(request.fresh ? { fresh: true as const } : {}) } : request),
     ...(request.requirements ? { requirements: request.requirements } : {}), ...(request.consumption ? { consumption: request.consumption } : {}) });
 }
 
@@ -143,7 +148,12 @@ export function invalidParameters(request: SemanticRequest, catalog: Readonly<Re
   if (request.kind !== 'lens') return null;
   if (!request.parameters || typeof request.parameters !== 'object' || Array.isArray(request.parameters) || Object.getPrototypeOf(request.parameters) !== Object.prototype) return 'Lens parameters must be an object.';
   const unexpected = Object.keys(request.parameters).filter(key => !Object.hasOwn(catalog[request.lens]!.parameters, key));
-  return unexpected.length ? `Lens ${request.lens} declares no parameters; unexpected: ${unexpected.join(', ')}.` : null;
+  if (unexpected.length) return `Lens ${request.lens} does not declare these parameters: ${unexpected.join(', ')}.`;
+  const definition = catalog[request.lens]!;
+  const missing = Object.keys(definition.parameters).filter(key => typeof request.parameters[key] !== 'string' || !request.parameters[key]);
+  if (missing.length) return `Lens ${request.lens} requires these parameters as nonempty text: ${missing.join(', ')}.`;
+  // A fresh investigation is new production; it has no meaning for a mechanical answer or for the earlier interpretation operations.
+  return request.fresh && definition.requirements.kind !== 'contribution' && definition.requirements.kind !== 'follow-up' ? `Lens ${request.lens} does not support an explicit fresh investigation.` : null;
 }
 export function invalidDesignation(request: SemanticRequest, catalog: Readonly<Record<string, LensDefinition>> = lenses, conflict = false): string | null {
   if (request.kind !== 'lens') return null;
@@ -153,8 +163,8 @@ export function invalidDesignation(request: SemanticRequest, catalog: Readonly<R
   if (request.designation.kind === 'configured-project' || request.designation.kind === 'repository') {
     if (!definition.subjects.includes(request.designation.kind)) return `Lens ${definition.id} does not apply to ${request.designation.kind}.`;
   }
-  if ((request.designation.kind === 'name' || request.designation.kind === 'reference') && definition.cardinality === 'population') return `Lens ${definition.id} requires a project or repository subject, not a selector.`;
-  if (request.designation.kind === 'name' && !definition.subjects.some(kind => kind === 'module' || kind === 'group')) return `Lens ${definition.id} requires a precise investigram reference; investigrams cannot be designated by name.`;
+  if ((request.designation.kind === 'name' || request.designation.kind === 'reference' || request.designation.kind === 'selection') && definition.cardinality === 'population') return `Lens ${definition.id} requires a project or repository subject, not a selector.`;
+  if (request.designation.kind === 'name' && !definition.subjects.some(kind => kind === 'module' || kind === 'group')) return `Lens ${definition.id} requires a precise ${definition.subjects.includes('contribution') ? 'contribution' : 'investigram'} reference; ${definition.subjects.includes('contribution') ? 'contributions' : 'investigrams'} cannot be designated by name.`;
   return null;
 }
 export function invalidReportInputs(request: SemanticRequest, supplied: boolean): string | null {
