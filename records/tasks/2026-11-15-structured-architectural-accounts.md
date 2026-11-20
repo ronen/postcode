@@ -304,6 +304,10 @@ to begin the substantive implementation task described by that plan.
 >
 > Follow the task and review-response workflow, recording the rule and verification for independent review. If enforcing it requires a consequential choice beyond this direction, bring that choice back for discussion.
 
+2026-11-20, accepting the final M4 integrated review gate after round 12 at production target `aec3bc511dbe398f8a598a50ae162cf5dc475d08`, and directing task closure and PR readiness. Merge and worktree removal are not authorized by this request.
+
+> I accept the M4 integrated review gate. Please complete the task records and prepare the PR for merge.
+
 ## Outcome
 
 ## Verification
