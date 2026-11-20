@@ -90,7 +90,7 @@ Each produced Projection retains its selected information and qualification. Rep
 
 ### Common contribution integration
 
-The [structured architectural accounts plan](plans/structured-architectural-accounts.md) has migrated supported investigation and inspection callers to common contributions. The M3 mechanical and caller checkpoints are accepted. The obsolete tree/correction path has been removed; final integrated review remains pending. No new CLI commands or live-inference authorization follow from that migration.
+The [structured architectural accounts plan](plans/structured-architectural-accounts.md) has migrated supported investigation and inspection callers to common contributions. The obsolete tree/correction path has been removed. State-behavior and retained-option invocation are application APIs; this migration adds no new CLI commands.
 
 The CLI exposes `summarize`, `explain`, `decompose`, `examine`, inspection and exact retained presentation through its existing commands. State-dependent behavior, state-diagram requests and retained follow-up-option invocation are available through the application API; this CLI has no corresponding commands. Exact retained presentation and Session-local reference lifetimes apply to all supported routes.
 

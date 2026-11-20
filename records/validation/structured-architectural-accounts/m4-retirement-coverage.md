@@ -1,6 +1,6 @@
 # M4 integrated coverage and retirement
 
-This closes the retirement obligation in the [M3 caller inventory](m3-agentic-caller-coverage.md) and the [M1 family inventory](m1-checkpoint.md). Both M3 checkpoints are accepted; this is implementation evidence for the separate final integrated review, not its acceptance.
+This closes the retirement obligation in the [M3 caller inventory](m3-agentic-caller-coverage.md) and the [M1 family inventory](m1-checkpoint.md). The human accepted the final integrated review gate on 2026-11-20; the [disposition](../../reviews/structured-architectural-accounts/2026-11-19-m4-integrated-disposition.md) records that acceptance, subsequent corrections to the original checkpoint and the exact verified targets.
 
 ## Reachability and retained boundaries
 
@@ -105,4 +105,4 @@ Common historical selection: `contribution-answers`, `contribution-results`, `m3
 
 ## Limits
 
-These tests establish structural, lifetime, delivery and interpretation-reporting behavior, not truth of generated explanations. M2 recorded trials and the subsequent M4 [context-authoring/invocation](m4-option-context-authoring.md) and [dialog 14 duplicate-input](m4-dialog14-live-regression.md) trials provide live evidence at their recorded revisions and within their stated limits. Migration-family coverage remains offline; these focused trials do not establish general reliability or address-matching strategy. Final integrated review and human sufficiency judgment remain required. Temporary canonicalization/allocation optimization, persistence, automatic reassessment/clearance, broader UI and additional language or Lens families are outside this implementation.
+These tests establish structural, lifetime, delivery and interpretation-reporting behavior, not truth of generated explanations. M2 recorded trials and the subsequent M4 [context-authoring/invocation](m4-option-context-authoring.md) and [dialog 14 duplicate-input](m4-dialog14-live-regression.md) trials provide live evidence at their recorded revisions and within their stated limits. Migration-family coverage remains offline; these focused trials do not establish general reliability or address-matching strategy. Temporary canonicalization/allocation optimization, persistence, automatic reassessment/clearance, broader UI and additional language or Lens families are outside this implementation.

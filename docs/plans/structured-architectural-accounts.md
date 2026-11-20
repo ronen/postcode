@@ -1,8 +1,8 @@
 # Structured architectural accounts
 
-Status: approved
+Status: completed
 Created: 2026-11-15
-Updated: 2026-11-18
+Updated: 2026-11-20
 Superseded by:
 
 ## Problem and intended outcome

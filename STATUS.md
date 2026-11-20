@@ -59,12 +59,6 @@ This page summarizes current capabilities and significant limits. The [capabilit
   These use the same contribution ledger as the existing mechanical and agentic families;
   there are no new CLI commands for them.
 
-The M3 mechanical and caller checkpoints are accepted. The legacy tree/correction
-route is retired and the [integrated checkpoint](records/validation/structured-architectural-accounts/m4-integrated-checkpoint.md)
-records the completed migration and verification. Final integrated review and human
-sufficiency judgment remain pending under the active task. The temporary migration
-exceptions have no remaining supported capability to cover.
-
 ## Current limits
 
 - **[Request-model integration](docs/plans/lens-request-model.md):** normalized request

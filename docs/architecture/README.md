@@ -37,8 +37,7 @@ See the [application route](contributions.md#application-route) and
 [hosted transport](contributions.md#hosted-transport) for those boundaries.
 
 The `summarize`, `explain`, `decompose` and `examine` operations and their
-associated-content callers now use this boundary. The mechanical and caller checkpoints are
-accepted; final integrated review remains required under the
+associated-content callers use this boundary, completing the migration under the
 [structured-accounts plan](../plans/structured-architectural-accounts.md). The superseded tree/correction helpers and their storage, presentation and wire contracts are removed; application registration rejects earlier interpretation requirements.
 
 ## Implemented subset of the product model

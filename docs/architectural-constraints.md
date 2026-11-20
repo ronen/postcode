@@ -10,7 +10,7 @@ Substantive changes require explicit human agreement and a corresponding accepte
 
 The common-contribution, association and exposure rules establish the target architecture. Apply the [temporary adoption and migration contract](decisions/common-analysis-contributions.md#adoption-and-migration-conformance) to unmigrated capabilities: their pre-adoption behavioral contracts remain applicable within its limited scope. Record migration status and expected gaps; do not claim target conformance before implementation. Migrated capabilities follow the new contracts, and plan completion requires removal of the temporary exceptions. Foundation, method guarantees and unaffected protections remain binding throughout.
 
-Implementation status (2026-11-18): the [integrated migration record](../records/validation/structured-architectural-accounts/m4-integrated-checkpoint.md) accounts for all supported families and retirement of the legacy regime. No supported capability remains under the temporary exception. Final integrated review and human sufficiency judgment remain separate task gates; the rules above are unchanged.
+Implementation status (2026-11-20): the [integrated migration record](../records/validation/structured-architectural-accounts/m4-integrated-checkpoint.md) accounts for all supported families and retirement of the legacy regime. No supported capability remains under the temporary exception. The human accepted the [final integrated review gate](../records/reviews/structured-architectural-accounts/2026-11-19-m4-integrated-disposition.md) on 2026-11-20; the rules above are unchanged.
 
 ## Claims and qualification
 
