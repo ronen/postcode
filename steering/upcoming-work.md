@@ -1,6 +1,6 @@
 # Upcoming work
 
-Last considered: 2026-11-18
+Last considered: 2026-11-20
 
 A living document for keeping track of upcoming work and deciding what order to
 do it in. Major checkpoints are useful occasions to reconsider it in strategy
@@ -74,29 +74,30 @@ Codes identify items independently of ordering.
 
 ```mermaid
 flowchart TD
-    ACCOUNT["✦ ⚠️ ACCOUNT — Structured architectural accounts"] --> SLICE["⚠️ SLICE — First usable graphical investigation scope"]
-    SLICE --> PRESENT["⚠️ ✦ PRESENT — Account presentation and navigation"]
-    ACCOUNT --> ORGANIZE["✦ ⚠️ ORGANIZE — Architectural reference organization"]
-    SLICE -. If reference organization is selected .-> ORGANIZE
+    SLICE["⚠️ SLICE — First usable graphical investigation scope"] --> PRESENT["⚠️ ✦ PRESENT — Account presentation and navigation"]
+    SLICE -. If reference organization is selected .-> ORGANIZE["✦ ⚠️ ORGANIZE — Architectural reference organization"]
     ORGANIZE -. Framework for the selected experience .-> PRESENT
     PRESENT --> MINIGUI["✦ MINIGUI — Minimal graphical investigation"]
     MINIGUI -. Needs demonstrated through use .-> GUI["✦ GUI — Broader graphical investigation 🧱"]
-    AGENT["✦ ⚠️ AGENT — External-agent investigation and exchange"]
+    SLICE -. If changing inputs are in scope .-> CHANGE["✦ ⚠️ CHANGE — Investigation across target changes"]
+    SLICE -. If cross-session return is in scope .-> PERSIST["✦ ⚠️ PERSIST — Retain investigations across sessions"]
 
     classDef default fill:#dbeafe,stroke:#64748b,color:#172554
 ```
+
+PERSIST and CHANGE can come in either order, according to the experience needed.
 
 <a id="tentative-ordering"></a>
 ## Tentative ordering
 
 | Position | Item | Why here / what could change it |
 | --- | --- | --- |
-| Next: plan and implement | [ACCOUNT — Structured architectural accounts](#account) | Exercise the account mechanism through representative, plausibly useful investigations and diagrams. Admission → trial → correction is a candidate; composition can test extension across accounts. |
-| After ACCOUNT | [SLICE — First usable graphical investigation scope](#slice) | Select a coherent first offering using the journey exploration and ACCOUNT's demonstrated capabilities and limitations. Identify any additional capability work needed. |
-| Conditional, scoped through SLICE | [ORGANIZE — Architectural reference organization](#organize) | Construct a useful reference framework if the selected experience needs one. Preliminary exploration can inform SLICE; implementation builds on ACCOUNT and precedes presentation work that depends on it. |
+| Next | [SLICE — First usable graphical investigation scope](#slice) | Select a coherent first offering using the journey exploration and implemented capabilities, including actual diagrams and live-trial findings. Identify additional work the experience needs. |
+| Conditional, scoped through SLICE | [ORGANIZE — Architectural reference organization](#organize) | Construct a useful reference framework if the selected experience needs one. Preliminary exploration can inform SLICE; implementation precedes presentation work that depends on it. |
 | After SLICE | [PRESENT — Account presentation and navigation](#present) | Build representations, qualifications, and navigation for the selected experience, using implemented accounts. Any additional capability prerequisites depend on SLICE's selection. |
 | After PRESENT | [MINIGUI — Minimal graphical investigation](#minigui) | Build a small graphical surface for actual human investigation using the available account and presentation capabilities. |
-| Movable, when a concrete exchange needs it | [AGENT — External-agent investigation and exchange](#agent) | Support external design or implementation agents requesting investigations or using retained accounts. Assess reusable investigation and exchange capabilities; neither retaining the interactive CLI, structured accounts, nor a preceding human GUI journey is a prerequisite. |
+| Conditional, when investigation must span input changes | [CHANGE — Investigation across target changes](#change) | SLICE or later use supplies the trigger. Can precede or follow PERSIST. |
+| Conditional, when cross-session return is needed | [PERSIST — Retain investigations across sessions](#persist) | SLICE or later use supplies the trigger. Can precede or follow CHANGE. |
 | Following experience with MINIGUI | [GUI — Broader graphical investigation](#gui) | Extend the graphical experience where sustained use identifies valuable capabilities. May become several plans. |
 
 <a id="item-catalog"></a>
@@ -104,70 +105,24 @@ flowchart TD
 
 Alphabetical by code.
 
-<a id="account"></a>
-### ACCOUNT — Structured architectural accounts
+<a id="change"></a>
+### CHANGE — Investigation across target changes
 
 - **Kind:** ✦ ⚠️
-- **Outcome:** successive investigations can reuse, extend, or challenge retained
-  architectural understanding while preserving evidence, qualifications,
-  conflicts, and access to earlier accounts.
-- **Scope:** a bounded slice drawn from the completed exploration's connected
-  account examples, within the current Session lifetime. Assess structured
-  investigram content and existing associations, retention, and replacement.
-  Choose plausibly useful investigations and diagrams with credible investigative
-  purposes, avoiding cases contrived to fit the mechanism. Proven user value is
-  not required here; SLICE selects the initial user-facing offering separately.
-  Extend the application answer-content contracts so direct and exact access
-  preserve the new structure and its qualified support.
-  Account design and implementation must carry the semantic content needed by
-  a small set of representative architectural diagrams—for example,
-  structural, state, or interaction views. Their distinct information needs
-  guide account structure; a working account may
-  comprise several investigrams. The examples span policy kinds, instance roles,
-  states, and executions; responsibility-focused investigation can inform those
-  accounts without requiring a separate Lens. Preserve the known account/answer
-  origin of follow-up selections, independently of evidence support or human reliance.
-- **Decision:** what structure and selection are actually needed? Distinguish
-  revision status, applicability to a question, and the working selection for an investigation.
-  Correspondence or synthesis requires qualified analysis. A universal schema,
-  consolidated model, and general retrieval system are not assumed.
-  Choose how the initial architectural subjects become available; a supplied
-  fixture can test machinery without demonstrating end-to-end investigation.
-  Define the meaning of offered questions so it does not depend on the human's
-  unspoken purpose; PRESENT can build their discoverable presentation.
-- **Validation:** demonstrate within ACCOUNT that the selected diagrams can be
-  generated from retained account content without reconstructing missing
-  architectural meaning during rendering. Universal notation support and stored
-  layout choices are not required. Success establishes faithful support for the
-  selected investigations, not their suitability for the first user-facing offering.
-- **Sources:** [journey outputs: connected account examples](../notes/initial-journey/cockatiel-account-examples.md),
-  [journey findings: capability-planning inputs](../notes/initial-journey/design-findings.md#capability-planning-inputs),
-  [backlog: architectural accounts through concrete journeys](../docs/backlog.md#explore-architectural-accounts-through-journeys),
-  [candidate capabilities: responsibility-focused investigation](candidate-capabilities.md#responsibility-focused-investigation),
-  [backlog: navigation origins](../docs/backlog.md#assess-and-preserve-navigation-origin-lineage),
-  [decision: structured investigram content](../docs/decisions/structured-investigram-content.md).
-
-<a id="agent"></a>
-### AGENT — External-agent investigation and exchange
-
-- **Kind:** ✦ ⚠️
-- **Outcome:** external design and implementation agents can request useful
-  investigations and consult qualified accounts during conversations held elsewhere,
-  with clear scope, exact-result versus repeatable-request semantics, reference
-  lifetime, captured basis, implementation mappings, and relevant origin.
-- **Scope:** a bounded exchange selected for a concrete episode, including agent-led or mixed
-  investigation. Assess the complete qualified content, precise references and
-  operational reports now available through the
-  [shared application API](../docs/architecture/README.md#application-entry)
-  before choosing an external-agent interface. The internal Node entry does not
-  itself provide an external transport or establish disclosure permissions. Reuse of
-  those capabilities does not depend on retaining the interactive human command
-  shell; any continuing command-line interface should serve concrete agent needs.
-  Structured accounts, a GUI, participant-material ingestion, and
-  persistence are not prerequisites by assumption. Preserve supplied PostCode
-  provenance when output returns through repository material or contributions,
-  so it is not mistaken for independent corroboration.
-- **Source:** [backlog: external-agent investigation and context exchange](../docs/backlog.md#design-a-bounded-shared-context-interface-for-coding-agents).
+- **Outcome:** continue useful investigation as the investigated repository changes,
+  preserving earlier accounts as accounts of their captured state and making their
+  applicability to the new state clear.
+- **Scope:** a bounded transition between input states, with new investigation and
+  access to earlier results. Establish what can be reused and what must be checked
+  or investigated again. Changed inputs do not make an earlier account wrong.
+- **Decision:** how are captured states, Session lifetimes and subjects related
+  across a change? Choose the continuity needed by the selected experience;
+  automatic refresh, selective re-evaluation and general cross-version subject
+  identity are not assumed. This concerns changes to the investigated software,
+  separately from changes to the generating agent or its configuration.
+- **Sequencing:** SLICE or subsequent use supplies the trigger. Can precede or follow
+  PERSIST. If persistence comes first, include persistence of the new changing-target state.
+- **Source:** [candidate capabilities: investigation across changing repository states](candidate-capabilities.md#changing-repository-states).
 
 <a id="gui"></a>
 ### GUI — Broader graphical investigation
@@ -178,7 +133,7 @@ Alphabetical by code.
 - **Outcome:** a graphical experience that supports sustained investigation on real
   repositories beyond the first bounded slice.
 - **Scope:** needs demonstrated through MINIGUI use. Workspace management, richer
-  layouts, persistence, and customization are possible extensions, selected for
+  layouts and customization are possible extensions, selected for
   their value rather than assumed prerequisites for useful graphical investigation.
 - **Source:** [backlog: whole-journey UX review](../docs/backlog.md#review-the-investigation-ui-and-ux-as-a-whole).
 
@@ -190,10 +145,13 @@ Alphabetical by code.
   evaluation can test more than typing commands and reading text results.
 - **Scope:** the experience selected by SLICE: a few account presentations and diagrams, selection of subjects and
   offered questions, following relationships, and returning to earlier or corrected
-  answers with their qualifications. Build on completed ACCOUNT and PRESENT: accounts
+  answers with their qualifications. Build on implemented structured accounts and PRESENT: accounts
   supply content, Presentations make it intelligible, and this item supplies the
   controls and interaction flow within the supported Session lifetime. Extend the
   API as needed within this task; full Workspace management and customization can wait.
+  Make progress, failure and recovery intelligible, including explicitly requesting
+  fresh investigation and returning to earlier attempts. Fresh execution is already
+  supported by the application; the graphical interaction remains to be designed.
 - **Decision:** choose GUI hosting and execution arrangements around the current
   in-process Node API. Synchronous compiler work cannot be preempted on its calling
   thread; preserve responsiveness, interruption and cleanup without assuming the
@@ -204,7 +162,9 @@ Alphabetical by code.
   [CLI retirement checkpoint](#cli-retirement-checkpoint).
 - **Sources:** strategy discussion: a graphical surface for first practical human use;
   [journey outputs: investigation script](../notes/initial-journey/cockatiel-investigation-script.md),
-  [journey findings: implementation-validation checks](../notes/initial-journey/design-findings.md#implementation-validation).
+  [journey findings: implementation-validation checks](../notes/initial-journey/design-findings.md#implementation-validation),
+  [backlog: fresh investigation and attempt history](../docs/backlog.md#expose-fresh-investigation-and-attempt-history-in-interfaces),
+  [implementation evidence: follow-up authoring and timeout](../records/validation/structured-architectural-accounts/m4-option-context-authoring.md).
 
 <a id="organize"></a>
 ### ORGANIZE — Architectural reference organization
@@ -214,14 +174,33 @@ Alphabetical by code.
   concern through its accumulated accounts.
 - **Scope:** construct and revise useful groupings, entry points, cross-references
   and reading paths, using retained accounts and additional investigation where
-  needed. Build on ACCOUNT; SLICE selects whether and how much of this capability
+  needed. Build on implemented accounts; SLICE selects whether and how much of this capability
   the first offering needs. Preliminary exploration can inform that selection.
 - **Boundary:** distinguish editorial organization from claims about the software.
   Partial and alternative organizations need not imply comprehensive coverage or
   one canonical hierarchy. Ordinary indexing and display grouping may be mechanical;
   inferred relationships, synthesis and coverage judgments require core investigation.
   PRESENT and MINIGUI make the supplied framework readable and navigable.
-- **Source:** [exploratory notes: architectural reference organization](../notes/architectural-reference-organization.md).
+- **Sources:** [exploratory notes: architectural reference organization](../notes/architectural-reference-organization.md),
+  [backlog: organization of contributions and architectural entities](../docs/backlog.md#explore-organization-of-contributions-and-architectural-entities).
+
+<a id="persist"></a>
+### PERSIST — Retain investigations across sessions
+
+- **Kind:** ✦ ⚠️
+- **Outcome:** return after closing PostCode and recover useful retained understanding
+  and a place to continue, without reconstructing the investigation from scratch.
+- **Scope:** select the needed level of return: readable saved accounts and exact
+  answers, resumed investigation against unchanged inputs, or continuation across
+  changed inputs. Restoring navigation context or layout is a separate choice.
+  These need not be delivered together.
+- **Decision:** what is retained, which references remain usable, and what can execute
+  after reopening? Preserve captured basis, qualifications and historical meaning;
+  saved records do not by themselves restore an executable Session.
+- **Sequencing:** trigger when SLICE requires cross-session return or later use shows
+  the need. Can precede or follow CHANGE. If changing-target support comes first,
+  include retention and restoration of its multiple input states and their relationships.
+- **Source:** [candidate UX: returning to an investigation](candidate-ux.md#returning-to-an-investigation).
 
 <a id="present"></a>
 ### PRESENT — Account presentation and navigation
@@ -230,7 +209,7 @@ Alphabetical by code.
 - **Outcome:** useful architectural representations through which the human can
   change perspective, inspect qualifications, and revisit earlier or revised accounts.
 - **Scope:** the representations and navigation needed for the experience selected
-  by SLICE, using implemented ACCOUNT capabilities and exact retained-answer presentation.
+  by SLICE, using implemented structured accounts and exact retained-answer presentation.
   Extend the API as needed within this task. Use
   established architectural notations where they fit. Generating a diagram
   cannot supply missing semantics or strengthen a claim. Additional perspective
@@ -244,7 +223,7 @@ Alphabetical by code.
   from displaying retained detail. Show consequential conditions and corrections
   while preserving access to earlier answers. Explore returning to a useful
   surrounding account; keeping it always visible remains a hypothesis.
-- **Validation:** build on ACCOUNT's diagram validation with a bounded
+- **Validation:** build on the implemented state-diagram validation with a bounded
   presentation and navigation demonstration, using an export or standalone renderer
   if sufficient. Check semantic fidelity, consequential scope and uncertainty,
   traceability to account content, and revised versus exact earlier answers.
@@ -274,11 +253,16 @@ Alphabetical by code.
   with concrete scope and acceptance criteria for PRESENT and MINIGUI.
 - **Scope:** choose the user scenario, starting knowledge, useful endpoint,
   investigations, and representations that belong together. Use the completed
-  journey exploration and ACCOUNT's demonstrated capabilities and limitations;
-  this selects an initial offering rather than restarting the journey exercise.
-  ACCOUNT's capabilities may be selected, modified, supplemented, or left out.
+  journey exploration alongside actual generated diagrams and live-trial findings;
+  mechanism validation does not establish a useful investigation experience.
+  Implemented capabilities may be selected, modified, supplemented, or left out.
+  This selects an initial offering rather than restarting the journey exercise.
   Explore an architectural-reference experience: browsing retained understanding
   and investigating gaps, with ORGANIZE supplying a framework if needed.
+  Decide whether the first experience needs cross-session return or investigation
+  across target changes, setting the scope and trigger for PERSIST and CHANGE.
+  Consider how a reader responds to an inadequate account: fresh investigation is
+  available, while submitting an objection to an investigating agent needs new work.
   Identify needed changes and missing capabilities, drawing on the backlog and
   candidate inventories, and place that work before the work that depends on it.
 - **Boundary:** selects the offering and its acceptance criteria. Detailed
@@ -288,6 +272,9 @@ Alphabetical by code.
   [journey outputs: investigation script](../notes/initial-journey/cockatiel-investigation-script.md),
   [journey outputs: connected account examples](../notes/initial-journey/cockatiel-account-examples.md),
   [journey findings: capability-planning inputs](../notes/initial-journey/design-findings.md#capability-planning-inputs),
+  [implementation evidence: state-diagram trials and outputs](../records/validation/structured-architectural-accounts/m2-trials/README.md),
+  [implementation evidence: follow-up-option trials](../records/validation/structured-architectural-accounts/m4-option-context-authoring.md),
+  [completion record: structured architectural accounts](../records/tasks/2026-11-15-structured-architectural-accounts.md),
   strategy discussion: separate mechanism validation from selection of the first offering.
 
 <a id="principles-for-choosing-the-order"></a>

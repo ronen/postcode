@@ -184,6 +184,12 @@ Area: external-agent context and reference lifecycle
 
 Choose a bounded useful exchange for external design and implementation agents, including agent-led or mixed investigation and conversations hosted elsewhere. An agent may request supported investigation or consult retained accounts without a preceding human investigation. Where the exchange uses focused/open Views, expose their qualified information without requiring manual translation into source coordinates. Distinguish exact retained Projection references from repeatable requests, disclose their lifetime and captured basis, and preserve source mappings, provenance, and relevant derivation. Assess current interfaces before selecting a transport or artifact format. Define which Workspaces/windows are included, how active focus is selected, and how the human can inspect that scope; a most-recently-active-window policy is a candidate, not an inherited requirement.
 
+Revisit when a concrete coding-agent handoff, external investigation or shared-account
+use case needs the exchange. Support for changing repository states may make a
+repeated design-and-implementation workflow practical, but does not by itself
+establish that an agent interface should be next. A human GUI, persistence and
+changing-target support are not universal prerequisites for a bounded exchange.
+
 If using a generated artifact, specify publication, revision, and evidence-exclusion behavior. Do not require richer Workspace purpose/context machinery or persistence just to share existing Views and focus. No particular agent host, file format, or implementation milestone is selected by this candidate.
 
 Include the feedback path when PostCode output returns through repository comments,
