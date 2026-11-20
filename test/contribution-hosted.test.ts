@@ -232,3 +232,41 @@ test('authored option context decodes existing handles and preserves local refer
   assert.deepEqual(codec.audit().resolutions.at(-1), { path: '$.investigrams[0].options[0].request.context[0].entity', handle: 'invented-handle', reference: null });
   codec.close();
 });
+
+test('real retained export bodies supply usable handles and copy back without changing literal text', async () => {
+  const { discover } = await import('./helpers.js');
+  const { evaluateModules } = await import('../src/lib/evaluation.js');
+  const { sessionLedger, moduleEntity } = await import('../src/lib/contributions/modules.js');
+  const { agentic } = await import('./contribution-helpers.js');
+  const { default: path } = await import('node:path');
+  const { store, analysis, evaluation, claims } = await discover(path.resolve('fixtures/exports/tsconfig.json'));
+  evaluateModules(store, analysis, ['exports']);
+  const ledger = sessionLedger(store, evaluation.session), subject = claims.find(claim => claim.information.handle === 'barrel')!.subject;
+  const selected = ledger.associations({ kind: 'entity', entity: moduleEntity(store, subject)!, role: 'topic', topic: 'exports' }, 'current')[0]!;
+  const production = ledger.begin({ producer: agentic() });
+  const delivered = production.association(selected.address, { content: true });
+  const codec = contributionProtocol.codec();
+  const encoded = codec.message({ ...input, responses: [{ tool: 'contribution', kind: 'association', value: delivered }] });
+  const value = (encoded.responses as { value: typeof delivered }[])[0]!.value;
+  const original = delivered.content[0]!.item, item = value.content[0]!.item;
+  assert.ok(original); assert.ok(item);
+  const body = original.body as { exports: string[]; reason: string | null }, encodedBody = item.body as typeof body;
+  assert.ok(body.exports.length > 0);
+  assert.notEqual(encodedBody.exports[0], body.exports[0]);
+  assert.deepEqual(encodedBody.exports, item.evidence);
+  assert.deepEqual(codec.tools({ requests: [{ kind: 'source', subject: encodedBody.exports[0] }] }),
+    { kind: 'tools', requests: [{ kind: 'source', subject: body.exports[0] }] });
+  // A Session-shaped reason is literal even when it equals an actual reference.
+  const literalItem = { ...original, body: { ...body, reason: body.exports[0] }, qualification: { ...original.qualification, limitations: [body.exports[0]] } };
+  const literalMessage = codec.message({ ...input, responses: [{ tool: 'contribution', kind: 'item', value: { item: literalItem } }] });
+  const wireItem = (literalMessage.responses as { value: { item: typeof literalItem } }[])[0]!.value.item;
+  assert.equal(wireItem.body.reason, body.exports[0]);
+  assert.deepEqual(wireItem.qualification.limitations, [body.exports[0]]);
+  const decoded = codec.submission({ investigrams: [{ key: 'copy', items: [wireItem] }] }, false);
+  assert.equal(decoded.kind, 'submit');
+  const copied = (decoded.contribution as { investigrams: { items: typeof literalItem[] }[] }).investigrams[0]!.items[0]!;
+  assert.deepEqual(copied.body, literalItem.body);
+  assert.deepEqual(copied.evidence, original.evidence);
+  codec.close();
+  ledger.abandon(production, 'Offline wire regression completed.');
+});

@@ -73,6 +73,7 @@ export function arrangeContributionView(content: ContributionAnswerContent | Con
   const qualificationGroups = [
     ...support.owners.map(owner => ({ source: owner.investigram, statements: [...qualified(owner.qualification), ...ownerReport(owner.report)], concerns: owner.producing })),
     ...support.items.map(item => ({ source: itemKey(item.address), statements: qualified(item.item.qualification), concerns: [] })),
+    ...support.metadata.filter(value => value.address.metadata === 'option').map(value => ({ source: JSON.stringify(value.address), statements: qualified(value.value.qualification), concerns: [] })),
     ...support.uses.map(use => ({ source: addressKey(use.address), statements: qualified(use.declaration.qualification), concerns: [...use.status.membership, ...use.status.producing] })),
   ].filter(group => group.statements.length || group.concerns.length);
   const page = options.revisionPage ?? 1;

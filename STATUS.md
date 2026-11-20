@@ -1,6 +1,6 @@
 # Project Status
 
-Last reviewed: 2026-11-18
+Last reviewed: 2026-11-20
 
 PostCode is currently available as a development CLI for investigating one
 configured TypeScript project.
@@ -83,7 +83,9 @@ exceptions have no remaining supported capability to cover.
 - **Hosted interpretation:** The following historical assessments concern the earlier
   instruction/representation revisions, not validation of the common dialog. M2
   [recorded trials](records/validation/structured-architectural-accounts/m2-trials/README.md)
-  remain its live evidence; M3/M4 verification is offline. [Formative assessments](records/validation/module-investigation/pass-01/report.md)
+  and focused M4 trials of [context authoring and invocation](records/validation/structured-architectural-accounts/m4-option-context-authoring.md)
+  and [deduplicated input delivery](records/validation/structured-architectural-accounts/m4-dialog14-live-regression.md)
+  provide live evidence for bounded common-dialog scenarios, not general reliability. [Formative assessments](records/validation/module-investigation/pass-01/report.md)
   show useful source-qualified summaries alongside omitted qualifications. A
   [subsequent reassessment](records/validation/module-investigation/pass-03/report.md)
   produced accepted summaries and an attributed documentation/source discrepancy

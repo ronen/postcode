@@ -1,4 +1,5 @@
 import { answerSupport } from './answer-support.js';
+import { answerSupportIdentity } from './support-identity.js';
 import type { AnswerSupport } from './answer-support.js';
 import { addressKey, itemKey } from './model.js';
 import { identityReference, methods, recordId } from '../identity.js';
@@ -111,8 +112,16 @@ export function selectContributionAnswer(store: ProgramRecordStore, ledger: Cont
   });
   const payload: Omit<ContributionAnswer, 'id'> = store.capture({ kind: 'contribution-projection', method: methods.contributionProjection, session, lens: selection.lens,
     subject: selection.subject, parameters: selection.parameters, question: { result: result.id, request }, alternatives, history, support: support.finish(), fulfillment: fulfillment?.status ?? null });
-  // Only the producing Session's namespace is normalized in the identity, so equal answers are equal independently of it.
-  const identity = JSON.parse(JSON.stringify(payload).replaceAll(session, 'session')) as unknown;
+  // Exact immutable owners identify content, provenance and the question. Only selection and
+  // captured derived status need value keys. Normalize reference positions, never literal text
+  // or operational input-exclusion metadata retained within the resolved evidence payload.
+  const ref = (id: RecordId) => identityReference(session, id);
+  const address = <T extends { readonly investigram: InvestigramId }>(value: T) => ({ ...value, investigram: ref(value.investigram) });
+  const identity = { kind: payload.kind, method: payload.method, lens: payload.lens, subject: ref(payload.subject), parameters: payload.parameters,
+    question: ref(payload.question.result), alternatives: payload.alternatives.map(alternative => ({ designation: address(alternative.designation),
+      uses: alternative.uses.map(address), items: alternative.items.map(item => address(item.address)), options: alternative.options.map(option => address(option.address)), unmet: alternative.unmet })),
+    history: payload.history.map(entry => ({ designation: address(entry.designation), displacedBy: entry.displacedBy.map(value => address(value.change)) })),
+    support: answerSupportIdentity(session, payload.support), fulfillment: payload.fulfillment };
   const answer = { ...payload, id: recordId(session, payload.kind, [identityReference(session, session), identity]) };
   store.put([answer]);
   return store.get(answer.id) as ContributionAnswer;
@@ -128,7 +137,7 @@ export function resolveContributionAnswer(store: Pick<ProgramRecordStore, 'get'>
 
 /** Qualification stays attached to its exact source; owner statements qualify that source's production. */
 export interface ArrangedQualification {
-  readonly kind: 'selected-content' | 'selected-use' | 'supporting-item' | 'bearer-identification' | 'displacement' | 'reconsideration' | 'inconsistency' | 'result-contract';
+  readonly kind: 'selected-content' | 'selected-use' | 'supporting-item' | 'bearer-identification' | 'displacement' | 'reconsideration' | 'inconsistency' | 'result-contract' | 'follow-up-option';
   readonly source: { readonly kind: 'item'; readonly address: ItemAddress }
     | { readonly kind: 'association' | 'declaration'; readonly address: DeclarationAddress }
     | { readonly kind: 'metadata'; readonly address: MetadataAddress };
@@ -148,7 +157,7 @@ export interface ArrangedAlternative {
   /** Every selected item not rendered, including each incompatible model and its full retained meaning. */
   readonly unpresented: readonly { readonly address: ItemAddress; readonly type: string; readonly reason: string;
     readonly bearer: string | null; readonly stateModel: StateModel | null }[];
-  readonly options: readonly { readonly address: MetadataAddress; readonly meaning: string; readonly operation: string; readonly resultContract: string | null }[];
+  readonly options: readonly { readonly address: MetadataAddress; readonly meaning: string; readonly operation: string; readonly resultContract: string | null; readonly qualification: ArrangedQualification }[];
 }
 export interface ContributionAnswerView {
   readonly answer: RecordId;
@@ -218,7 +227,10 @@ export function arrangeContributionAnswer(content: ContributionAnswerContent, ti
     };
     const selectedKeys = new Set(alternative.items.map(item => itemKey(item.address)));
     const displacedKeys = new Set(displacements.map(change => addressKey(change.address)));
+    const options = alternative.options.map(({ address, option }) => ({ address, meaning: option.meaning, operation: option.request.operation,
+      resultContract: option.request.resultContract, qualification: group('follow-up-option', { kind: 'metadata', address }, `Follow-up option: ${address.key}`, qualify(option.qualification)) }));
     const qualifications: ArrangedQualification[] = [
+      ...options.map(option => option.qualification),
       ...selectedItems.map(item => group(selectedKeys.has(itemKey(item.address)) ? 'selected-content' : 'supporting-item',
         { kind: 'item', address: item.address }, `${selectedKeys.has(itemKey(item.address)) ? 'Selected content' : 'Supporting item'}: ${item.item.key}`, qualify(item.item.qualification))),
       ...uses.map(use => group('selected-use', { kind: 'association', address: use.address }, `Selected use: ${use.address.declaration}`,
@@ -248,7 +260,7 @@ export function arrangeContributionAnswer(content: ContributionAnswerContent, ti
         }
         return [{ address: item.address, type: item.type, reason: `Selected ${item.type} content is retained but has no renderer in this arrangement.`, bearer: null, stateModel: null }];
       }),
-      options: alternative.options.map(({ address, option }) => ({ address, meaning: option.meaning, operation: option.request.operation, resultContract: option.request.resultContract })) };
+      options };
   });
   const drawn = alternatives.filter(item => item.diagrams.length).length;
   const unmet = projection.fulfillment === null ? 0 : projection.alternatives.filter(item => item.unmet.length).length;

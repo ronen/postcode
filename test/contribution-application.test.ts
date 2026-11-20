@@ -578,3 +578,38 @@ for (const lens of ['state-behavior', 'summarize']) test(`${lens}: returned with
   assert.deepEqual(first.content, historical); assert.deepEqual(returned.result.reporting, reportSnapshot);
   assert.equal(renderContributionView(view), rendered, 'report presentation needs no live Session or new standing lookup');
 });
+
+test('offered option qualifications survive direct and JSON arrangement and exact historical presentation', async t => {
+  const agent = new ScriptedDialogs([[input => ({ kind: 'submit', contribution: { investigrams: [{ key: 'offer', qualification: { limitations: ['OWNER_LIMIT'] },
+    items: [{ key: 'p', type: 'prose', body: { text: 'A qualified account.' } }],
+    declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: input.request.result },
+      members: [{ kind: 'item', item: { investigram: { local: 'offer' }, item: 'p' } }] }],
+    options: [{ key: 'next', meaning: 'Investigate further', qualification: { limitations: ['OPTION_ONLY_LIMIT: valid only for the hypothetical deployment.'] },
+      request: { operation: 'clarification', subjects: [{ subject: { kind: 'content', item: { investigram: { local: 'offer' }, item: 'p' } } }] } }] }] } })],
+    [input => ({ kind: 'submit', contribution: proseContribution(input, 'Later account without the old offer.') })]]);
+  const opened = await openApplication(fixture(t), { investigation: { dialogAgent: agent } });
+  assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
+  const session = opened.session; t.after(() => session.close());
+  const request = { kind: 'lens' as const, lens: 'summarize', designation: { kind: 'name' as const, value: 'breaker' } };
+  const first = answer(await session.execute(request));
+  const direct = arrangeContributionAnswer(first.content, first.result.title);
+  const offered = direct.alternatives[0]!.options[0]!;
+  assert.match(JSON.stringify(offered), /OPTION_ONLY_LIMIT/);
+  assert.deepEqual(offered.qualification.source, { kind: 'metadata', address: offered.address });
+  assert.ok(offered.qualification.statements.includes('OPTION_ONLY_LIMIT: valid only for the hypothetical deployment.'));
+  assert.ok(!offered.qualification.statements.includes('OWNER_LIMIT'));
+  assert.ok(offered.qualification.owner!.statements.includes('OWNER_LIMIT'));
+  assert.ok(!offered.qualification.owner!.statements.some(statement => statement.startsWith('OPTION_ONLY_LIMIT')));
+  const json = (value: typeof first) => arrangeContributionView(value.content, { title: value.result.title, presentation: { format: 'json', moreDetails: false } },
+    null, value.result.usage, new Map(value.result.bindings.associations)).view;
+  const view = json(first);
+  assert.match(renderContributionView(view), /OPTION_ONLY_LIMIT/);
+  assert.deepEqual(JSON.parse(renderContributionView(view)).summary.alternatives[0].options[0], offered);
+  assert.ok(view.qualification.some(group => group.source === JSON.stringify(offered.address) && group.statements.includes('OPTION_ONLY_LIMIT: valid only for the hypothetical deployment.')));
+  await session.execute({ ...request, fresh: true });
+  const exact = answer(await session.execute({ kind: 'present', target: first.projection.id }));
+  assert.deepEqual(arrangeContributionAnswer(exact.content, first.result.title), direct);
+  assert.deepEqual(json(exact).summary, view.summary);
+  await session.close();
+  assert.deepEqual(arrangeContributionAnswer(structuredClone(first.content), first.result.title), direct);
+});

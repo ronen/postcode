@@ -23,7 +23,7 @@ export const methods = {
   moduleIdentificationPolicy: 'postcode/module-identification-policy@1',
   nativeFindingPolicy: 'postcode/native-finding-policy@1',
   moduleExportsPolicy: 'postcode/module-exports-policy@1',
-  contributionProjection: 'postcode/contribution-projection@7',
+  contributionProjection: 'postcode/contribution-projection@8',
   contributionInspection: 'postcode/contribution-inspection@2',
   contributionDialog: 'postcode/contribution-dialog@14',
 } as const;

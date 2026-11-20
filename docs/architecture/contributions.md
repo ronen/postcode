@@ -70,8 +70,10 @@ exact causes and inconsistency reports; exact answers retain the old snapshot.
 Presentation discloses concerns with attributable grounds and qualifications, preserving
 precise references in structured output without exporting raw source bodies.
 
-Snapshot identity uses exact immutable item/declaration owners and captured derived
-status. Resolved evidence remains in the payload but is not independently re-keyed:
+Native and contribution-answer snapshot identity uses exact immutable item/declaration
+owners, selected question and content references, and captured derived status. Literal
+selection parameters remain verbatim; Session normalization applies only to known
+reference positions, never serialized prose or qualification text. Resolved evidence remains in the payload but is not independently re-keyed:
 its input capture can include operational output exclusions that do not change the
 provider's findings. Collection selection uses deterministic provider ordering, and
 native-use lookup indexes each selected Entity once rather than rescanning all its
@@ -236,3 +238,18 @@ Application reporting carries the producing attempt’s outcome, its own fulfill
 The hosted OpenAI transport is generic over a typed dialog protocol: two functions, one to request information and one to submit, plus the structural translation of that protocol's reference fields. Credentials, routes, streaming, usage reporting, failure classification and exchange capture are shared and unchanged. The original investigator protocol and the contribution dialog protocol are two such protocols; an agent identity records the contribution protocol in its configuration.
 
 The contribution protocol follows the [reference transport decision](../decisions/investigator-reference-transport.md). Identities travel as short handles from one private per-dialogue table. Translation is structural: a string at a designated reference key is an identity, and everything else is literal, including names, local keys, prose, labels, qualification text and scope descriptions that happen to contain an identity. An embedded program-evidence response is translated by the existing typed record traversal. An unknown handle in a reply stays explicitly unresolvable, so the dialog reports it unavailable or acceptance rejects it. An unparseable submission is still a submission, subject to validation and bounded repair.
+
+
+## Presentation and hosted reference preservation
+
+An offered follow-up option carries its own qualification alongside its exact metadata
+address, meaning, operation and result contract. Its owner's qualification is separately
+attributed rather than replacing the narrower option qualification. The CLI summary and
+qualification pages preserve this distinction from the answer's captured support, including
+when presenting an earlier answer after later history or Session close.
+
+The hosted contribution codec translates references inside known content bodies according
+to their type. In particular, `module-exports.body.exports` uses the same dialogue-local
+handles as its evidence references, and copied handles decode on submission. Reason text,
+qualification text and opaque bodies remain literal. These translations do not acquire
+content or alter exposure, acceptance or historical answers.

@@ -192,3 +192,44 @@ for (const contract of [null, stateDiagramContract, { id: 'test/designated-answe
     assert.equal(JSON.stringify(content), before);
   });
 }
+
+test('answer keys preserve Session-shaped literal parameters and retained support text', async () => {
+  const { store, ledger, subject, result } = await setup();
+  const literal = `Literal ${ledger.session} remains text.`;
+  const source = submit(ledger, agentic(), [{ key: 'source', qualification: q(literal), items: [{ key: 'p', type: 'prose', body: { text: literal } }] }]);
+  submit(ledger, agentic(), [{ key: 'answer', qualification: q('ANSWER'), items: [{ key: 'p', type: 'prose', body: { text: 'Supported answer.' }, support: [source.item('source', 'p')] }],
+    declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: result.id }, members: [{ kind: 'item', item: { investigram: { local: 'answer' }, item: 'p' } }] }] }]);
+  const select = (literal: string) => selectContributionAnswer(store, ledger, { lens: 'test-answer', subject, parameters: { literal }, result: result.id, contract: null });
+  const original = select(ledger.session), other = select('session');
+  assert.notEqual(original.id, other.id);
+  assert.equal(select(ledger.session), original);
+  assert.deepEqual(original.parameters, { literal: ledger.session });
+  const retained = original.support.items.find(value => value.address.investigram === source.investigram('source'))!;
+  assert.deepEqual(retained.item.body, { text: literal });
+  assert.deepEqual(original.support.owners.find(owner => owner.investigram === source.investigram('source'))!.qualification!.limitations, [literal]);
+  assert.equal(other.support.items.find(value => value.address.investigram === source.investigram('source'))!.item, retained.item);
+});
+
+test('contribution answer keys exclude operational output-exclusion capture while retaining it in support', async () => {
+  const { identityReference, recordId } = await import('../src/lib/identity.js');
+  const answers = [];
+  for (const exclusions of [[], [path.resolve('_verification/unused-answer-output')]]) {
+    const { store, evaluation, claims } = await discover(path.resolve('fixtures/exports/tsconfig.json'), exclusions);
+    const ledger = sessionLedger(store, evaluation.session), subject = claims.find(claim => claim.information.handle === 'barrel')!.subject;
+    const entity = moduleEntity(store, subject)!;
+    const { result, invocation } = ledger.invoke({ operation: 'controlled-answer', subjects: [{ role: null, subject: { kind: 'entity', entity } }], parameters: {}, context: [], resultContract: null });
+    const production = ledger.begin({ producer: agentic(), invocation: invocation.id, id: recordId(ledger.session, 'production', ['controlled-answer']) });
+    const module = store.get(subject); assert.equal(module.kind, 'module'); if (module.kind !== 'module') throw Error('Expected module');
+    production.supplied([module.claim]);
+    ledger.accept([{ production, contribution: { investigrams: [{ key: 'same', qualification: q('Same qualified account.'),
+      items: [{ key: 'p', type: 'prose', body: { text: 'Same meaning.' }, evidence: [module.claim] }],
+      declarations: [{ key: 'a', operation: 'add', target: { kind: 'result', result: result.id }, members: [{ kind: 'item', item: { investigram: { local: 'same' }, item: 'p' } }] }] }] } }]);
+    const selected = selectContributionAnswer(store, ledger, { lens: 'test-answer', subject, parameters: {}, result: result.id, contract: null });
+    answers.push({ key: identityReference(ledger.session, selected.id), item: identityReference(ledger.session, selected.alternatives[0]!.items[0]!.address.investigram),
+      inputs: selected.support.evidence.filter(record => record.kind === 'analysis-inputs') });
+  }
+  assert.equal(answers[0]!.item, answers[1]!.item);
+  assert.notDeepEqual(answers[0]!.inputs, answers[1]!.inputs, 'Operational input capture remains part of exact historical support');
+  assert.ok(answers[1]!.inputs.length > 0);
+  assert.equal(answers[0]!.key, answers[1]!.key);
+});

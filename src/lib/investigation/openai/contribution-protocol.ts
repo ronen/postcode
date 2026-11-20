@@ -8,7 +8,7 @@ import { hostedAgent } from './adapter.js';
 import type { OpenAIExchange, WireProtocol } from './adapter.js';
 import { InvestigatorReferences } from './references.js';
 
-export const contributionWireProtocol = 'postcode/contribution-dialog-wire@10';
+export const contributionWireProtocol = 'postcode/contribution-dialog-wire@11';
 
 /**
  * Reference positions of the contribution dialog. A string at one of these keys is an exact
@@ -114,6 +114,8 @@ export const contributionProtocol: WireProtocol<DialogInput, DialogReply> = {
       if (object.type === 'native-finding' && encodeNative) return { ...fields, body: { ...value,
         record: reference(value.record, `${path}.body.record`), finding: references.programRecord(value.finding as ProgramRecord, `${path}.body.finding`) } };
       if (object.type === 'module-identification') return { ...fields, body: { ...value, claim: reference(value.claim, `${path}.body.claim`) } };
+      if (object.type === 'module-exports') return { ...fields, body: { ...value,
+        exports: Array.isArray(value.exports) ? value.exports.map((entry, index) => reference(entry, `${path}.body.exports[${index}]`)) : value.exports } };
       if (object.type === 'state-model') {
         const entity = (value: unknown, at: string) => value && typeof value === 'object' && !Array.isArray(value)
           ? { ...value, ...(Object.hasOwn(value, 'entity') ? { entity: reference((value as Record<string, unknown>).entity, `${at}.entity`) } : {}) } : value;
