@@ -57,7 +57,11 @@ specification, approved plan or implementation authorization.
 - Shared higher-level accounts may provide common landmarks across reading routes.
   Their adequacy and the appropriate degree of convergence remain to be tested.
 
-### Decisions still needed
+### Open questions identified at the first checkpoint
+
+The human subsequently reprioritized these questions in the next section. This
+list preserves what prompted that clarification; it is not a required planning
+checklist or a set of prerequisites for beginning the first outing.
 
 - Concrete first scenario(s), available starting material and what understanding
   would count as a useful endpoint. Cockatiel remains a strong example, not a
@@ -78,10 +82,45 @@ specification, approved plan or implementation authorization.
   continuity, guidance and consistency; additional capability prerequisites and
   their sequencing before PRESENT/MINIGUI.
 
-The next useful scope decision is what qualifies as the first basic book: a
-concrete body of understanding and traversable connections substantial enough to
-test the agreed hypothesis. Existing account/diagram/follow-up trials support
-mechanism feasibility, not the usefulness or coherence of that whole experience.
+### Human priorities after taking stock
+
+The human's quick assessment refocused SLICE on the first capabilities of the
+magic-book mechanism, rather than a first specific book or prescribed journey
+about one chosen codebase. One or more favorite repositories can serve as places
+to try it; the product should not be targeted to them. Initial content concepts
+and diagrams can grow organically or methodically after the basic mechanism works;
+the Cockatiel examples are plausible starting material, not a specially selected
+product boundary.
+
+The human identified initial operations and ORGANIZE's responsibilities as useful
+open questions. They gave greater priority to coherence than to formalizing
+consistency across fresh investigations, emphasizing that PostCode assembles
+multiple accounts rather than necessarily reaching one answer. How those accounts
+are combined and presented is a central unresolved question. Reasonable
+cross-session consistency should remain in mind without becoming a separate
+formal acceptance exercise at this stage.
+
+Persistence and changed-input support appear noncritical for the first outing;
+the current preference is to get the experience working. Initial evaluation can
+be trying it out. Specific scripted journeys are problematic because actual
+inferences and emerging investigative routes cannot be known in advance. This
+does not claim usefulness has been established, or remove normal implementation
+verification; it changes how the initial product experience should be scoped
+and explored.
+
+The agent clarified that “the first basic book” should mean the first coherent
+capability set: a usable loop for generating, organizing, reading, connecting,
+extending and revisiting accounts. Concrete examples exercise that loop, rather
+than defining a required sequence of answers. The agent's earlier wording placed
+too much weight on selecting a particular scenario and understanding endpoint.
+
+The immediate scope discussion should therefore concentrate on operations,
+organization and assembly/presentation of multiple qualified accounts, with
+initial content sufficient to exercise those capabilities. No predetermined
+Cockatiel storyline, formal user study, persistent shared service or comprehensive
+concept catalogue has been selected as a prerequisite. Existing account/diagram/
+follow-up trials remain evidence about mechanisms rather than proof of the whole
+experience's usefulness.
 
 ## Working context
 
