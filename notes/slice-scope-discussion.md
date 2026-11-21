@@ -17,6 +17,18 @@ This checkpoint distinguishes working directions established in discussion from
 capability hypotheses and unresolved boundaries. It is not a formal adopted
 specification, approved plan or implementation authorization.
 
+Main's steering clarification (`0ac52c0`, 2026-11-21) was read directly from
+`main:steering/upcoming-work.md`. SLICE selects scope and identifies necessary
+work; it does not implement the experience and need not have its own implementation
+plan. New or modified investigations belong to conditional INVEST work, potentially
+several plans, ahead of presentation work dependent on their content. ORGANIZE
+supplies selected reference organization; PRESENT and MINIGUI handle detailed
+presentation and interface work. This discussion can identify page/guidance and
+follow-up information needs without selecting their implementation here. The
+human's preference for general book capabilities, representative testbeds and
+initial exploratory use remains the discussion's direction; this update does not
+reintroduce a fixed scripted journey as a prerequisite. No steering file was edited.
+
 ### Directions established
 
 - PostCode helps people understand the software through qualified architectural
@@ -723,6 +735,31 @@ content. A page can include described opportunities to expose further content,
 not only completed answers. Ordinary browsing uses available qualified material;
 explicit fresh investigation remains a distinct operation. This agreement does
 not settle the page schema, guidance implementation or detailed UI.
+
+### Surrounding context for a page
+
+The human proposed determining the surrounding context for any given page,
+potentially as part of guidance or organization, and asked to record the ensuing
+distinction: context helps readers understand the current treatment, whereas
+suggested next steps help them continue. The two overlap, but context should be
+useful without requiring the reader to follow a link.
+
+Organization can supply relationships across the developing book; contextual
+guidance can select and, where necessary, investigate the relationships that make
+a particular page intelligible. Newly established context can contribute back to
+organization. No exclusive subsystem assignment or separate agent is selected.
+Surrounding context may include broader treatments, important distinctions and
+related concerns. It is not necessarily a parent chapter and siblings, nor every
+referent one step away. Different treatments or approaches may call for different
+context.
+
+A candidate information need is: what context helps a reader understand this
+treatment? Existing organizational relationships and hints may support mechanical
+production, with interpretation where needed. Short orientation and substantive
+neighboring-topic previews are possible presentations, not a selected layout.
+This develops the original reference-book hypothesis: a reader entering directly
+at a relevant passage can immediately understand where they have landed; see-also
+links provide routes onward rather than carrying the entire contextual burden.
 
 ## Consequences to discuss after that choice
 
