@@ -599,6 +599,131 @@ that perspective the uniquely correct architecture, prevent other routes, or
 require a mandatory overview before direct lookup. The selection method and
 quality criteria remain to be scoped and tested.
 
+### Pages as developing book material
+
+The human distinguished the underlying entity/attribute and question-response
+population from a possible book-level collection of pages, with organization
+over those pages still to be determined. A subject could be a collection of
+items or entities. The previously suggested subject/concern/topic breakdown was
+exploratory wording, not an accepted taxonomy. The human asked whether pages
+could develop as further accounts accumulate and whether this fits adopted Views.
+
+The assistant's proposed distinction is between a recognizable, revisitable
+page and its particular displayed composition. A page could coordinate several
+qualified accounts; it need not equal one response or one newly synthesized
+answer. Its contents could develop without changing the exact retained accounts
+on which earlier presentations depended. New synthesis or inferred relationships
+would themselves require qualified analysis, rather than being invented by the
+display. This remains a proposal, not an adopted page object or lifecycle.
+
+The adopted product design already permits subjects that are collections and
+Views coordinating several Projections; it explicitly distinguishes changes in
+View composition or basis from rendering changes. Thus the book metaphor is
+compatible with those provisions. A revisitable page identity, rules for choosing
+its current contents, and update behavior are additional choices not settled by
+the View definition. More accounts becoming available need not automatically
+cause a page to change. Separating page composition from navigation among pages
+is useful for discussion, without requiring a fixed page population before
+organization begins.
+
+### Query-rooted pages without separate interpretive authorship (2026-11-21)
+
+The human proposed pages as entities or siblings of entities, potentially defined
+and modified by interpreting agents. This prompted discussion of inherited
+qualification, new synthesis and source consultation. No entity model or separate
+page-authoring responsibility was selected. The human also clarified that the
+adopted foundation may be deliberately revised if warranted; it should constrain
+thrashing, not prevent justified product development. No foundation change was
+requested.
+
+As a simpler exercise, the human proposed a page defined by a particular query's
+response(s) and traversal of their referents, displaying multiple responses as
+alternatives. Page assembly can then be non-interpretive even when the displayed
+content is interpreted. Expansion boundaries, treatment of complementary versus
+alternative material, and revisiting current selections versus exact earlier
+answers remain open.
+
+The human observed that recognizing another question's response as bearing on
+this one is already an interpreting-agent responsibility/affordance: answering
+one question can also address earlier questions. This challenges the need for
+a distinct interpretive page-authoring layer. A page could expose qualified
+connections and answer designations produced through ordinary investigation.
+Relevance alone need not mean a response is an alternative answer; the supplied
+relationship and the page's query meaning determine what is shown. This is a
+candidate mechanism for coherent developing pages, not evidence that discovery,
+selection, refresh or graphical presentation is already sufficient in practice.
+
+### Mechanically assembled pages with interpreted guidance
+
+The human proposed a `see also` affordance alongside follow-up options, pointing
+to existing entities or answers. Its useful meaning is navigation to identified
+subjects or available material, distinguished from proposing further investigation.
+A reason for the connection could supply a preview; relevance does not itself
+establish agreement, corroboration or alternative-answer standing. Whether existing
+association machinery suffices or new content is needed remains open.
+
+The human then suggested that a page interpreter could take responsibility for
+follow-up and see-also guidance, reducing the burden on account-producing agents.
+The assistant identified a possible distinction between investigators optionally
+contributing leads and another investigation selecting reader-facing guidance;
+leads discovered during source investigation could otherwise be lost or rediscovered.
+
+The human's intermediate proposal is a mechanically created page rooted in an
+answer, augmented by another agent examining that answer and related material
+to produce page-level guidance, potentially attached as attributes to the answer.
+This separates mechanical page composition from interpreted navigation without
+requiring an agent to rewrite or synthesize the main treatment. Guidance could
+develop as related material accumulates. Logical attachment need not mutate the
+original retained answer: attributable qualified information can be associated
+with it. The precise attachment scope (exact answer, question or page), refresh
+behavior, context supplied, and investigram representation remain design questions.
+This is a candidate scope direction, not implementation authorization or a settled
+requirement for a separate agent instance or execution phase.
+
+### Guidance queries and lazy book interaction
+
+Guidance can connect a local treatment to the emerging organization, using
+established relationships and potentially contributing further organizing
+interpretation. The human emphasized that guidance might be mechanical, agentic
+or mixed, using referents, follow-ups and possible see-also hints. The existing
+query boundary can hide that implementation choice. Define the information sought
+without prematurely requiring a guidance agent; implementations must preserve
+question meaning and disclose their methods and coverage.
+
+The discussion distinguished elaborating the current treatment from opening a
+separate connected treatment. The human proposed that the offered follow-up could
+declare this intended relationship, informing inline versus new-page placement.
+An elaboration can still require another query; visual form alone (for example,
+a diagram) does not determine placement. The assistant suggested this as semantic
+guidance for a presentation default, with actual fulfillment still assessed.
+No placement schema or UI has been selected.
+
+The human proposed retaining links between originating pages and follow-up pages.
+These conceptual/derivation links differ from navigation history; a destination
+can be reached from several origins without a mandatory single-parent hierarchy.
+The assistant proposed within-session back navigation restoring reading context;
+cross-restart persistence has not become a prerequisite.
+
+The human further proposed the same interaction for new investigation and retained
+results: offered follow-ups behave like available book content evaluated lazily.
+A missing diagram can be presented as an action to expose the diagram, rather
+than requiring the reader to choose an investigation procedure. This reinforces
+the pre-existing-book metaphor without claiming every offered treatment is already
+produced or guaranteed obtainable. Content-oriented actions can resolve to retained
+qualified material or new investigation. Waiting, inability, qualifications and
+material changes must remain intelligible; exact historic access and an explicit
+request to investigate afresh retain their separate meanings.
+
+The human agreed to record this interaction direction: readers ask to see content,
+and PostCode resolves reuse versus new production behind that action. Follow-up
+and see-also routes can therefore share a user-facing interaction even though
+their underlying targets and execution differ. Inline elaboration versus opening
+another treatment is a separate distinction from retained versus newly produced
+content. A page can include described opportunities to expose further content,
+not only completed answers. Ordinary browsing uses available qualified material;
+explicit fresh investigation remains a distinct operation. This agreement does
+not settle the page schema, guidance implementation or detailed UI.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and
