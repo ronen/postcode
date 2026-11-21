@@ -761,6 +761,24 @@ This develops the original reference-book hypothesis: a reader entering directly
 at a relevant passage can immediately understand where they have landed; see-also
 links provide routes onward rather than carrying the entire contextual burden.
 
+### Page composition behind the investigation boundary
+
+The human proposed deferring the choice of mechanical, agentic or mixed page
+assembly behind a page-composition investigation, given appropriate context.
+"Composition" was accepted as more accurate than "layout": the result specifies
+content and meaningful relationships, not screen geometry. This avoids allocating
+responsibility between original investigators, guidance and organization before
+understanding the desired output. Interpretation introduced by composition remains
+qualified information, not hidden renderer synthesis.
+
+The human requested a concrete Cockatiel exercise including diagrams and exposed
+detail. The [page-composition exercise](cockatiel-page-composition-exercise.md)
+uses the actual policy state account and breaker follow-up, explicitly distinguishes
+authored composition from generated content, and leaves concurrent-call interaction
+as an unfilled destination. It explores inline expansions, contextual previews,
+connected pages, return behavior and qualifications. It is a proposal for discussion,
+not an accepted page contract or new live validation.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and

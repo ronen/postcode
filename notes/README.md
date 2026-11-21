@@ -11,6 +11,7 @@ A document whose lifecycle prevents later editorial repair must not link to note
 ## Current notes
 
 - [SLICE scope discussion](slice-scope-discussion.md): actual-output evidence, starting-knowledge choices and open scope questions for the first useful graphical experience.
+- [Cockatiel page-composition exercise](cockatiel-page-composition-exercise.md): a concrete treatment using actual state accounts and diagrams, proposed detail and context, and lazy follow-up destinations.
 - [First graphical investigation slice](first-graphical-slice.md): reference-oriented experience and choices for the first offering.
 - [Architectural reference organization](architectural-reference-organization.md): candidate framework-generation capability, its boundaries and open questions.
 - Review consolidation: [resolution map and aligned probes](structured-account-example/review-alignment.md) records the fresh review discussions, production-update timing, precise inconsistency reports and referent discovery.
