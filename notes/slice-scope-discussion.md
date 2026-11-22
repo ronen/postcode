@@ -1288,6 +1288,57 @@ investigation. This sharpens the relation to foundation terminology without choo
 an implementation mapping or amending the foundation. It also keeps interpretive
 composition in the investigation model rather than treating it as hidden rendering.
 
+### Reuse existing investigation identity
+
+The human challenged the proposal's claim that a precise identity/reference
+mapping remained to be specified. The existing request-equivalence and Query-result
+mechanism already distinguishes the continuing investigation from particular
+invocations and retained answers, including fresh execution of the same question.
+The proposal now directly uses that identity rather than inventing a new open
+identity problem or discussing general semantic matching in the page definition.
+Existing lifecycle limits remain those of the supporting mechanism; no broader
+identity capability is implied.
+
+### Name the composition result consistently
+
+The human identified ambiguity between the model calling the Lens result "a
+page's content" and the components section referring to "the composition itself".
+The proposal now names the result consistently **page composition**: the qualified
+selection of page components and their roles/relationships, obtained through the
+page-composition Lens. Page content describes the material it presents, not a
+second distinct Lens result. The composition and component material can be
+addressed/revised independently, while the page's continuing identity remains
+the underlying investigation's identity.
+
+### Propose Page Component as an identified category
+
+The human proposed making the component model concrete: **Page Component** as
+a category adjacent to Entity and the query-side identity, sharing the attribute
+mechanism. The proposal now uses the existing repository term **Query result**
+for that adjacent identity (the organizing identity for answers, distinct from a
+particular response). Page Components would have identities with qualified
+associated content/descriptive information, using existing addition, supersession
+and withdrawal semantics. Existing response material can be reused through
+associations rather than copied into new explanations.
+
+This replaces the proposal's earlier statement leaving the component category
+entirely open. It is an explicit proposed extension: current association targets
+are Entities and Query results, so Page Component support is not already delivered.
+No governing document or implementation has been changed. Particular content
+contracts and how a composition selects components still need clarification;
+the category proposal does not settle physical storage or execution strategy.
+
+### Propose Page and Page Component as adjacent identified categories
+
+The human extended the category proposal to include **Page** as well as **Page
+Component**, alongside Entity and Query result with shared qualified attributes
+and associations. The proposal now makes both categories explicit. The Page's
+identity remains determined by the underlying investigation; separate composition
+results are qualified information about that Page, not new Page identities solely
+because the selected material changed. Page Components can be reused across
+compositions. This clarifies identity versus current descriptions without selecting
+a storage mapping, altering governing documents or implementing the extension.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and

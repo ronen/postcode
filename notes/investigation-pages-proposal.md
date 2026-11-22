@@ -35,56 +35,40 @@ part of the reference book. It adds a title, orientation, expansions, and connec
 to broader and related treatments. The underlying investigation determines the
 page's identity; other investigations may supply the additional material.
 
-**A page's content is the qualified result of applying a page-composition Lens
-to its underlying investigation, using the selected responses and relevant context.**
-Its presentation is a book-style View.
+**A page composition is the qualified result of applying a page-composition Lens
+to the underlying investigation, using the selected responses and relevant context.**
+It identifies the material for each page component. Its
+presentation is a book-style [View](../foundation/product-design.md#view).
 
-The underlying investigation is a continuing question, not a particular execution
-or response. Responses and compositions can change without necessarily creating a different
-page. Exact earlier material remains distinguishable. Different routes can reach
-the same identified investigation; similar titles or wording alone do not prove
-that two requests are the same investigation. The precise identity/reference
-mapping remains to be specified without requiring general semantic equivalence.
-
-An entity page follows the same model: its underlying investigation is an
-**entity-overview investigation**, and the entity is its subject. An entity page
-need not introduce a second kind of page identity or imply a new agent call.
-
-In the foundation's terminology, a particular result of the composition Lens is a
-[Projection](../foundation/product-design.md#projection), retaining the selected
-material and its basis and qualifications. A [View](../foundation/product-design.md#view)
-presents that information. A later composition can produce a new retained result
-for the same page's underlying investigation. This distinguishes the page's
-continuing identity from the identity of a particular composition result.
-Composition that introduces interpretation is qualified analysis, not merely a
-rendering rule. This is a proposed application of the foundation concepts, not an
-amendment of their definitions or a selected implementation mapping.
+The page uses the underlying investigation's
+[existing identity](../docs/decisions/qualified-answers-over-contributions.md#answer-identity-and-request-reuse),
+which is distinct from a particular execution or response. Responses and
+compositions can change while the page remains associated with that investigation.
+Exact earlier material remains distinguishable.
 
 ## Page components
 
 | Component | Meaning in the working model |
 | --- | --- |
-| Title | A descriptive response title supplied by the investigator, reused or replaced with a page title by composition. Wording is the investigator's judgment, not a rule about whether titles must restate questions or conclusions. |
+| Title | The title of the page. It may be supplied by the underlying investigation or authored for the page based on that investigation and its broader context. |
 | Orientation | An explanation of the frame and distinctions a reader needs to understand this treatment. Relevant broader treatments can inform it; it is not merely a summary of the answer. |
 | Main content, including expansions | The treatment of the underlying question, with further material that belongs within that treatment. It may include prose, structured explanations and diagrams. |
-| Broader-context links | Connections to more encompassing treatments: "see upwards", potentially in several perspectives. |
+| Broader-context links | Connections to more encompassing treatments, potentially from several perspectives. |
 | See-also links | Connections to other relevant treatments, without necessarily asserting a broader/narrower relationship. |
 
-Scope, basis and qualifications belong to responses, components and composition.
-They are not necessarily a separate page section; visibility and presentation
-are UI concerns, subject to preserving consequential meaning.
+We propose **Page** and **Page Component** as categories of identified object
+alongside Entity and Query result, using the same qualified attribute/association
+mechanism. A Page's identity is determined by its underlying investigation;
+particular compositions are qualified information about that Page. Page Components
+identify the constituent material and can be reused across compositions.
 
-Components must be referable and retain attributable meaning through reuse,
-amendment and replacement. Their exact representation is open: attributes,
-content items, associations and responses may serve different roles. Making a
-component addressable does not require making it an Entity.
-
-The **composition itself** is also qualified, addressable, revisable material.
-It establishes the selected constituents and their roles/relationships in a
-treatment. The material and its use are distinct: an explanation reused as
-orientation on one page need not acquire that role everywhere. Independent
-revision of a component does not automatically establish the coherence of a
-composition that uses it.
+Both categories have associated content and descriptive information, retaining
+applicable scope, basis and qualifications. They can reuse existing response
+material through qualified associations rather than duplicate it. Attributes can
+be added, superseded or withdrawn through the existing association semantics,
+preserving earlier content and its uses. This extends the existing mechanism;
+it does not classify pages or components as entities in the software under study.
+How qualifications are presented remains a UI concern.
 
 ## Expansions, connections and lazy content
 
@@ -110,8 +94,10 @@ Current **follow-up options** package qualified executable requests, not page
 placement decisions. They can support expansions or other-page destinations.
 The proposed **see also** meaning concerns relevance rather than whether a result
 has already been produced. It needs a destination investigation, or enough
-information to resolve one; an entity reference can lead to its entity-overview
-investigation. An exact historical answer remains a different selection from a
+information to resolve one. When a link or selection calls for a page about an
+entity, the proposal supplies a standard **entity-overview investigation** applied
+to that entity. Its page follows the same model as any other investigation's page.
+An exact historical answer remains a different selection from a
 page's current response material.
 
 Connections between originating and follow-up treatments belong to the reference
@@ -167,7 +153,7 @@ composition can interpret and preserve its relationship to the response?
 ### Entity overview
 
 **Purpose:** introduce an identified entity and the useful understanding available
-about it. This is an underlying investigation, not a separate page mechanism.
+about it. This is the standard investigation for opening a page about an entity.
 
 **Inputs:** the entity and applicable context/basis.
 
