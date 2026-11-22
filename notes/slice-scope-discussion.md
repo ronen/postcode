@@ -863,6 +863,71 @@ The assistant offered "treatments realized by qualified responses" as a conceptu
 description while leaving the target model open. This does not adopt a new
 treatment record, make responses Entities, or settle page identity and lifecycle.
 
+### Where the example's orientation comes from
+
+The human asked what supported the authored orientation and whether composition
+provides it or delegates it. Its three distinctions draw on the retained fresh
+policy account: instance-local state from its applicability statement; delegation
+of the opening decision from Closed behavior and transition T1; and policy state
+versus individual-call progress from the explicit concurrency limitation. The
+retained breaker follow-up further supports distinguishing delegated criterion
+state from caller-owned circuit modes. No fresh source inspection or existing
+orientation field supplied that paragraph. Selecting these distinctions as useful
+orientation and joining them in prose were the assistant's composition judgments.
+
+The assistant's proposal is that page composition is responsible for supplying
+adequate orientation when needed, without prescribing its producer. It could
+reuse supplied explanatory content, interpret the available accounts itself, or
+request orientation through another investigation. Delegation remains behind the
+agreed investigation boundary. Broader organization is relevant when explaining
+the page's place in the book, but the example's local scope distinctions do not
+require it. Novel substantive claims need qualified investigation; a gap should
+not be filled merely to make the introductory text read smoothly. This allocation
+is a proposal, not yet a settled separate orientation capability.
+
+### Emerging page content template
+
+The human and assistant agreed that examining broader treatments can improve the
+judgment of what orientation a reader needs: the local answer supplies facts and
+scope, while broader contexts help select relevant distinctions and prerequisites.
+For the Cockatiel example, circuit breaking, admission control and concurrent
+execution could each motivate different emphasis. The assistant proposed a useful
+default orientation across relevant broader contexts without assuming the reader
+has absorbed a particular arrival page; route-sensitive emphasis remains optional.
+
+The human identified an emerging general page template: **title, orientation,
+main content including expansions, broader-context links, and see-also links**.
+Navigation history, label/preview presentation and similar UI choices are outside
+this immediate discussion. This is a page-content organization, not a fixed set
+of architectural concepts to impose on every investigation. Proposed investigations
+can appear as not-yet-materialized expansions or connected treatments, consistent
+with lazy book interaction; they need not form a separate user-facing section.
+
+The human suggested that each component could be an Entity, response or other
+kind of thing carrying ordinary qualification and update/amendment/replacement
+behavior. The assistant agrees with separately addressable, attributable material
+and qualified relationships, but does not infer that every part requires a new
+Entity or Query result. Existing attributes, content items, associations and
+qualified responses may fill different roles. The object model remains open.
+
+The assistant identifies scope/basis and consequential qualifications as
+cross-cutting requirements of the template, rather than necessarily another
+content section. Alternatives or disagreement must remain intelligible within the
+main treatment where present. Material's membership and role in a composition are
+also decisions: reusing an explanation as supporting detail versus orientation
+does not alter the source explanation, but changes its use. Independently revised
+parts must remain compatible in basis and scope; current pages may develop while
+earlier exact content/compositions remain distinguishable. These observations are
+design implications for discussion, not a selected schema or live-refresh policy.
+
+The human agreed that the **page composition itself** can be one of these
+addressable, qualified, revisable components, potentially with its own type.
+It identifies selected material and the roles/relationships through which that
+material forms a treatment. This makes composition available for examination
+and revision, rather than leaving it implicit in display behavior. Its exact
+representation remains open; no new Entity kind, content type or lifecycle
+mechanism has been selected.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and
