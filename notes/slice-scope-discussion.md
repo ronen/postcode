@@ -29,6 +29,33 @@ human's preference for general book capabilities, representative testbeds and
 initial exploratory use remains the discussion's direction; this update does not
 reintroduce a fixed scripted journey as a prerequisite. No steering file was edited.
 
+### Evolved remit: page model and investigation contracts
+
+The human clarified the evolved remit on 2026-11-22: clarify **a page as a View
+of an investigation**, its decomposition into component parts and investigations,
+and the **contract of each investigation**. How those investigations fulfill
+their contracts belongs to INVEST and other subsequent work. This clarification
+controls how the earlier broader scope questions in these notes should be read;
+they are not all unfinished obligations of this discussion.
+
+The intended result is a coherent conceptual model and sufficient semantic
+contracts to explain what each investigation supplies and how the pieces fit.
+Contracts can identify the question/purpose, required subjects and context,
+qualified output and relationships, and the meaning of incomplete or unavailable
+results. They need not prescribe wire schemas, algorithms, prompts, agent
+allocation, acquisition/scheduling strategy or detailed presentation. A boundary
+may accommodate mechanical, agentic or mixed fulfillment. Responsibility for
+supplying information is distinct from prescribing which agent produces it.
+
+Continue by identifying which responsibilities need independent investigation
+contracts and which can be satisfied by supplied components within another result.
+The working candidates include the underlying investigation (including entity
+overview), page composition, orientation/contextual guidance, book organization,
+and interpretation of multiple accounts. This is not a decision to require a
+separate operation or execution for every named component. Expansions, see-also
+and broader-context relationships need clear meanings and target/input references;
+their production and UI realization remain outside this task's remit.
+
 ### Directions established
 
 - PostCode helps people understand the software through qualified architectural
@@ -68,6 +95,70 @@ reintroduce a fixed scripted journey as a prerequisite. No steering file was edi
   the architectural organization, and repeated interpretation need not be identical.
 - Shared higher-level accounts may provide common landmarks across reading routes.
   Their adequacy and the appropriate degree of convergence remain to be tested.
+
+### Page-model checkpoint and remaining scope questions (2026-11-22)
+
+The accumulated discussion now supplies a working page model: a book-style View
+identified by its **underlying investigation**, with qualified response material
+and composition. The template comprises title, orientation, main content with
+expansions, broader-context links and see-also links. Investigations supply
+descriptive response titles; composition may choose its own page title. The
+current main-content policy proposal reuses a single account and calls for
+interpretation to produce a coherent treatment of multiple accounts while keeping
+alternatives and unresolved relationships distinguishable. Qualification belongs
+to components and composition, with presentation deferred.
+
+Composition owns expansion versus other-page placement, informed by advisory
+investigator hints. Expansions belong conceptually to the current page; broader
+context and see-also lead to other pages. Selecting content and requesting
+explanation starts another investigation/page. Content can be retained or lazily
+obtained through the same book interaction. Entity pages use an entity-overview
+investigation. Whether overview, guidance, organization or composition is
+mechanical, agentic or mixed remains behind the investigation boundary.
+
+The assistant's current assessment of the substantive remaining scope questions:
+
+This list preceded the subsequent evolved-remit clarification above. Retain its
+questions only insofar as they help establish the page model, decomposition and
+investigation contracts; it does not mandate further implementation scoping or
+mechanism design here.
+
+- **Organization:** what framework is initially produced, from what material, and
+  how does it establish useful broader treatments and cross-connections? Existing
+  answers, proposed but unmaterialized investigations and mechanical entity
+  inventory can play different roles. Establishing enough context to open a useful
+  first page should not require completing the whole book first.
+- **Entry and investigative choices:** what does an entity overview need to supply,
+  and which operations are available on entities or selected account content?
+  Distinguish meanings such as clarification, deeper examination and investigating
+  an applicable architectural concept without requiring an exhaustive catalogue.
+- **Inadequate accounts:** which continuations belong in the first offering when
+  content is incomplete, unhelpful or questionable? Existing fresh investigation
+  and recording feedback differ from conveying a specific objection to an agent.
+- **Developing-book coherence:** how are existing investigations found and reused
+  across routes, and what causes composition/organization to be reconsidered as
+  accounts accumulate? Underlying-investigation identity supplies an anchor, but
+  does not by itself recognize equivalent separately offered questions or ensure
+  orientation and broader links remain appropriate. The required first behavior
+  is a scope question; matching algorithms, scheduling and notification UX are not.
+- **The first capability cut:** after these meanings are clear, choose a modest
+  set sufficient to try the loop and identify INVEST/ORGANIZE/PRESENT/MINIGUI work.
+  Decide whether an explicit small architectural vocabulary/reference seed is
+  needed immediately. This is not a demand for a definitive investigation/diagram
+  catalogue, a prescribed Cockatiel journey or a formal user study.
+
+The assistant recommends discussing ORGANIZE next, because the page side is now
+substantially clearer while broader context, entry routes and shared treatments
+still depend on what the framework supplies. The human corrected the assistant's
+description of other matters as "deliberately deferred": they are outside this
+scope discussion's remit, not an outstanding queue of decisions for this task.
+Exact schemas, producer allocation and UI layouts/indicators belong to subsequent
+design/implementation work. Persistence, changing targets, shared services and
+formal fresh-session consistency are not part of the selected first experience
+at present; only a material capability need would make their inclusion/dependency
+relevant to SLICE, not their detailed design. Prose-directed access remains intended
+but can follow the basic book. Initial assessment remains trying actual emergent
+investigations, not predicting their answer sequence.
 
 ### Open questions identified at the first checkpoint
 
@@ -1152,6 +1243,15 @@ investigation is its underlying investigation and identity anchor. A separate
 entity-only page kind is not needed for this proposal. The overview's exact content
 contract and entity-link resolution remain to be specified; this agreement does
 not claim that the operation is implemented or authorize implementation.
+
+### UI aside: searchable index of visited pages
+
+The human suggested a searchable index of all visited pages. This is a candidate
+way to rediscover explored treatments, distinct from navigation history and the
+reference framework's organization of broader or as-yet-unvisited material. Its
+scope is visited pages; it does not imply exhaustive indexing of the potential
+book or require cross-session persistence. Detailed indexing, search and display
+behavior remain UI work.
 
 ## Consequences to discuss after that choice
 
