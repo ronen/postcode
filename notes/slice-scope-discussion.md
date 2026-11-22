@@ -1017,6 +1017,142 @@ composition without implying that it supplies every component. Identity follows
 the continuing question, not a particular execution or response. The Cockatiel
 exercise now uses this definition explicitly.
 
+### Main-content synthesis was an evidence accommodation, not a demonstrated need
+
+The human questioned why the example rewrote main content instead of using the
+underlying investigation's generated prose. Inspection confirms that current
+`stateBehaviorGuidance` explicitly requests a prose item explaining behavior,
+reasoning and limits alongside the structured model. The harness separately saves
+full answers and diagram text; the committed M2 `.txt` specimens used in the
+exercise are the latter. Live records, including focused option verification and
+review elicitation, document answers with both model and explanation. The full
+prose of the selected specimen was not available in the exercise's preserved input.
+
+The assistant therefore corrects the inference: hand-authored main content
+compensated for incomplete available evidence, not an established inability of
+the investigation to produce useful prose or a demonstrated page-composition
+requirement. Its suitability cannot be judged from the model export. The example
+has been annotated accordingly. The proposed default is to reuse the underlying
+response's explanation, with additional synthesis justified by an actual need
+(such as coordinating several complementary accounts), not imposed merely to
+turn an answer into a page. This default remains a proposal for discussion.
+
+### Proposed single-account / multiple-account main-content policy
+
+The human proposed a definite policy: with one account, present it directly;
+with multiple accounts, an inferencing agent produces a unified treatment and
+judges whether the accounts are complementary and can be combined, or alternatives
+that should remain presented as such. This supersedes the assistant's preceding
+suggestion that multiple-account interpretation be optional as the working proposal
+under discussion. It is not implementation authorization or an adopted contract.
+
+The assistant supports the distinction, interpreting "unified" as one coherent
+treatment rather than necessarily one agreed conclusion. The single-account rule
+concerns main explanatory content; title selection, orientation, expansions and
+context composition still apply. The multiple-account interpretation should
+preserve selected sources and qualifications, may combine compatible contributions,
+and should explain alternatives or unresolved relationships without forcing a
+choice or silently superseding originals. It may find shared ground alongside
+remaining disagreement. Inability to establish the relationship is a legitimate
+qualified outcome, not permission to invent coherence.
+
+Account counting should concern the current explanatory answers selected for the
+underlying investigation, not the number of contributing investigrams or content
+items; one answer can already assemble several such records. The synthesized
+treatment is composition-supporting output over identified inputs, not automatically
+another peer input that triggers repeated synthesis of itself. Exact input scope
+and representation remain to be specified. The policy's cost/reliability tradeoff
+is an additional interpretive dependency for multiple-account pages, accepted
+only as a proposed content policy here; no live evidence has tested it.
+
+### Expansions versus destinations and selection-based explanation
+
+The human proposed that **expansions conceptually add or expose material on the
+same page**, while **see-also and broader-context links open their own pages**.
+The UX determines how same-page expansion and separate-page presentation appear;
+these are content relationships, not requirements for particular windows or panels.
+The human also proposed selecting material within a page and choosing an operation
+such as "explain", resulting in a new page. The assistant supports this as a clear
+working distinction consistent with investigation-based page identity.
+
+An offered expansion is explicitly part of the current treatment, whether its
+material is already retained or obtained lazily. A selection-based explanation
+asks a new question about selected content and therefore has its own underlying
+investigation/page, with the originating content and relationship preserved.
+This does not require a fresh page every time an existing explanation is revisited.
+Identity/reuse follows the actual supported request, not matching labels alone.
+The distinction depends on the declared operation/relationship, not merely the
+word "explain": an offered expansion can itself contain explanatory detail.
+Its availability as a diagram versus prose likewise does not decide placement.
+
+### Follow-up mechanics versus book relationships
+
+Inspection of the current follow-up contract confirms that an option supplies a
+qualified, exactly identified executable request with meaning, subjects/context,
+references and optional result requirements. It does not declare whether the
+result elaborates the current page or belongs to a separate treatment. Invoking
+an option is distinct from independently investigating a current selection.
+
+The assistant proposes separating **how material is obtained** from **its role in
+the book**. An expansion can expose retained content or invoke a follow-up request
+to obtain elaboration; see-also and broader-context links identify separate page
+treatments, likewise retained or evaluated lazily. Thus follow-up need not be a
+fourth visible page category. Supplied hints or qualified composition can establish
+elaboration versus a separate related treatment, and organization can establish
+broader/narrower scope. Diagram/prose form and current availability do not establish
+those relationships.
+
+The initial see-also proposal (references to existing entities/answers) consequently
+needs refinement for page navigation: a destination must identify or resolve to an
+underlying investigation, with the source relationship and its qualification.
+An Entity reference alone names a subject, not the investigation/page to open;
+an exact answer remains useful as a historical selection, distinct from the current
+page of its underlying investigation. This is a content-contract clarification for
+discussion, not a selected schema or newly implemented routing capability. Existing
+exact option identity is not replaced by matching similar labels or request text.
+
+### Composition owns placement; entity pages as a candidate
+
+The human clarified that the underlying investigator may supply hints, but the
+page-composition agent decides whether material belongs as an in-page expansion
+or a link to another page. Original hints are advisory; the composer has the
+broader treatment/context needed for that decision. This allocates responsibility
+without changing the earlier openness to mechanical, agentic or mixed realization
+behind the composition investigation boundary.
+
+The human proposed another useful kind of page: a presentation of an Entity.
+The assistant sees a useful entry point for direct entity lookup and entity
+referents. In the current model, the Entity supplies identity; names,
+descriptions and other information are qualified associated material. A human
+entity page would present selected understanding about it rather than just its
+identity record or an indiscriminate dump of every association.
+
+One proposed fit with the current working model is an entity-overview investigation
+(for example, "what is this entity, and what do we know about it?") whose response
+can be selected mechanically from existing material. The entity page is then the
+book-style View of that investigation. Entity-only see-also hints could resolve
+through a designated overview route, while more precise hints continue to name
+particular investigations. This does not presume an extra inferencing call or
+that the overview/default-route capability is already implemented.
+
+The alternative is an entity-anchored page independent of any underlying
+investigation, extending the working identity model to two page kinds. Neither
+mapping is selected yet. The assistant favors exploring the overview-query fit
+first because it preserves one account/composition model without inventing a
+separate rendering or qualification regime. Entity-page content, default selection
+and their relationship to the broader reference framework remain open.
+
+### Entity-overview investigation selected as the working model
+
+The human agreed to model an entity page through an **entity-overview
+investigation**, with mechanical, agentic or mixed implementation behind the
+investigation boundary as for other investigations. This resolves the preceding
+choice in favor of the same page model: the Entity is its subject, and the overview
+investigation is its underlying investigation and identity anchor. A separate
+entity-only page kind is not needed for this proposal. The overview's exact content
+contract and entity-link resolution remain to be specified; this agreement does
+not claim that the operation is implemented or authorize implementation.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and

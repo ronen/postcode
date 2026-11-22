@@ -28,6 +28,14 @@ The [trial record](../records/validation/structured-architectural-accounts/m2-tr
 describes production, captured-source interpretation, limitations and revision.
 The artifacts are not independent verification of the implementation's behavior.
 
+Crucially, these committed `.txt` specimens are **text renderings of state models,
+not the complete explanatory responses**. The trial harness saves full answers
+separately in its uncommitted capture. Current state-behavior guidance explicitly
+asks for a prose explanation alongside the model, and live-trial records document
+model-plus-prose answers. The complete prose of this particular specimen was not
+available in the material used for this exercise. Its absence here is not evidence
+that the operation cannot supply page-ready explanation or that its prose was poor.
+
 All page titles, short explanations, previews, grouping, proposed actions and
 connections below are authored for this exercise. They illustrate possible
 composition output; they are not retained output from a page-composition agent.
@@ -113,11 +121,13 @@ Whether orientation is reused, authored by composition or delegated remains open
 
 ### Main content: candidate explanatory synthesis
 
-The underlying material supplies four state descriptions, ten transitions and
-scope/coverage limitations. The paragraph sequence below is one possible treatment
-of that material. **It is newly authored synthesis, not existing generated prose.**
-The choice between selecting a suitable existing explanation, composing one, or
-supporting both is the next open question in the walkthrough.
+The preserved model rendering supplies four state descriptions, ten transitions
+and scope/coverage limitations. The paragraph sequence below is one possible
+treatment of that material. **It is newly authored synthesis, not existing
+generated prose.** It compensates for not having the complete original response
+in this specimen; it does not demonstrate that composition needs to rewrite a
+normal state-behavior answer. The operation already asks for explanatory prose.
+Whether a particular full response benefits from further synthesis remains open.
 
 > In Closed, the policy admits work and reports its outcome to the configured
 > breaker. When that breaker's failure criterion calls for opening, the policy
@@ -139,14 +149,20 @@ supporting both is the next open question in the walkthrough.
 The source selections are Closed/T1, Open/T2, HalfOpen/T3–T4, Isolated/T5–T10 and
 the entry qualification. An alternative composition could select a suitable
 retained prose explanation and the structured model without authoring this
-summary. The preserved model text alone does not demonstrate that such an
-explanation already exists in the desired form.
+summary. The preserved model text alone cannot establish the quality or suitability
+of the original response's prose. A sensible candidate default is to reuse that
+explanation; this exercise supplies no empirical reason to reject that default.
 
 ### Main-content expansions
 
 An expansion identifies additional material developing this treatment. Its form
-of exposure is a UI decision. Requesting it can resolve to retained material or
-new production; that distinction does not change the requested content.
+of exposure is a UI decision, but it conceptually belongs on the same page.
+Requesting it can resolve to retained material or new production; that distinction
+does not change its role. Broader-context and see-also destinations have their own
+pages. Independently selecting content and requesting "explain" creates another
+underlying investigation and a connected page (or revisits its retained treatment),
+rather than being an expansion solely because the selected content came from here.
+These distinctions do not prescribe windows, panels or navigation controls.
 
 | Expansion | Selected material / information requested | Availability in this exercise |
 | --- | --- | --- |
@@ -406,7 +422,11 @@ not invisible work by the renderer.
 ## Where to resume the walkthrough
 
 Title, orientation, broader context and the general page/composition model have
-been discussed. Resume with **main content**: what must the underlying investigation
-supply, what may composition select or synthesize, and what makes material a main
-explanation rather than an expansion? The candidate paragraph sequence above makes
-that open choice explicit; this revision does not decide who should produce it.
+been discussed. Main-content discussion has now clarified that the underlying
+operation already asks for explanation as well as structured diagram content;
+the authored paragraph sequence compensates for incomplete preserved evidence,
+not a demonstrated shortcoming of those explanations. Continue with whether to
+use the underlying response's explanation as the default main content, when
+composition would need substantive synthesis, and how main content relates to
+expansions. Assessing the actual prose requires a complete response, not just its
+model rendering; no new live investigation is authorized by this note.
