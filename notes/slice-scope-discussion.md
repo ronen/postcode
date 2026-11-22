@@ -779,6 +779,90 @@ as an unfilled destination. It explores inline expansions, contextual previews,
 connected pages, return behavior and qualifications. It is a proposal for discussion,
 not an accepted page contract or new live validation.
 
+### Response titles and two kinds of surrounding context (2026-11-22)
+
+The exercise's actual underlying operation was `state-behavior` on the
+`circuit-breaker-policy` module with a state-diagram requirement. Its main specimen
+comes from a fresh investigation of that question. The assistant supplied the
+page composition by hand; "admission and recovery" was an editorial focus, not
+the original operation's explicit question. Whether composition may choose such
+a focus or should receive it as part of its request remains open. A narrower
+page title should describe the selected treatment accurately rather than conceal
+the broader account's isolation and initialization content.
+
+While examining the Cockatiel composition exercise, the human and assistant
+settled on requiring a descriptive title for the explanatory response, expressed
+as an associated attribute. The investigating agent chooses the wording; no extra
+rule distinguishes a question-like title from a response-specific title. Page
+composition can reuse it or supply a different page title. This is a discussion
+decision for the intended capability, not an implemented field or adopted schema.
+
+The human clarified that the original surrounding-context idea chiefly meant
+structural context: which chapter or chapters contain the treatment, or "see
+upwards", as distinct from the more lateral associations of "see also". The human
+also found the example's orienting prose useful and asked whether both should be
+present. The assistant proposes distinguishing structural placement/links to
+broader treatments from a short explanation of the page's scope and connections.
+Several qualified broader contexts may coexist without a single-parent hierarchy.
+Navigation origin is separate: arriving through a page does not establish that
+page as an architectural parent. The need for both kinds of context does not
+require both to occupy substantial space on every page or new prose when the
+structural labels already orient the reader adequately. This proposal remains
+open for discussion.
+
+### Orientation, broader context and reference organization (2026-11-22)
+
+The human preferred **orienting explanation**, or simply **orientation**, for
+the short explanation that helps a reader understand the current treatment.
+**Broader context** is the proposed term for locating that treatment among more
+encompassing explanations; **broader treatments** could label its destinations.
+These names distinguish two information needs without requiring two large,
+mandatory page sections. The original example supplies orientation but does not
+yet demonstrate the proposed broader-context links.
+
+The human proposed that the organization/framework link related explanations,
+optionally indicating that one is broader than another. Broader context could
+then be derived from a partial ordering of that graph. The assistant qualified
+that the ordering would concern broader/narrower relationships, not every link:
+support, contrast, follow-up origin and other see-also relationships have different
+meanings. A more detailed explanation can have the same scope as a shorter one;
+detail alone is not narrower scope. A broader treatment need not contain all the
+content of its narrower treatments. Several broader frames may coexist, and many
+pairs of treatments need not be comparable. The ordering's exact semantics and
+consistency rules have not been selected.
+
+Once relationships are supplied, a presentation can derive upward routes
+mechanically. Composition may choose a readable neighborhood, such as nearby
+broader treatments with onward routes, rather than show every ancestor. This
+does not require a single chapter tree. The working responsibility distinction
+is: organization establishes relationships, composition selects their exposure,
+and orientation explains what the reader needs to understand locally. Those are
+responsibilities, not mandated separate agents or execution stages.
+
+The human further distinguished **organizing entities** from **organizing query
+responses**. The current model distinguishes Entities from Query results and
+retained answers; answers are not automatically a subtype of Entity. The book
+framework could organize explanatory responses, whereas an architectural structure
+would organize the things being explained. Reference relationships such as broader,
+narrower, complementary or contrasting are not the software's containment,
+ownership, responsibility or dependency relationships. For example, placing a
+recovery explanation within a broader circuit-breaker treatment does not assert
+that the implementation contains a separate recovery component.
+
+This suggests scoping the book framework as **reference organization**, without
+requiring a comprehensive architectural organization of the codebase first.
+Individual investigations may still establish architectural relationships needed
+for their explanations; the two kinds of organization can inform one another.
+No new general entity-organization effort was selected in this discussion.
+
+An unresolved identity issue remains: do reference-organization links attach to
+exact responses, questions, revisitable pages, or some combination? A developing
+page can outlive a particular answer; a replacement response does not automatically
+inherit every organizing relationship merely by addressing the same question.
+The assistant offered "treatments realized by qualified responses" as a conceptual
+description while leaving the target model open. This does not adopt a new
+treatment record, make responses Entities, or settle page identity and lifecycle.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and
