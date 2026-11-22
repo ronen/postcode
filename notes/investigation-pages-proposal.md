@@ -24,9 +24,7 @@ page is presented is outside its scope.
 Algorithms, prompts, allocation among agents, scheduling, storage and wire schemas
 belong to INVEST and other subsequent work. Detailed UI presentation and navigation
 belong to PRESENT/MINIGUI. These are outside this proposal's remit, not unresolved
-tasks for this discussion. The investigation boundary can hide mechanical,
-agentic or mixed fulfillment; naming a responsibility does not require a separate
-agent, operation or execution phase.
+tasks for this discussion.
 
 ## Working page model
 
@@ -81,30 +79,29 @@ Diagrams are a form of explanatory content, not a separate component role. They
 can supply main content, an expansion or contextual explanation; a diagram is not
 automatically an expansion.
 
-## Page-composition Lens responsibilities
+## Page-composition investigation responsibilities
 
-The page-composition Lens takes an underlying investigation and its responses and
-determines how to form a page within the overall book context. It consults the
-book organization and can contribute new or revised organizing relationships as
-it situates the treatment. Those contributions retain their qualifications.
-Its responsibilities for each page component follow; how it fulfills them remains
-behind the investigation boundary.
+The page-composition investigation takes an underlying investigation and its
+responses and determines how to form a page within the overall book context. It
+consults the book organization and can contribute new or revised organizing
+relationships as it situates the treatment. Those contributions retain their
+qualifications. Its responsibilities for each page component follow.
 
 ### Title
 
-The Lens chooses a single title for the page. It has the underlying investigation's
+The investigation chooses a single title for the page. It has the underlying investigation's
 suggested title and broader-context information available to it, and can reuse
 that title or author one suited to the page's place in the book.
 
 ### Orientation
 
-The Lens supplies a unified explanation of the frame and distinctions a reader
+The investigation supplies a unified explanation of the frame and distinctions a reader
 needs to understand this treatment, informed by relevant broader treatments.
-Orientation is not merely a summary of the answer.
+Orientation typically provides more context than a summary of the answer alone.
 
 ### Main content
 
-The Lens supplies the main treatment of the underlying question. It may include
+The investigation supplies the main treatment of the underlying question. It may include
 prose, structured explanations and diagrams.
 
 With a **single account**, use its explanatory content directly. Composition
@@ -128,7 +125,7 @@ unending synthesis; its role in composition must be explicit.
 
 ### Expansions
 
-The Lens selects additional material to expose on the same page, or requests to
+The investigation selects additional material to expose on the same page, or requests to
 obtain it, as a collection of expansions. An expansion can reference the part of
 the main content it elaborates, or concern the treatment as a whole.
 
@@ -137,13 +134,13 @@ part of the content contract; its visual attachment or placement is a UI choice.
 
 ### Broader-context links
 
-The Lens supplies a collection of links to more encompassing treatments in the
+The investigation supplies a collection of links to more encompassing treatments in the
 book organization, potentially from several perspectives. Each link leads to
 another investigation's page.
 
 ### See-also links
 
-The Lens supplies a collection of links to other relevant treatments, without
+The investigation supplies a collection of links to other relevant treatments, without
 necessarily asserting a broader/narrower relationship. Each link leads to another
 investigation's page. Relevance, rather than whether a result has already been
 produced, determines this role. A link needs a destination investigation, or enough
@@ -178,10 +175,21 @@ Connections between originating and follow-up treatments belong to the reference
 structure, distinct from the reader's navigation history. Detailed navigation,
 searchable visited-page indexes, labels and preview display are outside this remit.
 
+## Proposed changes to existing investigations
+
+The following changes concern the outputs of existing investigations. The
+guidance details below are proposals for discussion, not settled schemas.
+
+| Area | Proposed change |
+| --- | --- |
+| Response titles | Require a descriptive title associated with an explanatory response, chosen by its investigator. It is available as a suggested page title. |
+| Related-material guidance | Add optional suggestions identifying relevant entities, investigations, answers or selected content, with an explanation of the connection. These suggestions do not decide page placement. |
+| Follow-up guidance | Retain the existing qualified executable request and any promised result form. Clarify the information about relevance and source material that composition needs to use the suggestion. Existing meaning/references may carry some of this; a new placement field is not assumed. |
+
 ## Investigation contract sketches
 
-These distinguish responsibilities. They do not yet select which responsibilities
-need independent queries or which can be fulfilled within another investigation.
+These sketch the information requirements and results for the investigation
+responsibilities described above.
 
 ### Underlying investigation
 
@@ -195,13 +203,37 @@ can use in their work; it does not take responsibility for solving their task.
 context under that investigation's contract.
 
 **Supplies:** qualified explanatory response material with a descriptive title,
-required structured content, and supported optional leads such as follow-ups or
-see-also references. A diagram requirement needs appropriate semantic content;
-rendering cannot reconstruct omitted meaning.
+required structured content, and optional guidance identifying related material
+or proposing follow-up investigations. A diagram requirement needs appropriate
+semantic content; rendering cannot reconstruct omitted meaning.
 
-**Open:** what common expectations should all book-facing investigations meet,
-beyond their specific content contracts? What information must a lead carry so
-composition can interpret and preserve its relationship to the response?
+**Proposed guidance contract:**
+
+- **Related material:** identify a relevant entity, investigation, exact answer
+  or content selection, and explain its connection to the current account.
+- **Follow-up investigation:** supply the existing executable request, its
+  question and any promised result form, with enough explanation of its relevance
+  for composition to understand why it is being offered.
+- **Source connection:** where a suggestion concerns a particular part of the
+  response, identify that part. A suggestion can instead concern the account as
+  a whole. This can help composition associate an expansion with main content,
+  without declaring that the suggestion must become an expansion.
+- **Qualification:** preserve the qualification of the relevance judgment and
+  referenced material through the normal mechanism. A suggested connection is
+  not evidence of agreement or corroboration.
+
+These suggestions are optional, not an exhaustive inventory of everything worth
+reading. The investigator supplies relevant connections it has identified while
+answering its question. Composition decides whether to include them, whether they
+belong as expansions or other-page links, and whether to supplement them. Reserve
+**see also** for that page-component role; call the investigator's reference-based
+suggestions **related material** to avoid assigning them a destination in advance.
+
+**Open:** is this sufficient guidance for composition? Which target and source
+reference forms are needed? How much is already expressible in current option
+meaning/references, and what new semantic information must be carried? These
+questions do not yet prescribe a new serialization or a mandatory field on every
+option.
 
 ### Entity overview
 
@@ -219,18 +251,16 @@ is known? What lets an entity reference unambiguously select this investigation?
 
 ### Page composition
 
-**Purpose:** the page-composition Lens requests a coherent book treatment of the
-underlying investigation. Its fulfillment can use other investigations without
-prescribing a separate producer or execution for every component.
+**Purpose:** compose a coherent book treatment of the underlying investigation.
 
 **Candidate inputs:** the underlying investigation and its selected responses,
 available component material and hints, and relevant organizational context.
 
 **Supplies:** a qualified composition identifying material for each page component,
 and any qualified contributions to book organization, under the
-[responsibilities above](#page-composition-lens-responsibilities).
+[responsibilities above](#page-composition-investigation-responsibilities).
 
-**Open:** which inputs must be supplied versus requested through other contracts?
+**Open:** what context must be available to fulfill this contract?
 What exactly is selected when several current accounts exist? What can the
 composition return when context or interpretation is incomplete? Which changes
 make an existing composition require reconsideration, as a semantic dependency
@@ -248,9 +278,7 @@ treatments, and supplied links/leads.
 and proposed connections or investigations. Finding useful connections can also
 contribute information to organization; the relationship need not be one-way.
 
-**Open:** is this a distinct investigation, several investigations, or part of
-composition's result contract? How do we distinguish required local orientation
-from optional broader guidance without requiring a separate execution for each?
+**Open:** how do we distinguish required local orientation from optional broader guidance?
 What is meaningful when no broader treatment is yet available?
 
 ### Reference organization / framework
@@ -284,8 +312,7 @@ the algorithm for discovering a useful organization is not part of this proposal
 **Supplies:** a treatment preserving meaningful agreement, complementary content,
 alternatives and unresolved relationships, with attributable use of the inputs.
 
-**Open:** is this a separate investigation or a responsibility within composition?
-What is the result contract when no useful reconciliation/comparison is established?
+**Open:** what is the result contract when no useful reconciliation/comparison is established?
 What qualifies as a single versus multiple account input to this responsibility?
 
 ## Evidence and limits of the example

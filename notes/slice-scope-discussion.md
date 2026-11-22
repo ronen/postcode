@@ -1409,6 +1409,60 @@ composer's use of broader context; the later contract sketch references it rathe
 than repeating the conceptual introduction. Producer implementation remains behind
 the investigation boundary.
 
+### Inventory of investigation changes and separation of guidance from placement
+
+The human requested an inventory of proposed investigation changes and identified
+two uses of "see also": guidance from underlying investigations versus the final
+page component. The proposal now inventories response titles, related-material
+guidance, follow-up guidance clarification, page composition, entity overview,
+book organization and supporting responsibilities whose separate contracts remain
+open. It distinguishes these from existing prose/model, qualification, reference,
+follow-up and reuse capabilities and notes the proposed association-target extension.
+
+The assistant proposes reserving **see also** for the page role and naming
+underlying reference suggestions **related material**. A suggestion identifies a
+target (entity, investigation, answer or selected content), explains its relevance,
+and can identify the part of the originating response to which it relates.
+Follow-ups keep their executable requests and promised forms, with sufficient
+relevance information. All retain ordinary qualification. These are optional
+connections, not a duty to anticipate the entire book; no expansion-versus-page
+placement field is required from the underlying investigator. Composition can
+include, omit, supplement or place suggestions. This candidate guidance contract
+is recorded for discussion, not treated as a settled schema or changed implementation.
+
+### Composition now requires interpretation
+
+The human observed that the proposed title, orientation, multiple-account treatment,
+broader-context and expansion-versus-see-also decisions call for an inference
+agent rather than purely mechanical composition. The proposal now explicitly
+states that fulfilling the general composition remit requires interpretive
+judgment. Earlier openness to wholly mechanical composition is narrowed by the
+responsibilities since assigned to it. Reuse of qualified components/results and
+delegation remain possible; presenting a retained composition need not rerun an
+agent. Supporting investigations can still be mechanical, agentic or mixed. The
+allocation and execution of inference remain outside this proposal's remit.
+
+### Investigation performs the composition work
+
+The human proposed using **page-composition investigation** rather than
+**page-composition Lens** when describing its responsibilities, and explicitly
+noted that this applies whether the implementation is agentic or mechanical.
+The proposal now attributes choosing/supplying component material to the
+investigation. The formal definition still uses the Lens application to describe
+the qualified result; no general equation of "investigation" with agent execution
+is intended. The responsibility heading and its links were updated consistently.
+
+### Keep composition execution unstated in the proposal
+
+The human clarified that the proposal can leave implicit whether composition is
+agentic and whether one investigation obtains all components or supporting
+investigations are composed. They expect agentic work and suspect a single
+investigation may suffice, without selecting that implementation. The proposal
+therefore removes its explicit inference-agent requirement and questions treating
+execution decomposition as unresolved work for this remit. It retains the required
+component judgments and information contracts. This changes what the proposal
+specifies, not the earlier assessment that those judgments require interpretation.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and
