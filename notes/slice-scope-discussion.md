@@ -928,6 +928,71 @@ and revision, rather than leaving it implicit in display behavior. Its exact
 representation remains open; no new Entity kind, content type or lifecycle
 mechanism has been selected.
 
+### Pages as Views, with future pinning and comparison
+
+The human revisited whether a page fits the foundation's View concept, proposing
+future pinned/live pages and a "what changed" investigation producing a page
+relating earlier pages. The foundation already permits Views coordinating multiple
+qualified Projections across subjects/bases, identifiable composition and basis
+changes, and qualified comparisons using earlier Projections as input. The
+assistant therefore proposes treating the displayed book page as a kind of View,
+with its qualified composition and constituent accounts as underlying information.
+This does not equate an interpretive composition result with a Presentation rule.
+
+Two kinds of evolution matter: the target software can change, and accumulated
+understanding/composition can change over the same target state. Pinning the input
+state alone does not freeze the explanation; preserving exactly what was read is
+a distinct selection. A live page could obtain later qualified compositions and
+accounts rather than mutate earlier retained answers. Exact binding, refresh,
+continuity and pinning behavior remain future design choices, not capabilities
+selected for the first slice.
+
+Comparison could explain changes in the software, changes in PostCode's account,
+or both, while distinguishing them. It would use identified prior compositions,
+accounts and bases, adding qualified comparison findings rather than inferring
+architectural change merely from changed prose or layout. A comparison treatment
+can itself use the same page template and link back to its inputs. The remaining
+question is the continuing identity/lifecycle of a revisitable page versus its
+particular retained compositions and displayed states. No foundation change or
+new page/View identity rule has been adopted through this discussion.
+
+### Continuing page identity follows the investigation, not its response
+
+The human clarified the preferred experience when understanding changes over
+unchanged software: appropriate notification and access to history/changes,
+rather than routinely pinning to an outdated understanding. Exact earlier accounts
+remain useful historical references; detailed notification and history UI are
+deferred. This preference does not imply that every newly produced alternative
+automatically supersedes earlier understanding.
+
+For continuing identity, the human proposed that the page supplies the response
+to a specific investigation, dressed as a complete book page, and explicitly
+clarified that identity attaches to the **investigation, not the specific response**.
+The assistant interprets this as the continuing investigative question/request,
+not a particular execution attempt. Responses and compositions can change while
+the page continues to address that investigation. This aligns conceptually with
+the existing distinction between Query-result identity and particular invocations,
+designated content and captured answers. It does not yet select an exact storage
+mapping or establish cross-state/cross-session identity, semantic equivalence of
+different requests, or equivalence between independently authored follow-up options.
+
+### Working page model agreed
+
+The human accepted the working model: **a page is the book-style View of a
+particular investigation, with its current qualified response material and
+composition**. Its continuing identity follows the investigation/question, not a
+specific response or execution attempt. This is agreement in the scope discussion,
+not adoption of a schema, lifecycle implementation or foundation amendment.
+
+The human also confirmed that scope, basis and qualifications belong to the
+response, the page components and the page/composition itself. They are part of
+the content model, not a required extra page section. How visibly they appear,
+including possible summaries/icons of the kind explored in steering's candidate
+material, is deferred to UI/UX work. The human prefers avoiding intrusive displays
+when unnecessary. This discussion selects neither an icon scheme nor a blanket
+rule to hide qualifications; the presentation must still preserve consequential
+meaning under the adopted contracts. No candidate steering file was modified.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and
