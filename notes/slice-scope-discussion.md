@@ -11,6 +11,12 @@ The human requested discussion of the first useful graphical investigation
 experience, using actual structured-account outputs alongside the authored journey,
 with working notes here and a plan only after scope has been worked out.
 
+The [investigation-pages proposal](investigation-pages-proposal.md) now collects
+the current model and contract sketches for continued discussion. This file keeps
+the exploratory rationale and evolution; the [Cockatiel exercise](cockatiel-page-composition-exercise.md)
+provides the concrete specimen. The proposal does not promote these notes into
+governing material or authorize implementation.
+
 ## Current scope checkpoint
 
 This checkpoint distinguishes working directions established in discussion from
