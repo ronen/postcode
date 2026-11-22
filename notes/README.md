@@ -10,9 +10,9 @@ A document whose lifecycle prevents later editorial repair must not link to note
 
 ## Current notes
 
-- [Investigation pages: working proposal](investigation-pages-proposal.md): current page model, component responsibilities and investigation-contract questions for continued SLICE discussion.
+- [Reference-book experience: working proposal](investigation-pages-proposal.md): book organization, page model, component responsibilities and investigation contracts for continued SLICE discussion.
 - [SLICE scope discussion](slice-scope-discussion.md): actual-output evidence, starting-knowledge choices and open scope questions for the first useful graphical experience.
-- [Cockatiel page-composition exercise](cockatiel-page-composition-exercise.md): a concrete treatment using actual state accounts and diagrams, proposed detail and context, and lazy follow-up destinations.
+- [Cockatiel page-composition exercise](cockatiel-page-composition-exercise.md): a walkthrough of the current book model using actual state accounts and diagrams, illustrative organization, offered expansions and lazy destinations.
 - [First graphical investigation slice](first-graphical-slice.md): reference-oriented experience and choices for the first offering.
 - [Architectural reference organization](architectural-reference-organization.md): candidate framework-generation capability, its boundaries and open questions.
 - Review consolidation: [resolution map and aligned probes](structured-account-example/review-alignment.md) records the fresh review discussions, production-update timing, precise inconsistency reports and referent discovery.

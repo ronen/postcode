@@ -1463,6 +1463,491 @@ execution decomposition as unresolved work for this remit. It retains the requir
 component judgments and information contracts. This changes what the proposal
 specifies, not the earlier assessment that those judgments require interpretation.
 
+### Main-content policy uses existing Query-result values
+
+The human pointed out that the single/multiple distinction already comes from
+the current values associated with the underlying investigation's Query result.
+The proposal now states the policy in those terms, removing the informal-account
+terminology explanation, the purported unresolved input-population question and
+speculative synthesis-loop commentary. The existing mechanism supplies the
+designated values; an individual designation can select several content items.
+The related contract sketch now refers to those Query-result values as its inputs.
+
+### Sources of expansion candidates
+
+The human proposed limiting expansion candidates to guidance supplied with the
+underlying investigation's result. The proposal now identifies both follow-up
+options (requests for more investigation) and related-material suggestions
+(references to material that may elaborate the treatment) as sources. Composition
+selects which belong on the same page; it does not independently invent expansion
+requests. This narrows the earlier general permission to supplement guidance:
+book organization can still supply additional broader-context and see-also links.
+
+### Composition frames existing accounts within the book
+
+The human clarified the boundary of composition: it frames existing accounts in
+book context, rather than producing new accounts of the software, and can
+contribute to book organization. The proposal states this at the start of the
+responsibilities section. Orientation and joint treatment still derive explanatory
+text from existing accounts; composition does not investigate the software afresh
+or originate new explanatory investigations. Both see-also and broader-context
+links can draw on follow-ups, related-material suggestions and book organization.
+Organization is expected to be the main source of broader contexts, with composition
+judging whether the destination actually supplies a more encompassing treatment.
+The orientation/guidance sketch is aligned with this boundary.
+
+### Expansion material remains distinct from main content
+
+The human clarified that composition chooses whether material, either already
+supplied or obtainable through a follow-up, belongs as additional material on the
+current page. The proposal consistently calls this "additional material" and
+avoids "expose" as a definition of the content role. Main content derives from the
+underlying investigation's current result values; composition cannot promote
+follow-up or related-material candidates into main content. Those candidates can
+supply expansions or links.
+
+### Separate composition responsibilities from UI considerations
+
+The human identified "Connections and lazy content" as a miscellaneous section
+whose useful composition points belong in the responsibilities introduction.
+The proposal moves advisory investigator hints and the standard entity-overview
+investigation there, retaining a brief statement that expansion/link material need
+not already exist. A separate UI-concerns section collects presentation,
+navigation, selection/explanation, lazy access, qualification/history display and
+prose-directed access considerations for future UI work. The old section and
+repeated explanations are removed.
+
+### Retire duplicated investigation contract sketches
+
+The human observed that much of the contract-sketch section was no longer needed.
+The proposal removes repeated purpose/input/output descriptions now covered by
+composition responsibilities and proposed investigation changes. It also removes
+separate orientation and joint-treatment sketches that suggested an unchosen
+execution decomposition. The useful source-connection detail moves alongside
+proposed investigation changes. A short remaining-questions section preserves
+book-organization interfaces, context requirements and reconsideration, entity
+coverage, and guidance reference needs. The discussion order is updated to match.
+
+### Specify changes to the investigation contract against existing support
+
+The human requested framing the changes as changes to the existing investigation
+contract, removing the redundant placement qualification and identifying exactly
+what follow-up guidance lacks. Inspection of the accepted structured-explanation
+decision, FollowUpOption/Member/SubjectRef types, authoring instructions and wire
+schema confirms that options already retain meaning, executable requests, optional
+specialized result contracts, references and qualification. Current instructions
+require the specific question, but not an explicit explanation of relevance.
+The proposal strengthens the meaning requirement to include relevance and uses
+existing references for source items/association uses, with their connection
+explained in the meaning. This requires no new field. Independent component-level
+source references are not currently supported: component selectors belong to
+subjects/context, which identify investigation inputs. Such an extension is not
+required by the present proposal. The broad open question about existing follow-up
+support is replaced by the remaining target-reference question for related material.
+
+### Explicit source selection for both kinds of guidance
+
+The human agreed to an optional selection identifying the part of the reply a
+suggestion concerns, then suggested replacing follow-up `references` rather than
+adding a second field. Inspection found generic item/association references that
+are validated, retained and delivered with the option, but no separately specified
+purpose requiring their preservation alongside source selection. The existing
+test's reference points at the state model being elaborated. Invocation obtains
+its subjects and additional input from the request, not from this reference list.
+The proposal now gives both related-material and follow-up guidance an optional
+source selection, supporting an item, addressable component or association use,
+and proposes replacing the generic follow-up references. This supersedes the
+earlier choice to rely on generic references without extending their contract.
+The review establishes current documented/implemented use, not certainty about
+the field's original design intent. No implementation or adopted contract changed.
+
+### Entity-overview remit and elaborating an existing answer
+
+The human placed entity-overview coverage with the overview investigation rather
+than this proposal; it can investigate the entity rather than merely summarize
+what is already known. The corresponding open question is removed. The human
+also proposed an elaborate investigation given an existing investigation, which
+could enrich its answer through association replacement. This is a candidate for
+improving the current page's main treatment, distinct from an expansion that adds
+material alongside it. Under existing association semantics, such work can
+contribute new content and supersede exact result designations for the original
+Query result; it does not replace that Query result's identity or erase earlier
+content. The page remains associated with the original underlying investigation.
+Replacement is a qualified judgment, not an automatic consequence of producing
+a longer answer; complementary or alternative contributions remain possible.
+The human agreed with this distinction and use of association semantics. The
+proposal now includes elaboration as a way to develop the existing main treatment,
+separate from expansions. Detailed operation and execution design remain outside
+this agreement.
+
+### Reconsideration and recomposition after elaboration
+
+The human raised whether elaboration would flag the page through needs
+reconsideration or whether the UI would request recomposition directly. Existing
+rules can give the producing composition a reconsideration cause when an acquired
+answer association is displaced, or when an answer is added within an acquired
+Query-result inventory scope. Merely holding a reference does not create that
+exposure. This is a cause-bearing warning, not proof that the composition is wrong
+and not an automatic rerun. The UI can request recomposition after elaboration;
+application coordination determines execution/reuse. Reconsideration remains useful
+for changes produced through other routes. No elaboration-specific invalidation
+mechanism is needed in the page proposal on this account.
+
+### Updating page inputs and distinguishing current status from retained Projections
+
+The human requested clarifying that changes to a page's inputs can prompt another
+page-composition investigation. The working model now states this for responses,
+component material and organizational context, preserving page identity and exact
+earlier results. They also asked whether another investigation replacing component
+material makes the presentation out of date rather than the Projection. Existing
+rules preserve the Projection's captured selections and qualification unchanged;
+fresh access supplies later standing/reconsideration separately. A live page can
+therefore disclose that it displays earlier material, but rendering cannot silently
+substitute new component values into the retained Projection. Displaying revised
+material requires a newly constructed qualified answer. Fresh selection and
+construction may suffice when the existing composition still applies; changes
+affecting composition judgments may require another composition investigation.
+This is not a new mutable stale flag on a Projection or an implemented live-View
+refresh mechanism. PageComposition/PageComponent remain proposed categories.
+
+### Inventory of proposed investigations and first-slice elaboration scope
+
+The human requested a list of proposed investigations and noted that elaborate
+need not be included in the first slice. The proposal now lists page-composition,
+entity-overview and elaborate, with that scope qualification. Book organization
+is separately acknowledged as required with its investigation contract still open;
+orientation and joint treatment remain composition responsibilities rather than
+separately proposed investigations.
+
+### Opening a page develops its immediate surrounding context
+
+The human agreed that opening a page should include developing enough surrounding
+context to situate it, rather than depending entirely on previously generated
+accounts. A useful treatment can become available while its context develops;
+a destination can be offered before its full account exists. Missing context is
+a fallback, not the intended result merely because no earlier user generated it.
+How organization and composition fulfill this experience remains for discussion.
+
+### Restore the graph model of book organization
+
+The human recalled the earlier graph of explanatory responses/pages, with optional
+broader-than directionality and possible follow-up-to relationships. The proposal
+now states the graph model explicitly. Broader-than is an explanatory relationship;
+follow-up-to preserves an originating connection, distinct from navigation history.
+The precise identity of graph endpoints remains an open contract question. The
+assistant recommends stable underlying-investigation identities for book navigation,
+with particular response/composition versions qualifying the relationships, rather
+than requiring a new graph node for every response revision. That refinement has
+not yet been agreed.
+
+### Proposed content organization tags
+
+The human proposed content organization tags to distinguish multiple organizations
+of the book. Tags could be assigned to responses/pages/nodes, and broader-than
+relationships could be qualified by particular tags. Assignment belongs to book
+organization or page composition, rather than the underlying investigator,
+because the tags express topics relevant to the developing book as a whole.
+This remains a proposed extension rather than a settled tag schema or node model.
+The assistant distinguishes node membership in an organizing topic/perspective
+from an explicitly asserted broader-than relationship within it: shared tags do
+not imply relative breadth, and overlapping tags alone do not define different
+organizations. The proposal can support multiple organizations by qualifying
+relationships as well as tagging nodes. Organizing components would need to share
+the meaning/identity of tags rather than independently invent synonymous labels.
+
+### Allow topic and perspective tags without separate categories
+
+The human agreed that organization tags can identify both topics and perspectives
+and proposed leaving their usefulness to the organization investigation. The
+proposal now includes tags on nodes and tag-qualified broader-than relationships,
+assigned by book organization or page composition, with shared meanings within
+the book. It does not introduce separate topic/perspective categories: no current
+contract requires different behavior for them. Exact tag representation remains
+unspecified.
+
+### Perspectives select tagged nodes and their contextual ordering
+
+The human proposed expressing multiple perspectives by filtering nodes by content
+tags and arranging them by partial ordering. The proposal now states this, with
+the ordering drawn from broader-than relationships in the selected context.
+Unrelated nodes need not be comparable. Different contexts can order the same nodes
+differently, so a union of tag selections does not automatically supply a single
+valid combined partial order. Follow-up relationships remain separate from breadth.
+
+### Perspective selection as presentation
+
+The human asked whether perspective selection belongs only to the UI or also
+affects analysis, leaning toward UI only. The proposal takes that working direction:
+analysis establishes tags and qualified relationships, and presentation selects
+and arranges the supplied graph. The UI's selected tags are not investigation
+parameters. Changing perspective therefore does not automatically rewrite title,
+orientation or main content. Organization and composition still reason about
+topics/perspectives when producing relationships and explanations; this is
+distinct from depending on the user's current display selection. The graph is
+supplied through qualified Projections rather than discovered by rendering from
+mutable accumulated state. Requesting additional graph material remains a request
+for information, distinct from filtering supplied material.
+
+### PageComposition identities as graph nodes, qualified results carrying tags
+
+The human proposed that book-graph nodes be PageComposition identities, with tag
+assignments carried by results so later investigations can revise them. This
+refines the earlier endpoint discussion: a PageComposition identity is already
+determined by its underlying investigation, so using it as the book node preserves
+the same continuing page identity while expressing the book-level role directly.
+The proposal now uses these nodes and treats tags as qualified attributes supplied
+by results, revisable through the association mechanism. It allows a node to be
+identified before full composition, preserving lazy destinations. A tag revision
+does not require a new node or a rewritten underlying architectural account;
+fresh qualified selection can capture current assignments. The endpoint-identity
+question is removed from the remaining book-organization questions.
+
+### Introduce the book before the detailed page and graph models
+
+The human broadened the proposal's stated purpose from defining a page to making
+concrete the reference-book experience, and requested introducing book organization
+before the page model. The proposal's title and purpose now reflect that remit.
+Book organization starts with pages, relationships and tags, then introduces the
+graph and relationship kinds. Page model follows, without "Working" in its heading.
+Graph identity, qualified tag assignments and perspective filtering are collected
+after Page components, where PageComposition has been defined. This also records
+the agreed ability to establish a PageComposition association target before its
+content exists, then populate the same object through subsequent investigations.
+
+### Tags are PageComposition attributes rather than page components
+
+The human agreed that book organization tags belong directly to PageComposition
+as qualified attributes rather than introducing another PageComponent role, and
+requested making this explicit. The PageComposition definition now distinguishes
+its component references from its tag attributes. Displaying tags in the UI does
+not require separate component identities.
+
+### Graph relationships as qualified PageComposition attributes
+
+The human asked whether relationships to other PageCompositions are themselves
+qualified attributes. The proposal now expresses graph relationships this way:
+the associated material identifies the related PageComposition, relationship
+meaning and applicable book tags, with normal qualification and association
+revision semantics. The graph is expressed through these attributes, while a
+page's broader-context/see-also components select organizing relationships for
+the treatment. No additional relationship-object category is introduced.
+
+### Consolidate the object definitions
+
+The human requested collecting the scattered PageComposition specification under
+Page components and composition, with separate object subsections and the diagram
+paragraph before them. The proposal now defines PageComponent and PageComposition
+there. PageComposition's stable investigation-based identity, ability to exist
+before content, component references, book tags, relationship attributes and
+association revision semantics are together. Organization graph and perspectives
+retains relationship/tag meaning and presentation behavior rather than repeating
+the object specification. The summary inventory and section link are updated.
+
+### Separate PageComponent content type from its role in a composition
+
+The human agreed to content type as the basis for component structure/schema,
+rather than fixing a role on PageComponent. The definition now distinguishes that
+type from the role in a PageComposition's mapping, preserving reuse of a component
+in different roles across pages. Existing content types should be used where
+applicable; no separate duplicate type system is prescribed.
+
+### Follow-up relationships as context for organizing investigations
+
+After questioning a concrete UI use for follow-up-to relationships, the human
+suggested they could inform page composition and organization. The proposal now
+states this use: the originating treatment and reason for a further inquiry can
+help identify relevant contexts and connections even without a direct UI display.
+Source selection and follow-up meaning supply useful detail behind the connection.
+The relationship is input to an organizing judgment, not proof that either endpoint
+is broader. Its usefulness can begin when the follow-up is offered, before it is
+executed; it is distinct from the reader's click history. Storage versus derivation
+from retained follow-up information remains an implementation choice.
+
+### Follows-up-from remains a candidate rather than a slice requirement
+
+The human noted that the need/usefulness of follows-up-from relationships has not
+been established and asked whether to defer them. The proposal now specifies
+broader-than as the initial relationship type and records follows-up-from as a
+candidate to validate, not a first-slice requirement or promised later feature.
+Its direction is from follow-up page to originating page. A possible benefit for
+organizing investigations remains a hypothesis, particularly because the retained
+follow-up metadata already preserves originating information.
+
+### Default context boundary for book-level objects
+
+The human proposed that PageComposition/PageComponent normally not be offered as
+context to source investigations, while architectural accounts remain available
+to composition and book objects remain available across page-composition
+investigations. The proposal records this in the object-category inventory as a
+default context-selection boundary, not an absolute access restriction. Software
+investigations use repository evidence and relevant architectural accounts;
+explicit investigations of selected page content can receive that content.
+Book organization and page composition can use existing accounts and book objects
+from other pages. This does not change the qualification of any selected material.
+
+### BookOrganizationTag as an identified association target
+
+The human proposed identifying tags independently of their names so renaming does
+not require retagging all uses. The proposal now includes BookOrganizationTag as
+an association-target object, with qualified name/description attributes. Page and
+relationship tag assignments reference its stable identity. The object inventory
+and context-boundary wording include this third book-level category. Renaming a
+tag is distinct from materially redefining the category, which may require
+reconsidering assignments rather than merely changing the displayed name.
+
+### Focused book-tag investigation and possible wider maintenance
+
+The human proposed that page composition select from current tags, requesting a
+tuned book-tag investigation when tags seem missing or inadequate. The request
+supplies capsule page context, the mismatch and the intended distinction; relevant
+references let the investigator acquire further context. The proposal now describes
+this investigation and includes it in the inventory. It can return suitable
+existing tags as well as allocate new ones, and owns tag-set coherence rather
+than treating every proposed new label as necessary. Reassessing the set and
+retagging existing pages/relationships, immediately or through marked work for
+later reassessment, remain possible extensions. A capsule can motivate a broader
+review but does not by itself establish how other pages should be retagged.
+Normal reconsideration catches some changes to acquired tag information/scopes;
+new tags or changed category boundaries need not automatically flag every affected
+assignment. Deferred maintenance therefore needs identified affected work rather
+than assuming the current reconsideration mechanism handles it all. A pending
+reassessment is not a completed replacement of tag assignments.
+
+### Do not assume lazy tag reassessment or reader-managed maintenance
+
+The human agreed with the book-tag refinements and questioned whether lazy
+reassessment would be useful or feasible for correctness. They floated a UI for
+proposed reorganization followed by a wait for updating, while finding it inelegant.
+The proposal now leaves wider reorganization outside the initial book-tag contract
+and removes lazy marking as an assumed strategy. Tag meaning changes and affected
+assignments must be considered together; pending reassessment alone does not make
+old assignments suitable for a new meaning. A reviewable reorganization proposal
+could be useful, but no user-operated maintenance flow is adopted. Keeping the
+previous organization available while preparing a coherent revision is a possible
+approach, not a selected implementation or general atomic-update requirement.
+
+### Seed organization through acquired accounts and module context
+
+The human agreed to treating an empty book and an existing book through the same
+organizing responsibility, then proposed direct access to the underlying result
+rather than only a capsule. Following result referents in the mechanical module
+hierarchy could lead to entity-overview investigations of ancestors; top-level
+overviews could add context from the other direction. The proposal now describes
+book organization as an investigation with this access and authority to obtain
+missing architectural understanding. These traversal approaches are illustrative,
+not mandated algorithms or a requirement that the book mirror repository nesting.
+The resulting understanding can inform surrounding page identities, qualified
+relationships and tags. The book organization investigation is added to the
+inventory; details of its returned context and composition's contributions remain
+open. Tag-investigation capsule references likewise allow acquisition of the
+underlying result, rather than restricting the investigator to the summary.
+
+### Overview guidance discovers potential architectural treatments
+
+The human clarified that the module tree is a stable starting point for overview
+investigations, not the book structure. Traversal can be agent guidance, with the
+investigator choosing useful breadth/depth. They suggested that an entity overview
+could explicitly identify relevant architectural investigations, possibly with a
+more focused investigation if useful. The proposal uses existing follow-ups as the
+natural way for overviews to offer those questions, without selecting another
+specialized investigation yet. Tags organize existing and potential architectural
+treatments rather than classify entities. The source overview identifies worthwhile
+architectural questions using the architectural vocabulary; book organization and
+the tag investigation determine their book-level categories. This preserves the
+context/authority boundary for source investigations.
+
+### Consolidate organization and tag maintenance into one investigation
+
+The human found the split between book organization and book organization tag
+investigations confusing and requested one organizing responsibility. The proposal
+now has one book organization investigation owning graph and tag-set coherence,
+with a subsection for starting an empty organization. Page-composition
+responsibilities explicitly include selecting current tags and requesting book
+organization when tags or surrounding context are inadequate. The request conveys
+capsule context, the mismatch/needed distinction and access to the underlying
+result. BookOrganizationTag is introduced within the unified organization section;
+the separate tag-investigation inventory entry is removed. Wider reorganization
+remains a possible extension rather than an initial requirement.
+
+### Organization receives the result and an explanation of the need
+
+The human proposed simplifying organization input to an architectural investigation
+result plus an explanation of inadequate tags or possible additions, rather than
+a capsule describing the result. The proposal now states this at both the requester
+and receiver, also allowing a need for missing surrounding context. Available
+architectural accounts include the module inventory; it is no longer listed as
+a separate kind of input alongside them.
+
+### Close the listed contract questions at proposal scope
+
+The human asked whether the remaining contract questions had been dealt with.
+The proposal now describes organization's inputs, tag/page/relationship outputs,
+composition's organizing contributions, and requests for missing context. Update
+and reconsideration behavior follows the existing qualified association/Projection
+model; unavailable or incomplete work retains ordinary qualified-outcome semantics.
+The obsolete remaining-questions section and its next-discussion instructions are
+removed. This is closure of that question list at the proposal's scope, not adoption,
+proof of usefulness, or an implementation design. Wider reorganization, optional
+elaboration/follows-up-from, detailed UI, and INVEST's methods remain in their
+recorded scope categories.
+
+### Whole-proposal consistency review (2026-11-22)
+
+At the human's request, the assistant read the complete proposal against the
+accumulated agreements and the adopted Lens/Projection, association and exposure
+semantics. The review made these editorial corrections:
+
+- Distinguish the stable PageComposition object from the qualified Projection
+  returned by a Lens application; continuing page identity follows the underlying
+  investigation rather than being a particular execution or response.
+- Restore the read-only understanding role and architectural vocabulary rather
+  than a fixed template, both established earlier in discussion.
+- Remove wording suggesting broader-than graph relationships also define see-also
+  links; their respective contracts already distinguish these roles.
+- State the agreed obligation to request organization when surrounding context is
+  insufficient, and organization's authority to acquire missing software accounts.
+- Remove repeated scope/placeholder explanations and tidy paragraph wrapping.
+- Qualify the linked Cockatiel exercise as earlier content/evidence work, not a
+  complete walkthrough of the current object and organization contracts. Its old
+  five-role grouping and open-object-model language still need a separate refresh.
+
+One content point merits human discussion: substantive previews were part of the
+reference-book hypothesis, but the current proposal mentions previews only as a
+presentation concern. Their supply is not assigned: existing account excerpts,
+authored link descriptions and preview accounts have different implications.
+The review does not silently require a new preview component or investigation.
+The optional glossary, detailed implementation, UI realization and broader
+maintenance mechanisms remain outside the current required contract rather than
+being reopened as mandatory scope questions. No adopted documents or product
+code were changed.
+
+### Preview policy and conformance of the Cockatiel exercise
+
+The human chose ordinary investigations requested optimistically by the UI as the
+initial source of preview content, with another preview-production mechanism kept
+as a candidate capability. The proposal records this through normal application
+coordination; no separate preview investigation or component is required, and no
+steering material was changed. This resolves the content point raised by the
+whole-proposal review.
+
+At the human's request, the Cockatiel exercise was revised against the complete
+current proposal. It now demonstrates stable PageComposition identities, six
+component roles, typed/reusable PageComponents, BookOrganizationTag identities,
+tagged broader-than edges, the organization request and UI-only perspectives.
+The diagram and transition details already supplied in the underlying result
+remain main content. Progressive disclosure of those details is distinguished
+from an expansion supplied by an offered follow-up. Authored candidate guidance
+offers a focused post-isolation sample-completion clarification as an expansion
+and concurrent-caller interactions as a separate page. These draw on preserved
+M2/M4 trial records without transplanting exact option identities or fabricating
+missing answers. The original prose remains unavailable; the main prose is an
+explicitly authored stand-in, not a claimed rewrite required by composition.
+The exercise now uses the agreed single-/multiple-value policy and update model,
+and removes superseded open questions and its obsolete walkthrough-resumption
+instructions. Preview descriptions of unproduced investigations remain proposed
+questions rather than generated answers. No new inference or code execution
+against Cockatiel was performed.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and
