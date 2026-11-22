@@ -1388,6 +1388,27 @@ contract refers to that policy rather than repeating unification requirements.
 Shared lazy-investigation/connection behavior remains separate. This reorganizes
 the proposal without selecting additional component behavior or producer details.
 
+### Composition remit within book organization
+
+The human accepted treating diagrams as an explanatory form rather than a separate
+top-level component: a diagram can be main content, an expansion or contextual
+explanation. It is not an expansion merely because it is a diagram.
+
+While reviewing Title, the human proposed describing the page-composition Lens's
+decision explicitly: it chooses the page title with the underlying investigation's
+suggested title and broader-context information available. The detailed component
+subsections now sit under **Page-composition Lens responsibilities**, following
+the component summary and identified-object proposal. Its introductory remit is
+to take the investigation/responses and situate a coherent page in the overall book;
+it consults and can contribute qualified updates to book organization.
+
+The proposal now introduces **Book organization** before the components, contrasting
+organization of pages/explanatory responses with architectural organization of
+software entities. This makes the distinction available before discussing the
+composer's use of broader context; the later contract sketch references it rather
+than repeating the conceptual introduction. Producer implementation remains behind
+the investigation boundary.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and

@@ -46,7 +46,29 @@ which is distinct from a particular execution or response. Responses and
 compositions can change while the page remains associated with that investigation.
 Exact earlier material remains distinguishable.
 
+## Book organization
+
+Book organization relates pages and the explanatory responses they present. It
+establishes broader contexts and connections among treatments, potentially from
+several perspectives rather than through one hierarchy.
+
+This differs from **architectural organization**, which describes relationships
+among entities in the software, such as containment, ownership and dependency.
+An explanation of recovery can belong within a broader treatment of circuit
+breaking without implying that the software contains a separate recovery component.
+Architectural information can inform book organization, but constructing a complete
+architectural organization is not a prerequisite for organizing the book.
+
 ## Page components
+
+| Component | Summary |
+| --- | --- |
+| Title | The title of the page. |
+| Orientation | An explanation of the frame and distinctions needed to understand the treatment. |
+| Main content | The main treatment of the underlying question. |
+| Expansions | A collection of additional material to expose on the same page, or requests to obtain it. |
+| Broader-context links | A collection of links to more encompassing treatments. |
+| See-also links | A collection of links to other relevant treatments. |
 
 We propose **`PageComposition`** and **`PageComponent`** as categories of identified
 object alongside Entity and Query result, using the same qualified
@@ -55,21 +77,35 @@ its underlying investigation. Its qualified attributes map component-role keywor
 such as `title`, `orientation`, `main-content`, `expansions`, `broader-context` and
 `see-also` to `PageComponent` references. Components can be reused across compositions.
 
+Diagrams are a form of explanatory content, not a separate component role. They
+can supply main content, an expansion or contextual explanation; a diagram is not
+automatically an expansion.
+
+## Page-composition Lens responsibilities
+
+The page-composition Lens takes an underlying investigation and its responses and
+determines how to form a page within the overall book context. It consults the
+book organization and can contribute new or revised organizing relationships as
+it situates the treatment. Those contributions retain their qualifications.
+Its responsibilities for each page component follow; how it fulfills them remains
+behind the investigation boundary.
+
 ### Title
 
-A single title for the page. It may be supplied by the underlying investigation
-or authored for the page based on that investigation and its broader context.
+The Lens chooses a single title for the page. It has the underlying investigation's
+suggested title and broader-context information available to it, and can reuse
+that title or author one suited to the page's place in the book.
 
 ### Orientation
 
-A unified explanation of the frame and distinctions a reader needs to understand
-this treatment. Relevant broader treatments can inform it; it is not merely a
-summary of the answer.
+The Lens supplies a unified explanation of the frame and distinctions a reader
+needs to understand this treatment, informed by relevant broader treatments.
+Orientation is not merely a summary of the answer.
 
 ### Main content
 
-The main treatment of the underlying question. It may include prose, structured
-explanations and diagrams.
+The Lens supplies the main treatment of the underlying question. It may include
+prose, structured explanations and diagrams.
 
 With a **single account**, use its explanatory content directly. Composition
 still supplies the page's other parts and selects their relationships; it need
@@ -92,25 +128,26 @@ unending synthesis; its role in composition must be explicit.
 
 ### Expansions
 
-A collection of additional material to expose on the same page, or requests to
-obtain it. An expansion can reference the part of the main content it elaborates,
-or concern the treatment as a whole.
+The Lens selects additional material to expose on the same page, or requests to
+obtain it, as a collection of expansions. An expansion can reference the part of
+the main content it elaborates, or concern the treatment as a whole.
 
 An expansion's reference to main content identifies what it elaborates. It is
 part of the content contract; its visual attachment or placement is a UI choice.
 
 ### Broader-context links
 
-A collection of links to more encompassing treatments, potentially from several
-perspectives. Each link leads to another investigation's page.
+The Lens supplies a collection of links to more encompassing treatments in the
+book organization, potentially from several perspectives. Each link leads to
+another investigation's page.
 
 ### See-also links
 
-A collection of links to other relevant treatments, without necessarily asserting
-a broader/narrower relationship. Each link leads to another investigation's page.
-Relevance, rather than whether a result has already been produced, determines
-this role. A link needs a destination investigation, or enough information to
-resolve one.
+The Lens supplies a collection of links to other relevant treatments, without
+necessarily asserting a broader/narrower relationship. Each link leads to another
+investigation's page. Relevance, rather than whether a result has already been
+produced, determines this role. A link needs a destination investigation, or enough
+information to resolve one.
 
 ## Connections and lazy content
 
@@ -189,9 +226,9 @@ prescribing a separate producer or execution for every component.
 **Candidate inputs:** the underlying investigation and its selected responses,
 available component material and hints, and relevant organizational context.
 
-**Supplies:** qualified composition identifying the page components, their source
-material, roles, expansions and destinations. It owns the decision about expansion
-versus another treatment and applies the [main-content policy](#main-content).
+**Supplies:** a qualified composition identifying material for each page component,
+and any qualified contributions to book organization, under the
+[responsibilities above](#page-composition-lens-responsibilities).
 
 **Open:** which inputs must be supplied versus requested through other contracts?
 What exactly is selected when several current accounts exist? What can the
@@ -220,10 +257,8 @@ What is meaningful when no broader treatment is yet available?
 
 **Purpose:** relate explanatory treatments into a useful developing reference.
 
-The framework organizes explanations, not necessarily architectural entities.
-Broader/narrower, complementary and other reference relationships do not imply
-software containment, ownership or dependency. This does not require constructing
-a comprehensive architectural organization of the codebase first.
+This supplies the [book organization](#book-organization), distinct from an
+architectural organization of the software's entities.
 
 **Candidate inputs:** identified investigations and qualified responses, with
 other repository/entity information as appropriate to the question. A mechanical
