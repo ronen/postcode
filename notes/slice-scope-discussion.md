@@ -1259,6 +1259,35 @@ scope is visited pages; it does not imply exhaustive indexing of the potential
 book or require cross-session persistence. Detailed indexing, search and display
 behavior remain UI work.
 
+### Proposal wording: define the page at the information level
+
+On stepping through the proposal, the human asked to replace the task-oriented
+"Clarify a page as" with a definition of the page at the information level, not
+the presentation level. The proposal now defines a page as a treatment of a
+particular investigation comprising qualified response material and composition;
+its presentation is a book-style View. This refines the earlier shorthand
+"a page is a View" while retaining investigation-based identity and the distinction
+between qualified composition and rendering. No foundation definition was changed.
+
+The human then challenged whether "information level" was good terminology and
+reiterated that their suggested wording should receive independent critical
+judgment, not automatic acceptance. The proposal now states its remit directly:
+page content and composition, the investigations supplying them, and their
+contracts; presentation is outside scope. No additional architectural "level"
+is introduced. The intended distinction is retained without that vague label.
+
+### Functional definition through a page-composition Lens
+
+The human proposed describing a page functionally as the result of applying a
+page-composition Lens to its underlying investigation and related context. The
+proposal now expresses the page's content as that qualified result, using selected
+responses and relevant context. In foundation terminology a particular composition
+result is a Projection and its presentation is a View. Later composition results
+can belong to the same page, whose continuing identity still follows its underlying
+investigation. This sharpens the relation to foundation terminology without choosing
+an implementation mapping or amending the foundation. It also keeps interpretive
+composition in the investigation model rather than treating it as hidden rendering.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and

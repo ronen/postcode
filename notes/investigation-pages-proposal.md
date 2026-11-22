@@ -11,11 +11,15 @@ existence of this document.
 
 ## Purpose and remit
 
-Clarify a page as a View of an investigation, its decomposition into components
-and investigations, and the contract of each investigation. A contract describes
-the question, subjects and context, qualified output and relationships, and the
-meaning of partial or unavailable results. It does not prescribe how the result
-is produced.
+We propose a reference-book experience for PostCode: readers explore connected
+explanations of software through architectural concepts. The book develops as
+investigations contribute understanding, and further material can be obtained as
+the reader explores. Its pages place explanations in context and provide routes
+to broader, related and more detailed treatments.
+
+This proposal defines what a **page** of that book consists of: its content and
+composition, the investigations that supply them, and their contracts. How the
+page is presented is outside its scope.
 
 Algorithms, prompts, allocation among agents, scheduling, storage and wire schemas
 belong to INVEST and other subsequent work. Detailed UI presentation and navigation
@@ -24,24 +28,19 @@ tasks for this discussion. The investigation boundary can hide mechanical,
 agentic or mixed fulfillment; naming a responsibility does not require a separate
 agent, operation or execution phase.
 
-PostCode helps people understand software. The reference-book metaphor describes
-an adaptable, open-ended window onto qualified understanding, not an oracle that
-solves the reader's task. Architectural concepts provide a vocabulary appropriate
-to the subject rather than a fixed explanatory template. Initial prose-directed
-access may follow the basic book; when provided, its purpose is principally to
-open or develop relevant treatments.
-
 ## Working page model
 
-**A page is the book-style View of a particular investigation, with its current
-qualified response material and composition.**
+A page presents the question and responses of an **underlying investigation** as
+part of the reference book. It adds a title, orientation, expansions, and connections
+to broader and related treatments. The underlying investigation determines the
+page's identity; other investigations may supply the additional material.
 
-A page's **underlying investigation** is the investigation whose question and
-responses it presents, and which determines its identity. The term denotes the
-continuing investigative question, not one execution attempt or one response.
-Other investigations may supply parts of the page.
+**A page's content is the qualified result of applying a page-composition Lens
+to its underlying investigation, using the selected responses and relevant context.**
+Its presentation is a book-style View.
 
-Responses and compositions can change without necessarily creating a different
+The underlying investigation is a continuing question, not a particular execution
+or response. Responses and compositions can change without necessarily creating a different
 page. Exact earlier material remains distinguishable. Different routes can reach
 the same identified investigation; similar titles or wording alone do not prove
 that two requests are the same investigation. The precise identity/reference
@@ -51,12 +50,15 @@ An entity page follows the same model: its underlying investigation is an
 **entity-overview investigation**, and the entity is its subject. An entity page
 need not introduce a second kind of page identity or imply a new agent call.
 
-The foundation's [View definition](../foundation/product-design.md#view) permits
-coordinated presentations of multiple qualified Projections. The proposed page
-fits that model provisionally. Composition that introduces interpretation produces
-qualified information; it is not merely a rendering rule. Governing material may
-be revised deliberately if a substantive mismatch emerges, but this proposal
-does not amend it.
+In the foundation's terminology, a particular result of the composition Lens is a
+[Projection](../foundation/product-design.md#projection), retaining the selected
+material and its basis and qualifications. A [View](../foundation/product-design.md#view)
+presents that information. A later composition can produce a new retained result
+for the same page's underlying investigation. This distinguishes the page's
+continuing identity from the identity of a particular composition result.
+Composition that introduces interpretation is qualified analysis, not merely a
+rendering rule. This is a proposed application of the foundation concepts, not an
+amendment of their definitions or a selected implementation mapping.
 
 ## Page components
 
@@ -101,6 +103,9 @@ be evaluated lazily. Its request meaning and qualification must be sufficiently
 identified; an offered picture is not an already fulfilled picture. Missing,
 partial and unavailable information retain those meanings.
 
+Prose-directed access is an intended capability whose implementation may follow
+the basic book. Its purpose is principally to open or develop relevant treatments.
+
 Current **follow-up options** package qualified executable requests, not page
 placement decisions. They can support expansions or other-page destinations.
 The proposed **see also** meaning concerns relevance rather than whether a result
@@ -143,6 +148,10 @@ need independent queries or which can be fulfilled within another investigation.
 
 **Purpose:** answer a particular architectural question about identified subjects.
 
+Architectural concepts supply a vocabulary appropriate to the subject rather
+than a fixed explanatory template. PostCode supplies understanding that readers
+can use in their work; it does not take responsibility for solving their task.
+
 **Inputs:** subjects, question/parameters, applicable basis and relevant selected
 context under that investigation's contract.
 
@@ -171,7 +180,9 @@ is known? What lets an entity reference unambiguously select this investigation?
 
 ### Page composition
 
-**Purpose:** form a coherent book treatment of the underlying investigation.
+**Purpose:** the page-composition Lens requests a coherent book treatment of the
+underlying investigation. Its fulfillment can use other investigations without
+prescribing a separate producer or execution for every component.
 
 **Candidate inputs:** the underlying investigation and its selected responses,
 available component material and hints, and relevant organizational context.
