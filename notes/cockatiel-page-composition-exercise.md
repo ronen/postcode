@@ -43,9 +43,13 @@ single-trial scope are not imported as answers for this specimen's newer revisio
 and configurable sampling. In particular, the proposed concurrent-caller picture
 below has no supplied answer here.
 
-## Investigation and continuing identity
+## Underlying investigation and continuing identity
 
-The actual underlying operation is **`state-behavior` on the
+The page's **underlying investigation** is the investigation whose question and
+responses it presents, and which determines its identity. It is distinct from
+the page-composition investigation and need not supply every page component.
+
+Here, the underlying investigation is **`state-behavior` on the
 `circuit-breaker-policy` module**, with a state-diagram requirement. The fresh
 account is a later response to that investigation, not a different page merely
 because it is a different response. In ordinary language the question is:

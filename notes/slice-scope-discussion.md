@@ -1007,6 +1007,16 @@ now includes manual isolation and qualified initialization, consistent with the
 underlying question. The next walkthrough topic is main content and expansions,
 including selection versus synthesis; that choice has not been settled by revision.
 
+### Terminology: underlying investigation
+
+After considering defining, core, root, anchor, seed, kernel, content and related
+terms, the human and assistant chose **underlying investigation**. A page's
+underlying investigation is the investigation whose question and responses it
+presents, and which determines its identity. This distinguishes it from page
+composition without implying that it supplies every component. Identity follows
+the continuing question, not a particular execution or response. The Cockatiel
+exercise now uses this definition explicitly.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and
