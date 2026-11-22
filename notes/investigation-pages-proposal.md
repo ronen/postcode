@@ -48,63 +48,28 @@ Exact earlier material remains distinguishable.
 
 ## Page components
 
-| Component | Meaning in the working model |
-| --- | --- |
-| Title | The title of the page. It may be supplied by the underlying investigation or authored for the page based on that investigation and its broader context. |
-| Orientation | An explanation of the frame and distinctions a reader needs to understand this treatment. Relevant broader treatments can inform it; it is not merely a summary of the answer. |
-| Main content, including expansions | The treatment of the underlying question, with further material that belongs within that treatment. It may include prose, structured explanations and diagrams. |
-| Broader-context links | Connections to more encompassing treatments, potentially from several perspectives. |
-| See-also links | Connections to other relevant treatments, without necessarily asserting a broader/narrower relationship. |
+We propose **`PageComposition`** and **`PageComponent`** as categories of identified
+object alongside Entity and Query result, using the same qualified
+attribute/association mechanism. A `PageComposition`'s identity is determined by
+its underlying investigation. Its qualified attributes map component-role keywords
+such as `title`, `orientation`, `main-content`, `expansions`, `broader-context` and
+`see-also` to `PageComponent` references. Components can be reused across compositions.
 
-We propose **Page** and **Page Component** as categories of identified object
-alongside Entity and Query result, using the same qualified attribute/association
-mechanism. A Page's identity is determined by its underlying investigation;
-particular compositions are qualified information about that Page. Page Components
-identify the constituent material and can be reused across compositions.
+### Title
 
-Both categories have associated content and descriptive information, retaining
-applicable scope, basis and qualifications. They can reuse existing response
-material through qualified associations rather than duplicate it. Attributes can
-be added, superseded or withdrawn through the existing association semantics,
-preserving earlier content and its uses. This extends the existing mechanism;
-it does not classify pages or components as entities in the software under study.
-How qualifications are presented remains a UI concern.
+A single title for the page. It may be supplied by the underlying investigation
+or authored for the page based on that investigation and its broader context.
 
-## Expansions, connections and lazy content
+### Orientation
 
-- An **expansion** conceptually adds or exposes material on the same page.
-- **Broader-context and see-also links** open other investigations' pages.
-- **Selecting material and requesting explanation** starts an investigation about
-  that selection, with its own page, or revisits its identified retained treatment.
+A unified explanation of the frame and distinctions a reader needs to understand
+this treatment. Relevant broader treatments can inform it; it is not merely a
+summary of the answer.
 
-Composition decides expansion versus another page. Hints from the underlying
-investigator are advisory. The distinction does not follow merely from a label
-such as "explain", the presence of a diagram, or whether the material exists yet.
+### Main content
 
-From the reader's perspective, exposing content can be the same action whether
-it uses retained results or requires investigation. An offered destination can
-be evaluated lazily. Its request meaning and qualification must be sufficiently
-identified; an offered picture is not an already fulfilled picture. Missing,
-partial and unavailable information retain those meanings.
-
-Prose-directed access is an intended capability whose implementation may follow
-the basic book. Its purpose is principally to open or develop relevant treatments.
-
-Current **follow-up options** package qualified executable requests, not page
-placement decisions. They can support expansions or other-page destinations.
-The proposed **see also** meaning concerns relevance rather than whether a result
-has already been produced. It needs a destination investigation, or enough
-information to resolve one. When a link or selection calls for a page about an
-entity, the proposal supplies a standard **entity-overview investigation** applied
-to that entity. Its page follows the same model as any other investigation's page.
-An exact historical answer remains a different selection from a
-page's current response material.
-
-Connections between originating and follow-up treatments belong to the reference
-structure, distinct from the reader's navigation history. Detailed navigation,
-searchable visited-page indexes, labels and preview display are outside this remit.
-
-## Main content: working policy
+The main treatment of the underlying question. It may include prose, structured
+explanations and diagrams.
 
 With a **single account**, use its explanatory content directly. Composition
 still supplies the page's other parts and selects their relationships; it need
@@ -124,6 +89,57 @@ this policy is an open contract detail. Interpretation that cannot establish a
 relationship must preserve that uncertainty rather than manufacture agreement.
 Its output should not inadvertently become an additional peer input triggering
 unending synthesis; its role in composition must be explicit.
+
+### Expansions
+
+A collection of additional material to expose on the same page, or requests to
+obtain it. An expansion can reference the part of the main content it elaborates,
+or concern the treatment as a whole.
+
+An expansion's reference to main content identifies what it elaborates. It is
+part of the content contract; its visual attachment or placement is a UI choice.
+
+### Broader-context links
+
+A collection of links to more encompassing treatments, potentially from several
+perspectives. Each link leads to another investigation's page.
+
+### See-also links
+
+A collection of links to other relevant treatments, without necessarily asserting
+a broader/narrower relationship. Each link leads to another investigation's page.
+Relevance, rather than whether a result has already been produced, determines
+this role. A link needs a destination investigation, or enough information to
+resolve one.
+
+## Connections and lazy content
+
+Selecting material and requesting explanation starts an investigation about that
+selection, with its own page, or revisits its identified retained treatment.
+
+Composition decides expansion versus another page. Hints from the underlying
+investigator are advisory. The distinction does not follow merely from a label
+such as "explain", the presence of a diagram, or whether the material exists yet.
+
+From the reader's perspective, exposing content can be the same action whether
+it uses retained results or requires investigation. An offered destination can
+be evaluated lazily. Its request meaning and qualification must be sufficiently
+identified; an offered picture is not an already fulfilled picture. Missing,
+partial and unavailable information retain those meanings.
+
+Prose-directed access is an intended capability whose implementation may follow
+the basic book. Its purpose is principally to open or develop relevant treatments.
+
+Current **follow-up options** package qualified executable requests, not page
+placement decisions. They can support expansions or other-page destinations.
+When a link or selection calls for a page about an entity, the proposal supplies
+a standard **entity-overview investigation** applied to that entity. Its page
+follows the same model as any other investigation's page. An exact historical
+answer remains a different selection from a page's current response material.
+
+Connections between originating and follow-up treatments belong to the reference
+structure, distinct from the reader's navigation history. Detailed navigation,
+searchable visited-page indexes, labels and preview display are outside this remit.
 
 ## Investigation contract sketches
 
@@ -175,7 +191,7 @@ available component material and hints, and relevant organizational context.
 
 **Supplies:** qualified composition identifying the page components, their source
 material, roles, expansions and destinations. It owns the decision about expansion
-versus another treatment and applies the single-/multiple-account policy.
+versus another treatment and applies the [main-content policy](#main-content).
 
 **Open:** which inputs must be supplied versus requested through other contracts?
 What exactly is selected when several current accounts exist? What can the

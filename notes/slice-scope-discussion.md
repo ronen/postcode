@@ -1339,6 +1339,55 @@ because the selected material changed. Page Components can be reused across
 compositions. This clarifies identity versus current descriptions without selecting
 a storage mapping, altering governing documents or implementing the extension.
 
+### Component-role mapping and PageComposition terminology
+
+The human proposed describing composition as a mapping from component-role
+keywords to component objects. The discussion accepted a mapping to Page Component
+references, with role assignments carried through qualified associations rather
+than an unqualified mutable dictionary. Collections such as see-also links may
+be contained by a component; neither storage layout nor a detailed cardinality
+schema is selected.
+
+The human then proposed **PageComposition** and **PageComponent** as less overloaded
+names for the identified categories. The proposal now uses those names instead
+of Page and Page Component. PageComposition has the identity determined by the
+underlying investigation and qualified role-to-component attributes; a particular
+Lens result captures its qualified composition. "Page" remains the book-treatment
+term, not an additional identified category. This replaces the earlier category
+naming without abandoning continuing identity or retained qualified history.
+
+### Unified components versus link collections
+
+The human narrowed the collection distinction: title, orientation and main content
+are presumed unified by the page-composition Lens; broader-context and see-also
+components contain collections of links. The proposal now states those roles
+explicitly instead of generally allowing any component to be a collection.
+Unified main content remains compatible with presenting meaningful alternatives
+and disagreement under the multiple-account policy; it is not a requirement to
+force one conclusion. Main-content expansions remain part of that treatment.
+
+### Separate main content and expansions
+
+The human proposed separating **Main content** from **Expansions**, with expansions
+able to reference the parts of main content they elaborate. The proposal now uses
+six component roles: title, orientation, main content, expansions, broader context
+and see also. Title, orientation and main content remain unified; expansions form
+a collection alongside the two link collections. An expansion can identify a part
+of main content or concern the treatment as a whole, and can supply material or
+a request for obtaining it lazily. The reference is a semantic connection for the
+UI to present, not a prescribed placement. Expansions still belong to the same
+page; this separation does not turn them into see-also destinations.
+
+### Component terms grouped by component
+
+The human requested a subsection for each page component, in page order, with its
+terms specified locally. The proposal now has Title, Orientation, Main content,
+Expansions, Broader-context links and See-also links subsections. The existing
+single-/multiple-account policy sits within Main content. The page-composition
+contract refers to that policy rather than repeating unification requirements.
+Shared lazy-investigation/connection behavior remains separate. This reorganizes
+the proposal without selecting additional component behavior or producer details.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and
