@@ -993,6 +993,20 @@ when unnecessary. This discussion selects neither an icon scheme nor a blanket
 rule to hide qualifications; the presentation must still preserve consequential
 meaning under the adopted contracts. No candidate steering file was modified.
 
+### Revised Cockatiel walkthrough
+
+After the discussion was committed, the human requested revision of the example
+before continuing. The exercise now anchors identity and scope to the actual
+state-behavior investigation, distinguishes proposed response title from page
+title, separates orientation from hypothetical broader-context relationships,
+and identifies the qualified composition and its component roles. Navigation and
+visual presentation choices are deferred. Existing generated accounts and diagrams
+remain the evidence; no new investigation or architectural validation was run.
+The main paragraph sequence remains explicitly authored candidate synthesis and
+now includes manual isolation and qualified initialization, consistent with the
+underlying question. The next walkthrough topic is main content and expansions,
+including selection versus synthesis; that choice has not been settled by revision.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and
