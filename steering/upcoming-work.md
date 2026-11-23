@@ -75,8 +75,8 @@ Codes identify items independently of ordering.
 ```mermaid
 flowchart TD
     SLICE["⚠️ SLICE — First usable graphical investigation scope"] --> PRESENT["⚠️ ✦ PRESENT — Account presentation and navigation"]
-    SLICE -. If new or modified investigations are needed .-> INVEST["✦ INVEST — Selected investigation capabilities"]
-    INVEST -. Account content needed for presentation .-> PRESENT
+    SLICE -. If new or modified investigations are needed .-> BOOK["✦ BOOK — Initial book capability"]
+    BOOK -. Account content needed for presentation .-> PRESENT
     SLICE -. If reference organization is selected .-> ORGANIZE["✦ ⚠️ ORGANIZE — Architectural reference organization"]
     ORGANIZE -. Framework for the selected experience .-> PRESENT
     PRESENT --> MINIGUI["✦ MINIGUI — Minimal graphical investigation"]
@@ -95,9 +95,9 @@ PERSIST and CHANGE can come in either order, according to the experience needed.
 | Position | Item | Why here / what could change it |
 | --- | --- | --- |
 | Next: scoping | [SLICE — First usable graphical investigation scope](#slice) | Select a coherent first offering using the journey exploration and implemented capabilities, including actual diagrams and live-trial findings. Identify implementation work the experience needs; SLICE does not implement it. |
-| Conditional, scoped through SLICE | [INVEST — Selected investigation capabilities](#invest) | Implement new or modified investigations needed by the selected experience, before presentation work that depends on their account content. No work is needed here if existing capabilities suffice. May become several plans. |
+| Conditional, scoped through SLICE | [BOOK — Initial book capability](#book) | Implement new or modified investigations needed by the selected experience, before presentation work that depends on their account content. No work is needed here if existing capabilities suffice. May become several plans. |
 | Conditional, scoped through SLICE | [ORGANIZE — Architectural reference organization](#organize) | Construct a useful reference framework if the selected experience needs one. Preliminary exploration can inform SLICE; implementation precedes presentation work that depends on it. |
-| After SLICE and required capability work | [PRESENT — Account presentation and navigation](#present) | Build representations, qualifications, and navigation for the selected experience, using implemented accounts. INVEST and ORGANIZE supply additional content or organization where selected. |
+| After SLICE and required capability work | [PRESENT — Account presentation and navigation](#present) | Build representations, qualifications, and navigation for the selected experience, using implemented accounts. BOOK and ORGANIZE supply additional content or organization where selected. |
 | After PRESENT | [MINIGUI — Minimal graphical investigation](#minigui) | Build a small graphical surface for actual human investigation using the available account and presentation capabilities. |
 | Conditional, when investigation must span input changes | [CHANGE — Investigation across target changes](#change) | SLICE or later use supplies the trigger. Can precede or follow PERSIST. |
 | Conditional, when cross-session return is needed | [PERSIST — Retain investigations across sessions](#persist) | SLICE or later use supplies the trigger. Can precede or follow CHANGE. |
@@ -107,6 +107,22 @@ PERSIST and CHANGE can come in either order, according to the experience needed.
 ## Item catalog
 
 Alphabetical by code.
+
+<a id="book"></a>
+### BOOK — Initial book capability
+
+- **Kind:** ✦
+- **Outcome:** the investigations selected for the first graphical experience
+  produce the qualified account content that its presentations need.
+- **Scope:** new or modified investigation capabilities identified by SLICE.
+  Use the implemented structured-account mechanism and extend it where the selected
+  investigations require it. Validate the content needed for the selected diagrams
+  and other representations; rendering must not reconstruct missing architectural meaning.
+- **Boundary:** conditional implementation work, potentially several separately
+  scoped plans. Existing capabilities may suffice, in which case this item drops out.
+  Presentation and interaction belong to PRESENT and MINIGUI; reference organization
+  belongs to ORGANIZE.
+- **Source:** [journey findings: capability-planning inputs](../notes/initial-journey/design-findings.md#capability-planning-inputs).
 
 <a id="change"></a>
 ### CHANGE — Investigation across target changes
@@ -139,22 +155,6 @@ Alphabetical by code.
   layouts and customization are possible extensions, selected for
   their value rather than assumed prerequisites for useful graphical investigation.
 - **Source:** [backlog: whole-journey UX review](../docs/backlog.md#review-the-investigation-ui-and-ux-as-a-whole).
-
-<a id="invest"></a>
-### INVEST — Selected investigation capabilities
-
-- **Kind:** ✦
-- **Outcome:** the investigations selected for the first graphical experience
-  produce the qualified account content that its presentations need.
-- **Scope:** new or modified investigation capabilities identified by SLICE.
-  Use the implemented structured-account mechanism and extend it where the selected
-  investigations require it. Validate the content needed for the selected diagrams
-  and other representations; rendering must not reconstruct missing architectural meaning.
-- **Boundary:** conditional implementation work, potentially several separately
-  scoped plans. Existing capabilities may suffice, in which case this item drops out.
-  Presentation and interaction belong to PRESENT and MINIGUI; reference organization
-  belongs to ORGANIZE.
-- **Source:** [journey findings: capability-planning inputs](../notes/initial-journey/design-findings.md#capability-planning-inputs).
 
 <a id="minigui"></a>
 ### MINIGUI — Minimal graphical investigation
@@ -283,12 +283,12 @@ Alphabetical by code.
   Consider how a reader responds to an inadequate account: fresh investigation is
   available, while submitting an objection to an investigating agent needs new work.
   Identify needed changes and missing capabilities, drawing on the backlog and
-  candidate inventories. Scope any new or modified investigations under INVEST
+  candidate inventories. Scope any new or modified investigations under BOOK
   and place that work before presentation work that depends on it.
 - **Boundary:** scoping and selection, without production implementation.
   Small sketches or experiments may help resolve choices. The result informs
   subsequent plans; SLICE need not produce an implementation plan of its own.
-  Investigation implementation belongs to INVEST, and detailed presentation and
+  Investigation implementation belongs to BOOK, and detailed presentation and
   interface design belong to PRESENT and MINIGUI.
 - **Sources:** [exploratory notes: first graphical slice](../notes/first-graphical-slice.md),
   [journey outputs: investigation script](../notes/initial-journey/cockatiel-investigation-script.md),
