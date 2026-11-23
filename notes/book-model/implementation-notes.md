@@ -149,3 +149,26 @@ interface work. Their detailed behavior is not specified by the model:
 
 For preview content, the UI can optimistically request ordinary destination
 investigations through application coordination and preview the returned material.
+
+## Visual inspiration
+
+The [reference-book examples from the original discussion](../reference-book-inspiration/book-like-postcode.png)
+combine book spreads and an index with ideas about entries, cross-references and
+supporting detail. They suggest prose and several complementary illustrations around
+one subject: an overview, detailed views and annotations can explain different aspects
+together. They are visual inspiration, not a prescribed PostCode layout.
+
+## Evaluating the book experience
+
+Evaluate whether readers can enter, navigate and develop architectural understanding
+through the reference, beyond completing a sequence of requests. Useful questions include:
+
+- Do the available treatments and connections supply enough context to begin and
+  continue investigating without implying comprehensive coverage?
+- Can readers recognize unanswered questions and find useful further investigation,
+  distinguishing missing material, unsuccessful investigation and established absence?
+- Can they move between perspectives, inspect support and alternatives, and return
+  to an earlier account without losing their place or mistaking it for current selection?
+
+Continuity and discoverability are the useful hypotheses; literal book-shaped visuals
+are not the objective. The framing alone does not demonstrate an advantage over chat.

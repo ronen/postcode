@@ -11,8 +11,6 @@ A document whose lifecycle prevents later editorial repair must not link to note
 ## Current notes
 
 - [Reference-book model handoff](book-model/README.md): model and investigation contracts, implementation considerations, future capabilities and an evidence-grounded Cockatiel example for book-model implementation planning.
-- [First graphical investigation slice](first-graphical-slice.md): reference-oriented experience and choices for the first offering.
-- [Architectural reference organization](architectural-reference-organization.md): candidate framework-generation capability, its boundaries and open questions.
 - [Cockatiel composition examples](cockatiel-composition.md): two qualified wrapping scenarios with sequence-diagram overviews and legends, retained for future interaction/resource-lifetime exploration.
 - [Knowledge-representation precedents](knowledge-representation-precedents.md): research pointers on structured descriptions, truth maintenance, qualified statements, provenance and incremental formalization.
 - [Human understanding and agency](human-understanding-and-agency.md)

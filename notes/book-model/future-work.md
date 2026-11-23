@@ -27,6 +27,11 @@ but need not be part of the initial experience.
 Prose would principally open or develop relevant book treatments, with a brief reply
 where useful.
 
+For example, “write me a chapter on this” could request a coherent treatment of an
+architectural concern, later deepened or approached from another perspective. It
+need not promise exhaustive coverage or unbounded investigation. Collecting existing
+material and producing a new qualified synthesis are distinct kinds of work.
+
 ### Conveying a reader’s objection
 
 Let a reader convey what seems wrong or missing in an account to an investigator,
@@ -49,6 +54,27 @@ introductory material, and apply book organization tags to the groups. Multiple
 groupings could coexist. Presentation can derive some arrangements from the graph;
 interpreted groupings could explain why complementary treatments belong together. Their
 representation remains open.
+
+### Organization for an investigative purpose
+
+Organization could provide groupings, entry points and reading paths tailored to a
+stated investigative purpose. This goes beyond filtering an existing graph by topic
+or perspective: it would judge which treatments and connections help with that purpose,
+without making their editorial placement a claim about the software's structure.
+
+### Coverage planning
+
+An investigation could identify worthwhile topics or gaps and propose further work
+across the developing reference. This requires judgments about relevance and sufficiency
+beyond obtaining enough surrounding context for one page. Missing material does not
+establish that the corresponding behavior is absent; recognizing a relevant gap or
+claiming adequate coverage itself requires qualified investigation.
+
+### Investigator contributions to organization
+
+The existing [candidate for investigator contributions to reference organization](../../steering/candidate-capabilities.md#investigator-contributions-to-reference-organization)
+explores supplying a framework to an underlying investigator so it can suggest placement,
+cross-references or new entries. This could complement dedicated organizing investigations.
 
 ### Follows-up-from relationships
 
