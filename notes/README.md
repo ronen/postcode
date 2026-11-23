@@ -10,6 +10,7 @@ A document whose lifecycle prevents later editorial repair must not link to note
 
 ## Current notes
 
+- [Reference-book model handoff](book-model/README.md): model and investigation contracts, implementation considerations, future capabilities and an evidence-grounded Cockatiel example for book-model implementation planning.
 - [First graphical investigation slice](first-graphical-slice.md): reference-oriented experience and choices for the first offering.
 - [Architectural reference organization](architectural-reference-organization.md): candidate framework-generation capability, its boundaries and open questions.
 - Review consolidation: [resolution map and aligned probes](structured-account-example/review-alignment.md) records the fresh review discussions, production-update timing, precise inconsistency reports and referent discovery.
