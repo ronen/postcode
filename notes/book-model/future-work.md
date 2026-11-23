@@ -27,6 +27,12 @@ but need not be part of the initial experience.
 Prose would principally open or develop relevant book treatments, with a brief reply
 where useful.
 
+### Conveying a reader’s objection
+
+Let a reader convey what seems wrong or missing in an account to an investigator,
+so further investigation can address the specific concern. Current inadequacy feedback
+records the reader’s experience; retrying an investigation does not convey that objection.
+
 ## Organization and navigation
 
 ### Focused book maps

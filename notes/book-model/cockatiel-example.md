@@ -49,9 +49,9 @@ The underlying investigation is **Investigate architectural concept**, with para
 `circuit-breaker-policy` module as its subject.
 
 The retained specimen was produced by the earlier `state-behavior` operation with a
-state-diagram requirement. This example expresses that inquiry using the architectural-concept
-investigation; mapping its parameters to an operation and result contract remains an
-implementation decision.
+state-diagram requirement. This illustration uses that retained account as the answer
+to the hypothetical architectural-concept investigation. Mapping that investigation’s
+parameters to an operation and result contract remains an implementation decision.
 
 The module is the actual subject; the state bearer identified by the account is
 a policy instance. The architectural investigation covers recovery, manual isolation
