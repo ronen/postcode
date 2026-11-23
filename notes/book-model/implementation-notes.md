@@ -4,6 +4,14 @@ The [model](model.md) supplies the contracts. These notes explain existing suppo
 choices left to implementation and subsequent interface work. They do not prescribe
 algorithms, schemas, agent allocation or an implementation plan.
 
+## Starting implementation
+
+Entity-overview, page composition and book organization provide a small starting set
+of investigations for exercising the book mechanism. Specialized architectural
+investigations, such as those in the [Cockatiel example](cockatiel-example.md), can
+follow once the mechanism and an initial interface can be tried. The elaborate
+investigation remains optional for the initial implementation.
+
 ## Stable and familiar investigations
 
 The book experience is expected to work best with a stable, familiar set of available
