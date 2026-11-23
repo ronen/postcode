@@ -79,6 +79,7 @@ flowchart TD
     MINIGUI -. Interaction needs revealed through use .-> GUI["✦ GUI — Broader graphical investigation 🧱"]
     CHANGE["✦ ⚠️ CHANGE — Investigation across target changes"]
     PERSIST["✦ ⚠️ PERSIST — Retain investigations across sessions"]
+    NOTES["🧹 NOTES — Notes cleanup pass"]
 
     classDef default fill:#dbeafe,stroke:#64748b,color:#172554
 ```
@@ -98,6 +99,7 @@ gap prevents useful evaluation of the book.
 | Conditional, when investigation must span input changes | [CHANGE — Investigation across target changes](#change) | The intended experience or actual use supplies the trigger. Can precede or follow PERSIST. |
 | Conditional, when cross-session return is needed | [PERSIST — Retain investigations across sessions](#persist) | The intended experience or actual use supplies the trigger. Can precede or follow CHANGE. |
 | Following experience with MINIGUI | [GUI — Broader graphical investigation](#gui) | Extend the graphical experience where sustained use identifies valuable capabilities. May become several plans. |
+| Independent, when convenient | [NOTES — Notes cleanup pass](#notes) | Review accumulated notes for superseded material, future candidates and useful references. Bring this item back periodically as design and implementation progress. |
 
 <a id="item-catalog"></a>
 ## Item catalog
@@ -219,6 +221,23 @@ Alphabetical by code.
   [backlog: navigation origins](../docs/backlog.md#assess-and-preserve-navigation-origin-lineage),
   [backlog: coordinated-View conformance](../docs/backlog.md#assess-conformance-when-extending-coordinated-views-and-state-scope).
 
+<a id="notes"></a>
+### NOTES — Notes cleanup pass
+
+- **Kind:** 🧹
+- **Outcome:** a useful, navigable notes collection without obsolete guidance or
+  duplicated inventories obscuring the material worth keeping.
+- **Scope:** review the contents of `notes/`, classifying material as done or
+  superseded, future candidates, or notes to retain. Transfer useful ideas to an
+  appropriate home, consolidate or delete redundant material, and update indexes
+  and links. Preserve independently useful examples, research evidence and visual references.
+- **Boundary:** keep working material needed by active design work. Revisit the
+  book-model future-work inventory after BOOK promotion or implementation, when its
+  remaining items can be assessed for backlog, candidates or continued notes.
+- **Sequencing:** independent housekeeping. Complete a bounded pass, remove the item,
+  and bring it back at later checkpoints when accumulated changes warrant another review.
+- **Source:** [notes inventory](../notes/README.md).
+
 <a id="persist"></a>
 ### PERSIST — Retain investigations across sessions
 
@@ -277,6 +296,7 @@ At substantial completions, consequential findings, or changes in priority:
 - What is complete, and what remains unresolved?
 - Which backlog items now merit inclusion? Have candidate ideas become relevant?
 - Which listed items should move down, return to the broader inventory, or drop out?
+- Do accumulated notes warrant another cleanup pass?
 - Have dependencies or conditional choices changed?
 
 These questions guide human-led reconsideration of the selection, ordering, and
