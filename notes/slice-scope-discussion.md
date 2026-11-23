@@ -2420,6 +2420,80 @@ whitespace checks. No generated diagrams, retained validation evidence, adopted
 documents or implementation were changed, and no new live inference was run.
 The human subsequently authorized committing this checkpoint.
 
+### Initial assessment of the re-review at 828590d (2026-11-23)
+
+The human supplied Claude's re-review of checkpoint `828590d`. It treats the
+earlier findings as resolved, settled by choice or explicitly deferred, except
+for narrower residuals concerning updates and broader-context relationships.
+The assistant read the full report. The following is an initial assessment,
+not agreement to adopt its recommendations; the proposal and exercise have not
+been changed in response to this re-review.
+
+- **A, catalogue and operation identity:** mapping proposed investigation types
+  to existing operations belongs to implementation. Different result contracts
+  already distinguish requests under the adopted identity rules. The exercise
+  should keep the diagram requirement explicit when describing a proposed
+  catalogue formulation, without claiming that a hypothetical request is already
+  an alias of the recorded historical request.
+- **B, reconsideration coverage:** the stated all-current-results responsibility
+  requires input acquisition that represents the current answer set, and relevant
+  organizing context needs analogous coverage. This is a concrete implementation
+  obligation under the existing mechanism, not a new page freshness mechanism.
+  Whether the proposal benefits from an explicit input-contract sentence remains
+  for discussion; a bare reference alone still cannot establish exposure.
+- **C, links and relationship changes:** the relevant question is how a selected
+  destination remains eligible as broader context when graph relationships change.
+  Referring to an exact relationship association is not the only possible solution
+  and could reintroduce the need to edit links after ordinary relationship revision.
+  Lookup by endpoints in qualified current graph material is another possibility.
+  Withdrawal needs appropriate handling even in an unfiltered view; exact retained
+  views keep their existing meaning.
+- **D, competing replacements:** preserving uniqueness during independent updates
+  is already an explicit constraint. Rejecting updates against a displaced value
+  is one enforcement policy, not the only one. The representation and update
+  granularity of collections were explicitly left to INVEST. This assessment does
+  not adopt a particular acceptance or concurrency-control policy.
+
+The re-review again found the exercise faithful to retained evidence. Its small
+wording suggestions and the catalogue's treatment of elaborate can be assessed
+without assuming all proposed investigations need distinct new implementations
+or every operation must underlie a page of its own.
+
+### Re-review A, B and D clarifications; discussion of C (2026-11-23)
+
+The human accepted making the exercise's catalogue formulation explicit as
+investigate-architecture-concept with state-behavior and with-diagram parameters.
+The example now preserves the state-diagram requirement and leaves mapping to
+the existing operation and result contract to INVEST, without altering the
+recorded historical request.
+
+The human agreed with finding B's input-contract clarification in concept. The
+responsibilities now state that composition acquires the current answer set and
+the book-organization context it uses as scopes, enabling reconsideration for
+later additions and displacements. For D, the human asked whether INVEST's role
+could be clearer; the uniqueness paragraph now explicitly assigns handling of
+conflicting updates to INVEST while retaining the invariant.
+
+For C, the human pointed out that referring to relationships would use ordinary
+needs reconsideration. The assistant clarified that its earlier concern referred
+to an exact association reference remaining bound to the old assertion after
+supersession. Reconsideration and normal refresh can handle that; it is not a
+reason to reject the approach. Relationship references need not duplicate tags.
+The proposal's link-reference wording has not yet been changed in this exchange.
+
+### Re-review C: broader-context links reference relationships (2026-11-23)
+
+The human authorized changing broader-context links to refer to the broader-than
+relationships they present rather than only their destinations. The proposal and
+exercise now derive each such link's destination and applicable tags from its
+referenced relationship. Tags are not duplicated on the link. Relationship
+changes participate in ordinary reconsideration through composition's acquired
+context; the reference is not a replacement for acquisition. This supersedes the
+earlier destination-only link formulation.
+
+The proposal also uses the hyphenated needs-reconsideration spelling for the
+named status/mechanism, at the human's suggestion.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and

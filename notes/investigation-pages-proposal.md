@@ -57,7 +57,7 @@ identity; other investigations may supply the additional material.
 A **page-composition investigation** produces the composition using the existing
 investigram mechanism. The `PageComposition` and `PageComponent` objects described below
 are targets for its attribute associations. Its contributions therefore participate in
-the existing mechanisms for epistemic qualification, revision and **needs reconsideration**.
+the existing mechanisms for epistemic qualification, revision and **needs-reconsideration**.
 
 A **page-composition Lens** uses this investigation and selects its results into a
 qualified Projection of the page's composition and content. Its presentation is a
@@ -94,7 +94,7 @@ Qualifications and historical values remain accessible.
 Collections can hold items of additional detail, links, tag assignments or graph
 relationships. Whether a collection is one value replaced atomically or supports
 individual member additions and withdrawals is left to INVEST, as are the mechanisms
-that enforce uniqueness for singular attributes.
+for handling conflicting updates while preserving uniqueness for singular attributes.
 
 ### PageComposition
 
@@ -159,6 +159,9 @@ follow-ups, related material and organizational context to form the page. It doe
 investigate the software afresh or originate new explanatory investigations. Any text it
 authors is derived from existing accounts and book organization.
 
+Composition acquires the current answer set and the book-organization context it uses
+as scopes, so later additions and displacements can trigger needs-reconsideration.
+
 Composition must faithfully represent its source material, preserving material
 alternatives, disagreements and qualifications. Any synthesis remains identifiable as
 interpretation.
@@ -166,7 +169,8 @@ interpretation.
 The underlying investigation may supply guidance, such as a title or follow-ups. This is
 advisory to page composition.
 
-Links to other pages specify the investigations underlying their destination pages.
+Links to other pages identify destination investigations, directly or through book
+relationships.
 If a link is derived from an entity reference, PostCode uses the entity as the subject
 of a standard **entity-overview investigation**. A reference to retained content,
 including a whole response or a selected part, can supply the subject of an
@@ -235,8 +239,8 @@ For each selected destination, page composition establishes or reuses its
 relationships, including their applicable tags. It can register a candidate investigation
 and establish its destination object before that investigation is evaluated.
 
-Each link refers to the destination; tags belong to the graph relationships. Presentation
-can filter links using those relationships without duplicating their tags on the links.
+Each link references the **broader-than** relationship it presents. Its destination and
+applicable tags come from that relationship, so tags need not be duplicated on the link.
 
 ### See-also links
 

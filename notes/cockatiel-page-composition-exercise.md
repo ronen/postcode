@@ -46,9 +46,10 @@ The underlying investigation is **`state-behavior` on the
 
 The quoted question describes the recorded operation; it is not an arbitrary prose
 request defining page identity. The proposed book catalogue could express this as
-investigate architectural concept, with state-dependent behavior as the concept and
-the policy module as the subject. That is a proposed formulation, not a change to the
-retained trial's request.
+`investigate-architecture-concept` on the same policy module, with parameters
+`concept: state-behavior` and `with-diagram: true`, requiring a state diagram. These
+are illustrative catalogue parameters; their mapping to an operation and result
+contract belongs to INVEST. The retained trial's request remains unchanged.
 
 The module is the actual subject; the state bearer identified by the account is
 a policy instance. The question covers recovery, manual isolation and qualified
@@ -149,8 +150,8 @@ Initial graph relationships could be:
 
 These are qualified **broader-than** relationships between PageComposition objects,
 with applicable tags. The table shows their semantic direction without choosing which
-endpoint stores the attribute. The current page's broader-context links lead to the
-broader endpoints of those relationships.
+endpoint stores the attribute. The current page's broader-context links reference
+those relationships and lead to their broader endpoints.
 No **follows-up-from** graph relationship is required for this exercise; that
 remains a candidate capability in the proposal.
 
@@ -300,8 +301,8 @@ object in the illustrative organization, even though its account is not supplied
 here. Those identities can later receive content. The link descriptions explain
 relevance; they are not previews of purportedly completed investigations.
 
-The links refer to destinations; the UI can filter them using tags on the corresponding
-graph relationships. The relationships organize explanatory treatments, not code
+The links reference the broader-than relationships, from which their destinations and
+applicable tags are obtained. The relationships organize explanatory treatments, not code
 containment. More detail about T2 alone would not make it a broader treatment of the
 policy-state question.
 
