@@ -10,9 +10,8 @@ A document whose lifecycle prevents later editorial repair must not link to note
 
 ## Current notes
 
-- [Reference-book experience: working proposal](investigation-pages-proposal.md): book organization, page model, component responsibilities and investigation contracts for continued SLICE discussion.
-- [SLICE scope discussion](slice-scope-discussion.md): actual-output evidence, working agreements and review discussion for the reference-book proposal.
-- [Cockatiel page-composition exercise](cockatiel-page-composition-exercise.md): a walkthrough of the current book model using actual state accounts and diagrams, illustrative organization, offered additional detail and lazy destinations.
+- [Reference-book model handoff](book-model/README.md): model and investigation contracts, implementation considerations, future capabilities and an evidence-grounded Cockatiel example for book-model implementation planning.
+- Working sources retained for comparison during handoff review: [proposal](investigation-pages-proposal.md), [discussion notes](slice-scope-discussion.md) and [Cockatiel exercise](cockatiel-page-composition-exercise.md). The discussion began as SLICE planning and evolved into the book model.
 - [First graphical investigation slice](first-graphical-slice.md): reference-oriented experience and choices for the first offering.
 - [Architectural reference organization](architectural-reference-organization.md): candidate framework-generation capability, its boundaries and open questions.
 - Review consolidation: [resolution map and aligned probes](structured-account-example/review-alignment.md) records the fresh review discussions, production-update timing, precise inconsistency reports and referent discovery.
