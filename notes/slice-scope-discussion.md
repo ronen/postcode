@@ -2494,6 +2494,20 @@ earlier destination-only link formulation.
 The proposal also uses the hyphenated needs-reconsideration spelling for the
 named status/mechanism, at the human's suggestion.
 
+### Second re-review at 5411dc4 (2026-11-23)
+
+Claude's second re-review reports no substantive objections. It marks A, B and C
+resolved and D settled by the explicit assignment of conflicting-update handling
+to INVEST. It again finds the exercise faithful to retained evidence and the
+proposal coherent on its own terms.
+
+The assistant applied the two optional editorial suggestions: name the underlying
+investigation explicitly in the current-answer-set acquisition sentence, and use
+"investigate architectural concept" with "state-dependent behavior" consistently
+for the illustrative catalogue request. The historical state-behavior operation
+and the illustrative diagram requirement are unchanged. These edits introduce no
+new contracts or implementation decisions.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and

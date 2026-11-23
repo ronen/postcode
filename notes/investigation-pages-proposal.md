@@ -159,8 +159,9 @@ follow-ups, related material and organizational context to form the page. It doe
 investigate the software afresh or originate new explanatory investigations. Any text it
 authors is derived from existing accounts and book organization.
 
-Composition acquires the current answer set and the book-organization context it uses
-as scopes, so later additions and displacements can trigger needs-reconsideration.
+Composition acquires the underlying investigation's current answer set and the
+book-organization context it uses as scopes, so later additions and displacements can
+trigger needs-reconsideration.
 
 Composition must faithfully represent its source material, preserving material
 alternatives, disagreements and qualifications. Any synthesis remains identifiable as

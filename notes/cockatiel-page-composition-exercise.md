@@ -46,8 +46,8 @@ The underlying investigation is **`state-behavior` on the
 
 The quoted question describes the recorded operation; it is not an arbitrary prose
 request defining page identity. The proposed book catalogue could express this as
-`investigate-architecture-concept` on the same policy module, with parameters
-`concept: state-behavior` and `with-diagram: true`, requiring a state diagram. These
+*investigate architectural concept* on the same policy module, with parameters
+`concept: state-dependent behavior` and `with-diagram: true`, requiring a state diagram. These
 are illustrative catalogue parameters; their mapping to an operation and result
 contract belongs to INVEST. The retained trial's request remains unchanged.
 
