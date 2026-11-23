@@ -1948,6 +1948,478 @@ instructions. Preview descriptions of unproduced investigations remain proposed
 questions rather than generated answers. No new inference or code execution
 against Cockatiel was performed.
 
+### Initial assessment of Claude's proposal review (2026-11-22)
+
+Claude reviewed checkpoint `fcbb399`. The assistant read all twelve findings and
+the optional suggestions against the proposal and relevant adopted semantics.
+This records an initial assessment, not human agreement to the recommendations;
+the proposal and exercise have not been changed in response to this review.
+
+- Findings 1 and 2 expose important boundaries: identifying an executable page
+  destination before its first evaluation, and relating a composition's selected
+  answers to later changes and ordinary operation reuse. Request identity,
+  Query-result identity and composition identity need clearer connections. The
+  authority of book organization to originate useful investigation requests also
+  deserves an explicit statement. Automatic semantic merging is not promised.
+- Finding 2's recommended explicit recomposition policy is a possible solution,
+  not a consequence that the adopted rules force on the product. We should first
+  decide the intended behavior when opening a page after its inputs change, then
+  distinguish new selection from new interpretive work. Competing component
+  mappings must not acquire an implicit latest-wins rule.
+- Finding 3 correctly asks what remains available without an underlying answer
+  or complete composition. Its suggested ban on titles for unanswered pages is
+  unnecessarily restrictive: identifying a question is not claiming an answer.
+  Its proposed outcome paragraph also needs care to preserve the adopted
+  distinction between attempt reporting and qualified answer outcomes.
+- Findings 5 and 6 warrant discussion of agreement between broader-context links
+  and graph relationships, and of cycles within a claimed partial ordering.
+  Choosing an attribute owner is not by itself a coherence policy. Filtering to
+  selected nodes already has an intelligible induced-subgraph meaning; automatic
+  inclusion of relationship endpoints is a possible UI choice, not a necessary
+  correction to the model.
+- Findings 4, 8, 9 and 10 identify useful places to clarify inherited qualification,
+  immutable selections, Session lifetime and intentional component sharing. They
+  do not establish that qualified composition may never use another composition,
+  that every late result requires one particular View structure, or that shared
+  component identities must be removed. A page-specific edit to shared material
+  does need to preserve the other pages' intended meaning.
+- Finding 7 overstates the terminology conflict. Core concepts distinguish a
+  general Expansion from a standard expansion and explicitly permit coordinating
+  another Lens's answer. A book expansion need not be a standard expansion; a
+  brief clarification may suffice without renaming the component.
+- Finding 11 identifies a real destination distinction: a link referring to an
+  exact answer or selection cannot silently become a link to different current
+  material. Finding 12's multiple-part source selection is a small clarification
+  consistent with the intended contract.
+
+The review reports the exercise faithful to its retained evidence and careful
+about authored material. Its suggested explicit paraphrase label is reasonable.
+Identity before evaluation is a useful first discussion because it underlies
+opening destinations and the subsequent update policy.
+
+### Registering a question before producing an answer (2026-11-22)
+
+The human separated the practical identity question from the epistemic question
+of organizing unevaluated treatments. Inspection of the current implementation
+shows that the low-level separation already exists: `ContributionLedger.invoke`
+registers an Invocation and its Query result without starting production or
+calling an agent. Equivalent ordinary requests reuse those identities.
+`contributionEvaluation.evaluate` calls this registration operation first and
+separately decides whether to reuse completed production or conduct a dialog.
+An identity registered without production therefore does not itself count as a
+completed evaluation or prevent later evaluation.
+
+This narrows the initial assessment of review finding 1: an architectural
+question can already have an identified, initially unanswered Query result.
+The name `invoke` should not be read as proof that answer production has begun.
+The proposal still needs to specify how organizing work requests this
+registration and connects the resulting identity to its proposed PageComposition
+object; that book-level object is not an existing engine category. A fully
+specified request with valid subject/context references is required, not merely
+a prose page title. No additional standalone query-identity category or dummy
+producing investigation has been shown necessary.
+
+This finding does not settle how reliable prospective tags or broader-than
+relationships are, nor adopt the review's recommendation to replace the page's
+identity model with a new request-key scheme. No implementation was changed.
+
+### Revising prospective organization after investigation (2026-11-22)
+
+The human observed that the association mechanism already permits tags and
+relationships to be revised when the page is investigated. Changes to the book
+organization are an ordinary consequence of developing understanding; how the
+reader experiences those changes is a UX concern that exists regardless of
+whether pages were organized before evaluation.
+
+The assistant agrees that this substantially reduces the additional design
+problem. Prospective organization need not become a separate immutable structure
+or require a new lifecycle merely because its judgments precede an answer.
+Technically, page tag assignments and graph relationships are qualified
+attributes of PageComposition objects; BookOrganizationTag objects carry the
+shared tag meanings. Both use the proposed association mechanism for revision.
+
+The remaining responsibility is to consider the actual architectural answer
+during page composition, reassess the page's organizing judgments, and revise
+them or request book organization work where needed. Changing a shared tag's
+meaning remains an organization responsibility, rather than a page-local edit.
+Producing a new answer does not itself automatically supersede earlier organizing
+associations. Appropriate changes must be expressed through the existing rules.
+
+No separate question-scope versus achieved-coverage taxonomy is selected here.
+Organizing claims retain their meaning, basis and qualifications and may be
+revised as understanding develops. The mechanics of reassessment belong to
+INVEST; communicating consequential changes and preserving navigation continuity
+belong to UX. Exact earlier Projections remain unchanged.
+
+On further discussion, the human observed that correcting earlier judgments is a
+normal investigation responsibility applying to all page components. The explicit
+reassessment paragraph was therefore removed from the proposal as redundant;
+tagging does not require a special correction rule. The UX concern remains.
+
+To make the prospective-organization case explicit without introducing a special
+rule, the human suggested explaining it under Starting the organization. The
+proposal now states that assignments and relationships for unanswered questions
+are educated judgments from the questions and available architectural context;
+composition using actual answers revises them as appropriate under the normal
+association mechanism, requesting organizing work where needed.
+
+The human also suggested that later related investigations might cause the
+initial organizing contribution to be marked for reconsideration. Existing
+exposure/reconsideration machinery can derive such status from relevant changes
+to actually acquired information or selection scopes. Evidence citations and
+referent links alone do not establish that exposure. Whether the organizing
+investigation acquires a scope covering a later addition matters; merely being
+about a related entity is insufficient. This is an existing status mechanism,
+not automatic rerunning, correction or scheduling. Its use for the proposed book
+objects remains implementation work, rather than a new guarantee in the proposal.
+
+### Main treatment when findings are limited (2026-11-22)
+
+The human distinguished failure to execute an investigation, handled as a failed
+page opening by UX, from a completed investigation returning little useful
+material. The latter can supply the main finding, or composition can explain the
+lack of substantive findings from the returned material. This does not require a
+separate page model or a general new edge-case mechanism.
+
+At the human's suggestion, the Main content policy now uses existing explanatory
+content directly when there is exactly one current associated value providing a
+substantive answer. Otherwise interpretation supplies a coherent net treatment of
+available results and their limitations, including multiple contributions or lack
+of substantive findings. "Substantive answer" avoids equating success with positive
+findings: a useful finding of absence or uncertainty need not be rewritten. The
+policy retains source qualifications and does not turn attempt-only diagnostics
+into architectural findings.
+
+### Architectural questions as concept and subject (2026-11-23)
+
+The human clarified that page queries, including those proposed by organization,
+take the form (concept, subject), leaning into established architectural concepts;
+the experience does not expose arbitrarily worded prose investigations. Different
+titles or descriptions therefore do not themselves define different questions.
+The proposal now makes this explicit and states that organization can select or
+propose investigations, rather than only select previously offered questions.
+
+This constrains the duplicate-question concern raised in review finding 1 without
+requiring semantic matching of arbitrary prose. The pair describes the question,
+not a replacement for the existing complete request-equivalence contract:
+parameters, selected context, result requirements and applicable delegated-option
+identity still matter. Intended future prose access remains a way to open relevant
+book treatments, rather than an assumption of arbitrary-prose question identity.
+
+The human then refined the question model: it selects a predefined investigation
+type, subject and parameters, rather than always pairing an architectural concept
+with a subject. Examples include elaborate, explain, entity-overview and
+investigate architectural concept, with the concept a parameter of the last.
+The proposal uses this more general formulation. These examples do not establish
+a complete catalogue or make every named capability mandatory for the first slice.
+
+The human identified the predefined investigations as part of what makes the book
+stable and familiar. This framing now introduces the query model in Purpose and
+remit, rather than presenting it only as a detail of page identity.
+
+### Page freshness and review issue 2 (2026-11-23)
+
+The human considers review issue 1 addressed by the revised proposal, which
+should stand on its own without a separate reply to the reviewer.
+
+For issue 2, the human's preferred UX is that when PostCode has reason to believe
+a page is out of date, it notifies the reader and preferably updates the page
+automatically and notifies them of the update. The immediate design question is
+how PostCode knows that the page may be out of date, rather than starting from a
+requirement for manual recomposition.
+
+The assistant agrees with this framing. A freshness concern means that the
+page may need revision relative to its intended current inputs; it does not by
+itself prove its treatment wrong. Existing exposure/reconsideration can provide
+causes, but coverage depends on the actual information and scopes acquired by
+composition. In particular, acquiring only one exact answer differs from
+acquiring the scope of current answers, where a subsequent addition can matter.
+After detecting a relevant change, selecting already revised material and
+performing new interpretation remain distinct ways of updating the page. The
+freshness contract and its coverage remain under discussion; no new automatic
+refresh mechanism has been implemented or specified here.
+
+The human confirmed that needs reconsideration is the intended mechanism for
+this question: whether the page needs reconsideration. The proposal now states
+this explicitly. The remaining investigation concerns its input/exposure coverage
+and the response to a detected cause, rather than inventing a separate page
+freshness mechanism. This does not imply that current reconsideration machinery
+already schedules or performs updates.
+
+The human noted that input tracking is already part of the existing mechanism,
+not an additional page-design obligation. To express this structurally, Page
+model now introduces the page-composition investigation as using investigrams
+and producing attribute associations for PageComposition and PageComponent
+objects. Its contributions participate in the ordinary epistemic qualification,
+revision and needs-reconsideration mechanisms. The page-composition Lens uses
+that investigation and selects its results into a Projection. This replaces the
+separate page-freshness sentence and avoids suggesting a special tracking system.
+
+### Single current values for page framing (2026-11-23)
+
+The human proposed restricting PageComposition and PageComponent associations
+instead of requiring presentation to handle competing values for every component.
+PostCode's architectural accounts may overlap or compete, but the page framing
+can supply one current treatment of those accounts. The agreed contract gives
+singular attributes at most one current value: initial establishment is allowed,
+and subsequent changes replace or withdraw rather than leave competing standing
+values. This is an explicit constraint on the proposed book objects, beyond the
+unrestricted multiplicity of the existing association mechanism.
+
+Collections remain possible. INVEST can choose between a single collection value
+replaced atomically and individually added or withdrawn members. The uniqueness
+constraint applies to singular attributes; collection cardinality is not limited
+to one member. Whether that constraint also governs an enclosing collection value
+depends on the chosen representation. Implementation must preserve uniqueness
+even when independent investigations attempt updates to the same earlier value;
+simply requiring each declaration to say supersede would not by itself ensure it.
+
+Qualification and historical access remain intact, as do alternatives in the
+underlying architectural accounts and their unified treatment. This replaces the
+earlier suggestion that UX must necessarily handle alternative component values
+under the general association rules. No rule for automatic precedence among
+architectural accounts is introduced, and no implementation mechanism is chosen.
+
+### Follow-up: presentation generality under a page-only model (2026-11-23)
+
+The human observed that if PostCode adopts pages as essentially its only
+presentation, some existing presentation rules and mechanisms may no longer be
+needed. We agreed that removing them now would be premature, but should record
+a follow-up to reassess that generality if a page-only experience is adopted.
+
+Candidates for reassessment include arbitrary Lens/Presentation combinations,
+presentation selection and general compatibility machinery. Prose, diagrams and
+collections might be handled as page-component renderers rather than independently
+selectable Presentations. Qualification, exact-result preservation, disclosure of
+changes and separation of presentation from inference remain semantic obligations.
+This is a possible future simplification, not a decision to change the adopted
+model or part of the current proposal's implementation scope.
+
+### Inspecting the inputs to a unified treatment (2026-11-23)
+
+The human noted the limits of mechanically enforcing composition's semantic
+obligations, particularly whether a unified treatment faithfully preserves
+alternatives. Structural checks can retain sources, qualifications and input
+coverage, but cannot prove that the interpretation represents them adequately.
+The treatment remains attributable interpretation under the existing epistemic
+contract; enforcement methods belong to INVEST.
+
+The human suggested that UX allow inspection of the underlying results when the
+main treatment is not simply a direct use of a sole existing answer. This is now
+recorded in the proposal's UI concerns. Such access supports examination of the
+synthesis; it does not relieve composition of its obligation to represent material
+alternatives and limitations in the treatment itself. The relevant inputs are the
+exact results used for the synthesis, not silently substituted later answers.
+
+The human clarified that this access applies to other synthesized page components
+as well as main content. The proposal's UI concern now covers page components
+generally and their underlying material.
+
+### Review issue 3: incomplete and failed page investigations (2026-11-23)
+
+Much of the third review finding is covered by the distinction already discussed:
+failed execution belongs to ordinary outcome handling and UX, while limited
+findings can be presented under the revised main-content responsibility. The
+human asked whether to explicitly list failed-page UX outside this proposal's
+remit. The existing UI concern for pending, partial and unavailable results now
+also names failed page or expansion investigations and offering retry. This does
+not prescribe a new failure-state model or retry mechanism.
+
+### Review issues 4 and 5: qualification and broader-context links (2026-11-23)
+
+The human agreed that issue 4 is covered by composition's explicit participation
+in the existing epistemic mechanisms. Qualified composed material can inform
+later composition without becoming independent repository evidence; no blanket
+ban on consuming other compositions is adopted.
+
+For issue 5, we agreed to make the connection between broader-context links and
+the book graph explicit: links select and describe broader-than relationships,
+which page composition can establish or revise when considering candidates.
+Links carry the applicable relationship tags. The human observed that this may
+require establishing destination PageComposition objects before evaluation, just
+as book organization can. The proposal now explicitly permits page composition
+to register the candidate investigation and establish its destination object
+before that investigation is evaluated. This does not expand its remit to
+inventing new explanatory questions; it acts on the existing candidate sources.
+The storage endpoint and update mechanics remain implementation choices.
+
+The human refined this to avoid copying relationship tags onto links: composition
+establishes or reuses destination objects and creates or revises the tagged graph
+relationships directly. Broader-context links refer to destinations. Presentation
+filters them using tags on the corresponding relationships, so a tag revision
+does not require a matching edit to a link. The proposal and the exercise's
+broader-context section now reflect this single location for relationship tags.
+
+### Review issue 6: perspectives and cycles (2026-11-23)
+
+Perspective selection and endpoint inclusion are UI choices; supplying the
+qualified graph is implementation work. For cycles, the human chose to describe
+broader-than relationships as typically forming a partial ordering within a
+perspective, rather than guarantee an acyclic graph. Explicit cycle checking is
+deferred until cycles become a practical problem. The proposal now states this
+and describes UI arrangement using the applicable relationships without assuming
+they always constitute a partial order.
+
+The human subsequently simplified this: arranging pages using the applicable
+broader-than relationships is sufficient, without a partial-order claim or an
+explicit deferral of cycle checking. Presentation may tolerate cycles, so the
+proposal should not assume checking is needed. Those two sentences were removed;
+no acyclicity requirement is adopted.
+
+### Review issue 7: existing expansion usage (2026-11-23)
+
+The human identified the collision with the earlier application expansion model
+as real, even though the reference-book model need not conflict with the product
+foundation. Two options were considered: rename the book component and revisit
+retirement of the old concept under a page-only model, or retire an unused old
+concept now and reclaim the term.
+
+Inspection shows standard expansions are actively integrated into the current
+implementation. Module expansions supply exports, documentation and composition;
+organization uses group details, and dependency presentations include repository
+layout. Presentation contracts request these, evaluators materialize them, and
+qualified answers retain their content and outcomes. Agent evidence access also
+uses exports/documentation expansions, so this is not solely a presentation label.
+Existing tests exercise expanded versus unexpanded answers and exact presentation
+without acquiring missing detail. This inspection did not run those tests.
+
+The assistant therefore recommends renaming the proposed book component, with
+"supplements" a candidate, and retaining a follow-up to assess whether the old
+concept can be retired or replaced under a page-only model. Retirement would need
+to account for currently used functionality rather than delete unused terminology.
+No rename or retirement is adopted by this assessment, and no governing material
+or implementation was changed.
+
+The human asked about committing to the book versus retaining the previous
+experience while validating it. The assistant recommended a bounded transition,
+but no migration strategy was adopted. The human directed the proposal to record
+only the design implication: in a book-only model, the earlier presentation model
+and Expansion mechanism should be examined and unnecessary parts retired. This
+now appears under Proposed changes and additions. Adoption and migration remain
+outside this proposal's remit; the foundation's semantic obligations remain.
+
+### Additional detail terminology (2026-11-23)
+
+The human chose **Additional detail** in place of **Expansions** for the book
+component. The proposal, Cockatiel exercise and notes index now use that term,
+with `additional-detail` as the illustrative component-role keyword. Historical
+discussion terminology is retained. References to the existing application
+Expansion concept and standard-expansion framework remain unchanged and distinct.
+
+### Future capability: chapters and sections (2026-11-23)
+
+The human suggested grouping related pages into chapters, and chapters into
+sections, potentially with agent-authored overview or introductory material.
+Multiple groupings could coexist, and the chapters or sections could themselves
+carry book organization tags. This would not require one canonical hierarchy.
+
+The UI could derive some grouping from the existing graph, while interpreting
+agents could judge which pages belong together and explain the resulting
+organization. Such a grouping need not merely reproduce broader-than links:
+complementary treatments can belong together without one encompassing another.
+Authored introductions and inferred grouping judgments would retain the usual
+qualification and provenance.
+
+This is recorded as a potential future capability, outside the current required
+contracts. Whether groups need new identified object categories or can be
+represented through existing investigations and book objects remains open.
+
+### Consolidating future directions in the proposal (2026-11-23)
+
+The human requested copying future capabilities and follow-ups into the proposal
+so that it stands on its own, explicitly preserving these discussion notes.
+A Future capabilities and follow-ups section now collects chapters/sections,
+the supporting architectural vocabulary, intended prose access, optional
+elaboration, candidate follows-up-from relationships and preview production,
+wider reorganization, possible page comparisons, separate persistence/input-change
+scope decisions and conditional presentation simplification. It distinguishes
+their statuses rather than treating every idea as committed deferred work.
+Detailed UI concerns remain in their existing section; earlier discussion and
+rationale remain here unchanged.
+
+### Review issue 8: late-arriving additional detail and previews (2026-11-23)
+
+The human agreed to record the representation of newly obtained additional detail
+and previews as a UI/implementation concern: they could be selected into a new
+page Projection or coordinated as separate qualified Projections in its View.
+The proposal does not require one representation for all cases. Existing
+qualification and immutable-result obligations apply in either case. The relevant
+section is now titled UI and implementation concerns outside this proposal.
+
+The future-directions section was also renamed Future capabilities and related
+work, and presentation simplification labeled a conditional design implication,
+to avoid overloading the investigation term follow-up.
+
+### Review issue 9: Session lifetime and persistence (2026-11-23)
+
+The human considers issue 9 addressed by Future capabilities and related work,
+which explicitly leaves persistence across sessions as a separate scope decision.
+The page model follows existing investigation identity rules; the proposal does
+not establish cross-session continuity. No further proposal wording was added.
+
+### Review issues 10 and 11: shared components and link destinations (2026-11-23)
+
+For issue 10, the human observed that respecting the meaning and scope of a
+shared component is already an investigation responsibility. No special revision
+rule was added. The incidental phrase "reusable across compositions" was removed
+from the object inventory.
+
+For issue 11, we distinguished related-material references used by composition
+from the resulting links, which specify destination page investigations.
+"Exact answer" was the reviewer's wording; the proposal had not defined a
+separate answer destination category. Related material now names entities,
+investigations or retained content, including whole responses and selected parts.
+An entity-derived link uses entity-overview; retained content can be a subject
+for explain or inform selection of another relevant investigation. Exact source
+material remains part of normal qualified provenance, not an additional book-link
+category. The human requested this framing in the responsibilities introduction,
+which now states it in place of the entity-only link paragraph.
+
+### Review issue 12 and optional suggestions (2026-11-23)
+
+The human accepted the clarification that a source selection can identify one or
+more parts of the reply. The proposal now explicitly permits multiple selected
+items, components or association uses without choosing a representation.
+
+The assistant also checked the review's optional suggestions. The exercise's
+transition-detail table now labels its prose as paraphrase. Mapping proposed
+investigations to existing summarize/examine operations is relevant implementation
+work, not a requirement to create duplicate operations. The first-page entry route
+belongs to UI work; possible upward cascades and latent destinations are largely
+covered by establishing destinations without evaluation and without constructing
+the whole book. Perspective-independent page content is already explicit. The
+assistant found no further mandatory design decision in these suggestions;
+this assessment does not claim implementation or empirical validation.
+
+### Consistency pass after the review discussion (2026-11-23)
+
+At the human's request, the assistant read the revised proposal and Cockatiel
+exercise together against the review discussion and checked the retained state
+models supporting the exercise. The pass made the following corrections:
+
+- Align the exercise with registration before evaluation, investigation-backed
+  composition and the singular-attribute uniqueness contract.
+- Describe proposed destination investigations using investigation types,
+  subjects and concept parameters, keeping actual historical requests distinct
+  from the proposed catalogue and unresolved illustrative request descriptions.
+- Remove the exercise's implicit choice of which graph endpoint stores an
+  organizing relationship, and update entity-derived destination wording.
+- Carry the agreed source-selection cardinality, synthesis responsibility,
+  underlying-material access and refresh preference into the exercise.
+- Preserve the implementation choice for late-arriving additional detail and
+  previews, and keep graph tags separate from destination links.
+- Clarify that the future choice about following or pinning concerns changing
+  software inputs, rather than reopening the preferred refresh behavior for
+  changes in accumulated understanding.
+- Tidy terminology, wrapping, grammar and the notes index description.
+
+The pass found no additional design decision requiring human resolution. All
+23 local links and image references in the proposal and exercise, including
+anchors, were checked, and the six component-role sections agree. The diff passed
+whitespace checks. No generated diagrams, retained validation evidence, adopted
+documents or implementation were changed, and no new live inference was run.
+The human subsequently authorized committing this checkpoint.
+
 ## Consequences to discuss after that choice
 
 - **Reference substance:** a recovery entry connected to admission, ownership and

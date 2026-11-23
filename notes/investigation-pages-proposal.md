@@ -16,6 +16,12 @@ related and more detailed treatments. The book is a read-only window onto the so
 helping readers understand it for their own work. Architectural concepts provide a
 vocabulary suited to the subject, rather than a fixed template.
 
+Part of the book's stability and familiarity comes from a predefined set of investigation
+types, such as elaborate, explain, entity-overview and investigate architectural concept.
+Queries specify an investigation type, its subject and applicable parameters, rather
+than an arbitrary prose question; for investigate architectural concept, the concept is
+a parameter drawn from the architectural vocabulary.
+
 This proposal makes the reference-book experience concrete by defining its pages, their
 organization and composition, and the investigations and contracts that supply them.
 
@@ -44,22 +50,23 @@ relationships, and their organization in the book can reflect that structure.
 ## Page model
 
 A page presents the question and responses of an **underlying investigation** as part of
-the reference book. It adds a title, orientation, expansions, and connections to broader
-and related treatments. The underlying investigation determines the page's identity;
-other investigations may supply the additional material.
+the reference book. It adds a title, orientation, additional detail, and connections to
+broader and related treatments. The underlying investigation determines the page's
+identity; other investigations may supply the additional material.
 
-**Applying a page-composition Lens to the underlying investigation produces a qualified
-Projection of the page's composition and content**, using selected responses and
-relevant context. Its presentation is a book-style
-[View](../foundation/product-design.md#view).
+A **page-composition investigation** produces the composition using the existing
+investigram mechanism. The `PageComposition` and `PageComponent` objects described below
+are targets for its attribute associations. Its contributions therefore participate in
+the existing mechanisms for epistemic qualification, revision and **needs reconsideration**.
+
+A **page-composition Lens** uses this investigation and selects its results into a
+qualified Projection of the page's composition and content. Its presentation is a
+book-style [View](../foundation/product-design.md#view).
 
 The page's continuing identity follows the underlying investigation's [existing
 identity](../docs/decisions/qualified-answers-over-contributions.md#answer-identity-and-request-reuse),
 which is distinct from a particular execution or response. Responses and compositions
-can change while the page remains associated with that investigation. When the current
-responses, component material or organizational context used by the page change, a new
-Projection can be constructed to update the page. Exact earlier results remain
-unchanged.
+can change while the page remains associated with that investigation.
 
 ## Page components and composition
 
@@ -68,28 +75,39 @@ unchanged.
 | Title | The title of the page. |
 | Orientation | An explanation of the frame and distinctions needed to understand the treatment. |
 | Main content | The main treatment of the underlying question. |
-| Expansions | A collection of additional material for the current page, or requests to obtain it. |
+| Additional detail | A collection of additional material for the current page, or requests to obtain it. |
 | Broader-context links | A collection of links to more encompassing treatments. |
 | See-also links | A collection of links to other relevant treatments. |
 
 Diagrams are a form of explanatory content, not a separate component role. They can
-supply main content, an expansion or contextual explanation; a diagram is not
-automatically an expansion.
+supply main content, additional detail or contextual explanation; a diagram is not
+automatically additional detail.
 
 `PageComposition` and `PageComponent` are identified object categories alongside Entity
 and Query result, using the same qualified attribute/association mechanism.
 
+These objects impose an additional constraint: singular attributes have at most one
+current value. Initial values can be established; subsequent changes replace or
+withdraw them, preserving uniqueness even when investigations update independently.
+Qualifications and historical values remain accessible.
+
+Collections can hold items of additional detail, links, tag assignments or graph
+relationships. Whether a collection is one value replaced atomically or supports
+individual member additions and withdrawals is left to INVEST, as are the mechanisms
+that enforce uniqueness for singular attributes.
+
 ### PageComposition
 
 A `PageComposition` identifies the composition of a page. Its identity is determined by
-its underlying investigation and serves as a node in the book organization graph. The
-object can be established before it has any content; subsequent investigations supply
-associations to that same object.
+the identity of its underlying investigation, and it serves as a node in the book
+organization graph. The underlying investigation can be registered without being
+evaluated, allowing the `PageComposition` object to be established before that evaluation.
+Subsequent investigations supply associations to that same object.
 
 Its qualified attributes supply:
 
 - **Component references:** mappings from component-role keywords such as `title`,
-  `orientation`, `main-content`, `expansions`, `broader-context` and `see-also` to
+  `orientation`, `main-content`, `additional-detail`, `broader-context` and `see-also` to
   `PageComponent` references.
 - **Book organization tags:** assignments referencing `BookOrganizationTag`
   identities and describing the page's participation in book organization.
@@ -127,11 +145,11 @@ maintains the tag set, without a formal distinction between topic and perspectiv
 
 Tags support UI presentation of focused perspectives over the graph supplied in
 qualified Projections. For example, the UI could filter nodes by tags and arrange them
-using the corresponding broader-than partial ordering, including untagged relationships
+using the applicable broader-than relationships, including untagged relationships
 among the selected nodes. Different contexts may have different orderings that cannot
-simply be merged. The UI could also filter a page's tagged broader-context links by the
-selected perspective. This is a presentation choice, not an investigation parameter; it
-does not change the page's title, orientation or main content.
+simply be merged. The UI could also filter a page's broader-context links using tags on
+the corresponding graph relationships. This is a presentation choice, not an
+investigation parameter; it does not change the page's title, orientation or main content.
 
 ## Page-composition investigation responsibilities
 
@@ -141,21 +159,30 @@ follow-ups, related material and organizational context to form the page. It doe
 investigate the software afresh or originate new explanatory investigations. Any text it
 authors is derived from existing accounts and book organization.
 
+Composition must faithfully represent its source material, preserving material
+alternatives, disagreements and qualifications. Any synthesis remains identifiable as
+interpretation.
+
+The underlying investigation may supply guidance, such as a title or follow-ups. This is
+advisory to page composition.
+
+Links to other pages specify the investigations underlying their destination pages.
+If a link is derived from an entity reference, PostCode uses the entity as the subject
+of a standard **entity-overview investigation**. A reference to retained content,
+including a whole response or a selected part, can supply the subject of an
+**explain investigation** or inform composition's choice of another relevant destination
+investigation.
+
+The page-composition investigation's responsibilities follow.
+
+### Tagging and organizing relationships
+
 It consults the book organization and selects appropriate tags from the current set. If
 none fit or further tags seem needed, it requests a **book organization investigation**,
 supplying the underlying investigation result and an explanation of why existing tags
 seem inadequate, optionally suggesting additional tags. It requests organizing work when
 available surrounding context is insufficient to situate the treatment, and can
 contribute new or revised qualified organizing relationships.
-
-The underlying investigation may supply guidance, such as a title or follow-ups. This is
-advisory to page composition.
-
-Links may identify an entity rather than an investigation. In that case, PostCode uses
-the entity as the subject of a standard **entity-overview investigation**. Its page
-follows the same model as any other investigation's page.
-
-The page-composition investigation's responsibilities for each page component follow.
 
 ### Title
 
@@ -171,33 +198,29 @@ typically provides more context than a summary of the answer alone.
 
 ### Main content
 
-The investigation supplies the main treatment of the underlying question. It may include
-prose, structured explanations and diagrams.
+The investigation produces a unified treatment of the underlying question from all its
+current result values. The treatment may include prose, structured explanations and
+diagrams. It makes limitations or a lack of substantive findings explicit.
+Where there are multiple contributions, interpretation judges whether they can be
+combined, should remain alternatives, or have unresolved relationships. Shared ground
+and local disagreement can coexist. "Unified" means an intelligible treatment, not
+necessarily one agreed conclusion. Sources and qualifications remain identifiable;
+the unified treatment does not automatically supersede its inputs.
 
-Main content comes from the underlying investigation's current result values.
-Composition does not promote follow-ups or related-material candidates into main
-content; those supply candidates for expansions or links.
+In the common special case where the underlying investigation's Query result has
+**exactly one current associated value** providing a substantive answer, page composition
+simply uses its explanatory content directly.
 
-If the underlying investigation's Query result has **one current associated value**, use
-its explanatory content directly.
+### Additional detail
 
-With **multiple current values**, interpretation produces a coherent joint treatment,
-judging whether contributions can be combined, should remain alternatives, or have
-unresolved relationships. Shared ground and local disagreement can coexist. "Unified"
-means an intelligible treatment, not necessarily one agreed conclusion. Sources and
-qualifications remain identifiable; the joint treatment does not automatically supersede
-its inputs.
-
-### Expansions
-
-Expansion candidates come from the underlying investigation's response material: its
-follow-ups supply requests for further investigation, and its related material
-identifies existing content that may elaborate the treatment. The page-composition
-investigation decides which material—whether supplied directly or to be returned by a
-follow-up investigation—should be included as additional material on the current page.
-These are the page's expansions. It does not independently invent expansion requests. An
-expansion can reference the part of the main content it elaborates, or concern the
-treatment as a whole.
+Candidates for additional detail come from the underlying investigation's response
+material: its follow-ups supply requests for further investigation, and its related
+material identifies existing content that may elaborate the treatment. The
+page-composition investigation decides which material—whether supplied directly or to
+be returned by a follow-up investigation—should be included as additional detail on
+the current page.
+It does not independently invent requests for additional detail. Each item can reference
+the part of the main content it elaborates, or concern the treatment as a whole.
 
 ### Broader-context links
 
@@ -207,8 +230,13 @@ investigation's page. Candidates can come from the underlying response's follow-
 related material or book organization. Book organization is expected to be the main
 source.
 
-Links can carry book organization tags so presentation can filter them by the selected
-perspective. Untagged links apply across perspectives.
+For each selected destination, page composition establishes or reuses its
+`PageComposition` object and creates or revises the corresponding **broader-than**
+relationships, including their applicable tags. It can register a candidate investigation
+and establish its destination object before that investigation is evaluated.
+
+Each link refers to the destination; tags belong to the graph relationships. Presentation
+can filter links using those relationships without duplicating their tags on the links.
 
 ### See-also links
 
@@ -228,7 +256,7 @@ architectural accounts (including the module inventory) and the existing book
 organization, and request further software investigations when those accounts do not
 provide enough context.
 
-It identifies useful architectural investigations and creates or reuses their
+It selects or proposes useful architectural investigations and creates or reuses their
 `PageComposition` objects, establishing qualified **broader-than** relationships among
 new and existing objects where appropriate. These relationships can be scoped by book
 organization tags. It returns suitable existing tags or allocates new ones. Tags
@@ -269,9 +297,16 @@ book organization determines their organizing tags.
 The first page can therefore acquire useful surrounding context without first
 constructing the whole book; later pages develop the same organization.
 
-Alternatively, the agent could prepare an initial set of tags before the first page
-request, or a separate initial-organization agent could perform that work. The choice of
-timing and division of work is left to INVEST and experience in use.
+Where underlying architectural investigations have not yet produced answers, initial
+tag assignments and relationships are educated judgments based on the questions and
+available architectural context. When those pages are composed using actual answers,
+page composition revises these judgments where appropriate through the normal
+association mechanism, requesting book organization work where needed.
+
+Other startup arrangements are possible: the agent could prepare an initial set of tags
+before the first page request, or a separate initial-organization agent could perform
+that work. The choice of timing and division of work is left to INVEST and experience
+in use.
 
 ## Elaborating the main treatment
 
@@ -282,21 +317,20 @@ mechanism to designate a fuller answer for the original Query result, supersedin
 earlier designations where warranted or retaining complementary or alternative
 contributions. The page keeps its underlying investigation identity.
 
-This differs from an expansion, which supplies additional material alongside the main
+This differs from additional detail, which supplies material alongside the main
 treatment. The elaborating investigation produces the new account; page composition
 presents it under the same composition responsibilities.
 
 ## Proposed changes and additions
 
-These inventories summarize the proposal's object categories, investigation-contract
-changes and new investigations.
+The following summarizes the proposal's object categories, investigation-contract
+changes, new investigations and implications for the existing application design.
 
 ### Object categories
 
 - **`PageComposition`:** the identified object whose associations supply a page's
   component references, tags and graph relationships; its identity is a graph node.
-- **`PageComponent`:** an identified component of a page, reusable across
-  compositions.
+- **`PageComponent`:** an identified component of a page.
 - **`BookOrganizationTag`:** an identified tag whose name and description are
   qualified attributes, referenced by tag assignments on pages and relationships.
 
@@ -313,12 +347,12 @@ book-level material, including material produced for other pages.
 | Area | Proposed change |
 | --- | --- |
 | Response titles | Require a descriptive title associated with an explanatory response, chosen by its investigator. It is available as a suggested page title. |
-| Related material | Add optional references to relevant entities, investigations, answers or selected content, with an explanation of the connection. These may include a *source selection*. |
+| Related material | Add optional references to relevant entities, investigations or retained content (including whole responses and selected parts), with an explanation of the connection. These may include a *source selection*. |
 | Follow-ups | Require the follow-up's meaning to explain the proposed inquiry's relevance to the current account. Replace `references` with an optional *source selection*. |
 
-For related material and follow-ups, a **source selection** identifies the part of the
-reply they concern: a content item, an addressable component within it, or an
-association use. It is distinct from the destination of a related-material link or the
+For related material and follow-ups, a **source selection** identifies one or more parts
+of the reply they concern: content items, addressable components within them, or
+association uses. It is distinct from the destination of a related-material link or the
 subjects and input context of a follow-up investigation. It can be omitted when the
 connection concerns the reply as a whole.
 
@@ -327,42 +361,95 @@ connection concerns the reply as a whole.
 - **Page-composition:** compose the underlying investigation's accounts into a
   page within the book organization.
 - **Entity-overview:** provide an introductory account of an entity, serving as
-  the underlying investigation when a link identifies that entity. It can offer
-  relevant architectural investigations as follow-ups.
+  the underlying investigation for a destination derived from an entity reference.
+  It can offer relevant architectural investigations as follow-ups.
 - **Book organization:** situate treatments in the developing book, acquiring
   architectural context, establishing surrounding pages and relationships, and
   maintaining the tag set.
 - **Elaborate:** develop the main treatment of an existing investigation. This
   capability need not be included in the first slice.
 
-Orientation and joint treatment of multiple responses are responsibilities of page
+Orientation and synthesis of the main treatment are responsibilities of page
 composition, not additional proposed investigations.
 
-## UI concerns outside this proposal
+### Existing presentation mechanisms
 
-The following considerations are recorded for future UI work, rather than resolved by
-this proposal:
+In a book-only model, the earlier application's model of independently selected
+Presentations and its Expansion mechanism would no longer define the experience.
+Existing presentation mechanisms, including the standard-expansion framework, should
+be examined and unnecessary parts retired. The foundation's qualification and
+presentation obligations still apply. Adoption and migration strategy are outside
+this proposal's remit.
 
-- How page components are arranged, including how expansions appear and attach
-  to the main content they elaborate.
+## Future capabilities and related work
+
+These collect the directions discussed alongside the proposal, preserving their
+different statuses rather than treating them all as promised later work.
+
+- **Chapters and sections — candidate capability.** Agents could group related pages
+  into chapters and chapters into sections, author introductory material, and apply
+  book organization tags to the groups. Multiple groupings could coexist. Presentation
+  can derive some arrangements from the graph; interpreted groupings could explain why
+  complementary treatments belong together. Their representation remains open.
+- **Architectural vocabulary — candidate supporting capability.** A maintained,
+  lightly structured vocabulary could connect related concepts and provide access to
+  reference works for investigating agents, without imposing a fixed explanatory template.
+- **Prose-directed access — intended capability.** Prose would principally open or
+  develop relevant book treatments, with a brief reply where useful. Implementation
+  may follow the basic book experience.
+- **Elaborating an answer — optional for the first slice.** The
+  [elaborate investigation](#elaborating-the-main-treatment) fits the proposed mechanism
+  but need not be part of the initial experience.
+- **Follows-up-from relationships — candidate to validate.** Their value beyond
+  retained follow-up information is unproven; see
+  [Organization graph and perspectives](#organization-graph-and-perspectives).
+- **Alternative preview production — candidate capability.** Ordinary destination
+  investigations can supply previews initially. A separate mechanism could produce
+  previews more selectively or efficiently.
+- **Wider reorganization — possible extension.** Reassessing shared tag meanings and
+  affected assignments across the book goes beyond the initial
+  [book organization contract](#book-organization-investigation).
+- **Page comparison — future possibility.** A comparison investigation could explain
+  changes in software, changes in PostCode's understanding, or both, using identified
+  earlier accounts and bases. Following or pinning changing software inputs remains a
+  future design choice.
+- **Persistence and changing repository inputs — separate scope decisions.** Continuing
+  a book across sessions or following changes to its software inputs is not established
+  by this proposal. Sharing a developing book across users remains an unselected possibility.
+- **Presentation simplification — conditional design implication.** A book-only model
+  calls for examining and retiring unnecessary existing presentation machinery, as
+  described under [Existing presentation mechanisms](#existing-presentation-mechanisms).
+
+## UI and implementation concerns outside this proposal
+
+The following considerations are recorded for UI and implementation work, rather than
+resolved by this proposal:
+
+- How page components are arranged, including how additional detail appears and attaches
+  to the main content it elaborates.
 - How links, labels and previews convey broader and related treatments.
+- Whether newly obtained additional detail and previews are selected into a new page
+  Projection or coordinated as separate Projections in its View, preserving their
+  qualifications and leaving earlier retained results unchanged.
 - How perspective selection filters and arranges the book graph and filters a
-  page's broader-context links using book organization tags.
+  page's broader-context links using tags on the corresponding graph relationships.
+- How changes to tags and relationships resulting from investigation are
+  communicated while preserving the reader's orientation and navigation continuity.
+- How pages needing reconsideration are updated and changes communicated, with
+  automatic updating and notification as the preferred experience.
 - How accessing retained material and requesting material not yet produced can
   offer the same interaction, while communicating pending, partial or unavailable
-  results.
+  results, handling failed investigations for pages or additional detail, and offering retry.
 - Selecting material and requesting an explanation on its own investigation page.
 - Navigation history, returning to earlier pages and a searchable index of visited
   pages. These are distinct from the book's organizing relationships.
 - How scope, basis, qualifications, alternatives and changes in understanding are
   presented, including access to earlier responses.
-- Prose-directed access that principally opens or develops relevant treatments.
-  This is an intended capability that may follow the basic book experience.
+- How readers can inspect the underlying material when a page component is
+  synthesized rather than directly using existing content.
 
 For preview content, the UI can optimistically request ordinary destination
 investigations through application coordination and preview the returned material.
-An alternative mechanism for producing previews is a candidate capability, not a
-first-slice requirement.
 
 ## Evidence and limits of the example
 
@@ -370,7 +457,7 @@ The [Cockatiel exercise](cockatiel-page-composition-exercise.md) grounds the dis
 in actual generated state models, diagrams and recorded live follow-ups. It
 distinguishes those outputs from authored composition and proposed destinations, and
 keeps the older authored journey's revision separate. The walkthrough illustrates the
-current object and organization model, including offered expansions and optimistic
+current object and organization model, including offered additional detail and optimistic
 preview requests, without claiming that the book mechanisms have been implemented.
 
 The committed state-model text is not a full explanatory response. The operation already

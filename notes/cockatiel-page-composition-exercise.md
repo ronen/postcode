@@ -1,6 +1,6 @@
 # Cockatiel page-composition exercise
 
-Started: 2026-11-21. Revised: 2026-11-22 to conform to the
+Started: 2026-11-21. Revised: 2026-11-23 to conform to the
 [reference-book proposal](investigation-pages-proposal.md).
 
 This is an authored walkthrough of the proposed information model using actual
@@ -44,6 +44,12 @@ The underlying investigation is **`state-behavior` on the
 
 > Explain this circuit-breaker policy's state-dependent behavior.
 
+The quoted question describes the recorded operation; it is not an arbitrary prose
+request defining page identity. The proposed book catalogue could express this as
+investigate architectural concept, with state-dependent behavior as the concept and
+the policy module as the subject. That is a proposed formulation, not a change to the
+retained trial's request.
+
 The module is the actual subject; the state bearer identified by the account is
 a policy instance. The question covers recovery, manual isolation and qualified
 initialization/serialization information. A recovery-only title would not change
@@ -54,11 +60,12 @@ It remains the same when another response or composition is supplied. The fresh
 account superseded an earlier designation in the recorded trial; those two
 responses are not two page identities or two equally standing current answers.
 
-The object could be established before any page components exist. Later
-composition supplies qualified associations to the same object. Applying the
-page-composition Lens constructs a Projection of the selected composition and
-content; presenting that Projection gives the book-style View. An earlier
-Projection retains its exact selections when subsequent associations change.
+The underlying investigation could be registered without evaluation, allowing its
+PageComposition object to exist before an answer or page components are produced.
+The page-composition investigation supplies qualified associations to that object
+through investigrams. The page-composition Lens uses that investigation and selects
+its results into a Projection; presenting that Projection gives the book-style View.
+An earlier Projection retains its exact selections when subsequent associations change.
 
 All page and tag names below are descriptive labels, not runtime identifiers.
 Exact investigation, content and association references would be needed in an
@@ -68,8 +75,8 @@ implementation; matching these labels does not establish identity.
 
 Composition receives the underlying result and available guidance. It can consult
 existing book material, but does not independently investigate the software or
-invent expansion requests. The following guidance is **authored for the exercise**;
-its presence on the fresh specimen is not established by the preserved outputs:
+invent requests for additional detail. The following guidance is **authored for the
+exercise**; its presence on the fresh specimen is not established by the preserved outputs:
 
 | Proposed underlying output | Meaning and source connection |
 | --- | --- |
@@ -78,8 +85,8 @@ its presence on the fresh specimen is not established by the preserved outputs:
 | Follow-up: sample completions after isolation | Ask what happens when an already-admitted HalfOpen call completes after manual isolation. Source selection: the HalfOpen → Isolated transition, rendered as T7. |
 | Follow-up: concurrent callers during recovery | Investigate sampled executions, waiting callers and their shared decision. Source selection: HalfOpen and its concurrency limitation. |
 
-Source selections identify where the offered material connects to the reply.
-The follow-up request separately identifies its investigation subject and input
+Source selections identify one or more parts of the reply to which the offered material
+connects. The follow-up request separately identifies its investigation subject and input
 context. Rendered labels such as T7 are not fabricated retained component keys.
 
 The follow-up examples are informed by the live trials, but do not transplant an
@@ -106,14 +113,15 @@ One candidate organizing result is:
 | Page label | Underlying investigation | Available material in this exercise |
 | --- | --- | --- |
 | Circuit-breaker policy states and transitions | The actual policy `state-behavior` investigation above | Retained model and diagram; full original prose unavailable here. |
-| Circuit breaking and its participating responsibilities | Explain the mechanism across the policy and its collaborators | Proposed investigation and PageComposition object; no generated account supplied. |
-| State-dependent control of execution | Explain how persistent control state governs execution attempts across relevant Cockatiel mechanisms | Proposed broader investigation and PageComposition object; no generated account supplied. |
+| Circuit breaking and its participating responsibilities | Investigate architectural concept: responsibility; subject: the policy and its collaborators | Proposed investigation and PageComposition object; no generated account supplied. |
+| State-dependent control of execution | Investigate architectural concept: state-dependent behavior; subject: the relevant Cockatiel execution-control mechanisms | Proposed broader investigation and PageComposition object; no generated account supplied. |
 | Breaker failure criteria | The existing investigation behind the retained breaker-implementation account | Actual model and diagram. |
-| Concurrent callers during recovery | The proposed interaction investigation offered above | Proposed destination; no full interaction account supplied. |
+| Concurrent callers during recovery | Investigate architectural concept: interaction; subject: participants in HalfOpen recovery, as offered above | Proposed destination; no full interaction account supplied. |
 
-These are example choices, not a prescribed book for Cockatiel. The broader
-investigations need enough identified subject and request meaning to be pursued;
-the prose labels alone are not executable requests or established classifications.
+These are example choices, not a prescribed book for Cockatiel. The proposed rows
+describe investigation types, subjects and concept parameters; concrete subject
+references and request parameters would still need to be resolved before registration.
+The prose labels alone are not executable requests or established classifications.
 
 ### Tags and graph relationships
 
@@ -129,6 +137,8 @@ with these qualified names and descriptions:
 Assignments reference stable tag identities. Renaming “Failure handling” would
 change the tag's name attribute, not require rewriting every assignment. All these
 assignments are proposed organizing judgments, not facts generated in the trials.
+For unanswered destinations they are educated judgments from the proposed questions
+and available accounts, revisable when composition uses actual answers.
 
 Initial graph relationships could be:
 
@@ -137,9 +147,10 @@ Initial graph relationships could be:
 | Circuit-breaking responsibilities → policy states | Failure handling |
 | State-dependent control → policy states | State-dependent behavior |
 
-A relationship is a qualified attribute of its PageComposition source, identifying
-the related PageComposition, **broader-than** and the applicable tag. The current
-page's broader-context links lead to the broader endpoints of those relationships.
+These are qualified **broader-than** relationships between PageComposition objects,
+with applicable tags. The table shows their semantic direction without choosing which
+endpoint stores the attribute. The current page's broader-context links lead to the
+broader endpoints of those relationships.
 No **follows-up-from** graph relationship is required for this exercise; that
 remains a candidate capability in the proposal.
 
@@ -151,11 +162,16 @@ perspectives; different tagged orderings need not combine into one ordering.
 
 ## Composed page: six component roles
 
-The PageComposition maps `title`, `orientation`, `main-content`, `expansions`,
+The PageComposition maps `title`, `orientation`, `main-content`, `additional-detail`,
 `broader-context` and `see-also` to PageComponent objects. Each component supplies
 qualified, typed material; its content type describes structure, while the role
 belongs to this composition's mapping. Reuse on another page need not use the
 same role. No particular wire schema or fabricated object identifier is supplied.
+
+Singular attributes have at most one current value; subsequent changes replace or
+withdraw that value. Additional detail and link collections can contain multiple
+members. This constrains the page framing, while the main treatment can still
+describe alternative architectural accounts.
 
 ### Title
 
@@ -186,10 +202,10 @@ arrival route or that the reader has already read them.
 
 ### Main content
 
-For the selected single current result value, composition presents its explanatory
-content directly. That includes the structured state model as well as the original
-prose. The following paragraphs are an **authored stand-in for the unavailable
-original prose**, based on the retained model. They are not an example of
+This illustrates the common case of one current value supplying a substantive answer:
+composition presents its explanatory content directly, including the structured state
+model and original prose. The following paragraphs are an **authored stand-in for the
+unavailable original prose**, based on the retained model. They are not an example of
 composition rewriting a single adequate account:
 
 > In Closed, the policy admits work and reports its outcome to the configured
@@ -227,15 +243,16 @@ state. Those qualifications remain attached to the picture.
 The SVG has crossing edges and truncated labels; it demonstrates rendering of
 semantic content, not an adequate final UI. The full transition text remains
 available. A UI could reveal the diagram or transition details progressively,
-but that disclosure does not make already-supplied main content an expansion
-investigation. A diagram is a content form, not a separate component role.
+but that disclosure does not turn already-supplied main content into a separate
+investigation for additional detail. A diagram is a content form, not a separate
+component role.
 
 #### Available transition and initialization detail
 
 These are selections from the same main account. They are not independently
-invented expansion candidates:
+invented candidates for additional detail:
 
-| Source selection | Detail supplied by the actual account |
+| Source selection | Paraphrase of detail supplied by the actual account |
 | --- | --- |
 | T2: Open → HalfOpen | An execution request after the backoff creates fresh sample counters and a shared deferred decision, increments the attempt number, emits the half-open/state-change notifications and admits that request into the sample. |
 | T3: HalfOpen → Open | A sampled failure reopens the policy when recorded failures are strictly greater than the configured threshold multiplied by the sample-call count. Backoff advances and calls waiting on the sample decision are resolved. |
@@ -247,17 +264,18 @@ Resolving the sample decision does not by itself establish every waiting caller'
 subsequent execution outcome. That requires further investigation; it cannot be
 inferred by drawing additional arrows on this state diagram.
 
-### Expansions
+### Additional detail
 
 The example selects the **offered sample-completion clarification** as additional
-material on this page. Its proposed question is:
+detail on this page. In the proposed book catalogue, this could be an explain
+investigation of the transition rendered as T7. Its explanatory intent is:
 
 > What happens when an already-admitted HalfOpen call completes after the policy
 > has been manually isolated?
 
 The source selection is the transition rendered as T7. The requested material is
-a focused explanation of that transition's consequences. Composition selects
-this offered follow-up as an expansion; it does not invent the request or replace
+a focused explanation of that transition's consequences. Composition selects this
+offered follow-up for additional detail; it does not invent the request or replace
 the existing main account with its eventual answer.
 
 The [M4 record](../records/validation/structured-architectural-accounts/m4-option-context-authoring.md)
@@ -265,14 +283,14 @@ demonstrates a similar actual `clarify_stale_samples` option on its own
 `transition:half_isolated` subject, with the original explanation supplied as
 additional context. Its invocation produced an accepted prose answer in about
 43 seconds. The full answer is not preserved in that record, so this exercise
-leaves the expansion's answer unfilled rather than inventing its conclusions or
+leaves this follow-up's answer unfilled rather than inventing its conclusions or
 claiming to possess that exact retained option on the M2 specimen.
 
 ### Broader-context links
 
 Composition selects the two proposed broader treatments from the organization:
 
-| Destination | Why it provides broader context | Link tag |
+| Destination | Why it provides broader context | Relationship tag |
 | --- | --- | --- |
 | Circuit breaking and its participating responsibilities | Situate policy modes alongside the failure criterion and execution-facing responsibilities. | Failure handling |
 | State-dependent control of execution | Situate this policy within a wider account of persistent control state and execution attempts. | State-dependent behavior |
@@ -282,9 +300,10 @@ object in the illustrative organization, even though its account is not supplied
 here. Those identities can later receive content. The link descriptions explain
 relevance; they are not previews of purportedly completed investigations.
 
-The UI can filter these links by their tags. The relationships organize explanatory
-treatments, not code containment. More detail about T2 alone would not make it a
-broader treatment of the policy-state question.
+The links refer to destinations; the UI can filter them using tags on the corresponding
+graph relationships. The relationships organize explanatory treatments, not code
+containment. More detail about T2 alone would not make it a broader treatment of the
+policy-state question.
 
 ### See-also links
 
@@ -302,20 +321,23 @@ candidate related-material reference; it was not generated as a book link in
 the trials. The destination's common abstraction is not a singleton state machine,
 and its unknown common entry and other limitations remain attached.
 
-If a link instead identified only the breaker Entity, PostCode would use an
-entity-overview investigation. That would be a different underlying question
-from the retained state-behavior investigation used here.
+If the related-material candidate instead identified only the breaker Entity,
+PostCode would use an entity-overview investigation for the destination. That would
+be a different underlying question from the retained state-behavior investigation
+used here.
 
 #### Concurrent callers during recovery
 
-**Destination investigation:** explain sampled executions, other callers and their
-shared decision during HalfOpen recovery, under an explicit sampling configuration.
+**Destination investigation:** investigate architectural concept, with interaction
+as the concept and the participants in HalfOpen recovery as the subject. The treatment
+would explain sampled executions, other callers and their shared decision under an
+explicit sampling configuration.
 
 **Connection:** The main state account summarizes aggregate policy changes and
 explicitly omits individual caller progress. The proposed follow-up addresses
 interactions among participants, so composition places it on its own page rather
-than treating it as a focused expansion of T7. Its intended account could include
-an interaction picture if supported by the investigation contract.
+than treating it as focused additional detail about T7. Its intended account could
+include an interaction picture if supported by the investigation contract.
 
 This destination has no supplied full account here. The
 [revised-selector trial](../records/validation/structured-architectural-accounts/m2-trials/revised-selector-verification.md)
@@ -347,31 +369,43 @@ an established answer while awaiting it. Rendering itself does not initiate work
 
 An alternative preview-production mechanism remains a candidate capability.
 This example requires no preview-specific investigation or component type.
+Whether returned preview or additional-detail results join a new page Projection
+or remain separate Projections coordinated in its View is left to UI and implementation.
 
 ## Associations, multiple answers and updates
 
 The main specimen's fresh answer superseded an earlier designation with grounds
 of confirmation and refinement. Its historical predecessor is not a second current
-value requiring joint treatment.
+value requiring synthesis.
 
 The [review-elicitation trials](../records/validation/structured-architectural-accounts/m2-trials/review-elicitation.md)
 separately demonstrated multiple standing answer values, including a new explanation
 reusing an unchanged model. For that case the proposal requires interpretation
-of the current values into a coherent treatment, combining complementary material
+of the current values into a unified treatment, combining complementary material
 or preserving alternatives and unresolved relationships. It does not select a
 winner by enumeration order or automatically supersede the source answers. Those
 trials do not demonstrate the proposed page-composition synthesis.
 
+The unified treatment supplies one current main-content value, even when it describes
+several standing architectural alternatives. Composition must faithfully preserve
+material alternatives, disagreements and qualifications. UX can provide access to
+the exact underlying material of this treatment and other synthesized components.
+
 A later investigation can revise a PageComponent's material, a PageComposition's
 component references, its tags or graph relationships through qualified associations.
+Changes to singular page attributes preserve the single-current-value constraint;
+collection update mechanics remain unspecified.
+
 A new Projection can select the revised material. Recomposition may be needed when
 orientation or other organizing judgments need revision; the old Projection is not
 silently updated. Reconsideration reflects changes to acquired information under
 the normal mechanism, rather than a new page-specific invalidation rule.
+The preferred UX is automatic updating with notification when reconsideration is
+indicated; no refresh scheduling or execution is demonstrated by this static exercise.
 
 The proposed **elaborate investigation**, optional for the first slice, would develop
 the underlying answer and could supersede its designation while preserving the
-same page identity. That differs from adding the T7 expansion alongside it.
+same page identity. That differs from adding the T7 clarification alongside it.
 Selecting T2 and asking for an explanation instead identifies a new investigation
 and its page, or revisits an existing result for that exact request. Carrying a
 reader's particular objection to an investigator is not established by the current
@@ -385,7 +419,7 @@ feedback mechanism and is not demonstrated here.
 - The page's six components, tags and organizing relationships illustrate the
   proposed categories and boundaries. The composition, organization and guidance
   choices remain authored examples rather than measured agent behavior.
-- Main-content disclosure, offered expansions and links to separate pages have
+- Main-content disclosure, offered additional detail and links to separate pages have
   distinct meanings, even when a UI could make their interactions look similar.
 - Preview content can come from ordinary investigations run optimistically; the
   live trials demonstrate that obtaining further content can also be slow or fail.
