@@ -174,15 +174,22 @@ Alphabetical by code.
 - **Kind:** ✦
 - **Outcome:** the book can pursue a few useful architectural questions beyond the
   initial entity overviews.
-- **Scope:** add or improve investigations and the account content they produce,
-  guided by needs encountered in the book. The Cockatiel state, responsibility and
+- **Scope:** add or improve investigations and the account content they produce.
+  Selection could draw on use, a systematic review of architectural concepts, or
+  another approach. The Cockatiel state, responsibility and
   interaction examples are candidates, not a required package or a complete catalogue.
   Extend content types and diagram support where the selected investigations need them.
+- **Catalogue:** consider an architectural-concept catalogue for investigating
+  agents, with concept meanings, relationships, reference material and diagram
+  suggestions to help them identify useful investigative perspectives, apply concepts
+  appropriately and choose suitable representations.
 - **Sequencing:** tentatively after MINIGUI, using experience to distinguish missing
   investigative content from organization or interaction problems. Bring a bounded
   investigation forward if its absence prevents meaningful use of the initial book.
   This item may become several plans as the capabilities develop.
 - **Sources:** [book-model handoff: further architectural investigations](../notes/book-model/future-work.md#further-architectural-investigations),
+  [book-model handoff: stable and familiar investigations](../notes/book-model/implementation-notes.md#stable-and-familiar-investigations),
+  [book-model handoff: architectural vocabulary](../notes/book-model/future-work.md#architectural-vocabulary),
   [book-model handoff: Cockatiel example](../notes/book-model/cockatiel-example.md),
   [candidate capabilities](candidate-capabilities.md).
 
