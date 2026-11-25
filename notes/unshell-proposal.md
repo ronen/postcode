@@ -103,71 +103,14 @@ does not withdraw either requirement.
 
 Remove the unused observation sink and delivery implementation with its retiring
 CLI consumers. Do not retain it speculatively, introduce a new consumer to justify
-it, or replace it with a generic observation framework. Existing trial capture
-continues through its direct file-writing path.
+it, or replace it with a generic observation framework.
 
-### Current trial support
-
-The main [trial runner](../scripts/structured-accounts/run-trial.mjs) supports focused,
-scripted contribution investigations. Source inspection establishes these captures:
-
-| Capture | What is retained |
-| --- | --- |
-| Trial specification | `spec.json`: supplied project/output/budget paths, trial identifier, steps and any elicitation instructions. |
-| Step records | `steps.jsonl`: executed request, label, elicitation, timing, result kind, failure/reporting fields; contribution answer Projection plus arranged view, or the complete result for other kinds. Missing follow-up options produce explicit skipped-step records. |
-| Rendered artifacts | Qualified explanations in the arranged view and separate SVG/text diagram files, including alternatives and rendering limitations. These supplement the structured answer. |
-| Agent exchanges | `exchanges.jsonl`: transport-provided sanitized exchange records correlated with the current step. These can still contain repository source. |
-| Execution reports | `attempts.jsonl`: reported attempts correlated with their steps. `usage.json` records Session usage after the step loop completes successfully. |
-| Request accounting | The separately configured budget ledger reserves requests before dispatch and records response/transport status and available usage. It is not stored inside the trial output directory automatically. |
-
-Fresh steps reuse captured requests; follow-up steps use exact option-owner addresses.
-These connections and qualified references must survive compact-alias removal.
-
-The specialized [dialog14 runner](../scripts/structured-accounts/run-dialog14-trial.mjs)
-additionally records its controlled seed, domain inputs/replies, setup result and final
-result, with phase attribution. Its scenario-specific capture does not establish a
-general interaction recorder.
-
-Delivery is direct local filesystem writing to the configured output directory and
-budget-ledger path. The runners create a new output directory with restrictive modes
-and exclude their own output from the analyzed evidence; the budget ledger is expected
-to be outside the analyzed project. Study setup must preserve the generated-output
-boundary for all artifacts, including later reuse.
-
-A configured local path can be the designated research destination when selected for
-that study. Research instructions must identify the required records and destinations,
-including the separate ledger when relevant. Successful writes then deliver those
-records locally; the runner does not independently select a research destination,
-export to a remote/archive service or establish a retention policy. Development
-capture alone is not a claim that a research study's delivery requirements are met.
-
-### Remaining capability gap
-
-After retirement, there is no general application facility for capturing human
-interaction, actual display/navigation context or inadequacy feedback and submitting
-it to a research destination. Trial scripts capture their programmed investigation
-scenarios; they do not replace those product/research interactions. The foundation's
-feedback and observation obligations remain requirements for the relevant future
-capabilities, without selecting a GUI feedback design here.
-
-The trial artifacts are not a complete reproducibility archive: the runner does not
-automatically preserve all repository inputs, tool versions, supporting records or
-surrounding human activity. Saved precise references retain their meaning but do not
-make unexported Session data available after disposal. Each study must assess whether
-the captured or separately retained context is sufficient for its question.
-
-Direct writes expose failures by throwing; they do not implement an independent
-acceptance/rejection/cleanup-warning delivery protocol. Records accumulate across
-files rather than through an atomic complete-run publication. A failed/interrupted
-run can leave partial artifacts, no failed-step record and no final usage summary;
-earlier exchange/attempt/ledger records may still exist. These limits must not be
-presented as successful complete capture. Preserve current runner behavior in
-UNSHELL rather than adding a delivery redesign.
-
-Document this bounded surviving support and remaining gap in the resulting current
-architecture/capability account and the eventual retirement decision's conformance
-statement. The gap remains explicit future work; removing an unused implementation
-neither withdraws the foundation obligations nor establishes their full conformance.
+After retirement, the application lacks the observation capture and delivery
+facility needed to support research into human interactions and inadequacy feedback.
+Document this capability gap in the resulting architecture/capability account and
+the eventual retirement decision's conformance statement. The foundation obligations
+remain requirements for future work; removing the unused implementation neither
+withdraws them nor establishes conformance. GUI feedback design is outside UNSHELL.
 
 ## Residual capabilities and exclusions
 
