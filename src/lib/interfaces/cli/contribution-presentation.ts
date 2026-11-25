@@ -1,4 +1,4 @@
-import { arrangeContributionAnswer } from '../../contributions/answers.js';
+import { arrangeContributionAnswer } from '../../../../scripts/structured-accounts/support/answers.js';
 import type { ContributionAnswerContent } from '../../contributions/answers.js';
 import type { ContributionInspectionContent } from '../../contributions/inspection.js';
 import { addressKey, itemKey } from '../../contributions/model.js';

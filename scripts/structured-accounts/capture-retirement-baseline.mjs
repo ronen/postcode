@@ -13,7 +13,7 @@ let sequence = 0;
 crypto.randomUUID = () => `11111111-1111-4111-8111-${String(++sequence).padStart(12, '0')}`;
 syncBuiltinESMExports();
 Object.defineProperty(performance, 'now', { value: () => 0 });
-const [output, fixture, renderer = '_build/src/lib/contributions/answers.js'] = process.argv.slice(2);
+const [output, fixture, renderer = '_build/scripts/structured-accounts/support/answers.js'] = process.argv.slice(2);
 assert.ok(output && fixture, 'Supply output and fixture directories');
 mkdirSync(output, { recursive: true });
 const files = { 'tsconfig.json': '{"compilerOptions":{"noLib":true,"types":[]},"files":["gate.ts","clock.ts"]}\n',

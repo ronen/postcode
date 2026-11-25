@@ -1,3 +1,4 @@
+import { arrangeContributionAnswer } from '../scripts/structured-accounts/support/answers.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { writeFileSync } from 'node:fs';
@@ -10,7 +11,6 @@ import type { Production, AssociationAddress } from '../src/lib/contributions/mo
 import { interactiveSession } from '../src/lib/interactive-session.js';
 import { ScriptedContributionAgent, proseContribution } from './contribution-agent.js';
 import { temporaryDirectory } from './cli-helpers.js';
-import { arrangeContributionAnswer } from '../src/lib/contributions/answers.js';
 import { openCliSession } from '../src/lib/interfaces/cli/application.js';
 import type { DialogReply } from '../src/lib/contributions/dialog.js';
 import { investigationBounds } from '../src/lib/investigation/bounds.js';

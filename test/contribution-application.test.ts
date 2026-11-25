@@ -1,3 +1,4 @@
+import { arrangeContributionAnswer } from '../scripts/structured-accounts/support/answers.js';
 import type { AssociationAddress } from '../src/lib/contributions/model.js';
 import { arrangeContributionView, renderContributionView } from '../src/lib/interfaces/cli/contribution-presentation.js';
 import { openAIDialogAgent } from '../src/lib/investigation/openai/contribution-protocol.js';
@@ -12,7 +13,6 @@ import { test } from 'node:test';
 import type { TestContext } from 'node:test';
 import { openApplication } from '../src/lib/application/index.js';
 import type { ApplicationResult } from '../src/lib/application/index.js';
-import { arrangeContributionAnswer } from '../src/lib/contributions/answers.js';
 import type { DialogAgent, DialogInput, DialogReply } from '../src/lib/contributions/dialog.js';
 import type { EntityId, SubmittedContribution } from '../src/lib/contributions/model.js';
 import { temporaryDirectory } from './cli-helpers.js';

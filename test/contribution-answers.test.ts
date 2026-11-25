@@ -1,10 +1,11 @@
+import { arrangeContributionAnswer } from '../scripts/structured-accounts/support/answers.js';
 import { stateDiagramContract } from '../src/lib/contributions/state-model.js';
 import type { ResultContract } from '../src/lib/contributions/outcomes.js';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { test } from 'node:test';
-import type { ArrangedQualification } from '../src/lib/contributions/answers.js';
-import { arrangeContributionAnswer, resolveContributionAnswer, selectContributionAnswer } from '../src/lib/contributions/answers.js';
+import type { ArrangedQualification } from '../scripts/structured-accounts/support/answers.js';
+import { resolveContributionAnswer, selectContributionAnswer } from '../src/lib/contributions/answers.js';
 import { moduleEntity, sessionLedger } from '../src/lib/contributions/modules.js';
 import { discover } from './helpers.js';
 import { agentic, submit } from './contribution-helpers.js';
