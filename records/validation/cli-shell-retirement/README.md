@@ -4,6 +4,11 @@ Task: [Surgical CLI shell retirement](../../tasks/2026-11-25-cli-shell-retiremen
 Approved source baseline: `5f9534aeee06996843c74548a3083b11df8815bf`.
 Implementation starts at `5db2cf19f0436d206aa5d5c05de7f022a03b45b9`; no intervening source changes.
 
+The [integrated retirement verification](integrated-verification.md) records the final
+result, exact runtime/comparison, standalone disclosure correction, lifecycle
+coverage migration and retained limitations. Sections below preserve the earlier
+baseline and lifecycle checkpoint evidence.
+
 ## Controlled baseline
 
 The committed baseline, its initial repeat, and the implementing agent's original
@@ -43,7 +48,7 @@ The standalone ordinary diagram and text are included for readable inspection.
 Existing application, answer and state-model suites additionally cover incompatible
 and unrendered alternatives, historical status and immutable exact support.
 
-## Disclosure assessment (correction authorized, not yet implemented)
+## Baseline disclosure assessment (before correction)
 
 The arranged view records interpretation status and the owner limitation
 “Controlled interpretation; not independently established.” The standalone diagram
