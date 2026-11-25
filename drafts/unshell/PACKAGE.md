@@ -40,3 +40,16 @@ they do not claim a completed retirement at adoption.
 
 The source baseline is `5f9534a`; `c1907d2` identifies the reviewed exploratory proposal.
 The decision and plan contain the contracts and verification requirements for review.
+
+## Backlog links at promotion
+
+When the replacement backlog entry is in place, retarget “bounded provenance
+correction” in `README.md` and `docs/cli-reference.md`, and “optional cleanup
+candidate” in `docs/architecture/README.md`, to the
+`research-observation-and-feedback-after-cli-retirement` anchor in `docs/backlog.md`.
+Adjust the labels to describe the relevant part of the successor entry. These
+passages describe the running implementation until the implementation changes.
+
+Historical records keep their original references. The separate note
+`notes/initial-journey/design-findings.md` also cites the former captured-basis
+entry. Retargeting that note is optional and requires human direction.
