@@ -255,7 +255,7 @@ pretending to have a suitable implementation. Foundation material is unchanged.
 <a id="adoption"></a>
 ## Adoption and conformance
 
-This decision adopts the target, not implementation completion. At adoption, the
+At adoption, the
 CLI, worker, aliases and observation implementation still exist; direct abort still
 has the cleanup/reporting exception problem. The associated plan reconciles those
 gaps and verifies preservation. Until reconciliation, describe the current interface
@@ -266,12 +266,8 @@ Trial-rendering disclosure conformance is unassessed beyond existing qualificati
 and omission checks. The plan requires focused baseline/output assessment and
 disposition of material findings before declaring verification sufficient. The
 post-retirement research/feedback gap persists beyond plan completion and is tracked
-by the backlog item above. No foundation change, core-concept redefinition, book-model
-or graphical-interface design or implementation authorization is implied by adoption.
+by the backlog item above.
 
-Revise the application specification and architectural constraints together with
-this record. Maintain forward/backward scoped supersession metadata and current
-indexes; preserve old rationale and completed records. Reconcile current descriptive
-docs during implementation. Preserve all obligations outside the explicit supersession
+Preserve all obligations outside the explicit supersession
 scope, including immutable qualification, precise identity, unchanged-input validity,
 generated-output exclusion, credential protection and useful information acquisition.

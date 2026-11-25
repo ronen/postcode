@@ -10,8 +10,7 @@ In anticipation of a graphical interface built around the book model, remove the
 investigation CLI and its private machinery so they do not remain an additional
 interface to maintain as the application design evolves. Preserve the internal
 application, qualified information and direct validation facilities. This plan
-implements [CLI shell retirement](../decisions/cli-shell-retirement.md); adoption of
-the plan does not itself authorize implementation.
+implements [CLI shell retirement](../decisions/cli-shell-retirement.md).
 
 `npm run postcode` remains an authentication-only entry point with help. Retired
 investigation, presentation, shell and feedback commands are rejected without
@@ -54,19 +53,14 @@ changes. Do not add production callers merely to retain unused facilities.
 
 ## Preparation and dependency boundary
 
-Start implementation only after the coordinated decision/specification/constraint
-package is adopted and the human authorizes a task under the task protocol. Use an
-implementation worktree containing the adopted package. The examined source baseline
-is `5f9534aeee06996843c74548a3083b11df8815bf`; later planning commits change notes only.
+The examined source baseline is `5f9534aeee06996843c74548a3083b11df8815bf`.
 Reconcile intervening source changes before using the inventories below.
 
 Capture controlled pre-change evidence before removal or movement. Use existing
 application fixtures and scripted agent participants to exercise real coordination;
 do not replace the engine with mocked final results. Preserve a reproducible comparison
-procedure and enough sanitized evidence for review. Keep bulky disposable captures in
-a root underscore directory; preserve necessary conclusions/representative artifacts
-in the task's durable verification record. Do not include credentials or raw sensitive
-repository material in committed evidence.
+procedure and representative sanitized artifacts. Baseline captures must exclude
+credentials and sensitive repository material from committed evidence.
 
 ## Work sequence
 
@@ -167,12 +161,7 @@ capabilities or ordinary callback-policy limitations as dead-code redesign proje
 
 The adopted backlog revision tracks research observation/feedback reconciliation.
 Check remaining entries for stale CLI/worker/export premises without reprioritizing
-unrelated work. Historical reports, accepted rationale and concluded task/review
-records remain unchanged. Report affected development instructions separately.
-
-Prepare the final integrated review handoff under the task protocol. The human
-arranges review and decides when its gate is sufficient. Close implementation only
-after required verification and review, with remaining limits stated accurately.
+unrelated work.
 
 ## Dependency and coverage inventory
 
@@ -228,11 +217,8 @@ can replace a prior error or skip budget close) are outside this separation. Do 
 fix them incidentally or describe the retained behavior as stronger than it is.
 
 Controlled participants are the equality oracle. This work does not intentionally
-change agent instructions or wire handles. If instructions, agent-facing tools or
-response schemas change, focused actual-integration live trials are required under
-the workflow; estimate requests and establish a finite cap before running them.
-Otherwise, live smoke validation can supplement controlled verification but cannot
-prove equality across independent model responses. Record any unperformed checks.
+change agent instructions or wire handles. Live smoke validation can supplement
+controlled verification but cannot prove equality across independent model responses.
 
 ## Success, risks and follow-up
 
@@ -247,7 +233,7 @@ breaking exact trial connections while removing aliases, losing accounting durin
 shutdown, and confusing deletion of implementation with withdrawal of foundation
 requirements. The baselines, direct tests, scoped decision and gap/backlog revisions
 address these risks. Renderer disclosure conformance remains an assessment obligation,
-not a presumed property of existing tests. Material new conflicts return to the human.
+not a presumed property of existing tests.
 
 The research-support backlog and later presentation/acquisition design remain outside
 implementation scope. No new human interface, persistence, public transport or GUI

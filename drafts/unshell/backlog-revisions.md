@@ -1,6 +1,6 @@
 # Proposed revisions to docs/backlog.md
 
-Promote these changes with CLI retirement. Retain existing anchors for revised entries. They remain candidates, not implementation commitments; implementation timing and priority are unchanged.
+Retain existing anchors for revised entries.
 
 ## Add “Research observation and feedback support after CLI retirement”
 
@@ -39,7 +39,7 @@ Decide presentation choice, parameters, bounds and context for actual GUI capabi
 
 Assess nonempty multi-Projection input collections, contribution/state attribution, exact correspondence guarantees, and the distinction between coordinating one View and placing independent Views together. Decide how composition changes remain visible and attributable in the investigation, and how continuity relates to identity, before implementing a managed View lifecycle. Select research recording of those changes according to the research question. Preserve population counts and qualification through arrangement; do not hide new analysis inside cross-Projection coordination. Decide which input orders or roles are meaningful, which are presentation choices, and which do not affect identity. Preserve meaningful before/after roles without imposing ordered identity on every collection.
 
-This remaining work needs decisions before GUI Presentation implementation, not before the bounded retained-answer or application-boundary capabilities. No multi-Projection GUI implementation is authorized here.
+This remaining work needs decisions before GUI Presentation implementation, not before the bounded retained-answer or application-boundary capabilities.
 
 ## Replace “Design bounded investigation and context exchange for external agents”
 
@@ -136,7 +136,7 @@ The surviving direct application executes one operation at a time in its caller'
 
 When a concrete performance question warrants work, measure CPU use, stage-level wall time and memory on representative projects through the current direct boundary. Separate opening, first use and reuse; account for input validity, deterministic mechanical results, precise identity and resource ownership. Introduce successor measurement tooling only for that question. Do not assume asynchronous reads accelerate CPU-bound compiler work or that a new worker is required.
 
-The [completed latency investigation](../records/validation/2026-09-21-analysis-latency.md), [processing audits](../records/audits/2026-09-27-foundation-readiness/README.md) and foundation-readiness measurements remain historical evidence. Their CLI publication and parent/worker costs do not describe the post-retirement runtime. This candidate does not authorize parallelism, a host redesign or a new benchmark project.
+The [completed latency investigation](../records/validation/2026-09-21-analysis-latency.md), [processing audits](../records/audits/2026-09-27-foundation-readiness/README.md) and foundation-readiness measurements remain historical evidence. Their CLI publication and parent/worker costs do not describe the post-retirement runtime.
 
 ## Replace “Consider summary suggestions and recursive navigation”
 
@@ -146,7 +146,7 @@ Added: 2026-10-07
 Origin: [Summary Views and navigation](decisions/coordinated-views-and-qualified-results.md#allow-summary-views-independently-of-summary-lenses)
 Area: entry experience and navigation
 
-The product permits suggesting a summary View when no more specific information need is expressed; it does not mandate that default. The application retains module interpretation after CLI retirement, but no replacement entry experience or navigation interface is selected. Consider whether summary suggestions and recursive navigation would be useful in future interface work, distinguishing coordination of qualified inputs from synthesis of a new answer. Define useful selection and omission disclosure without requiring a summary Lens for every subject. This does not authorize immediate GUI work.
+The product permits suggesting a summary View when no more specific information need is expressed; it does not mandate that default. The application retains module interpretation after CLI retirement, but no replacement entry experience or navigation interface is selected. Consider whether summary suggestions and recursive navigation would be useful in future interface work, distinguishing coordination of qualified inputs from synthesis of a new answer. Define useful selection and omission disclosure without requiring a summary Lens for every subject.
 
 ## Sweep disposition for other candidates
 

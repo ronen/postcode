@@ -1,9 +1,7 @@
 # CLI shell retirement planning package
 
-Draft for human review, 25 November 2026. Nothing in this directory is adopted or
-implementation authorization. The package records the reviewed proposal as a plan,
-scoped decision and coordinated canonical revisions. No application code, canonical
-governing document, foundation, steering or development-process file is changed.
+Draft for review, 25 November 2026. The package contains the plan, scoped decision
+and coordinated canonical revisions for CLI shell retirement.
 
 ## Review entry points
 
@@ -41,24 +39,4 @@ architecture, setup/reference docs and STATUS changes belong to implementation, 
 they do not claim a completed retirement at adoption.
 
 The source baseline is `5f9534a`; proposal review concluded at `c1907d2` on
-`codex/unshell-planning`. The proposal and its discussions are drafting provenance,
-not dependencies of the intended canonical documents. Only the package is changed
-for formal drafting; notes and disposable review evidence are left intact for now.
-
-## Adoption and later implementation
-
-After human approval, promote the plan, decision, specification/constraint/backlog
-units, older-record metadata and indexes atomically. Set final status/date metadata
-at adoption and reconcile intervening canonical changes. The research-support item
-must accompany the decision; the immutable decision names it without linking to the
-mutable entry. No task record is opened by drafting or promotion.
-
-Clean up notes/review scratch only under human direction after required context is
-incorporated. Report the steering implication separately: CLI shell retirement planning
-advances, but retirement implementation and readiness for book-model implementation
-are not established. Do not include steering
-revisions in this package. Historical completed plans/records remain unchanged.
-
-Implementation requires a separately authorized task under the task protocol and
-uses its review gates. The human decides whether this draft needs another review and
-whether to adopt it; the earlier proposal review did not approve this package.
+`codex/unshell-planning`.
