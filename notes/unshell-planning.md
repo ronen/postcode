@@ -44,8 +44,28 @@ but no replacement end-user investigation interface. Document that accurately.
 > Preserve the existing qualified explanations and state diagrams where they support live validation, moving any validation-only arrangement/rendering into trial-runner support. Keep the structured results as the authoritative artifacts. Preserve alternatives, limitations and unrendered-content notices so the rendered artifacts remain faithful to those results. This does not require retaining the CLI presentation framework or maintaining a separate rendering path in core.
 
 This settles the direction for trial presentation. It does not adopt a formal plan
-or amend governing documents. Preserve the complete application result first;
-rendering is a derived artifact with separately recorded failure/omission information.
+or amend governing documents. Structured results remain authoritative; this does
+not authorize changing their schema, capture ordering or failure behavior.
+
+### Surgical separation — human direction, 25 November 2026
+
+> ok yes, our goal should be to move the rendering code over and then verify that the trial behavior is unchanged.
+
+> Our overall attitude should be "surgical separation and removal of the CLI shell"
+
+Use this as the scope criterion throughout UNSHELL: separate responsibilities with
+surviving consumers, remove the retiring CLI client and its private machinery, and
+verify that surviving behavior is unchanged. The original retirement boundary still
+includes one-shot investigation commands and the private worker; authentication
+remains. Do not bundle improvements to surviving application contracts, trial
+artifacts, cancellation policy or lifecycle behavior merely because inspection
+revealed an opportunity or an existing defect. Any necessary behavioral departure
+must be identified and discussed separately before inclusion.
+
+The trial runner already uses the application directly and does not depend on the
+shell or worker. Move its useful arrangement/rendering and redirect imports while
+preserving the existing trial behavior. There is no new trial-publication or
+execution-architecture decision required by that move.
 
 ## Dependency and disposition assessment
 
@@ -64,7 +84,7 @@ entry points, test semantics and accepted obligations also matter.
 | `application/session.ts`, `executor.ts`, `requests.ts`, `contracts.ts`, `content.ts`, `retained.ts`, `consumption.ts` | Preserve shared requests, validation, qualification, exact access, content requirements, Presentation matching, usage/work and lifecycle. Remove only private-host plumbing proven unused. |
 | `application/operation-scope.ts` | Both `withCliOperation` and `evaluateOperation` are consumed only by `interfaces/cli/application.ts` (plus tests for the former). Retire the private registration/host surface and its Session closures once surviving tests use public requests. Preserve the lower shared evaluation machinery. Do not promote this hook into BOOK orchestration. This narrows the prior handoff's tentative suggestion of a surviving internal direct consumer. |
 | `application/bindings.ts` | Preserve current shared alias handling and coordinated allocations. Production imports remain in executor/contracts. CLI-port-only allocations may retire with their adapter; removing shared aliases is a separate semantic change. |
-| `application/publication.ts` | Keep the neutral publication guard and direct tests; remove CLI integration. Runner artifacts need an explicit captured-result validity policy, discussed below. |
+| `application/publication.ts` | Keep the neutral publication guard and direct tests; remove CLI integration. Preserve the runner's existing validation and artifact behavior; do not add a new publication policy. |
 | `application/feedback.ts`, `application/observations.ts` | Preserve independent companion services and their tests. They are explicit application entries despite not being re-exported by `application/index.ts`. Retire CLI builders/capture commands. Do not infer that no remaining CLI caller cancels adopted feedback/delivery requirements. |
 | `contributions/answers.ts` | Keep `selectContributionAnswer`, `resolveContributionAnswer`, retained content/support and identity. Move the arrangement types/function beginning at `ArrangedQualification` into trial support where needed, along with its rendering dependencies. |
 | `contributions/state-diagram.ts` | Move useful renderer and incompatibility checks into validation support. Preserve `state-model.ts` and analysis content contracts in core. Keep rendering tests with the moved responsibility. |
@@ -88,12 +108,10 @@ module solely because an old test imports it.
 
 The general runner already executes direct application requests, fresh requests,
 and offered follow-ups. Contribution steps currently save a projection and arranged
-view instead of the complete result; other steps save the result. Normalize capture
-around complete application results with request, attribution/reporting, selected
-qualified content, exact support and consumption context. Save those authoritative
-artifacts before attempting explanations/diagrams. Preserve raw step outcomes even
-when an artifact cannot be arranged or written. Failed rendering must not recast a
-completed application request as failed analysis.
+view; other steps save the result. Preserve those existing formats and behavior
+through the rendering move. Earlier suggestions to normalize complete-result
+capture or alter capture ordering were broader than this separation requires and
+are not part of the working approach.
 
 The useful arrangement is bounded: `arrangeContributionAnswer` consumes fixed
 selected content, emits alternatives separately, carries qualification/support,
@@ -138,28 +156,40 @@ loop, and `finally` awaits Session close before budget close. There is no lifeti
 signal wiring. The budget lease reserves requests before dispatch; preserve that
 ordering and never refund failed attempts merely because output capture failed.
 
-### Proposed observable lifecycle policy — discussion still needed
+### Separate findings, not migration requirements
 
-- Preserve primary execution outcome, artifact/reporting failure and cleanup
-  failure as distinguishable information. If there is no primary failure, a cleanup
-  failure still makes the run visibly unsuccessful; never report clean success.
-- On interruption, request terminal cooperative cancellation through the existing
-  application lifetime API, await active request settlement, then snapshot available
-  final work/usage. Independently attempt Session cleanup and lease release, even
-  when one fails. Restore installed process listeners. No prompt preemption of
-  synchronous compiler work or crash-proof final accounting is promised.
-- Attempt final accounting on request, rendering and output failures. Report missing
-  artifacts explicitly when storage itself fails; preserve already-written attempts
-  and budget records. Do not claim that every failure can produce `usage.json`.
-- Treat trial outputs as records of captured application outcomes, not certification
-  that files remain current throughout artifact writing. Preserve direct pre/post
-  execution validation; rendering consumes returned fixed content. If a stronger
-  current-at-publication policy is wanted, make that explicit and use the neutral
-  guard rather than reintroducing worker deferral.
-- Keep output directories explicitly excluded. Validate or enforce the budget ledger,
-  lock and temporary-file boundary too: a source comment saying the ledger lives
-  outside the project is not an enforced evidence exclusion. Choose a narrow policy
-  during drafting; do not silently allow generated ledger evidence.
+The experiments above identify existing runner accounting and cleanup weaknesses.
+They are not caused by moving rendering or removing the CLI, and do not make runner
+redesign a prerequisite for UNSHELL. Preserve this evidence for separate disposition;
+no failure-policy, capture-schema, signal-handling or publication-policy change is
+included merely to address it.
+
+Likewise, in-process compiler interruption limits already apply to trials. Removing
+the private CLI worker does not newly impose those limits on the runner. Preserve
+its existing execution architecture and resource accounting during the migration.
+The unenforced assumption that the budget ledger lives outside the analyzed project
+is another separate finding, rather than an implicit instruction to expand this work.
+
+### Verification of unchanged trial behavior
+
+- Exercise the same supplied qualified results through the original and relocated
+  arrangement. Compare structured arrangements, SVG, textual diagrams, legends,
+  qualifications, alternatives and unrendered-content notices. The same rendering
+  algorithm retains its method identity when only its location changes.
+- Use representative fixed inputs covering prose, drawable and incompatible models,
+  multiple alternatives, missing renderable content and retained support. Preserve
+  existing rendering assertions at their new home; do not replace them solely with
+  snapshots generated by the implementation under test.
+- Exercise the actual runner with controlled application/agent participants to
+  compare requests, ordinary/fresh/follow-up step behavior, artifact formats and
+  contents, usage/accounting and cleanup behavior before and after the move.
+  Account narrowly for inherently variable timing or Session references; do not
+  normalize away qualification, provenance, ordering or failures.
+- Verify that the surviving runner/rendering dependency graph no longer reaches
+  the retired CLI machinery. Preserve existing application-boundary checks.
+- Live inference need not be used as a deterministic equality oracle for a code
+  move. Any required live smoke validation is separate from fixed-input equivalence;
+  changed agent instructions would require the repository's live-verification rules.
 
 ### Conversation-close failure
 
@@ -172,19 +202,19 @@ Source has not changed since its baseline. Current source inspection confirms th
 catch/rethrow followed by `conversation.close()` in `finally`, and a nested final
 report callback that still executes when close throws.
 
-Preserve the primary outcome while exposing cleanup failure and retaining final
-accounting/close-once behavior. Concrete representation remains unsettled; an
-unclassified aggregate that makes interruption look like a defect is insufficient.
-Check success, expected failure, interruption, throwing close and throwing report
-callbacks. The latter can also replace an earlier exception and deserves a bounded
-assessment before selecting the reporting mechanism. No general supervisor follows
-from this issue.
+The earlier handoff proposed a narrow correction to preserve the primary outcome
+while exposing cleanup failure. This is a pre-existing direct-path defect, not a
+rendering-move regression. Under the subsequent surgical-separation direction,
+retain the finding separately and do not silently include the correction in the
+migration. If separately authorized, assess success, expected failure, interruption,
+throwing close and throwing report callbacks while preserving final accounting and
+close-once behavior. No general supervisor follows from this issue.
 
 ## Coverage relocation
 
 | Existing coverage | Surviving verification |
 | --- | --- |
-| `contribution-application.test.ts` cancellation | Keep real application/evaluation with only the agent participant substituted: dispatched usage survives and late contributions are rejected. Add throwing-close regression at this boundary. |
+| `contribution-application.test.ts` cancellation | Keep real application/evaluation with only the agent participant substituted: dispatched usage survives and late contributions are rejected. A throwing-close correction/regression belongs with separate disposition of that defect. |
 | `contribution-dialog.test.ts` timeout/exposure | Keep direct tests and final attempt reporting. |
 | `investigation-integration.test.ts`, “usage arriving after a reply remains attributable until dialogue close” | Move the substantive assertion to direct dialog/application tests: reporting for the first exchange during the second remains attributable; two calls, no missing measurements, one close. CLI JSON/batch equality is retired. |
 | Same file, “worker guard ignores late replies and late usage from a closed dialogue” | Preserve direct post-close rejection of late result/usage. Retire transport-specific delivery behavior. |
@@ -206,7 +236,8 @@ was run in this resumed planning session. Coverage mappings above are source-ins
   while they validate the retained dialog contract. The scenario runner already uses
   nested cleanup so Session failure does not skip budget close; its final usage write
   is still success-path-only and nested cleanup can still replace an earlier error.
-  Assess the same outcome/accounting policy without creating a generic runner framework.
+  Preserve their behavior in UNSHELL; retain these pre-existing failure-path findings
+  for separate disposition.
 - Keep `module-investigation/request-budget.mjs`, its coverage, useful usage reporting
   and authentication diagnostics. Do not delete the directory wholesale. Reassess
   shell-only scenario/configuration helpers and README references with `run-shell.mjs`.
@@ -256,15 +287,16 @@ A scoped retirement decision is necessary before implementation. In particular:
 
 ## Next discussion and drafting
 
-Artifact presentation is settled above. Recommended remaining boundary: keep shared
-aliases and feedback/delivery contracts, retire their CLI-specific callers, and use
-cooperative in-process validation with separately visible execution, capture and
-cleanup outcomes. Confirm the observable lifecycle/publication policy before formal
-drafting; representation and helper names can remain implementation choices.
+The agreed approach is surgical separation and removal. Preserve shared aliases,
+feedback/delivery contracts and the existing direct trial behavior while retiring
+CLI-specific callers. No new runner lifecycle/publication policy is needed to draft
+that approach. Keep pre-existing defects distinct from migration requirements.
 
-A small prospective implementation sequence is: establish retained authentication
-and reliable direct validation; move useful rendering/coverage and retire the complete
-CLI/worker consumer cluster; verify surviving application behavior and reconcile
-active documentation/dependencies. These are discussion dependencies, not approved
-milestones. No compatibility machinery should be added solely to keep retiring
-commands or their old tests working.
+Finish the scoped supersession map and remaining mixed-consumer/coverage assessment,
+then draft the smallest coherent retirement package. A prospective implementation
+sequence is: separate retained authentication and trial rendering; retire the complete
+CLI/worker consumer cluster and relocate useful coverage; verify surviving behavior
+and reconcile active documentation/dependencies. These are discussion dependencies,
+not approved milestones. Do not introduce compatibility machinery solely to keep
+retiring commands or their old tests working, or generic abstractions for hypothetical
+future consumers.
