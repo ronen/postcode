@@ -14,7 +14,7 @@ and coordinated canonical revisions for CLI shell retirement.
 - [Backlog revisions](backlog-revisions.md): research/feedback gap, captured-basis
   requirement and reconciliation of obsolete CLI/worker premises.
 - `decisions/*-revisions.md`: complete replacement metadata blocks for affected older
-  records. Their bodies and historical rationale are preserved.
+  records. Each mapping names the whole section or the specific clauses it replaces.
 - [Index revisions](README-revisions.md), [plan index](plans/README-revisions.md)
   and [decision index](decisions/README-revisions.md).
 
@@ -38,5 +38,5 @@ Foundation and human-maintained development instructions are unchanged. Implemen
 architecture, setup/reference docs and STATUS changes belong to implementation, so
 they do not claim a completed retirement at adoption.
 
-The source baseline is `5f9534a`; proposal review concluded at `c1907d2` on
-`codex/unshell-planning`.
+The source baseline is `5f9534a`; `c1907d2` identifies the reviewed exploratory proposal.
+The decision and plan contain the contracts and verification requirements for review.

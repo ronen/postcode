@@ -25,4 +25,12 @@ Delete the bullet beginning “For these Projection families, arrangement may us
 
 ## Views and analysis boundary — add the following bullet
 
-- Core owns qualified analysis and Projection construction. Trial support owns validation rendering and uses the structured results as its authoritative input. Render only claims supplied by those results, preserve alternatives and qualifications, and disclose consequential omissions or incompatibilities. Verify disclosure against the actual human-facing output. [[Analysis boundary](decisions/cli-shell-retirement.md#retire-client)] [[Validation rendering](decisions/cli-shell-retirement.md#validation-rendering)]
+- Core owns qualified analysis and Projection construction. Validation rendering belongs outside core and uses the structured results as its authoritative input. Render only claims supplied by those results, preserve alternatives and qualifications, and disclose consequential omissions or incompatibilities. Verify disclosure against the actual human-facing output. [[Analysis boundary](decisions/cli-shell-retirement.md#retire-client)] [[Validation rendering](decisions/cli-shell-retirement.md#validation-rendering)]
+
+## Views and analysis boundary — update the presentation continuity references
+
+In the bullet beginning “Preserve the selected answer”, keep the Presentation continuity reference and remove the adjacent “Current CLI limitation and deferred remediation” reference.
+
+## Observation lifecycle and delivery — replace the destination-selection bullet
+
+- Keep the choice of observation destination independent of retention, migration, historical reading and producer-side caching. [[Observation lifecycle policy](decisions/adopt-identity-evidence-and-observation-constraints.md#keep-sink-selection-separate-from-observation-lifecycle-policy)]

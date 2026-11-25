@@ -64,6 +64,8 @@ credentials and sensitive repository material from committed evidence.
 
 ## Required outcomes
 
+Once the pre-change baseline is available, the implementing agent can sequence the work.
+
 ### Independent authentication and validation support
 
 - Account for surviving consumers, including scripts, package commands and mixed
@@ -91,8 +93,8 @@ and equal-input rendering comparison has no unexplained changes.
   attempt/work/usage internally before settling the interrupted request; notification
   failure cannot erase them. Reject late content and seal usage without inventing
   missing measurements.
-- Both `interrupt()` and `close()` expose the same shutdown outcome, covering active
-  request finalization and participant/resource cleanup. Signal-triggered failures
+- Both `interrupt()` and `close()` expose the same shutdown outcome, covering owned-resource
+  cleanup and any terminal-abort finalization failures. Signal-triggered failures
   remain available to later close. Request interruption alone is not a shutdown
   failure. Preserve distinguishable
   cleanup and report-delivery failures, including simultaneous failures.
@@ -192,6 +194,8 @@ both failures, delayed/late replies and usage, owned Git exit timeout and eventu
 exit, injected Git ownership, repeated/mixed shutdown calls, idle close after abort,
 and invalidation versus abort ordering. Verify both request and shutdown promises,
 internal final accounting, no late acceptance, and no unhandled internal rejection.
+Verify that an ordinary request which reports a participant or callback failure can
+be followed by a clean idle close when owned-resource cleanup succeeds.
 Test a completed request followed by abort and abort before final validation finishes.
 Do not claim to test hard interruption of synchronous compiler work in-process.
 
@@ -206,14 +210,18 @@ outputs are not compatibility targets.
 
 Keep normal runner capture order, budgets and cleanup behavior. Existing runner
 limitations (partial records on failure, success-path final usage, and cleanup that
-can replace a prior error or skip budget close) are outside this separation. Do not
-fix them incidentally or describe the retained behavior as stronger than it is.
+can replace a prior error or, in the standard trial runner, skip budget close) are
+outside this separation.
 
 Controlled participants are the equality oracle. This work does not intentionally
 change agent instructions or wire handles. Live smoke validation can supplement
 controlled verification but cannot prove equality across independent model responses.
 
 ## Success, risks and follow-up
+
+One API choice awaits human confirmation before adoption. The draft decision uses
+promise rejection to report shutdown failures, preserving the existing
+`Promise<void>` contract of `interrupt()` and `close()`.
 
 Success means the authentication entry point, direct application and retained trials
 work without the retired shell/worker/alias/observation implementation; terminal

@@ -12,5 +12,4 @@ Scope: ownership and cancellation contract for command opening, Git acquisition,
 Superseded in part:
 
 - [Decision](#decision), only private compiler-worker/parent composition and its host-specific consequences; retain acquisition, validity, ownership and cleanup distinctions, is replaced by [CLI shell retirement](cli-shell-retirement.md#retire-client).
-
 - [Decision](#decision), terminal Session-abort settlement/reporting, extended to the specified direct shutdown assessment, is replaced by [CLI shell retirement](cli-shell-retirement.md#terminal-abort).

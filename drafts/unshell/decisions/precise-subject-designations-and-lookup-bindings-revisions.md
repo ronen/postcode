@@ -12,5 +12,4 @@ Scope: Subject resolution and reference allocation in the current transient Sess
 Superseded in part:
 
 - [Allocate only returned candidates on unsuccessful lookup](#unsuccessful-lookup-bindings), the whole allocation decision; qualified candidate population/resolution behavior remains required, is replaced by [CLI shell retirement](cli-shell-retirement.md#precise-references).
-
 - [Accept raw same-Session record IDs as precise designations](#precise-subject-designations), only compact-input acceptance and compact/raw equivalence; preserve retained-ID, kind, Session and applicability validation, is replaced by [CLI shell retirement](cli-shell-retirement.md#precise-references).

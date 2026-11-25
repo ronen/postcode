@@ -7,6 +7,7 @@ Scope: retirement of the investigation CLI, its private host and exclusive core 
 
 Supersedes:
 
+- [Begin with a TypeScript module inventory](initial-module-inventory-decisions.md#begin-with-a-typescript-module-inventory), only development CLI delivery, CLI subject selection and Unicode-text/experimental JSON Views, by [retire client](#retire-client).
 - [Decision](execution-ownership-and-cancellation.md#decision), only private compiler-worker/parent composition and its host-specific consequences; retain acquisition, validity, ownership and cleanup distinctions, by [retire client](#retire-client).
 - [Decision](execution-ownership-and-cancellation.md#decision), terminal Session-abort settlement/reporting, extended to the specified direct shutdown assessment, by [terminal abort](#terminal-abort).
 - [Preserve typed application attribution and separate client context](internal-application-api.md#invocation-context), only CLI attachments, parser outcomes and adapter-specific invocation requirements, by [retire client](#retire-client).
@@ -29,7 +30,6 @@ Supersedes:
 - [Initial feedback interaction](human-facing-architectural-representations.md#initial-feedback-interaction), the shell and one-shot interaction selection, including the nested observation contract replaced below, by [research gap](#research-gap).
 - [Observation context and delivery](human-facing-architectural-representations.md#feedback-observations), the command-correlated self-contained batch implementation; carry forward available actual context, no reconstruction and visible delivery failures, by [research gap](#research-gap).
 - [Current observation provenance gap](coordinated-views-and-qualified-results.md#current-observation-provenance-gap), only the prospective remedy targeting the retiring observation export; preserve the historical finding and question-dependent basis-attribution need in the successor backlog, by [research gap](#research-gap).
-
 - [Session as the analysis and reference context](transient-analysis-sessions.md#session-as-the-analysis-and-reference-context), only selection of shell/one-shot CLI lifetimes; preserve Session analysis/reference context, supported lifetime and precise-reference stability, by [retire client](#retire-client).
 
 ## Context
@@ -156,10 +156,11 @@ accounting or reclassify it as a defect. Missing measurements remain explicit; l
 replies cannot add accepted content or alter sealed usage.
 
 Request settlement does not await resource exit. `interrupt()` and `close()` expose
-the same shutdown assessment, including request finalization, participant cleanup,
-terminal-report delivery and owned-resource cleanup. Retain actual failures and
-distinguish cleanup from reporting failure; expected request interruption alone is
-not a shutdown failure. This expands `interrupt()` beyond its former Git-only cleanup
+the same shutdown assessment. It covers owned-resource cleanup and, on terminal
+abort, request finalization including participant cleanup and terminal-report delivery.
+A failure already delivered by an ordinary request stays with that request.
+Distinguish cleanup from reporting failures. Expected request interruption alone
+is not a shutdown failure. This expands `interrupt()` beyond its former Git-only cleanup
 promise. Repeated shutdown calls do not repeat participant cleanup or lose failures.
 Shutdown promises resolve after a clean assessment and reject with the retained,
 distinguishable failure set otherwise; preserve underlying typed resource failures.
@@ -267,6 +268,12 @@ and omission checks. The plan requires focused baseline/output assessment and
 disposition of material findings before declaring verification sufficient. The
 post-retirement research/feedback gap persists beyond plan completion and is tracked
 by the backlog item above.
+
+Unordered collection inspection still orders subjects independently of reference
+spelling. Its conditions on compact-reference allocation apply only where such
+allocation exists. Presentations of module dependencies must still state relationship
+direction. Neither rule requires a CLI. [[Unordered selections](unordered-collection-inspection.md)]
+[[Module dependencies](module-dependency-structure-decisions.md)]
 
 Preserve all obligations outside the explicit supersession
 scope, including immutable qualification, precise identity, unchanged-input validity,

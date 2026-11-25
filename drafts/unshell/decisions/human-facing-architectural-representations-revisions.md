@@ -21,5 +21,4 @@ Superseded in part:
 - [Provide additional detail under the human output boundary](#additional-detail) is replaced in full by [additional detail](research-question-driven-observation.md#additional-detail).
 - [Keep organization conceptual with intelligible detail](#organization-detail) is replaced in full by [organization detail](research-question-driven-observation.md#organization-detail).
 - [Initial feedback interaction](#initial-feedback-interaction), the shell and one-shot interaction selection, including the nested observation contract replaced below, is replaced by [CLI shell retirement](cli-shell-retirement.md#research-gap).
-
 - [Observation context and delivery](#feedback-observations), the command-correlated self-contained batch implementation; carry forward available actual context, no reconstruction and visible delivery failures, is replaced by [CLI shell retirement](cli-shell-retirement.md#research-gap).

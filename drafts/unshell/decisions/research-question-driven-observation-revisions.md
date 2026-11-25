@@ -31,5 +31,4 @@ Superseded in part:
 - [Preserve qualified construction and exposure coverage](#qualified-construction) is replaced in full by [qualified answers over contributions](qualified-answers-over-contributions.md#qualified-construction-and-retained-support).
 - [Preserve domain and storage boundaries with selected research capture](#domain-and-storage) is replaced in full by [common analysis contributions](common-analysis-contributions.md#retained-domain-and-storage).
 - [Choose capture for the research question](#research-capture), only continued availability of the command-batch format/local sink and its use for existing explicit feedback; preserve question-selected research capture/delivery duties, is replaced by [CLI shell retirement](cli-shell-retirement.md#research-gap).
-
 - [Retain local investigation context and explicit feedback](#retained-understanding-and-context), only continued provision through the current CLI feedback interaction; preserve retained understanding and client-neutral feedback obligations, is replaced by [CLI shell retirement](cli-shell-retirement.md#research-gap).

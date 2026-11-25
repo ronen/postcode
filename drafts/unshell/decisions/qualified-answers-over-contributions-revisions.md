@@ -22,9 +22,6 @@ Superseded in part:
 
 - [Qualified construction and retained support](#qualified-construction-and-retained-support), only the requirement to retain investigation-attempt failure/unavailability kind, code and diagnostic in answer selections, is replaced by [Separate attempt reporting and answer meaning](investigation-attempts-and-answer-outcomes.md#separate-attempt-reporting-and-answer-meaning). Other construction, support and qualification obligations remain accepted.
 - [Exact prior information as a subject](#exact-prior-information-as-a-subject), only continued CLI answer-alias acceptance; preserve exact subject meaning and kind checks, is replaced by [CLI shell retirement](cli-shell-retirement.md#precise-references).
-
 - [Exact presentation and references](#exact-presentation-and-references), CLI present/continuation syntax, retired-family paging/format/disclosure controls, compact aliases/allocation schedules and retired CLI View identity/finalization formulas; retain exact qualified access and surviving artifact identity, is replaced by [CLI shell retirement](cli-shell-retirement.md#precise-references).
-
 - [Qualified application access](#qualified-application-access), only acceptance/preservation of Session compact aliases and retired CLI refusal syntax, is replaced by [CLI shell retirement](cli-shell-retirement.md#precise-references).
-
 - [Qualified construction and retained support](#qualified-construction-and-retained-support), only CLI binding/allocation ports, worker finalization and retired Presentation verification obligations, including incorporated predecessors; keep qualification, exact support and semantic verification, is replaced by [CLI shell retirement](cli-shell-retirement.md#precise-references).
