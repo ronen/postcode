@@ -112,6 +112,23 @@ the eventual retirement decision's conformance statement. The foundation obligat
 remain requirements for future work; removing the unused implementation neither
 withdraws them nor establishes conformance. GUI feedback design is outside UNSHELL.
 
+Include a backlog item, **Research observation and feedback support after CLI
+retirement**, in the eventual planning package and promote it with the retirement
+decision. It must identify the missing capture and delivery capability, reference
+the decision and preserved foundation obligations, and describe the needed
+reconciliation: support question-directed research observation and inadequacy
+feedback through the relevant human interfaces, with sufficient context, delivery
+to the designated research destination, visible delivery failures and separation
+of generated records from program evidence. It does not select a GUI design,
+recording schema or implementation schedule.
+
+The retirement decision must state the gap and that the backlog item was added;
+it must not link to the mutable backlog entry. Reconcile the existing CLI-specific
+optional-recording/feedback backlog candidate during package preparation so the
+backlog does not retain an obsolete implementation premise. The new item belongs
+with the proposal's adoption rather than describing the retirement as already
+implemented in the current canonical backlog.
+
 ## Residual capabilities and exclusions
 
 Shared Presentation negotiation remains outside UNSHELL. It loses its principal
