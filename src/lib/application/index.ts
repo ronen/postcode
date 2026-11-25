@@ -29,10 +29,14 @@
  * Invalid requestId correlation rejects with InvalidRequestId before work begins;
  * its captured input/problems preserve safe values or explicit omission reasons.
  * onWork and investigator onProgress/onReport callbacks receive owned cloneable
- * reports. interrupt(), lifetime-signal abort and active close() terminate the Session.
+ * reports. interrupt(), lifetime-signal abort, active close() and detected invalidation
+ * terminate the Session and begin owned-resource cleanup. Invalidation detected first
+ * keeps SessionInvalidated/invalidated; interruption established before a pending change
+ * is detected keeps CommandInterrupted/interrupted. Neither alone fails shutdown.
  * The request retains its first established terminal outcome and final accounting;
  * interrupt()/close() separately expose the same shutdown assessment. Observe these
- * promises for owned cleanup and terminal-report failures (SessionShutdownError).
+ * promises for owned cleanup and terminal-report failures (SessionShutdownError), including
+ * invalidated-request finalization. Ordinary request failures remain request-local.
  * Signal-only failures remain available to later close(), without an unhandled
  * internal rejection. usage() and work() remain available after shutdown.
  * Injected runGit retains caller subprocess ownership. No overall shutdown deadline

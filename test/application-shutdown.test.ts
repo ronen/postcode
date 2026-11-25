@@ -254,3 +254,103 @@ test('missing measurements stay explicit through simultaneous attempt and work n
   assert.deepEqual(session.usage().attempts[0]!.usage[0]!.reports, []);
   reply.resolve({ kind: 'ended' });
 });
+
+for (const failures of ['none', 'participant-and-report', 'all-finalizers'] as const) {
+  test(`active invalidation preserves its cause and shared shutdown assessment: ${failures}`, async t => {
+    const f = fixture(t), entered = deferred<void>(), reply = deferred<DialogReply>();
+    const participantFailure = new Error('invalidated participant cleanup');
+    const attemptFailure = new Error('invalidated attempt notification');
+    const workFailure = new Error('invalidated work notification');
+    const resourceFailure = new CleanupIncomplete('controlled invalidation cleanup');
+    let participantCloses = 0, resourceCloses = 0, reportCalls = 0, workFinishes = 0;
+    let cleanupReason: Error | undefined, lateUsage!: (value: ReportedUsage) => void;
+    const close = GitExecutionOwner.prototype.close;
+    t.mock.method(GitExecutionOwner.prototype, 'close', function(this: GitExecutionOwner, reason?: Error) {
+      resourceCloses++; cleanupReason = reason;
+      return close.call(this, reason).then(() => { if (failures === 'all-finalizers') throw resourceFailure; });
+    });
+    const session = sessionOf(await openApplication(f, {
+      onWork: event => {
+        if (event.kind !== 'finish') return;
+        workFinishes++; assert.equal(event.status, 'invalidated');
+        if (failures === 'all-finalizers') throw workFailure;
+      },
+      investigation: { dialogAgent: { identity, open: () => ({
+        exchange: (_input, _signal, usage) => { lateUsage = usage; usage(measurement); entered.resolve(); return reply.promise; },
+        close: () => { participantCloses++; if (failures !== 'none') throw participantFailure; },
+      }) }, onReport: report => {
+        reportCalls++; assert.equal(report.termination, 'invalidated');
+        if (failures !== 'none') throw attemptFailure;
+      } },
+    }));
+    let terminal: unknown;
+    const rejected = assert.rejects(session.execute(request), error => { terminal = error; return error instanceof SessionInvalidated; });
+    await entered.promise;
+    writeFileSync(path.join(path.dirname(f.configPath), 'gate.ts'), 'export const changedDuringDialog = 2;\n');
+    reply.resolve({ kind: 'tools', requests: [{ kind: 'modules' }] });
+    await rejected;
+    // Detection itself must start owned cleanup; no explicit shutdown call has occurred.
+    assert.equal(resourceCloses, 1); assert.equal(cleanupReason, terminal);
+    assert.equal(session.work()?.status, 'invalidated');
+    assert.equal(session.usage().attempts[0]!.termination, 'invalidated');
+    const work = session.work(), usage = session.usage();
+    lateUsage({ ...measurement, categories: [{ category: 'input', unit: 'tokens', value: 99, includedIn: null }] });
+    await tick(); // Also allow a signal-triggered assessment rejection before explicit observation.
+    assert.deepEqual(session.usage(), usage);
+    const interrupted = session.interrupt(), closed = session.close();
+    assert.equal(closed, interrupted);
+    const outcome = await interrupted.then(() => null, error => error);
+    if (failures === 'none') assert.equal(outcome, null, 'Invalidation is not itself a shutdown failure');
+    else {
+      assert.ok(outcome instanceof SessionShutdownError);
+      const expected = new Map<string, unknown>([['participant-cleanup', participantFailure], ['attempt-report', attemptFailure]]);
+      if (failures === 'all-finalizers') { expected.set('work-report', workFailure); expected.set('resource-cleanup', resourceFailure); }
+      assert.equal(outcome.failures.length, expected.size);
+      for (const failure of outcome.failures) assert.equal(failure.cause, expected.get(failure.phase));
+      assert.deepEqual(new Set(outcome.errors), new Set(expected.values()));
+    }
+    assert.equal(await closed.then(() => null, error => error), outcome);
+    assert.equal(await session.close().then(() => null, error => error), outcome);
+    await assert.rejects(session.execute(request), error => error === terminal);
+    await assert.rejects(session.check(), error => error === terminal);
+    assert.deepEqual(session.work(), work); assert.deepEqual(session.usage(), usage);
+    assert.deepEqual([participantCloses, resourceCloses, reportCalls, workFinishes], [1, 1, 1, 1]);
+  });
+}
+
+for (const first of ['detected-change', 'interruption'] as const) {
+  test(`active dialog with pending Git input change: ${first} establishes the terminal cause`, async t => {
+    const entered = deferred<void>(), changed = deferred<GitResult>();
+    const initial: GitResult = { status: 128, signal: null, stdout: Buffer.alloc(0), stderr: Buffer.alloc(0) };
+    // Repository acquisition retains the failure code. A different code is an input change,
+    // and the detected-change case proves this same pending result invalidates without abort.
+    const later: GitResult = { ...initial, status: 129 };
+    let pendingChange = false, closes = 0, reports = 0, exchanges = 0;
+    const session = sessionOf(await openApplication(fixture(t), {
+      runGit: async () => { if (!pendingChange) return initial; entered.resolve(); return changed.promise; },
+      investigation: { dialogAgent: { identity, open: () => ({
+        exchange: async (_input, _signal, usage) => {
+          exchanges++; usage(measurement); pendingChange = true;
+          return { kind: 'tools', requests: [{ kind: 'modules' }] };
+        }, close: () => { closes++; },
+      }) }, onReport: () => { reports++; } },
+    }));
+    const ErrorType = first === 'detected-change' ? SessionInvalidated : CommandInterrupted;
+    const status = first === 'detected-change' ? 'invalidated' : 'interrupted';
+    let terminal: unknown;
+    const rejected = assert.rejects(session.execute(request), error => { terminal = error; return error instanceof ErrorType; });
+    await entered.promise;
+    assert.equal(session.work()?.status, 'running');
+    if (first === 'detected-change') changed.resolve(later);
+    else await session.interrupt();
+    await rejected;
+    assert.equal(session.work()?.status, status);
+    assert.equal(session.usage().attempts[0]!.termination, status);
+    const work = session.work(), usage = session.usage();
+    changed.resolve(later); await tick();
+    await session.interrupt(); await session.close();
+    await assert.rejects(session.execute(request), error => error === terminal);
+    assert.deepEqual(session.work(), work); assert.deepEqual(session.usage(), usage);
+    assert.deepEqual([closes, reports, exchanges], [1, 1, 1]);
+  });
+}

@@ -104,19 +104,29 @@ the display without re-entering the public Session guard. Overlapping direct ope
 invalidation and interruption are terminal. Closing releases retained domain
 state while preserving final reports and usage. For an opened direct application
 Session, `interrupt()`, lifetime-signal abort and close during unfinished work
-establish terminal cancellation. The interrupted request finalizes attempt/work
-accounting without awaiting Git exit. Both shutdown methods observe the same
+establish terminal cancellation. Detected invalidation also immediately starts owned
+resource cleanup and uses the same terminal-finalization protections and shutdown
+assessment. An invalidated request rejects with `SessionInvalidated` and keeps
+`invalidated` work despite later interrupt or close; producing attempts stopped by
+invalidation report `invalidated`. If interruption
+is established while a changed input is still pending detection, work remains
+`interrupted`. Both terminal paths finalize accounting without awaiting Git exit.
+Both shutdown methods observe the same
 assessment of owned resource cleanup and terminal participant/report failures;
 `SessionShutdownError.failures` distinguishes their phases and retains original
 causes. Signal-only failures are internally observed and remain available through
-later close. Completed production retains its actual outcome when final request
-validation is interrupted. Invalidation established first remains the terminal cause.
+later close. Invalidation alone leaves shutdown clean; participant cleanup, attempt/work
+reporting and owned-resource failures remain separately observable through both shutdown
+methods, without repeating cleanup. See the [terminal invalidation decision](../decisions/terminal-session-invalidation.md).
+Completed production retains its actual outcome when final request
+validation is interrupted or invalidated. Invalidation established first remains the terminal cause.
 
 Git cleanup reporting remains bounded, with ownership retained until confirmed exit.
 Injected `runGit` leaves subprocess ownership with its caller. Session shutdown has
 no overall deadline and cannot preempt synchronous compiler work or callbacks.
-Notification protection is limited to terminal finalization; ordinary request
-callback/finalizer failures remain request-local. Opening retains its earlier
+Notification protection applies only once an interruption or invalidation cause is
+established. Ordinary request callback/finalizer failures remain request-local;
+this does not provide general callback isolation. Opening retains its earlier
 cleanup contract, including the separately recorded opening-error preservation gap. Presentation method versions are
 client artifact provenance and are absent from captured application methods.
 

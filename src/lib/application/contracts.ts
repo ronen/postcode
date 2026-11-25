@@ -87,14 +87,19 @@ export interface ApplicationSession {
   readonly id: SessionId;
   capabilities(): readonly Capability[];
   execute(request: ApplicationRequest, context?: ExecutionContext): Promise<ApplicationResult>;
+  /** Detected invalidation establishes SessionInvalidated and immediately begins owned cleanup.
+   * Active work stays invalidated; later interrupt/close cannot replace the terminal cause. */
   check(): Promise<void>;
   usage(): InvestigationUsageReport;
   work(): WorkReport | undefined;
-  /** Terminal cancellation. Shares close()'s assessment of owned cleanup and terminal reporting.
-   * Request interruption settles separately; cleanup deadlines do not prove resource exit. */
+  /** Terminal cancellation unless an earlier cause (including invalidation) is established.
+   * Shares close()'s assessment of owned cleanup and terminal reporting. Request settlement
+   * is separate; neither interruption nor invalidation alone is a shutdown failure. */
   interrupt(): Promise<void>;
   /** Active work is interrupted; idle close starts no new request abort. Repeated calls observe
-   * the same assessment and reject with SessionShutdownError when cleanup/report delivery failed. */
+   * the same assessment, including failures during invalidated-request finalization, and reject
+   * with SessionShutdownError when cleanup/report delivery failed. Ordinary request failures
+   * stay with their request. Cleanup deadlines do not prove resource exit. */
   close(): Promise<void>;
 }
 export type OpenApplicationResult = { readonly status: 'opened'; readonly session: ApplicationSession }

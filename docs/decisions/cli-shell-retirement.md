@@ -1,9 +1,11 @@
 # Retire the investigation CLI while preserving the application
 
-Status: accepted
+Status: partially superseded
 Decided: 2026-11-25
 Arising from: [Surgical CLI shell retirement](../plans/cli-shell-retirement.md)
 Scope: retirement of the investigation CLI, its private host and exclusive core support; direct validation, precise references, terminal Session abort and the research-support gap
+
+Superseded in part: [Preserve terminal Session abort and separate shutdown failures](#terminal-abort), only the abort-only scope of finalization protection, by [Share terminal finalization for Session invalidation and abort](terminal-session-invalidation.md#terminal-finalization).
 
 Supersedes:
 

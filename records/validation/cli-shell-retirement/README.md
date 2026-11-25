@@ -6,7 +6,17 @@ Implementation starts at `5db2cf19f0436d206aa5d5c05de7f022a03b45b9`; no interven
 
 ## Controlled baseline
 
-Before removal or movement, run:
+The committed baseline, its initial repeat, and the implementing agent's original
+post-lifecycle comparison all used **Node 26.11.0**. Use that exact Node version for
+byte comparison. The captured `node` value is method provenance and contributes to
+`analysis-inputs` identities: a different supported runtime can legitimately change
+both that value and derived IDs. Do not strip runtime provenance or identity fields
+to obtain equality. Round 1 independently reproduced byte equality under Node 26.11.0;
+its Node 22.13.1 comparison differs in runtime provenance and derived input identities,
+as recorded in the findings. Record the exact runtime again for the final integrated
+comparison and in subsequent handoffs; the original handoff remains historical.
+
+Before removal or movement, using Node 26.11.0, run:
 
 ```sh
 npm run build
@@ -51,7 +61,11 @@ correction and both-format verification remain pending after the lifecycle check
 The implementation retains the first established interruption/invalidation cause,
 seals final dialog usage, records final attempt/work accounting and separately
 assesses resource cleanup, participant cleanup, attempt notification and work
-notification. Repeated `interrupt()`/`close()` calls observe one assessment. Signal
+notification. Detection of invalidation starts owned cleanup without an explicit
+shutdown call, and uses the same protections and assessment as terminal abort.
+Invalidation alone leaves shutdown clean. Its cleanup/notification failures remain
+available to later shutdown observers, while ordinary request failures remain local
+to their requests. Repeated `interrupt()`/`close()` calls observe one assessment. Signal
 cancellation internally observes its promise. Cooperative waits cover input validation
 and asynchronous participant selection; no new asynchronous participant-close contract
 or synchronous preemption is introduced. The worker and CLI remain at this checkpoint.
@@ -93,3 +107,27 @@ awaits cleanup before rethrowing its original error. That pre-existing loss of t
 original cause remains outside this active-Session correction and is recorded in the
 backlog. Cleanup failure is not concealed. No additional opening lifecycle has been
 introduced.
+
+## Round 1 corrections and verification
+
+Human direction confirmed invalidation's terminal-finalization contract in the
+[task follow-up](../../tasks/2026-11-25-cli-shell-retirement.md); the
+[accepted clarification](../../../docs/decisions/terminal-session-invalidation.md)
+and application contract/architecture now describe it explicitly. No runtime
+implementation semantics changed in these review corrections.
+
+On Node **26.11.0**, `npm run check`, `npm run build`, and
+`node --test --test-concurrency=2 _build/test/application-shutdown.test.js` pass
+(all 35 tests). Five added direct-boundary cases exercise clean active invalidation,
+simultaneous participant-close/attempt-report failures, all finalizer phases including
+work reporting and owned cleanup, and both orders around a pending Git input change.
+The paired pending-change test proves the same delayed input result invalidates
+when allowed to finish and cannot relabel work after interruption. Tests observe
+accounting and original cause identity, automatically started owned cleanup,
+repeated/mixed shutdown promises, late usage and cleanup/report call counts.
+
+A new controlled capture on Node **26.11.0** is byte-identical to the committed,
+decompressed baseline, with no exclusions. Reproduce with the capture command above
+using `_verification/invalidation-capture` as output and compare `capture.json`
+with decompressed `baseline/capture.json.gz`. The historical review handoff and
+reviewer's findings remain unchanged. Full integrated verification remains pending.
