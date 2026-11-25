@@ -27,6 +27,10 @@ Invalidation alone leaves the shutdown assessment clean. If participant cleanup,
 
 Update the contract and implementation documentation, and add direct-boundary tests during active work. Cover clean invalidation, invalidation with simultaneous participant-close and final-report failures followed by shutdown observation, and interruption before a pending change is detected. These cases also address F3’s ordering concern. This clarification is limited to finalization once a Session terminal cause is established. General callback isolation and broader lifecycle redesign remain outside scope.
 
+### 2026-11-25 — Intermediate checkpoint acceptance
+
+Yes checkpoint is accepted, continue with the implementation
+
 ## Outcome
 
 ## Verification
