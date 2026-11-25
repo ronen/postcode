@@ -1,23 +1,17 @@
 # Implemented architecture
 
-The development CLI opens one configured TypeScript project in a transient
-session (one request or an interactive investigation), evaluates module
-inventory and presentation-declared standard expansions, constructs stored
-`modules(project)`, repository/project organization, or exact-selection group/module inspection projections, and presents
-a qualified Unicode or experimental JSON view. Every produced view submits a
-self-contained observation batch to a separate local sink. The initial slice's
-instrument validation and independent reviews are recorded in the
-[completed task](../../records/tasks/2026-09-12-initial-module-inventory.md).
+The internal Node application opens one configured TypeScript project in a
+transient Session, constructs complete qualified mechanical and contribution
+content, and retains exact answers with their fixed support. Authentication/help
+is the only CLI entry. Direct validation trials own explanation and state-diagram
+rendering; there is no current human investigation interface.
 
-The current lifecycle is governed by the [session decisions](../decisions/transient-analysis-sessions.md).
-The shell and one-shot CLI share request execution in a private compiler worker.
-The parent owns terminal interaction, asynchronous Git subprocesses, publication
-and observation delivery; child ownership survives worker disposal. Direct session
-users own Git in their calling process and await opening, execution, validation and
-close. The [execution decision](../decisions/execution-ownership-and-cancellation.md)
-governs this lifetime boundary. Other governing choices are the accepted [projection architecture decisions](../decisions/initial-projection-architecture-decisions.md)
-and [module inventory decisions](../decisions/initial-module-inventory-decisions.md).
-The governing cross-cutting terminology is maintained in [core concepts](../core-concepts.md), and binding cross-cutting rules are maintained in [architectural constraints](../architectural-constraints.md); this document describes how the current implementation realizes them. The [application specification](../app-specification.md) describes the broader intended application design; adopting it does not establish conformance or implement its future capabilities.
+The [retirement decision](../decisions/cli-shell-retirement.md) removes the private
+shell/worker, mechanical human Views, compact aliases and research sink/feedback
+implementation. It preserves analysis, qualification, account services and direct
+execution. [Core concepts](../core-concepts.md), [architectural constraints](../architectural-constraints.md)
+and accepted decisions govern these boundaries; the [application specification](../app-specification.md)
+describes broader intended behavior without claiming its implementation.
 
 ## Common contribution mechanism
 
@@ -31,7 +25,7 @@ selected findings with organizing status and exact qualified support. Fresh sele
 show later changes while exact retained answers preserve their earlier snapshots.
 The application interface also exposes `state-behavior` and `follow-up` Lenses over
 this ledger, with contribution evaluation, investigating-agent dialogs and retained
-answers. Application and CLI hosted configuration select the common dialog
+answers. Application hosted configuration select the common dialog
 protocol under the existing explicit enablement and credential contracts.
 See the [application route](contributions.md#application-route) and
 [hosted transport](contributions.md#hosted-transport) for those boundaries.
@@ -42,27 +36,33 @@ associated-content callers use this boundary, completing the migration under the
 
 ## Implemented subset of the product model
 
-The [architectural-investigation decision](../decisions/specialized-architectural-investigation.md) permits architectural accounts over captured bases that can include program states, observations, participant-supplied material and earlier Projections. Its successor to the [coordinated-Views decision](../decisions/coordinated-views-and-qualified-results.md#generalize-lens-results-and-view-composition) preserves multi-Projection coordination and multi-state conceptual scope. The current CLI implements a narrower shape: one configured TypeScript project under the unchanged-input Session contract, family-specific construction and a single top-level Projection descriptor per program View. Embedded module bases and associated-inspection selections are specific compositions within that implementation, not a general facility for coordinating arbitrary Projections.
+The [architectural-investigation decision](../decisions/specialized-architectural-investigation.md)
+permits accounts over captured program states, observations, participant-supplied
+material and earlier Projections. The implemented subset is one configured
+TypeScript project under an unchanged-input precondition, family-specific
+construction, and qualified contributions. Embedded mechanical bases and associated
+inspections are specific compositions, not arbitrary multi-Projection coordination.
 
-Supported interpretations use [common qualified contributions](contributions.md): flat owned items, explicit associations/result designations and independent producer records. Follow-up can select an exact contribution, item/component or result designation; delivery captures what the producer actually received. Immutable answers capture selected evidence, qualifications, producer/origin reports and standing/cause snapshots. Failed attempt diagnostics remain retained/reportable separately from answer meaning, under the accepted [attempt/answer distinction](../decisions/investigation-attempts-and-answer-outcomes.md). This does not establish participant-material ingestion, multi-state analysis or arbitrary Projection inputs.
+Accounts retain flat owned items, explicit associations/result designations and
+independent producer records. Follow-up can select an exact contribution,
+item/component or designation. Delivery captures what the producer actually received.
+Answers preserve evidence, qualifications, origins and standing/change snapshots.
+Failed attempt diagnostics remain reportable separately from answer meaning.
+There is no general participant-material ingestion, multi-state analysis or arbitrary
+Projection-input interface.
 
-The existing construction/arrangement boundary remains applicable to each input. Core supplies selected qualified content and any qualified population summaries; arrangement describes the supplied populations and applies display choices. A display count or a count of omitted items does not independently establish project-wide coverage. New program claims remain core analysis responsibilities.
+`present` resolves an exact retained Projection and fixed support. It has no Lens
+parameters or Evaluation plan and cannot select replacements or acquire missing
+support. Fresh requests can select later interpretation/standing snapshots while
+retaining their captured program basis. Precise references are Session-scoped;
+no compact bindings, display aliases or reference-lifetime metadata remain.
+There is no save/resume or automatic refresh.
 
-The CLI does not follow changing inputs, persist workspaces or offer multi-state analysis. It invalidates on detected relevant changes and requires reopening. Retained results remain immutable; later requests can select new interpretation and association/standing snapshots. These selections support the answer but are distinct from its captured program-state basis, and do not acquire following or pinned policies.
-
-The `present` request resolves an exact retained Projection and its fixed support before selecting a compatible Presentation. It has no subject designation, Lens parameters or Evaluation plan. Fixed-reference content resolution uses narrow read capabilities; it does not enumerate current histories, select replacements or construct another Projection. Missing support produces a qualified refusal rather than acquisition. Fresh requests retain their existing planning and selection path; paging belongs only to exact presentation. This implements the bounded continuity remedy in the [exact retained-answer plan](../plans/exact-retained-answer-presentation.md).
-
-Session coordination allocates answer aliases in a separate append-only namespace after exact construction/resolution and before arrangement. Associated inspections select their composite before arranging its mechanical base, preserving mechanical-then-association subject binding order. Their exported descriptor names the composite variant and precise mechanical support. A bare support ID can be presented independently. Aliases are local bindings, never cross-Session lookup keys.
-
-Views include fresh/retained selection mode and reference lifetime in presentation identity, without changing Projection identity. Arrangement consumes explicit inputs and supplied bindings; generated continuations preserve all other choices and target the same precise Projection. Usage finalization keeps the usage-independent arrangement key through worker transport. Retained semantic outcomes remain separate from current invocation reporting, so displaying an earlier failure does not repeat its failed execution or charge usage. All affected program Views share text/JSON reference-lifetime disclosure. These changes do not add View history, persistence or captured-basis export.
-
-Coordinating several Projections from an existing Session does not inherently require multi-state support. Input attribution, composition recording, presentation continuity and interface compatibility must be addressed for that capability; additional captures require their own state, identity and session-scope decisions.
-
-Current observation batches retain the presented View, rendered output, session identifier, configured paths and method names, but do not generally export the captured program-state basis associated with the Projection. For example, ordinary module inventory omits the retained analysis-input support; additional-detail output can include individual evidence digests without establishing a complete captured-state association. Retained core support and exported observation provenance are different guarantees. This is a [known current recording gap](../decisions/coordinated-views-and-qualified-results.md#current-observation-provenance-gap), not only a future multi-state requirement.
-
-Recorded output remains evidence of what PostCode displayed, but observations do not generally establish the captured program basis supporting it. Correction is explicitly deferred and does not block architectural adoption or interface exploration; it must precede reliance on newly collected observations for assessments requiring attribution to a particular program state. The bounded follow-up concerns adequate basis identification, not full investigation reproducibility or a durable analysis store or repository archive. Neither a commit hash alone nor references into a discarded store can be assumed sufficient.
-
-The product permits a summary suggestion when no more specific information need has been expressed; it does not require a summary-first default. The current no-argument CLI command lists modules, and `summarize` requests the implemented module interpretation. This is compatible with the optional suggestion, although the CLI does not provide a general summary View selector. Adoption of the conceptual model changes neither command behavior nor the current schema and identity contracts.
+Trial arrangement receives supplied qualified content and applies display choices.
+Counts/omissions do not independently establish project-wide coverage. No human
+View history, research sink or feedback mechanism is retained. Historical output
+and its captured-basis attribution limitations remain historical evidence; see the
+[research-support gap](../backlog.md#research-observation-and-feedback-after-cli-retirement).
 
 <a id="application-entry"></a>
 ## Internal application entry
@@ -85,23 +85,16 @@ captured separately from semantic request meaning; neither occurrence context
 nor Presentation choices enter answer identity. Capabilities expose Lens meaning
 and semantic requirements without implementation registrations or output formats.
 
-`interfaces/cli/application.ts` is the shared adapter for the private worker and
-in-process CLI tests. It supplies captured declarative option constraints, projects
-the application context back to the existing CLI report shape, and arranges
-supplied content and coordinated aliases. All arrangement consumes coordinated aliases without a store-backed binding port, under one operation guard. Application work is
-finalized before arrangement. An unknown continuation or client arrangement
-failure cannot turn completed application work into failed application work.
-The CLI still owns presentation/command failure, output, observation construction
-and parent usage finalization.
+The small [direct client](../../test/application-client.ts) imports only the
+application entry and exported types. Its integration test exercises complete
+exports, dependency occurrences, alternative populations and historical answers.
+No internal adapter, worker, CLI operation capability or deferred publication
+check is needed. All ordinary requests use the same direct validity boundary.
 
 Ordinary application execution checks input validity before and after work.
-CLI publication uses the shared `guardPublication` before and after output;
-the worker transfers these final checks to its parent. The in-process CLI host
-keeps its operation scope through local delivery and uses the scope’s internal
-validity transport. When `publishCommand` receives that host, it delegates actual
-output to its scoped publication operation, so one pre/post-output guard covers
-the display without re-entering the public Session guard. Overlapping direct operations raise `SessionBusy`;
-invalidation and interruption are terminal. Closing releases retained domain
+The client-neutral `guardPublication` can separately check before/after a caller's
+output; it does not bypass or defer Session execution checks. Overlapping direct
+operations raise `SessionBusy`; invalidation and interruption are terminal. Closing releases retained domain
 state while preserving final reports and usage. For an opened direct application
 Session, `interrupt()`, lifetime-signal abort and close during unfinished work
 establish terminal cancellation. Detected invalidation also immediately starts owned
@@ -144,176 +137,68 @@ through the same execution and exact-access paths.
 Account/provider services are available separately at `application/accounts.ts`.
 They assemble existing credential services, return typed configuration reasons,
 and expose the explicitly requested, cost-bearing connection check without
-opening a project. `interfaces/cli/investigator-policy.ts` owns route disclosures
-and command/document guidance, including credential failures during an exchange.
-The CLI authentication host owns process signals and passes cancellation to the
+opening a project. The authentication host owns process signals and passes cancellation to account
 services. Neither preflight nor ordinary authentication starts the connection check.
+`authentication/commands.ts` supplies terminal-safe authentication/help independently
+of project setup. Direct clients explicitly choose provider configuration and own
+their transmission disclosures.
 
-`application/observations.ts` owns the version-four envelope, sink acceptance,
-failure-isolated delivery and local file sink. `application/feedback.ts` prepares
-feedback from caller-supplied displayed artifacts, or from context-free input;
-it does not inspect a Session or reconstruct source context. CLI observation
-construction, source classification, warning text, feedback rendering, report
-rendering and command continuations remain client responsibilities. Report data
-contracts are separate from terminal rendering. The shell and one-shot host share
-`interfaces/cli/runtime.ts` for worker assembly and output-directory exclusions;
-their signal and EOF policies remain in their respective hosts.
-
-This boundary implements the application and companion-service extraction in the
-[application interface plan](../plans/application-interface-boundary.md).
-Live scripts and CLI-shaped in-process tests use the shared CLI adapter; the old
-`session.ts` import shim is removed. Historical cross-build tools keep their
-documented checkpoint module/export assumptions and are not an extraction oracle.
-The live profiler and partial-session measurement support older builds only when
-those builds expose the migrated harness's expected modules, exports and View shape.
-The small [direct client](../../test/application-client.ts) imports only the intended
-application entry and its exported types. Its integration test compares answers on
-the same fixture with Unicode/JSON CLI output, retaining full content in the direct
-client and explicit display bounds in the CLI. This verification does not extend
-the existing single-project, unchanged-input or source-disclosure guarantees.
+The CLI-only deferred publication path and private operation scope are removed.
+The Session's `requestFinalized` marker remains necessary for direct clients: a
+work-finish callback may synchronously call `close()` before `finish()` returns.
+It preserves completed work in that case, rather than relabelling it as interrupted.
+A direct boundary test covers this residual; it is not a retained CLI capability.
+Client Presentation method versions remain artifact provenance outside application
+method capture.
 
 <a id="request-publication"></a>
 ## Request publication
 
-Session execution normalizes the requested question, subject designation, Lens
-parameters and presentation choices independently of the resulting answer. A
-fixed Session catalog supplies Lens questions, titles, applicability, mechanical
-implementation keys and consuming operation mappings. Construction checks those declarations; retained operation
-selections carry the actual operation request and subject kind, so record validation
-and reconstruction do not depend on a global Lens-name mapping. Command spellings
-map to normalized Lens identities; dependency identities agree with retained answers.
-Missing or incompatible designation modes are refused before Evaluation. Usage is
-subjectless and refuses extraneous designation or parameter inputs. Unknown names
-and malformed designation/reference choices produce rejected-input context before
-lookup. In-process CLI-adapter and worker requests require a string or null selector; optional
-reference, subject and reference-lifetime choices must have their supported types
-and values. Organization construction takes its scope from the normalized designation.
-Unrepresentable values also produce rejected-input context and a resolution report,
-with explicit omissions where the supplied data cannot safely cross the worker or
-JSON reporting boundary; an absent required field is distinguished from such an omission.
-The parent handles invalid captured input before posting
-it to the worker, using the same refusal renderer and input checks. Invocation
-correlation belongs to the returned request context and does not enter retained
-Projection or reusable operation identity.
+Session execution captures and normalizes the requested question, designation,
+parameters and consumption choices independently of the answer. Its fixed catalog
+supplies Lens applicability, requirements, mechanical implementations and consuming
+operations. Missing/incompatible designation modes are refused before Evaluation.
+Usage is subjectless and refuses extraneous designation or parameter input.
+Unrepresentable input produces rejected context with explicit omissions, without
+invoking accessors. Invocation correlation is separate from reusable answer identity.
 
-The worker result distinguishes a program View, a subjectless usage report and a
-request-resolution report. The parent finalizes reports using its authoritative
-usage ledger. Publication uses the actual normalized request for version-four
-observations, including follow-ups, and emits a View event only for a program
-View. Input checks and observation-delivery warnings apply to every alternative.
-Subject resolution consumes qualified module/group populations and the Lens's
-applicability/cardinality. Precise references resolve either a compact binding or a
-raw record ID to an actual retained same-Session module, group or investigram before
-any applicability-dependent acquisition; classification allocates no references and
-prefixes do not establish existence. Both spellings supply the resolved record ID to
-answer construction while request context preserves the original spelling.
-Unsuccessful lookup returns a resolution report without constructing the requested
-Projection. Reports preserve frozen candidates, criteria, population outcomes and
-qualification; successful observations carry resolution information separately.
-Missing lookups allocate no unrelated bindings; ambiguous lookups bind the complete
-returned candidate set. Successful applications retain their established population
-allocation schedule. These [reference choices](../decisions/precise-subject-designations-and-lookup-bindings.md)
-preserve existing bindings and genuine prerequisite allocations.
-Module/name matching is shared with family selection without constructing an unused
-inspection answer. Compatible bound subjects absent from a supplied mechanical
-evaluation remain identified: construction retains their naming support and records
-that the supplied population omits them. Arrangement exposes unavailable detail
-without inventing population membership or complete empty results.
+Qualified resolution consumes module/group populations and Lens cardinality.
+Exact references must identify actual same-Session retained records; prefixes alone
+do not establish existence. Known unsupported kinds, unknown references, ambiguous
+names and incomplete/unavailable lookup remain distinct. Candidates carry precise
+IDs, support, criteria and qualifications, with no alias allocation. Names and exact
+references supply settled subjects to construction; equivalent subjects, question,
+parameters and support share an answer regardless of designation spelling.
 
-The request path implements the bounded [request-model plan](../plans/lens-request-model.md)
-using shared qualified resolution. Family constructors accept
-resolved subjects and retain qualified answers without lookup spelling or lookup
-status. All four families key the complete qualified selection, normalizing only
-declared reference positions. Names and precise references therefore share an answer
-when the question, subjects, parameters and support are equal. Failed resolution
-does not construct a requested answer; valid empty populations and embedded details
-remain supported. Current unordered collection constructors canonicalize the full
-payload in evaluation-population order, with outside-population subjects ordered by
-record ID. Binding schedules are independent of this ordering. Ordinary module
-inspection rejects empty resolved input as an invariant violation; group-only
-inspection uses an explicit empty-module-detail constructor. These rules implement
-the [unordered collection decision](../decisions/unordered-collection-inspection.md)
-and do not redefine meaningful order or roles in other Lenses.
-Investigation selections retain frozen revision and association
-snapshots, including valid failed and unavailable outcomes.
+Mechanical registrations own prerequisite expansions, result-contract selection
+and construction. Catalog capture rejects missing implementations or declarations
+that repurpose a registered question. Coordination does not dispatch construction
+by Lens name. This is a fixed internal catalog, not dynamic plugin installation.
 
-Arrangement receives a frozen lookup context separately. Its designation, criteria,
-subjects and population qualifications appear in View JSON; Unicode labels only
-incomplete or unavailable lookup coverage separately from answer qualification.
-This context participates in View identity without
-altering answer identity. Arrangement still has no lookup or Evaluation access.
-The bounded request/work attribution path is implemented as described below. A
-nonpublic module-risks fixture and a second consuming Lens exercise normalization,
-resolution, interpretation, retention and the existing interpretation Presentation
-through the fixed catalog. A nonpublic module-exports Lens exercises a separate
-qualified export-surface record and Presentation through the same request path.
-Both extensions also pass through worker delivery, parent publication and observations;
-neither is a public CLI command.
+Family constructors retain complete qualified selections and support. Unsuccessful
+resolution creates no requested Projection; established empty populations remain
+valid. Unordered collection payloads use evaluation-population order, followed by
+outside-population subjects ordered by record ID. Meaningful order/roles are not
+redefined. Ordinary inspection rejects empty settled input; group-only inspection
+uses the explicit embedded empty module detail constructor.
 
-Mechanical implementation registrations own prerequisite expansions, result-contract
-selection and local Evaluation/construction coordination. The Session coordinator
-does not dispatch mechanical construction by Lens name. Catalog assembly matches
-each mechanical declaration to its registered executable definition, rejecting
-unregistered implementations or declarations that repurpose a registered question.
-This replaces the earlier restriction to built-in mechanical Lenses without allowing
-metadata to promise behavior a constructor cannot supply. Static registration and
-the catalog snapshot are immutable during a Session; the parent transfers the same
-captured definitions to its worker.
+The exports fixture selects export claims, documentation, support and outcomes
+without constructing module inspection. It distinguishes complete empty surfaces
+from incomplete, unavailable or unrequested exports, and preserves known subjects
+omitted from a supplied population. Dependencies retain direction, endpoint roles
+and recognition coverage explicitly. Associated inspection selects its mechanical
+basis and contributions before returning a complete composite.
 
-The exports constructor selects established export claims, documentation associations,
-their support and relevant Evaluation outcomes without constructing module inspection.
-Its result distinguishes a complete empty surface from incomplete, unavailable or
-unrequested exports, and retains precise subjects omitted from the supplied population.
-The paired Presentation requests the existing export/documentation expansions,
-shares qualified export resolution and documentation/role formatting with inspection,
-and bounds displayed detail while retaining the full core selection. Source evidence
-is exposed only on explicit request and only for displayed exports/documentation.
-Adding this content family uses bounded record, contract, arrangement and disclosure
-registrations; it introduces no analyzer, dynamic plugin system or general planner.
-
-The Session's fixed catalog also declares bounded Presentations for the module,
-organization, dependency and interpretation content contracts, with an internal
-exports pairing available to fixture catalogs. Coordination checks
-prospective compatibility before requested Evaluation and refines the contract after
-subject resolution, including the different inspection subject kinds. Explicit format,
-source and paging choices constrain both the default and declared fallbacks. Required
-standard expansions for compatible choices are acquired together before construction;
-arrangement cannot acquire missing information. Current production choices accept
-qualified partial, unavailable and established-empty content. Internal assembly can
-declare a complete-materialization precondition and an explicit qualified fallback.
-Operational completeness does not establish the truth or completeness of an
-interpretation's account of the program.
-
-Construction resolves the retained content, then checks its semantic family and
-materialization before arrangement. A missing compatible choice or unmet precondition
-returns a resolution report preserving actual request, prerequisite qualifications,
-unmet outcome states and any already-retained answer IDs. Malformed content remains
-an internal defect. A selected Presentation's criteria and consequential fallback
-are captured in the View, with fallback changes also explained in Unicode output.
-These choices participate in View identity without changing retained answer identity.
-Embedded module detail and associated interpretation inspection remain explicit
-family compositions; their resolved content is validated at arrangement boundaries.
-Shared arrangements do not infer layout, detail, direction or coverage from a Lens
-name. Module and organization content already identifies population versus selected
-subjects; each family's fixed Presentation owns the corresponding table/tree or card
-layout, bounds and additional-detail policy. Compatible qualified content can carry another
-question identity through those same arrangements. Coordination supplies the question
-label separately from subject scope: module and organization Views retain that label
-in their self-contained payload and identity, while renderers append the scope context.
-A display-label change does not change the underlying Projection. The shared `inspect`
-question is labelled `Inspect`; its interpretation application adds the investigram
-context, preserving the established built-in headings. Dependency answers retain the
-selected subjects' endpoint role and recognition-coverage scope; their constructors
-use those meanings to select relationships and source-owned outcomes. Presentation
-uses the supplied direction and coverage to explain empty and unattributable results.
-Interpretation Views carry the retained selection variant, allowing support disclosure
-to distinguish operation answers from historical or associated selections. Lens names
-remain answer metadata and registration/validation inputs, not rendering dispatch.
-The dependency descriptor's direction/coverage and interpretation descriptor's variant
-are explicit in experimental JSON. Responsible answer and Presentation methods advance
-when these payloads change; designation-independent answer identity, reference allocation
-and bounded source disclosure retain their existing contracts.
-There is no generic multi-Projection selector or public Presentation registration API.
+Shared Presentation negotiation remains in `application/consumption.ts`. It lost
+its principal CLI client but is coupled to useful standard/subset expansion
+selection and exact-support compatibility. Optional internal declarations can
+constrain options, require materialization and specify qualified fallbacks.
+Compatibility is checked before acquisition and against the actual constructed or
+retained contract. A refusal preserves unmet states and retained answer IDs; exact
+access never enriches missing support. Negotiation affects consumption, not answer
+identity. No production renderer or new client has been added to preserve it.
+Separating this residual requires later acquisition/presentation design; there is
+no general planner or public Presentation registration API.
 
 <a id="request-work-attribution"></a>
 ## Request work attribution
@@ -344,11 +229,11 @@ parents. Report-local origin references resolve entirely within that report even
 a caller reuses a request correlation ID. Detail still scales
 with supported record identities and evidence queries; no detail is silently capped.
 
-Returned execution envelopes carry immutable work reports separately from Views.
-Non-View JSON retains the full resolution explanation and a compact attribution
-summary. Reporting completeness and included detail are separate fields; Session
-results and observations carry full reports independently of sink delivery. This
-follows the [interface attribution decision](../decisions/research-question-driven-observation.md#compact-attribution).
+Returned execution envelopes carry immutable work reports separately from answer
+meaning, resolution and usage. Reporting completeness is explicit and does not
+depend on research recording. This follows the
+[interface attribution decision](../decisions/research-question-driven-observation.md#compact-attribution).
+
 The Session exposes its latest execution report
 for failure handling, not a request-history catalog. Interpretation attempts carry
 their parent context; retained operation reuse and exact/associated selection record
@@ -358,20 +243,13 @@ acquired-but-not-dispatched and actually dispatched information remain distingui
 Pure retrieval/continuation records consumption without claiming new acquisition.
 Producer exposure depends on actual dispatch; references and host-side assembly do not create it.
 
-Operation-tagged worker progress sends newly recorded work and indexed evidence
-updates, rather than repeatedly transmitting the accumulated report. Entries are
-frozen once; full immutable report containers are built on demand. The parent
-seals received facts on forced termination and labels the report incomplete; late
-messages cannot replace it. Thrown execution failures preserve completed boundary
-facts while disclosing that work without returned outcomes is unknown. Version-four
-command observations include the work report for successful, refused and abnormal
-requests independently of sink success. Publication validity/outcome remains distinct
-from application completion: arrangement failure or an unknown continuation can
-fail the command after work completes, and a later input check can suppress a
-completed result. Direct clients receive work reports without research recording.
-Closing releases core state while already returned report snapshots remain usable.
-This is bounded attribution at existing boundaries, not an autonomous scheduler,
-request store or post-Session export of captured program inputs.
+Work is recorded internally before terminal notification. Thrown execution failures
+preserve completed boundary facts while disclosing unknown work without outcomes.
+Once a terminal cause is established, final notification failure cannot erase
+attempt/work/usage accounting. Ordinary callback failure remains request-local.
+Application completion and subsequent client publication remain distinct.
+Closing releases core state while returned report snapshots remain usable. This is
+bounded attribution, not a scheduler, history store or captured-program export.
 
 ## Responsibilities and flow
 
@@ -382,13 +260,12 @@ account inspection and exact historical access. Fresh selection preserves every 
 failure and cancellation.
 
 Hosted work explicitly selects OpenAI API-key billing or Sign in with ChatGPT and
-granted plan usage. The parent owns credentials, coordinated renewal, streaming
-transport and the authoritative usage ledger; credentials stay outside the worker
-and investigation context. Both routes share domain validation and structural
+granted plan usage. The calling process owns credentials, coordinated renewal, streaming
+transport and usage; credentials stay outside investigation context. Both routes share domain validation and structural
 reference translation. Scripted/offline tests exercise production boundaries;
 retained live formative evidence and its limitations are described in
 [STATUS](../../STATUS.md). See [hosted setup](../hosted-investigation.md) and the
-[CLI reference](../cli-reference.md#progressive-investigation-and-usage).
+[capability reference](../capability-reference.md#interpretive-investigation).
 
 Operational project opening lives in the TypeScript integration. It follows
 TypeScript configuration inheritance, file selection, package and module
@@ -397,7 +274,7 @@ application reads programs. Configuration errors and unavailable configured root
 files return project-open failure before a projection exists. Compiler objects
 remain inside that integration; input projects are never executed.
 
-The presentation declares module-standard exports, documentation and composition requirements
+The application selects standard or explicitly requested exports, documentation and composition requirements
 before the evaluator requests discovery through a small language-analysis boundary. Discovery writes an atomic batch of session, captured analysis inputs, module entity, module
 claim, Claim context, and source-evidence records through `ProgramRecordStore`.
 Compiler expansion preparation completes before its supporting input record is captured.
@@ -411,14 +288,10 @@ construction reads stored information, selects relevant subjects and context,
 and writes an addressable projection. It does not call TypeScript.
 
 For module, organization, dependency and investigation families, core construction
-resolves immutable qualified content before CLI arrangement. The content includes
-the supporting evaluation populations and qualification used for derived counts.
-Investigation answers are retained Projections of designated content with independently
-captured standing and change context; associated inspection fixes its shown mechanical
-basis and full associated population. Arrangement applies display limits and source
-choices to that supplied content with application-coordinated reference bindings.
-Rendering consumes the self-contained View. These responsibilities and their scope
-for future Presentations are set by the
+resolves immutable qualified content, including supporting populations and
+qualification for derived counts. Associated inspection fixes its mechanical basis
+and full associated population. Trial arrangement consumes only supplied content;
+core has no dependency on trial rendering. This follows the
 [qualified construction decision](../decisions/qualified-projection-construction.md).
 
 The current store adapter uses private in-memory maps. It clones and freezes
@@ -488,10 +361,8 @@ preserves direct re-export intermediates and all occurrences, and marks a
 relationship type-only only when every occurrence establishes that qualification.
 
 This provider boundary supplies the evidence for the integrated dependency graph
-projections, composition and organization expansions, presentations, navigation,
-and dependency-view observations described below. Those layers implement the
-[active plan](../plans/module-dependencies-plan.md) without moving compiler analysis
-into projections or presentation.
+projections and composition/organization expansions described below, without moving
+compiler analysis into projections or trial rendering.
 
 ## Identity and evidence
 
@@ -501,13 +372,13 @@ platform context, selected configuration and options, source population/content
 digests, observed configuration/resolution inputs, and repository evidence.
 Claim contexts produced by the provider reference that record; claims retain
 source and responsible method context. Repository-derived contexts retain their
-captured repository evidence. Neither session identity nor observation metadata
+captured repository evidence. Neither session identity nor reporting metadata
 establishes the evidential basis of a claim.
 
 Positive and negative reads/existence checks, directory queries and realpath
 results are memoized within the opened project. Capture is first-observed and
 non-atomic. Inputs are assumed unchanged. Validation replays captured probes and
-compares repository capture and process environment at command boundaries; it
+compares repository capture and process environment at request boundaries; it
 never updates the supporting evidence or refreshes the session. The session record retains concise
 coverage, consistency and enforced output-location counts for presentation.
 Counts identify filter boundaries, not generated files found or read.
@@ -518,10 +389,12 @@ cross-session or relocation continuity. Internal keys belong to a session;
 reference spelling is excluded from the local key digest so random session IDs
 do not randomize semantic record ordering. Handles use language names, basenames
 or declared exports with honest anonymity, retaining generated provenance.
-Compact module/group IDs are allocated in a session-owned store map. Existing
-bindings remain fixed; new collisions extend only the new spelling. The one-shot CLI only performs exact name/handle lookups;
-its printed IDs cannot navigate another invocation. Library projections can
-select precise references in their existing session.
+Exact names/generated handles remain lookup aids; precise record IDs resolve only
+within their retained Session. Compact module/group/investigram/answer aliases,
+allocation and `@` input syntax have retired. The generated-module-handle method
+still reserves its existing spellings (including former compact-ID patterns) to
+preserve naming semantics and method identity; reserved spelling is not alias lookup.
+Investigator wire handles are a separate dialog transport and are unchanged.
 
 Actual generated-output directories supplied by the caller are excluded before
 configuration discovery and compiler reads. A target directory named `_observations`
@@ -534,8 +407,7 @@ entries make caller ordering and repetition immaterial. Unverifiable explicit
 boundaries refuse opening with an operational failure, separately from compiler
 diagnostics. Revalidation detects retargeting or resolution failure and invalidates
 the session. Captured repository source links retain their separate historical
-resolver. The changed acquisition policy advances `postcode/observed-inputs` to
-version 6. Ordinary candidate paths that fail operational resolution remain absent
+resolver. The current captured-input method is `postcode/observed-inputs@7`. Ordinary candidate paths that fail operational resolution remain absent
 to the compiler, with a retained recovery probe; they do not turn a resolved output
 boundary into an opening refusal. Missing output suffixes use filesystem case
 handling observed by a read-only spelling probe of an existing directory on the
@@ -546,9 +418,8 @@ does not reliably handle per-directory case rules or lexical paths crossing
 filesystems with different case rules. Validation compares captured compiler
 observations without extending their identity or acquisition revision. Case-equivalent materialization does not itself
 retarget the boundary. This implements the [output-boundary decision](../decisions/generated-output-boundaries.md). Discovery contexts assert this exclusion only when at least one
-output location was supplied; direct library runs may enforce none. The CLI supplies
-its actual checkout observation and build directories before opening a project,
-including when the selected configuration is nested elsewhere. Git-ignore rules
+output location was supplied; direct library runs may enforce none. Direct clients and trial runners supply their actual output destinations before
+opening a project. The authentication CLI opens no project. Git-ignore rules
 alone are not this evidence boundary.
 
 Configuration opening retains explicit syntax validation because TypeScript 6.0
@@ -581,101 +452,34 @@ assertion: mechanically establishing its association does not establish that the
 text is true, current or complete. Unattached comments are not assigned a subject.
 
 Projection construction selects expansion claims and outcomes relevant to selected
-modules. For module, organization and dependency Views, core resolution reads the
-Projection's retained basis into immutable, qualified content, including supporting
-contexts, inputs, evidence and complete selected populations. It does not take a
-format or display limit. Coordination binds the established entity populations;
-arrangement receives the resolved content and those bindings without a store
-handle. Arrangement applies export/documentation limits, tree and graph traversal,
-additional-detail selection and omission accounting. This eager strategy is specific
-to these builders; it does not establish a general restriction on qualified lazy
-materialization or presentation pushdown. Omitted exports, assertions, tags and
-text characters remain counted. Rendering receives a qualified view value and cannot query the
-store or trigger analysis. Unicode and JSON use the same domain projection with
-different display limits. Unicode inventory lists project modules, counts collapsed
-external modules and retains their exceptional qualifications. Its qualified view records display coverage separately from analysis
-selection. JSON retains the full selected module list and full identities.
-Detailed inspection exposes exports and recorded assertions; shared qualifications
-appear once while exceptional provenance stays local. JSON has an explicitly
-experimental schema. Normal qualifications omit detailed
-source evidence. Explicit inspection detail groups captured names and locations by displayed
-modules and exports, distinguishing forwarding, definitions and documentation.
-The attribution adapter excludes excerpt text before either text or JSON rendering;
-core evidence and machine access retain captured excerpts. Detail remains bounded
-and keeps its placement before closing qualifications and navigation. Dependency
-non-edge requests name their written specifiers independently of excerpt text.
-Documentation preserves qualified prose and reference tags, with explicit limits for
-unrepresented blocks and examples. Shared diagnostic presentation adds problem,
-consequence and next-action descriptions while preserving analyzer messages and locations.
+modules, with immutable contexts, input records, evidence and complete populations.
+It takes no format/display limit and cannot refresh captured support. Human mechanical
+Views, source-detail classification, terminal bounds and JSON View schemas have
+retired; qualified domain content remains available to direct clients.
 
-Successful capability states and common module anonymity/facets are consolidated.
-Analysis status, aggregate display omissions, and run limitations remain separate;
-documentation omission counts include materialized exports outside the displayed
-cue. Stable explanations live in help and the command reference, while concise
-TypeScript coverage and non-atomic-input limitations remain in the view. The CLI
-accepts options before an end-of-options marker so option-like exact names remain
-usable. Generated next-command text and its structured presentation fields have
-been removed. One selector can match multiple names/handles without choosing one.
+Trial explanation arrangement and state-diagram rendering live in
+`scripts/structured-accounts/support/`. They depend on supplied selected content,
+never a store/history callback. Alternatives remain separate, including incompatible
+models and unrendered notices. Each standalone SVG/text diagram carries its own
+alternative's supplied interpretation status and applicable owner limitations.
+The rendering-only disclosure correction advances the diagram method to version 8;
+core state semantics and answer identity are unchanged.
 
 ## Observations and runtime boundaries
 
-The [research recording policy](../decisions/research-question-driven-observation.md#research-capture) permits question-specific recording and ordinary non-research use without records. The CLI described here still automatically constructs and submits command batches; it has no public no-recording mode or selective capture interface. `command-execution.ts` also derives the shell's displayed-result feedback snapshot from those records, and `application/feedback.ts` embeds it without live-store lookup. Discarding sink output does not skip record construction. The [research observation and feedback backlog entry](../backlog.md#research-observation-and-feedback-after-cli-retirement) carries forward the feedback context requirement; no runtime change accompanies the policy revision. Full operational attribution, qualifications, Investigator exposure/provenance and retained-answer selection remain independent of research delivery. Study instructions or configuration can designate the current local folder as the research destination; automatic local capture alone does not establish research use. No research-mode workflow or new application fields accompany that responsibility rule.
+The research policy still permits question-specific capture and ordinary use without
+records. CLI observation envelopes, local sink/delivery, human disclosure classification
+and feedback builders are removed. There is no replacement research framework,
+feedback context mechanism or automatic recording in trials. Operational attribution,
+qualified bases and actual producer exposure remain independent of research delivery.
+Historical records remain evidence under their original limitations.
+[Research reconciliation](../backlog.md#research-observation-and-feedback-after-cli-retirement)
+tracks these lost facilities, captured-basis attribution and later contextual feedback;
+retirement does not withdraw the foundation's requirements.
 
-The observation sink remains separate from the program store. Version-four batches
-carry command correlation, actual normalized requests, outcomes, qualified artifacts
-and exact output. They distinguish View production, additional-detail access,
-attribution disclosure, explicit representation limits and subjective inadequacy
-reports. Exposure classification describes what was displayed, not comprehension;
-a nonconforming excerpt-bearing payload remains classifiable as source display.
-Diagnostic provenance paths are classified even outside detail fields and in non-View resolution reports.
-Diagnostic meanings and provenance classification read owned qualification/support
-fields. Preserved rejected request data cannot supply analyzer diagnostics or create
-an attribution-disclosure event merely by containing similarly named fields.
-Representation-limit classification likewise reads only owned documentation,
-support-assertion and resolution fields; preserved request and attribution data
-cannot introduce recognized limits.
-No machine evidence acquisition is recorded as human disclosure merely because the
-investigator received source.
-
-The shell keeps a snapshot of the last published View, resolution result or
-command failure for feedback. Failures replace older results and retain the exact
-stderr, request and outcome; acknowledgments identify the target command/status. It does not keep a general View history. Feedback embeds that snapshot,
-including its exact output and already available request/context records, in its
-own self-contained batch. It does not re-render or consult the Session. Usage,
-help and feedback acknowledgments leave the snapshot unchanged. Missing basis
-and navigation history remain explicit. One-shot feedback bypasses project and
-investigator opening, uses invocation-only correlation and context-free grouping,
-and fabricates no analysis-context record. Both paths submit at command completion;
-sink failure remains visible and does not invalidate investigation results.
-
-The CLI discloses the project-specific sink destination on stderr. New batches
-are grouped by configured project and UTC date under the checkout’s ignored
-`_observations/` root, with time/UUID filenames. The project directory combines a
-safe configuration-directory label and a short hash of the absolute configuration
-path; batches without views use the same grouping. A private, complete, closed
-staging file is published through a no-overwrite hard link, then staging is
-removed. Final-link creation commits acceptance. Failure before publication is
-non-delivery; staging cleanup failure afterward is a distinct warning. Both
-preserve successful views and their exit status. Unsupported hard-link publication
-fails without a weaker fallback. Acceptance does not promise power-loss durability;
-crashes can leave staging residue. Existing files remain in place, with no
-historical reader, migration or scavenging. These guarantees implement
-[local observation acceptance](../decisions/local-observation-acceptance.md). No remote/shared
-sink exists; the bounded inadequacy-feedback command uses this local destination. Privacy and exclusion details are in
-[implementation conventions](../implementation-conventions.md#local-observation-sink).
-
-Expected usage and project-open failures precede view production. Internal defects
-propagate to a distinct CLI failure. Successful views can carry partial expansion
-outcomes; process success is not a claim that every requested fact was established.
-Both initial independent reviews and instrument validation are complete; their
-evidence and limitations remain in the completed initial task. Subsequent PR review
-corrections and the human-arranged rereview gate are tracked by the active
-[continuation](../../records/tasks/2026-09-13-module-inventory-review-continuation.md).
-
-Unicode rendering escapes controls at inline value boundaries before assembling
-layout. Documentation uses structured wrapping; JSON and domain
-records retain their original text. Re-export traversal guards module/exported-name pairs along each path, permitting
-renamed routes to revisit a module while bounding actual cycles.
+Authentication escapes inline controls and reports credential-safe errors. Trial
+artifacts may contain source-derived content; their capture is not authorization
+for external evidence export. Core content and JSON preserve literal evidence.
 
 ## Repository organization
 
@@ -688,7 +492,7 @@ including explicit unavailability outside a worktree. Organization evaluation
 reads that result and a stored module evaluation; it performs no filesystem or
 compiler work. Pure organization and relationship-organization derivations reuse deterministic stored outcomes over their immutable bases, including unavailable and partial results. Provider acquisition and retry remain a separate responsibility. Pure layout is prepared with capture and retained alongside it,
 so view construction never repeats layout analysis. Repository inputs contribute
-to claim support across the module and organization CLI surfaces.
+to claim support across module and organization content.
 
 Capture uses the enclosing Git worktree of a configuration path. Git supplies
 tracked membership, effective ignore decisions, and repository metadata; native
@@ -743,45 +547,21 @@ Neither changes the direct relationships of a retained group. Declared
 placements, and documentation relationships; adjacent entities are expansion
 data rather than extra selected subjects. Generic organization inspection matches
 exact group and module names together, including repeated group names, or selects
-precisely by currently scoped Entity ID. Group IDs use `group-` and the same
-collision-extending digest abbreviation as module IDs. Group paths and root
+precisely by currently scoped Entity ID. Group references use exact retained IDs in the owning Session. Group paths and root
 display labels are not selectors. Existing module inspection expansion records
 remain available through a referenced module projection.
 
-The organization presentation declares group details and the common module
-standard expansions before evaluation. Using the same compiler preparation keeps
-navigation across lenses in a common captured analysis. Core resolution reads the
-retained Projection's claims, qualification and captured paths into immutable content,
-including full selected relationships and summaries tied to their evaluation basis.
-Coordination binds the established entity populations. Arrangement consumes that
-content and its binding maps without store access, then applies tree limits and
-computes display omissions. Rendering receives only the arranged View; neither
-arrangement nor rendering invokes another Lens or analysis.
-Repository/project trees retain direct contextual siblings, distinguish pruning
-from selection, and expand a shared group once. Group inspection shows all direct
-relationships; adjacent summary records explicitly identify unrequested detail.
-Core artifact summaries distinguish complete, incomplete and unrequested
-classification, with reasons identifying incomplete repository or placement support.
-For incomplete classification, inspection and tree counts use “other captured
-artifacts” with an adjacent notice, and the closing qualification explains the
-absence of established module or documentation associations in the supplied
-information. The View's existing evaluation and detail fields suffice to reproduce
-that qualification; complete-case wording and the legacy JSON count fields remain
-unchanged. See the [CLI reference](../cli-reference.md#organization-and-group-inspection)
-for the meaning of `unanalyzed`.
-Module-only inspection reuses the existing qualified module view; mixed matches
-are sectioned by kind and retain that module view as embedded detail.
+Application defaults select group details and module-standard expansions; callers
+can request supported subsets. Core content includes full selected relationships,
+captured paths and summaries tied to the evaluation basis. Artifact classification
+distinguishes complete, incomplete and unrequested states. Incomplete classification
+never establishes absence of module/documentation associations. Module-only and
+mixed inspection preserve qualified module detail without a mechanical human View.
+Paths and README/artifact/link metadata are captured evidence, without artifact
+contents. The analysis repository root comes from stored capture, not a second lookup.
 
-Group additional detail carries captured group/README/artifact paths and qualified
-link evidence without contents. Source-level mechanics are absent from ordinary
-organization output. Observations accept either view schema and distinguish group
-paths from module locations or mixed disclosure. The analysis context's
-repository root comes from stored capture rather than a second live lookup.
-
-The representative fixture and focused ephemeral Git projects exercise the full
-journey, graph/display limits, source disclosure, observations, and synthetic
-partial/unavailable module providers. Instrument validation and the final review
-gate are recorded in the completed repository organization task.
+Ephemeral Git fixtures and synthetic partial/unavailable providers verify these
+semantics independently of the retired tree rendering, disclosure and observations.
 
 Inputs remain first-observed and non-atomic. Git may reread live exclusion policy;
 a final policy check refuses detected lasting changes but cannot detect every
@@ -818,17 +598,13 @@ underlying dependency result when repository organization is unavailable.
 These library layers follow the accepted [dependency structure](../decisions/module-dependency-structure-decisions.md),
 [composition](../decisions/module-composition-property-decision.md), and
 [organization integration](../decisions/dependency-organization-integration-decisions.md)
-decisions. Dependency CLI views now declare composition and repository-layout expansion,
-materialize bounded Unicode/JSON displays, and use the established observation sink.
-Project SCCs remain separate from opaque leaves drawn from projection relationships.
-Parent views use reusable bounded-coverage disclosure without inventing source-owned
-coverage records. Explicit additional detail materializes captured request names, attribution and organization
-metadata with separate bounds.
+decisions. Standard direct requirements include composition and repository-layout
+support. Project SCCs remain separate from opaque endpoints. Parent coverage does
+not invent source-owned evidence. Full captured requests, qualification and
+organization metadata remain in the selected core content.
 
 Ordinary organization analysis remains independent of dependency evaluation.
-Dependency resolution can acquire additional inputs. Its former
-`--dependency-context` scope-reproduction option has been retired; ordinary
-inspection uses current exact name/handle lookup. Accumulation reuses applicable
+Dependency resolution can acquire additional inputs. Ordinary inspection uses exact name/handle lookup or precise retained IDs. Accumulation reuses applicable
 completed work while preserving earlier captured input support. Discovery is
 retained per store; expansions and dependency analysis are acquired when requested.
 Completed results remain reusable across input acquisition. The TypeScript
@@ -844,32 +620,27 @@ additional dependency inputs do not add modules. Repeated contexts read their
 first supporting input record from the stored Claim context; new contexts can reference a later input basis.
 Any conflicting record content still fails the store’s immutability check.
 
-Both CLI entry paths keep compiler work in a worker so the parent can interrupt
-active work, reject the command with status 130, and independently dispose of the
-worker and owned Git children. Operation identities reject stale replies; failed
-sends, pending close and unexpected worker exit settle the current operation.
-The session ends; safe worker-state recovery is not claimed.
+The direct Session owns compiler execution and asynchronous Git in the calling
+process. Cancellation settles cooperative waits and rejects late participant content;
+it cannot preempt synchronous compiler work or callbacks. Worker termination,
+transport races, parent observation delivery and prompt/EOF policy have retired.
 
 Each Git invocation has a 30-second deadline and a combined 64 MiB output bound.
 On cancellation, POSIX children receive SIGTERM, then SIGKILL after 250 ms if
-still running. Cleanup reporting waits at most 2 seconds; an unconfirmed child or
-worker is reported separately while exit monitoring remains owned. These bounds
+still running. Cleanup reporting waits at most 2 seconds; an unconfirmed child is reported separately while exit monitoring remains owned. These bounds
 do not establish a whole-analysis deadline, descendant-tree termination, or
 universal native-work exit. After confirmed cleanup an opening Git timeout yields
 qualified unavailable repository evidence under `postcode/repository-inputs@5`.
 Recovery to available evidence, or loss of a previously available basis, invalidates
 the session. Consistently unavailable evidence stays qualified as unavailable.
 Unconfirmed opening cleanup is a resource failure, never a usable degraded session.
-At an idle prompt, Ctrl-C cancels the line. EOF finishes accepted work and sink
-submission. Syntax errors and expected operational analysis failures retain
-sound state; unexpected defects terminate distinctly.
+There is no terminal prompt or worker-state recovery contract.
 
-Direct session execution checks inputs before and after work. CLI requests defer
-the latter check to the publisher, after worker delivery when applicable and
-before output, avoiding a duplicate scan while retaining the publication boundary.
-Before publication, detected input changes withhold the result. A check after
-output can instead report invalidation while retaining the actual emitted view
-in the observation. Validation is sequential, not atomic or continuous; transient
-changes and unobserved inputs may escape it. The [CLI reference](../cli-reference.md#input-stability-and-retained-work)
-states the implemented probe coverage and gaps. Worker messages are a private
-execution detail, not a public server or batch interface.
+Direct execution checks inputs before and after work. The private CLI-only
+publication deferral is removed. `guardPublication` retains the neutral distinction
+between withholding output after a failed precheck, output failure, and a failed
+post-output check. It does not make output atomic. Validation replays positive and
+negative compiler reads/existence checks, directory queries, realpaths, repository
+capture and relevant process environment. It does not continually watch files or
+observe unacquired inputs. Transient changes can escape sequential checks, and
+validation cannot turn first-observed acquisition into an atomic snapshot.
