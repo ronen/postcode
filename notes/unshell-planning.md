@@ -47,6 +47,17 @@ but no replacement end-user investigation interface. Document that accurately.
 
 ## Discussion decisions
 
+### Terminal Session abort and deferred request cancellation — human direction, 25 November 2026
+
+> OK, let's preserve the existing terminal Session-abort capability and the proposed accounting/cleanup guarantees within UNSHELL. But we shouldn't treat it as the settled design for cancelling an individual GUI investigation. Let's identify request-level cancellation with a reusable Session as a deferred separate capability question.
+
+The [proposal](unshell-proposal.md#terminal-session-abort) now specifies interrupted
+request outcome, internally retained final accounting, separately observable cleanup
+and final-report delivery failures, shutdown coordination and repeated-shutdown
+behavior. It preserves terminal Session abort without selecting a GUI cancellation
+interaction. Cancellation of one request with a reusable Session remains a distinct
+deferred capability question, not an implementation commitment or a UNSHELL feature.
+
 ### Research observation disposition — human direction, 25 November 2026
 
 > for research observation, i'd say: Choose option 2. Remove the unused implementation and explicitly document the resulting capability gap, preserving the foundation obligations. Identify what research capture and delivery the trial runner currently supports. Report the remaining gap.

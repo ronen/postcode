@@ -46,29 +46,56 @@ the entire shell or assuming every unused facility is dead.
 | Domain/application capabilities | Preserve acquisition, qualified analysis and contributions, retained answers, fresh/follow-up behavior, attribution, credentials, resource ownership and useful client-neutral validity policy. CLI use alone does not make these CLI features. |
 | Tests, scripts and dependencies | Remove those whose purpose disappears; relocate checks of surviving semantics to the direct boundary or trial support. Preserve direct validation/measurement tools and shared fixtures with surviving consumers. |
 
-## Interruption capability
+## Terminal Session abort
 
-The proposal includes a narrow core improvement where the retiring host currently
-protects a useful guarantee better than direct application execution does:
+Preserve the existing ability to abort the whole analysis Session. An interrupted
+Session accepts no further investigation requests; continuing requires a new
+Session. Final accounting remains readable and the caller can complete shutdown.
+This is a Session-lifecycle capability, not the design for cancelling an individual
+GUI investigation.
 
-**An interrupted operation remains interrupted when cleanup fails; cleanup failure
-is separately observable, and final accounting remains available.**
+Preserve these guarantees through the direct application boundary:
 
-Retain terminal cancellation, rejection of late content, sealing of usage, and
-resource ownership until confirmed exit. Distinguish cancellation request, operation
-settlement, cleanup reporting and actual resource exit. Do not claim that in-process
-cancellation can stop arbitrary synchronous computation or survive destruction of
-its host.
+- An active request terminated by Session abort settles as interrupted. Cleanup or
+  final-report delivery failures cannot replace that outcome. An already completed
+  request is not retroactively interrupted.
+- Before the interrupted request settles, core retains final work/attempt reports
+  and known usage. A client reporting callback throwing cannot erase those records
+  or change interruption into a defect. Reject late content and prevent late usage
+  from altering sealed accounting; missing measurements remain explicit.
+- Abort initiates cleanup immediately, but request settlement does not wait for
+  resource exit. `close()` waits for request finalization and the bounded cleanup
+  assessment, reporting cleanup and reporting failures separately from the request's
+  interruption. Preserve the actual failures and distinguish them from each other.
+- Unconfirmed cleanup remains explicitly unconfirmed. Retain resource ownership and
+  exit monitoring until actual exit; a reporting deadline does not discharge them.
+- Repeated interruption or close does not repeat participant cleanup or lose recorded
+  failures. Use the existing lifecycle: `interrupt()` signals immediately, with its
+  returned promise reporting shutdown separately from the active request's promise.
 
-The assessed gap is concrete: a dialog's cleanup exception can replace the original
-interruption, causing attempt and work classifications to disagree. Address that
-through existing lifecycle responsibilities rather than a general worker framework.
+The concrete correction is that a dialog cleanup exception must no longer replace
+interruption and leave attempt/work classifications inconsistent. Strengthen the
+existing lifecycle responsibilities, including joining request finalization during
+close, rather than introduce a general worker framework or another failure-reporting
+callback. This does not redesign ordinary successful execution or unrelated failure
+handling.
 
-The proposal still needs a precise account of how secondary cleanup failures reach
-the caller, when final reports are complete, and how reporting-callback exceptions
-interact with interruption. Choosing `Session.close()` by name alone is insufficient:
-it currently does not join an active request. These are remaining design details to
-settle in this proposal before converting it into implementation steps.
+Distinguish cancellation request, operation settlement, cleanup reporting and actual
+resource exit. In-process cancellation does not promise hard termination of arbitrary
+synchronous computation or survival after host destruction.
+
+### Deferred capability: request cancellation with a reusable Session
+
+Whether a caller should be able to cancel one investigation while continuing to use
+the same Session is a separate capability question, outside UNSHELL. Terminal Session
+abort must not be treated as the settled interaction design for a GUI cancel action.
+
+Future design must establish what work stops, which already accepted information
+remains usable, how partial work and accounting are represented, and when another
+request may safely begin while cleanup is outstanding. It must preserve input validity,
+qualification and resource ownership. Record this as a deferred capability question,
+not a commitment to implement request-level cancellation or a claim that UNSHELL
+supplies it.
 
 ## Trial preservation
 
@@ -149,9 +176,9 @@ changes to foundation or development-process documents.
 
 ## What remains before an implementation plan
 
-Settle the precise interruption outcome, cleanup and reporting contract. Check the
-complete proposal against the governing
-requirements, including scoped retirement of alias, worker and CLI feedback clauses.
+Review the complete proposal against the governing requirements, including scoped
+retirement of alias, worker and CLI feedback clauses and preservation of terminal
+Session-abort guarantees. Keep reusable-Session request cancellation separate.
 Then prepare the formal decision/document revisions and an implementation plan.
 Agreement on this note's direction does not amend governing documents or authorize
 implementation. No formal plan is being drafted in parallel with this discussion.
