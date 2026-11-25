@@ -4,7 +4,7 @@ These units state the proposed specification, including intended behavior, suppo
 
 ## Navigation context — replace the paragraph beginning “For each retained View”
 
-For each retained View, preserve what it shows, its supporting captured bases, and applicable discovery and derivation relationships: the View or subject from which it was opened, the known origin of a supplied reference, and earlier information contributing to a comparison or summary. Moving or closing a visible View does not erase those relationships from retained investigation context. This intended contract applies across human interfaces within their supported lifecycle; it does not require a separately stored View object or persistence after that lifecycle ends. Preserve origin relationships the interface establishes and disclose unavailable origin rather than guessing where a human obtained a reference. Human investigation navigation and general View-to-View lineage are gaps in the specified interface subset. Opening dependencies alongside an explanation, for example, retains the navigation origin without asserting that the two answers share a capture or that one is evidence for the other. [[Capability gaps](decisions/cli-shell-retirement.md#adoption)]
+For each retained View, preserve what it shows, its supporting captured bases, and applicable discovery and derivation relationships: the View or subject from which it was opened, the known origin of a supplied reference, and earlier information contributing to a comparison or summary. Moving or closing a visible View does not erase those relationships from retained investigation context. This intended contract applies across human interfaces within their supported lifecycle; it does not require a separately stored View object or persistence after that lifecycle ends. Preserve origin relationships the interface establishes and disclose unavailable origin rather than guessing where a human obtained a reference. Human investigation navigation and general View-to-View lineage are gaps in the specified interface subset. Opening dependencies alongside an explanation, for example, retains the navigation origin without asserting that the two answers share a capture or that one is evidence for the other. [[Navigation-origin lineage](decisions/application-specification-boundaries.md#adoption-and-conformance)]
 
 ## Request coordination — replace the paragraph beginning “An interface can retain”
 
@@ -13,6 +13,10 @@ An interface can retain and use returned resolution information after execution 
 ## Architectural accounts — replace the paragraph beginning “The current CLI remains”
 
 The supported analysis subset covers configured TypeScript projects, module-originating prose interpretations and investigations of selected content within a transient unchanged-input Session. The internal application API is the access point for this subset, including development validation. End-user investigation, investigation of hypothetical or intended accounts, and general participant-material capture fall outside this subset. [[Supported interfaces](decisions/cli-shell-retirement.md#retire-client)] [[Conformance](decisions/cli-shell-retirement.md#adoption)]
+
+## Responsibilities and boundaries — replace the paragraph beginning “Rendering and arrangement”
+
+Rendering and arrangement do not initiate Evaluation or independently query accumulated state to broaden an answer. Interactions requiring additional information return through request coordination, Evaluation, and core construction. Standard expansions remain subject-kind detail declared before evaluation; another Lens question is not made a standard expansion by inline placement. The [qualified-construction boundary](decisions/qualified-answers-over-contributions.md#qualified-construction-and-retained-support) remains in force.
 
 ## Replace the complete “Application functionality and interface clients” subsection, preserving its existing anchor
 

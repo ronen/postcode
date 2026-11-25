@@ -34,3 +34,15 @@ In the bullet beginning “Preserve the selected answer”, keep the Presentatio
 ## Observation lifecycle and delivery — replace the destination-selection bullet
 
 - Keep the choice of observation destination independent of retention, migration, historical reading and producer-side caching. [[Observation lifecycle policy](decisions/adopt-identity-evidence-and-observation-constraints.md#keep-sink-selection-separate-from-observation-lifecycle-policy)]
+
+## Observation lifecycle and delivery — replace the bullet beginning “Keep research collection distinct”
+
+- Keep research collection distinct from architectural provenance, qualification, exact-answer continuity and investigation attribution. When recording Views or their changes, preserve or reference the composition, contributing bases and surrounding context needed for the research question; do not imply that displayed output establishes a complete captured basis. Required local investigation lineage is independent of research export. [[Qualified results](decisions/research-question-driven-observation.md#results-over-captured-bases)] [[Local context](decisions/research-question-driven-observation.md#retained-understanding-and-context)] [[Research capture and basis-attribution gap](decisions/cli-shell-retirement.md#research-gap)]
+
+## Observation lifecycle and delivery — replace the bullet beginning “During early development”
+
+- During early development, affected structured outputs can change directly under the temporary experimental-output policy, with specific accepted preservation clauses reconciled explicitly. Preserve semantic qualification and method provenance; experimental output schema strings do not establish supported compatibility versions. [[Experimental outputs](decisions/experimental-structured-outputs.md)] [[Current request-model conformance gaps](decisions/lens-application-and-request-outcomes.md#adoption-and-conformance)]
+
+## Source evidence and human understanding — replace the bullet beginning “Human understanding must not depend”
+
+- Human understanding must not depend on programming-language source or syntax. Apply this to Views, generated explanations, evidence detail, qualifications, diagnostics and non-View reports. An interface's declared purpose and consumption contract determine its audience, not its encoding or caller identity. [[Human output boundary](decisions/human-facing-architectural-representations.md#human-output-boundary)]
