@@ -86,6 +86,40 @@ for later retirement. Distinguish implementation reachability, useful responsibi
 and adopted obligations. Document a limitation honestly rather than describing all
 retained machinery as necessary or all CLI-originated machinery as dead.
 
+### Core location does not imply retention — human direction, 25 November 2026
+
+> also surgical removal can include removing core capabilities whose purpose was only for CLI shell support.  of course being careful not to remove core functionality that will be needed for the future book model and gui
+
+Assess responsibility and dependencies, not directory location. Remove capabilities
+inside core when their sole purpose is support for the retiring CLI and they can be
+separated without losing behavior needed by surviving consumers or the intended BOOK
+and GUI. An exported function, an existing test or CLI-oriented wording in an accepted
+decision does not by itself justify retaining its implementation. Reconcile affected
+governing clauses through the retirement planning package where necessary.
+
+For each candidate:
+
+1. **Remove surgically** when its responsibility ends with the CLI and local separation
+   preserves the needed core behavior. Private operation scopes, worker-only work
+   finalization helpers and CLI-specific binding affordances are candidates even when
+   implemented under application/core directories.
+2. **Keep or extract the needed responsibility** when current consumers or concrete
+   BOOK/GUI requirements depend on it. Preserve qualified content and exact references,
+   analysis/acquisition, retained support, lifecycle/resource/accounting guarantees,
+   and useful feedback/delivery responsibilities. This does not preserve every current
+   CLI-shaped representation of those responsibilities.
+3. **Document a residual requiring redesign** only when unnecessary CLI support is
+   entangled with needed core behavior and cannot be removed locally. Name the actual
+   coupling and required redesign; neither an API export nor a governing-text update
+   alone establishes that substantial core redesign is necessary.
+
+Check future needs against the BOOK handoff and relevant adopted GUI/application
+requirements, distinguishing established responsibilities from exploratory suggestions.
+Avoid deleting useful core functionality simply because its current visible caller is
+the CLI; equally, hypothetical future reuse is not a blanket reason to keep CLI support.
+This assessment does not implement BOOK or GUI, and shared Presentation negotiation
+and Expansion acquisition remain outside the original retirement scope.
+
 ## Dependency and disposition assessment
 
 Observed source consumers were checked at the baseline above, including static
@@ -100,11 +134,11 @@ entry points, test semantics and accepted obligations also matter.
 | `interactive-session.ts`, `session-worker.ts`, `session-protocol.ts` | Retire private transport and host together. Closing-window reconciliation, wire identifiers and stale-reply checks have no remaining direct-process role. |
 | `interfaces/cli/application.ts`, `runtime.ts` | Retire client composition and deferred publication transport. Direct application execution already performs pre/post-execution checks. |
 | `interfaces/cli/authentication.ts`, `application/accounts.ts`, `investigation/openai/` | Preserve authentication/account/provider behavior. Extract the authentication diagnostic dependency from mixed `interfaces/cli/investigator-policy.ts`; remove investigation-only policy when its callers retire. Help currently refers to project commands and needs revision. |
-| `application/session.ts`, `executor.ts`, `requests.ts`, `contracts.ts`, `content.ts`, `retained.ts`, `consumption.ts` | Preserve shared requests, validation, qualification, exact access, content requirements, Presentation matching, usage/work and lifecycle. Remove only private-host plumbing proven unused. |
+| `application/session.ts`, `executor.ts`, `requests.ts`, `contracts.ts`, `content.ts`, `retained.ts`, `consumption.ts` | Preserve shared requests, validation, qualification, exact access, content requirements, Presentation matching, usage/work and lifecycle. Remove separable CLI-only capabilities within these modules as well as private-host plumbing; audit concrete BOOK/GUI needs before deletion. |
 | `application/operation-scope.ts` | Both `withCliOperation` and `evaluateOperation` are consumed only by `interfaces/cli/application.ts` (plus tests for the former). Retire the private registration/host surface and its Session closures once surviving tests use public requests. Preserve the lower shared evaluation machinery. Do not promote this hook into BOOK orchestration. This narrows the prior handoff's tentative suggestion of a surviving internal direct consumer. |
-| `application/bindings.ts` | Preserve current shared alias handling and coordinated allocations. Production imports remain in executor/contracts. CLI-port-only allocations may retire with their adapter; removing shared aliases is a separate semantic change. |
-| `application/publication.ts` | Keep the neutral publication guard and direct tests; remove CLI integration. Preserve the runner's existing validation and artifact behavior; do not add a new publication policy. |
-| `application/feedback.ts`, `application/observations.ts` | Preserve independent companion services and their tests. They are explicit application entries despite not being re-exported by `application/index.ts`. Retire CLI builders/capture commands. Do not infer that no remaining CLI caller cancels adopted feedback/delivery requirements. |
+| `application/bindings.ts` | Assess CLI-only allocations/affordances for surgical removal, including within core. Production imports remain in executor/contracts, and shared request alias handling is an adopted behavior. Preserve precise identity/reference guarantees; determine whether removing remaining alias support is local separation or needs reference-contract redesign, then document any genuine residual. |
+| `application/publication.ts` | Assess whether the neutral guard preserves a needed application/GUI guarantee or is separable CLI support; its export/tests alone do not settle retention. Preserve input-validity guarantees and the runner's existing validation/artifact behavior; do not add a new trial publication policy. |
+| `application/feedback.ts`, `application/observations.ts` | Preserve needed feedback/delivery responsibilities and coverage. Remove separable CLI-only helpers/shapes even within these companion entries. Where command-shaped contracts are entangled with useful future feedback, document the redesign needed; no remaining CLI caller does not itself cancel the responsibility. |
 | `contributions/answers.ts` | Keep `selectContributionAnswer`, `resolveContributionAnswer`, retained content/support and identity. Move the arrangement types/function beginning at `ArrangedQualification` into trial support where needed, along with its rendering dependencies. |
 | `contributions/state-diagram.ts` | Move useful renderer and incompatibility checks into validation support. Preserve `state-model.ts` and analysis content contracts in core. Keep rendering tests with the moved responsibility. |
 | `contributions/native-presentation.ts` | Retire with mechanical CLI renderers; preserve native selection, content contracts and identity. |
@@ -305,7 +339,9 @@ was run in this resumed planning session. Coverage mappings above are source-ins
 
 This is an initial post-retirement assessment, to be verified against the completed
 separation. It is not a claim that every listed feature is presently unused, nor
-an authorization to redesign it within UNSHELL. Carry confirmed residuals into durable
+an authorization to redesign it within UNSHELL. Reassess each candidate for surgical
+removal under the core-location criterion above before deciding to retain it.
+Carry confirmed residuals into durable
 implemented-architecture documentation and appropriate follow-up candidates; notes
 alone must not be their only description when implementation is complete.
 
@@ -353,10 +389,12 @@ A scoped retirement decision is necessary before implementation. In particular:
 
 ## Next discussion and drafting
 
-The agreed approach is surgical separation and removal. Preserve shared aliases,
-feedback/delivery contracts and the existing direct trial behavior while retiring
-CLI-specific callers. No new runner lifecycle/publication policy is needed to draft
-that approach. Assess and preserve worthwhile core interruption guarantees under
+The agreed approach is surgical separation and removal, including separable CLI-only
+capabilities within core. Preserve existing direct trial behavior and the core
+responsibilities needed by surviving consumers, BOOK and GUI. Assess aliases,
+feedback representations and other residual candidates individually rather than
+assuming all shared code must remain. No new runner lifecycle/publication policy
+is needed to draft that approach. Assess and preserve worthwhile core interruption guarantees under
 the explicit exception above; keep unrelated defects distinct from migration work.
 
 Finish the interruption-guarantee assessment, residual core register, scoped
