@@ -81,7 +81,8 @@ Once the pre-change baseline is available, the implementing agent can sequence t
 - Compare output against the controlled baseline. Inspect actual explanation/diagram
   output against qualification and disclosure requirements;
   existing omission tests are not proof of full conformance. Record any material
-  pre-existing gap and obtain disposition rather than silently broadening this task.
+  disclosure gap found during implementation. The human decides how to address it
+  before rendering verification is considered complete.
 
 Completion evidence: authentication works through the retained entry point, relocated
 rendering consumes only supplied content, core has no dependency on trial support,
@@ -211,7 +212,7 @@ outputs are not compatibility targets.
 Keep normal runner capture order, budgets and cleanup behavior. Existing runner
 limitations (partial records on failure, success-path final usage, and cleanup that
 can replace a prior error or, in the standard trial runner, skip budget close) are
-outside this separation.
+outside this separation. Documentation of runner behavior must reflect these limits.
 
 Controlled participants are the equality oracle. This work does not intentionally
 change agent instructions or wire handles. Live smoke validation can supplement
@@ -219,7 +220,7 @@ controlled verification but cannot prove equality across independent model respo
 
 ## Success, risks and follow-up
 
-The plan has no unresolved API decisions.
+There are no outstanding consequential decisions or open planning questions.
 
 Success means the authentication entry point, direct application and retained trials
 work without the retired shell/worker/alias/observation implementation; terminal
