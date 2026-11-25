@@ -33,7 +33,7 @@ The standalone ordinary diagram and text are included for readable inspection.
 Existing application, answer and state-model suites additionally cover incompatible
 and unrendered alternatives, historical status and immutable exact support.
 
-## Disclosure assessment (pending human direction)
+## Disclosure assessment (correction authorized, not yet implemented)
 
 The arranged view records interpretation status and the owner limitation
 “Controlled interpretation; not independently established.” The standalone diagram
@@ -41,8 +41,10 @@ SVG and text exported by the standard runner do not include either statement.
 The text preserves entry, coverage and unsupported semantics, but those disclosures
 do not establish the epistemic status of the account. The SVG is an overview whose
 full transition meaning requires its accompanying text/legend. This is a material
-pre-existing disclosure gap; equality alone cannot establish conformance. Human
-direction is required by the plan before rendering verification can be complete.
+pre-existing disclosure gap; equality alone cannot establish conformance. The human has directed a rendering-only correction: each standalone SVG/text
+diagram must visibly carry its own alternative’s supplied interpretation status and
+applicable owner limitations. The task follow-up preserves that instruction. The
+correction and both-format verification remain pending after the lifecycle checkpoint.
 
 ## Direct terminal lifecycle checkpoint
 
