@@ -10,10 +10,7 @@ A document whose lifecycle prevents later editorial repair must not link to note
 
 ## Current notes
 
-- [UNSHELL proposal](unshell-proposal.md): current removal/separation proposal, preservation guarantees and remaining design questions before formal planning.
-- [UNSHELL planning](unshell-planning.md): CLI/worker retirement boundary, surviving responsibilities, runner failure experiments and coverage migration.
-- [UNSHELL separation assessment](unshell-assessment.md): core removal candidates, interruption guarantees, actual residuals and compatibility choices before formal drafting.
-
+- [CLI shell retirement evidence](cli-shell-retirement-evidence.md): baseline source consumers, interruption behavior and controlled trial-failure cases for implementation verification.
 - [Initial book planning guidance](book-planning.md): minimal scope, migration and retirement assessment, and the boundary with graphical-interface work.
 - [Reference-book model handoff](book-model/README.md): model and investigation contracts, implementation considerations, future capabilities and an evidence-grounded Cockatiel example for book-model implementation planning.
 - [Cockatiel composition examples](cockatiel-composition.md): two qualified wrapping scenarios with sequence-diagram overviews and legends, retained for future interaction/resource-lifetime exploration.

@@ -491,3 +491,13 @@ Area: investigator interaction and validation
 Current inadequacy feedback goes to developers/researchers; it does not challenge retained information or instruct an investigating agent. A user-facing objection/reconciliation mechanism would need an explicit qualified input and resource contract rather than reusing observational feedback silently.
 
 If live experience shows instruction-following problems, consider semantic-policy assistance in the dialog: point out a suspected omission, permit further acquisition or explanation, and then validate the final submission. Decide any completeness or prior-acquisition gates separately. Acknowledging a reminder does not establish understanding. Structural integrity and honest delivery remain mandatory regardless of assistance.
+
+## Assess artifact capture and cleanup in failed trials
+
+Added: 2026-11-25
+Origin: controlled failure cases for the structured-account trial runner during [CLI shell retirement planning](plans/cli-shell-retirement.md)
+Area: development trials, artifact capture and budget cleanup
+
+A failed trial can contain attempt reports but lack a completed step record or final usage summary. In the standard runner, a Session close failure can mask the request error and skip closing the budget lease. The dialog14 runner attempts budget close even when Session close fails. The CLI retirement plan preserves these existing behaviors during separation.
+
+Determine which completed artifacts and known usage a failed or interrupted trial should retain, how to identify incomplete capture, and how callers should learn both the original failure and any cleanup failure. Assess budget release separately from the accounting for requests already reserved before dispatch.
