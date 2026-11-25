@@ -24,3 +24,18 @@ export function errorCode(error: unknown): string | null {
 export function operationalIO(error: unknown): error is Error {
   return ['EACCES', 'EPERM', 'ENOENT', 'ENOTDIR', 'ELOOP', 'EIO', 'EMFILE', 'ENFILE'].includes(errorCode(error) ?? '');
 }
+
+/** Failures observed separately from a terminal request's established outcome. */
+export interface ShutdownFailure {
+  readonly phase: 'resource-cleanup' | 'participant-cleanup' | 'attempt-report' | 'work-report';
+  readonly cause: unknown;
+}
+export class SessionShutdownError extends AggregateError {
+  constructor(readonly failures: readonly ShutdownFailure[]) {
+    super(failures.map(failure => failure.cause), 'Session shutdown encountered cleanup or report-delivery failures.');
+  }
+}
+/** Internal propagation preserves the primary terminal cause and every finalizer failure. */
+export class TerminalFinalizationError extends SessionShutdownError {
+  constructor(readonly terminal: unknown, failures: readonly ShutdownFailure[]) { super(failures); }
+}

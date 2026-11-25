@@ -1,7 +1,7 @@
 import type { RequestWork, WorkScope, EvidenceWorkHandle } from '../work-attribution.js';
 import { performance } from 'node:perf_hooks';
 import { randomUUID } from 'node:crypto';
-import { CommandInterrupted, SessionInvalidated } from '../execution-errors.js';
+import { CommandInterrupted, SessionInvalidated, TerminalFinalizationError } from '../execution-errors.js';
 import type { EvidenceQuery, EvidenceResponse } from '../evidence-access.js';
 import { canonical, recordId } from '../identity.js';
 import { freezeOwned } from '../immutable.js';
@@ -404,8 +404,14 @@ export async function conductDialog(options: DialogOptions): Promise<DialogExecu
     clearTimeout(timer);
     options.signal?.removeEventListener('abort', interrupt);
     controller.abort();
-    try { conversation?.close(); } finally {
-      options.onReport?.({ ...report(), termination, contributionDeliveries: handle.deliveries, suppliedEvidence: handle.evidence });
+    const failures: import('../execution-errors.js').ShutdownFailure[] = [];
+    try { conversation?.close(); } catch (cause) { failures.push({ phase: 'participant-cleanup', cause }); }
+    try { options.onReport?.({ ...report(), termination, contributionDeliveries: handle.deliveries, suppliedEvidence: handle.evidence }); }
+    catch (cause) { failures.push({ phase: 'attempt-report', cause }); }
+    if (failures.length) {
+      if (options.signal?.aborted) throw new TerminalFinalizationError(options.signal.reason, failures);
+      // Ordinary callback/finalizer policy remains request-local.
+      throw failures.at(-1)!.cause;
     }
   }
 }

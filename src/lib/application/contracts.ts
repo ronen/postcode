@@ -64,6 +64,7 @@ export interface CapturedInvocation {
   readonly problems: readonly InputProblem[];
 }
 export interface ApplicationDependencies {
+  /** Injected execution retains caller ownership: the Session cannot confirm its subprocess exit. */
   readonly runGit?: RunGit;
   readonly signal?: AbortSignal;
   readonly investigation?: import('../contributions/evaluation.js').ContributionDependencies;
@@ -89,7 +90,11 @@ export interface ApplicationSession {
   check(): Promise<void>;
   usage(): InvestigationUsageReport;
   work(): WorkReport | undefined;
+  /** Terminal cancellation. Shares close()'s assessment of owned cleanup and terminal reporting.
+   * Request interruption settles separately; cleanup deadlines do not prove resource exit. */
   interrupt(): Promise<void>;
+  /** Active work is interrupted; idle close starts no new request abort. Repeated calls observe
+   * the same assessment and reject with SessionShutdownError when cleanup/report delivery failed. */
   close(): Promise<void>;
 }
 export type OpenApplicationResult = { readonly status: 'opened'; readonly session: ApplicationSession }

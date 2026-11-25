@@ -102,7 +102,22 @@ validity transport. When `publishCommand` receives that host, it delegates actua
 output to its scoped publication operation, so one pre/post-output guard covers
 the display without re-entering the public Session guard. Overlapping direct operations raise `SessionBusy`;
 invalidation and interruption are terminal. Closing releases retained domain
-state while preserving final reports and usage. Presentation method versions are
+state while preserving final reports and usage. For an opened direct application
+Session, `interrupt()`, lifetime-signal abort and close during unfinished work
+establish terminal cancellation. The interrupted request finalizes attempt/work
+accounting without awaiting Git exit. Both shutdown methods observe the same
+assessment of owned resource cleanup and terminal participant/report failures;
+`SessionShutdownError.failures` distinguishes their phases and retains original
+causes. Signal-only failures are internally observed and remain available through
+later close. Completed production retains its actual outcome when final request
+validation is interrupted. Invalidation established first remains the terminal cause.
+
+Git cleanup reporting remains bounded, with ownership retained until confirmed exit.
+Injected `runGit` leaves subprocess ownership with its caller. Session shutdown has
+no overall deadline and cannot preempt synchronous compiler work or callbacks.
+Notification protection is limited to terminal finalization; ordinary request
+callback/finalizer failures remain request-local. Opening retains its earlier
+cleanup contract, including the separately recorded opening-error preservation gap. Presentation method versions are
 client artifact provenance and are absent from captured application methods.
 
 The same engine serves organization, dependency structure/children/parents,

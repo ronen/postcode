@@ -1,3 +1,4 @@
+import { untilAborted } from '../execution-wait.js';
 import { freezeOwned } from '../immutable.js';
 import { initiation, RequestWork } from '../work-attribution.js';
 import type { WorkReport, WorkProgress } from '../work-attribution.js';
@@ -8,7 +9,7 @@ import { InvestigationUsage } from '../investigation/usage.js';
 import { usageSummary } from '../investigation/reporting.js';
 import type { AttemptReport } from '../investigation/contracts.js';
 import type { RecordId } from '../records.js';
-import { AnalysisFailure, SessionInvalidated, SessionClosed, SessionBusy, CommandInterrupted, CleanupIncomplete, operationalIO } from '../execution-errors.js';
+import { AnalysisFailure, SessionInvalidated, SessionClosed, SessionBusy, CommandInterrupted, CleanupIncomplete, operationalIO, SessionShutdownError, TerminalFinalizationError } from '../execution-errors.js';
 import { GitExecutionOwner } from '../git-execution.js';
 import { OutputBoundaryFailure } from '../output-boundary.js';
 import { evaluateModules } from '../evaluation.js';
@@ -35,8 +36,27 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
   const usageReport = () => usageSummary([...reports.values()]);
   let state: { store: MemoryProgramRecordStore; execute: ReturnType<typeof requestExecutor>;
     evaluate: (request: import('../investigation/contracts.js').InvestigationRequest, work?: RequestWork) => Promise<import('../contributions/evaluation.js').ContributionEvaluated>; changed: () => Promise<boolean> } | undefined;
-  let disposed: Error | undefined, busy = false, invalid = false;
-  const dispose = (reason: Error) => { disposed ??= reason; state?.store.releaseOwnership(); controller.abort(reason); return owner?.close(reason) ?? Promise.resolve(); };
+  let disposed: Error | undefined, busy = false, invalid = false, requestFinalized = false;
+  let activeDone: Promise<void> | undefined, shutdown: Promise<void> | undefined;
+  const shutdownFailures: import('../execution-errors.js').ShutdownFailure[] = [];
+  const dispose = (reason: Error): Promise<void> => {
+    disposed ??= reason;
+    if (!shutdown) {
+      let assess!: () => void;
+      shutdown = new Promise<void>(resolve => { assess = resolve; }).then(() => {
+        state = undefined;
+        lifetime.signal?.removeEventListener('abort', interrupt);
+        if (shutdownFailures.length) throw new SessionShutdownError(Object.freeze([...shutdownFailures]));
+      });
+      void shutdown.catch(() => {});
+      state?.store.releaseOwnership();
+      controller.abort(disposed);
+      const cleanup = (owner?.close(disposed) ?? Promise.resolve()).catch(cause => { shutdownFailures.push({ phase: 'resource-cleanup', cause }); });
+      // Both inputs are fulfilled internal observations, never the caller's request promise.
+      void Promise.all([cleanup, activeDone]).then(assess);
+    }
+    return shutdown;
+  };
   const interrupt = () => { void dispose(new CommandInterrupted()).catch(() => {}); };
   lifetime.signal?.addEventListener('abort', interrupt, { once: true });
   if (lifetime.signal?.aborted) interrupt();
@@ -45,24 +65,27 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
   try { alive(); opened = await openTypeScriptProject(options, lifetime.runGit ?? owner!.run); alive(); }
   catch (error) {
     lifetime.signal?.removeEventListener('abort', interrupt);
-    await dispose(error instanceof Error ? error : new Error('Opening failed'));
+    // Opening keeps its existing cleanup/error contract; no Session has been returned.
+    const reason = error instanceof Error ? error : new Error('Opening failed');
+    disposed ??= reason; controller.abort(disposed);
+    await owner?.close(disposed);
     if (!operationalIO(error)) throw error;
     return { status: 'project-open-failed', diagnostics: [], operational: { operation: 'project input acquisition', path: options.configPath, reason: error.message } };
   }
-  if (opened.status !== 'opened') { lifetime.signal?.removeEventListener('abort', interrupt); await dispose(new SessionClosed()); return opened; }
+  if (opened.status !== 'opened') { lifetime.signal?.removeEventListener('abort', interrupt); await owner?.close(new SessionClosed()); return opened; }
   const id = opened.session;
   const check = async () => {
     alive();
     if (!state) throw new SessionClosed();
     if (!invalid) {
-      try { invalid = await state.changed(); }
+      try { invalid = await untilAborted(state.changed, controller.signal); }
       catch (error) {
         if (!operationalIO(error) && !(error instanceof OutputBoundaryFailure) && !(error instanceof CleanupIncomplete)) throw error;
         invalid = true;
       }
     }
     alive();
-    if (invalid) { state.store.releaseOwnership(); const error = new SessionInvalidated(); controller.abort(error); throw error; }
+    if (invalid) { const error = disposed ?? new SessionInvalidated(); void dispose(error); throw error; }
   };
   // Retained domain state is owned by this holder and released on close. Final
   // attempt accounting may arrive during cancellation; progress cannot revive work.
@@ -88,11 +111,21 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
   const operation = async <T>(run: () => Promise<T>): Promise<T> => {
     alive(); if (invalid) throw new SessionInvalidated();
     if (busy) throw new SessionBusy();
-    busy = true; try { return await run(); } finally { busy = false; }
+    busy = true; requestFinalized = false;
+    let done!: () => void;
+    activeDone = new Promise<void>(resolve => { done = resolve; });
+    try { return await run(); } finally { busy = false; done(); activeDone = undefined; }
   };
   let latestWork: WorkReport | undefined, currentWork: RequestWork | undefined;
-  const progress = lifetime.onWork ? (event: WorkProgress) => lifetime.onWork!(freezeOwned(structuredClone(event))) : undefined;
+  const progress = lifetime.onWork ? (event: WorkProgress) => {
+    try { lifetime.onWork!(freezeOwned(structuredClone(event))); }
+    catch (cause) {
+      if (!controller.signal.aborted) throw cause;
+      shutdownFailures.push({ phase: 'work-report', cause });
+    }
+  } : undefined;
   const finishWork = (work: RequestWork, status: Exclude<WorkReport['status'], 'running'>, reason?: string) => {
+    requestFinalized = true;
     latestWork = work.finish(status, reason); currentWork = undefined; return latestWork;
   };
   const failWork = (work: RequestWork, error: unknown) => finishWork(work, error instanceof CommandInterrupted ? 'interrupted'
@@ -109,6 +142,8 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
       const attribution = finishWork(work, result.kind === 'resolution' ? 'refused' : result.kind === 'answer' && result.failed ? 'failed' : 'completed');
       return freezeOwned({ ...result, attribution });
     } catch (error) {
+      if (error instanceof TerminalFinalizationError) { shutdownFailures.push(...error.failures); error = error.terminal; }
+      if (disposed) error = disposed;
       if (operationalIO(error)) {
         try { await check(); } catch (invalid) { failWork(work, invalid); throw invalid; }
         error = new AnalysisFailure(error.message);
@@ -136,7 +171,7 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
       return operation(() => perform(captured, { ...(requestId !== undefined ? { requestId } : {}), ...(invocation ? { invocation: { fields: invocation.input, problems: invocation.problems } } : {}) }, false));
     },
     interrupt: () => dispose(new CommandInterrupted()),
-    async close() { const closing = dispose(new SessionClosed()); state = undefined; lifetime.signal?.removeEventListener('abort', interrupt); await closing; },
+    close: () => dispose(busy && !requestFinalized ? new CommandInterrupted() : new SessionClosed()),
   };
   registerOperationHost(session, {
     run: client => operation(async () => {
@@ -164,7 +199,11 @@ export async function openApplication(options: ProjectOptions, lifetime: Applica
           const result = await state!.evaluate(context.request.operation, work);
           await check(); alive();
           return freezeOwned({ ...result, context, attribution: finishWork(work, result.unavailable || (result.execution?.outcome ?? result.attempt?.outcome)?.kind !== 'accepted' ? 'failed' : 'completed') });
-        } catch (error) { failWork(work, error); throw error; }
+        } catch (error) {
+          if (error instanceof TerminalFinalizationError) { shutdownFailures.push(...error.failures); error = error.terminal; }
+          if (disposed) error = disposed;
+          failWork(work, error); throw error;
+        }
       });
     },
   });

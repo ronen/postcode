@@ -501,3 +501,20 @@ Area: development trials, artifact capture and budget cleanup
 A failed trial can contain attempt reports but lack a completed step record or final usage summary. In the standard runner, a Session close failure can mask the request error and skip closing the budget lease. The dialog14 runner attempts budget close even when Session close fails. The CLI retirement plan preserves these existing behaviors during separation.
 
 Determine which completed artifacts and known usage a failed or interrupted trial should retain, how to identify incomplete capture, and how callers should learn both the original failure and any cleanup failure. Assess budget release separately from the accounting for requests already reserved before dispatch.
+
+<a id="preserve-opening-and-cleanup-failures"></a>
+## Preserve simultaneous application-opening and cleanup failures
+
+Added: 2026-11-25
+Origin: [CLI shell retirement lifecycle checkpoint](../records/validation/cli-shell-retirement/README.md)
+Area: application opening and resource ownership
+
+Before an application Session is returned, the existing opening catch awaits owned
+Git cleanup before propagating the acquisition error. If both fail, the cleanup
+failure replaces the acquisition error. Controlled process-creation and cleanup
+substitutes reproduce this: an acquisition defect plus `CleanupIncomplete` returns
+only `CleanupIncomplete`. Cleanup failure is visible, but the original cause is lost.
+
+Assess preservation of both opening and cleanup causes without implying that a
+cleanup deadline confirms resource exit. This is separate from the approved
+active-Session terminal-abort correction; no new opening lifecycle is selected here.
