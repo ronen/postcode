@@ -7,6 +7,10 @@ implementation plan or authorization. This is the current synthesis; the
 
 ## Purpose
 
+In anticipation of a graphical interface built around the book model, retire CLI
+shell support so it does not remain an additional interface to maintain and keep
+consistent with the evolving application design.
+
 Surgically separate and remove the CLI shell, including one-shot investigation
 commands and their private execution machinery. Preserve the application capabilities
 needed by direct validation, the future book model and future human clients.
