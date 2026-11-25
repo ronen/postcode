@@ -4,11 +4,11 @@ Unlisted constraints remain in force. No core-concept semantic revision is inclu
 
 ## Application and interface boundary — replace the “Preserve append-only aliases” bullet
 
-- Preserve precise identity, stable referents and qualified references within the supported Session lifetime, including exact targets used to connect requests. Retire compact CLI aliases, their allocation schedules, accepted compact inputs and scoped binding ports; do not introduce a replacement short namespace. Name resolution and investigator wire handles remain distinct from canonical identity. [[Precise references](decisions/cli-shell-retirement.md#precise-references)]
+- Preserve precise identity, stable referents and qualified references within the supported Session lifetime, including exact targets used to connect requests. Keep name resolution and investigator wire handles distinct from canonical identity. [[Precise references](decisions/cli-shell-retirement.md#precise-references)]
 
 ## Application and interface boundary — replace the “Preserve ownership, typed lifecycle outcomes” bullet
 
-- Preserve ownership, typed lifecycle outcomes, progress/usage, credentials and guarded publication validity independently of research capture. Deliver plain data without store handles or executable capabilities; human clients must verify their actual output disclosure. The command feedback/sink implementation retires with its documented capability gap, without withdrawing client-neutral feedback/delivery obligations. This establishes no public transport or compatibility commitment. [[Retained boundary](decisions/cli-shell-retirement.md#retire-client)] [[Research gap](decisions/cli-shell-retirement.md#research-gap)]
+- Preserve ownership, typed lifecycle outcomes, progress/usage, credentials and guarded publication validity independently of research capture. Deliver plain data without store handles or executable capabilities. Keep shared feedback and delivery contracts independent of interface View types. Human clients must verify what their output actually discloses. The application boundary is internal and carries no public transport or compatibility commitment. [[Application boundary](decisions/cli-shell-retirement.md#retire-client)] [[Feedback and delivery obligations](decisions/cli-shell-retirement.md#research-gap)]
 
 ## Application and interface boundary — add the following bullet
 
@@ -16,13 +16,13 @@ Unlisted constraints remain in force. No core-concept semantic revision is inclu
 
 ## Views and analysis boundary — delete one bullet
 
-Delete the bullet beginning “For these Projection families, arrangement may use a narrowly scoped, session-owned reference-binding capability”. The supplied-qualified-information and no-acquisition rules surrounding it remain unchanged; alias binding is retired by [precise references](decisions/cli-shell-retirement.md#precise-references).
+Delete the bullet beginning “For these Projection families, arrangement may use a narrowly scoped, session-owned reference-binding capability”.
 
 ## Observation lifecycle and delivery — replace the first two bullets
 
 - Inadequacy feedback records experience; it neither establishes program truth nor changes an investigation, initiates work or applies a correction. Retain available actual displayed artifacts and exact output, associated subject, qualified captured basis and investigation context without reconstruction or further investigation. Missing context does not prevent submission and must remain explicit; context-free feedback must not fabricate project, Session or View context. [[Preserved feedback obligations](decisions/cli-shell-retirement.md#research-gap)]
-- Deliver requested feedback to its designated observation destination, disclosing failure without invalidating the displayed result or preventing subsequent use. Preserve sufficient available context for its interpretation without requiring earlier batches or a live store to reconstruct what was actually supplied. The command-shaped implementation retires without replacement; the resulting feedback/research capability gap remains documented and backlogged. Observation history is not restored operational state. [[Research gap](decisions/cli-shell-retirement.md#research-gap)]
+- Deliver requested feedback to its designated observation destination, disclosing failure without invalidating the displayed result or preventing subsequent use. Each submission must include enough available context for a recipient to interpret it independently of prior submissions and the live Session. Keep observation history separate from Session state. [[Feedback and delivery obligations](decisions/cli-shell-retirement.md#research-gap)]
 
 ## Views and analysis boundary — add the following bullet
 
-- Retire the CLI's mechanical-family Presentations and disclosure classification while preserving qualified analysis and Projection construction. Validation rendering moved out of core remains subject to qualification, no-new-claims and applicable human-output obligations; assess actual output rather than infer conformance from module location or old CLI checks. [[Client retirement](decisions/cli-shell-retirement.md#retire-client)] [[Validation rendering](decisions/cli-shell-retirement.md#validation-rendering)]
+- Core owns qualified analysis and Projection construction. Trial support owns validation rendering and uses the structured results as its authoritative input. Render only claims supplied by those results, preserve alternatives and qualifications, and disclose consequential omissions or incompatibilities. Verify disclosure against the actual human-facing output. [[Analysis boundary](decisions/cli-shell-retirement.md#retire-client)] [[Validation rendering](decisions/cli-shell-retirement.md#validation-rendering)]
