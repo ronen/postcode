@@ -14,6 +14,12 @@ documenting surviving trial support and the remaining gap; see the
 The choices and recommendations below preserve the assessment leading to that
 discussion, rather than asserting that both original questions remain unanswered.
 
+The [current proposal](unshell-proposal.md) also incorporates the preliminary review:
+active `close()` and lifetime-signal abort share terminal-abort guarantees; shutdown
+reports participant/reporting and owned-resource cleanup failures separately from
+request interruption; responsiveness is cooperative. Detailed inventories below are
+supporting evidence, not authority over the proposal's current scope or choices.
+
 ## Finding
 
 The CLI/worker cluster can be retired without replacing the trial runner or
@@ -181,6 +187,8 @@ incorporated predecessor clauses. Historical rationale and records stay intact.
 | `qualified-answers-over-contributions.md`, exact presentation/references, qualified access and construction | Preserve fixed retained support, qualifications, exact IDs, selection and identity. Retire CLI continuation rendering and worker finalization. Explicitly address alias acceptance/allocation schedules if removing aliases; do not broadly supersede retained access. |
 | `precise-subject-designations-and-lookup-bindings.md` and inherited request/reference clauses | Preserve precise-ID validation, literal/name resolution and kind-aware behavior. Amend short-lookup spelling/namespace requirements only if aliases retire. |
 | `research-question-driven-observation.md`, retained understanding/context and actual exposure, including incorporated feedback contract | Preserve question-selected capture and truthful display context. Resolve temporary absence of feedback interaction and command representation explicitly. No new mandatory capture or trial schema. |
+| `local-observation-acceptance.md`; remaining live sink clauses of `initial-observation-recording-decisions.md`; current-format commitments in `research-question-driven-observation.md` | Retire the filesystem-sink implementation selection and command-batch support commitments. Preserve applicable general acceptance/failure and foundation obligations through the scoped successor. Follow the live supersession chain: initial invocation-batch submission has already been replaced and must not be superseded a second time. |
+| `coordinated-views-and-qualified-results.md`, current observation provenance gap; related backlog candidate | Preserve the historical finding. Carry the research-question-dependent captured-basis attribution need into the new research-support backlog item, replacing its obsolete export-path remedy through current documentation and the successor decision. |
 | Application specification, concepts/constraints and current architecture/reference/setup docs | Reconcile current interface, private worker, binding and rendering claims while preserving applicable product and domain requirements. Any substantive governing change needs accepted decision support. |
 
 Formal drafting must follow the relevant inheritance links for exact replacement

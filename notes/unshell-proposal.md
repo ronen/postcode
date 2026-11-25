@@ -27,8 +27,9 @@ the entire shell or assuming every unused facility is dead.
 - The internal application API continues to supply qualified analysis, investigation,
   exact retained access, resolution, attribution and usage within its supported Session
   lifetime. It does not become a public API or external-agent export.
-- A small command entry point supplies authentication. There is no replacement
-  end-user investigation interface during this transition.
+- `npm run postcode` remains an authentication-only CLI with appropriate help.
+  Retired investigation/shell commands are rejected without opening a project.
+  There is no replacement end-user investigation interface during this transition.
 - Existing trial runners continue to call the application directly. Rendering useful
   for validation lives in trial support, outside core.
 - The private CLI worker, transport, adapter, shell, investigation commands and their
@@ -50,41 +51,89 @@ the entire shell or assuming every unused facility is dead.
 | Domain/application capabilities | Preserve acquisition, qualified analysis and contributions, retained answers, fresh/follow-up behavior, attribution, credentials, resource ownership and useful client-neutral validity policy. CLI use alone does not make these CLI features. |
 | Tests, scripts and dependencies | Remove those whose purpose disappears; relocate checks of surviving semantics to the direct boundary or trial support. Preserve direct validation/measurement tools and shared fixtures with surviving consumers. |
 
+Mechanical-family Presentations, their View helpers and CLI disclosure classification
+retire too; analysis, qualified content and Projection construction remain. There is
+no replacement human-facing rendering of module, organization, dependency or export
+Views. Future human clients must establish disclosure verification for their actual
+output. Preserve the small client-neutral publication guard and authentication's
+terminal-safe text handling; retire terminal layout and its exclusive dependencies.
+
+The [assessment and linked inventory](unshell-assessment.md#dispositions) supply the
+source/test/script detail. CLI-shell validation scenarios, CLI comparison/human-output
+checks and CLI/worker analysis benchmarks/profilers retire without replacements in
+UNSHELL. Preserve the direct structured-account runners and direct contribution
+measurement tools. Trial preservation below refers to these surviving tools, not
+every historical validation harness. Consider any later direct-analysis benchmarking
+need with the existing performance backlog rather than reproduce retired scenarios
+solely to keep their tools running.
+
 ## Terminal Session abort
 
 Preserve the existing ability to abort the whole analysis Session. An interrupted
 Session accepts no further investigation requests; continuing requires a new
 Session. Final accounting remains readable and the caller can complete shutdown.
 
+This retains the accepted terminal-abort/resource-ownership responsibility for future
+application clients, despite neither surviving trial runner invoking interruption.
+Verify it through direct application tests; do not add abort wiring to the runners.
+
 Preserve these guarantees through the direct application boundary:
 
 - An active request terminated by Session abort settles as interrupted. Cleanup or
   final-report delivery failures cannot replace that outcome. An already completed
-  request is not retroactively interrupted.
+  request is not retroactively interrupted: completion is established only after
+  final validity checks and internal result/work finalization. Preserve the first
+  established terminal cause, including already established invalidation, across
+  subsequent shutdown requests.
 - Before the interrupted request settles, core retains final work/attempt reports
   and known usage. A client reporting callback throwing cannot erase those records
   or change interruption into a defect. Reject late content and prevent late usage
   from altering sealed accounting; missing measurements remain explicit.
-- Abort initiates cleanup immediately, but request settlement does not wait for
-  resource exit. `close()` waits for request finalization and the bounded cleanup
-  assessment, reporting cleanup and reporting failures separately from the request's
-  interruption. Preserve the actual failures and distinguish them from each other.
+- `interrupt()`, a lifetime-signal abort, and `close()` during an active request use
+  the same terminal-abort guarantees. Closing an idle Session simply closes it.
+  Abort initiates cleanup as soon as the host can deliver it; execution responds at
+  cooperative checkpoints. Request settlement does not wait for resource exit.
+- `interrupt()` and `close()` expose the same shutdown assessment, covering request
+  finalization, participant cleanup, final-report delivery and owned-resource cleanup.
+  Their promises report failures separately from the active request's interruption,
+  retaining the actual failures and distinguishing cleanup from reporting failures.
+  The request's interruption alone is not a shutdown failure.
+  A later `close()` also exposes failures from signal-triggered abort. Internally
+  observe and retain those failures so signal-only abort creates no unhandled cleanup
+  rejection. If the caller never observes shutdown, failures remain retained but
+  unobserved; callers must handle promises they explicitly request.
 - Unconfirmed cleanup remains explicitly unconfirmed. Retain resource ownership and
   exit monitoring until actual exit; a reporting deadline does not discharge them.
 - Repeated interruption or close does not repeat participant cleanup or lose recorded
-  failures. Use the existing lifecycle: `interrupt()` signals immediately, with its
-  returned promise reporting shutdown separately from the active request's promise.
+  failures. Subsequent calls observe the same shutdown assessment.
+
+The bound applies to owned-resource exit reporting, using the existing Git cleanup
+deadlines. It is not an overall shutdown deadline: participant close is synchronous
+today, and synchronous computation/callbacks cannot be forcibly bounded in-process.
+No new asynchronous participant lifecycle is introduced. With caller-supplied
+`runGit`, subprocess ownership, termination and exit monitoring belong to that caller;
+the Session cannot claim to confirm cleanup of resources it does not own.
 
 The concrete correction is that a dialog cleanup exception must no longer replace
 interruption and leave attempt/work classifications inconsistent. Strengthen the
 existing lifecycle responsibilities, including joining request finalization during
 close, rather than introduce a general worker framework or another failure-reporting
-callback. This does not redesign ordinary successful execution or unrelated failure
-handling.
+callback. Protection applies to notifications during terminal-abort finalization.
+Exceptions from `onProgress`, `onWork` or `onReport` before a terminal outcome is
+established, and success-path callback policy, retain existing behavior. Record that
+limited callback-exception policy as a residual follow-up consideration; UNSHELL
+does not establish a general callback-isolation guarantee.
 
 Distinguish cancellation request, operation settlement, cleanup reporting and actual
 resource exit. In-process cancellation does not promise hard termination of arbitrary
 synchronous computation or survival after host destruction.
+
+Retiring the worker deliberately gives up its active synchronous-work interruption
+boundary. This reverses the host selection in the accepted execution-ownership
+decision, which rejected moving compiler work into the parent for that reason.
+The surviving direct callers already run in-process, and the retiring human client
+no longer needs that private host. Accept and disclose the limitation instead of
+retaining an unused worker; future hosting is outside UNSHELL.
 
 ## Trial preservation
 
@@ -93,6 +142,13 @@ explanations and diagrams, their qualification, and the runner's existing sequen
 capture and budget behavior. Do not redesign trial schemas, reporting, publication
 or failure handling merely because the renderer moves.
 
+Relocated rendering remains presentation: consume only supplied qualified content,
+add no claims or acquisition, preserve alternatives and disclose omissions. Its actual
+rendered output must continue to satisfy the applicable human-output/disclosure
+requirements; moving it into development support is no exemption. Preserve relevant
+checks without retaining the CLI's unrelated classification/export framework.
+Source-bearing validation captures are not automatically human-facing output.
+
 Two deliberate differences are distinguished from that preservation:
 
 - Compact-alias metadata and accepted compact-alias inputs may disappear, as agreed.
@@ -100,7 +156,8 @@ Two deliberate differences are distinguished from that preservation:
 - The separately specified core interruption correction changes its exceptional
   outcome/cleanup behavior. It is not permission to revise the runner's lifecycle.
 
-Evidence for preservation should cover equal-input rendering and application results,
+Capture a pre-change baseline with controlled participants before moving or removing
+code. Evidence for preservation should cover equal-input rendering and application results,
 ordinary/fresh/follow-up step connections, alternatives, omissions and state diagrams.
 Any comparison exclusions must name the deliberate alias changes and unavoidable
 run-specific values; they must not hide changed qualification or broken references.
@@ -138,10 +195,17 @@ to the designated research destination, visible delivery failures and separation
 of generated records from program evidence. It does not select a GUI design,
 recording schema or implementation schedule.
 
+Carry forward the existing captured-basis observation-attribution need when the
+research question requires it; references into a discarded Session are insufficient.
+The conformance statement should identify the absence of both human feedback and
+research interaction support during the period without a human investigation interface.
+
 The retirement decision must state the gap and that the backlog item was added;
 it must not link to the mutable backlog entry. Reconcile the existing CLI-specific
-optional-recording/feedback backlog candidate during package preparation so the
-backlog does not retain an obsolete implementation premise. The new item belongs
+optional-recording/feedback candidate and fold the captured-basis observation candidate
+into the new item, preserving its qualified scope. Sweep the backlog for other obsolete
+CLI, worker, alias and export premises; preserve independent needs and do not silently
+reprioritize unrelated candidates. The new item belongs
 with the proposal's adoption rather than describing the retirement as already
 implemented in the current canonical backlog.
 
@@ -156,12 +220,34 @@ BOOK/GUI consumption model here.
 Other leftovers should be classified by evidence: useful retained capability,
 deliberately retained transition code, or unnecessary code whose removal needs actual
 core redesign. Only the last category belongs in the redesign residual register.
+Keep that register in implemented-architecture documentation after separation.
 Canonical exports, tests and adopted clauses require reconciliation, but do not by
 themselves make removal technically inseparable.
 
 Excluded: implementing BOOK, GUI interaction/hosting/feedback design, replacement
 investigation CLI, generic worker abstraction, unrelated trial improvements and
 changes to foundation or development-process documents.
+
+## Governing and documentation impact
+
+Formal adoption needs a scoped retirement decision and coordinated revisions to
+`docs/app-specification.md` and `docs/architectural-constraints.md`. The latter's
+alias preservation, scoped binding and shared feedback/delivery provisions are
+directly affected. No semantic change to `docs/core-concepts.md` is currently
+identified. Preserve domain identity and reference stability while retiring aliases.
+
+The [assessment's governing-impact map](unshell-assessment.md#governing-changes-to-draft-after-discussion)
+guides exact supersession: execution host selection, internal-API CLI hooks,
+alias/Presentation clauses and observation implementation commitments. Include
+`local-observation-acceptance.md` and the live successor clauses of the initial
+observation, research-question-driven observation and coordinated-View decisions.
+Preserve general qualification, delivery and foundation obligations; do not supersede
+already replaced predecessor clauses again or erase historical conformance findings.
+
+Reconcile README, STATUS, CLI/capability references, hosted setup, implemented
+architecture and implementation conventions with authentication-only CLI access and
+the surviving internal API. Detailed file and clause inventories remain in the
+assessment; they are drafting inputs, not changes made by this proposal.
 
 ## What remains before an implementation plan
 

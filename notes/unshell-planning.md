@@ -47,6 +47,19 @@ but no replacement end-user investigation interface. Document that accurately.
 
 ## Discussion decisions
 
+### Close during active work — human direction, 25 November 2026
+
+In response to the proposal review, the agent asked whether `close()` during an
+active request should use terminal-abort semantics alongside `interrupt()` and
+lifetime-signal abort. The human selected:
+
+> Yes—treat active close as terminal abort (recommended)
+
+The proposal includes this route in the interrupted-outcome, final-accounting and
+separate-shutdown-assessment guarantees. The human also clarified that the proposal
+can rely on the linked assessment for detailed supporting inventories; it need not
+duplicate that material to stand alone for an unrelated audience.
+
 ### Keep interruption scope surgical — human direction, 25 November 2026
 
 > actually i overreached -- our UNSHELL remit doesn't need to include any mention of individual request cancellation at all. That wasn't part of the CLI shell, so is not an issue that needs discussing regarding surgical CLI shell removal.
