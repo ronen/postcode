@@ -219,9 +219,7 @@ controlled verification but cannot prove equality across independent model respo
 
 ## Success, risks and follow-up
 
-One API choice awaits human confirmation before adoption. The draft decision uses
-promise rejection to report shutdown failures, preserving the existing
-`Promise<void>` contract of `interrupt()` and `close()`.
+The plan has no unresolved API decisions.
 
 Success means the authentication entry point, direct application and retained trials
 work without the retired shell/worker/alias/observation implementation; terminal

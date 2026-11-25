@@ -162,8 +162,9 @@ A failure already delivered by an ordinary request stays with that request.
 Distinguish cleanup from reporting failures. Expected request interruption alone
 is not a shutdown failure. This expands `interrupt()` beyond its former Git-only cleanup
 promise. Repeated shutdown calls do not repeat participant cleanup or lose failures.
-Shutdown promises resolve after a clean assessment and reject with the retained,
-distinguishable failure set otherwise; preserve underlying typed resource failures.
+Both methods return `Promise<void>`. They resolve after a clean shutdown assessment
+and reject with the retained failures otherwise. Each cause remains distinguishable,
+including the underlying typed resource failures.
 
 Observe internal asynchronous failures, retain signal-route failures and expose them
 through later shutdown calls. Signal-only abort must not create an unhandled internal
