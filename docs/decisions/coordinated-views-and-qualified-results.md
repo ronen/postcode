@@ -15,6 +15,7 @@ Superseded in part:
 - [Generalize Lens results and View composition](#generalize-lens-results-and-view-composition) is replaced by [Results over captured bases](specialized-architectural-investigation.md#results-over-captured-bases).
 - [Define request inputs and captured states](#define-request-inputs-and-captured-states) is replaced by [Inputs and captured bases](specialized-architectural-investigation.md#inputs-and-captured-bases).
 - [Retain unaffected domain and storage commitments](#retain-unaffected-domain-and-storage-commitments) is replaced in full by [domain and storage](research-question-driven-observation.md#domain-and-storage).
+- [Current observation provenance gap](#current-observation-provenance-gap), only the prospective remedy targeting the retiring observation export; preserve the historical finding and question-dependent basis-attribution need in the successor backlog, is replaced by [CLI shell retirement](cli-shell-retirement.md#research-gap).
 
 ## Context
 

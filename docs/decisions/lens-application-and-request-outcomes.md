@@ -10,6 +10,7 @@ Superseded in part:
 - [Return unsettled applications as resolution results](#return-unsettled-applications-as-resolution-results), only its Investigation retention row and subsequent preservation paragraph insofar as they retain an investigation-attempt failure or retryable unavailability as answer content, is replaced by [Separate attempt reporting and answer meaning](investigation-attempts-and-answer-outcomes.md#separate-attempt-reporting-and-answer-meaning). Resolution results, mechanical qualified-answer retention and other retained-selection obligations remain accepted.
 - [Report actual requests and outcomes](#report-actual-requests-and-outcomes) is replaced in full by [request reporting](research-question-driven-observation.md#request-reporting).
 - [Give equivalent qualified answers repeatable identity](#give-equivalent-qualified-answers-repeatable-identity) is replaced in full by [qualified answers over contributions](qualified-answers-over-contributions.md#answer-identity-and-request-reuse).
+- [Return unsettled applications as resolution results](#return-unsettled-applications-as-resolution-results), only current CLI/worker-envelope delivery and one-shot-specific guidance; preserve returned qualified resolution information and reference lifetime, is replaced by [CLI shell retirement](cli-shell-retirement.md#retire-client).
 
 ## Context
 

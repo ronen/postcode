@@ -1,6 +1,6 @@
 # Surgical CLI shell retirement
 
-Status: in preparation
+Status: approved
 Created: 2026-11-25
 Updated: 2026-11-25
 

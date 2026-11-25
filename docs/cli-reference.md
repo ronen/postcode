@@ -514,7 +514,7 @@ fails visibly. This does not guarantee persistence after power loss or cleanup
 after a crash. Existing observation files remain in place; the producer does not
 read historical batches, migrate them, scavenge staging residue or prescribe retention.
 
-Recorded output remains evidence of what PostCode displayed, but observations do not yet generally identify the captured program basis supporting it. The [bounded provenance correction](backlog.md#preserve-captured-basis-attribution-in-observations) must precede reliance on newly collected observations for assessments requiring attribution to a particular program state.
+Recorded output remains evidence of what PostCode displayed, but observations do not yet generally identify the captured program basis supporting it. The [captured-basis attribution work](backlog.md#research-observation-and-feedback-after-cli-retirement) must precede reliance on newly collected observations for assessments requiring attribution to a particular program state.
 
 Caller-supplied generated-output locations are excluded before configuration and
 compiler input reads, including imported files and symlink targets. The run's exclusion

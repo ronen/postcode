@@ -4,6 +4,12 @@ Plans in this directory describe future work that the human has explicitly appro
 
 Use descriptive, unnumbered filenames, such as `initial-product-slice.md` or `agent-context-exchange.md`. Do not encode priority or sequence in filenames. Express dependencies and ordering in the plan itself or in a current roadmap when one becomes necessary.
 
+## Approved work
+
+- [Surgical CLI shell retirement](cli-shell-retirement.md) — remove the investigation
+  CLI/private host and exclusive support, preserve direct application and validation
+  behavior, and strengthen terminal Session-abort accounting/cleanup.
+
 ## Completed work
 
 - [Structured architectural accounts](structured-architectural-accounts.md) — implemented; all producer migration, exact qualified answers, state diagrams and retained follow-up options. The human accepted the final integrated review gate and directed closure of the [task](../../records/tasks/2026-11-15-structured-architectural-accounts.md) on 2026-11-20.

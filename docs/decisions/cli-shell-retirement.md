@@ -1,6 +1,6 @@
 # Retire the investigation CLI while preserving the application
 
-Status: in preparation
+Status: accepted
 Decided: 2026-11-25
 Arising from: [Surgical CLI shell retirement](../plans/cli-shell-retirement.md)
 Scope: retirement of the investigation CLI, its private host and exclusive core support; direct validation, precise references, terminal Session abort and the research-support gap

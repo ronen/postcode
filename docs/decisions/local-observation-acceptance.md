@@ -1,9 +1,10 @@
 # Local observation acceptance contract
 
-Status: accepted
+Status: superseded
 Decided: 2026-09-27
 Arising from: [Foundation readiness](../plans/foundation-readiness.md)
 Scope: acceptance and delivery guarantees of the development filesystem observation sink
+Superseded by: [Remove unused research implementation without withdrawing its obligations](cli-shell-retirement.md#research-gap), the complete record.
 
 ## Context
 

@@ -10,6 +10,11 @@ For supported questions and actions, begin with the [capability reference](capab
 
 [`plans/`](plans/) contains future-work plans explicitly approved by the human. Plans may evolve while approved or active and do not authorize implementation by themselves. Proposed plans and revisions remain under [`drafts/`](../drafts/) or in ignored underscore workspaces until approved.
 
+The [CLI shell retirement plan](plans/cli-shell-retirement.md) coordinates removal
+of the investigation CLI and preservation of direct application/validation access.
+The [retirement decision](decisions/cli-shell-retirement.md#adoption) identifies the
+conformance transition and the separately backlogged research-support gap.
+
 <a id="application-specification"></a>
 ### Application specification
 

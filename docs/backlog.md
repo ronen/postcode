@@ -49,22 +49,20 @@ the implementation available when this item is selected. A graphical display,
 multi-agent support, freshness/reconsideration policies and automatic
 reinvestigation are separate capabilities, not prerequisites or implied scope.
 
-<a id="separate-optional-research-recording-from-feedback-context"></a>
-## Separate optional research recording from feedback context
+<a id="research-observation-and-feedback-after-cli-retirement"></a>
+## Research observation and feedback support after CLI retirement
 
-Added: 2026-11-05
-Origin: [Research-question-driven observation](decisions/research-question-driven-observation.md#adoption-and-conformance)
-Area: optional CLI recording, publication and explicit feedback
+Added: 2026-11-25
+Origin: [CLI retirement and research-support gap](decisions/cli-shell-retirement.md#research-gap)
+Area: human feedback, research observation, capture and delivery
 
-The CLI automatically constructs version-four observation batches and submits them to its local sink. Publication also takes the shell's displayed-result feedback snapshot from those batches. A discard sink avoids local writes but still constructs records and classifies exposure; deleting batch construction would also remove feedback context. The relaxed requirements permit a useful simplification, but do not require changing this working behavior for conformance.
+CLI retirement removes the command-shaped feedback and observation implementation without a replacement human investigation interface. The foundation's [feedback](../foundation/product-design.md#inadequate-representations) and [research observation support](../foundation/product-design.md#research-observation-support) obligations, and the accepted client-neutral feedback contract, remain. Reconcile this capability gap when developing the relevant human interactions; removal is not conformance.
 
-Consider a bounded no-automatic-recording option that separates the available displayed-result snapshot from research event/UUID construction and sink submission. Keep explicit feedback submission useful with its available artifact, exact output and missing-context disclosure, without reconstruction. Choose the public control, default and feedback destination semantics before implementation; do not silently discard requested feedback when automatic capture is off. Avoid a generic event subscription/configuration framework without a concrete research need.
+Support question-directed observation and deliberate inadequacy reporting with sufficient available context and delivery to the designated research destination. Feedback records experience, not program truth, correction or authorization for more investigation. Preserve actual displayed artifacts, exact output and available subject/basis/context without reconstruction; disclose missing context and delivery failure. Keep generated records separate from program evidence. Acceptance, cleanup and retention are distinct. This item does not select a GUI design, schema, general event framework, remote service or implementation schedule.
 
-Potential benefits are fewer unnecessary local files and less record construction, serialization and delivery work. No runtime or storage savings have been measured. The existing sink is small, has useful no-overwrite/cleanup guarantees and fault tests, and remains needed by explicit feedback and research. Source-exposure classification has bounded family-specific logic and verification; preserve the human output boundary even if its research classification is skipped on an unrecorded path. Work attribution, usage, immutable basis/selection records, citation exposure and Investigator delivery are operational or semantic support, not disposable research instrumentation.
+Carry forward the research-question-dependent captured-basis attribution need. Earlier command exports did not generally retain the association between a shown answer and its captured basis; paths, Session IDs, optional source-detail digests and references into a discarded store were insufficient. For research requiring that attribution, identify what retained or separately captured support makes the actual result and its qualifications interpretable, including selected prior accounts and organizing snapshots. Do not reconstruct provenance from a later working tree or assume a commit describes all inputs. Complete that reconciliation before relying on new records for basis-dependent claims. Full reproducibility, repository archiving and operational persistence are separate concerns.
 
-A later scoped plan should trace the publication/feedback dependency, choose the simplest separation, and verify identical qualified results, request attribution, exit status, input checks and cancellation with automatic recording on and off; absence of automatic files/submissions when off; explicit feedback with and without available context; and unchanged chosen-record delivery-failure behavior. Reuse current publication, feedback, actual-exposure, retained-presentation and local-sink tests. Verify that required operational attribution survives a failed or absent sink. No new benchmark or broad rewrite is required unless measurements are used to justify it.
-
-Question-specific payload reduction is a separate opportunity when a concrete study establishes which data it needs. Retaining both qualified artifacts and exact output currently supports exposure assessment and self-contained feedback; removing either universally would lose that use. Preserve historical files and declare any changed experimental producer format. Do not add generalized schema selection, migrations, restoration or research UI merely to prepare for selection. This candidate is optional, separately approvable work and does not block documentary reconciliation.
+The obsolete optional-CLI-recording and bounded observation-export remedies are replaced by this candidate. Retain their useful actual-display and captured-basis requirements without retaining their implementation premises. There is no requirement to implement observation support as part of shell retirement.
 
 <a id="investigate-hypothetical-and-intended-architecture"></a>
 ## Investigate hypothetical and intended architecture
@@ -109,31 +107,15 @@ Added: 2026-10-06
 Origin: representation audit finding [F5](../records/audits/2026-10-06-user-model-concept-representations/REPORT.md#f5-presentation-choice-presentation-parameters-and-display-bounds-are-fused-into-format)
 Area: presentations and GUI preparation
 
-The CLI's format choice selects both encoding and existing display bounds. Its options do not provide general GUI sorting, grouping, layout or expansion-depth policy. Under the [internal application API decision](decisions/internal-application-api.md#qualified-content-delivery), precise IDs suffice for GUI clients to refer to supplied subjects and answers without reproducing CLI compact-alias arrangement. The [application/interface boundary plan](plans/application-interface-boundary.md) establishes that access for current capabilities; it does not establish GUI Presentation policy or a general compact-binding API.
+The internal application supplies qualified answers and precise references; CLI retirement removes its old format/bounds choices, compact aliases and mechanical-family Presentations. That does not supply GUI sorting, grouping, layout or expansion policy. Use the surviving [qualified application access](decisions/qualified-answers-over-contributions.md#qualified-application-access) and [retirement boundary](decisions/cli-shell-retirement.md#retire-client) without reproducing retired CLI formulas.
 
-The [exact retained-answer plan](plans/exact-retained-answer-presentation.md) scopes the separation needed to present existing answers: explicit supported presentation inputs, retained-content compatibility, and reference coordination without fresh selection. General GUI Presentation design remains outside that bounded separation.
+Exact retained access preserves qualified content and compatibility without fresh selection. Its historical CLI Presentation implementation is retired; the underlying access contract does not choose a GUI Presentation design.
 
 Decide presentation choice, parameters, bounds and context for actual GUI capabilities. Determine which available-space, interaction, lifetime and usage differences affect the resulting View identity; do not assume all context is identity-neutral or blindly inherit CLI formulas. Assess reference lifetime and exact correspondence against the implementations resulting from the retained-answer and application-boundary work. Any new interface-specific compact-reference requirement needs its own design.
 
 Assess nonempty multi-Projection input collections, contribution/state attribution, exact correspondence guarantees, and the distinction between coordinating one View and placing independent Views together. Decide how composition changes remain visible and attributable in the investigation, and how continuity relates to identity, before implementing a managed View lifecycle. Select research recording of those changes according to the research question. Preserve population counts and qualification through arrangement; do not hide new analysis inside cross-Projection coordination. Decide which input orders or roles are meaningful, which are presentation choices, and which do not affect identity. Preserve meaningful before/after roles without imposing ordered identity on every collection.
 
-This remaining work needs decisions before GUI Presentation implementation, not before the bounded retained-answer or application-boundary capabilities. No multi-Projection GUI implementation is authorized here.
-
-## Preserve captured-basis attribution in observations
-
-Added: 2026-10-08
-Origin: [Current observation provenance gap](decisions/coordinated-views-and-qualified-results.md#current-observation-provenance-gap)
-Area: observation provenance and qualified result attribution
-
-Current observation batches do not generally preserve an exported association between the presented Projection and its captured program-state basis. Ordinary module inventory is a confirmed case: the batch retains a conceptual View and session/path/method context, but not the retained analysis-input support. Session-local identifiers and configured paths do not establish that basis after the ephemeral store is gone. Optional source-detail evidence digests describe disclosed items, not a complete state association. Recorded output remains evidence of what PostCode displayed; observations do not generally establish the captured program basis supporting it. This is a confirmed limitation of current exports. Under [question-driven recording](decisions/research-question-driven-observation.md#research-capture), it requires remediation for research that relies on captured-basis attribution, not for every use or every record of displayed output. It is independent of future multi-state or GUI capability and does not establish a missing internal architectural basis.
-
-For a research question requiring this attribution, assess and correct the bounded observation export path so that the recorded result remains attributable to the basis actually used, including relevant capture limitations and repository-state provenance. Identify the question and required attribution before choosing additional capture. Do not reconstruct provenance by reading a later working tree. Determine what can be supplied from retained support, which references remain resolvable after session closure, and which additional capture or retention information is necessary. Choose schema, disclosure and compatibility treatment from that assessment; do not prescribe a state field in every record family or imply that a commit alone captures relevant working-tree inputs.
-
-Scope this work to identifying the captured basis and its limitations, rather than retaining everything necessary to reproduce an investigation. It does not authorize a durable analysis store or repository archive. Do not assume that a commit hash or references into a discarded store are sufficient attribution. Any bounded retention needed for adequate attribution must be justified within the later approved design; full reproducibility is a separate concern.
-
-Include associated-inspection attribution in the assessment: its exported descriptor now identifies the `associated-inspection` variant, composite selection ID and precise `mechanical` support reference. Retained-presentation tests verify that these identify the frozen composite and allow separate mechanical presentation. This bounded correction under the [exact retained-answer plan](plans/exact-retained-answer-presentation.md) does not close the general captured-basis export gap. Assess whether the records needed for the question adequately identify the actual qualified answer and its captured basis, including supplied prior interpretation and selected accounts/correction/association snapshots where used. Internal delivery/provenance and selection records do not by themselves establish that these contributions remain attributable in exported observations. A composed Projection does not inherently become a View of two independent Projections; preserve the accepted composition contract without requiring universal direct component pointers.
-
-Correction is explicitly deferred and need not block architectural adoption or interface exploration. Complete it before relying on newly collected observations for assessments requiring attribution to a particular program state. Until then, preserve the distinction between evidence of displayed output and evidence of its captured program basis. Keep this work separate from F1 request-description fixes unless an approved implementation scope deliberately combines them. This candidate authorizes no implementation or rewriting of historical observations.
+This remaining work needs decisions before GUI Presentation implementation, not before the bounded retained-answer or application-boundary capabilities.
 
 ## Assess conformance when extending coordinated Views and state scope
 
@@ -160,7 +142,7 @@ Added: 2026-10-07
 Origin: [Summary Views and navigation](decisions/coordinated-views-and-qualified-results.md#allow-summary-views-independently-of-summary-lenses)
 Area: entry experience and navigation
 
-The product permits suggesting a summary View when no more specific information need is expressed; it does not mandate that default. The CLI’s module-inventory default is compatible with that direction, while `summarize` offers the implemented module interpretation. Consider whether summary suggestions and recursive navigation would be useful in future interface work, distinguishing coordination of qualified inputs from synthesis of a new answer. Define useful selection and omission disclosure without requiring a summary Lens for every subject. No change to current commands or immediate GUI work is implied.
+The product permits suggesting a summary View when no more specific information need is expressed; it does not mandate that default. The application retains module interpretation after CLI retirement, but no replacement entry experience or navigation interface is selected. Consider whether summary suggestions and recursive navigation would be useful in future interface work, distinguishing coordination of qualified inputs from synthesis of a new answer. Define useful selection and omission disclosure without requiring a summary Lens for every subject.
 
 <a id="assess-investigation-initiation-and-parent-attribution"></a>
 ## Assess investigation initiation and parent attribution
@@ -200,7 +182,7 @@ does not independently corroborate its originating conclusions. Origin may be
 unavailable; this does not require detecting unknown derivation or preventing
 useful artifact sharing.
 
-Distinguish currently available CLI invocation from a shared-context protocol or participant-contribution capability. When a concrete exchange requires contributions, define their provenance and evidential role in that scope. The modality candidate records the broader future capability; this entry does not select generalized capture, an acceptance workflow or a conversation host.
+The remaining internal API is not a supported external-agent interface. CLI retirement supplies no shared-context protocol or participant-contribution capability. When a concrete exchange requires contributions, define their provenance and evidential role in that scope. The modality candidate records the broader future capability; this entry does not select generalized capture, an acceptance workflow or a conversation host.
 
 <a id="assess-and-preserve-navigation-origin-lineage"></a>
 ## Assess and preserve navigation-origin lineage
@@ -209,9 +191,9 @@ Added: 2026-10-10
 Origin: [Application specification conformance](decisions/application-specification-boundaries.md#adoption-and-conformance)
 Area: investigation context, navigation provenance, interfaces
 
-The CLI retains selected subjects for investigram follow-ups, but not general origin-View relationships for ordinary navigation. Projections and observation batches do not by themselves reconstruct where the human found a reference. Disclose that limited context rather than claiming full investigation history.
+The internal application retains exact selected subjects and follow-up targets, but CLI retirement provides no replacement navigation interface or general origin-View lineage facility. Projections and observation batches do not by themselves reconstruct where the human found a reference. Disclose that limited context rather than claiming full investigation history.
 
-Assess which CLI and future GUI interactions establish discovery, source-navigation, and derivation origins, which existing records preserve them, and where origin is unavailable. Scope bounded retention and inspection support before claiming full navigation-origin history. Do not infer a source View merely because it previously displayed the same reference. Preserve qualified captured bases and distinguish navigation origin from program relationships and evidence dependencies. This does not require persistent Workspaces, a separately stored View object, or a general history service.
+Assess which supported human interactions establish discovery, source-navigation, and derivation origins, which existing records preserve them, and where origin is unavailable. Scope bounded retention and inspection support before claiming full navigation-origin history. Do not infer a source View merely because it previously displayed the same reference. Preserve qualified captured bases and distinguish navigation origin from program relationships and evidence dependencies. This does not require persistent Workspaces, a separately stored View object, or a general history service.
 
 ## Qualify evidence that modules are used for testing
 
@@ -319,19 +301,18 @@ certification or authorization to implement. See the
 [M3 disposition](../records/reviews/foundation-readiness/2026-09-28-m3-acquisition-lifetime-disposition.md)
 and [preserved model evidence](../records/validation/foundation-readiness/2026-09-28-m3-round-2.md).
 
-## Assess reference-lifetime disclosure in existing views
+<a id="assess-reference-lifetime-disclosure-in-existing-views"></a>
+## Assess reference-lifetime disclosure in human output
 
 Added: 2026-09-26
-Origin: module investigation review and reference-lifetime disclosure decision
-Area: presentation and session references
+Origin: module investigation review and [reference lifetime disclosure](decisions/reference-lifetime-disclosure.md)
+Area: presentation and Session references
 
-Assess output against the [reference-lifetime disclosure requirement](decisions/reference-lifetime-disclosure.md): when references expire before they can be used in a subsequent request, their surrounding presentation must make that limitation clear. Cover human and JSON output. A shared notice can cover affected references; ordinary follow-up references in a continuing Session need no repeated caveats.
+Assess actual human output against the reference-lifetime requirement: when references expire before they can be used in a subsequent request, surrounding presentation must disclose that limit. A shared notice can cover affected references; ordinary follow-up references in a continuing Session need no repeated caveat. Encoding alone does not determine the audience.
 
-The [exact retained-answer implementation](plans/exact-retained-answer-presentation.md) supplies a shared lifetime notice for all references in its affected program Views, including answer aliases, module/group/investigram subjects and supporting source/navigation references. Unicode and JSON tests cover module inventory/inspection/exports, repository/project organization and group inspection, dependency overview/direct relationships and their source detail, and one-shot versus shell output. One-shot answers expose no executable present continuation; their notice directs the human to start new work in a shell. This establishes the bounded program-View coverage without closing the separate assessment below.
+The retired CLI had bounded verified lifetime notices for its affected program Views; that is historical evidence, not certification of another interface. Reassess actual future human output, including candidate references, operational reports and refusals, without carrying forward alias or shell-continuation assumptions. Preserve precise-reference meaning and qualified navigation. The retirement plan separately assesses its moved validation renderer's actual output obligations; this candidate covers remaining interface use rather than duplicate that bounded check.
 
-The remaining independent assessment covers references in non-View output, including ambiguous-selection candidates, operational reports and refusals. The retained-answer plan also covers its own presentation-unavailable retainedAnswers and new refusals; use that verified coverage without assuming it establishes conformance of every pre-existing non-View path.
-
-Conformance of those remaining paths is currently unknown. The potential impact is confusion about which displayed references support further navigation, rather than a change to reference binding or underlying program claims. This remains a deferred usability assessment; its broader scope does not block the bounded retained-answer implementation.
+Unknown conformance must remain explicit. The concern is misleading follow-up guidance, not altered reference binding or underlying program claims. No new interface or persistent reference mechanism is selected here.
 
 <a id="retry-failed-or-incomplete-interpretation-without-restarting-the-session"></a>
 <a id="explicitly-rerun-a-successful-interpretation"></a>
@@ -417,7 +398,7 @@ Added: 2026-09-23
 Origin: human exploratory use of the completed interactive session on another repository
 Area: presentations and interaction
 
-The session works, but repeated use makes the current views difficult to read: output is too wordy, important information is hard to find, and presentation choices that were tolerable for one-shot commands compound across an investigation. Evaluate the full journey across inventory, organization, dependencies, inspection, qualifications, additional detail and shell interaction before making isolated formatting changes. Identify what deserves immediate attention, what should be progressively disclosed, and what belongs in a later visual interface. Preserve precise navigation, evidence attribution, qualifications and consequential omission disclosure while improving readability. Coordinate the [more-details placement review](#review-more-details-information-placement) with this broader work.
+Earlier shell use exposed overly wordy output and difficulty finding important information across repeated investigation. The CLI and its Presentations retire; these observations inform future human-interface design rather than a shell-formatting task. Evaluate the supported journey across inventory, organization, dependencies, inspection, qualifications and detail, using the available core capabilities. Preserve precise navigation, evidence attribution, qualification and consequential omission disclosure. Coordinate the [more-details placement review](#review-more-details-information-placement) with this broader work.
 
 The [milestone-4 progressive assessment](../records/validation/module-investigation/pass-04/report.md) supplies captured examples of repeated accounts and accounting/evidence metadata obscuring what changed, limited evidence navigation, and standalone interpretive Views omitting effective compiler/configuration attribution available in the surrounding assessment record. Assess whether intelligible evidence attribution and bounded navigation help the human identify and evaluate support under the human output boundary. Missing source excerpts are not by themselves a deficiency. These are formative observations, not measured human usability results.
 
@@ -443,11 +424,11 @@ Added: 2026-09-24
 Origin: human observation that PostCode appears to use one CPU during analysis
 Area: analysis execution and responsiveness
 
-Both CLI entry paths run one command at a time in one analysis worker. TypeScript program construction and much of discovery use synchronous compiler APIs; repository capture and input probes retain synchronous filesystem reads. The [foundation-readiness plan](plans/foundation-readiness.md) has introduced parent-owned asynchronous Git execution and cancellation. Its remaining processing work removes repeated scans through local indexes; it does not establish general analysis parallelism.
+The surviving direct application executes one operation at a time in its caller's process. TypeScript construction/analysis and some filesystem work remain synchronous; owned Git work is asynchronous with explicit termination/exit monitoring. CLI retirement removes the private worker and its benchmark/profiling drivers without replacing them. This changes the measurement boundary, not evidence that analysis performance is sufficient or deficient.
 
-After that slice, measure remaining CPU use and stage-level wall time on representative projects to identify work that could run independently or overlap without changing results. Account for the implemented parent/worker execution model and asynchronous Git ownership.
+When a concrete performance question warrants work, measure CPU use, stage-level wall time and memory on representative projects through the current direct boundary. Separate opening, first use and reuse; account for input validity, deterministic mechanical results, precise identity and resource ownership. Introduce successor measurement tooling only for that question. Do not assume asynchronous reads accelerate CPU-bound compiler work or that a new worker is required.
 
-Evaluate further parallel analysis or asynchronous I/O against worker startup and communication, memory use, deterministic output, captured-input consistency, session reference bindings and cancellation. Do not assume that asynchronous reads accelerate CPU-bound compiler work. Use the [completed latency investigation](../records/validation/2026-09-21-analysis-latency.md), the [processing audits](../records/audits/2026-09-27-foundation-readiness/README.md), and the foundation plan's integrated measurements as evidence, accounting separately for opening, first use, reuse and full CLI publication.
+The [completed latency investigation](../records/validation/2026-09-21-analysis-latency.md), [processing audits](../records/audits/2026-09-27-foundation-readiness/README.md) and foundation-readiness measurements remain historical evidence. Their CLI publication and parent/worker costs do not describe the post-retirement runtime.
 
 ## Evaluate independent TypeScript versions for building and analysis
 
