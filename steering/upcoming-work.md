@@ -1,6 +1,6 @@
 # Upcoming work
 
-Last considered: 2026-11-23
+Last considered: 2026-11-25
 
 A living document for keeping track of upcoming work and deciding what order to
 do it in. Major checkpoints are useful occasions to reconsider it in strategy
@@ -74,6 +74,7 @@ Codes identify items independently of ordering.
 
 ```mermaid
 flowchart TD
+    UNSHELL["🧹 UNSHELL — Retire the interactive CLI shell"] --> BOOK
     BOOK["✦ BOOK — Initial book capability"] --> MINIGUI["✦ MINIGUI — Minimal graphical investigation"]
     BOOK --> INVEST["✦ INVEST — Broader investigation capabilities"]
     MINIGUI -. Interaction needs revealed through use .-> GUI["✦ GUI — Broader graphical investigation 🧱"]
@@ -93,7 +94,8 @@ gap prevents useful evaluation of the book.
 
 | Position | Item | Why here / what could change it |
 | --- | --- | --- |
-| Next: plan and implement | [BOOK — Initial book capability](#book) | Turn the book-model handoff into a minimal working capability, including organization, composition and qualified access. Assess existing presentation/expansion machinery during planning and include its migration or retirement where appropriate. |
+| Next: plan and implement | [UNSHELL — Retire the interactive CLI shell](#unshell) | Remove a major consumer of presentation machinery, simplifying the remaining BOOK work. Live trials already have their own runner. |
+| After UNSHELL | [BOOK — Initial book capability](#book) | Turn the book-model handoff into a minimal working capability, including organization, composition and qualified access. Reassess presentation/expansion machinery against its remaining consumers; decide then whether any cleanup should be implemented separately. |
 | After BOOK | [MINIGUI — Minimal graphical investigation](#minigui) | Make the book readable and navigable, so actual use can reveal gaps in its content and interaction. |
 | Tentatively after MINIGUI | [INVEST — Broader investigation capabilities](#invest) | Add a few investigations in response to needs encountered in the book. Bring a bounded capability forward if it is needed to exercise the book meaningfully. |
 | Conditional, when investigation must span input changes | [CHANGE — Investigation across target changes](#change) | The intended experience or actual use supplies the trigger. Can precede or follow PERSIST. |
@@ -118,8 +120,8 @@ Alphabetical by code.
   Build on the implemented structured-account mechanism. Specialized architectural
   investigations can follow; the full Cockatiel example is not the initial scope.
 - **Planning:** use the book-model handoff to develop the implementation plan,
-  decisions and coordinated governing-document revisions. Assess existing presentation
-  and expansion machinery as **keep, adapt, replace or remove**. Include migration
+  decisions and coordinated governing-document revisions. Following UNSHELL, assess
+  remaining presentation and expansion machinery as **keep, adapt, replace or remove**. Include migration
   and retirement in the plan; removals requiring a usable graphical replacement can
   belong to MINIGUI. Retain useful acquisition and qualification responsibilities
   without assuming two parallel presentation systems must remain supported.
@@ -218,8 +220,7 @@ Alphabetical by code.
   API already supplies a browser runtime or transport.
 - **Validation:** use the book for actual investigation, including follow-up and
   revised accounts. Check faithful presentation as well as usefulness; CLI checks
-  alone do not establish the human experience. Once usable, trigger the
-  [CLI retirement checkpoint](#cli-retirement-checkpoint).
+  alone do not establish the human experience.
 - **Sources:** [book-model handoff: model](../notes/book-model/model.md),
   [book-model handoff: presentation and interface considerations](../notes/book-model/implementation-notes.md#presentation-and-interface-considerations),
   [backlog: fresh investigation and attempt history](../docs/backlog.md#expose-fresh-investigation-and-attempt-history-in-interfaces),
@@ -262,6 +263,20 @@ Alphabetical by code.
   cross-session return. Can precede or follow CHANGE. If changing-target support comes first,
   include retention and restoration of its multiple input states and their relationships.
 - **Source:** [candidate UX: returning to an investigation](candidate-ux.md#returning-to-an-investigation).
+
+<a id="unshell"></a>
+### UNSHELL — Retire the interactive CLI shell
+
+- **Kind:** 🧹
+- **Outcome:** the interactive CLI shell is retired, removing its dependency on
+  presentation machinery and simplifying subsequent assessment of that machinery.
+- **Scope:** remove the shell and directly related code and documentation; identify
+  any useful responsibilities that need to remain elsewhere. Live trials have their
+  own runner, so shell retirement does not require a replacement trial interface.
+- **Boundary:** complete and verify shell retirement independently of the book model.
+  Reassess presentation machinery afterward; whether its cleanup should be separate
+  from BOOK remains open.
+- **Source:** strategy discussion: extract shell retirement from BOOK planning.
 
 <a id="principles-for-choosing-the-order"></a>
 ## Principles for choosing the order
@@ -309,13 +324,3 @@ At substantial completions, consequential findings, or changes in priority:
 These questions guide human-led reconsideration of the selection, ordering, and
 rationale. Item codes stay stable as priorities change; detailed outcomes and
 implementation history remain in their existing records.
-
-<a id="cli-retirement-checkpoint"></a>
-### CLI retirement checkpoint
-
-Once MINIGUI supports usable graphical investigation, assess whether to retire
-the interactive human CLI. Consider any continuing value in launching,
-authentication, debugging, automation, or agent-facing access separately:
-those facilities need not require retaining the interactive command shell.
-The checkpoint decides what remains useful and the cost of supporting it;
-neither retirement nor indefinite support for both interfaces is assumed.
