@@ -90,7 +90,8 @@ Preserve these guarantees through the direct application boundary:
   or change interruption into a defect. Reject late content and prevent late usage
   from altering sealed accounting; missing measurements remain explicit.
 - `interrupt()`, a lifetime-signal abort, and `close()` during an active request use
-  the same terminal-abort guarantees. Closing an idle Session simply closes it.
+  the same terminal-abort guarantees. Closing an idle Session starts no request abort
+  but still exposes any retained shutdown assessment and its failures.
   Abort initiates cleanup as soon as the host can deliver it; execution responds at
   cooperative checkpoints. Request settlement does not wait for resource exit.
 - `interrupt()` and `close()` expose the same shutdown assessment, covering request
@@ -120,16 +121,18 @@ existing lifecycle responsibilities, including joining request finalization duri
 close, rather than introduce a general worker framework or another failure-reporting
 callback. Protection applies to notifications during terminal-abort finalization.
 Exceptions from `onProgress`, `onWork` or `onReport` before a terminal outcome is
-established, and success-path callback policy, retain existing behavior. Record that
-limited callback-exception policy as a residual follow-up consideration; UNSHELL
-does not establish a general callback-isolation guarantee.
+established, and success-path callback policy, retain existing behavior. State that
+limited callback-exception policy in the retirement decision's consequences; it is
+not a code-removal residual or a commitment to general callback isolation.
 
 Distinguish cancellation request, operation settlement, cleanup reporting and actual
 resource exit. In-process cancellation does not promise hard termination of arbitrary
 synchronous computation or survival after host destruction.
 
 Retiring the worker deliberately gives up its active synchronous-work interruption
-boundary. This reverses the host selection in the accepted execution-ownership
+boundary and separation of compiler execution/state into a worker thread. The current
+host uses `node:worker_threads`, not a separate process; it does not establish general
+process-crash containment. This reverses the host selection in the accepted execution-ownership
 decision, which rejected moving compiler work into the parent for that reason.
 The surviving direct callers already run in-process, and the retiring human client
 no longer needs that private host. Accept and disclose the limitation instead of
@@ -144,9 +147,12 @@ or failure handling merely because the renderer moves.
 
 Relocated rendering remains presentation: consume only supplied qualified content,
 add no claims or acquisition, preserve alternatives and disclose omissions. Its actual
-rendered output must continue to satisfy the applicable human-output/disclosure
-requirements; moving it into development support is no exemption. Preserve relevant
-checks without retaining the CLI's unrelated classification/export framework.
+rendered output must satisfy the applicable human-output/disclosure requirements;
+moving it into development support is no exemption. Existing qualification and
+omission checks do not establish complete disclosure conformance, which has not been
+assessed here. Assess the actual rendered output during baseline/migration verification
+with those tests and focused output inspection, and report any remaining gap explicitly.
+This does not require retaining the CLI's unrelated classification/export framework.
 Source-bearing validation captures are not automatically human-facing output.
 
 Two deliberate differences are distinguished from that preservation:
@@ -154,7 +160,9 @@ Two deliberate differences are distinguished from that preservation:
 - Compact-alias metadata and accepted compact-alias inputs may disappear, as agreed.
   Precise identity, qualified references and connections between trial steps remain.
 - The separately specified core interruption correction changes its exceptional
-  outcome/cleanup behavior. It is not permission to revise the runner's lifecycle.
+  outcome/cleanup behavior. In particular, `interrupt()`'s promise changes from Git
+  cleanup alone to the full shutdown assessment, including request finalization.
+  It is not permission to revise the runner's lifecycle.
 
 Capture a pre-change baseline with controlled participants before moving or removing
 code. Evidence for preservation should cover equal-input rendering and application results,
@@ -173,6 +181,8 @@ command-shaped batch schema, or a universal event stream. Its
 [feedback intent](../foundation/product-design.md#inadequate-representations)
 also survives retirement of the particular CLI interaction. Removing the shell
 does not withdraw either requirement.
+The accepted client-neutral [representation-limit and feedback obligation](../docs/decisions/human-facing-architectural-representations.md#representation-limits-and-feedback)
+also remains; its feedback provision is part of the capability gap below.
 
 Remove the unused observation sink and delivery implementation with its retiring
 CLI consumers. Do not retain it speculatively, introduce a new consumer to justify
