@@ -119,8 +119,8 @@ Two possible dispositions remain:
    that deleting the sink completes that requirement or that trial files universally
    replace it.
 
-This choice is not settled by the agreement to remove CLI-specific feedback
-representation. The earlier automatic-removal recommendation was premature.
+Removing CLI-specific feedback representation does not determine whether the
+underlying delivery mechanism should remain.
 
 ## Residual capabilities and exclusions
 
