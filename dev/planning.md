@@ -42,7 +42,7 @@ This sequence is a convenience, not a required ceremony. Feel free to vary it or
 
 1. Capture durable initial notes and alternatives under a suitable location in `notes/`, or use `_<planning-name>/` for disposable checkout-local work.
 2. When discussion has reached the point of being ready to create a plan, draft the plan and its related documents in a tracked [planning package](#planning-package).
-3. Review the plan, decisions, and canonical revisions together when their choices are interdependent. Another agent may perform a review when an independent reading would be useful.
+3. Review the plan, decisions, and canonical revisions together when their choices are interdependent. When an independent reading would be useful, request a [review of the planning package](#planning-package-review).
 4. Once the human approves the package, promote it as described below.
 
 ### Planning package
@@ -82,6 +82,20 @@ For a revision to a canonical file, normally include only the independently revi
 - identify each canonical heading or entry proposed for deletion.
 
 Use a stable unit appropriate to the destination, such as a core-concept definition, architectural constraint, or backlog entry. These are proposed revisions, not line-level patches.
+
+<a id="planning-package-review"></a>
+## Reviewing a planning package
+
+When asked to review a draft package, assess whether it is ready for human approval and promotion. Read the package alongside the governing documents it relies on or would change. Inspect the implementation where a material assumption depends on current behavior.
+
+- Assess whether the proposed work addresses the stated problem, whether its scope and complexity are proportionate, and whether its success criteria and verification would establish the intended outcome. Test feasibility against the proposed sequence, dependencies, and material risks.
+- Check that consequential choices are explicit, supported by reasoning, and recorded in the appropriate documents. Identify decisions the human needs to make before approval and choices that can reasonably wait for implementation.
+- Read the decisions and governing documents as they would stand after promotion, including unchanged passages affected by the proposal. Look for inconsistencies, material gaps, obsolete instructions, and incomplete supersession. Check that the package accounts for any known gap between the adopted requirements and the implementation.
+- Check that the promoted documents would stand on their own once draft context, working notes, and temporary steering labels are gone.
+
+Identify the package reviewed and any material limits of the review. For each finding, cite the affected passage, explain the practical consequence, and suggest a resolution when clear. Distinguish verified problems from uncertainties. Conclude whether the package is ready for approval, making clear which findings need resolution before approval and which are optional improvements.
+
+Write the findings to a descriptively named Markdown file under `_reviews/` at the root of the worktree containing the draft package. Use a distinct filename for each review and return its path with a brief assessment. Make no other changes to the repository unless the human explicitly directs you to do so.
 
 ## Promotion and disposal
 
