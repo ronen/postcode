@@ -51,8 +51,6 @@ the entire shell or assuming every unused facility is dead.
 Preserve the existing ability to abort the whole analysis Session. An interrupted
 Session accepts no further investigation requests; continuing requires a new
 Session. Final accounting remains readable and the caller can complete shutdown.
-This is a Session-lifecycle capability, not the design for cancelling an individual
-GUI investigation.
 
 Preserve these guarantees through the direct application boundary:
 
@@ -83,19 +81,6 @@ handling.
 Distinguish cancellation request, operation settlement, cleanup reporting and actual
 resource exit. In-process cancellation does not promise hard termination of arbitrary
 synchronous computation or survival after host destruction.
-
-### Deferred capability: request cancellation with a reusable Session
-
-Whether a caller should be able to cancel one investigation while continuing to use
-the same Session is a separate capability question, outside UNSHELL. Terminal Session
-abort must not be treated as the settled interaction design for a GUI cancel action.
-
-Future design must establish what work stops, which already accepted information
-remains usable, how partial work and accounting are represented, and when another
-request may safely begin while cleanup is outstanding. It must preserve input validity,
-qualification and resource ownership. Record this as a deferred capability question,
-not a commitment to implement request-level cancellation or a claim that UNSHELL
-supplies it.
 
 ## Trial preservation
 
@@ -178,7 +163,7 @@ changes to foundation or development-process documents.
 
 Review the complete proposal against the governing requirements, including scoped
 retirement of alias, worker and CLI feedback clauses and preservation of terminal
-Session-abort guarantees. Keep reusable-Session request cancellation separate.
+Session-abort guarantees.
 Then prepare the formal decision/document revisions and an implementation plan.
 Agreement on this note's direction does not amend governing documents or authorize
 implementation. No formal plan is being drafted in parallel with this discussion.

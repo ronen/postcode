@@ -47,6 +47,14 @@ but no replacement end-user investigation interface. Document that accurately.
 
 ## Discussion decisions
 
+### Keep interruption scope surgical — human direction, 25 November 2026
+
+> actually i overreached -- our UNSHELL remit doesn't need to include any mention of individual request cancellation at all. That wasn't part of the CLI shell, so is not an issue that needs discussing regarding surgical CLI shell removal.
+
+The proposal retains terminal Session abort and the accounting/cleanup guarantees.
+The deferred capability discussion introduced below is withdrawn from UNSHELL;
+it creates no follow-up or backlog requirement for this work.
+
 ### Terminal Session abort and deferred request cancellation — human direction, 25 November 2026
 
 > OK, let's preserve the existing terminal Session-abort capability and the proposed accounting/cleanup guarantees within UNSHELL. But we shouldn't treat it as the settled design for cancelling an individual GUI investigation. Let's identify request-level cancellation with a reusable Session as a deferred separate capability question.
