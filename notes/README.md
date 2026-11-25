@@ -10,6 +10,7 @@ A document whose lifecycle prevents later editorial repair must not link to note
 
 ## Current notes
 
+- [UNSHELL proposal](unshell-proposal.md): current removal/separation proposal, preservation guarantees and remaining design questions before formal planning.
 - [UNSHELL planning](unshell-planning.md): CLI/worker retirement boundary, surviving responsibilities, runner failure experiments and coverage migration.
 - [UNSHELL separation assessment](unshell-assessment.md): core removal candidates, interruption guarantees, actual residuals and compatibility choices before formal drafting.
 

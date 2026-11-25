@@ -4,6 +4,10 @@ Exploratory working notes, 25 November 2026. Not an approved implementation plan
 accepted architectural decision, or implementation authorization. Formal drafting
 follows discussion of consequential choices. Implementation belongs in a separate chat.
 
+The [UNSHELL proposal](unshell-proposal.md) is the current synthesis for discussion.
+The human directed that a well-defined proposal in notes precede an implementation
+plan. Formal drafting waits for the remaining design questions in that proposal.
+
 The subsequent [separation assessment](unshell-assessment.md) refines the provisional
 dispositions and residual register below, identifies the worthwhile core interruption
 correction, and records the two concrete compatibility choices for discussion.
