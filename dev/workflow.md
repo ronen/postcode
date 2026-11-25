@@ -92,6 +92,8 @@ Record a decision under [`docs/decisions/`](../docs/decisions/) when a choice ha
 <a id="references-in-historical-records"></a>
 ### References in historical records
 
+When writing a plan or other document that will serve as a historical record, describe any relevant backlog work directly and omit links to individual backlog entries, which may later be removed or consolidated.
+
 For records whose lifecycle preserves their historical content (see the [examples in the process conventions](process-conventions.md#historical-records)), preserve links as recorded. Interpret historical references against the explicitly identified baseline where applicable, or otherwise the historical context in which the relevant text was recorded; a later metadata update does not change that context. Later changes to link destinations do not by themselves make the record defective or authorize retrospective link repairs.
 
 Follow the applicable lifecycle and its human-authorization requirements for corrections, clarifications, and changes of governing authority. Record material corrections or superseding decisions separately, explicitly identifying the affected record. This does not prevent required lifecycle metadata updates or mechanical link changes expressly permitted when relocating records.
