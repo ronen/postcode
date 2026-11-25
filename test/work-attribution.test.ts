@@ -4,17 +4,14 @@ import { test } from 'node:test';
 import type { TestContext } from 'node:test';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { temporaryDirectory } from './cli-helpers.js';
+import { temporaryDirectory } from './temporary-directory.js';
 import { ScriptedContributionAgent, moduleRecord, proseContribution } from './contribution-agent.js';
-import { openWorkerCliSession, openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
-import { interactiveSession } from '../src/lib/interactive-session.js';
-import { publishCommand } from '../src/lib/command-execution.js';
-import type { ObservationBatch } from '../src/lib/application/observations.js';
+import { openApplication as openSession } from '../src/lib/application/index.js';
 import { CommandInterrupted } from '../src/lib/execution-errors.js';
 import { initiation, RequestWork, WorkReportState, recordExpansionWork } from '../src/lib/work-attribution.js';
 import type { WorkReport, AttributedWork } from '../src/lib/work-attribution.js';
 import { freezeOwned } from '../src/lib/immutable.js';
-import { normalizeRequest } from '../src/lib/requests.js';
+import { captureApplicationRequest as normalizeRequest } from '../src/lib/application/requests.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 import { conductDialog } from '../src/lib/contributions/dialog.js';
@@ -25,11 +22,8 @@ import { evaluateModules } from '../src/lib/evaluation.js';
 import { investigationBounds } from '../src/lib/investigation/bounds.js';
 import type { RecordId } from '../src/lib/records.js';
 
-import type { ContributionView as InvestigationView } from '../src/lib/interfaces/cli/contribution-presentation.js';
-
-const presentation = { format: 'json' as const, moreDetails: false };
-const inventory = { lens: 'modules' as const, selector: null, presentation };
-const summary = { lens: 'summarize' as const, selector: 'widget', presentation };
+const inventory = { kind: 'lens', lens: 'modules', designation: { kind: 'configured-project' } } as const;
+const summary = { kind: 'lens', lens: 'summarize', designation: { kind: 'name', value: 'widget' } } as const;
 function fixture(t: TestContext, huge = false, many = false) {
   const root = temporaryDirectory(t, 'postcode-work-attribution-');
   const configPath = path.join(root, 'tsconfig.json');
@@ -38,10 +32,9 @@ function fixture(t: TestContext, huge = false, many = false) {
   if (many) for (let i = 0; i < 30; i++) writeFileSync(path.join(root, `other${i}.ts`), `export const other${i} = ${i};`);
   return { root, configPath };
 }
-function view(result: Awaited<ReturnType<Extract<Awaited<ReturnType<typeof openSession>>, { status: 'opened' }>['session']['execute']>>) {
-  assert.equal(result.kind, 'view');
-  assert.equal(result.view.schema, 'postcode-contribution-view/1-experimental');
-  return result.view as InvestigationView;
+function contribution(result: import('../src/lib/application/index.js').ApplicationResult) {
+  assert.equal(result.kind, 'answer'); assert.equal(result.answer.content.contract, 'contribution');
+  return { ...result, projection: result.answer.content.value.projection };
 }
 
 test('request attribution separates prerequisite work, actual provider reuse and first generation without changing answers', async t => {
@@ -50,17 +43,17 @@ test('request attribution separates prerequisite work, actual provider reuse and
   assert.equal(opened.status, 'opened');
   t.after(() => opened.session.close());
   const first = await opened.session.execute(inventory);
-  assert.equal(first.kind, 'view');
+  assert.equal(first.kind, 'answer');
   assert.equal(first.attribution.status, 'completed');
   assert.equal(first.context.initiator, 'caller');
   assert.equal(first.context.constraints.wholeRequestBudget, null);
   const snapshot = JSON.stringify(first);
   const repeat = await opened.session.execute(inventory);
-  assert.equal(repeat.kind, 'view');
+  assert.equal(repeat.kind, 'answer');
   assert.notEqual(first.context.id, repeat.context.id);
   assert.deepEqual(repeat.attribution.parents, [first.context]);
   assert.deepEqual(first.attribution.parents, []);
-  assert.deepEqual(first.view, repeat.view);
+  assert.deepEqual(first.answer, repeat.answer);
   for (const boundary of ['provider-modules', 'module-evaluation']) {
     assert.equal(first.attribution.work.find(item => item.boundary === boundary)!.disposition, 'established');
     const reused: AttributedWork = repeat.attribution.work.find(item => item.boundary === boundary)!;
@@ -68,23 +61,13 @@ test('request attribution separates prerequisite work, actual provider reuse and
     assert.deepEqual(parentOf(repeat.attribution, reused.current.parent), repeat.context);
     assert.ok(reused.generating.every(item => item.origin !== null && parentOf(repeat.attribution, item.origin.parent).id === first.context.id));
   }
-  const missing = await opened.session.execute({ ...summary, selector: 'absent-candidate' });
+  const missing = await opened.session.execute({ ...summary, designation: { kind: 'name', value: 'absent-candidate' } });
   assert.equal(missing.kind, 'resolution');
   assert.equal(missing.attribution.status, 'refused');
   assert.ok(missing.attribution.work.length > 0);
   assert.ok(missing.attribution.work.every(item => item.current.role === 'resolution-prerequisite' && item.current.initiator === 'PostCode'));
-  assert.deepEqual(missing.report.attribution, missing.attribution);
-  const { attribution: summaryAttribution, ...renderedReport } = JSON.parse(missing.rendered);
-  const { attribution: full, ...expectedReport } = missing.report;
-  assert.deepEqual(renderedReport, expectedReport, 'compact attribution must not replace request, candidates or prerequisite qualifications');
-  assert.equal(summaryAttribution.detail, 'summary');
-  assert.equal(summaryAttribution.completeness, 'complete');
-  assert.equal(summaryAttribution.status, 'refused');
-  assert.equal(summaryAttribution.counts.workEntries, full!.work.length);
-  assert.equal(full!.detail, 'full');
-  assert.equal(summaryAttribution.work, undefined);
-  const dependencies = await opened.session.execute({ ...inventory, lens: 'dependencies' });
-  const repeated = await opened.session.execute({ ...inventory, lens: 'dependencies' });
+  const dependencies = await opened.session.execute({ ...inventory, lens: 'dependency-structure' });
+  const repeated = await opened.session.execute({ ...inventory, lens: 'dependency-structure' });
   const provider = repeated.attribution.work.find(item => item.boundary === 'provider-dependencies')!;
   assert.equal(provider.disposition, 'reused');
   assert.ok(provider.generating.every(item => item.origin !== null && parentOf(repeated.attribution, item.origin.parent).id === dependencies.context.id));
@@ -122,7 +105,7 @@ test('partial provider outcomes retry without an assurance and retain current ve
   assert.equal(contexts[3]!.work[0]!.outcome.state!.reason, 'Controlled incomplete population.');
 });
 
-test('evidence attribution preserves withheld capture, unavailability, reuse and direct-operation parent context', async t => {
+test('evidence attribution preserves withheld capture, unavailability, reuse and request parent context', async t => {
   const agent = new ScriptedContributionAgent([
     input => input.request.operation === 'functionality' ? { kind: 'tools', requests: [
       { kind: 'source', subject: moduleRecord(input) }, { kind: 'source', subject: moduleRecord(input) },
@@ -138,7 +121,7 @@ test('evidence attribution preserves withheld capture, unavailability, reuse and
   assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
   bounds.calls = 1;
   const first = await opened.session.execute(summary);
-  const answer = view(first);
+  const answer = contribution(first);
   assert.equal(first.context.constraints.investigation.calls, 4, 'the actual inherited bounds are captured when the Session opens');
   assert.equal(first.attribution.evidence.filter(item => item.query.kind === 'source').length, 3);
   const [acquired, repeated, unavailable] = first.attribution.evidence.filter(item => item.query.kind === 'source');
@@ -150,7 +133,7 @@ test('evidence attribution preserves withheld capture, unavailability, reuse and
   assert.equal(unavailable!.delivery, 'delivered');
   const content = first.attribution.work.filter(item => item.boundary === 'content');
   assert.deepEqual(content.map(item => item.disposition), ['established', 'reused']);
-  assert.deepEqual(content[0]!.current.trigger, { kind: 'source', subject: answer.resolution!.subjects[0] });
+  assert.deepEqual(content[0]!.current.trigger, { kind: 'source', subject: answer.resolution!.candidates[0]!.id });
   assert.equal(content[0]!.current.sequence, 1);
   assert.equal(content[1]!.current.sequence, 2);
   assert.equal(content[1]!.generating[0]!.origin!.sequence, 1);
@@ -159,28 +142,18 @@ test('evidence attribution preserves withheld capture, unavailability, reuse and
   assert.ok(!answer.usage.attempts[0]!.suppliedEvidence.includes(capture));
   assert.equal(answer.usage.attempts[0]!.parent!.id, first.context.id);
   const second = await opened.session.execute(summary);
-  assert.deepEqual(view(second).projection, answer.projection);
+  assert.deepEqual(contribution(second).projection, answer.projection);
   assert.deepEqual(second.attribution.evidence, []);
   const reused = second.attribution.work.find(item => item.boundary === 'interpretation')!;
   assert.equal(reused.disposition, 'reused');
   assert.ok(reused.generating.every(item => parentOf(second.attribution, item.origin!.parent).id === first.context.id));
-  const operation = { operation: 'functionality', subject: answer.resolution!.subjects[0]!, parameters: {} };
-  const pending = opened.session.evaluateInvestigation(operation);
-  operation.subject = 'mutated-after-entry' as RecordId;
-  const direct = await pending;
-  assert.equal(direct.context.request.kind, 'operation');
-  assert.equal(direct.context.request.operation.subject, answer.resolution!.subjects[0], 'entry captures direct operation inputs before asynchronous checks');
-  assert.equal(direct.context.request.kind, 'operation');
-  assert.equal(direct.reused, true);
-  assert.notEqual(direct.context.id, first.context.id);
-  assert.equal(agent.inputs.length, 1);
-  const followup = await opened.session.execute({ ...summary, lens: 'explain', selector: answer.rows[0]!.address.investigram, reference: true });
-  assert.equal(view(followup).reporting!.contribution!.outcome.kind, 'accepted');
+  const followup = await opened.session.execute({ ...summary, lens: 'explain', designation: { kind: 'reference', value: answer.projection.alternatives[0]!.designation.investigram } });
+  assert.equal(contribution(followup).reporting!.contribution!.outcome.kind, 'accepted');
   assert.equal(followup.attribution.evidence[0]!.query.kind, 'contribution');
   assert.equal(followup.attribution.evidence[0]!.delivery, 'delivered');
   assert.ok(followup.attribution.evidence[0]!.outcome!.contributions!.some(delivery => delivery.kind === 'item'));
   assert.equal(followup.attribution.work.find(item => item.boundary === 'evidence-retrieval')!.disposition, 'consumed');
-  const inspected = await opened.session.execute({ ...summary, lens: 'inspect', selector: answer.rows[0]!.address.investigram, reference: true });
+  const inspected = await opened.session.execute({ ...summary, lens: 'inspect', designation: { kind: 'reference', value: answer.projection.alternatives[0]!.designation.investigram } });
   const consumption = inspected.attribution.work.find(item => item.boundary === 'interpretation' && item.disposition === 'consumed')!;
   assert.ok(consumption.generating.some(item => item.records.includes(answer.reporting!.attempt!) && item.origin !== null && parentOf(inspected.attribution, item.origin.parent).id === first.context.id));
   assert.equal(agent.inputs.length, 2, 'historical inspection starts no inference');
@@ -211,7 +184,7 @@ test('continuations consume an established page without claiming another acquisi
   } });
   assert.equal(limited.status, 'opened'); t.after(() => limited.session.close());
   const stopped = await limited.session.execute(summary);
-  assert.equal(view(stopped).reporting!.contribution!.outcome.kind, 'limit-stop');
+  assert.equal(contribution(stopped).reporting!.contribution!.outcome.kind, 'limit-stop');
   assert.equal(stopped.attribution.evidence[1]!.outcome!.status, 'available');
   assert.equal(stopped.attribution.evidence[1]!.delivery, 'not-delivered');
   assert.equal(stopped.attribution.status, 'failed');
@@ -235,8 +208,8 @@ test('over-bound common content is withheld while a subsequent bounded excerpt i
   ]);
   const opened = await openSession({ configPath: fixture(t).configPath }, { investigation: { agent } });
   assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
-  const first = view(await opened.session.execute(summary)); item = first.rows[0]!.address;
-  const follow = await opened.session.execute({ ...summary, lens: 'explain', selector: item.investigram, reference: true });
+  const first = contribution(await opened.session.execute(summary)); item = first.projection.alternatives[0]!.items[0]!.address;
+  const follow = await opened.session.execute({ ...summary, lens: 'explain', designation: { kind: 'reference', value: item.investigram } });
   const common = follow.attribution.evidence.filter(entry => entry.query.kind === 'contribution');
   assert.equal(common.length, 3, 'initial whole subject, explicit full item, then excerpt');
   for (const entry of common.slice(0, 2)) {
@@ -245,38 +218,8 @@ test('over-bound common content is withheld while a subsequent bounded excerpt i
     assert.match(entry.reason!, /Response omitted.*Nothing was delivered/);
   }
   assert.equal(common[2]!.delivery, 'delivered'); assert.equal(common[2]!.outcome!.status, 'available');
-  const supplied = view(follow).usage.attempts.at(-1)!.contributionDeliveries!.filter(delivery => delivery.kind === 'item');
+  const supplied = contribution(follow).usage.attempts.at(-1)!.contributionDeliveries!.filter(delivery => delivery.kind === 'item');
   assert.equal(supplied.length, 1); assert.deepEqual(supplied[0]!.item, item); assert.equal(supplied[0]!.coverage, 'excerpt');
-});
-
-test('worker interruption seals received work and observations independently of a View and sink success', { timeout: 30_000 }, async t => {
-  let ready!: () => void;
-  const waiting = new Promise<void>(resolve => { ready = resolve; });
-  const agent = new ScriptedContributionAgent([
-    input => ({ kind: 'tools', requests: [{ kind: 'source', subject: moduleRecord(input) }] }),
-    () => { ready(); return new Promise(() => {}); },
-  ]);
-  const f = fixture(t);
-  const remote = interactiveSession({ configPath: f.configPath }, { investigator: agent });
-  t.after(() => remote.close());
-  const opened = await remote.opening; assert.equal(opened.status, 'opened');
-  const batches: ObservationBatch[] = []; let stdout = '', stderr = '';
-  const pending = publishCommand({ id: opened.id, execute: remote.execute, check: remote.check, usage: remote.usage, work: remote.work }, summary,
-    'summarize widget', f.configPath, 1, { stdout: text => { stdout += text; }, stderr: text => { stderr += text; } },
-    { async submit(batch) { batches.push(batch); return { accepted: false, reason: 'Controlled sink failure.' }; } });
-  await waiting;
-  await remote.interrupt();
-  assert.equal(await pending, 130);
-  assert.equal(stdout, ''); assert.match(stderr, /Controlled sink failure/);
-  const work = remote.work()!;
-  assert.equal(work.status, 'interrupted'); assert.equal(work.completeness, 'incomplete');
-  assert.ok(work.work.some(item => item.boundary === 'content' && item.disposition === 'established'));
-  assert.equal(work.evidence[1]!.delivery, 'delivered');
-  assert.deepEqual(batches[0]!.records.find(item => item.kind === 'request-work')!.value, work);
-  assert.ok(!batches[0]!.events.some(item => item.type === 'view-produced'));
-  const sealed = JSON.stringify(work);
-  await assert.rejects(remote.execute(inventory), CommandInterrupted);
-  assert.equal(JSON.stringify(work), sealed);
 });
 
 
@@ -292,26 +235,6 @@ test('equal re-derived records do not invent original attribution for previously
   assert.equal(report.work.find(item => item.boundary === 'dependency-evaluation')!.disposition, 'established');
   assert.ok(report.work.every(item => item.generating.every(generation => generation.origin === null)));
   assert.match(report.limitations.join(' '), /unknown for untracked support/);
-});
-
-test('failed publication retains completed prerequisite facts and labels the missing boundary outcome', async t => {
-  const f = fixture(t), opened = await openSession({ configPath: f.configPath });
-  assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
-  const original = MemoryProgramRecordStore.prototype.put;
-  t.mock.method(MemoryProgramRecordStore.prototype, 'put', function (this: MemoryProgramRecordStore, records: Parameters<typeof original>[0]) {
-    if (records.some(record => record.kind === 'projection')) throw new Error('Controlled construction defect.');
-    return original.call(this, records);
-  });
-  const batches: ObservationBatch[] = [];
-  const code = await publishCommand(opened.session, inventory, 'modules', f.configPath, 1,
-    { stdout() { assert.fail('No fabricated output on defect'); }, stderr() {} },
-    { async submit(batch) { batches.push(batch); return { accepted: true }; } });
-  assert.equal(code, 1);
-  const work = opened.session.work()!;
-  assert.equal(work.status, 'defect'); assert.equal(work.completeness, 'incomplete');
-  assert.ok(work.work.some(item => item.boundary === 'module-evaluation' && item.outcome.state?.execution === 'completed'));
-  assert.deepEqual(batches[0]!.records.find(item => item.kind === 'request-work')!.value, work);
-  assert.equal(batches[0]!.events.at(-1)!.type, 'command-defect');
 });
 
 test('a cancelled asynchronous evidence query retains known acquisition but never accepts a late query result', async t => {
@@ -441,62 +364,13 @@ test('hundreds of modules produce boundary-sized expansion reports with complete
   }
   const reportBytes = Buffer.byteLength(JSON.stringify(first.attribution));
   assert.ok(events < 32, 'provider/evaluator expansion reports are grouped by requirement and qualification');
-  assert.ok(bytes < reportBytes * 1.5, 'worker progress does not repeatedly transmit earlier facts');
+  assert.ok(bytes < reportBytes * 1.5, 'incremental progress does not repeat earlier facts');
   assert.ok(reportBytes < 1_500_000, 'report size includes record identities, not repeated parent descriptions');
   const repeat = await opened.session.execute(inventory);
   assert.deepEqual(repeat.attribution.parents, [first.context]);
-  assert.deepEqual(repeat.kind === 'view' && repeat.view, first.kind === 'view' && first.view);
+  assert.deepEqual(repeat.kind === 'answer' && repeat.answer, first.kind === 'answer' && first.answer);
   assert.ok(repeat.attribution.work.filter(item => item.boundary === 'module-expansion-evaluation')
     .every(item => item.disposition === 'reused' && item.generating.every(generation => generation.origin !== null && parentOf(repeat.attribution, generation.origin.parent).id === first.context.id)));
-});
-
-test('non-View publication keeps full attribution despite sink rejection and summarizes only rendered detail', async t => {
-  const f = fixture(t), opened = await openWorkerCliSession({ configPath: f.configPath });
-  assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
-  const established = await opened.session.execute(inventory);
-  let result: Awaited<ReturnType<typeof opened.session.execute>> | undefined;
-  const batches: ObservationBatch[] = [], output: string[] = [], errors: string[] = [];
-  const code = await publishCommand({ ...opened.session, async execute(request, execution) {
-    result = await opened.session.execute(request, execution); return result;
-  } }, { ...inventory, lens: 'inspect', selector: 'absent-name' }, 'inspect absent-name', f.configPath, 2,
-  { stdout(text) { output.push(text); }, stderr(text) { errors.push(text); } },
-  { async submit(batch) { batches.push(batch); return { accepted: false, reason: 'Controlled sink rejection.' }; } });
-  assert.equal(code, 3);
-  assert.equal(result!.kind, 'resolution');
-  const json = JSON.parse(output.join(''));
-  assert.equal(json.attribution.detail, 'summary');
-  assert.equal(json.attribution.completeness, 'complete');
-  assert.equal(json.resolution.reason, 'lookup-unavailable', 'the temporary project has no repository/group lookup population');
-  assert.ok(json.resolution.prerequisites.length);
-  assert.ok(json.resolution.support.length);
-  assert.equal(json.context.request.designation.value, 'absent-name');
-  assert.equal(result!.attribution.detail, 'full');
-  assert.ok(result!.attribution.parents.some(parent => parent.id === established.context.id));
-  for (const entry of result!.attribution.work) {
-    assert.ok(parentOf(result!.attribution, entry.current.parent));
-    for (const generation of entry.generating) if (generation.origin) assert.ok(parentOf(result!.attribution, generation.origin.parent));
-  }
-  assert.deepEqual(batches[0]!.records.find(item => item.kind === 'request-work')!.value, result!.attribution);
-  assert.ok(errors.join('').includes('Controlled sink rejection.'));
-});
-
-test('a deferred publication invalidation keeps execution completion distinct from command outcome', async t => {
-  const f = fixture(t), opened = await openWorkerCliSession({ configPath: f.configPath });
-  assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
-  const batches: ObservationBatch[] = [], output: string[] = [];
-  const code = await publishCommand({ ...opened.session, async execute(request, execution) {
-    const result = await opened.session.execute(request, execution);
-    writeFileSync(path.join(f.root, 'widget.ts'), 'export const changed = 2;');
-    return result;
-  } }, inventory, 'modules', f.configPath, 1, { stdout(text) { output.push(text); }, stderr() {} },
-  { async submit(batch) { batches.push(batch); return { accepted: true }; } });
-  assert.equal(code, 2);
-  assert.deepEqual(output, []);
-  const report = batches[0]!.records.find(item => item.kind === 'request-work')!.value as WorkReport;
-  assert.equal(report.status, 'completed');
-  assert.equal(report.completeness, 'complete');
-  assert.equal((batches[0]!.records.find(item => item.kind === 'command-outcome')!.value as { status: string }).status, 'invalidated');
-  assert.equal(batches[0]!.events.some(event => event.type === 'view-produced'), false);
 });
 
 
@@ -508,7 +382,7 @@ test('reused caller correlation IDs cannot conflate distinct generating parent d
   const opened = await openSession({ configPath: fixture(t).configPath });
   assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
   const first = await opened.session.execute(inventory, { requestId: 'repeated-correlation' });
-  const second = await opened.session.execute({ ...inventory, lens: 'dependencies' }, { requestId: 'repeated-correlation' });
+  const second = await opened.session.execute({ ...inventory, lens: 'dependency-structure' }, { requestId: 'repeated-correlation' });
   assert.equal(first.context.id, second.context.id);
   assert.notEqual(first.context.purpose, second.context.purpose);
   const reused = second.attribution.work.find(item => item.boundary === 'module-evaluation')!;

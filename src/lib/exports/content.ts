@@ -21,7 +21,6 @@ export function moduleExports(store: ProgramRecordStore, basis: EvaluationRecord
   if (entity.kind !== 'module' || retained.kind !== 'evaluation' || entity.session !== retained.session || retained.requirement !== 'modules') throw new Error('Invalid exports basis or subject');
   basis = retained;
   // Preserve successful module-population allocations, including a precise outsider.
-  store.entityIds(basis.modules, 'module'); store.entityIds(subjects, 'module');
   const outcomes = store.evaluations(basis.session).filter(item => item.basis === basis.id && item.modules.includes(subject)
     && (item.requirement === 'exports' || item.requirement === 'documentation'));
   const claims = [...new Set(outcomes.flatMap(item => item.claims ?? []))].map(id => store.get(id));

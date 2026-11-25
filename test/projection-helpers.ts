@@ -2,7 +2,7 @@ import { inspect as inspectSubjects } from '../src/lib/projections.js';
 import { inspectOrganization as inspectEntities } from '../src/lib/organization/projections.js';
 import { dependencyChildren as children, dependencyParents as parents } from '../src/lib/dependencies/projections.js';
 import { resolveSubjects } from '../src/lib/subject-resolution.js';
-import { lenses } from '../src/lib/requests.js';
+import { lenses } from '../src/lib/application/lenses.js';
 import type { EvaluationRecord, ProgramRecordStore, RecordId } from '../src/lib/records.js';
 import type { OrganizationEvaluationRecord } from '../src/lib/organization/records.js';
 import type { DependencyEvaluationRecord } from '../src/lib/dependencies/records.js';

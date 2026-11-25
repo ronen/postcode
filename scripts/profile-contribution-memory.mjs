@@ -8,7 +8,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { Session as Inspector } from 'node:inspector';
 import { createHash } from 'node:crypto';
-import { buildIdentity } from './comparison-fixtures.mjs';
+import { buildIdentity } from './build-identity.mjs';
 
 const configPath = path.resolve(process.argv[2]);
 const build = path.resolve(process.argv[3]);

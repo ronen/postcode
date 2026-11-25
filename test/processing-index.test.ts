@@ -4,7 +4,6 @@ import { test } from 'node:test';
 import { locate } from '../src/lib/organization/placement.js';
 import { deriveLayout } from '../src/lib/repository/layout.js';
 import type { RepositoryEvidence } from '../src/lib/repository/evidence.js';
-import { compositionView } from '../src/lib/composition-view.js';
 import { resolveComposition } from '../src/lib/composition-content.js';
 import type { ProgramRecord, ProgramRecordStore, RecordId, SessionId } from '../src/lib/records.js';
 
@@ -53,8 +52,8 @@ test('selected composition preparation has linear store reads and keeps parallel
     const content = resolveComposition(store, claims, evaluations);
     const preparedReads = reads;
     for (let pass = 0; pass < 2; pass++) for (let index = 0; index < size; index++) {
-      const result = compositionView(content(id(`module-${index}`)));
-      assert.deepEqual(result.claims.map(claim => claim.id), [`claim-${index}-a`, `claim-${index}-b`]);
+      const result = content(id(`module-${index}`));
+      assert.deepEqual(result.claims.map(claim => claim.record.id), [`claim-${index}-a`, `claim-${index}-b`]);
       assert.deepEqual(result.evaluations.map(outcome => outcome.id), [`outcome-${index}`]);
     }
     assert.equal(reads, preparedReads);

@@ -34,7 +34,7 @@ function project(store: ProgramRecordStore, evaluation: OrganizationEvaluationRe
       ? [[claim.subject, claim.information.child] as const] : [])).ancestors(selected);
   } else if (subject === 'selected-entities') {
     if (!resolved?.length) throw new Error('Inspection requires resolved subjects');
-    store.entityIds(evaluation.groups, 'group');
+
     const resolvedGroups = resolved.filter(id => store.get(id).kind === 'group');
     const resolvedModules = resolved.filter(id => store.get(id).kind === 'module');
     if (resolvedGroups.length + resolvedModules.length !== resolved.length || new Set(resolved).size !== resolved.length

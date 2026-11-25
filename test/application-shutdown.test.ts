@@ -5,7 +5,7 @@ import { EventEmitter } from 'node:events';
 import { PassThrough } from 'node:stream';
 import { GitExecutionOwner } from '../src/lib/git-execution.js';
 import type { GitResult } from '../src/lib/git-execution.js';
-import { CleanupIncomplete, SessionInvalidated } from '../src/lib/application/index.js';
+import { CleanupIncomplete, SessionInvalidated, SessionClosed, SessionBusy } from '../src/lib/application/index.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
@@ -354,3 +354,47 @@ for (const first of ['detected-change', 'interruption'] as const) {
     assert.deepEqual([closes, reports, exchanges], [1, 1, 1]);
   });
 }
+
+test('close from the completed-work callback preserves completed direct delivery and establishes SessionClosed', async t => {
+  let session!: ApplicationSession, closing: Promise<void> | undefined, finishes = 0;
+  session = sessionOf(await openApplication(fixture(t), { onWork(event) {
+    if (event.kind === 'finish') { finishes++; closing = session.close(); }
+  } }));
+  const result = await session.execute({ kind: 'lens', lens: 'modules', designation: { kind: 'configured-project' } });
+  assert.equal(result.kind, 'answer'); assert.equal(result.attribution.status, 'completed');
+  await closing; assert.equal(finishes, 1); assert.equal(session.work()!.status, 'completed');
+  await assert.rejects(session.check(), SessionClosed);
+  assert.equal(session.close(), closing);
+});
+
+test('pending direct work refuses concurrent execution and validity checks without disturbing its accounting', async t => {
+  const entered = deferred<void>(), reply = deferred<DialogReply>();
+  const session = sessionOf(await openApplication(fixture(t), { investigation: { dialogAgent: { identity, open: () => ({
+    exchange: () => { entered.resolve(); return reply.promise; }, close() {},
+  }) } } }));
+  t.after(() => session.close());
+  const running = session.execute(request); await entered.promise;
+  await assert.rejects(session.execute({ kind: 'report', report: 'usage' }), SessionBusy);
+  await assert.rejects(session.check(), SessionBusy);
+  assert.equal(session.work()!.status, 'running');
+  reply.resolve({ kind: 'refused' }); await running;
+  assert.notEqual(session.work()!.status, 'interrupted');
+  await session.check();
+});
+
+test('lifetime abort during direct opening cancels owned Git before returning any Session', async t => {
+  const controller = new AbortController(), entered = deferred<void>(), signals: string[] = [];
+  const fake = Object.assign(new EventEmitter(), { pid: 13579, stdin: new PassThrough(), stdout: new PassThrough(), stderr: new PassThrough(),
+    kill(signal: string) { signals.push(signal); setImmediate(() => { fake.emit('exit', null, signal); fake.emit('close', null, signal); }); return true; } });
+  const spawn = childProcess.spawn, close = GitExecutionOwner.prototype.close;
+  let owner: GitExecutionOwner | undefined;
+  t.mock.method(childProcess, 'spawn', () => { entered.resolve(); return fake as unknown as ChildProcessWithoutNullStreams; });
+  syncBuiltinESMExports();
+  t.mock.method(GitExecutionOwner.prototype, 'close', function(this: GitExecutionOwner, reason?: Error) { owner = this; return close.call(this, reason); });
+  t.after(() => { t.mock.restoreAll(); syncBuiltinESMExports(); });
+  const opening = openApplication(fixture(t), { signal: controller.signal });
+  const rejected = assert.rejects(opening, CommandInterrupted);
+  await entered.promise; controller.abort(); await rejected;
+  assert.ok(signals.includes('SIGTERM')); assert.equal(owner!.ownedChildren, 0);
+  assert.notEqual(childProcess.spawn, spawn);
+});

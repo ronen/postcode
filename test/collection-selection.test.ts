@@ -11,13 +11,12 @@ import { inspectOrganization, organization } from '../src/lib/organization/proje
 import { dependencyChildren, dependencyParents, dependencyStructure } from '../src/lib/dependencies/projections.js';
 import { recordId } from '../src/lib/identity.js';
 import type { EvaluationRecord, RecordId } from '../src/lib/records.js';
-import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
+import { openApplication as openSession } from '../src/lib/application/index.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import { requireResolution } from './request-helpers.js';
 
 const configPath = path.resolve('fixtures/dependency-journey/tsconfig.json');
 
-test('unordered selections canonicalize whole payloads without changing population allocation or compact bindings', async t => {
+test('unordered selections canonicalize whole payloads independently of caller order', async () => {
   const { store, evaluation, analysis } = await discover(configPath);
   const organized = evaluateOrganization(store, evaluation);
   const dependencies = evaluateDependencies(store, analysis);
@@ -32,7 +31,7 @@ test('unordered selections canonicalize whole payloads without changing populati
     moduleEvaluation: moduleBasis.id, projectModules: modulePopulation, relationships: [], occurrences: [], coverage: [] };
   store.put([moduleBasis, groupBasis, dependencyBasis]);
 
-  // Prebind the larger colliding ID first: compact spelling order is now the opposite of record order.
+  // Outside-population subjects use precise record order, independently of request order.
   const outsiders = (kind: 'module' | 'group') => {
     const source = store.get(kind === 'module' ? evaluation.modules[0]! : organized.groups[0]!);
     if (source.kind !== 'module' && source.kind !== 'group') throw new Error('Expected subject');
@@ -52,14 +51,10 @@ test('unordered selections canonicalize whole payloads without changing populati
       store.put([produced]); contributeModuleFindings(store, produced);
     }
     else contributeNativeFindings(store, evaluation.session, ids);
-    store.entityIds([ids[1]!], kind);
-    const bindings = store.entityIds(ids, kind);
-    assert.ok(bindings.get(ids[1]!)! < bindings.get(ids[0]!)!);
-    return { ids, bindings };
+    return { ids };
   };
   const outsideModules = outsiders('module'), outsideGroups = outsiders('group');
   const expectedModules = [...modulePopulation, ...outsideModules.ids], expectedGroups = [...groupPopulation, ...outsideGroups.ids];
-  const allocations = t.mock.method(store, 'entityIds');
   const cases = [
     { build: (subjects: readonly RecordId[]) => inspect(store, moduleBasis, subjects), subjects: expectedModules,
       schedule: [[modulePopulation, 'module']] },
@@ -70,10 +65,9 @@ test('unordered selections canonicalize whole payloads without changing populati
   ];
   for (const item of cases) {
     const payloads = [item.subjects, [...item.subjects].reverse(), [...item.subjects.slice(1), item.subjects[0]!]].map(subjects => {
-      const before = structuredClone(subjects), count = allocations.mock.calls.length;
+      const before = structuredClone(subjects);
       const answer = item.build(subjects);
       assert.deepEqual(subjects, before, 'caller inputs remain unchanged');
-      assert.deepEqual(allocations.mock.calls.slice(count).map(call => call.arguments), item.schedule);
       return answer;
     });
     assert.deepEqual(payloads[0], payloads[1]);
@@ -90,16 +84,13 @@ test('unordered selections canonicalize whole payloads without changing populati
     }
     assert.throws(() => item.build([...item.subjects, item.subjects[0]!]), /Duplicate|Invalid inspection subject/);
   }
-  assert.deepEqual(store.entityIds(outsideModules.ids, 'module'), outsideModules.bindings);
-  assert.deepEqual(store.entityIds(outsideGroups.ids, 'group'), outsideGroups.bindings);
 });
 
 test('ordinary empty inspection is an invariant violation while embedded detail and empty populations remain valid', async t => {
   const { store, evaluation, analysis } = await discover(configPath);
   const basis = evaluateOrganization(store, evaluation);
-  const allocations = t.mock.method(store, 'entityIds'), writes = t.mock.method(store, 'put');
+  const writes = t.mock.method(store, 'put');
   assert.throws(() => inspect(store, evaluation, []), /requires at least one resolved subject/);
-  assert.equal(allocations.mock.calls.length, 0);
   assert.equal(writes.mock.calls.length, 0);
   const group = inspectOrganization(store, basis, [basis.groups[0]!]);
   const embedded = store.get(group.moduleProjection!);
@@ -124,8 +115,8 @@ test('unsuccessful user lookup returns a resolution result without ordinary or e
   if (opened.status !== 'opened') throw new Error('Expected fixture Session');
   t.after(() => opened.session.close());
   const writes = t.mock.method(MemoryProgramRecordStore.prototype, 'put');
-  const result = requireResolution(await opened.session.execute({ lens: 'inspect', selector: 'absent-collection-subject',
-    presentation: { format: 'json', moreDetails: false } }));
+  const result = await opened.session.execute({ kind: 'lens', lens: 'inspect', designation: { kind: 'name', value: 'absent-collection-subject' } });
+  assert.equal(result.kind, 'resolution');
   assert.equal(result.resolution.reason, 'missing');
   assert.equal(writes.mock.calls.flatMap(call => call.arguments[0]).some(record => record.kind.endsWith('projection')), false);
 });

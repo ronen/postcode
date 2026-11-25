@@ -71,16 +71,6 @@ export interface WorkReport {
   readonly limitations: readonly string[];
 }
 
-/** Interface summary; reporting completeness is independent of omitted detail. */
-export function summarizeWork(report: WorkReport) {
-  return Object.freeze({ detail: 'summary' as const, status: report.status, completeness: report.completeness,
-    counts: Object.freeze({ workEntries: report.work.length, evidenceQueries: report.evidence.length,
-      deliveredQueries: report.evidence.filter(item => item.delivery === 'delivered').length,
-      withheldQueries: report.evidence.filter(item => item.delivery === 'withheld').length,
-      queriesWithoutOutcome: report.evidence.filter(item => item.outcome === null).length }),
-    limitations: report.limitations });
-}
-
 /** Append-only work and indexed evidence replacements; never resend accumulated history. */
 export type WorkProgress = { readonly kind: 'start'; readonly context: InitiationContext }
   | { readonly kind: 'work'; readonly entry: AttributedWork; readonly parents: readonly InitiationContext[] }
@@ -253,11 +243,6 @@ export interface WorkScope {
 export function workState(value: WorkState): WorkState {
   const { applicability, availability, execution, materialization, reason, cost } = value;
   return { applicability, availability, execution, materialization, reason, cost };
-}
-
-export function incompleteWork(report: WorkReport, status: 'interrupted' | 'invalidated' | 'failed' | 'defect'): WorkReport {
-  return freezeOwned({ ...report, status, completeness: 'incomplete', limitations: [...report.limitations,
-    'Execution ended before a final work report was received. Only received facts are recorded; unfinished work is unknown.'] });
 }
 
 /** Aggregate only equal per-expansion states within one provider/evaluator call. */

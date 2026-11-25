@@ -1,78 +1,22 @@
-import { randomUUID } from 'node:crypto';
-import { publishFeedback } from './interfaces/cli/feedback.js';
-import { runAuthentication } from './interfaces/cli/authentication.js';
-import type { ChatGPTCredentials } from './investigation/openai/chatgpt-credentials.js';
-import type { DialogAgent as InvestigatorAgent } from './contributions/dialog.js';
-import type { InvocationRequest as InvestigationRequest } from './contributions/model.js';
-import type { InvestigationBounds } from './investigation/bounds.js';
-import path from 'node:path';
-import type { Readable } from 'node:stream';
-import { localFileObservationSink } from './application/observations.js';
-import type { ObservationSink } from './application/observations.js';
-import { createCliRuntime } from './interfaces/cli/runtime.js';
-import { CommandInterrupted, CleanupIncomplete } from './execution-errors.js';
+import { authHelp, runAuthentication } from './authentication/commands.js';
+import type { ChatGPTCredentials } from './application/accounts.js';
 import { inlineText } from './terminal-text.js';
-import { help, parseCommand } from './commands.js';
-import { publishCommand, openFailureText } from './command-execution.js';
-import { runShell } from './shell.js';
-import { configureCliInvestigator as configuredInvestigator, hostedDisclosure, chatGPTDisclosure } from './interfaces/cli/investigator-policy.js';
 
 export interface CliEnvironment {
-  /** Internal communication-boundary injection for tests and assessment. */
   readonly authentication?: ChatGPTCredentials;
-  readonly investigator?: InvestigatorAgent;
-  /** Internal controlled-assessment injection; no public configuration route. */
-  readonly selectInvestigator?: (request: InvestigationRequest) => InvestigatorAgent;
-  readonly investigationBounds?: InvestigationBounds;
-  /** Internal setup substitution for offline tests. Production uses POSTCODE_INVESTIGATOR. */
-  readonly configureInvestigator?: typeof configuredInvestigator;
-  readonly cwd: string;
-  readonly checkout: string;
   readonly stdout: (text: string) => void;
   readonly stderr: (text: string) => void;
-  readonly sink?: ObservationSink;
-  readonly input?: Readable & { readonly isTTY?: boolean };
 }
+const help = `PostCode authentication CLI
+Investigation and shell commands have been retired. Internal application access and direct validation trials remain available.
+
+${authHelp}`;
 
 export async function runCli(args: readonly string[], environment: CliEnvironment): Promise<number> {
   if (args[0] === 'auth') return runAuthentication(args.slice(1), environment, environment.authentication);
-  const parsed = parseCommand(args, environment.cwd);
-  if (parsed.kind === 'help') { environment.stdout(help); return 0; }
-  if (parsed.kind === 'error') { environment.stderr(parsed.message); return 2; }
-  if (parsed.kind === 'exit') return 0;
-  if (parsed.kind === 'feedback') {
-    const local = localFileObservationSink(path.resolve(environment.checkout, '_observations'), null);
-    environment.stderr(`Local observations: ${inlineText(local.destination)} (context-free feedback).\n`);
-    await publishFeedback({ correlation: `invocation:${randomUUID()}`, command: 1, explanation: parsed.explanation, json: parsed.json }, environment, environment.sink ?? local);
-    return 0;
+  if (!args.length || args.length === 1 && ['help', '--help', '-h'].includes(args[0]!)) {
+    environment.stdout(help); return 0;
   }
-  if (!environment.investigator) {
-    const configured = await (environment.configureInvestigator ?? configuredInvestigator)(process.env.POSTCODE_INVESTIGATOR);
-    if (configured.kind === 'configuration-unavailable') { environment.stderr(`${configured.diagnostic}\n`); return 2; }
-    if (configured.kind === 'ready') {
-      environment.stderr(configured.agent.identity.configuration.billingRoute === 'chatgpt-plan' ? chatGPTDisclosure : hostedDisclosure);
-      environment = { ...environment, investigator: configured.agent };
-    }
-  }
-  if (parsed.kind === 'shell') return runShell(parsed, environment);
-  const { localSink, sink, remote } = createCliRuntime(parsed.configPath, environment);
-  const interrupt = () => { void remote.interrupt().catch(() => {}); };
-  process.on('SIGINT', interrupt);
-  try {
-    let opened;
-    try { opened = await remote.opening; }
-    catch (error) {
-      if (error instanceof CommandInterrupted) { environment.stderr(`${error.message}\n`); return 130; }
-      if (error instanceof CleanupIncomplete) { environment.stderr(`Project open failed:\n  ${inlineText(error.message)}\n`); return 2; }
-      throw error;
-    }
-    if (opened.status !== 'opened') { environment.stderr(openFailureText(opened)); return 2; }
-    environment.stderr(`Local observations: ${inlineText(localSink.destination)} (may contain repository-derived text and explicitly requested source locations).\n`);
-    return await publishCommand({ id: opened.id, execute: remote.execute, check: remote.check, usage: remote.usage, work: remote.work }, parsed.request, args, parsed.configPath, 1,
-      environment, sink);
-  } finally {
-    process.removeListener('SIGINT', interrupt);
-    try { await remote.close(); }
-    catch (error) { environment.stderr(`WARNING: ${inlineText(error instanceof Error ? error.message : 'Cleanup unconfirmed')}\n`); }
-  }
+  environment.stderr(`Unsupported command: ${inlineText(args[0]!)}. Only authentication and help are available.\n`);
+  return 2;
 }

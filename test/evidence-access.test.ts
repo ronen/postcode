@@ -4,7 +4,7 @@ import type { TestContext } from 'node:test';
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, writeFileSync, rmSync, symlinkSync } from 'node:fs';
 import path from 'node:path';
-import { temporaryDirectory } from './cli-helpers.js';
+import { temporaryDirectory } from './temporary-directory.js';
 import { ScriptedContributionAgent, proseContribution } from './contribution-agent.js';
 import { conductDialog, responseCharacters as evidenceResponseCharacters } from '../src/lib/contributions/dialog.js';
 import type { DialogInput, DialogReply, DialogResponse, DialogOptions } from '../src/lib/contributions/dialog.js';

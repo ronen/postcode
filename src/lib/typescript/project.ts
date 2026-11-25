@@ -394,7 +394,7 @@ export async function openTypeScriptProject(options: ProjectOptions, runGit?: Ru
           const handleProvenance = candidate.name ? 'language-name' : filename ? 'source-basename' : exportCue ? 'declared-export' : 'anonymous-fallback';
           const slug = cue?.replace(/([A-Z])([A-Z][a-z])/g, '$1-$2').replace(/([a-z0-9])([A-Z])/g, '$1-$2')
             .normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-          // Reserve compact Entity-ID syntax so generated handles remain independently selectable.
+          // Preserve the established handle naming method, including its reserved spellings; compact lookup is retired.
           const handle = slug && /^(?:module|group)-[a-f0-9]{8,64}$/.test(slug) ? `handle-${slug}` : slug || 'anonymous';
           return { handle, handleProvenance: slug ? handleProvenance : 'anonymous-fallback' };
         };

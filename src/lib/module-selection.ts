@@ -5,7 +5,7 @@ import type { EvaluationRecord, ProgramRecordStore, RecordId } from './records.j
 
 /** Construction consumes an explicit selection; null denotes the configured population. */
 export function selectResolvedModules(store: ProgramRecordStore, evaluation: EvaluationRecord, subjects: readonly RecordId[] | null) {
-  store.entityIds(evaluation.modules, 'module');
+
   const modules = subjects === null ? [...evaluation.modules] : orderCollectionSubjects(evaluation.modules, subjects);
   if (new Set(modules).size !== modules.length) throw new Error('Duplicate resolved module subject');
   for (const id of modules) {

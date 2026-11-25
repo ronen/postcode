@@ -1,6 +1,6 @@
-import { credentialDiagnostic } from './investigator-policy.js';
-import { productionChatGPTCredentials, checkChatGPTConnection, CredentialError } from '../../application/accounts.js';
-import type { ChatGPTCredentials } from '../../application/accounts.js';
+import { inlineText } from '../terminal-text.js';
+import { productionChatGPTCredentials, checkChatGPTConnection, CredentialError } from '../application/accounts.js';
+import type { ChatGPTCredentials } from '../application/accounts.js';
 export const authHelp = `PostCode ChatGPT authentication (no project required):
   postcode auth chatgpt sign-in [label] [--consent]
   postcode auth chatgpt status
@@ -8,8 +8,8 @@ export const authHelp = `PostCode ChatGPT authentication (no project required):
   postcode auth chatgpt sign-out [label]
   postcode auth chatgpt check
 Labels default to personal for sign-in. Reuse a label to reauthorize; use a new label to add an account.
-Sign-in does not select billing for project commands. Set POSTCODE_INVESTIGATOR=chatgpt
-for ChatGPT plan usage, or POSTCODE_INVESTIGATOR=openai for API-key billing.
+Sign-in does not select billing for direct investigation clients. Clients explicitly configure
+chatgpt for ChatGPT plan usage or openai for API-key billing; see docs/hosted-investigation.md.
 The check uses a small inference request and reports provider token usage.
 ChatGPT usage and optional credit controls: https://chatgpt.com/settings/usage
 `;
@@ -32,10 +32,10 @@ export async function runAuthentication(args: readonly string[], output: { stdou
     if (operation === 'sign-in') {
       output.stderr('Opening ChatGPT sign-in. Approve optional plan usage in the browser if desired. PostCode will not purchase credits or change spending settings.\n');
       const result = await credentials.signIn(label ?? 'personal', rest.includes('--consent'), controller.signal);
-      output.stdout(`Signed in as registration ${result.label}. ChatGPT plan usage ${result.planUsage ? 'granted' : 'not granted'}; ${result.renewable ? 'renewable session saved' : 'interactive renewal may be required'}.\n`);
+      output.stdout(`Signed in as registration ${inlineText(result.label)}. ChatGPT plan usage ${result.planUsage ? 'granted' : 'not granted'}; ${result.renewable ? 'renewable session saved' : 'interactive renewal may be required'}.\n`);
     } else if (operation === 'status') {
       const accounts = await credentials.status();
-      output.stdout(accounts.length ? accounts.map(a => `${a.active ? '*' : ' '} ${a.label}: ${a.signedIn ? 'signed in' : 'signed out'}; plan usage ${a.planUsage ? 'granted' : 'unavailable'}; renewal ${a.renewable ? 'available' : 'unavailable'}`).join('\n') + '\n' : 'No saved ChatGPT registrations.\n');
+      output.stdout(accounts.length ? accounts.map(a => `${a.active ? '*' : ' '} ${inlineText(a.label)}: ${a.signedIn ? 'signed in' : 'signed out'}; plan usage ${a.planUsage ? 'granted' : 'unavailable'}; renewal ${a.renewable ? 'available' : 'unavailable'}`).join('\n') + '\n' : 'No saved ChatGPT registrations.\n');
     } else if (operation === 'use') {
       await credentials.select(label!); output.stdout(`Selected ChatGPT registration ${label}. Project billing still requires an explicit route selection.\n`);
     } else if (operation === 'sign-out') {
@@ -47,8 +47,14 @@ export async function runAuthentication(args: readonly string[], output: { stdou
     }
     return 0;
   } catch (error) {
-    output.stderr(`${error instanceof CredentialError ? credentialDiagnostic(error) : controller.signal.aborted ? 'Authentication operation interrupted.' : 'PostCode authentication operation failed. No credentials or provider errors are displayed.'}\n`);
+    output.stderr(`${error instanceof CredentialError ? inlineText(credentialDiagnostic(error)) : controller.signal.aborted ? 'Authentication operation interrupted.' : 'PostCode authentication operation failed. No credentials or provider errors are displayed.'}\n`);
     return controller.signal.aborted ? 130 : 2;
   } finally { process.removeListener('SIGINT', interrupt); }
 }
 
+
+function credentialDiagnostic(error: { readonly code: string; readonly message: string }): string {
+  if (error.code === 'reauthorization_required') return 'ChatGPT sign-in is required. Run postcode auth chatgpt sign-in in your own terminal. No API billing fallback was used.';
+  if (error.code === 'plan_permission_required' && error.message === 'Signed in, but ChatGPT plan usage was not granted.') return 'Signed in, but ChatGPT plan usage was not granted. Use postcode auth chatgpt sign-in <label> --consent to request it, or explicitly choose API billing.';
+  return error.message;
+}

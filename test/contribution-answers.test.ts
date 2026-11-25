@@ -234,3 +234,29 @@ test('contribution answer keys exclude operational output-exclusion capture whil
   assert.ok(answers[1]!.inputs.length > 0);
   assert.equal(answers[0]!.key, answers[1]!.key);
 });
+
+test('each standalone SVG and text diagram carries only its alternative qualifications from the same fixed content', async () => {
+  const { store, ledger, result, select } = await setup();
+  submit(ledger, agentic(), ['alpha', 'beta'].map(key => ({ key, qualification: q(`${key.toUpperCase()}_OWNER_ONLY <limit> & condition`),
+    items: [{ key: 'model', type: 'state-model', qualification: q(`${key.toUpperCase()}_ITEM_ONLY`),
+      body: { bearer: { role: key }, states: [{ key: 'idle', label: 'Idle' }], initial: { kind: 'unknown' }, transitions: [], coverage: { states: 'some', transitions: 'unknown' } } }],
+    declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: result.id }, members: [{ kind: 'item', item: { investigram: { local: key }, item: 'model' } }] }] })));
+  const content = resolveContributionAnswer(store, select()), before = structuredClone(content);
+  const view = arrangeContributionAnswer(content, 'Separate accounts');
+  assert.equal(view.alternatives.length, 2);
+  const decode = (svg: string) => [...svg.matchAll(/<text\b[^>]*>(.*?)<\/text>/gs)].map(match => match[1]!.replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))).join('');
+  for (const alternative of view.alternatives) {
+    const diagram = alternative.diagrams[0]!, own = diagram.text.startsWith('States of alpha') ? 'ALPHA' : 'BETA', other = own === 'ALPHA' ? 'BETA' : 'ALPHA';
+    for (const rendered of [diagram.text, decode(diagram.svg)]) {
+      assert.match(rendered, /Interpretation/);
+      assert.ok(rendered.includes(`${own}_OWNER_ONLY <limit> & condition`));
+      assert.ok(rendered.includes(`${own}_ITEM_ONLY`));
+      assert.ok(!rendered.includes(`${other}_OWNER_ONLY`));
+      assert.ok(!rendered.includes(`${other}_ITEM_ONLY`));
+    }
+    assert.doesNotMatch(diagram.svg, /<limit>/);
+    assert.equal(diagram.method, 'postcode/state-transition-diagram@8');
+  }
+  assert.deepEqual(content, before);
+  assert.deepEqual(arrangeContributionAnswer(structuredClone(content), 'Separate accounts'), view);
+});

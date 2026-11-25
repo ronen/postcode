@@ -13,7 +13,7 @@
 import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { buildIdentity } from './comparison-fixtures.mjs';
+import { buildIdentity } from './build-identity.mjs';
 
 const configPath = path.resolve(process.argv[2] ?? 'tsconfig.json');
 const build = path.resolve(process.argv[3] ?? '_build');

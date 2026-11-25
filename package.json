@@ -16,7 +16,6 @@
     "@statelyai/graph": "2.4.0",
     "jose": "6.2.12",
     "openai": "7.25.0",
-    "string-width": "8.3.0",
     "typescript": "6.0.3"
   },
   "devDependencies": {

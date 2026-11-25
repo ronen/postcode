@@ -7,7 +7,6 @@ import { evaluateModules } from '../src/lib/evaluation.js';
 import { methods, recordId } from '../src/lib/identity.js';
 import type { ClaimContextRecord, ModuleClaim, ModuleRecord, RecordId } from '../src/lib/records.js';
 import { moduleExports, resolveModuleExports } from '../src/lib/exports/content.js';
-import { arrangeModuleExports, renderModuleExports } from '../src/lib/exports/presentation.js';
 import { discover } from './helpers.js';
 import { normalizeSession } from './comparison.js';
 
@@ -120,7 +119,6 @@ test('a mechanical qualification can name only a Claim context of its own produc
   assert.doesNotThrow(submit(module.method, claim.context));
 });
 
-const unicode = { format: 'unicode' as const, moreDetails: false };
 async function exportsSession(order: 'direct' | 'contributions-first' | 'contributions-after' = 'direct') {
   const { store, evaluation, analysis, claims } = await discover(fixture('exports'));
   const barrel = claims.find(claim => claim.information.handle === 'barrel')!.subject, other = claims.find(claim => claim.information.handle === 'origin')!.subject;
@@ -192,21 +190,12 @@ test('a withdrawn use of a method\'s finding is captured by a fresh answer, show
   assert.equal(after.contributions.surface!.uses[0]!.standing, 'displaced');
   assert.deepEqual((store.get(before.id) as typeof before).contributions, before.contributions);
   assert.equal(before.contributions.naming[0]!.standing, 'standing');
-  const render = (projection: typeof before) => renderModuleExports(arrangeModuleExports(resolveModuleExports(store, projection), 'module-test', unicode, 'Exports'));
-  // The method's name is still shown, and not as though unaffected.
-  assert.match(render(after), /^barrel \(module-test\)$/m);
-  assert.match(render(after), /use of this module identification as information about the module was withdrawn by later analysis: The file name does not describe the responsibility\. The finding itself/);
-  assert.match(render(after), /use of this export listing .* was withdrawn by later analysis: The listing omits the dynamic registrations\./);
-  assert.equal(render(after).split('The file name does not describe the responsibility.').length - 1, 1);
-  assert.equal(render(after).split('The listing omits the dynamic registrations.').length - 1, 1);
-  const structured = arrangeModuleExports(resolveModuleExports(store, after), 'module-test', unicode, 'Exports');
-  assert.equal(structured.nativeConcerns.changes.length, 2, 'Structured native displacement detail remains complete');
   const nativeUse = after.native.findings.find(finding => finding.record && finding.uses.length
     && store.get(finding.record).kind === 'claim' && (store.get(finding.record) as { information: { type: string } }).information.type === 'export')!.uses[0]!;
   ledger.accept([{ production: ledger.begin({ producer: agent }), contribution: { investigrams: [{ key: 'native', qualification: caveat,
     declarations: [{ key: 'withdraw', operation: 'withdraw', displaces: [nativeUse], grounds: { text: 'Independent individual-export use withdrawn.' } }] }] } }]);
-  assert.equal(render(answer()).split('Independent individual-export use withdrawn.').length - 1, 1);
-  assert.doesNotMatch(render(before), /later analysis/);
+  assert.match(JSON.stringify(answer().native.support.changes), /Independent individual-export use withdrawn/);
+  assert.equal(before.native.support.changes.length, 0);
 });
 
 test('equivalent exports answers are identical when findings arrive in a different order', async () => {
@@ -214,19 +203,15 @@ test('equivalent exports answers are identical when findings arrive in a differe
   const sessions = [await exportsSession('direct'), await exportsSession('contributions-first'), await exportsSession('contributions-after')];
   const [direct, ...reordered] = sessions.map(item => {
     const projection = item.answer(), content = resolveModuleExports(item.store, projection);
-    return { item, projection: normalizeSession(projection), content: normalizeSession(content, item.session),
-      rendered: normalizeSession(renderModuleExports(arrangeModuleExports(content, 'module-test', unicode, 'Exports')), item.session),
-      json: normalizeSession(renderModuleExports(arrangeModuleExports(content, 'module-test', { format: 'json', moreDetails: false }, 'Exports')), item.session) };
+    return { item, projection: normalizeSession(projection), content: normalizeSession(content, item.session) };
   });
   // The ledgers really differ in arrival order and in what else stands for the module.
   assert.notEqual(direct!.item.ledger.position, reordered[0]!.item.ledger.position);
   assert.equal(reordered[0]!.item.ledger.identifications(reordered[0]!.item.entity).length, 2);
-  // The full structured answer, its resolved content and both renderings are equal under the shared comparison policy.
+  // The full structured answer, its resolved content are equal under the shared comparison policy.
   for (const other of reordered) {
     assert.deepEqual(other.projection, direct!.projection);
     assert.deepEqual(other.content, direct!.content);
-    assert.equal(other.rendered, direct!.rendered);
-    assert.equal(other.json, direct!.json);
   }
   // Unrelated accumulated work and another standing identification did not broaden or reorder the method's answer.
   assert.equal(direct!.projection.contributions.naming.length, 1);
@@ -263,27 +248,18 @@ test('export displacement snapshots retain separately qualified evidence and sup
     assert.ok(support.evidence.some(record => record.kind === 'claim-context'));
     assert.ok(support.items.some(item => item.address.item === 'grounds' && item.item.qualification?.limitations.includes('SUPPORT_LIMIT: not a mechanically established fact.')));
     assert.ok(!support.items.some(item => item.address.item === 'replacement'), 'displacement context does not select replacement content');
-    const render = () => arrangeModuleExports(resolveModuleExports(store, selected), 'module-test', unicode, 'Exports');
-    const view = render(), text = renderModuleExports(view);
-    assert.match(text, /Displacement producer: agentic \(test\/investigation@1\)/);
-    assert.match(text, /Displacement owner: interpretation.*scope: hypothetical comparison only/);
-    assert.match(text, /OWNER_LIMIT/); assert.match(text, /DECLARATION_LIMIT/); assert.match(text, /EXPORT_LIMIT/);
-    assert.ok(!view.module.qualification.limitations.some(value => /OWNER_LIMIT|DECLARATION_LIMIT|EXPORT_LIMIT/.test(value)));
-    const displacement = view.contributions.naming[0]!.displacements[0]!;
+    const displacement = support.changes.find(item => item.address.declaration === 'withdraw-name')!.declaration.grounds!;
     assert.deepEqual(displacement.evidence, [before.exports[0]]);
     assert.deepEqual(displacement.support, [{ investigram: owner, item: 'grounds' }]);
-    assert.ok(!('support' in view.contributions), 'raw resolved source evidence is not copied into the public View');
-    const textBeforeLaterChange = renderModuleExports(view);
     const later = ledger.begin({ producer: agent });
     ledger.accept([{ production: later, contribution: { investigrams: [{ key: 'later', qualification: caveat, declarations: [{ key: 'w', operation: 'withdraw',
       displaces: [{ investigram: owner, declaration: 'replace-exports' }], grounds: { text: 'Later withdrawal of the replacement use.' } }] }] } }]);
     assert.deepEqual(resolveModuleExports(store, selected).projection, fixed);
-    assert.equal(renderModuleExports(render()), textBeforeLaterChange);
     assert.equal(before.contributions.support.changes.length, 0);
     const fresh = answer();
     assert.notEqual(fresh.id, selected.id);
     assert.equal(fresh.contributions.support.changes.find(item => item.address.declaration === 'replace-exports')?.standing?.state, 'displaced');
-    return { projection: normalizeSession(fixed), view: normalizeSession(view, selected.session), text: normalizeSession(textBeforeLaterChange, selected.session) };
+    return normalizeSession(fixed);
   };
   assert.deepEqual(await run(), await run(), 'qualified displacement captures and identities are repeatable across Sessions');
 });
@@ -302,36 +278,26 @@ test('fresh exports disclose reconsideration of the displacing production withou
     declarations: [{ key: 'withdraw', operation: 'withdraw', displaces: [naming, surface], grounds: { text: 'Organizing judgment based on the received premise.' } }] }] } }]);
   const owner = withdrawn.productions[0]!.investigrams.w!;
   const earlier = answer(), fixed = structuredClone(earlier);
-  const arrange = (projection: typeof earlier) => arrangeModuleExports(resolveModuleExports(store, projection), 'module-test', unicode, 'Exports');
-  const earlierView = arrange(earlier), earlierText = renderModuleExports(earlierView);
-  assert.deepEqual(earlierView.contributions.surface!.uses[0]!.displacements[0]!.producing, []);
+  assert.deepEqual(earlier.contributions.support.owners.find(item => item.investigram === owner)!.producing, []);
   const changed = ledger.accept([{ production: ledger.begin({ producer: agent }), contribution: { investigrams: [{ key: 'change', qualification: caveat,
     declarations: [{ key: 'withdraw-premise', operation: 'withdraw', displaces: [premiseUse],
       qualification: { limitations: ['CAUSE_LIMIT: concerns only the organizing premise.'] }, grounds: { text: 'The organizing premise was withdrawn.' } }] }] } }]);
   const cause = { investigram: changed.productions[0]!.investigrams.change!, declaration: 'withdraw-premise' };
-  const fresh = answer(), view = arrange(fresh), text = renderModuleExports(view);
+  const fresh = answer();
   assert.notEqual(fresh.id, earlier.id);
-  for (const use of [view.contributions.naming[0]!, view.contributions.surface!.uses[0]!]) {
+  for (const use of [fresh.contributions.naming[0]!, fresh.contributions.surface!.uses[0]!]) {
     assert.equal(use.standing, 'displaced');
     const change = use.displacements[0]!;
     assert.deepEqual(change.change, { investigram: owner, declaration: 'withdraw' });
-    assert.equal(change.production, displacer.id);
-    assert.deepEqual(change.producing.map(item => item.change), [cause]);
-    assert.equal(change.producing[0]!.grounds?.text, 'The organizing premise was withdrawn.');
-    assert.deepEqual(change.producing[0]!.routes, [{ kind: 'exact', association: premiseUse }]);
+    const changedOwner = fresh.contributions.support.owners.find(item => item.investigram === owner)!;
+    assert.equal(changedOwner.production, displacer.id);
+    assert.deepEqual(changedOwner.producing.map(item => item.change), [cause]);
+    assert.equal(fresh.contributions.support.changes.find(item => item.address.investigram === cause.investigram && item.address.declaration === cause.declaration)!.declaration.grounds?.text, 'The organizing premise was withdrawn.');
+    assert.deepEqual(changedOwner.producing[0]!.routes, [{ kind: 'exact', association: premiseUse }]);
   }
-  assert.match(text, /Displacement production needs reconsideration: 1 later change/);
-  assert.match(text, /does not establish an error, reverse the displacement or reinstate the earlier association/);
-  assert.match(text, /Reconsideration cause: withdraw — The organizing premise was withdrawn/);
-  assert.match(text, /CAUSE_LIMIT/);
-  assert.deepEqual(view.module.qualification, earlierView.module.qualification);
-  assert.deepEqual(view.exports, earlierView.exports);
   assert.deepEqual(ledger.status.investigram(initial.contributions.surface!.item.investigram).producing, []);
   assert.equal(ledger.standing(surface).state, 'displaced');
   assert.equal(fresh.contributions.support.changes.some(item => item.address.investigram === cause.investigram && item.address.declaration === cause.declaration), true);
   assert.deepEqual(resolveModuleExports(store, earlier).projection, fixed);
-  assert.deepEqual(arrange(earlier), earlierView);
-  assert.equal(renderModuleExports(arrange(earlier)), earlierText);
-  assert.doesNotMatch(earlierText, /needs reconsideration|CAUSE_LIMIT/);
   assert.equal(answer().id, fresh.id);
 });

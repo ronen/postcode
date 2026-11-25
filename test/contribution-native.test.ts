@@ -12,10 +12,8 @@ import { evaluateDependencyOrganization } from '../src/lib/dependencies/organiza
 import { dependencyChildren, dependencyParents, dependencyStructure } from '../src/lib/dependencies/projections.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
 import { inspectOrganization, organization } from '../src/lib/organization/projections.js';
-import { createOrganizationView, renderOrganizationView } from '../src/lib/organization/presentation.js';
 import { modules } from '../src/lib/projections.js';
 import { contributeNativeFindings, nativeEntity, nativeFindingRecords, nativeItem } from '../src/lib/contributions/native.js';
-import { nativeConcerns, nativeConcernLines } from '../src/lib/contributions/native-presentation.js';
 import { sessionLedger } from '../src/lib/contributions/modules.js';
 import { addressKey, InvalidContribution, itemKey } from '../src/lib/contributions/model.js';
 import type { AssociationAddress } from '../src/lib/contributions/model.js';
@@ -58,7 +56,7 @@ test('dependency children and parents exclude concerns about unrelated organizat
   const fresh = [dependencyChildren(store, dependency, [module.subject], expansion.id), dependencyParents(store, dependency, [parentSubject], expansion.id)];
   for (const [index, answer] of fresh.entries()) {
     assert.equal(answer.id, answers[index]!.id);
-    assert.doesNotMatch(nativeConcernLines(nativeConcerns(answer.contributions)).join('\n'), /Unrelated classifications/);
+    assert.doesNotMatch(JSON.stringify(answer.contributions.support), /Unrelated classifications/);
     const classifications = answer.contributions.findings.flatMap(finding => {
       const record = finding.record && store.get(finding.record);
       return record && record.kind === 'claim' && record.information.type === 'dependency-organization' ? [record.subject] : [];
@@ -66,7 +64,7 @@ test('dependency children and parents exclude concerns about unrelated organizat
     assert.deepEqual(new Set(classifications), new Set(answer.relationships));
   }
   const whole = dependencyStructure(store, dependency, expansion.id);
-  assert.match(nativeConcernLines(nativeConcerns(whole.contributions)).join('\n'), /Unrelated classifications/);
+  assert.match(JSON.stringify(whole.contributions.support), /Unrelated classifications/);
 });
 
 test('dependency organization delivers only the exact retained findings it reads', async t => {
@@ -120,10 +118,10 @@ test('organization inspection renders module concerns once and retains both stru
   ledger.accept([{ production, contribution: { investigrams: [{ key: 'withdraw', qualification,
     declarations: [{ key: 'use', operation: 'withdraw', displaces: [use], grounds: { text: 'Controlled module identification withdrawal.' } }] }] } }]);
   const projection = inspectOrganization(store, layout, [subject]);
-  const view = createOrganizationView(store, projection, { format: 'unicode', moreDetails: false }, 'Inspection');
-  assert.ok(view.contributionConcerns.changes.length);
-  assert.ok(view.moduleDetail!.contributionConcerns.changes.length);
-  assert.equal(renderOrganizationView(view).split('Controlled module identification withdrawal.').length - 1, 1);
+  assert.match(JSON.stringify(projection.contributions.support.changes), /Controlled module identification withdrawal/);
+  const detail = store.get(projection.moduleProjection!);
+  assert.equal(detail.kind, 'projection');
+  assert.match(JSON.stringify(detail.contributions.support.changes), /Controlled module identification withdrawal/);
 });
 
 test('all module expansions retain exact symbols, exports, assertions and composition through contributions', async () => {
@@ -185,12 +183,12 @@ test('mechanical selections expose exact displacement without changing earlier c
   ledger.accept([{ production, contribution: { investigrams: [{ key: 'review', qualification, declarations: [
     { key: 'withdraw', operation: 'withdraw', displaces: selected.uses, grounds: { text: 'Use is withdrawn for the controlled account.' } },
   ] }] } }]);
-  const after = modules(store, complete), concerns = nativeConcerns(after.contributions);
+  const after = modules(store, complete), concerns = after.contributions.support;
   assert.notEqual(after.id, before.id);
   assert.deepEqual(after.claims, before.claims);
   assert.ok(concerns.uses.some(value => selected.uses.some(use => addressKey(use) === addressKey(value.address)) && value.status.standing.state === 'displaced'));
-  assert.match(nativeConcernLines(concerns).join('\n'), /Use is withdrawn/);
-  assert.deepEqual(nativeConcerns(before.contributions).changes, []);
+  assert.match(JSON.stringify(concerns), /Use is withdrawn/);
+  assert.deepEqual(before.contributions.support.changes, []);
   const count = ledger.position;
   evaluateModules(store, analysis, ['composition']);
   assert.equal(ledger.position, count, 'Equivalent native computation does not reassert a withdrawn use');

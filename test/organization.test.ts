@@ -1,3 +1,5 @@
+import { resolveSubjects } from '../src/lib/subject-resolution.js';
+import { lenses } from '../src/lib/application/lenses.js';
 import { contributeModuleFindings } from '../src/lib/contributions/modules.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -86,10 +88,7 @@ test('explicit references select group IDs and inspect artifact-only groups outs
   await fixture(async root => {
     const { store, outcome } = (await evaluated(root));
     const manual = groups(store, outcome).get('manual')!;
-    const compact = store.entityIds(outcome.groups, 'group').get(manual)!;
-    assert.match(compact, /^group-[a-f0-9]{8,64}$/);
-    assert.throws(() => inspectOrganization(store, outcome, compact), /\(missing\)/);
-    assert.deepEqual(inspectOrganization(store, outcome, compact, true).groups, [manual]);
+    assert.deepEqual(inspectOrganization(store, outcome, manual, true).groups, [manual]);
     assert.throws(() => inspectOrganization(store, outcome, 'group-00000000', true), /\(unknown-reference\)/);
     assert.deepEqual(inspectOrganization(store, outcome, manual).groups, [manual]);
     assert.deepEqual(inspectOrganization(store, outcome, 'manual').groups, [manual]);
@@ -162,8 +161,8 @@ test('a configured project outside Git remains usable with unavailable organizat
     assert.equal(outcome.groups.length, 0);
     assert.ok(placements(store, outcome).every(claim => claim.information.outcome === 'unavailable'));
     assert.equal(organization(store, outcome, 'repository').selection.populationEstablished, false);
-    const compact = store.entityIds(evaluation.modules, 'module').get(evaluation.modules[0]!)!;
-    assert.deepEqual(inspectOrganization(store, outcome, compact, true).modules, [evaluation.modules[0]]);
+    const exact = evaluation.modules[0]!;
+    assert.deepEqual(inspectOrganization(store, outcome, exact, true).modules, [evaluation.modules[0]]);
   });
 });
 
@@ -233,20 +232,20 @@ test('names can match groups and modules together; scoped Entity IDs are precise
     assert.ok(originalModule.kind === 'module');
     const originalClaim = store.get(originalModule.claim) as ModuleClaim;
     const group = inspection.groups[0]!;
-    const compactGroup = store.entityIds(outcome.groups, 'group').get(group)!;
+    const exactGroup = group;
     // A later provider may report a literal language name equal to a navigation ID.
     const renamed = { ...originalModule, id: recordId(outcome.session, 'module', 'collision'), claim: recordId(outcome.session, 'claim', 'collision') };
-    const claim = { ...originalClaim, id: renamed.claim, subject: renamed.id, information: { ...originalClaim.information, name: compactGroup } };
+    const claim = { ...originalClaim, id: renamed.claim, subject: renamed.id, information: { ...originalClaim.information, name: exactGroup } };
     const synthetic = { ...evaluation, id: recordId(outcome.session, 'evaluation', 'collision'), modules: [renamed.id], attempt: 2 };
     store.put([renamed, claim, synthetic]);
     contributeModuleFindings(store, synthetic);
     const next = evaluateOrganization(store, synthetic);
-    assert.deepEqual(inspectOrganization(store, next, compactGroup).modules, [renamed.id]);
-    const precise = inspectOrganization(store, next, compactGroup, true);
+    assert.deepEqual(inspectOrganization(store, next, exactGroup, false, resolveSubjects(store, next.session, lenses.inspect, { kind: 'name', value: exactGroup }, { modules: synthetic, organization: next }).candidates.map(item => item.id)).modules, [renamed.id]);
+    const precise = inspectOrganization(store, next, exactGroup, true);
     assert.deepEqual(precise.groups, [group]);
     assert.deepEqual(precise.modules, []);
-    const compactModule = store.entityIds(synthetic.modules, 'module').get(renamed.id)!;
-    assert.deepEqual(inspectOrganization(store, next, compactModule, true).modules, [renamed.id]);
+    const exactModule = renamed.id;
+    assert.deepEqual(inspectOrganization(store, next, exactModule, true).modules, [renamed.id]);
   });
 });
 

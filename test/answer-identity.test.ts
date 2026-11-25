@@ -1,59 +1,31 @@
+import { openApplication } from '../src/lib/application/index.js';
+import { requireAnswer } from './application-assertions.js';
+import { lenses } from '../src/lib/application/lenses.js';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { test } from 'node:test';
 import { writeFileSync } from 'node:fs';
-import { temporaryDirectory } from './cli-helpers.js';
-import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
+import { temporaryDirectory } from './temporary-directory.js';
 import { discover } from './helpers.js';
-import { requireView } from './request-helpers.js';
 import { inspect } from '../src/lib/projections.js';
-import { createView } from '../src/lib/presentation.js';
 import { resolveSubjects } from '../src/lib/subject-resolution.js';
-import { resolutionContext, resolutionContextIdentity } from '../src/lib/resolution-context.js';
-import { lenses } from '../src/lib/requests.js';
-import { identityReference, recordId } from '../src/lib/identity.js';
+import { recordId } from '../src/lib/identity.js';
 import type { EvaluationRecord, ProjectionRecord } from '../src/lib/records.js';
 
 const configPath = path.resolve('fixtures/dependency-journey/tsconfig.json');
-const presentation = { format: 'json' as const, moreDetails: false };
 
-test('mechanical names and references share answers while exposed resolution changes View identity', async t => {
-  const opened = await openSession({ configPath });
-  if (opened.status !== 'opened') throw new Error('Expected project');
-  t.after(() => opened.session.close());
-  const inventory = requireView(await opened.session.execute({ lens: 'modules', selector: null, presentation })).view;
-  assert.equal(inventory.schema, 'postcode-view/1-experimental');
-  const module = inventory.modules.find(item => item.handle === 'left')!;
-  assert.ok(module);
-  for (const lens of ['inspect', 'children', 'parents'] as const) {
-    const named = requireView(await opened.session.execute({ lens, selector: module.handle, presentation }));
-    const precise = requireView(await opened.session.execute({ lens, selector: module.entityId, reference: true, presentation }));
-    if (lens === 'inspect') {
-      assert.equal(named.view.schema, 'postcode-contribution-view/1-experimental');
-      assert.equal(precise.view.schema, 'postcode-contribution-view/1-experimental');
-      assert.deepEqual(named.view.mechanical!.projection, precise.view.mechanical!.projection);
-      assert.notEqual(named.view.projection.id, precise.view.projection.id, 'general name lookup also selects the separately identified exported symbol named left');
-      assert.ok(named.view.rows.length > precise.view.rows.length);
-    } else assert.deepEqual(named.view.projection, precise.view.projection);
-    assert.deepEqual(named.view.projection.parameters, {});
-    assert.notEqual(named.view.id, precise.view.id, 'exposed lookup context belongs to the View');
-    assert.notDeepEqual(named.view.resolution, precise.view.resolution);
-    const again = requireView(await opened.session.execute({ lens, selector: module.handle, presentation }));
-    assert.deepEqual(again.view, named.view);
+test('mechanical names and exact references share answers and retain distinct qualified resolution', async t => {
+  const opened = await openApplication({ configPath }); assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
+  const inventory = requireAnswer(await opened.session.execute({ kind: 'lens', lens: 'modules', designation: { kind: 'configured-project' } }));
+  assert.equal(inventory.answer.content.contract, 'modules');
+  const module = inventory.answer.content.value.modules.find(item => item.claim.record.information.handle === 'left')!;
+  for (const lens of ['dependency-children', 'dependency-parents']) {
+    const named = requireAnswer(await opened.session.execute({ kind: 'lens', lens, designation: { kind: 'name', value: 'left' } }));
+    const exact = requireAnswer(await opened.session.execute({ kind: 'lens', lens, designation: { kind: 'reference', value: module.id } }));
+    assert.deepEqual(named.answer, exact.answer);
+    assert.notDeepEqual(named.resolution, exact.resolution);
+    assert.deepEqual(requireAnswer(await opened.session.execute({ kind: 'present', target: named.answer.id })).answer, named.answer);
   }
-  const organized = requireView(await opened.session.execute({ lens: 'organization', selector: null, presentation })).view;
-  assert.equal(organized.schema, 'postcode-organization-view/1-experimental');
-  const group = organized.groups.find(item => item.selected && item.name !== null)!;
-  assert.ok(group);
-  const named = requireView(await opened.session.execute({ lens: 'inspect', selector: group.name!, presentation })).view;
-  const precise = requireView(await opened.session.execute({ lens: 'inspect', selector: group.entityId, reference: true, presentation })).view;
-  assert.deepEqual(named.projection, precise.projection);
-  assert.equal(named.schema, 'postcode-contribution-view/1-experimental');
-  assert.equal(precise.schema, 'postcode-contribution-view/1-experimental');
-  assert.equal(named.mechanical!.schema, 'postcode-organization-view/1-experimental');
-  assert.equal(precise.mechanical!.schema, 'postcode-organization-view/1-experimental');
-  assert.deepEqual(named.mechanical!.moduleDetail, precise.mechanical!.moduleDetail, 'legitimate empty embedded detail is retained for both routes');
-  assert.notEqual(named.id, precise.id);
 });
 
 test('partial lookup context stays separate from selected answer support and remains frozen', async t => {
@@ -81,22 +53,8 @@ test('partial lookup context stays separate from selected answer support and rem
   assert.equal('selector' in named.parameters, false);
   assert.throws(() => store.put([{ ...named, id: recordId(basis.session, 'projection', 'invalid-designation-payload'),
     parameters: { selector: 'widget' } } as unknown as ProjectionRecord]), /Invocation-specific/);
-  const context = resolutionContext(designation, found);
-  assert.ok(context.qualifications.includes(partial.reason!));
-  const shown = createView(store, named, presentation, 'Inspect', context);
-  assert.equal(shown.resolution, context);
-  assert.notEqual(shown.id, createView(store, reconstructed, presentation, 'Inspect').id);
-  assert.notEqual(shown.id, createView(store, reconstructed, presentation, 'Inspect', { ...context, qualifications: [] }).id,
-    'exposed lookup qualification alone changes View identity');
-  assert.ok(Object.isFrozen(context));
+  assert.ok(found.qualifications.includes(partial.reason!));
+  assert.ok(Object.isFrozen(found));
   const differentBasis = inspect(store, partial, subjects);
   assert.notEqual(differentBasis.id, named.id, 'qualified population support remains an answer input');
-  const before = structuredClone(shown);
-  store.entityIds(basis.modules, 'module');
-  assert.deepEqual(shown, before);
-  assert.notDeepEqual(resolutionContextIdentity(basis.session, { ...context, designation: { kind: 'name', value: basis.session } }),
-    resolutionContextIdentity(basis.session, { ...context, designation: { kind: 'name', value: 'session' } }), 'literal Session-shaped names remain literal');
-  assert.notDeepEqual(resolutionContextIdentity(basis.session, { ...context, designation: { kind: 'reference', value: entity.id } }),
-    resolutionContextIdentity(basis.session, { ...context, designation: { kind: 'name', value: identityReference(basis.session, entity.id)! } }),
-    'a literal name and a raw reference with the same normalized spelling have distinct context identity');
 });

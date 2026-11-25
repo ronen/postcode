@@ -4,20 +4,17 @@ import { EventEmitter, once } from 'node:events';
 import { PassThrough } from 'node:stream';
 import { spawn } from 'node:child_process';
 import type { ChildProcessWithoutNullStreams } from 'node:child_process';
-import type { Worker } from 'node:worker_threads';
 import { GitExecutionOwner, executionLimits } from '../src/lib/git-execution.js';
-import { CleanupIncomplete, CommandInterrupted, GitFailure, SessionClosed } from '../src/lib/execution-errors.js';
-import { interactiveSession } from '../src/lib/interactive-session.js';
-import { openCliSession as openSession, SessionInvalidated } from '../src/lib/interfaces/cli/application.js';
+import { CleanupIncomplete, GitFailure } from '../src/lib/execution-errors.js';
+import { openApplication as openSession, SessionInvalidated } from '../src/lib/application/index.js';
 import { captureRepository } from '../src/lib/repository/capture.js';
-import { temporaryDirectory } from './cli-helpers.js';
+import { temporaryDirectory } from './temporary-directory.js';
 import { writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 
 const limits = { gitDeadlineMs: 2000, terminationGraceMs: 30, cleanupDeadlineMs: 500 };
 const request = { cwd: process.cwd(), args: ['--version'] };
-const command = { lens: 'modules' as const, selector: null, presentation: { format: 'json' as const, moreDetails: false } };
 
 function childHarness() {
   let ready!: () => void;
@@ -96,72 +93,6 @@ test('unconfirmed Git cleanup reports the resource and retains exit ownership', 
   assert.equal(owner.ownedChildren, 0);
 });
 
-for (const phase of ['opening', 'validation'] as const) {
-  test(`worker interruption owns Git through ${phase} and prevents later work`, { timeout: 10000 }, async t => {
-    const harness = childHarness();
-    let block = phase === 'opening';
-    const owner = new GitExecutionOwner({ limits, spawn: (req, env) => block ? harness.start()
-      : spawn('git', ['-C', req.cwd, ...req.args], { env, stdio: 'pipe' }) });
-    const remote = interactiveSession({ configPath: 'fixtures/empty/tsconfig.json' }, { git: owner });
-    t.after(async () => { harness.child?.kill('SIGKILL'); await remote.close(); });
-    let operation: Promise<unknown> = remote.opening;
-    if (phase === 'validation') {
-      assert.equal((await remote.opening).status, 'opened');
-      block = true; operation = remote.check();
-    }
-    const rejected = assert.rejects(operation, CommandInterrupted);
-    await harness.readiness;
-    const exited = once(harness.child, 'exit');
-    await remote.interrupt();
-    await rejected; await exited;
-    assert.equal(owner.ownedChildren, 0);
-    await assert.rejects(remote.execute(command), CommandInterrupted);
-  });
-}
-
-test('unexpected worker exit cancels outstanding Git independently', { timeout: 10000 }, async t => {
-  const harness = childHarness();
-  const owner = new GitExecutionOwner({ limits, spawn: harness.start });
-  const worker = Object.assign(new EventEmitter(), { postMessage() {}, async terminate() { return 0; } });
-  const remote = interactiveSession({ configPath: 'unused' }, { worker: worker as unknown as Worker, git: owner });
-  t.after(async () => { harness.child?.kill('SIGKILL'); await remote.close(); });
-  const rejected = assert.rejects(remote.opening, /exited unexpectedly/);
-  worker.emit('message', { type: 'git', operation: 0, id: 1, request });
-  await harness.readiness;
-  worker.emit('exit', 1);
-  await rejected; await remote.close();
-  assert.equal(owner.ownedChildren, 0);
-});
-
-for (const failure of ['send', 'close', 'late'] as const) {
-  test(`worker ${failure} settles once without phantom pending operations`, async () => {
-    let sent: { operation: number } | undefined;
-    const worker = Object.assign(new EventEmitter(), {
-      postMessage(message: { operation: number }) { if (failure === 'send') throw new Error('Controlled send failure'); sent = message; },
-      async terminate() { return 0; },
-    });
-    const remote = interactiveSession({ configPath: 'unused' }, { worker: worker as unknown as Worker });
-    worker.emit('message', { type: 'reply', operation: 0, opening: { status: 'opened', id: 'session:test' } });
-    await remote.opening;
-    const pending = remote.check();
-    if (failure === 'send') await assert.rejects(pending, /send failure/);
-    else if (failure === 'close') {
-      const rejected = assert.rejects(pending, SessionClosed);
-      await remote.close(); await rejected;
-    } else {
-      let complete = false; void pending.then(() => { complete = true; });
-      worker.emit('message', { type: 'reply', operation: 0 });
-      await new Promise(resolve => setImmediate(resolve));
-      assert.equal(complete, false);
-      worker.emit('message', { type: 'reply', operation: sent!.operation });
-      await pending;
-    }
-    await remote.close();
-    worker.emit('message', { type: 'reply', operation: 999 });
-    await assert.rejects(remote.check(), SessionClosed);
-  });
-}
-
 test('opening timeout is qualified unavailability; recovery or loss invalidates, consistent unavailability remains', async t => {
   const root = temporaryDirectory(t, 'postcode-timeout-basis-');
   execFileSync('git', ['init', '--quiet', root]);
@@ -192,40 +123,6 @@ test('opening timeout is qualified unavailability; recovery or loss invalidates,
   cleanupFailed = true;
   await assert.rejects(third.session.check(), SessionInvalidated);
   await assert.rejects(openSession({ configPath }, { runGit: async () => { throw new CleanupIncomplete('controlled Git child'); } }), CleanupIncomplete);
-});
-
-test('interrupted publication settles at 130 while cleanup failure is reported separately', async () => {
-  const { publishCommand } = await import('../src/lib/command-execution.js');
-  const fake = Object.assign(new EventEmitter(), { pid: 98765, stdin: new PassThrough(), stdout: new PassThrough(), stderr: new PassThrough(), kill() { return false; } });
-  const git = new GitExecutionOwner({ spawn: () => fake as unknown as ChildProcessWithoutNullStreams,
-    limits: { ...limits, terminationGraceMs: 5, cleanupDeadlineMs: 20 } });
-  let operation = 0;
-  const worker = Object.assign(new EventEmitter(), { postMessage(message: { operation: number }) { operation = message.operation; }, async terminate() { return 0; } });
-  const remote = interactiveSession({ configPath: 'unused' }, { worker: worker as unknown as Worker, git });
-  worker.emit('message', { type: 'reply', operation: 0, opening: { status: 'opened', id: 'session:test' } });
-  await remote.opening;
-  let output = '', error = '', status: unknown;
-  const published = publishCommand({ id: 'session:test', execute: remote.execute, check: remote.check }, command, 'modules', 'unused', 1,
-    { stdout: text => { output += text; }, stderr: text => { error += text; } },
-    { async submit(batch) { status = batch.records.find(record => record.kind === 'command-outcome')!.value; return { accepted: true }; } });
-  worker.emit('message', { type: 'git', operation, id: 1, request });
-  await assert.rejects(remote.interrupt(), /Cleanup incomplete.*98765/);
-  assert.equal(await published, 130); assert.equal(output, ''); assert.match(error, /interrupted/);
-  assert.equal((status as { status: string }).status, 'interrupted');
-  assert.equal(git.ownedChildren, 1);
-  fake.emit('exit', null, 'SIGKILL'); fake.emit('close', null, 'SIGKILL');
-  assert.equal(git.ownedChildren, 0);
-});
-
-test('worker cleanup reporting is bounded without claiming worker exit', async () => {
-  let exit!: (code: number) => void;
-  const worker = Object.assign(new EventEmitter(), { postMessage() {}, terminate: () => new Promise<number>(resolve => { exit = resolve; }) });
-  const remote = interactiveSession({ configPath: 'unused' }, { worker: worker as unknown as Worker, cleanupDeadlineMs: 20 });
-  const opening = assert.rejects(remote.opening, SessionClosed);
-  await assert.rejects(remote.close(), /Cleanup incomplete.*analysis worker/);
-  await opening;
-  exit(0); worker.emit('exit', 0);
-  await assert.rejects(remote.execute(command), SessionClosed);
 });
 
 test('Git output limits wait for exit and sanitized invocation context stays local', async () => {

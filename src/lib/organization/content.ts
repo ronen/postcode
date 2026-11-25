@@ -31,12 +31,6 @@ export function artifactClassification(repository: ClassificationOutcome, placem
     : Object.freeze({ state: 'complete', reasons: Object.freeze([] as const) });
 }
 
-/** Compatibility wording is derivable from the existing public View fields. */
-export function artifactClassificationComplete(repository: ClassificationOutcome, placement: ClassificationOutcome,
-  detail: 'materialized' | 'not-requested' | 'unavailable'): boolean {
-  return artifactClassification(repository, placement, detail).state === 'complete';
-}
-
 /** Selects captured support and derives scoped summaries without a display traversal. */
 export function resolveOrganizationProjection(store: Pick<ProgramRecordStore, 'get'>, projection: OrganizationAnswer) {
   const retained = store.get(projection.id);

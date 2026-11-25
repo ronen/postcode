@@ -1,24 +1,19 @@
+import { openApplication as openSession } from '../src/lib/application/index.js';
+import { requireAnswer } from './application-assertions.js';
 import type { DialogInput } from '../src/lib/contributions/dialog.js';
 import type { InvocationId, QueryResultId } from '../src/lib/contributions/model.js';
-import { requireView } from './request-helpers.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { PassThrough } from 'node:stream';
 import type { OpenAIExchange } from '../src/lib/investigation/openai/adapter.js';
 import { configuredInvestigator } from '../src/lib/application/accounts.js';
 import { InvestigationUsage } from '../src/lib/investigation/usage.js';
 import { usageSummary } from '../src/lib/investigation/reporting.js';
-import { usageLines } from '../src/lib/investigation/usage-presentation.js';
-import type { ContributionView as InvestigationView } from '../src/lib/interfaces/cli/contribution-presentation.js';
 import { openAIDialogAgent, chatGPTDialogAgent } from '../src/lib/investigation/openai/contribution-protocol.js';
 import type { AttemptReport, ReportedUsage } from '../src/lib/investigation/contracts.js';
 import type { RecordId } from '../src/lib/records.js';
-import type { ObservationBatch } from '../src/lib/application/observations.js';
-import { runCli } from '../src/lib/cli.js';
-import { openCliSession as openSession } from '../src/lib/interfaces/cli/application.js';
-import { temporaryDirectory, interactionDriver } from './cli-helpers.js';
+import { temporaryDirectory } from './temporary-directory.js';
 
 const sentinel = 'postcode-sentinel-secret-not-a-real-key';
 const input: DialogInput = { attempt: 'attempt:test' as RecordId, instructions: 'Interpret this module using only supplied evidence.',
@@ -166,7 +161,6 @@ test('usage grouping preserves returned models and service tiers and does not ad
   const report = usageSummary([{ usage: ledger.calls() } as AttemptReport]);
   assert.equal(report.calls, 3); assert.equal(report.totals.length, 3);
   assert.deepEqual(report.totals.map(group => group.categories.find(c => c.category === 'total')!.value), [150, 150, 150]);
-  assert.match(usageLines(report, 'Session').join('\n'), /reported model gpt-6-sol-snapshot, service tier default/);
 });
 
 test('configuration fails closed without probing credentials when disabled or unsupported', async () => {
@@ -182,16 +176,6 @@ test('configuration fails closed without probing credentials when disabled or un
     assert.equal(result.kind, 'configuration-unavailable'); assert.doesNotMatch(JSON.stringify(result), new RegExp(sentinel));
   }
   assert.equal((await configuredInvestigator('openai', deps)).kind, 'ready'); assert.equal(reads, 1);
-});
-
-test('CLI preflight precedes project opening for shell and mechanical one-shot commands', async () => {
-  for (const args of [['shell'], ['modules'], ['summarize', 'entry']]) {
-    let stdout = '', stderr = '', calls = 0;
-    const exit = await runCli([...args, '--project', '/nonexistent/tsconfig.json'], { cwd: process.cwd(), checkout: process.cwd(),
-      stdout: text => { stdout += text; }, stderr: text => { stderr += text; },
-      configureInvestigator: async () => { calls++; return { kind: 'configuration-unavailable', diagnostic: 'Controlled unavailable setup' }; } });
-    assert.equal(exit, 2); assert.equal(calls, 1); assert.equal(stdout, ''); assert.equal(stderr, 'Controlled unavailable setup\n');
-  }
 });
 
 test('SDK service failure after evidence retains usage and acquisition, but a later request starts fresh', async t => {
@@ -212,10 +196,10 @@ test('SDK service failure after evidence retains usage and acquisition, but a la
   const opened = await openSession({ configPath }, { investigation: { agent } });
   assert.equal(opened.status, 'opened'); if (opened.status !== 'opened') return;
   t.after(() => opened.session.close());
-  const command = { lens: 'summarize' as const, selector: 'entry', presentation: { format: 'json' as const, moreDetails: false } };
-  const first = requireView(await opened.session.execute(command)).view as InvestigationView;
-  const second = requireView(await opened.session.execute(command)).view as InvestigationView;
-  assert.equal(calls, 4); assert.equal(second.rows.length, 0); assert.equal(second.reporting!.reused, false);
+  const command = { kind: 'lens', lens: 'summarize', designation: { kind: 'name', value: 'entry' } } as const;
+  const first = requireAnswer(await opened.session.execute(command));
+  const second = requireAnswer(await opened.session.execute(command));
+  assert.equal(calls, 4); assert.equal(second.answer.content.contract, 'contribution'); assert.equal(second.answer.content.value.projection.alternatives.length, 0); assert.equal(second.reporting!.reused, false);
   assert.equal(first.usage.missingCalls, 1); assert.equal(second.usage.missingCalls, 2);
   assert.equal(second.usage.totals[0]!.categories.find(c => c.category === 'total')!.value, 300);
   assert.ok(first.usage.attempts[0]!.suppliedEvidence.length > 0);
@@ -223,14 +207,12 @@ test('SDK service failure after evidence retains usage and acquisition, but a la
   assert.doesNotMatch(JSON.stringify({ first, second, captures }), new RegExp(sentinel));
 });
 
-for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode', 'json'] as const) test(`offline real-adapter CLI shell covers source acquisition, retention, usage and credential exclusion in ${format} via ${route}`, async t => {
+for (const route of ['api-key', 'chatgpt-plan']) test(`offline real-adapter application covers source acquisition, retention, usage and credential exclusion in direct via ${route}`, async t => {
   const root = temporaryDirectory(t, 'postcode-openai-');
   writeFileSync(path.join(root, 'tsconfig.json'), '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
   writeFileSync(path.join(root, 'entry.ts'), 'export function entry() { return 7; }');
-  const inputStream = Object.assign(new PassThrough(), { isTTY: true });
-  const driver = interactionDriver(() => inputStream.end());
-  const batches: ObservationBatch[] = [], captures: OpenAIExchange[] = [];
-  let calls = 0, stdout = '', stderr = '', prompts = 0, subject = '';
+  let calls = 0, subject = '';
+  const captures: OpenAIExchange[] = [];
   const createAgent = (options: Parameters<typeof openAIDialogAgent>[1]) => route === 'api-key' ? openAIDialogAgent(sentinel, options) : chatGPTDialogAgent({ token: async () => sentinel, watch: () => () => {} }, options);
   const transportResponse = (body: ReturnType<typeof response>) => {
     if (route === 'api-key') return http(body);
@@ -252,28 +234,19 @@ for (const route of ['api-key', 'chatgpt-plan']) for (const format of ['unicode'
     assert.equal(result.response.status, 'available');
     return transportResponse(response({ output: [call('submit_contribution', { investigrams: [{ key: 'answer', qualification: { limitations: ['Offline controlled interpretation.'] }, items: [{ key: 'text', type: 'prose', body: { text: 'Returns seven.' }, evidence: result.response.selected }], declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: JSON.parse(latest.content).request.result }, members: [{ kind: 'item', item: { investigram: { local: 'answer' }, item: 'text' } }] }] }] })] }));
   } });
-  const exit = await runCli(['shell', '--project', path.join(root, 'tsconfig.json'), ...(format === 'json' ? ['--json'] : [])], {
-    cwd: root, checkout: root, input: inputStream,
-    configureInvestigator: async () => ({ kind: 'ready', agent }),
-    stdout: text => { stdout += text; if (text.endsWith('postcode> ')) driver.run(() => {
-      inputStream.write(['summarize entry\n', 'summarize entry\n', 'usage\n', 'exit\n'][prompts++]!);
-    }); }, stderr: text => { stderr += text; },
-    sink: { async submit(batch) { batches.push(batch); return { accepted: true }; } },
-  });
-  driver.verify(); assert.equal(exit, 0); assert.equal(calls, 2); assert.match(stderr, /sent to OpenAI/);
-  assert.match(stdout, /Returns seven/);
-  const views = batches.flatMap(batch => batch.records.filter(record => record.kind === 'qualified-view').map(record => record.value as InvestigationView));
-  assert.equal(views.length, 2);
-  const usage = batches[2]!.records.find(record => record.kind === 'usage-report')!.value as import('../src/lib/interfaces/cli/report-contracts.js').UsageReport;
-  assert.deepEqual(usage.usage, views[1]!.usage);
-  assert.equal('projection' in usage, false);
-  assert.ok(!batches[2]!.events.some(event => event.type === 'view-produced'));
+  const opened = await openSession({ configPath: path.join(root, 'tsconfig.json') }, { investigation: { agent } });
+  assert.equal(opened.status, 'opened'); t.after(() => opened.session.close());
+  const request = { kind: 'lens', lens: 'summarize', designation: { kind: 'name', value: 'entry' } } as const;
+  const views = [requireAnswer(await opened.session.execute(request)), requireAnswer(await opened.session.execute(request))];
+  const usage = await opened.session.execute({ kind: 'report', report: 'usage' });
+  assert.equal(usage.kind, 'usage'); assert.deepEqual(usage.usage, views[1]!.usage);
+  assert.equal(calls, 2); assert.match(JSON.stringify(views[0]!.answer), /Returns seven/);
   for (const view of views) { assert.equal(view.usage.calls, 2); assert.equal(view.usage.totals[0]!.categories.find(c => c.category === 'total')!.value, 300); }
   assert.equal(views[1]!.reporting!.reused, true);
   assert.equal(captures[0]!.request.model, route === 'api-key' ? 'gpt-6-sol' : 'gpt-5.6-sol');
   assert.equal(views[0]!.usage.totals[0]!.agent.configuration.billingRoute, route === 'api-key' ? 'openai-api' : 'chatgpt-plan');
-  if (route === 'chatgpt-plan') { assert.match(stderr, /ChatGPT plan usage/); assert.match(JSON.stringify(views[0]!.usage.limitations), /monetary attribution is unavailable/); }
-  assert.doesNotMatch(JSON.stringify({ stdout, stderr, batches, captures }), new RegExp(sentinel));
+  if (route === 'chatgpt-plan') { assert.match(JSON.stringify(views[0]!.usage.limitations), /monetary attribution is unavailable/); }
+  assert.doesNotMatch(JSON.stringify({ views, captures }), new RegExp(sentinel));
 });
 
 

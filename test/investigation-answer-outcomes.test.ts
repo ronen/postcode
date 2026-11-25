@@ -8,13 +8,10 @@ import { openApplication } from '../src/lib/application/index.js';
 import type { ApplicationResult } from '../src/lib/application/index.js';
 import { ContributionLedger } from '../src/lib/contributions/ledger.js';
 import type { Production, AssociationAddress } from '../src/lib/contributions/model.js';
-import { interactiveSession } from '../src/lib/interactive-session.js';
 import { ScriptedContributionAgent, proseContribution } from './contribution-agent.js';
-import { temporaryDirectory } from './cli-helpers.js';
-import { openCliSession } from '../src/lib/interfaces/cli/application.js';
+import { temporaryDirectory } from './temporary-directory.js';
 import type { DialogReply } from '../src/lib/contributions/dialog.js';
 import { investigationBounds } from '../src/lib/investigation/bounds.js';
-import { inlineText } from '../src/lib/terminal-text.js';
 
 function fixture(t: TestContext) {
   const root = temporaryDirectory(t, 'postcode-attempt-answers-');
@@ -79,81 +76,29 @@ for (const lens of ['summarize', 'state-behavior']) test(`${lens}: attempts, par
   const snapshot = structuredClone(retained); await session.close(); assert.deepEqual(retained, snapshot);
 });
 
-test('worker retries distinct transient failures without changing the empty answer, then retains selected partial qualification', async t => {
-  let phase = 0;
-  const agent = new ScriptedContributionAgent([input => phase++ === 0 ? { kind: 'communication-failure', code: 'network', diagnostic: 'NETWORK_DIAGNOSTIC' }
-    : phase === 2 ? { kind: 'configuration-unavailable', code: 'credentials', diagnostic: 'CREDENTIAL_DIAGNOSTIC' }
-      : { kind: 'submit', contribution: { ...proseContribution(input, 'Selected partial account.'), report: { inability: 'PARTIAL_SCOPE' } } }]);
-  const remote = interactiveSession(fixture(t), { investigator: agent }); t.after(() => remote.close());
-  assert.equal((await remote.opening).status, 'opened');
-  const request = { lens: 'summarize', selector: 'entry', presentation: { format: 'json', moreDetails: false } } as const;
-  const a = await remote.execute(request), b = await remote.execute(request);
-  assert.equal(a.kind, 'view'); assert.equal(b.kind, 'view');
-  assert.equal(a.view.schema, 'postcode-contribution-view/1-experimental'); assert.equal(b.view.schema, 'postcode-contribution-view/1-experimental');
-  assert.deepEqual(a.view.projection, b.view.projection); assert.deepEqual(a.view.summary, b.view.summary);
-  assert.notEqual(a.view.reporting!.attempt, b.view.reporting!.attempt);
-  assert.deepEqual([a.view.reporting!.unavailable!.code, b.view.reporting!.unavailable!.code], ['network', 'credentials']);
-  const exact = await remote.execute({ kind: 'present', target: a.view.answerReference!, presentation: request.presentation });
-  assert.equal(exact.kind, 'view'); assert.equal(exact.view.schema, 'postcode-contribution-view/1-experimental');
-  assert.equal(exact.view.reporting, null); assert.deepEqual(exact.view.summary, a.view.summary);
-  const partial = await remote.execute(request), reused = await remote.execute(request);
-  assert.equal(partial.kind, 'view'); assert.equal(reused.kind, 'view');
-  assert.equal(reused.view.schema, 'postcode-contribution-view/1-experimental');
-  assert.equal(reused.view.reporting!.reused, true); assert.match(JSON.stringify(reused.view.summary), /PARTIAL_SCOPE/);
-  assert.equal(agent.inputs.length, 3); assert.equal(agent.closes, 3);
-  assert.deepEqual(structuredClone(reused), reused);
-});
-
-for (const worker of [false, true]) for (const scenario of ['inability', 'malformed', 'invalid', 'guard', 'communication', 'configuration'] as const) {
-  test(`Unicode preserves ${scenario} attempt reporting and separates exact answers (${worker ? 'worker' : 'direct'})`, async t => {
+for (const scenario of ['inability', 'malformed', 'invalid', 'guard', 'communication', 'configuration'] as const) {
+  test(`direct application preserves ${scenario} reporting and separates exact answers`, async t => {
     const step = (): DialogReply => scenario === 'inability'
-      ? { kind: 'submit', contribution: { investigrams: [], report: { inability: 'INABILITY_SENTINEL\nnot a heading', statement: 'STATEMENT_SENTINEL' } } }
+      ? { kind: 'submit', contribution: { investigrams: [], report: { inability: 'INABILITY_SENTINEL', statement: 'STATEMENT_SENTINEL' } } }
       : scenario === 'malformed' ? { kind: 'malformed' } as unknown as DialogReply
         : scenario === 'invalid' ? { kind: 'submit', contribution: { investigrams: [] } }
           : scenario === 'guard' ? { kind: 'tools', requests: [] }
-            : { kind: scenario === 'communication' ? 'communication-failure' : 'configuration-unavailable', code: 'CODE_SENTINEL', diagnostic: 'DIAGNOSTIC_SENTINEL\nnot a heading' };
+            : { kind: scenario === 'communication' ? 'communication-failure' : 'configuration-unavailable', code: 'CODE_SENTINEL', diagnostic: 'DIAGNOSTIC_SENTINEL' };
     const agent = new ScriptedContributionAgent([step, step]);
-    const bounds = { ...investigationBounds, calls: scenario === 'guard' ? 1 : investigationBounds.calls };
-    const options = fixture(t), remote = worker ? interactiveSession(options, { investigator: agent, investigationBounds: bounds }) : null;
-    const opened = remote ? await remote.opening : await openCliSession(options, { investigation: { agent, bounds } });
-    assert.equal(opened.status, 'opened');
-    const session = remote ?? ('session' in opened ? opened.session : null)!; t.after(() => session.close());
-    const request = { lens: 'summarize', selector: 'entry', presentation: { format: 'unicode', moreDetails: false } } as const;
-    const first = await session.execute(request);
-    assert.equal(first.kind, 'view'); assert.equal(first.view.schema, 'postcode-contribution-view/1-experimental');
-    const saved = structuredClone(first.view.summary), reporting = first.view.reporting!;
-    assert.match(first.rendered, /New investigation request\./);
-    if (scenario === 'inability') {
-      assert.match(first.rendered, /Attempt: accepted/);
-      assert.ok(first.rendered.includes(inlineText('INABILITY_SENTINEL\nnot a heading')));
-      assert.match(first.rendered, /Attempt report: STATEMENT_SENTINEL/);
-      assert.doesNotMatch(first.rendered, /\nnot a heading/);
-    } else if (scenario === 'malformed') assert.match(first.rendered, /Attempt: investigation-failure: Malformed agent response\./);
-    else if (scenario === 'guard') assert.match(first.rendered, /Attempt: limit-stop: .*guard/);
-    else if (scenario === 'invalid') {
-      const outcome = reporting.contribution!.outcome;
-      assert.equal(outcome.kind, 'invalid-submission');
-      assert.ok(outcome.problems.length > 0);
-      for (const problem of outcome.problems) assert.ok(first.rendered.includes(`Submission problem: ${inlineText(problem)}`));
-    } else {
-      assert.ok(first.rendered.includes(`Attempt: ${scenario === 'communication' ? 'communication-failure' : 'configuration-unavailable'} (CODE_SENTINEL): ${inlineText('DIAGNOSTIC_SENTINEL\nnot a heading')}`));
-      assert.doesNotMatch(first.rendered, /\nnot a heading/);
-    }
-    const repeated = await session.execute(request);
-    assert.equal(repeated.kind, 'view'); assert.equal(repeated.view.schema, 'postcode-contribution-view/1-experimental');
+    const opened = await openApplication(fixture(t), { investigation: { agent, bounds: { ...investigationBounds, calls: scenario === 'guard' ? 1 : investigationBounds.calls } } });
+    assert.equal(opened.status, 'opened'); const session = opened.session; t.after(() => session.close());
+    const request = { kind: 'lens', lens: 'summarize', designation: { kind: 'name', value: 'entry' } } as const;
+    const first = answer(await session.execute(request)), repeated = answer(await session.execute(request));
     const reusable = !['communication', 'configuration'].includes(scenario);
-    assert.equal(repeated.view.reporting!.reused, reusable);
-    assert.match(repeated.rendered, reusable ? /Retained outcome; no new investigation\./ : /New investigation request\./);
-    assert.deepEqual(repeated.view.reporting!.contribution, reporting.contribution);
-    for (const line of first.rendered.split('\n').filter(line => /^(Attempt:|Attempt report:|Submission problem:)/.test(line))) {
-      assert.ok(repeated.rendered.includes(line), 'reused reporting preserves its applicable outcome and producer report');
-    }
-    assert.deepEqual(repeated.view.projection, first.view.projection);
-    assert.deepEqual(repeated.view.summary, saved);
-    const exact = await session.execute({ kind: 'present', target: first.view.answerReference!, presentation: request.presentation });
-    assert.equal(exact.kind, 'view'); assert.equal(exact.view.schema, 'postcode-contribution-view/1-experimental');
-    assert.equal(exact.view.reporting, null); assert.deepEqual(exact.view.summary, saved);
-    assert.doesNotMatch(exact.rendered, /Attempt:|Attempt report:|New investigation request|Retained outcome|SENTINEL|Submission problem:|Malformed agent response/);
+    assert.equal(repeated.result.reporting!.reused, reusable);
+    assert.deepEqual(repeated.result.reporting!.contribution, first.result.reporting!.contribution);
+    assert.deepEqual(repeated.projection, first.projection);
+    const expected = { inability: 'accepted', malformed: 'investigation-failure', invalid: 'invalid-submission', guard: 'limit-stop', communication: 'communication-failure', configuration: 'configuration-unavailable' };
+    const outcome = first.result.reporting!.contribution?.outcome ?? first.result.reporting!.unavailable;
+    assert.equal(outcome?.kind, expected[scenario]);
+    const exact = answer(await session.execute({ kind: 'present', target: first.projection.id }));
+    assert.equal(exact.result.reporting, null); assert.deepEqual(exact.projection, first.projection);
     assert.equal(agent.inputs.length, reusable ? 1 : 2);
+    assert.equal(agent.closes, agent.inputs.length);
   });
 }

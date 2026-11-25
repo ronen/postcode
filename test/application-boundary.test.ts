@@ -53,6 +53,7 @@ test('application and companion service runtime/type imports do not reach CLI, V
     if (seen.has(file)) return;
     seen.add(file);
     const relative = path.relative(root, file);
+    assert.ok(!relative.startsWith('..'), `Core imports trial support: ${chain.join(' -> ')}`);
     assert.doesNotMatch(relative, /(^interfaces\/cli\/|^(requests|request-catalog|presentation-contracts|diagnostic-view)\.ts$|(^|\/)(cli|commands|shell|interactive-session|session-worker|session-protocol|presentation|program-presentation|retained-presentation|request-reporting|terminal-text|terminal-layout|answer-presentation|source-disclosure)\.ts$)/, chain.join(' -> '));
     const source = ts.createSourceFile(file, readFileSync(file, 'utf8'), ts.ScriptTarget.Latest, true);
     const inspect = (node: ts.Node): void => {
@@ -67,6 +68,6 @@ test('application and companion service runtime/type imports do not reach CLI, V
     };
     inspect(source);
   }
-  for (const entry of ['index', 'accounts', 'observations', 'feedback']) visit(path.join(root, `application/${entry}.ts`), []);
+  for (const entry of ['index', 'accounts']) visit(path.join(root, `application/${entry}.ts`), []);
   assert.ok(seen.size > 30, 'inspect the transitive graph, including type imports');
 });

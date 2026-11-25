@@ -6,6 +6,5 @@ export function isAnswer(record: ProgramRecord): record is RetainedAnswer {
 }
 /** Classification provides guidance, never proof of retention or a prefix lookup. */
 export function isAnswerReference(value: string): boolean {
-  return /^@?answer-[a-f0-9]{8,64}$/.test(value)
-    || /^@?session:[^:]+:(projection|organization-projection|dependency-projection|module-exports-projection|contribution-projection|contribution-inspection-projection):[a-f0-9]{64}$/.test(value);
+  return /^session:[^:]+:(projection|organization-projection|dependency-projection|module-exports-projection|contribution-projection|contribution-inspection-projection):[a-f0-9]{64}$/.test(value);
 }
