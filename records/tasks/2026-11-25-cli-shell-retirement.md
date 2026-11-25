@@ -31,6 +31,13 @@ Update the contract and implementation documentation, and add direct-boundary te
 
 Yes checkpoint is accepted, continue with the implementation
 
+### 2026-11-25 — Next checkpoint coverage
+
+BTW for the next checkpoint, the reviewer suggests including these two points in the handoff: &#x20;
+&#x20; \- Checking that the carried-forward items were handled: the CLI-only publication path and its completion flag (my note O1) and the Node\
+&#x20;   version recorded for the capture comparison.\
+&#x20; \- Checking that removing the CLI host didn't weaken the lifecycle guarantees that the old host's tests used to cover.
+
 ## Outcome
 
 ## Verification
