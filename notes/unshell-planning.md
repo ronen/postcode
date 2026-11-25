@@ -90,12 +90,21 @@ retained machinery as necessary or all CLI-originated machinery as dead.
 
 > also surgical removal can include removing core capabilities whose purpose was only for CLI shell support.  of course being careful not to remove core functionality that will be needed for the future book model and gui
 
-Assess responsibility and dependencies, not directory location. Remove capabilities
-inside core when their sole purpose is support for the retiring CLI and they can be
-separated without losing behavior needed by surviving consumers or the intended BOOK
-and GUI. An exported function, an existing test or CLI-oriented wording in an accepted
+> ...or even if CLI support wasn't its express purpose, if it is to support features that only CLI shell needed -- we can discuss things that are unclear
+
+Assess actual feature needs and dependencies, not directory location, original intent
+or a general-purpose name. A capability is a removal candidate when the features it
+supports were needed only by the retiring CLI, even if it was designed as general core
+functionality. Remove it when it can be separated without losing behavior needed by
+surviving consumers or the intended BOOK and GUI. An exported function, an existing
+test or CLI-oriented wording in an accepted
 decision does not by itself justify retaining its implementation. Reconcile affected
 governing clauses through the retirement planning package where necessary.
+
+Where need or separability is unclear, bring the specific capability, its current
+feature/consumer dependencies, plausible BOOK/GUI need and removal consequences to
+the human for discussion. Do not silently settle uncertainty through either deletion
+or indefinite retention.
 
 For each candidate:
 
