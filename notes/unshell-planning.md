@@ -47,6 +47,20 @@ but no replacement end-user investigation interface. Document that accurately.
 
 ## Discussion decisions
 
+### Research observation disposition — human direction, 25 November 2026
+
+> for research observation, i'd say: Choose option 2. Remove the unused implementation and explicitly document the resulting capability gap, preserving the foundation obligations. Identify what research capture and delivery the trial runner currently supports. Report the remaining gap.
+
+The [proposal's research observation section](unshell-proposal.md#research-observation-capture-and-delivery)
+now defines removal of the unused sink/delivery implementation, surviving direct
+trial capture and local delivery, and the remaining capability gap. This settles
+the delivery-mechanics question recorded below. Foundation obligations remain;
+no GUI feedback design or replacement delivery framework is included.
+
+The capture account was checked against both current structured-account runners,
+their request-budget helper and the accepted research-capture contract. This was
+source inspection, not a new live trial or verification of complete research capture.
+
 ### Alias and feedback disposition — human direction, 25 November 2026
 
 > Agreed on both. Preserve precise identities, qualified references and the runner’s ability to connect trial steps; compact-alias metadata need not remain compatible. Remove CLI-specific feedback representation, retaining delivery mechanics only where still useful to an actual consumer. GUI feedback design is out of scope.

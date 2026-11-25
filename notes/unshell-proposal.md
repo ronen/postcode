@@ -42,7 +42,7 @@ the entire shell or assuming every unused facility is dead.
 | Useful trial rendering | Move qualified explanation arrangement and state-diagram rendering into trial support. Preserve alternative answers, limitations and notices for unrendered content. Keep content selection, exact support and state semantics in core. |
 | CLI-only core hooks | Remove private operation-scope access, CLI-only request constraints, deferred-check routing, binding ports and shell-only work/usage formatting. Preserve ordinary application validation and execution checks. |
 | Compact aliases | Remove allocation, compact-input resolution and alias-only metadata. Preserve precise-ID validation, kind checks, names/ambiguity, exact retained targets and qualified support. Investigator wire handles are a separate active facility and remain. |
-| Feedback representation | Remove command-shaped feedback builders, snapshots and envelope. GUI feedback design is outside this proposal. The delivery-mechanics question is explicit below. |
+| Feedback and observation implementation | Remove command-shaped feedback builders, snapshots, envelope and the unused observation sink/delivery implementation. Preserve foundation obligations and document the remaining research-support gap below. GUI feedback design is outside this proposal. |
 | Domain/application capabilities | Preserve acquisition, qualified analysis and contributions, retained answers, fresh/follow-up behavior, attribution, credentials, resource ownership and useful client-neutral validity policy. CLI use alone does not make these CLI features. |
 | Tests, scripts and dependencies | Remove those whose purpose disappears; relocate checks of surviving semantics to the direct boundary or trial support. Preserve direct validation/measurement tools and shared fixtures with surviving consumers. |
 
@@ -91,7 +91,7 @@ run-specific values; they must not hide changed qualification or broken referenc
 Live trials supplement controlled comparison rather than establish equality between
 nondeterministic agent responses.
 
-## Research observation delivery — unresolved disposition
+## Research observation capture and delivery
 
 The [foundation](../foundation/product-design.md#research-observation-support)
 requires research observation support and delivery of resulting records to a
@@ -101,26 +101,73 @@ command-shaped batch schema, or a universal event stream. Its
 also survives retirement of the particular CLI interaction. Removing the shell
 does not withdraw either requirement.
 
-The current sink's production callers retire with the CLI. Trials write artifacts
-directly; no surviving consumer of the sink was found. Those facts establish
-reachability, not full foundation conformance. A trial output directory is not
-automatically the designated destination for every research use.
+Remove the unused observation sink and delivery implementation with its retiring
+CLI consumers. Do not retain it speculatively, introduce a new consumer to justify
+it, or replace it with a generic observation framework. Existing trial capture
+continues through its direct file-writing path.
 
-Two possible dispositions remain:
+### Current trial support
 
-1. **Retain the small delivery mechanism for the foundation requirement.** Separate
-   it from command-specific payloads; preserve acceptance, rejection, cleanup-warning,
-   no-overwrite and privacy behavior. This would be an explicit exception to retaining
-   mechanics only for an actual surviving consumer. Do not add a fabricated caller,
-   GUI feedback design, or general observation framework to justify it.
-2. **Remove the currently unused implementation.** Preserve the foundation and
-   delivery obligations and document the resulting capability gap for future research
-   interaction support. Identify what current trial capture does cover. Do not claim
-   that deleting the sink completes that requirement or that trial files universally
-   replace it.
+The main [trial runner](../scripts/structured-accounts/run-trial.mjs) supports focused,
+scripted contribution investigations. Source inspection establishes these captures:
 
-Removing CLI-specific feedback representation does not determine whether the
-underlying delivery mechanism should remain.
+| Capture | What is retained |
+| --- | --- |
+| Trial specification | `spec.json`: supplied project/output/budget paths, trial identifier, steps and any elicitation instructions. |
+| Step records | `steps.jsonl`: executed request, label, elicitation, timing, result kind, failure/reporting fields; contribution answer Projection plus arranged view, or the complete result for other kinds. Missing follow-up options produce explicit skipped-step records. |
+| Rendered artifacts | Qualified explanations in the arranged view and separate SVG/text diagram files, including alternatives and rendering limitations. These supplement the structured answer. |
+| Agent exchanges | `exchanges.jsonl`: transport-provided sanitized exchange records correlated with the current step. These can still contain repository source. |
+| Execution reports | `attempts.jsonl`: reported attempts correlated with their steps. `usage.json` records Session usage after the step loop completes successfully. |
+| Request accounting | The separately configured budget ledger reserves requests before dispatch and records response/transport status and available usage. It is not stored inside the trial output directory automatically. |
+
+Fresh steps reuse captured requests; follow-up steps use exact option-owner addresses.
+These connections and qualified references must survive compact-alias removal.
+
+The specialized [dialog14 runner](../scripts/structured-accounts/run-dialog14-trial.mjs)
+additionally records its controlled seed, domain inputs/replies, setup result and final
+result, with phase attribution. Its scenario-specific capture does not establish a
+general interaction recorder.
+
+Delivery is direct local filesystem writing to the configured output directory and
+budget-ledger path. The runners create a new output directory with restrictive modes
+and exclude their own output from the analyzed evidence; the budget ledger is expected
+to be outside the analyzed project. Study setup must preserve the generated-output
+boundary for all artifacts, including later reuse.
+
+A configured local path can be the designated research destination when selected for
+that study. Research instructions must identify the required records and destinations,
+including the separate ledger when relevant. Successful writes then deliver those
+records locally; the runner does not independently select a research destination,
+export to a remote/archive service or establish a retention policy. Development
+capture alone is not a claim that a research study's delivery requirements are met.
+
+### Remaining capability gap
+
+After retirement, there is no general application facility for capturing human
+interaction, actual display/navigation context or inadequacy feedback and submitting
+it to a research destination. Trial scripts capture their programmed investigation
+scenarios; they do not replace those product/research interactions. The foundation's
+feedback and observation obligations remain requirements for the relevant future
+capabilities, without selecting a GUI feedback design here.
+
+The trial artifacts are not a complete reproducibility archive: the runner does not
+automatically preserve all repository inputs, tool versions, supporting records or
+surrounding human activity. Saved precise references retain their meaning but do not
+make unexported Session data available after disposal. Each study must assess whether
+the captured or separately retained context is sufficient for its question.
+
+Direct writes expose failures by throwing; they do not implement an independent
+acceptance/rejection/cleanup-warning delivery protocol. Records accumulate across
+files rather than through an atomic complete-run publication. A failed/interrupted
+run can leave partial artifacts, no failed-step record and no final usage summary;
+earlier exchange/attempt/ledger records may still exist. These limits must not be
+presented as successful complete capture. Preserve current runner behavior in
+UNSHELL rather than adding a delivery redesign.
+
+Document this bounded surviving support and remaining gap in the resulting current
+architecture/capability account and the eventual retirement decision's conformance
+statement. The gap remains explicit future work; removing an unused implementation
+neither withdraws the foundation obligations nor establishes their full conformance.
 
 ## Residual capabilities and exclusions
 
@@ -142,8 +189,8 @@ changes to foundation or development-process documents.
 
 ## What remains before an implementation plan
 
-Settle the observation-delivery disposition and the precise interruption outcome,
-cleanup and reporting contract. Check the complete proposal against the governing
+Settle the precise interruption outcome, cleanup and reporting contract. Check the
+complete proposal against the governing
 requirements, including scoped retirement of alias, worker and CLI feedback clauses.
 Then prepare the formal decision/document revisions and an implementation plan.
 Agreement on this note's direction does not amend governing documents or authorize

@@ -7,8 +7,10 @@ residual register. It does not amend governing documents.
 
 Subsequent human direction accepts compact-alias removal while preserving precise
 identities, qualified references and trial step connections, and accepts removal of
-CLI-specific feedback representation. The foundation-driven disposition of delivery
-mechanics remains under discussion; see [the recorded clarification](unshell-planning.md#alias-and-feedback-disposition--human-direction-25-november-2026).
+CLI-specific feedback representation. The human also selected removal of the unused
+observation delivery implementation while preserving foundation obligations and
+documenting surviving trial support and the remaining gap; see the
+[current proposal](unshell-proposal.md#research-observation-capture-and-delivery).
 The choices and recommendations below preserve the assessment leading to that
 discussion, rather than asserting that both original questions remain unanswered.
 
