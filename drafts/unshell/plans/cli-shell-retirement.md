@@ -47,8 +47,8 @@ shutdown methods expose the same separately observed shutdown assessment. Preser
 first established terminal cause, repeated-shutdown behavior, ownership until exit
 and the cooperative limits of in-process execution.
 
-Excluded: BOOK implementation, GUI interaction/hosting/feedback design, replacement
-investigation CLI, generic worker or observation framework, unrelated runner lifecycle
+Excluded: book-model implementation, graphical interaction/hosting/feedback design,
+replacement investigation CLI, generic worker or observation framework, unrelated runner lifecycle
 fixes, broad callback-isolation redesign, and foundation/steering/development-process
 changes. Do not add production callers merely to retain unused facilities.
 

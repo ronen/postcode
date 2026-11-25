@@ -87,7 +87,8 @@ Keep shared Presentation negotiation and its current direct-request defaults;
 Expansion acquisition remains useful. Record the loss of negotiation's principal
 client and its coupling to requirement selection in implemented architecture, with
 later redesign distinguished from removable code. This decision does not choose a
-BOOK/GUI consumption model or retire unrelated domain capabilities.
+consumption model for the book or its graphical interface, or retire unrelated domain
+capabilities.
 
 **Alternatives.** Keeping the shell preserves another design-conformance obligation.
 Replacing its worker with a general host expands the goal without a current client.
@@ -265,8 +266,8 @@ Trial-rendering disclosure conformance is unassessed beyond existing qualificati
 and omission checks. The plan requires focused baseline/output assessment and
 disposition of material findings before declaring verification sufficient. The
 post-retirement research/feedback gap persists beyond plan completion and is tracked
-by the backlog item above. No foundation change, core-concept redefinition, BOOK/GUI
-design or implementation authorization is implied by adoption.
+by the backlog item above. No foundation change, core-concept redefinition, book-model
+or graphical-interface design or implementation authorization is implied by adoption.
 
 Revise the application specification and architectural constraints together with
 this record. Maintain forward/backward scoped supersession metadata and current

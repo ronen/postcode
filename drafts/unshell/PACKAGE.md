@@ -1,4 +1,4 @@
-# UNSHELL planning package
+# CLI shell retirement planning package
 
 Draft for human review, 25 November 2026. Nothing in this directory is adopted or
 implementation authorization. The package records the reviewed proposal as a plan,
@@ -54,8 +54,9 @@ must accompany the decision; the immutable decision names it without linking to 
 mutable entry. No task record is opened by drafting or promotion.
 
 Clean up notes/review scratch only under human direction after required context is
-incorporated. Report the steering implication separately: UNSHELL planning advances,
-but its implementation and BOOK readiness are not established. Do not include steering
+incorporated. Report the steering implication separately: CLI shell retirement planning
+advances, but retirement implementation and readiness for book-model implementation
+are not established. Do not include steering
 revisions in this package. Historical completed plans/records remain unchanged.
 
 Implementation requires a separately authorized task under the task protocol and
