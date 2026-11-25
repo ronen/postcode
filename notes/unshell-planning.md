@@ -59,13 +59,32 @@ verify that surviving behavior is unchanged. The original retirement boundary st
 includes one-shot investigation commands and the private worker; authentication
 remains. Do not bundle improvements to surviving application contracts, trial
 artifacts, cancellation policy or lifecycle behavior merely because inspection
-revealed an opportunity or an existing defect. Any necessary behavioral departure
-must be identified and discussed separately before inclusion.
+revealed an opportunity or an existing defect. The interruption-guarantee preservation
+exception below is part of the separation assessment. Any other necessary behavioral
+departure must be identified and discussed separately before inclusion.
 
 The trial runner already uses the application directly and does not depend on the
 shell or worker. Move its useful arrangement/rendering and redirect imports while
 preserving the existing trial behavior. There is no new trial-publication or
 execution-architecture decision required by that move.
+
+### Preserve valuable core guarantees and document residuals — human direction, 25 November 2026
+
+> ...where the separation will include adding a core capability around interruption guarantees, if that is worth keeping for future clients.  Plus documenting whatever unused/unneeded capabilities remain in the core but are not removable surgically, i.e. that need some redesign of core
+
+Surgical separation includes preserving worthwhile interruption guarantees in core,
+including adding a narrowly scoped capability when the retiring host is their only
+adequate implementation. This is conditional on demonstrated value, not a requirement
+to invent an abstraction. Prefer strengthening existing lifecycle responsibilities
+when sufficient. The direct application boundary supplies a concrete home and consumer;
+future clients should not have to reconstruct the same correctness policy.
+
+Document residual core capabilities that become unused or unnecessary but cannot be
+removed through local separation. For each, record the remaining consumers or lack
+of them, the contract/coupling preventing surgical removal, and the redesign needed
+for later retirement. Distinguish implementation reachability, useful responsibility
+and adopted obligations. Document a limitation honestly rather than describing all
+retained machinery as necessary or all CLI-originated machinery as dead.
 
 ## Dependency and disposition assessment
 
@@ -204,17 +223,43 @@ report callback that still executes when close throws.
 
 The earlier handoff proposed a narrow correction to preserve the primary outcome
 while exposing cleanup failure. This is a pre-existing direct-path defect, not a
-rendering-move regression. Under the subsequent surgical-separation direction,
-retain the finding separately and do not silently include the correction in the
-migration. If separately authorized, assess success, expected failure, interruption,
-throwing close and throwing report callbacks while preserving final accounting and
-close-once behavior. No general supervisor follows from this issue.
+rendering-move regression. The subsequent explicit direction to preserve valuable
+interruption guarantees makes this a concrete core-preservation candidate within
+UNSHELL's planning assessment. It does not authorize implementation yet.
+
+Inspection confirms the relevant contrast: `interactive-session.ts` settles the
+pending operation with its original disposal reason before collecting conversation,
+Git and worker cleanup failures into the separately awaited termination result.
+Core `conductDialog` closes the production and rethrows interruption, but a throwing
+conversation close in `finally` can replace it. The application then classifies work
+from that replacement error. Existing direct callers are a concrete consumer of a
+core outcome/cleanup distinction; this is not solely a hypothetical GUI need.
+
+Recommended capability boundary:
+
+- Preserve terminal interruption and original request outcome, with cleanup failures
+  separately observable rather than replacing or disguising that outcome.
+- Preserve close-once behavior, the cutoff for accepting late contribution/usage,
+  and available final attempt/work accounting. Check throwing cleanup and reporting
+  callbacks so the reporting path does not recreate the same outcome-loss problem.
+- Reuse existing Session/dialog, usage/work and Git ownership facilities. Establish
+  whether a small change there suffices before extracting any new helper or API.
+- Keep cancellation request, request settlement, cleanup reporting and actual resource
+  exit distinguishable. Do not promise hard interruption of synchronous computation,
+  transport supervision or accounting survival after process destruction in core.
+- Verify through the surviving application boundary with controlled participants.
+  Any intentional change in exceptional interruption behavior is tested and documented
+  separately from unchanged trial rendering behavior; normal trial behavior stays fixed.
+
+The primary-outcome/cleanup distinction appears worth retaining in core. The exact
+representation and complete guarantee inventory still need design assessment; do
+not infer a generic worker host or resource supervisor from this recommendation.
 
 ## Coverage relocation
 
 | Existing coverage | Surviving verification |
 | --- | --- |
-| `contribution-application.test.ts` cancellation | Keep real application/evaluation with only the agent participant substituted: dispatched usage survives and late contributions are rejected. A throwing-close correction/regression belongs with separate disposition of that defect. |
+| `contribution-application.test.ts` cancellation | Keep real application/evaluation with only the agent participant substituted: dispatched usage survives and late contributions are rejected. Add coverage for any approved core interruption-guarantee preservation, distinguishing its exceptional-path change from unchanged trial rendering. |
 | `contribution-dialog.test.ts` timeout/exposure | Keep direct tests and final attempt reporting. |
 | `investigation-integration.test.ts`, “usage arriving after a reply remains attributable until dialogue close” | Move the substantive assertion to direct dialog/application tests: reporting for the first exchange during the second remains attributable; two calls, no missing measurements, one close. CLI JSON/batch equality is retired. |
 | Same file, “worker guard ignores late replies and late usage from a closed dialogue” | Preserve direct post-close rejection of late result/usage. Retire transport-specific delivery behavior. |
@@ -256,6 +301,27 @@ was run in this resumed planning session. Coverage mappings above are source-ins
   comparison fixtures while retained scripts use them. `prototype-contribution-sharing`
   is independent of CLI retirement and should not be removed as incidental cleanup.
 
+## Residual core capability register
+
+This is an initial post-retirement assessment, to be verified against the completed
+separation. It is not a claim that every listed feature is presently unused, nor
+an authorization to redesign it within UNSHELL. Carry confirmed residuals into durable
+implemented-architecture documentation and appropriate follow-up candidates; notes
+alone must not be their only description when implementation is complete.
+
+| Candidate | Expected residual and evidence | Why removal may require redesign |
+| --- | --- | --- |
+| Shared Presentation negotiation (`application/consumption.ts`, catalog capture and request/result contracts) | Retiring CLI declarations removes its principal current client. The trial runner uses direct content requests. Generic declaration capture, compatibility/refusal handling and consumption metadata remain shared API facilities with direct tests. | Removing negotiation changes accepted application semantics and types; requirement selection shares this code with direct requests. Separate negotiable client presentation from still-needed information requirements and explicitly revise the contracts. Do not remove Expansion acquisition with it. |
+| Compact aliases and coordinated allocations (`application/bindings.ts`, executor, store/reference handling) | Direct mechanical execution still allocates and returns aliases; current reference requests accept them even when the surviving caller uses precise IDs. This is active CLI-motivated coupling, not unreachable code. | Removing allocation or alias input changes accepted designation behavior, optional result fields and append-only binding/allocation schedules. Decide the future reference contract before removing that coupling. CLI-only binding ports can still retire locally. |
+| Command-shaped feedback and observation envelope (`application/feedback.ts`, `application/observations.ts`) | CLI capture/feedback callers retire. The independent services and tests remain; displayed-result feedback still consumes command/records/events snapshots and emits version-four command batches. No new trial consumer is assumed. | A client-neutral replacement must preserve explicit feedback, actual-display context, delivery/cleanup distinctions and adopted observation obligations. Retiring the client does not by itself settle those contracts. Distinguish retained generic sink utility from unused command-shaped affordances. |
+| Neutral publication guard (`application/publication.ts`) | Production integrations found are CLI-owned; the helper remains an explicit application export with direct coverage after their removal. The runner does not need new publication checks. | Determine whether this is useful retained core policy or an unnecessary API obligation. Reconcile the explicit publication contract before removing the export. Do not automatically call a small unused helper a core-redesign project; if its removal proves surgical, handle it as such. |
+
+Expansion acquisition, qualified answer selection, resource ownership and final
+accounting still serve surviving application work. They are not residual dead
+capabilities merely because the CLI was one consumer. Complete the register with
+any additional coupled leftovers found during separation, and remove candidates
+from the residual list if the audit shows they can be retired surgically.
+
 ## Governing and documentation impact
 
 A scoped retirement decision is necessary before implementation. In particular:
@@ -290,13 +356,16 @@ A scoped retirement decision is necessary before implementation. In particular:
 The agreed approach is surgical separation and removal. Preserve shared aliases,
 feedback/delivery contracts and the existing direct trial behavior while retiring
 CLI-specific callers. No new runner lifecycle/publication policy is needed to draft
-that approach. Keep pre-existing defects distinct from migration requirements.
+that approach. Assess and preserve worthwhile core interruption guarantees under
+the explicit exception above; keep unrelated defects distinct from migration work.
 
-Finish the scoped supersession map and remaining mixed-consumer/coverage assessment,
-then draft the smallest coherent retirement package. A prospective implementation
-sequence is: separate retained authentication and trial rendering; retire the complete
-CLI/worker consumer cluster and relocate useful coverage; verify surviving behavior
-and reconcile active documentation/dependencies. These are discussion dependencies,
+Finish the interruption-guarantee assessment, residual core register, scoped
+supersession map and remaining mixed-consumer/coverage assessment, then draft the
+smallest coherent retirement package. A prospective implementation sequence is:
+separate retained authentication and trial rendering and preserve identified core
+interruption guarantees; retire the complete CLI/worker consumer cluster and relocate
+useful coverage; verify surviving behavior, document core residuals and reconcile
+active documentation/dependencies. These are discussion dependencies,
 not approved milestones. Do not introduce compatibility machinery solely to keep
 retiring commands or their old tests working, or generic abstractions for hypothetical
 future consumers.
