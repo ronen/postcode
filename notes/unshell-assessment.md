@@ -5,6 +5,13 @@ plan or implementation authorization. Read with [the discussion and earlier
 evidence](unshell-planning.md). This assessment refines that note's provisional
 residual register. It does not amend governing documents.
 
+Subsequent human direction accepts compact-alias removal while preserving precise
+identities, qualified references and trial step connections, and accepts removal of
+CLI-specific feedback representation. The foundation-driven disposition of delivery
+mechanics remains under discussion; see [the recorded clarification](unshell-planning.md#alias-and-feedback-disposition--human-direction-25-november-2026).
+The choices and recommendations below preserve the assessment leading to that
+discussion, rather than asserting that both original questions remain unanswered.
+
 ## Finding
 
 The CLI/worker cluster can be retired without replacing the trial runner or

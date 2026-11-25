@@ -43,6 +43,42 @@ but no replacement end-user investigation interface. Document that accurately.
 
 ## Discussion decisions
 
+### Alias and feedback disposition — human direction, 25 November 2026
+
+> Agreed on both. Preserve precise identities, qualified references and the runner’s ability to connect trial steps; compact-alias metadata need not remain compatible. Remove CLI-specific feedback representation, retaining delivery mechanics only where still useful to an actual consumer. GUI feedback design is out of scope.
+
+This settles alias removal without preserving compact-alias metadata compatibility.
+Preserve exact identities, qualified support and trial step connections. The runner's
+follow-up route already uses the selected option's precise Investigram address;
+fresh steps reuse the earlier captured request. Both need regression verification.
+
+Remove CLI-specific feedback representation. A consumer audit found no surviving
+production caller of `deliverObservation` or `localFileObservationSink`: callers
+belong to the retiring CLI and its measurement scripts; other uses are tests.
+The trial runner writes its artifacts directly. Do not add a new caller merely to
+justify retaining the sink, or design GUI feedback in UNSHELL.
+
+The human then asked:
+
+> ...but is the observation sink needed for the foundation design?
+
+The foundation's [research observation support](../foundation/product-design.md#research-observation-support)
+requires support for research recording and delivery to a designated research
+destination. Its [feedback provision](../foundation/product-design.md#inadequate-representations)
+also remains applicable to the intended human-facing product. Neither prescribes
+the current command-batch envelope or a particular sink API. The accepted
+[research-capture decision](../docs/decisions/research-question-driven-observation.md#research-capture)
+preserves acceptance/failure distinctions and the current sink's protections when
+used, without requiring that format for every research question.
+
+The agent's immediate recommendation to remove the sink based solely on no surviving
+caller was too strong. Trial file capture is a concrete surviving path, not evidence
+that the foundation's broader recording/delivery requirement is fully satisfied.
+Preserve that requirement and distinguish it from the implementation's reachability.
+Whether to retain the reusable delivery mechanics as an explicit foundation-driven
+exception to the actual-consumer criterion remains under discussion. No sink
+retention/removal implementation or governing revision has been made.
+
 ### Validation artifacts — human direction, 25 November 2026
 
 > Preserve the existing qualified explanations and state diagrams where they support live validation, moving any validation-only arrangement/rendering into trial-runner support. Keep the structured results as the authoritative artifacts. Preserve alternatives, limitations and unrendered-content notices so the rendered artifacts remain faithful to those results. This does not require retaining the CLI presentation framework or maintaining a separate rendering path in core.
