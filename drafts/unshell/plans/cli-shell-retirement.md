@@ -35,9 +35,9 @@ feature need and dependency ownership, not module location or export status.
 
 Preserve shared Presentation negotiation under its current contract, Expansion
 acquisition, domain identity, qualification, exact support, retained selection,
-credential protections, generated-output exclusions, the neutral publication guard
-and asynchronous Git ownership. Document negotiation's lost principal client and its
-coupling to useful requirement selection as a residual for later design.
+credential protections, generated-output exclusions, client-neutral publication
+validity policy and asynchronous Git ownership. Document negotiation's lost principal
+client and its coupling to useful requirement selection as a residual for later design.
 
 Strengthen terminal Session abort according to the decision: interrupted work remains
 interrupted despite cleanup/final-report failures; internal accounting survives;
@@ -54,32 +54,30 @@ changes. Do not add production callers merely to retain unused facilities.
 ## Preparation and dependency boundary
 
 The examined source baseline is `5f9534aeee06996843c74548a3083b11df8815bf`.
-Reconcile intervening source changes before using the inventories below.
+Reconcile intervening source changes when assessing consumers and preservation coverage.
 
-Capture controlled pre-change evidence before removal or movement. Use existing
-application fixtures and scripted agent participants to exercise real coordination;
-do not replace the engine with mocked final results. Preserve a reproducible comparison
-procedure and representative sanitized artifacts. Baseline captures must exclude
+Capture controlled pre-change evidence before removal or movement. Verification
+must exercise real application coordination with controlled participants rather than
+substitute mocked final results. Preserve a reproducible comparison procedure and
+representative sanitized artifacts. Baseline captures must exclude
 credentials and sensitive repository material from committed evidence.
 
-## Work sequence
+## Required outcomes
 
-### 1. Establish preservation baselines and separate surviving clients
+### Independent authentication and validation support
 
-- Establish an import/consumer inventory, including scripts, package commands and
-  mixed tests. Capture representative direct application/runner outputs before edits.
+- Account for surviving consumers, including scripts, package commands and mixed
+  test responsibilities. Establish representative direct application/runner baselines.
 - Separate authentication/help and terminal-safe output from general CLI dispatch.
   Preserve account behavior, credential-safe errors and interruption handling without
   opening analysis projects. Keep the `postcode` package command.
-- Move `arrangeContributionAnswer`, its arrangement-only types/helpers and
-  `contributions/state-diagram.ts` into coherent trial support. Choose the smallest
-  build arrangement consistent with existing script/test conventions. Do not leave a
-  forwarding renderer in core or migrate the whole CLI Presentation framework.
-- Keep selection/resolution in `contributions/answers.ts` and state semantics in
-  `state-model.ts`. Redirect runner imports and move rendering assertions, preserving
-  qualified prose, alternative diagrams, incompatible-model and unrendered notices.
-- Compare controlled baseline output before further semantic changes. Inspect the
-  actual explanation/diagram output against qualification and disclosure requirements;
+- Separate validation rendering from core selection, resolution and state semantics,
+  preserving their behavior and dependency boundaries. Trial support owns the useful
+  rendering; core has no dependency on it and retains no separate rendering path.
+- Preserve qualified prose, alternative diagrams, incompatible-model and unrendered
+  notices, with verification of the relocated rendering and surviving core semantics.
+- Compare output against the controlled baseline. Inspect actual explanation/diagram
+  output against qualification and disclosure requirements;
   existing omission tests are not proof of full conformance. Record any material
   pre-existing gap and obtain disposition rather than silently broadening this task.
 
@@ -87,29 +85,29 @@ Completion evidence: authentication works through the retained entry point, relo
 rendering consumes only supplied content, core has no dependency on trial support,
 and equal-input rendering comparison has no unexplained changes.
 
-### 2. Preserve terminal Session-abort guarantees in core
+### Reliable terminal Session abort
 
 - Correct dialog cleanup/final-report exceptions replacing interruption. Retain final
   attempt/work/usage internally before settling the interrupted request; notification
   failure cannot erase them. Reject late content and seal usage without inventing
   missing measurements.
-- Coordinate active request finalization and participant/resource cleanup through one
-  Session-owned shutdown assessment. Both `interrupt()` and `close()` observe its
-  completion/failures; signal-triggered failures remain available to later close.
-  Request interruption alone is not a shutdown failure. Preserve distinguishable
+- Both `interrupt()` and `close()` expose the same shutdown outcome, covering active
+  request finalization and participant/resource cleanup. Signal-triggered failures
+  remain available to later close. Request interruption alone is not a shutdown
+  failure. Preserve distinguishable
   cleanup and report-delivery failures, including simultaneous failures.
 - Treat close during active work as terminal abort, idle close as shutdown without a
   new request abort, and repeated calls as observers of the same assessment. Preserve
   first established termination/invalidation reason and the final-validation boundary.
-- Observe internal asynchronous failures so signal-only abort creates no unhandled
-  cleanup rejection. Do not suppress failures from callers observing shutdown.
+- Signal-only abort creates no unhandled internal cleanup rejection, and callers
+  observing shutdown can obtain the retained failures.
 - Preserve Git reporting deadlines, escalation and ownership until exit. Document
   caller ownership with injected `runGit`. No overall shutdown deadline or new
   asynchronous participant contract is introduced; synchronous work remains cooperative.
 
-Test through the direct application boundary before retiring worker coverage. Audit
-abort ordering at the opening boundary as well: do not let the separation introduce
-an unowned resource or conceal cleanup failure before a Session is returned. Report
+Verify these guarantees through the direct application boundary. At the opening
+boundary, do not let the separation introduce an unowned resource or conceal cleanup
+failure before a Session is returned. Report
 any existing opening-path defect outside the agreed active-Session correction rather
 than silently designing an additional lifecycle.
 
@@ -118,17 +116,16 @@ Work terminated by abort and a producing attempt stopped by that abort report
 interruption even when cleanup and a final reporting callback fail. Earlier completed
 attempts retain their actual outcomes; do not retroactively relabel accepted production.
 
-### 3. Remove the CLI consumer cluster and compact aliases
+### Complete retirement without loss of surviving responsibilities
 
-- Retire shell/command execution, worker protocol/host, private CLI operation scope
-  and adapter, deferred publication-check transfer, and CLI-only input constraints.
-  Ordinary direct pre/post-execution validity checks remain.
-- Remove mechanical-family Presentations and View/disclosure helpers whose consumers
-  retire. Keep same-named domain analysis, content builders and qualification data.
-- Remove Entity/answer/Investigram compact-binding maps, allocators, private ports,
-  candidate/delivery alias metadata and alias-input branches. Preserve same-Session
-  retained-ID validation, kind/applicability distinctions, names/ambiguity and request
-  attribution. Do not replace compact aliases with another generated short namespace.
+- Retire shell/command execution, the private worker and its protocol, and exclusive
+  CLI adaptation, coordination and validation support. Ordinary direct pre/post-
+  execution validity checks remain.
+- Retire mechanical-family human Presentations and CLI disclosure classification
+  while preserving domain analysis, qualified content construction and qualification.
+- Remove compact-alias allocation, lookup and input/output support. Preserve
+  same-Session retained-ID validation, kind/applicability distinctions, names/ambiguity
+  and request attribution. Do not replace aliases with another short namespace.
 - Remove the command feedback builders/envelope and unused observation sink/delivery
   implementation. Do not wire trials to a replacement. Keep operational attribution,
   usage, qualified bases and production exposure independent of this removal.
@@ -139,11 +136,11 @@ attempts retain their actual outcomes; do not retroactively relabel accepted pro
 Completion evidence: no remaining production import of the retired cluster; all
 retained scripts build/run through their intended boundary; alias compatibility is
 removed deliberately without changing exact references, qualified meaning or method
-provenance. New imports/exports are justified by actual surviving responsibilities.
+provenance.
 
-### 4. Verify the integrated result and reconcile current documentation
+### Verified preservation and accurate current documentation
 
-Run type/build checks and the retained full test suite after focused tests pass.
+Verify type/build correctness and the retained full test suite.
 Inspect the final dependency graph, package scripts, current docs and surviving
 validation tools. Compare baseline artifacts using only explicitly listed alias-field
 and run-specific exclusions; never normalize away support, qualification, referenced
@@ -163,30 +160,26 @@ The adopted backlog revision tracks research observation/feedback reconciliation
 Check remaining entries for stale CLI/worker/export premises without reprioritizing
 unrelated work.
 
-## Dependency and coverage inventory
+## Tooling and verification coverage
 
-These are assessed starting points, not permission to delete a file with a surviving
-responsibility. Recheck at implementation time.
+Retain the direct structured-account trials and their scenario auditing, request-budget
+support, authentication/usage diagnostics and useful direct contribution measurement.
+Retire shell-driven live-validation scenarios, CLI comparison and human-output checks,
+worker-specific probes, and CLI/worker analysis benchmarks and profilers. No replacement
+benchmark project is included. Shared fixtures and dependencies remain only where
+surviving responsibilities need them.
 
-| Cluster | Disposition |
+Retiring a harness must not erase verification of surviving semantics. The required
+coverage is:
+
+| Responsibility | Required evidence |
 | --- | --- |
-| `cli`, `commands`, `shell`, `command-execution`, `interactive-session`, `session-worker`, worker protocol and `interfaces/cli` | Retire investigation/shell/feedback and transport; extract/retain authentication composition and actual credential/output dependencies. |
-| `application/operation-scope`, Session registration/private evaluator route, `InputConstraints`, shell-only `incompleteWork` and `investigation/usage-presentation` | Remove exclusive CLI support; retain shared contribution evaluation, RequestWork, usage and public validation. |
-| `presentation.ts`, organization/dependency/export Presentation modules, `contributions/native-presentation`, `presentation-contracts`, `request-catalog`, `program-presentation`, qualification/diagnostic/evidence/documentation/composition/export View helpers and `source-disclosure` | Remove CLI Presentation closure. Keep analysis/evidence/Projection construction with similar names. |
-| `application/bindings`, memory-store/identity compact bindings, subject/retained reference branches | Remove compact alias allocation/lookup/output, preserving canonical identity and qualified access. `investigation/openai/references` remains active transport support. |
-| `application/feedback`, `application/observations` and CLI snapshot/capture adapters | Remove their unused implementation and exclusive tests. Preserve foundation/semantic requirements through documents and backlog, not an unused replacement abstraction. |
-| `terminal-layout`, `string-width` | Remove when the consumer audit confirms exclusivity. `terminal-text` remains for authentication. |
-| `structured-accounts/run-trial`, dialog14 runner/auditor, request budget, auth/usage diagnostics, direct contribution measurement/profile tools | Retain useful direct consumers and behavior, redirect renderer imports only. Do not delete `module-investigation/` wholesale. |
-| `module-investigation/run-shell`, CLI `compare-*`, `assess-human-output`, worker probes, `measure-analysis`, `benchmark-analysis`, `profile-analysis`, `measure-session-journey`, `measure-partial-session` | Retire with their targets, including exclusive benchmark retry/disposition tests. Keep shared fixtures while retained tools use them. No replacement benchmark project. |
-
-| Existing coverage | Required treatment |
-| --- | --- |
-| Contribution application/dialog tests | Preserve cancellation, exact targets, retained outcomes, exposure and usage; add the direct shutdown matrix. |
-| Mixed investigation integration tests | Move late-usage attribution, post-close rejection and one-close assertions to direct tests. Retire worker-to-parent closing-window reconciliation and transport-specific races. |
-| Execution ownership tests | Retain Git deadlines, escalation, spawn/output failure and incomplete-cleanup ownership. Move meaningful opening/validation assertions off CLI helpers; retire worker-exit cases. |
-| Application lifecycle/boundary/identity/request tests | Preserve safe capture, refusal distinctions, qualified empty/partial content, exact support and publication guard. Retire private operation-scope and alias-allocation assertions. |
-| Contribution answer/state tests | Keep domain semantics and exact support in core tests; relocate arrangement/diagram/omission assertions to trial support. |
-| Authentication/services tests | Retain credential/account behavior and safe output; verify help/retired-command rejection and no project/investigator opening. Retire observation/feedback-only tests. |
+| Application investigation and retained access | Exact targets, retained outcomes, qualification, production exposure, accounting and the terminal-abort matrix below. |
+| Usage and participant lifetime | Usage arriving before sealing remains attributable; late content/usage is rejected after closure; participant cleanup is not repeated. Transport-only races retire with the worker. |
+| Execution ownership | Git deadlines, escalation, spawn/output failures, incomplete-cleanup ownership and opening/validation behavior through the surviving boundary. |
+| Application requests and results | Safe capture, refusal distinctions, qualified empty/partial content, exact support, identity and publication validity. Private CLI scopes and alias allocation are no longer compatibility targets. |
+| Rendering | Qualified arrangement, diagrams, incompatible-model/omission behavior and actual disclosure, separately from core state semantics and exact support. |
+| Authentication | Credential/account behavior, safe output, help, retired-command rejection and absence of project/investigator opening. |
 
 ## Verification contract
 

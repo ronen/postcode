@@ -5,7 +5,7 @@ and coordinated canonical revisions for CLI shell retirement.
 
 ## Review entry points
 
-- [Implementation plan](plans/cli-shell-retirement.md): scope, ordered work, coverage,
+- [Implementation plan](plans/cli-shell-retirement.md): scope, required outcomes, coverage,
   baselines, completion criteria and verification limits.
 - [Retirement decision](decisions/cli-shell-retirement.md): contracts, alternatives,
   exact scoped supersession and adoption/conformance gaps.

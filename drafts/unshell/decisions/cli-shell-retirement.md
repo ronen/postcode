@@ -66,9 +66,9 @@ Keep shared semantic request capture/validation, qualified resolution, acquisiti
 analysis/investigation, Projection construction, exact retained access, attribution
 and usage. Preserve ordinary pre/post-execution checks; remove the private transfer
 of check ownership to CLI publication. Application result completion remains distinct
-from later client presentation/publication failure. Keep the small neutral publication
-guard. API receipt is not later display validity or authorization to expose internal
-source-bearing support publicly.
+from later client presentation/publication failure. Preserve client-neutral pre-output
+and post-output validity policy. API receipt is not later display validity or
+authorization to expose internal source-bearing support publicly.
 
 Remove mechanical-family Presentations and their View/disclosure helpers. Family
 analysis, qualified content and exact support remain. A future human client must
@@ -178,9 +178,9 @@ be forcibly time-bounded in-process. No asynchronous participant lifecycle is in
 With injected `runGit`, subprocess ownership and cleanup belong to its caller; the
 Session cannot claim confirmation for resources it does not own.
 
-**Consequences.** Strengthen existing Session/dialog responsibilities, including
-joining active finalization for shutdown, without introducing a general supervisor.
-Protection of notifications is limited to terminal-abort finalization. Exceptions
+**Consequences.** Shutdown assessment must include active request finalization without
+delaying interrupted request settlement until resource exit. No general supervisor
+is introduced. Protection of notifications is limited to terminal-abort finalization. Exceptions
 from progress/work/report callbacks before a terminal outcome is established and
 success-path callback policy retain existing behavior. This is not a general
 callback-isolation guarantee. Initial opening retains its existing acquisition,
