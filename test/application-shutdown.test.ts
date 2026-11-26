@@ -14,6 +14,9 @@ import path from 'node:path';
 import { openApplication, CommandInterrupted, SessionShutdownError } from '../src/lib/application/index.js';
 import type { ApplicationSession, InvestigatorAgent } from '../src/lib/application/index.js';
 import type { DialogReply } from '../src/lib/contributions/dialog.js';
+import { sessionLedger } from '../src/lib/contributions/modules.js';
+import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
+import type { ProgramRecord } from '../src/lib/records.js';
 import type { ReportedUsage } from '../src/lib/investigation/contracts.js';
 
 const identity = { provider: 'postcode-test', model: 'shutdown', configuration: {}, origin: 'scripted' as const };
@@ -180,6 +183,40 @@ for (const route of ['interrupt', 'signal', 'close'] as const) {
     result.resolve(unavailable); await tick(); assert.deepEqual(session.work(), work);
   });
 }
+
+test('submission validation invalidates changed input without accepting production or an answer and retains usage', async t => {
+  const f = fixture(t), records: ProgramRecord[] = [];
+  let store!: MemoryProgramRecordStore;
+  const put = MemoryProgramRecordStore.prototype.put;
+  t.mock.method(MemoryProgramRecordStore.prototype, 'put', function(this: MemoryProgramRecordStore, values: readonly ProgramRecord[]) {
+    put.call(this, values); records.push(...values); store = this;
+  });
+  let closes = 0;
+  const session = sessionOf(await openApplication(f, {
+    investigation: { dialogAgent: { identity, open: () => ({ close() { closes++; }, exchange: async (input, _signal, usage) => {
+      usage(measurement);
+      writeFileSync(path.join(path.dirname(f.configPath), 'gate.ts'), 'export const changedBeforeSubmission = 2;\n');
+      return { kind: 'submit', contribution: { investigrams: [{ key: 'a', qualification: { limitations: ['Controlled interpretation.'] },
+        items: [{ key: 'p', type: 'prose', body: { text: 'A gate.' } }],
+        declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: input.request.result },
+          members: [{ kind: 'item', item: { investigram: { local: 'a' }, item: 'p' } }] }] }] } };
+    } }) } },
+  }));
+  t.after(() => session.close());
+  await assert.rejects(session.execute(request), SessionInvalidated);
+  assert.equal(session.work()?.status, 'invalidated');
+  const attempts = session.usage().attempts;
+  assert.equal(attempts.length, 1);
+  assert.equal(attempts[0]!.termination, 'invalidated');
+  assert.equal(attempts[0]!.usage.length, 1);
+  assert.deepEqual(attempts[0]!.usage[0]!.reports, [{ reported: measurement, anomalies: [] }]);
+  const productions = sessionLedger(store, session.id).productions().filter(production => production.invocation !== null);
+  assert.ok(!productions.some(production => production.outcome.kind === 'accepted'));
+  assert.ok(productions.every(production => production.investigrams.length === 0));
+  assert.ok(!records.some(record => record.kind === 'contribution-projection'));
+  await session.close();
+  assert.equal(closes, 1);
+});
 
 test('an accepted producing attempt retains acceptance when final request validation is aborted', async t => {
   const entered = deferred<void>(), result = deferred<GitResult>();
