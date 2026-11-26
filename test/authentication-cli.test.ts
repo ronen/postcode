@@ -3,6 +3,7 @@ import { test } from 'node:test';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 import { runCli } from '../src/lib/cli.js';
 import type { ChatGPTCredentials } from '../src/lib/application/accounts.js';
@@ -22,7 +23,7 @@ test('authentication-only entry has help and rejects retired commands without co
     assert.equal(capture.read().stdout, ''); assert.match(capture.read().stderr, /Only authentication and help/);
     assert.doesNotMatch(capture.read().stderr, /\u001b/);
   }
-  assert.match(execFileSync(process.execPath, ['_build/src/cli.js', '--help'], { encoding: 'utf8' }), /authentication CLI/);
+  assert.match(execFileSync(process.execPath, [fileURLToPath(new URL('../src/cli.js', import.meta.url)), '--help'], { encoding: 'utf8' }), /authentication CLI/);
 });
 
 test('authentication status escapes supplied account labels and failures stay credential-safe', async () => {
