@@ -4,9 +4,10 @@ Record type: disposition
 Date: 2026-11-26
 Task: [Surgical CLI shell retirement](../../tasks/2026-11-25-cli-shell-retirement.md)
 Handoff: [Final integrated review](2026-11-25-integrated-retirement-handoff.md)
-Findings: [Round 1](2026-11-25-integrated-retirement-round-1-findings.md), [Round 2](2026-11-26-integrated-retirement-round-2-findings.md)
+Findings: [Round 1](2026-11-25-integrated-retirement-round-1-findings.md), [Round 2](2026-11-26-integrated-retirement-round-2-findings.md), [Copilot](2026-11-26-integrated-retirement-round-3-copilot-findings.md)
 Production correction target: `cacea3e8850f47c9e1976fcb4c09de5260fbaae5`
-Test-only correction target: `388b795bc82d9c6e573fc8b18e54a414c12c88c4`
+Diagram test correction: `388b795bc82d9c6e573fc8b18e54a414c12c88c4`
+CLI test correction: `0ef827ebbb5a38706d24a56119870c1cc00f7075`
 
 ## Findings and dispositions
 
@@ -45,6 +46,13 @@ Test-only correction target: `388b795bc82d9c6e573fc8b18e54a414c12c88c4`
   pass. This replaces the narrower notes-only assertions introduced with R2.
   No production source or rendered artifact changed.
 
+- **Copilot — Accepted and corrected.** Review comment
+  [4714281602](https://github.com/ronen/postcode/pull/15#discussion_r4714281602)
+  identifies a real isolated-build test gap. `0ef827e` resolves the child CLI entry
+  using `fileURLToPath(new URL('../src/cli.js', import.meta.url))`, instead of the
+  checkout-relative `_build/src/cli.js`. The smoke test now executes the CLI in
+  its own compiled build. No production source changed.
+
 ## Corrections and verification
 
 [Correction verification and artifacts](../../validation/cli-shell-retirement/review-corrections.md)
@@ -67,6 +75,17 @@ For the round 2 test tightening, type checking and build passed, all **10/10**
 capture rerun was needed for this test-only change; round 2 independently reproduced
 the 500-test result and all recorded capture/artifact comparisons on Node 26.11.0.
 
+For the Copilot correction, `npm run check`, `npm run build`, and all **3/3**
+authentication CLI tests passed on Node 26.11.0. A second compilation using
+`tsc -p tsconfig.json --outDir _verification/copilot-isolated-build` passed, and all
+three tests passed from that isolated build while the working directory remained
+the checkout. A controlled negative check changed only the disposable isolated
+CLI entry to throw `ISOLATED_CLI_ENTRY_SENTINEL`: the former cwd-relative test still
+passed against the checkout CLI, whereas the corrected test failed on that
+sentinel. Both disposable files were restored, and the isolated suite passed again.
+This directly verifies the identified gap and the fix. `git diff --check` passed;
+no full-suite or capture rerun was needed for this test-only correction.
+
 ## Review rounds
 
 Round 1 reviewed `3b1a5bc0d1fb9e4bfc943bd1d71eecdba1760edc` under the original
@@ -82,11 +101,17 @@ human's authorization. It found no new correctness or disclosure defect, reprodu
 all verification, and recommended the review gate as sufficient. Its only new
 finding was N1, the optional test-strengthening nit corrected above.
 
+Copilot reviewed `3af1c57c406fa07906e6c581210ad3965034ad8b`. Its complete review,
+inline annotation and retrieval scope are preserved in the linked Copilot findings
+record (`0019f1f`), before the correction. The one actionable finding is corrected
+and verified as described above.
+
 The original handoff, findings and reviewed artifacts remain unchanged.
 
 ## Gate conclusion
 
-All actionable findings are addressed, including the round 2 test nit. Round 2
+All actionable findings are addressed, including the round 2 test nit and Copilot
+smoke-test finding. Round 2
 recommends that the final review gate is sufficient. Human confirmation remains
 pending; the task stays active awaiting direction on further review or task closure.
 This disposition does not authorize task closure or merging.
