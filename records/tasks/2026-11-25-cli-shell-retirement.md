@@ -1,8 +1,8 @@
 # Surgical CLI shell retirement
 
-Status: active
+Status: completed
 Opened: 2026-11-25
-Closed:
+Closed: 2026-11-26
 
 ## Task
 
@@ -54,4 +54,53 @@ The review gate is satisfied. Please close the task, merge PR #15, and clean up 
 
 ## Outcome
 
+Retired the investigation CLI, interactive shell, private worker, mechanical human
+Views, compact aliases, command observation/feedback implementation, and dependent
+tooling. The remaining CLI provides authentication and help. Direct application
+clients retain qualified content, precise same-Session references, historical
+answers, ordinary/fresh/follow-up investigations, attribution and usage.
+
+Terminal abort and detected invalidation share protected finalization and a
+memoized shutdown assessment. The first established cause is preserved, cleanup
+and reporting failures remain observable, and ordinary request failures remain
+local. The private CLI publication path is removed; the directly necessary
+completed-work flag remains covered by its reentrant-close test.
+
+Trial rendering is separate from core content. The human-authorized rendering
+extensions make each standalone SVG/text artifact identify its trial answer,
+alternative and account, disclose multiple-alternative standing, and carry its
+own qualifications and coverage notes. SVGs reference the companion text for the
+full legend. These intentional baseline differences add no analysis capability.
+
+The human accepted the final review gate and authorized closure, merge and cleanup
+on 2026-11-26. All returned actionable findings are resolved; see the
+[final disposition](../reviews/cli-shell-retirement/2026-11-25-integrated-retirement-disposition.md).
+No required implementation work remains. The documented residual limits remain:
+cooperative execution without worker hard preemption, the separate opening-path
+cleanup-error gap, and no replacement human investigation interface or research
+recording facility. General callback isolation remains outside scope.
+
 ## Verification
+
+- Type checking and compilation passed. The latest full suite passed **500/500**
+  tests on Node **26.11.0**, independently reproduced during integrated review.
+- Subsequent test-only corrections passed their affected suites: all 10
+  contribution-answer tests and all 3 authentication CLI tests. The latter also
+  passed from an isolated compiled build; a deliberate isolated-entry failure
+  proved the corrected smoke test no longer executes a stale checkout CLI.
+- Two controlled 18-step captures repeat byte-identically. Strict comparison with
+  the preserved baseline allows only enumerated retirement/rendering differences,
+  retaining exact identities, runtime provenance, support, qualifications,
+  relationships and ordering. Both fresh-alternative SVGs were rendered and
+  visually inspected; both formats were tested against the same structured input
+  with separate qualifications and partial coverage.
+- Direct-boundary verification preserves the former host's applicable lifecycle
+  guarantees, including submission-time invalidation, once-only cleanup, terminal
+  cause ordering, final accounting and repeated shutdown observation.
+- Retained controlled trials, import/dependency audits, runtime provenance and
+  coverage migration are preserved in the [integrated evidence](../validation/cli-shell-retirement/integrated-verification.md)
+  and [review-correction evidence](../validation/cli-shell-retirement/review-corrections.md).
+  No live model/credential run was used.
+- Intermediate and final review gates were accepted by the human. The final
+  [disposition](../reviews/cli-shell-retirement/2026-11-25-integrated-retirement-disposition.md)
+  links the complete recorded findings, correction commits and verification.
