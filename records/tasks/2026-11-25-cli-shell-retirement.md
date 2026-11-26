@@ -38,6 +38,16 @@ BTW for the next checkpoint, the reviewer suggests including these two points in
 &#x20;   version recorded for the capture comparison.\
 &#x20; \- Checking that removing the CLI host didn't weaken the lifecycle guarantees that the old host's tests used to cover.
 
+### 2026-11-26 — Integrated review and bounded rendering extension
+
+The review is in records/reviews/cli-shell-retirement/2026-11-25-integrated-retirement-round-1-findings.md .&#x20;
+
+Regarding R2: Authorize a bounded rendering-only extension. Each standalone SVG/text artifact should identify its alternative and corresponding account in the trial record and, when multiple alternatives exist, state their count, equal standing and unreconciled status.
+
+Include the existing entry, coverage, applicability and unsupported-content notes in the SVG. The full transition legend may remain in the companion text, with an explicit reference from the SVG.
+
+Use only supplied information; no new analysis or core capability. Record intentional baseline differences and verify both formats with multiple alternatives and partial coverage, keeping each alternative’s qualifications separate.\
+
 ## Outcome
 
 ## Verification
