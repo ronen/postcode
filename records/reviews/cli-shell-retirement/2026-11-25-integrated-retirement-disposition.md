@@ -111,7 +111,7 @@ The original handoff, findings and reviewed artifacts remain unchanged.
 ## Gate conclusion
 
 All actionable findings are addressed, including the round 2 test nit and Copilot
-smoke-test finding. Round 2
-recommends that the final review gate is sufficient. Human confirmation remains
-pending; the task stays active awaiting direction on further review or task closure.
-This disposition does not authorize task closure or merging.
+smoke-test finding. On 2026-11-26 the human confirmed that the review gate is
+satisfied and explicitly authorized task closure, merging PR #15, and cleanup of
+the task branch and worktree. This acceptance is preserved in the task follow-up.
+The final integrated review gate is satisfied.
