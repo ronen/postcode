@@ -48,6 +48,10 @@ Include the existing entry, coverage, applicability and unsupported-content note
 
 Use only supplied information; no new analysis or core capability. Record intentional baseline differences and verify both formats with multiple alternatives and partial coverage, keeping each alternative’s qualifications separate.\
 
+### 2026-11-26 — Final gate acceptance, closure and integration
+
+The review gate is satisfied. Please close the task, merge PR #15, and clean up the task branch and worktree.
+
 ## Outcome
 
 ## Verification
