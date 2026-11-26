@@ -242,9 +242,8 @@ test('a cancelled asynchronous evidence query retains known acquisition but neve
   assert.equal(opened.status, 'opened');
   const store = new MemoryProgramRecordStore();
   const basis = evaluateModules(store, opened.analysis);
-  const request = { operation: 'functionality' as const, subject: basis.modules[0]!, parameters: {} };
   const controller = new AbortController();
-  const work = new RequestWork(initiation({ kind: 'operation', operation: request }), store);
+  const work = new RequestWork(initiation(normalizeRequest({ kind: 'lens', lens: 'summarize', designation: { kind: 'reference', value: basis.modules[0]! } })), store);
   const evidence = evidenceAccess(store, opened.analysis, opened.session);
   let release!: () => void, ready!: () => void;
   const started = new Promise<void>(resolve => { ready = resolve; });

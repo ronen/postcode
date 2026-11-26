@@ -61,7 +61,7 @@ test('raw organization subsets remain retrievable without Presentation expansion
   assert.equal(refused.kind, 'resolution'); assert.equal(refused.attribution.status, 'refused');
   assert.equal(refused.resolution.reason, 'presentation-unavailable');
   assert.match(refused.resolution.explanation, /group details not selected/);
-  assert.deepEqual(refused.resolution.retainedAnswers, [{ id: subset.answer.id, reference: subset.answer.id }]);
+  assert.deepEqual(refused.resolution.retainedAnswers, [{ id: subset.answer.id }]);
 });
 
 test('direct exact exports refuses missing declared support without enriching the retained answer', async t => {
@@ -78,7 +78,7 @@ test('direct exact exports refuses missing declared support without enriching th
   const refused = await session.execute({ kind: 'present', target: subset.answer.id,
     consumption: { presentations: ['module-exports'], options: consumptionOptions } });
   assert.equal(refused.kind, 'resolution'); assert.equal(refused.resolution.reason, 'presentation-unavailable');
-  assert.deepEqual(refused.resolution.retainedAnswers, [{ id: subset.answer.id, reference: subset.answer.id }]);
+  assert.deepEqual(refused.resolution.retainedAnswers, [{ id: subset.answer.id }]);
   assert.match(refused.resolution.explanation, /support not selected by this retained answer/);
   assert.match(refused.resolution.explanation, /new information request/);
   assert.equal(refused.attribution.status, 'refused');

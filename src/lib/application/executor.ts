@@ -44,7 +44,7 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
       criteria: [...(resolution?.criteria ?? []), 'Compatible qualified result contract and explicit Presentation choices'],
       qualifications: [...new Set([...(resolution?.qualifications ?? []), ...(content ? materializationLimitations(content) : [])])],
       prerequisites: resolution?.prerequisites ?? [], support: resolution?.support ?? [],
-      retainedAnswers: retained.map(id => ({ id, reference: id })),
+      retainedAnswers: retained.map(id => ({ id })),
     });
     const delivery = (content: QualifiedContent, base: QualifiedContent, decision: ConsumptionDecision | null,
       title: string, selectionMode: 'fresh' | 'retained', resolution?: SubjectResolution,
@@ -75,7 +75,7 @@ export function requestExecutor(store: ProgramRecordStore, analysis: ModuleAnaly
       const exact = resolveRetainedTarget(store, session, request.target);
       const exactRefusal = (reason: ResolutionInformation['reason'], explanation: string, retained: readonly RecordId[] = [], qualifications: readonly string[] = []) => refusal({ reason, explanation,
         candidates: [], criteria: ['Exact retained target in the active Session', 'Compatible Presentation over fixed support'], qualifications, prerequisites: [],
-        retainedAnswers: retained.map(id => ({ id, reference: id })) });
+        retainedAnswers: retained.map(id => ({ id })) });
       if (exact.kind === 'refusal') return exactRefusal(exact.reason, exact.explanation);
       const { content, base, associated } = exact;
       const id = content.value.projection.id;

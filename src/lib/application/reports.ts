@@ -9,7 +9,7 @@ export interface ResolutionInformation {
   readonly criteria: readonly string[];
   readonly qualifications: readonly string[];
   readonly prerequisites: readonly RecordId[];
-  readonly retainedAnswers: readonly { readonly id: RecordId; readonly reference: string }[];
+  readonly retainedAnswers: readonly { readonly id: RecordId }[];
   readonly support?: readonly LookupSupport[];
   readonly representationLimits?: readonly string[];
 }

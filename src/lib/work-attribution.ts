@@ -2,7 +2,6 @@ import { randomUUID } from 'node:crypto';
 import { freezeOwned } from './immutable.js';
 import { investigationBounds } from './investigation/bounds.js';
 import type { InvestigationBounds } from './investigation/bounds.js';
-import type { InvestigationRequest } from './investigation/contracts.js';
 import type { SemanticRequest, InputProblem } from './application/requests.js';
 import type { ParameterValue } from './application/lenses.js';
 import type { EvidenceResponse } from './evidence-delivery.js';
@@ -14,7 +13,7 @@ export interface InitiationContext {
   /** The entry point knows its caller role, not whether that caller is a human. */
   readonly initiator: 'caller';
   readonly purpose: string;
-  readonly request: SemanticRequest | { readonly kind: 'operation'; readonly operation: InvestigationRequest };
+  readonly request: SemanticRequest;
   readonly invocation?: { readonly fields: Readonly<Record<string, ParameterValue>>; readonly problems: readonly InputProblem[] };
   readonly constraints: {
     readonly wholeRequestBudget: null;
@@ -25,8 +24,7 @@ export interface InitiationContext {
 
 export function initiation<T extends InitiationContext['request']>(request: T, id: string = randomUUID(), bounds = investigationBounds): InitiationContext & { readonly request: T } {
   return freezeOwned(structuredClone({ id, initiator: 'caller' as const, request,
-    purpose: request.kind === 'present' ? 'Present the exact retained answer; selection unchanged.' : request.kind === 'lens' ? `Answer the ${request.lens} Lens request.` : request.kind === 'operation'
-      ? `Evaluate the ${request.operation.operation} interpretation operation.` : request.kind === 'report' ? 'Report investigation usage.' : 'Resolve the supplied rejected request.',
+    purpose: request.kind === 'present' ? 'Present the exact retained answer; selection unchanged.' : request.kind === 'lens' ? `Answer the ${request.lens} Lens request.` : request.kind === 'report' ? 'Report investigation usage.' : 'Resolve the supplied rejected request.',
     constraints: { wholeRequestBudget: null, investigation: bounds,
       cancellation: 'Session lifetime; investigation inherits cancellation and its own guards' as const } }));
 }
