@@ -4,9 +4,11 @@ Task: [Surgical CLI shell retirement](../../tasks/2026-11-25-cli-shell-retiremen
 Approved source baseline: `5f9534aeee06996843c74548a3083b11df8815bf`.
 Implementation starts at `5db2cf19f0436d206aa5d5c05de7f022a03b45b9`; no intervening source changes.
 
-The [integrated retirement verification](integrated-verification.md) records the final
-result, exact runtime/comparison, standalone disclosure correction, lifecycle
-coverage migration and retained limitations. Sections below preserve the earlier
+The [review-correction verification](review-corrections.md) records the current
+standalone identity/coverage disclosure, restored submission-invalidation test and
+retirement residue cleanup. The [integrated retirement verification](integrated-verification.md)
+preserves the earlier reviewed result, exact runtime/comparison, initial disclosure
+correction, lifecycle coverage migration and retained limitations. Sections below preserve the earlier
 baseline and lifecycle checkpoint evidence.
 
 ## Controlled baseline
