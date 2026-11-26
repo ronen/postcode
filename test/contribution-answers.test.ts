@@ -4,6 +4,7 @@ import type { ResultContract } from '../src/lib/contributions/outcomes.js';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { test } from 'node:test';
+import type { StateDiagram } from '../scripts/structured-accounts/support/state-diagram.js';
 import type { ArrangedQualification } from '../scripts/structured-accounts/support/answers.js';
 import { resolveContributionAnswer, selectContributionAnswer } from '../src/lib/contributions/answers.js';
 import { moduleEntity, sessionLedger } from '../src/lib/contributions/modules.js';
@@ -12,6 +13,18 @@ import { agentic, submit } from './contribution-helpers.js';
 
 const statements = (group: ArrangedQualification) => [...group.statements, ...(group.owner?.statements ?? [])];
 const q = (text: string) => ({ limitations: [text] });
+
+function assertNoSessionInDiagramLabels(diagrams: readonly StateDiagram[], session: string) {
+  for (const diagram of diagrams) {
+    // Precise identities belong in Trial record; they must not become fallback
+    // bearer labels in the picture, text, legends or notes.
+    const text = diagram.text.replace(/\nTrial record\n.*?(?=\nQualifications of this alternative\n|$)/s, '');
+    const svg = diagram.svg.replace(/<text x="20"[^>]*>Trial record<\/text>.*?(?=<text x="20"[^>]*>Diagram notes<\/text>)/s, '');
+    assert.notEqual(text, diagram.text, 'The text has a distinct trial-record section');
+    assert.notEqual(svg, diagram.svg, 'The SVG has a distinct trial-record section');
+    assert.ok(!JSON.stringify({ ...diagram, text, svg }).includes(session), 'Only the trial-record section may contain the Session ID');
+  }
+}
 async function setup(contract: ResultContract | null = null) {
   const { store, evaluation, claims } = await discover(path.resolve('fixtures', 'exports', 'tsconfig.json'));
   const ledger = sessionLedger(store, evaluation.session), subject = claims.find(claim => claim.information.handle === 'barrel')!.subject;
@@ -103,7 +116,7 @@ test('multiple state models preserve their distinct role and Entity bearers with
   assert.match(diagrams[0]!.text, /States of each cache instance\\u001b/);
   assert.match(diagrams[1]!.text, /States of one connection/);
   assert.match(diagrams[2]!.text, /States of barrel/);
-  assert.ok(diagrams.every(diagram => !diagram.notes.join(' ').includes(ledger.session)), 'Bearer labels remain independent of the trial record identity');
+  assertNoSessionInDiagramLabels(diagrams, ledger.session);
   assert.ok(diagrams.every(diagram => diagram.text.includes('Alternative 1 of 1.') && !diagram.text.includes('equally standing')));
   assert.deepEqual((projection.alternatives[0]!.items[2]!.body as { bearer: unknown }).bearer, { kind: 'entity', entity });
   assert.ok(!diagrams.some(diagram => diagram.text.includes('wrong common module label')));
@@ -140,7 +153,7 @@ test('discovered module bearers retain distinct qualified labels without supplem
     assert.ok(group.statements.includes(`Generated handle: ${handle}.`));
     assert.ok(group.statements.some(statement => statement.startsWith('Mechanically derived')));
   }
-  assert.ok(alternative.diagrams.every(diagram => !diagram.notes.join(' ').includes(ledger.session)));
+  assertNoSessionInDiagramLabels(alternative.diagrams, ledger.session);
   assert.deepEqual(ledger.productions().map(production => production.deliveries), deliveries);
   // Presentation of the old answer cannot refresh its identification after a withdrawal.
   submit(ledger, agentic(), [{ key: 'withdraw', qualification: q('WITHDRAWAL_LIMIT'), declarations: [{ key: 'w', operation: 'withdraw',
