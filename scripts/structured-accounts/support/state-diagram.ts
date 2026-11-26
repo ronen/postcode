@@ -14,7 +14,7 @@ export interface StateDiagram {
   /** Qualification that must accompany the picture: entry, coverage, applicability and unsupported semantics. */
   readonly notes: readonly string[];
 }
-export const stateDiagramMethod = 'postcode/state-transition-diagram@8';
+export const stateDiagramMethod = 'postcode/state-transition-diagram@9';
 
 /** Why a state model cannot be drawn, or null. Missing content is a different condition from a rendering failure. */
 export function stateDiagramIncompatibility(model: StateModel): string | null {
@@ -32,7 +32,7 @@ const short = (value: string, limit: number): string => value.length <= limit ? 
  * causation or completeness claim: every node and edge is one supplied state or transition,
  * unknown information is shown as unknown, and anything the picture abbreviates is in the legend.
  */
-export function renderStateDiagram(model: StateModel, bearerLabel: string, qualifications: readonly string[] = []): StateDiagram {
+export function renderStateDiagram(model: StateModel, bearerLabel: string, qualifications: readonly string[] = [], context: readonly string[] = []): StateDiagram {
   bearerLabel = model.bearer.kind === 'role' ? model.bearer.role : bearerLabel;
   const reason = stateDiagramIncompatibility(model);
   if (reason) throw new Error(`Incompatible state model: ${reason}`);
@@ -118,23 +118,45 @@ export function renderStateDiagram(model: StateModel, bearerLabel: string, quali
   // Each standalone artifact carries only its own alternative's supplied qualifications.
   // Wrap without truncating: arbitrary owner text must remain visible in the SVG.
   const disclosure = [...new Set(qualifications)].map(visible);
-  const columns = Math.floor((width - 40) / 14);
-  const lines = disclosure.flatMap(statement => {
+  const record = context.map(visible);
+  const companion = 'Full state and transition legend: see the companion .txt artifact with the same basename as this SVG.';
+  const sections = [
+    ...(record.length ? [{ title: 'Trial record', statements: record }] : []),
+    { title: 'Diagram notes', statements: [...notes, companion] },
+    ...(disclosure.length ? [{ title: 'Qualifications of this alternative', statements: disclosure }] : []),
+  ];
+  // 13px monospace is about 8px per Latin character; allow two cells for wider
+  // characters. Prefer spaces, splitting only tokens too long to fit a whole line.
+  // Preserve every character (including spaces at a wrap) for exact disclosure.
+  const columns = Math.floor((width - 40) / 8);
+  const wrap = (statement: string): string[] => {
     const characters = Array.from(statement), result: string[] = [];
-    for (let offset = 0; offset < characters.length; offset += columns) result.push(characters.slice(offset, offset + columns).join(''));
+    while (characters.length) {
+      let end = 0, cells = 0, space = 0;
+      while (end < characters.length) {
+        const size = characters[end]!.codePointAt(0)! > 255 ? 2 : 1;
+        if (cells + size > columns) break;
+        cells += size;
+        if (characters[end] === ' ') space = end + 1;
+        end++;
+      }
+      if (end < characters.length && space) end = space;
+      result.push(characters.splice(0, end).join(''));
+    }
     return result;
-  });
-  const disclosureHeight = lines.length ? 42 + lines.length * 20 : 0;
+  };
+  const lines = sections.flatMap(section => [{ text: section.title, heading: true },
+    ...section.statements.flatMap(statement => wrap(statement).map(text => ({ text, heading: false })))]);
+  const disclosureHeight = 22 + lines.length * 20;
   const svg = [`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height + disclosureHeight}" role="img" aria-label="${escape(`State-transition diagram of ${bearerLabel}`)}">`,
     '<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z"/></marker></defs>',
     '<style>.state{fill:#f6f8fa;stroke:#24292f;stroke-width:1.5}.state-label{font:14px sans-serif;text-anchor:middle}.edge{fill:none;stroke:#24292f;stroke-width:1.3}.edge-label{font:11px sans-serif;text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:4}.entry{fill:#24292f}.title{font:600 15px sans-serif;text-anchor:middle}</style>',
     // Captions are drawn last, above every state, so no box can hide one.
     `<text class="title" x="${centre.x}" y="30">${escape(short(`States of ${bearerLabel}`, 80))}</text>`, ...edges.map(item => item.path), entry, ...nodes, ...edges.map(item => item.caption),
-    ...(lines.length ? [`<text x="20" y="${height + 20}" style="font:600 14px sans-serif">Qualifications of this alternative</text>`,
-      ...lines.map((line, index) => `<text x="20" y="${height + 42 + index * 20}" style="font:13px monospace">${escape(line)}</text>`)] : []), '</svg>'].join('');
+    ...lines.map((line, index) => `<text x="20" y="${height + 20 + index * 20}" xml:space="preserve" style="font:${line.heading ? '600 14px sans-serif' : '13px monospace'}">${escape(line.text)}</text>`), '</svg>'].join('');
   const describe = (item: StateDiagram['legend'][number]) => [`${item.mnemonic}  ${item.from} → ${item.to}`,
     `      trigger: ${item.trigger ?? 'not established'}`, ...(item.guard ? [`      guard: ${item.guard}`] : []), ...(item.effect ? [`      effect: ${item.effect}`] : [])];
   const text = [`States of ${bearerLabel}`, ...model.states.map(state => `  [${label.get(state.key)}]${state.description ? `  ${state.description}` : ''}`),
-    model.transitions.length ? 'Transitions' : 'No transitions are listed.', ...legend.flatMap(describe), ...notes, ...(disclosure.length ? ['Qualifications of this alternative', ...disclosure] : [])].map(visible).join('\n');
+    model.transitions.length ? 'Transitions' : 'No transitions are listed.', ...legend.flatMap(describe), ...notes, ...(record.length ? ['Trial record', ...record] : []), ...(disclosure.length ? ['Qualifications of this alternative', ...disclosure] : [])].map(visible).join('\n');
   return { diagramType: 'state-transition', method: stateDiagramMethod, svg, text, stateLegend, legend, notes };
 }

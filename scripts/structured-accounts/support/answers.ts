@@ -56,9 +56,10 @@ export function arrangeContributionAnswer(content: ContributionAnswerContent, ti
   const itemSupport = new Map(projection.support.items.map(value => [itemKey(value.address), value]));
   const changeSupport = new Map(projection.support.changes.map(value => [addressKey(value.address), value]));
   const bearerSupport = new Map(projection.support.bearers.map(value => [value.entity, value]));
-  const alternatives = projection.alternatives.map((alternative): ArrangedAlternative => {
-    const models = alternative.items.filter(item => item.type === 'state-model').map(item => item.body as StateModel);
-    const drawable = models.filter(model => stateDiagramIncompatibility(model) === null);
+  const alternatives = projection.alternatives.map((alternative, index): ArrangedAlternative => {
+    const modelItems = alternative.items.filter(item => item.type === 'state-model');
+    const models = modelItems.map(item => item.body as StateModel);
+    const drawable = modelItems.filter(item => stateDiagramIncompatibility(item.body as StateModel) === null);
     const qualify = (qualification: Qualification | null) => qualification ? [`${statusPhrase[qualification.status]} (${qualification.method})${qualification.scope ? `, scope: ${qualification.scope}` : ''}.`,
       ...(qualification.guarantee ? [qualification.guarantee] : []), ...qualification.limitations] : [];
     const uses = alternative.uses.map(address => useSupport.get(addressKey(address))!);
@@ -124,10 +125,16 @@ export function arrangeContributionAnswer(content: ContributionAnswerContent, ti
     ];
     return { designation: alternative.designation, producer: alternative.producer, qualifications,
       prose: alternative.items.flatMap(item => item.type === 'prose' ? [(item.body as { text: string }).text] : []),
-      diagrams: drawable.map(model => renderStateDiagram(model, bearer(model), qualifications.flatMap(group => [
+      diagrams: drawable.map(item => renderStateDiagram(item.body as StateModel, bearer(item.body as StateModel), qualifications.flatMap(group => [
         ...group.statements.map(statement => `${group.label}: ${statement}`),
         ...(group.owner?.statements.map(statement => `${group.label} — owner: ${statement}`) ?? []),
-      ]))),
+      ]), [
+        `Trial answer: ${projection.id}`,
+        `Alternative ${index + 1} of ${projection.alternatives.length}.`,
+        `Alternative designation: ${JSON.stringify(alternative.designation)}`,
+        `Account item: ${JSON.stringify(item.address)}`,
+        ...(projection.alternatives.length > 1 ? [`${projection.alternatives.length} equally standing alternative answers are shown separately. Their order implies no preference, and they are not reconciled.`] : []),
+      ])),
       diagramUnavailable: drawable.length ? null : models.length ? 'None of the selected state models can be drawn; see the unpresented items.' : 'This alternative selects no state model.',
       unpresented: alternative.items.flatMap((item): ArrangedAlternative['unpresented'] => {
         if (item.type === 'prose') return [];

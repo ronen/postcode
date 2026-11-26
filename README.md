@@ -78,7 +78,9 @@ be preempted. Callers await shutdown and separately observe cleanup failures.
 The [direct structured-account trial runner](scripts/structured-accounts/run-trial.mjs)
 retains controlled and hosted validation paths. Its qualified explanation and SVG/text
 rendering lives under `scripts/structured-accounts/support/`, consumes supplied
-content, and carries each diagram's own interpretation status and owner limitations.
+content. Each standalone diagram identifies its alternative and account, states the
+standing of multiple alternatives, and carries its own qualifications and coverage
+notes. The SVG points to the companion text for the full transition legend.
 The [retirement evidence](records/validation/cli-shell-retirement/README.md) explains
 controlled comparison and intentional differences. Routine tests need no inference
 credentials. Live trials require separately authorized provider use.

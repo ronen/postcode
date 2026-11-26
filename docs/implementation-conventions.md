@@ -68,7 +68,7 @@ Agents may update this document only as part of authorized implementation work t
 ## Authentication and validation output
 
 - Authentication/help requires no project opening or investigator configuration. Escape terminal controls at inline output boundaries and never print raw credentials or caught provider errors.
-- Trial explanation and diagram rendering consumes supplied qualified content. Keep source/evidence literal in structured content; visibly escape controls and XML in rendered artifacts. Diagram disclosure includes the alternative's supplied interpretation status and applicable owner limitations. Core state semantics and exact support remain independent of rendering.
+- Trial explanation and diagram rendering consumes supplied qualified content. Keep source/evidence literal in structured content; visibly escape controls and XML in rendered artifacts. Each standalone diagram identifies its trial answer, alternative and account item, and states the count, equal standing and unreconciled status of multiple alternatives. Disclosure keeps each alternative's supplied interpretation status and applicable owner limitations separate. Include entry, coverage, applicability and unsupported-content notes in both formats; the SVG explicitly points to its companion text for the full legend. Core state semantics and exact support remain independent of rendering.
 - Retired human Views, observation/feedback delivery and disclosure classification do not establish conformance for future interfaces. Record the research-support gap without wiring validation tools to a replacement recording framework.
 - Store file associations separately from precise source spans; spans use one-based UTF-16 columns and exclusive ends.
 

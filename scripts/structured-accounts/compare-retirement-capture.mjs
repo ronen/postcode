@@ -46,8 +46,18 @@ for (const [i, step] of expected.steps.entries()) {
     for (const [k, diagram] of alternative.diagrams.entries()) {
       const rendered = current.diagrams[k];
       assert.equal(diagram.method, 'postcode/state-transition-diagram@7');
-      assert.equal(rendered.method, 'postcode/state-transition-diagram@8');
-      assert.equal(rendered.text, diagram.text + '\nQualifications of this alternative\n' + disclosure.join('\n'));
+      assert.equal(rendered.method, 'postcode/state-transition-diagram@9');
+      const account = step.result.answer.content.value.projection.alternatives[j].items
+        .filter(item => item.type === 'state-model' && item.body.states.length)[k];
+      assert.ok(account, 'Each diagram identifies a supplied drawable account item');
+      const context = [
+        `Trial answer: ${step.view.answer}`,
+        `Alternative ${j + 1} of ${step.view.alternatives.length}.`,
+        `Alternative designation: ${JSON.stringify(alternative.designation)}`,
+        `Account item: ${JSON.stringify(account.address)}`,
+        ...(step.view.alternatives.length > 1 ? [`${step.view.alternatives.length} equally standing alternative answers are shown separately. Their order implies no preference, and they are not reconciled.`] : []),
+      ].map(visible);
+      assert.equal(rendered.text, diagram.text + '\nTrial record\n' + context.join('\n') + '\nQualifications of this alternative\n' + disclosure.join('\n'));
       const oldBox = /viewBox="0 0 (\d+) (\d+)"/.exec(diagram.svg), newBox = /viewBox="0 0 (\d+) (\d+)"/.exec(rendered.svg);
       assert.ok(oldBox && newBox); assert.equal(newBox[1], oldBox[1]); assert.ok(Number(newBox[2]) > Number(oldBox[2]));
       const start = rendered.svg.indexOf('<text x="20"');
@@ -55,17 +65,19 @@ for (const [i, step] of expected.steps.entries()) {
       const graph = rendered.svg.slice(0, start).replace(newBox[0], oldBox[0]) + '</svg>';
       assert.equal(graph, diagram.svg, 'Existing nodes, labels, edges and entry must be unchanged');
       const footer = rendered.svg.slice(start, -'</svg>'.length);
-      const lines = [...footer.matchAll(/<text x="20" y="(\d+)" style="[^"]+">([^<]*)<\/text>/g)];
+      const lines = [...footer.matchAll(/<text x="20" y="(\d+)" xml:space="preserve" style="[^"]+">([^<]*)<\/text>/g)];
       assert.equal(lines.map(match => match[0]).join(''), footer, 'Only visible text is added');
-      assert.equal(decode(lines[0][2]), 'Qualifications of this alternative');
-      assert.equal(lines.slice(1).map(match => decode(match[2])).join(''), disclosure.join(''), 'SVG preserves all statements of its own alternative');
+      const footerStatements = ['Trial record', ...context, 'Diagram notes', ...diagram.notes,
+        'Full state and transition legend: see the companion .txt artifact with the same basename as this SVG.',
+        'Qualifications of this alternative', ...disclosure];
+      assert.equal(lines.map(match => decode(match[2])).join(''), footerStatements.join(''), 'SVG preserves context, notes and qualifications of its own alternative');
       let previousY = Number(oldBox[2]);
       for (const line of lines) {
         assert.ok(Number(line[1]) > previousY && Number(line[1]) < Number(newBox[2]), 'Disclosure lines are distinct and within the canvas');
         previousY = Number(line[1]);
       }
       diagram.method = rendered.method; diagram.text = rendered.text; diagram.svg = rendered.svg;
-      count('qualified standalone diagram');
+      count('identified and qualified standalone diagram');
     }
   }
 }
