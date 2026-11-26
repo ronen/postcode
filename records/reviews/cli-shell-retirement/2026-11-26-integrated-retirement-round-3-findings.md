@@ -1,0 +1,24 @@
+# CLI shell retirement — final integrated review, round 3
+
+Record type: findings
+Received: 2026-11-26
+Reviewer: Codex, second reviewer for the integrated assignment
+Handoff: [Original integrated retirement handoff](2026-11-25-integrated-retirement-handoff.md)
+Round: 3
+Reviewed target: `3af1c57c406fa07906e6c581210ad3965034ad8b`
+Prior findings: [Round 2](2026-11-26-integrated-retirement-round-2-findings.md) and [updated disposition](2026-11-25-integrated-retirement-disposition.md)
+Prior reviewed target: `ae9f2acac28b71afb2e217da5213b1e3d983ecf9`
+
+## Returned findings
+
+I recommend accepting the final integrated review gate. I found no blocking correctness, scope or disclosure issue. The diff from the round 2 target consists of the contribution-answer test strengthening and two review records. I also checked the integrated result against the approved plan, the invalidation decision and the human's rendering follow-up.
+
+**N1 is resolved.** The new assertion excludes the trial-record section in each rendered format before checking the whole diagram for the Session ID. Against a captured diagram containing legitimate trial-record IDs, I exercised the compiled assertion with six in-memory changes. It accepted the original and detected a misplaced ID in each of the SVG title, text title, state legend, transition legend, notes and trailing qualification text. No production code changed between rounds.
+
+**Lifecycle and retirement.** I traced direct execution through the final validity check and work finalization. The completion marker has a surviving purpose when a finish callback closes the Session synchronously. Abort and established invalidation each preserve their cause, with separate shutdown observation of terminal-finalization and owned-resource cleanup failures. I compared former worker and Session tests with the retained direct tests for invalidation at submission, rejection of late content and usage, accepted production before a later abort, concurrent requests, and ordinary failure followed by clean idle close. The authentication entry dispatches only authentication and help, with retired commands refused before credential acquisition. I found no core dependency on trial rendering or surviving private worker/operation-scope entry. The hosted investigator transport is unchanged across the integrated diff. Current architecture documentation identifies the Presentation negotiation/acquisition coupling and the research-support gap.
+
+**Preservation and disclosure.** On Node 26.11.0 I regenerated the capture at the documented absolute fixture path. Its SHA-256 was `3945ac6d645e65b14bdc60b3a3f2b219a9b62cea392d480a62d54aab134054b6`, byte-identical to the committed corrected capture. Both fresh alternatives' SVG and text files also matched byte for byte. I inspected and ran the comparator. It checks the alias changes against the original precise IDs, derives expected labels, alternative addresses and qualifications from baseline structured content, compares the original graph markup, then compares the full adjusted capture. All 18 steps passed, including exact access, reuse, fresh and follow-up requests. The only diagram changes were the five checked rendering differences. I inspected the alternative-specific tests, read both companion texts and rendered the second SVG on white. Its picture, equal-standing notice, coverage limits, owner qualifications and companion-legend reference are visible.
+
+**Design observation for the human.** I would keep the disclosure correction. In the rendered example, long answer and account identifiers precede the first explicit interpretation warning, and one owner limitation appears four times under different supported items or uses. That order is defensible for a trial artifact used to audit provenance. For a future human interface I would put interpretation status, alternative standing and the consequential limitation beside the picture, with exact identifiers and detailed provenance available on demand. I would leave this renderer within the approved trial scope.
+
+**Verification and limits.** Type checking and a build from an empty output directory passed. The retained suite ran 500 tests: 497 passed in the sandbox and three loopback sign-in tests failed there. With local loopback access the entire controlled authentication file passed 20/20, including all three. Every retained test therefore passed across the two runs. I used the installed dependencies and controlled collaborators. Live credentials, hosted inference, browser sign-in and real subprocess deadline behavior were outside my checks. I did not regenerate the pre-retirement build. One cosmetic discrepancy: checking the *entire* baseline-to-target diff with `git diff --check` flags a trailing blank line at the end of `src/lib/contributions/answers.ts`; it has no behavioral effect and need not delay acceptance.
