@@ -4,8 +4,9 @@ Record type: disposition
 Date: 2026-11-26
 Task: [Surgical CLI shell retirement](../../tasks/2026-11-25-cli-shell-retirement.md)
 Handoff: [Final integrated review](2026-11-25-integrated-retirement-handoff.md)
-Findings: [Round 1](2026-11-25-integrated-retirement-round-1-findings.md)
-Correction target: `cacea3e8850f47c9e1976fcb4c09de5260fbaae5`
+Findings: [Round 1](2026-11-25-integrated-retirement-round-1-findings.md), [Round 2](2026-11-26-integrated-retirement-round-2-findings.md)
+Production correction target: `cacea3e8850f47c9e1976fcb4c09de5260fbaae5`
+Test-only correction target: `388b795bc82d9c6e573fc8b18e54a414c12c88c4`
 
 ## Findings and dispositions
 
@@ -37,6 +38,13 @@ Correction target: `cacea3e8850f47c9e1976fcb4c09de5260fbaae5`
   `retainedAnswers[].reference` field and verifies `{ id }` refusals directly.
   Candidate `reference` remains to preserve supplied reference spelling.
 
+- **Round 2 N1 — Accepted and corrected.** `388b795` restores the two diagram
+  Session-ID assertions across the complete text, SVG picture, state/transition
+  legends and notes, excluding only the intentional `Trial record` section in
+  each rendered format. Both sections must be found before the assertions can
+  pass. This replaces the narrower notes-only assertions introduced with R2.
+  No production source or rendered artifact changed.
+
 ## Corrections and verification
 
 [Correction verification and artifacts](../../validation/cli-shell-retirement/review-corrections.md)
@@ -54,18 +62,31 @@ terminal cause, shutdown assessment, ordering and ordinary-failure boundaries ar
 unchanged. Broader callback isolation, hard preemption and the documented opening
 cleanup limitation remain outside scope. No live provider/credential run was used.
 
+For the round 2 test tightening, type checking and build passed, all **10/10**
+`contribution-answers` tests passed, and `git diff --check` passed. No full-suite or
+capture rerun was needed for this test-only change; round 2 independently reproduced
+the 500-test result and all recorded capture/artifact comparisons on Node 26.11.0.
+
 ## Review rounds
 
 Round 1 reviewed `3b1a5bc0d1fb9e4bfc943bd1d71eecdba1760edc` under the original
 handoff and found no correctness defect. It recommended sufficiency after human
-R2 disposition and allowed implementing-agent verification of minor corrections.
+R2 disposition and allowed implementing-agent verification of the minor R1, R3
+and R4 corrections. The R2 rendering extension was material and required further
+independent review.
 The human subsequently authorized the bounded rendering extension; this record
 supplies its correction target and verification under the same review assignment.
+Round 2 reviewed `ae9f2acac28b71afb2e217da5213b1e3d983ecf9`, including that rendering
+extension, and confirmed that all four round 1 findings were resolved within the
+human's authorization. It found no new correctness or disclosure defect, reproduced
+all verification, and recommended the review gate as sufficient. Its only new
+finding was N1, the optional test-strengthening nit corrected above.
+
 The original handoff, findings and reviewed artifacts remain unchanged.
 
 ## Gate conclusion
 
-All actionable findings are addressed. Human confirmation that the final review
-gate is sufficient remains pending; the task stays active. The corrected target
-above is available for any further round the human arranges under the original
-handoff. This disposition does not authorize task closure or merging.
+All actionable findings are addressed, including the round 2 test nit. Round 2
+recommends that the final review gate is sufficient. Human confirmation remains
+pending; the task stays active awaiting direction on further review or task closure.
+This disposition does not authorize task closure or merging.
