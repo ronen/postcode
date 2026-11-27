@@ -1,6 +1,6 @@
 # Upcoming work
 
-Last considered: 2026-11-25
+Last considered: 2026-11-27
 
 A living document for keeping track of upcoming work and deciding what order to
 do it in. Major checkpoints are useful occasions to reconsider it in strategy
@@ -74,7 +74,6 @@ Codes identify items independently of ordering.
 
 ```mermaid
 flowchart TD
-    UNSHELL["🧹 UNSHELL — Retire the interactive CLI shell"] --> BOOK
     BOOK["✦ BOOK — Initial book capability"] --> MINIGUI["✦ MINIGUI — Minimal graphical investigation"]
     BOOK --> INVEST["✦ INVEST — Broader investigation capabilities"]
     MINIGUI -. Interaction needs revealed through use .-> GUI["✦ GUI — Broader graphical investigation 🧱"]
@@ -94,8 +93,7 @@ gap prevents useful evaluation of the book.
 
 | Position | Item | Why here / what could change it |
 | --- | --- | --- |
-| Next: plan and implement | [UNSHELL — Retire the interactive CLI shell](#unshell) | Remove a major consumer of presentation machinery, simplifying the remaining BOOK work. Live trials already have their own runner. |
-| After UNSHELL | [BOOK — Initial book capability](#book) | Turn the book-model handoff into a minimal working capability, including organization, composition and qualified access. Reassess presentation/expansion machinery against its remaining consumers; decide then whether any cleanup should be implemented separately. |
+| Planning in progress | [BOOK — Initial book capability](#book) | Turn the book-model handoff into readable, connected pages through organization, composition and qualified access. |
 | After BOOK | [MINIGUI — Minimal graphical investigation](#minigui) | Make the book readable and navigable, so actual use can reveal gaps in its content and interaction. |
 | Tentatively after MINIGUI | [INVEST — Broader investigation capabilities](#invest) | Add a few investigations in response to needs encountered in the book. Bring a bounded capability forward if it is needed to exercise the book meaningfully. |
 | Conditional, when investigation must span input changes | [CHANGE — Investigation across target changes](#change) | The intended experience or actual use supplies the trigger. Can precede or follow PERSIST. |
@@ -120,11 +118,10 @@ Alphabetical by code.
   Build on the implemented structured-account mechanism. Specialized architectural
   investigations can follow; the full Cockatiel example is not the initial scope.
 - **Planning:** use the book-model handoff to develop the implementation plan,
-  decisions and coordinated governing-document revisions. Following UNSHELL, assess
-  remaining presentation and expansion machinery as **keep, adapt, replace or remove**. Include migration
-  and retirement in the plan; removals requiring a usable graphical replacement can
-  belong to MINIGUI. Retain useful acquisition and qualification responsibilities
-  without assuming two parallel presentation systems must remain supported.
+  decisions and coordinated governing-document revisions. Direct requests still use
+  information requirements selected through Presentation negotiation, and Expansion
+  still supports acquisition. Assess what book requests need from each and whether
+  any further retirement is separable from BOOK.
 - **Coordination:** determine how opening a page obtains its treatment and surrounding
   context, and how changed inputs to composition lead to revised material or new
   composition. Automatic updating is the preferred experience; reconsideration alone
@@ -134,6 +131,7 @@ Alphabetical by code.
   validation without hard-coding its pages or relationships. Check that returned
   content carries the meaning needed for rendering; human-use evaluation follows in MINIGUI.
 - **Sources:** [book-model handoff: model](../notes/book-model/model.md),
+  [CLI retirement decision: surviving application responsibilities](../docs/decisions/cli-shell-retirement.md#retire-client),
   [book-model handoff: implementation considerations](../notes/book-model/implementation-notes.md),
   [book-model handoff: Cockatiel example](../notes/book-model/cockatiel-example.md),
   [backlog: organization of contributions and architectural entities](../docs/backlog.md#explore-organization-of-contributions-and-architectural-entities).
@@ -209,20 +207,21 @@ Alphabetical by code.
 - **Presentation:** preserve consequential scope, qualifications, alternatives and
   access to underlying material. Support exact earlier results and make revised content
   and changes to organization intelligible. Resolve View composition and reference
-  coordination as needed, using qualified API content rather than CLI output.
+  coordination as needed, using qualified API content.
 - **Interaction:** show progress, partial or unavailable results, failure and recovery,
   including fresh investigation and earlier attempts. Present updates and notifications
-  without losing the reader's place. Complete presentation retirement that depends on
-  this graphical replacement. Full Workspace management and customization can wait.
+  without losing the reader's place. Full Workspace management and customization can wait.
 - **Decision:** choose GUI hosting and execution arrangements around the current
   in-process Node API. Synchronous compiler work cannot be preempted on its calling
   thread; preserve responsiveness, interruption and cleanup without assuming the
   API already supplies a browser runtime or transport.
 - **Validation:** use the book for actual investigation, including follow-up and
-  revised accounts. Check faithful presentation as well as usefulness; CLI checks
-  alone do not establish the human experience.
+  revised accounts. Check faithful presentation as well as usefulness. Address
+  inadequacy feedback for the displayed pages and choose observation capture for
+  the research question when evaluating human use.
 - **Sources:** [book-model handoff: model](../notes/book-model/model.md),
   [book-model handoff: presentation and interface considerations](../notes/book-model/implementation-notes.md#presentation-and-interface-considerations),
+  [backlog: research observation and feedback](../docs/backlog.md#research-observation-and-feedback-after-cli-retirement),
   [backlog: fresh investigation and attempt history](../docs/backlog.md#expose-fresh-investigation-and-attempt-history-in-interfaces),
   [backlog: Presentation representation](../docs/backlog.md#decide-how-gui-presentations-and-their-parameters-are-represented),
   [backlog: additional-detail placement](../docs/backlog.md#review-more-details-information-placement),
@@ -263,20 +262,6 @@ Alphabetical by code.
   cross-session return. Can precede or follow CHANGE. If changing-target support comes first,
   include retention and restoration of its multiple input states and their relationships.
 - **Source:** [candidate UX: returning to an investigation](candidate-ux.md#returning-to-an-investigation).
-
-<a id="unshell"></a>
-### UNSHELL — Retire the interactive CLI shell
-
-- **Kind:** 🧹
-- **Outcome:** the interactive CLI shell is retired, removing its dependency on
-  presentation machinery and simplifying subsequent assessment of that machinery.
-- **Scope:** remove the shell and directly related code and documentation; identify
-  any useful responsibilities that need to remain elsewhere. Live trials have their
-  own runner, so shell retirement does not require a replacement trial interface.
-- **Boundary:** complete and verify shell retirement independently of the book model.
-  Reassess presentation machinery afterward; whether its cleanup should be separate
-  from BOOK remains open.
-- **Source:** strategy discussion: extract shell retirement from BOOK planning.
 
 <a id="principles-for-choosing-the-order"></a>
 ## Principles for choosing the order
