@@ -495,10 +495,10 @@ If live experience shows instruction-following problems, consider semantic-polic
 ## Assess artifact capture and cleanup in failed trials
 
 Added: 2026-11-25
-Origin: controlled failure cases for the structured-account trial runner during [CLI shell retirement planning](plans/cli-shell-retirement.md)
+Origin: [Nine controlled failure cases for the standard trial runner](https://github.com/ronen/postcode/blob/5db2cf19f0436d206aa5d5c05de7f022a03b45b9/notes/cli-shell-retirement-evidence.md#what-did-the-standard-trial-runner-save-on-failure) during [CLI shell retirement planning](plans/cli-shell-retirement.md)
 Area: development trials, artifact capture and budget cleanup
 
-A failed trial can contain attempt reports but lack a completed step record or final usage summary. In the standard runner, a Session close failure can mask the request error and skip closing the budget lease. The dialog14 runner attempts budget close even when Session close fails. The CLI retirement plan preserves these existing behaviors during separation.
+A failed trial can contain attempt reports but lack a completed step record or final usage summary. In the standard runner, a Session close failure can mask the request error and skip closing the budget lease. The dialog14 runner attempts budget close even when Session close fails. CLI retirement preserved these behaviors.
 
 Determine which completed artifacts and known usage a failed or interrupted trial should retain, how to identify incomplete capture, and how callers should learn both the original failure and any cleanup failure. Assess budget release separately from the accounting for requests already reserved before dispatch.
 
