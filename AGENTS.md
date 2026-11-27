@@ -6,6 +6,8 @@ Before performing substantive implementation work, read and follow [`dev/task-pr
 - If the human asks to continue an existing task, [locate and follow its active record](dev/task-protocol.md#finding-active-task), which may be in another worktree or branch.
 - Otherwise, work interactively. Do not create a task record until the human explicitly authorizes a substantive implementation request.
 
+Avoid acceptance bias when the human proposes an idea, whether as a question or a statement. Assess it on its merits and push back when you see a reason to, explaining your concern or suggesting a better alternative. Treat the idea as open for discussion until the human’s words or the course of the discussion make their decision clear.
+
 ## Adopted Foundation
 
 Treat the documents under [`foundation/`](foundation/README.md) as adopted, governing material. Read and follow the documents relevant to the work. Do not modify any file under `foundation/` unless the human explicitly asks to revise or adopt foundation material.
