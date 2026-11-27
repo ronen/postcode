@@ -74,7 +74,8 @@ Codes identify items independently of ordering.
 
 ```mermaid
 flowchart TD
-    BOOK["✦ BOOK — Initial book capability"] --> MINIGUI["✦ MINIGUI — Minimal graphical investigation"]
+    ORGANIZE["✦ ORGANIZE — Initial book organization"] --> BOOK["✦ BOOK — Initial book capability"]
+    BOOK --> MINIGUI["✦ MINIGUI — Minimal graphical investigation"]
     BOOK --> INVEST["✦ INVEST — Broader investigation capabilities"]
     MINIGUI -. Interaction needs revealed through use .-> GUI["✦ GUI — Broader graphical investigation 🧱"]
     CHANGE["✦ ⚠️ CHANGE — Investigation across target changes"]
@@ -93,7 +94,8 @@ gap prevents useful evaluation of the book.
 
 | Position | Item | Why here / what could change it |
 | --- | --- | --- |
-| Planning in progress | [BOOK — Initial book capability](#book) | Turn the book-model handoff into readable, connected pages through organization, composition and qualified access. |
+| Next | [ORGANIZE — Initial book organization](#organize) | Build and exercise a book map that BOOK planning can inspect before settling page composition. |
+| Resume planning after ORGANIZE | [BOOK — Initial book capability](#book) | Use the Cockatiel map and trial results to decide how a page selects useful context and links. |
 | After BOOK | [MINIGUI — Minimal graphical investigation](#minigui) | Make the book readable and navigable, so actual use can reveal gaps in its content and interaction. |
 | Tentatively after MINIGUI | [INVEST — Broader investigation capabilities](#invest) | Add a few investigations in response to needs encountered in the book. Bring a bounded capability forward if it is needed to exercise the book meaningfully. |
 | Conditional, when investigation must span input changes | [CHANGE — Investigation across target changes](#change) | The intended experience or actual use supplies the trigger. Can precede or follow PERSIST. |
@@ -112,11 +114,11 @@ Alphabetical by code.
 - **Kind:** ✦
 - **Outcome:** investigations develop connected book pages with qualified explanations,
   surrounding context and routes to further treatments, available through the application API.
-- **Scope:** entity-overview, page composition and book organization form the minimal
-  starting set. Implement the book objects and association behavior, page-composition
-  and book-map Lenses, and the investigation-contract changes needed to supply them.
-  Build on the implemented structured-account mechanism. Specialized architectural
-  investigations can follow; the full Cockatiel example is not the initial scope.
+- **Scope:** build on entity overviews and the book map from ORGANIZE. Implement
+  the page-composition Lens and the book objects, associations and investigation
+  contracts needed to supply connected pages. Page composition chooses which
+  destinations to link from a given treatment. Specialized architectural
+  investigations can follow.
 - **Planning:** use the book-model handoff to develop the implementation plan,
   decisions and coordinated governing-document revisions. Direct requests still use
   information requirements selected through Presentation negotiation, and Expansion
@@ -126,15 +128,14 @@ Alphabetical by code.
   context, and how changed inputs to composition lead to revised material or new
   composition. Automatic updating is the preferred experience; reconsideration alone
   does not schedule it. MINIGUI supplies the visible interaction and notification.
-- **Validation:** exercise generated overviews, organization and composition through
-  connected pages, qualified alternatives and revisions. The authored example guides
+- **Validation:** compose connected pages from generated overviews and the book map,
+  including cases with qualified alternatives and revisions. The authored example guides
   validation without hard-coding its pages or relationships. Check that returned
   content carries the meaning needed for rendering; human-use evaluation follows in MINIGUI.
 - **Sources:** [book-model handoff: model](../notes/book-model/model.md),
   [CLI retirement decision: surviving application responsibilities](../docs/decisions/cli-shell-retirement.md#retire-client),
   [book-model handoff: implementation considerations](../notes/book-model/implementation-notes.md),
-  [book-model handoff: Cockatiel example](../notes/book-model/cockatiel-example.md),
-  [backlog: organization of contributions and architectural entities](../docs/backlog.md#explore-organization-of-contributions-and-architectural-entities).
+  [book-model handoff: Cockatiel example](../notes/book-model/cockatiel-example.md).
 
 <a id="change"></a>
 ### CHANGE — Investigation across target changes
@@ -199,7 +200,7 @@ Alphabetical by code.
 - **Kind:** ✦
 - **Outcome:** a usable graphical book for investigating one project, supporting
   evaluation through reading, navigation and further investigation.
-- **Scope:** render the pages and book map supplied by BOOK. Provide page layout,
+- **Scope:** render the composed pages and the book map. Provide page layout,
   additional detail, useful links and perspective filtering, with navigation history
   and access to visited pages. Make available investigations discoverable and distinguish
   reading retained content from obtaining new material. Include diagrams where supported
@@ -244,6 +245,26 @@ Alphabetical by code.
 - **Sequencing:** independent housekeeping. Complete a bounded pass, remove the item,
   and bring it back at later checkpoints when accumulated changes warrant another review.
 - **Source:** [notes inventory](../notes/README.md).
+
+<a id="organize"></a>
+### ORGANIZE — Initial book organization
+
+- **Kind:** ✦
+- **Outcome:** a developing book map that can be inspected, queried and extended
+  before page composition is available.
+- **Scope:** implement `entity-overview` first. Use the configured TypeScript project
+  as the root and its overview and module hierarchy to guide a bounded survey.
+  Record shared tags with descriptions, investigation destinations and qualified
+  broader-than relationships where warranted. A destination can be registered
+  before its investigation runs.
+- **Growth on request:** given an investigation answer and an explanation of the
+  missing context, find an existing destination, extend the map or report that
+  no suitable context was found.
+- **Validation:** exercise both the initial survey and a later context request.
+  Retain the Cockatiel map and trial outputs so BOOK planning can examine which
+  broader destination, if any, a breaker page should link to and what supports that choice.
+- **Sources:** BOOK planning discussion,
+  [backlog: organization of contributions and architectural entities](../docs/backlog.md#explore-organization-of-contributions-and-architectural-entities).
 
 <a id="persist"></a>
 ### PERSIST — Retain investigations across sessions
