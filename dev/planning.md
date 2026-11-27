@@ -40,10 +40,12 @@ Reviews of draft planning material are working material, not historical review r
 
 This sequence is a convenience, not a required ceremony. Feel free to vary it or use an entirely different approach to suit the planning work.
 
-1. Capture durable initial notes and alternatives under a suitable location in `notes/`, or use `_<planning-name>/` for disposable checkout-local work.
-2. When discussion has reached the point of being ready to create a plan, draft the plan and its related documents in a tracked [planning package](#planning-package).
-3. Review the plan, decisions, and canonical revisions together when their choices are interdependent. When an independent reading would be useful, request a [review of the planning package](#planning-package-review).
-4. Once the human approves the package, promote it as described below.
+1. Start planning on a new branch in its own [worktree](worktrees.md#setup). Capture useful initial notes and alternatives under `notes/`, or use `_<planning-name>/` for disposable work.
+2. When the discussion has taken shape and the human directs preparation of a proposal, write it in a single file under `notes/`. Use the note to develop and revise the substance of the planning package before dividing it among the draft documents.
+3. Seek appropriate review of the proposal while it is still in notes. When useful, compare it with the discussion notes to check that it captures the ideas intended to carry forward. Use the findings to refine the approach with the human.
+4. When the proposal is ready, draft the plan, related decisions, and canonical revisions in a tracked [planning package](#planning-package).
+5. Compare the draft package with the reviewed proposal for omissions or unintended changes. Also [review the package on its own merits](#planning-package-review), reading the plan, decisions, and revisions together. These checks may be combined in one review or performed separately.
+6. Once the human approves the package, promote it as described below.
 
 ### Planning package
 
