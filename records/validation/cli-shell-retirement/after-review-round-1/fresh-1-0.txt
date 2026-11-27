@@ -1,0 +1,35 @@
+States of gate
+  [Ready]
+  [Stopped]
+Transitions
+T1  Ready → Stopped
+      trigger: a failure occurs
+      effect: stops accepting requests
+State bearer: gate.
+Entry: Ready.
+States shown: some states only; others may exist.
+Transitions shown: some transitions only; others may exist.
+Not representable in this diagram: Concurrent changes are not modelled.
+The diagram arranges the supplied account. It adds no state, transition or completeness claim, and the absence of an arrow is not a claim that no transition exists unless stated above.
+Trial record
+Trial answer: session:11111111-1111-4111-8111-000000000001:contribution-projection:759f136c580d30ec8fdb657a4a882c70edd64a1ab2c0eea1eb1cb2f1103e8773
+Alternative 2 of 2.
+Alternative designation: {"investigram":"session:11111111-1111-4111-8111-000000000001:investigram:fa0fa91bd69b25758d7ec0c5924c9225e4f1fdcbabcf3c642233bf2a3bdbd730","declaration":"answer"}
+Account item: {"investigram":"session:11111111-1111-4111-8111-000000000001:investigram:fa0fa91bd69b25758d7ec0c5924c9225e4f1fdcbabcf3c642233bf2a3bdbd730","item":"model"}
+2 equally standing alternative answers are shown separately. Their order implies no preference, and they are not reconciled.
+Qualifications of this alternative
+Follow-up option: why — owner: Interpretation (postcode/contribution-dialog@14 postcode/state-behavior@1 definition:472045d803d8324658ffb742d0f3b9ec3bcea290dcee04219f160013ad9f6d9c).
+Follow-up option: why — owner: Controlled interpretation; not independently established.
+Selected content: explanation — owner: Interpretation (postcode/contribution-dialog@14 postcode/state-behavior@1 definition:472045d803d8324658ffb742d0f3b9ec3bcea290dcee04219f160013ad9f6d9c).
+Selected content: explanation — owner: Controlled interpretation; not independently established.
+Selected content: model — owner: Interpretation (postcode/contribution-dialog@14 postcode/state-behavior@1 definition:472045d803d8324658ffb742d0f3b9ec3bcea290dcee04219f160013ad9f6d9c).
+Selected content: model — owner: Controlled interpretation; not independently established.
+Selected use: answer — owner: Interpretation (postcode/contribution-dialog@14 postcode/state-behavior@1 definition:472045d803d8324658ffb742d0f3b9ec3bcea290dcee04219f160013ad9f6d9c).
+Selected use: answer — owner: Controlled interpretation; not independently established.
+Bearer identification use — owner: Organizing policy (postcode/module-identification-policy@1).
+Bearer identification use — owner: Deterministic wrapper policy: a module discovery finding is used as the identification of the module it was discovered as. This is an organizing use, not a further finding about the module.
+Bearer identification content: Mechanically derived (postcode/typescript-modules@13;typescript@6.0.3), scope: session:module:bfef0d0b97589c202d8acefe314b8332e63b8bec016c58e3de61dcfc072d3139.
+Bearer identification content: Module membership established by the supported TypeScript compiler operations.
+Bearer identification content: Population covers configured files the analyzer treats as separate modules and visible named modules described by declarations (including interfaces to external implementations). Files treated as shared global code and other compiler module categories are not established as modules.
+Bearer identification content: No atomic filesystem snapshot is claimed; inputs are memoized as first observed.
+Bearer identification content: Generated handle: gate.

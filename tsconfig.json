@@ -14,5 +14,5 @@
     "rootDir": ".",
     "outDir": "_build"
   },
-  "include": ["src/**/*.ts", "test/**/*.ts"]
+  "include": ["src/**/*.ts", "test/**/*.ts", "scripts/structured-accounts/support/**/*.ts"]
 }

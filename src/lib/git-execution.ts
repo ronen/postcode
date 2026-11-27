@@ -16,7 +16,7 @@ export function reportExit(exit: Promise<unknown>, resource: string, deadlineMs:
   });
 }
 
-/** Own Git in the calling process, outside disposable compiler workers. */
+/** Own Git in the calling process until subprocess exit is confirmed. */
 export class GitExecutionOwner {
   readonly #children = new Set<{ cancel(error: Error): Promise<void> }>();
   #disposed: Error | undefined;

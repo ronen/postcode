@@ -1,3 +1,4 @@
+import { resolveModuleProjection } from '../src/lib/module-content.js';
 import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
@@ -6,7 +7,6 @@ import { test } from 'node:test';
 import { normalizeSession } from './helpers.js';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import { createView, renderView } from '../src/lib/presentation.js';
 import { inspect, modules } from './projection-helpers.js';
 import { emptyModuleDetail } from '../src/lib/projections.js';
 import type { ClaimContextRecord, ExportClaim, ModuleExpansion, RecordedAssertion, SourceEvidenceRecord, SymbolClaim, SymbolRecord } from '../src/lib/records.js';
@@ -120,13 +120,10 @@ test('requested expansion kinds are unique while qualified evaluation scopes rem
   assert.ok(projection.modules.length > 1);
   for (const selected of [projection, inspect(store, evaluation, projection.modules[0]!), emptyModuleDetail(store, evaluation)]) {
     assert.deepEqual(selected.expansions.requested, ['exports', 'documentation']);
-    const view = createView(store, selected, { format: 'json', moreDetails: false }, 'Inspect');
-    const serialized = JSON.parse(renderView(view)) as typeof view;
-    assert.deepEqual(serialized.presentation.expansions, ['exports', 'documentation']);
-    assert.equal(new Set(serialized.presentation.expansions).size, serialized.presentation.expansions.length);
-    assert.deepEqual(serialized.evaluations.map(outcome => outcome.id), selected.evaluations);
+    const content = resolveModuleProjection(store, selected);
+    assert.deepEqual(content.evaluations.map(outcome => outcome.id), selected.evaluations);
     for (const requirement of ['exports', 'documentation']) {
-      const outcomes = serialized.evaluations.filter(outcome => outcome.requirement === requirement);
+      const outcomes = content.evaluations.filter(outcome => outcome.requirement === requirement);
       assert.equal(outcomes.length, selected.modules.length);
       assert.deepEqual(outcomes.flatMap(outcome => outcome.modules), selected.modules);
       assert.ok(outcomes.every(outcome => outcome.execution === 'completed' && outcome.materialization === 'full'));

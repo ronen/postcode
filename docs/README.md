@@ -2,7 +2,7 @@
 
 This directory contains the human-maintained application specification, governing core concepts and architectural constraints, plans, accepted decisions, supported-capability documentation, and descriptions of the implemented application. See the [repository documentation map](../README.md#documentation-map) for material elsewhere in the repository.
 
-For supported questions and actions, begin with the [capability reference](capability-reference.md); for command syntax and detailed behavior, use the [CLI reference](cli-reference.md). Optional hosted inference has a separate [setup and transmission disclosure](hosted-investigation.md).
+For supported questions and actions, begin with the [capability reference](capability-reference.md); for authentication commands, use the [CLI reference](cli-reference.md). Optional hosted inference has a separate [setup and transmission disclosure](hosted-investigation.md).
 
 ## Documentation Types
 
@@ -23,7 +23,7 @@ conformance transition and the separately backlogged research-support gap.
 <a id="capability-reference"></a>
 ### Capability reference
 
-[`capability-reference.md`](capability-reference.md) describes supported investigations and Views, their meanings, applicability, and limitations. The project status gives a concise overview and significant limits; this reference gives per-action meanings, applicability, and limitations. The CLI reference supplies syntax and detailed command behavior. It does not prioritize particular Lenses as architecture or turn research candidates into delivered capabilities.
+[`capability-reference.md`](capability-reference.md) describes supported internal investigations and qualified content, their meanings, applicability, and limitations. The project status gives a concise overview and significant limits; this reference gives per-action meanings, applicability, and limitations. The CLI reference supplies authentication syntax and documents the retired investigation interface. It does not prioritize particular Lenses as architecture or turn research candidates into delivered capabilities.
 
 <a id="core-concepts"></a>
 ### Core concepts

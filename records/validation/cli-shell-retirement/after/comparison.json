@@ -1,0 +1,13 @@
+{
+  "runtime": "26.11.0",
+  "steps": 18,
+  "intentionalDifferences": {
+    "bindings": 17,
+    "answerReference": 17,
+    "referenceLifetime": 18,
+    "candidate.reference → own precise ID": 6,
+    "qualified standalone diagram": 5,
+    "referenceNotice": 1
+  },
+  "result": "exact equality after checked differences"
+}

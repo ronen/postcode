@@ -1,3 +1,4 @@
+import { untilAborted } from '../execution-wait.js';
 import type { RequestWork } from '../work-attribution.js';
 import type { AgentFailure, AttemptReport } from '../investigation/contracts.js';
 import type { InvestigationBounds } from '../investigation/bounds.js';
@@ -71,7 +72,7 @@ export function contributionEvaluation(store: ProgramRecordStore, ledger: Contri
           fulfillment: contract && attempt.outcome.kind === 'accepted' ? assessFulfillment(ledger, contract, result.id, attemptAnswers(ledger, attempt, result.id)) : null, report: attempt.report } };
       }
     }
-    const agent = dependencies.selectDialogAgent ? await dependencies.selectDialogAgent(request) : dependencies.dialogAgent ?? dependencies.agent;
+    const agent = dependencies.selectDialogAgent ? await untilAborted(() => dependencies.selectDialogAgent!(request), signal) : dependencies.dialogAgent ?? dependencies.agent;
     if (!agent) {
       const unavailable: AgentFailure = { kind: 'configuration-unavailable', code: 'investigating-agent-not-configured',
         diagnostic: 'No investigating agent is configured for contribution investigations.' };

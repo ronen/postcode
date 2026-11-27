@@ -10,7 +10,6 @@ import type { QualifiedContent } from './content.js';
 import type { SemanticRequest, ApplicationRequest, InputProblem } from './requests.js';
 import type { ParameterValue, LensDefinition } from './lenses.js';
 import type { ConsumptionDecision } from './consumption.js';
-import type { CoordinatedBindings } from './bindings.js';
 import type { ResolutionInformation } from './reports.js';
 
 export interface ApplicationContext extends InitiationContext { readonly request: SemanticRequest }
@@ -30,10 +29,7 @@ export interface AnswerDelivery extends ApplicationDelivery {
   readonly answer: SelectedAnswer;
   readonly selectionMode: 'fresh' | 'retained';
   readonly title: string;
-  readonly answerReference: string;
-  readonly referenceLifetime: 'session' | 'command';
   readonly resolution?: SubjectResolution;
-  readonly bindings: CoordinatedBindings;
   readonly consumption: ConsumptionDecision | null;
   readonly reporting: { readonly contribution?: import('../contributions/evaluation.js').ContributionAttemptResult | null;
     readonly unavailable?: import('../investigation/contracts.js').AgentFailure | null;
@@ -46,8 +42,6 @@ export interface AnswerDelivery extends ApplicationDelivery {
 export interface ResolutionDelivery extends ApplicationDelivery {
   readonly kind: 'resolution';
   readonly resolution: ResolutionInformation;
-  readonly referenceLifetime: 'session' | 'command';
-  readonly referenceNotice: boolean;
 }
 export interface UsageDelivery extends ApplicationDelivery { readonly kind: 'usage' }
 export type ApplicationResult = AnswerDelivery | ResolutionDelivery | UsageDelivery;
@@ -64,11 +58,11 @@ export interface CapturedInvocation {
   readonly problems: readonly InputProblem[];
 }
 export interface ApplicationDependencies {
+  /** Injected execution retains caller ownership: the Session cannot confirm its subprocess exit. */
   readonly runGit?: RunGit;
   readonly signal?: AbortSignal;
   readonly investigation?: import('../contributions/evaluation.js').ContributionDependencies;
   readonly onWork?: (progress: WorkProgress) => void;
-  readonly referenceLifetime?: 'session' | 'command';
 }
 export interface Capability {
   readonly id: string;
@@ -86,10 +80,19 @@ export interface ApplicationSession {
   readonly id: SessionId;
   capabilities(): readonly Capability[];
   execute(request: ApplicationRequest, context?: ExecutionContext): Promise<ApplicationResult>;
+  /** Detected invalidation establishes SessionInvalidated and immediately begins owned cleanup.
+   * Active work stays invalidated; later interrupt/close cannot replace the terminal cause. */
   check(): Promise<void>;
   usage(): InvestigationUsageReport;
   work(): WorkReport | undefined;
+  /** Terminal cancellation unless an earlier cause (including invalidation) is established.
+   * Shares close()'s assessment of owned cleanup and terminal reporting. Request settlement
+   * is separate; neither interruption nor invalidation alone is a shutdown failure. */
   interrupt(): Promise<void>;
+  /** Active work is interrupted; idle close starts no new request abort. Repeated calls observe
+   * the same assessment, including failures during invalidated-request finalization, and reject
+   * with SessionShutdownError when cleanup/report delivery failed. Ordinary request failures
+   * stay with their request. Cleanup deadlines do not prove resource exit. */
   close(): Promise<void>;
 }
 export type OpenApplicationResult = { readonly status: 'opened'; readonly session: ApplicationSession }

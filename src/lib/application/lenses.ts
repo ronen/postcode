@@ -9,7 +9,7 @@ export type SubjectKind = 'configured-project' | 'repository' | 'module' | 'grou
 export type SubjectDesignation = { readonly kind: 'default' | 'configured-project' | 'repository' | 'missing' }
   | { readonly kind: 'name' | 'reference'; readonly value: string }
   | { readonly kind: 'selection'; readonly subject: ExactSubject };
-/** Request parameters cross the worker boundary as JSON data. */
+/** Request parameters are captured as serializable data. */
 export type ParameterValue = null | boolean | number | string | readonly ParameterValue[] | { readonly [key: string]: ParameterValue };
 export type ResultContract = 'modules' | 'organization' | 'dependencies' | 'module-exports' | 'contribution' | 'contribution-inspection';
 export interface LensDefinition {

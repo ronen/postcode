@@ -3,18 +3,15 @@ import { test } from 'node:test';
 import type { TestContext } from 'node:test';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { temporaryDirectory } from './cli-helpers.js';
-import { openApplication, guardPublication, SessionBusy, SessionClosed, SessionInvalidated, InvalidRequestId } from '../src/lib/application/index.js';
+import { temporaryDirectory } from './temporary-directory.js';
+import { openApplication, guardPublication, SessionClosed, SessionInvalidated, InvalidRequestId } from '../src/lib/application/index.js';
 import type { ApplicationRequest, ExecutionContext, PresentationDeclaration } from '../src/lib/application/index.js';
-import { withCliOperation } from '../src/lib/application/operation-scope.js';
 import { lenses } from '../src/lib/application/lenses.js';
 import { contributionOperations as operations } from '../src/lib/contributions/operations.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import { arrangeModuleView } from '../src/lib/presentation.js';
 import { MessageChannel } from 'node:worker_threads';
 import { once } from 'node:events';
 import type { ProgramRecord } from '../src/lib/records.js';
-import { ScriptedContributionAgent } from './contribution-agent.js';
 
 function fixture(t: TestContext) {
   const root = temporaryDirectory(t, 'postcode-application-lifecycle-');
@@ -25,7 +22,7 @@ function fixture(t: TestContext) {
 }
 const inventory = { kind: 'lens', lens: 'modules', designation: { kind: 'configured-project' } } as const;
 
-test('simultaneous Sessions dispose only their own capture bookkeeping and detached historical output survives close and worker delivery', async t => {
+test('simultaneous Sessions dispose only their own capture bookkeeping and detached historical output survives close and structured transfer', async t => {
   const f = fixture(t), stores = new Map<string, MemoryProgramRecordStore>();
   const put = MemoryProgramRecordStore.prototype.put;
   t.mock.method(MemoryProgramRecordStore.prototype, 'put', function(this: MemoryProgramRecordStore, records: readonly ProgramRecord[]) {
@@ -38,8 +35,6 @@ test('simultaneous Sessions dispose only their own capture bookkeeping and detac
   assert.equal(first.kind, 'answer'); assert.equal(other.kind, 'answer');
   assert.equal(first.answer.content.contract, 'modules');
   const content = first.answer.content.value, before = structuredClone(first.answer);
-  const ids = new Map(content.discovery.modules.map(id => [id, String(id)]));
-  const view = arrangeModuleView(content, ids, { format: 'json', moreDetails: false }, 'Modules');
   const firstStore = stores.get(a.session.id)!, secondStore = stores.get(b.session.id)!;
   const one = firstStore.get(first.answer.id), two = secondStore.get(other.answer.id);
   assert.equal(firstStore.capture(one), one); assert.equal(secondStore.capture(two), two);
@@ -57,7 +52,6 @@ test('simultaneous Sessions dispose only their own capture bookkeeping and detac
     t.mock.method(store, method, () => { throw Error('Closed output consulted retained state'); });
   }
   assert.deepEqual(first.answer, before);
-  assert.deepEqual(arrangeModuleView(content, ids, { format: 'json', moreDetails: false }, 'Modules'), view);
   assert.throws(() => Object.assign(content.projection.contributions.support.evidence[0]!, { method: 'changed' }), TypeError);
   const { port1, port2 } = new MessageChannel(); t.after(() => { port1.close(); port2.close(); });
   const received = once(port2, 'message'); port1.postMessage(first.answer);
@@ -65,7 +59,6 @@ test('simultaneous Sessions dispose only their own capture bookkeeping and detac
   assert.deepEqual(delivered, before);
   assert.equal(delivered.content.contract, 'modules');
   assert.notEqual(delivered.content.value.projection, content.projection);
-  assert.deepEqual(arrangeModuleView(delivered.content.value, ids, { format: 'json', moreDetails: false }, 'Modules'), view);
 });
 
 test('direct requests capture caller data and declarations, honor subsets and refuse unsupported exact expansion', async t => {
@@ -91,7 +84,7 @@ test('direct requests capture caller data and declarations, honor subsets and re
   assert.equal(refused.kind, 'resolution'); assert.equal(refused.resolution.reason, 'presentation-unavailable');
   const bound = await session.execute({ ...inventory, consumption: { presentations: ['summary'], options: { detail: false } } });
   assert.equal(bound.kind, 'answer'); assert.equal(bound.consumption!.selected.id, 'summary');
-  for (const method of ['put', 'evaluations', 'boundEntity'] as const) t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw Error(`Exact access called ${method}`); });
+  for (const method of ['put', 'evaluations', 'retainedEntity'] as const) t.mock.method(MemoryProgramRecordStore.prototype, method, () => { throw Error(`Exact access called ${method}`); });
   const exact = await session.execute({ kind: 'present', target: result.answer.id });
   assert.equal(exact.kind, 'answer'); assert.deepEqual(exact.answer, before);
 });
@@ -139,33 +132,6 @@ test('direct boundary rejects malformed data without invoking accessors and pres
   assert.equal(wrong.kind, 'resolution'); assert.equal(wrong.resolution.reason, 'invalid-designation');
 });
 
-test('one operation guard spans arrangement, expires its capabilities and preserves completed application work after client failure', async t => {
-  const opened = await openApplication(fixture(t), { investigation: { agent: new ScriptedContributionAgent([() => ({ kind: 'ended' })]) } });
-  assert.equal(opened.status, 'opened'); const session = opened.session; t.after(() => session.close());
-  let escapedCheck!: () => Promise<void>;
-  await assert.rejects(withCliOperation(session, async scope => {
-    const result = await scope.execute({ kind: 'lens', lens: 'modules', question: lenses.modules.question,
-      designation: { kind: 'configured-project' }, parameters: {}, programInput: 'session-configured-project' });
-    assert.equal(result.attribution.status, 'completed');
-    escapedCheck = scope.check;
-    await assert.rejects(session.execute({ kind: 'report', report: 'usage' }), SessionBusy);
-    await assert.rejects(session.check(), SessionBusy);
-    throw Error('Client arrangement failed');
-  }), /Client arrangement failed/);
-  assert.equal(session.work()!.status, 'completed');
-  await assert.rejects(escapedCheck(), /expired/);
-  await withCliOperation(session, async scope => {
-    const result = await scope.execute({ kind: 'lens', lens: 'summarize', question: lenses.summarize.question,
-      designation: { kind: 'name', value: 'entry' }, parameters: {}, programInput: 'session-configured-project' });
-    assert.equal(result.kind, 'answer'); assert.equal(result.answer.content.contract, 'contribution');
-    escapedCheck = scope.check;
-    assert.ok(result.resolution!.candidates[0]!.reference);
-
-  });
-  await assert.rejects(escapedCheck(), /expired/);
-  await session.close(); await assert.rejects(escapedCheck(), SessionClosed);
-});
-
 test('publication distinguishes withheld, output failure and invalidation after output', async () => {
   const error = new SessionInvalidated(); let checks = 0, outputs = 0;
   const withheld = await guardPublication(() => { throw error; }, () => { outputs++; });
@@ -174,34 +140,6 @@ test('publication distinguishes withheld, output failure and invalidation after 
   assert.equal(after.status, 'failed-after-output'); assert.equal(outputs, 1);
   const output = await guardPublication(() => {}, () => { throw Error('Output failed'); });
   assert.equal(output.status, 'output-failed');
-});
-
-test('closing from completed work refuses scoped delivery with SessionClosed and keeps final work', async t => {
-  let close: (() => Promise<void>) | undefined, closing: Promise<void> | undefined;
-  let finished = 0;
-  const opened = await openApplication(fixture(t), {
-    onWork(event) {
-      if (event.kind === 'finish' && close) { finished++; closing = close(); }
-    },
-  });
-  assert.equal(opened.status, 'opened'); const session = opened.session;
-  t.after(() => session.close());
-  const retained = await session.execute({ kind: 'lens', lens: 'summarize', designation: { kind: 'name', value: 'entry' } });
-  assert.equal(retained.kind, 'answer'); assert.equal(retained.answer.content.contract, 'contribution');
-  close = () => session.close();
-  let delivered = false;
-  let escapedCheck!: () => Promise<void>;
-  await assert.rejects(withCliOperation(session, async scope => {
-    escapedCheck = scope.check;
-    await scope.execute({ kind: 'present', target: retained.answer.id });
-    delivered = true;
-  }), SessionClosed);
-  await closing;
-  assert.equal(delivered, false);
-  assert.equal(finished, 1);
-  assert.equal(session.work()!.status, 'completed');
-  await assert.rejects(escapedCheck(), SessionClosed);
-  await assert.rejects(session.execute({ kind: 'report', report: 'usage' }), SessionClosed);
 });
 
 test('direct post-execution validation precedes application completion', async t => {

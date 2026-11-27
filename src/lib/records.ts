@@ -225,8 +225,5 @@ export interface ProgramRecordStore {
   get(id: RecordId): ProgramRecord;
   lookup(id: RecordId): ProgramRecord | undefined;
   evaluations(session: SessionId): readonly EvaluationRecord[];
-  entityIds(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string>;
-  answerIds(ids: readonly RecordId[]): ReadonlyMap<RecordId, string>;
-  boundAnswer(session: SessionId, reference: string): RecordId | undefined;
-  boundEntity(session: SessionId, reference: string): RecordId | undefined;
+  retainedEntity(session: SessionId, reference: string): RecordId | undefined;
 }

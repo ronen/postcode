@@ -5,9 +5,7 @@
  * queue; interruption is terminal. Synchronous compiler work in the calling thread
  * cannot be preempted there. Content can contain source support: it is not a human
  * output format or an authorized external evidence export.
- * Account/configuration, observation delivery and feedback are independent
- * companion entries in accounts.ts, observations.ts and feedback.ts; none
- * requires opening a project or constructing a CLI host.
+ * Account/configuration services in accounts.ts require no project.
  *
  * @example
  * const opened = await openApplication({ configPath }, { onWork: recordWork });
@@ -29,8 +27,18 @@
  * Invalid requestId correlation rejects with InvalidRequestId before work begins;
  * its captured input/problems preserve safe values or explicit omission reasons.
  * onWork and investigator onProgress/onReport callbacks receive owned cloneable
- * reports. Call interrupt() for terminal cancellation, then separately await
- * close(); usage() and work() remain available for final accounting. */
+ * reports. interrupt(), lifetime-signal abort, active close() and detected invalidation
+ * terminate the Session and begin owned-resource cleanup. Invalidation detected first
+ * keeps SessionInvalidated/invalidated; interruption established before a pending change
+ * is detected keeps CommandInterrupted/interrupted. Neither alone fails shutdown.
+ * The request retains its first established terminal outcome and final accounting;
+ * interrupt()/close() separately expose the same shutdown assessment. Observe these
+ * promises for owned cleanup and terminal-report failures (SessionShutdownError), including
+ * invalidated-request finalization. Ordinary request failures remain request-local.
+ * Signal-only failures remain available to later close(), without an unhandled
+ * internal rejection. usage() and work() remain available after shutdown.
+ * Injected runGit retains caller subprocess ownership. No overall shutdown deadline
+ * or hard interruption of synchronous compiler work/callbacks is promised. */
 export { openApplication } from './session.js';
 export type { ApplicationSession, ApplicationResult, AnswerDelivery, ResolutionDelivery, UsageDelivery,
   SelectedAnswer, ApplicationContext, ApplicationDependencies, ExecutionContext, OpenApplicationResult, Capability, ProjectOptions } from './contracts.js';
@@ -44,6 +52,8 @@ export type { WorkReport, WorkProgress } from '../work-attribution.js';
 export type { AttemptReport } from '../investigation/contracts.js';
 export type { DialogAgent as InvestigatorAgent } from '../contributions/dialog.js';
 export type { ExactSubject } from '../contributions/subjects.js';
-export { AnalysisFailure, SessionInvalidated, SessionClosed, SessionBusy, CommandInterrupted, CleanupIncomplete } from '../execution-errors.js';
+export { AnalysisFailure, SessionInvalidated, SessionClosed, SessionBusy, CommandInterrupted, CleanupIncomplete, SessionShutdownError } from '../execution-errors.js';
 export { guardPublication } from './publication.js';
 export type { PublicationOutcome } from './publication.js';
+
+export type { ShutdownFailure } from '../execution-errors.js';

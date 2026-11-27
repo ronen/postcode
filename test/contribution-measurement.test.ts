@@ -4,7 +4,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { temporaryDirectory } from './cli-helpers.js';
+import { temporaryDirectory } from './temporary-directory.js';
 
 test('measurement refuses report parents with project inputs and preserves the journey with a dedicated output directory', t => {
   const root = temporaryDirectory(t, 'postcode-measurement-output-');

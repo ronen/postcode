@@ -1,78 +1,52 @@
 # Project Status
 
-Last reviewed: 2026-11-20
+Last reviewed: 2026-11-25
 
-PostCode is currently available as a development CLI for investigating one
-configured TypeScript project.
-
-This page summarizes current capabilities and significant limits. The [capability reference](docs/capability-reference.md) describes individual supported actions; the [CLI reference](docs/cli-reference.md) supplies syntax and detailed behavior.
+PostCode currently supplies an internal in-process application for investigating
+one configured TypeScript project. The CLI provides authentication/help only;
+there is no current human investigation interface. See the
+[capability reference](docs/capability-reference.md) for supported semantics and the
+[CLI reference](docs/cli-reference.md) for authentication commands.
 
 ## Implemented capabilities
 
-- **[Internal application entry](docs/architecture/README.md#application-entry).**
-  In-process Node clients can request complete qualified content, follow precise
-  subjects, retrieve exact retained answers and receive work/usage reports without
-  CLI rendering or observation recording. The CLI uses the same execution engine.
-  Account/configuration, observation delivery and feedback are separate services.
-  This is an internal entry, without a stable public transport or browser runtime.
-- **[Interactive investigation](docs/cli-reference.md#commands).**
-  A session shell supports successive questions, stable references to previously
-  displayed subjects, and reuse of accumulated analysis.
-- **[Module inventory and inspection](docs/cli-reference.md#inventory-and-inspection).**
-  Modules, exports, forwarding relationships and associated documentation can be
-  listed and examined.
-- **[Repository organization](docs/cli-reference.md#organization-and-group-inspection).**
-  Project and repository views expose groups, their relationships and module
-  membership, with group inspection and navigation.
-- **[Dependency investigation](docs/cli-reference.md#dependency-investigation).**
-  Dependency structure, cycles, direct dependencies and dependents are available,
-  with unresolved requests and analysis limits distinguished.
-- **Qualified retained findings.** Mechanical module, dependency and organization
-  answers preserve exact contribution support. Fresh answers disclose changed uses
-  and their qualified grounds; presenting an earlier answer keeps its captured state.
-- **[Supporting evidence](docs/cli-reference.md#source-detail-and-observations).**
-  Inspections can expose qualified detail, names and captured implementation
-  locations without source excerpts. Inadequacy feedback is available in the shell
-  and as a context-free one-shot command. Terminal wrapping preserves combining characters and emoji,
-  measures display width, and visibly escapes control characters.
-- **[Local observation recording](README.md#observability).**
-  Commands record their actual requested question, designation, outcomes and presented
-  views, grouped by project and UTC date. Request-scoped work reports distinguish
-  prerequisite analysis, reuse and evidence delivery, preserving received facts on interruption.
-  Non-View JSON summarizes work detail; Session results and observations retain full reports.
-  Usage is reported without a program View. Only complete batches become visible under final filenames; delivery
-  and later cleanup warnings remain distinct.
-
-- **[Interpretation integration](docs/cli-reference.md#progressive-investigation-and-usage).**
-  Summary, explanation, decomposition and examination requests, retained account
-  navigation, associated-account inspection and attempt/session usage are
-  integrated with the shell. Fresh selection preserves all standing alternatives and their
-  displacement/exposure concerns. Exact answers preserve their independently captured
-  content, qualification, provenance and standing; shared immutable support never
-  consults current ledger state during presentation.
-  An optional OpenAI adapter supports explicit hosted
-  enablement, API-key billing or persistent Sign in with ChatGPT plan use, and
-  macOS Keychain credentials. Billing routes are selected explicitly.
-
-- **Structured explanation APIs.** The internal application entry supports state-behavior
-  investigation, a bounded state diagram and invocation of retained follow-up options.
-  These use the same contribution ledger as the existing mechanical and agentic families;
-  there are no new CLI commands for them.
+- **Direct application.** Complete qualified module, export, organization and
+  dependency content; exact names/generated handles, precise same-Session IDs,
+  qualified resolution and exact retained answers. There is no compact-alias route.
+- **Common contributions.** Mechanical and agentic findings retain their exact
+  qualified support. Ordinary/fresh investigations, exact item/designation subjects,
+  state-dependent behavior and retained follow-up options preserve standing
+  alternatives and actual-delivery reconsideration causes. Exact answers keep their
+  independently captured historical content and status.
+- **Operational reporting.** Request work, reuse, attempt outcomes and known provider
+  usage remain separate from answer meaning. Unknown usage is not zero.
+- **Terminal lifecycle.** Interruption, active close and detected invalidation preserve
+  the first terminal cause, finalize accounting and start owned cleanup. Repeated
+  shutdown calls observe one assessment retaining cleanup/report failures. Git exit
+  ownership remains separate from its bounded cleanup report.
+- **Authentication and trials.** Optional hosted investigation selects API-key billing
+  or ChatGPT plan use explicitly, with protected macOS credentials. Direct trials
+  retain qualified explanation and state-diagram rendering in validation support.
 
 ## Current limits
 
-- **[Request-model integration](docs/plans/lens-request-model.md):** normalized request
-  reporting, non-View usage and qualified subject resolution are implemented at the
-  request boundary. Unsuccessful lookups return reports with candidates and limits.
-  Equivalent names and references share retained answers while preserving lookup
-  context in displayed results. The shell can present an exact retained answer with
-  new format, supported source disclosure or paging, preserving its frozen selection.
-  Views identify fresh or retained selection and disclose reference lifetime. Bounded prerequisite/evidence attribution and
-  Presentation compatibility are implemented. Unsupported display choices return
-  qualified reports; existing displays retain partial and unavailable answers.
-  Fixed catalogs support the internal interpretation and mechanical extension
-  examples; public commands remain the supported toolbox. There is no dynamic
-  installation, general planner or public Presentation-registration interface.
+- There is no GUI, replacement investigation CLI, save/resume, multi-state analysis,
+  general participant-material ingestion, public transport or stable package API.
+  TypeScript analysis covers one configured project with explicit qualified limits.
+- Execution is cooperative: synchronous compiler work/callbacks cannot be preempted.
+  Input checks are sequential and non-atomic. Detected relevant changes require a new
+  Session; long Sessions accumulate retained information until closed. There is no
+  overall shutdown deadline. Ordinary callback failures remain request-local.
+- Presentation negotiation remains coupled to useful requirement selection after
+  losing its principal CLI client. The internal declarations/requirements contract
+  remains; mechanical human Views and their rendering have retired.
+- Observation delivery, human disclosure classification and inadequacy feedback
+  have retired. Work reports and trial artifacts are not replacement research
+  facilities. [Research reconciliation](docs/backlog.md#research-observation-and-feedback-after-cli-retirement)
+  remains required, including captured-basis attribution and contextual feedback.
+- Known [output case-rule limits](docs/backlog.md#correct-output-boundaries-across-different-filesystem-case-rules)
+  and [opening/cleanup failure preservation](docs/backlog.md#preserve-opening-and-cleanup-failures)
+  remain outside this task. Trial failure capture/cleanup limitations also remain.
 
 - **Hosted interpretation:** The following historical assessments concern the earlier
   instruction/representation revisions, not validation of the common dialog. M2
@@ -96,15 +70,3 @@ This page summarizes current capabilities and significant limits. The [capabilit
   [focused dependent-account sequence](records/validation/module-investigation/pass-06/report.md)
   adds source-supported corrections of controlled direct and transitive errors;
   deliberate examination and scripted origin limit what it establishes.
-
-- **[Analysis scope](docs/cli-reference.md#supported-typescript-population-and-qualifications):**
-  TypeScript only, one configured project at a time, with explicit coverage limits.
-- **[Session lifetime](docs/cli-reference.md#input-stability-and-retained-work):**
-  investigations cannot be saved or resumed. Detected input changes require
-  reopening; long sessions can accumulate memory until closed. Active commands
-  can be interrupted in both CLI modes. Git acquisition has a per-call deadline;
-  unconfirmed cleanup is reported separately, without promising a deadline for
-  the whole analysis.
-- **[Output exclusions](docs/backlog.md#correct-output-boundaries-across-different-filesystem-case-rules):**
-  paths crossing different filesystem case rules, or directories with different
-  case rules on one filesystem, have known exclusion defects awaiting correction.

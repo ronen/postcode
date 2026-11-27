@@ -4,11 +4,10 @@ import { recordModuleEvaluation } from '../src/lib/evaluation.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
 import { evaluateDependencyOrganization } from '../src/lib/dependencies/organization.js';
-import { recordId, sessionId, EntityBindings } from '../src/lib/identity.js';
+import { recordId, sessionId } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import type { ClaimContextRecord } from '../src/lib/records.js';
 import type { DiscoveryResult } from '../src/lib/evaluation.js';
-import type { ModuleClaim, ProgramRecord, RecordId } from '../src/lib/records.js';
+import type { RecordId } from '../src/lib/records.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
 import { completedMaterialization } from '../src/lib/evaluation-state.js';
 
@@ -83,34 +82,6 @@ test('provider discovery cannot be mutated to affect retained results or later d
   assert.deepEqual(opened.analysis.discover(store, ['exports', 'documentation', 'composition'], true), retained);
   const later = opened.analysis.discover(store);
   assert.deepEqual(later.modules, retained.modules);
-});
-
-test('entity binding batches validate first, order new collisions together and preserve existing bindings', () => {
-  const { store, session } = synthetic();
-  const base = { session, method: 'test' };
-  const context: ClaimContextRecord = { ...base, kind: 'claim-context', id: recordId(session, 'context', 1),
-    scope: 'configured-project', evidence: [], status: 'mechanically-derived', guarantee: '', limitations: [], diagnostics: [] };
-  const ids = [2, 1].map(n => `${session}:module:12345678${String(n).repeat(56)}` as RecordId);
-  const records: ProgramRecord[] = [context];
-  for (const [index, id] of ids.entries()) {
-    const claim: ModuleClaim = { ...base, kind: 'claim', id: recordId(session, 'claim', index), subject: id, context: context.id,
-      information: { type: 'module', name: null, handle: 'test', handleStatus: 'generated-navigation-aid', handleProvenance: 'anonymous-fallback', discoveryFacets: [] } };
-    records.push({ ...base, kind: 'module', id, claim: claim.id }, claim);
-  }
-  store.put(records);
-  assert.throws(() => store.entityIds([ids[0]!, context.id], 'module'), /matching entity kind/);
-  const bound = store.entityIds(ids, 'module');
-  assert.equal(bound.get(ids[1]!), 'module-12345678');
-  assert.equal(bound.get(ids[0]!), 'module-123456782');
-  assert.deepEqual(store.entityIds([...ids].reverse(), 'module'), new Map([...bound].reverse()));
-  const bindings = new EntityBindings();
-  assert.throws(() => bindings.allocate([ids[0]!, 'invalid' as RecordId], 'module'), /Invalid/);
-  assert.equal(bindings.allocate([ids[1]!, ids[0]!], 'module').get(ids[1]!), 'module-12345678');
-  const staged = new EntityBindings();
-  const publish = staged.prepare([ids[0]!], 'module');
-  staged.allocate([ids[1]!], 'module');
-  assert.throws(publish, /changed before publication/);
-  assert.equal(staged.allocate([ids[1]!], 'module').get(ids[1]!), 'module-12345678');
 });
 
 test('completed materialization leaves independent availability and applicability dimensions unchanged', () => {

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { temporaryDirectory } from './cli-helpers.js';
+import { temporaryDirectory } from './temporary-directory.js';
 
 const { requestBudget } = await import(new URL('../../scripts/module-investigation/request-budget.mjs', import.meta.url).href);
 test('assessment allowance reserves before dispatch, persists failed attempts and excludes competing runners', t => {
@@ -19,114 +19,4 @@ test('assessment allowance reserves before dispatch, persists failed attempts an
   try { assert.equal(reopened.reserve('second'), 2); assert.equal(reopened.reserve('third'), null); }
   finally { reopened.close(); }
   assert.equal(JSON.parse(readFileSync(file, 'utf8')).requests.length, 2);
-});
-
-test('assessment harness captures CLI interaction and refuses an extra POST without exposing credentials', async t => {
-  const { runAssessment } = await import(new URL('../../scripts/module-investigation/run-shell.mjs', import.meta.url).href);
-  const root = temporaryDirectory(t, 'postcode-assessment-shell-'), file = path.join(root, 'budget.json'), output = path.join(root, 'capture');
-  writeFileSync(file, JSON.stringify({ ceiling: 1, requests: [] }));
-  let posts = 0;
-  const exit = await runAssessment({ id: 'offline', project: 'fixture', output, budget: file, pass: 'test', commands: ['usage', 'exit'] }, {
-    onError(error: unknown) { throw error; }, verify() {}, session: async () => ({ token: async () => 'offline-secret', watch: () => () => {} }),
-    fetch: async () => { posts++; return new Response('data: ' + JSON.stringify({ type: 'response.completed', response: { id: 'test', status: 'completed', model: 'gpt-5.6-sol', output: [], usage: { input_tokens: 4, output_tokens: 2, total_tokens: 6 } } }) + '\n\n', { headers: { 'content-type': 'text/event-stream' } }); },
-    runCli: async (_args: unknown, options: any) => {
-      const { agent } = await options.configureInvestigator(); const dialogue = agent.open();
-      const input = { attempt: 'attempt:test', instructions: 'offline', request: { operation: 'functionality', subject: 'module:test', parameters: {} }, responses: [], remaining: { milliseconds: 10000, calls: 3, toolCalls: 3 } };
-      try {
-        await dialogue.exchange(input, new AbortController().signal, () => {});
-        const another = agent.open();
-        try { await another.exchange(input, new AbortController().signal, () => {}); } finally { another.close(); }
-        for (const expected of ['usage', 'exit']) {
-          const line = new Promise<string>(resolve => options.input.once('data', (data: Buffer) => resolve(data.toString().trim())));
-          options.stdout('postcode> '); assert.equal(await line, expected);
-        }
-        await options.sink.submit({ type: 'test' }); return 0;
-      } finally { dialogue.close(); }
-    },
-  });
-  assert.equal(exit, 0); assert.equal(posts, 1);
-  assert.equal(JSON.parse(readFileSync(path.join(output, 'result.json'), 'utf8')).pausedForBudget, true);
-  assert.equal(JSON.parse(readFileSync(file, 'utf8')).requests.length, 1);
-  assert.doesNotMatch(readFileSync(path.join(output, 'exchanges.jsonl'), 'utf8'), /offline-secret/);
-});
-
-test('controlled earlier interpretation is explicitly scripted and never sends a provider request', async () => {
-  const { injectedSetup } = await import(new URL('../../scripts/module-investigation/injected-setup.mjs', import.meta.url).href);
-  const captures: unknown[] = [], usage: unknown[] = [];
-  const agent = injectedSetup({ id: 'controlled', prose: 'Earlier root.', childProse: 'Earlier part.', qualifications: ['Injected test context.'] }, (value: unknown) => captures.push(value));
-  const dialogue = agent.open();
-  const reply = await dialogue.exchange({ request: { result: 'result:test', subjects: [{ subject: { kind: 'entity', entity: 'entity:test' } }] }, responses: [] }, new AbortController().signal, (value: unknown) => usage.push(value));
-  assert.equal(agent.identity.origin, 'scripted'); assert.equal(agent.identity.configuration.providerRequests, false);
-  assert.equal(reply.kind, 'submit'); assert.equal(reply.contribution.investigrams[1].items[0].body.text, 'Earlier part.');
-  assert.equal(reply.contribution.investigrams[0].declarations[0].target.result, 'result:test');
-  assert.equal(reply.contribution.investigrams[0].declarations[0].members.length, 2);
-  assert.deepEqual(usage, [{ source: 'synthetic', categories: [] }]); assert.equal(captures.length, 1);
-  dialogue.close(); await assert.rejects(dialogue.exchange({}, new AbortController().signal, () => {}), /Closed/);
-});
-
-test('controlled setup can acquire source before a mistaken account and retain exact prior-account attribution for a correction', async () => {
-  const { injectedSetup } = await import(new URL('../../scripts/module-investigation/injected-setup.mjs', import.meta.url).href);
-  const captures: any[] = [];
-  const source = injectedSetup({ id: 'source-first', prose: 'One label only.', acquireSource: true, qualifications: ['Scripted static interpretation.'] }, (value: unknown) => captures.push(value)).open();
-  assert.deepEqual(await source.exchange({ request: { result: 'result:A', subjects: [{ moduleRecord: 'module:A', subject: { kind: 'entity', entity: 'entity:A' } }] }, responses: [] }, new AbortController().signal, () => {}), { kind: 'tools', requests: [{ kind: 'source', subject: 'module:A' }] });
-  const result = await source.exchange({ request: { result: 'result:A', subjects: [{ moduleRecord: 'module:A', subject: { kind: 'entity', entity: 'entity:A' } }] }, responses: [{ tool: 'evidence', response: { records: [{}], selected: ['capture:A'] } }] }, new AbortController().signal, () => {});
-  assert.equal(result.kind, 'submit'); assert.deepEqual(result.contribution.investigrams[0].items[0].evidence, ['capture:A']);
-  assert.equal(captures.length, 2); assert.ok(captures.every(item => item.providerRequests === 0));
-  const correction = injectedSetup({ id: 'branch', prose: 'Alternative follows.', citeSubject: true,
-    qualifications: ['Scripted alternative.'], correction: { reason: 'Alternative reason.', prose: 'Replacement.' } }, () => {}).open();
-  const subject = { kind: 'designation', association: { investigram: 'account:A', declaration: 'answer' } };
-  const reply = await correction.exchange({ request: { result: 'result:B', subjects: [{ subject }] }, responses: [{ tool: 'contribution', kind: 'association', value: { address: subject.association, declaration: { target: { kind: 'result', result: 'result:A' } } } }] }, new AbortController().signal, () => {});
-  const change = reply.contribution.investigrams[1].declarations[0];
-  assert.deepEqual(change.displaces, [subject.association]);
-  assert.deepEqual(change.target, { kind: 'result', result: 'result:A' });
-  assert.equal(change.grounds.text, 'Alternative reason.');
-  assert.equal(reply.contribution.investigrams[0].declarations[0].target.result, 'result:B');
-
-});
-
-test('frozen setup sequence selects attributed participants in order and refuses an unexpected operation', async t => {
-  const { runAssessment } = await import(new URL('../../scripts/module-investigation/run-shell.mjs', import.meta.url).href);
-  const root = temporaryDirectory(t, 'postcode-assessment-sequence-'), budget = path.join(root, 'budget.json'), setup = path.join(root, 'setup.json');
-  writeFileSync(budget, JSON.stringify({ ceiling: 1, requests: [] }));
-  writeFileSync(setup, JSON.stringify({ sequence: ['functionality', 'clarification'].map((operation, index) => ({ operation,
-    recipe: { id: `step-${index}`, prose: 'Earlier account.', qualifications: ['Scripted assessment input.'] } })) }));
-  for (const mismatch of [false, true]) {
-    const exit = await runAssessment({ id: 'offline', project: 'fixture', output: path.join(root, String(mismatch)), budget, setup, pass: 'test' }, {
-      verify() {}, session: async () => ({ token: async () => { throw new Error('No request authorized by this test'); }, watch: () => () => {} }),
-      runCli: async (_args: unknown, options: any) => {
-        assert.equal(options.selectInvestigator({ operation: 'functionality' }).identity.configuration.setup, 'step-0');
-        const second = options.selectInvestigator({ operation: mismatch ? 'examination' : 'clarification' });
-        assert.equal(second.identity.configuration.setup, 'step-1');
-        assert.equal(options.selectInvestigator({ operation: 'examination' }).identity.origin, 'hosted');
-        return 0;
-      },
-    });
-    assert.equal(exit, mismatch ? 2 : 0);
-  }
-  assert.equal(JSON.parse(readFileSync(budget, 'utf8')).requests.length, 0);
-});
-
-test('assessment runner drives the real CLI shell with scripted investigation and feedback offline', async t => {
-  const { runAssessment } = await import(new URL('../../scripts/module-investigation/run-shell.mjs', import.meta.url).href);
-  const root = temporaryDirectory(t, 'postcode-assessment-real-shell-');
-  const project = path.join(root, 'tsconfig.json'), budget = path.join(root, 'budget.json'), setup = path.join(root, 'setup.json'), output = path.join(root, 'capture');
-  writeFileSync(project, '{"compilerOptions":{"noLib":true,"types":[]},"files":["sample.ts"]}');
-  writeFileSync(path.join(root, 'sample.ts'), 'export const sample = 1;\n');
-  writeFileSync(budget, JSON.stringify({ ceiling: 0, requests: [] }));
-  writeFileSync(setup, JSON.stringify({ id: 'offline-shell', prose: 'Controlled interpretation.', qualifications: ['Scripted offline context.'] }));
-  let tokens = 0, posts = 0;
-  const exit = await runAssessment({ id: 'offline-real-shell', project, output, budget, setup, pass: 'test', json: true,
-    commands: ['summarize sample', 'feedback incomplete', 'exit'] }, {
-    verify() {}, onError(error: unknown) { throw error; },
-    session: async () => ({ token: async () => { tokens++; throw new Error('No credentials authorized'); }, watch: () => () => {} }),
-    fetch: async () => { posts++; throw new Error('No requests authorized'); },
-  });
-  assert.equal(exit, 0); assert.equal(tokens, 0); assert.equal(posts, 0);
-  const batches = readFileSync(path.join(output, 'observations.jsonl'), 'utf8').trim().split('\n').map(line => JSON.parse(line));
-  assert.equal(batches.length, 3);
-  assert.ok(batches[0].records.some((record: any) => record.kind === 'qualified-view'));
-  const feedback = batches[1].records.find((record: any) => record.kind === 'inadequacy-feedback').value;
-  assert.deepEqual(feedback.target, { command: 1, status: 'completed' });
-  assert.equal(feedback.context, 'displayed-result');
-  assert.equal(JSON.parse(readFileSync(budget, 'utf8')).requests.length, 0);
 });

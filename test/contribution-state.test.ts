@@ -5,7 +5,7 @@ import { ContributionLedger } from '../src/lib/contributions/ledger.js';
 import { InvalidContribution } from '../src/lib/contributions/model.js';
 import type { EntityId, QueryResultId } from '../src/lib/contributions/model.js';
 import { assessFulfillment } from '../src/lib/contributions/outcomes.js';
-import { renderStateDiagram, stateDiagramIncompatibility } from '../src/lib/contributions/state-diagram.js';
+import { renderStateDiagram, stateDiagramIncompatibility } from '../scripts/structured-accounts/support/state-diagram.js';
 import { stateBehaviorGuidance, stateDiagramContract, stateModelContract } from '../src/lib/contributions/state-model.js';
 import type { StateModel } from '../src/lib/contributions/state-model.js';
 import type { SessionId } from '../src/lib/records.js';

@@ -75,7 +75,7 @@ test('focused lenses retain only direct edges, nonedges stay with their owner an
     'node_modules/outside/package.json': '{"types":"index.d.ts"}',
     'node_modules/outside/index.d.ts': 'export interface T {}',
   }, async root => {
-    const { store, evaluation, name, module, basis } = (await analyze(root));
+    const { store, evaluation, name, module } = (await analyze(root));
     const child = dependencyChildren(store, evaluation, 'a');
     assert.deepEqual(child.modules.map(name).sort(), ['a', 'b', 't']);
     assert.equal(child.relationships.length, 2);
@@ -86,10 +86,10 @@ test('focused lenses retain only direct edges, nonedges stay with their owner an
     assert.deepEqual(external.opaqueSubjects, [module('t')]);
     assert.equal(external.relationships.length, 0);
     assert.equal(dependencyParents(store, evaluation, module('t')).relationships.length, 1);
-    const compact = store.entityIds(basis.modules, 'module').get(module('a'))!;
-    assert.throws(() => dependencyChildren(store, evaluation, compact), /\(missing\)/);
+    const exact = module('a');
+    assert.deepEqual(dependencyChildren(store, evaluation, exact).subjects, [module('a')]);
     assert.throws(() => dependencyChildren(store, evaluation, 'module-00000000', true), /\(unknown-reference\)/);
-    assert.deepEqual(dependencyChildren(store, evaluation, compact, true).subjects, [module('a')]);
+    assert.deepEqual(dependencyChildren(store, evaluation, exact, true).subjects, [module('a')]);
     const partial = { ...evaluation, id: recordId(evaluation.session, 'partial', 1), execution: 'stopped' as const, materialization: 'partial' as const };
     store.put([partial]);
     const incomplete = dependencyStructure(store, partial);
@@ -111,7 +111,7 @@ test('composition is an independent exhaustive positive property across merged d
     'first.d.ts': "declare module 'merged' { export * from 'target'; } declare module 'mixed' { export * from 'target'; } declare module 'target' { export interface T {} }",
     'second.d.ts': "declare module 'merged' { export type { T } from 'target'; } declare module 'mixed' { export const local: number; }",
   }, async root => {
-    const { store, evaluation, basis, name, module } = (await analyze(root));
+    const { store, evaluation, name, module } = (await analyze(root));
     const outcomes = store.evaluations(evaluation.session).filter(e => e.requirement === 'composition');
     const positives = outcomes.flatMap(e => e.claims ?? []).map(id => store.get(id)).map(claim => {
       assert.ok(claim.kind === 'claim' && claim.information.type === 'module-composition');
@@ -120,7 +120,7 @@ test('composition is an independent exhaustive positive property across merged d
     assert.deepEqual(positives.sort(), ['merged', 'positive']);
     assert.equal(outcomes.find(e => e.modules.includes(module('broken')))!.materialization, 'partial');
     assert.equal(outcomes.find(e => e.modules.includes(module('empty')))!.materialization, 'full');
-    assert.equal(outcomes.length, basis.modules.length);
+    assert.equal(outcomes.length, (store.get(evaluation.moduleEvaluation) as import('../src/lib/records.js').EvaluationRecord).modules.length);
     const view = dependencyChildren(store, evaluation, 'positive');
     assert.ok(view.expansions.moduleClaims.length > 0);
     assert.ok(view.expansions.moduleEvaluations.every(id => store.get(id).kind === 'evaluation'));
@@ -290,12 +290,12 @@ test('store rejects invalid component indices and missing organization occurrenc
 
 test('dependency subject lookup never constructs an unused module inspection Projection', async t => {
   await fixture({ 'a.ts': "import './b'; export {};", 'b.ts': 'export {};' }, async root => {
-    const { store, evaluation, basis, module } = await analyze(root);
+    const { store, evaluation, module } = await analyze(root);
     const retained: string[] = [];
     const put = store.put.bind(store);
     t.mock.method(store, 'put', (records: readonly import('../src/lib/records.js').ProgramRecord[]) => { retained.push(...records.map(record => record.kind)); put(records); });
     const byName = dependencyChildren(store, evaluation, 'a');
-    const binding = store.entityIds(basis.modules, 'module').get(module('a'))!;
+    const binding = module('a');
     const byReference = dependencyParents(store, evaluation, binding, true);
     assert.deepEqual(byName.subjects, [module('a')]);
     assert.deepEqual(byReference.subjects, [module('a')]);

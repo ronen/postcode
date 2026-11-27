@@ -1,8 +1,7 @@
-import { isAnswer } from './answer-references.js';
 import { ImmutableCapture } from './immutable.js';
 import path from 'node:path';
 import { completedMaterialization } from './evaluation-state.js';
-import { canonical, digest, EntityBindings } from './identity.js';
+import { canonical, digest } from './identity.js';
 import type { EvaluationRecord, ProgramRecord, ProgramRecordStore, RecordId, SessionId } from './records.js';
 
 function references(record: ProgramRecord): readonly RecordId[] {
@@ -61,7 +60,6 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
   capture<T>(value: T): T { return this.#ownership.capture(value); }
   /** The application releases ownership bookkeeping on close, independently of retained outputs. */
   releaseOwnership(): void { this.#ownership.dispose(); }
-  readonly #bindings = new Map<SessionId, EntityBindings>();
   readonly #evaluations = new Map<SessionId, Map<RecordId, EvaluationRecord>>();
   readonly #records = new Map<RecordId, ProgramRecord>();
 
@@ -429,55 +427,11 @@ export class MemoryProgramRecordStore implements ProgramRecordStore {
     }
   }
 
-  readonly #answerBindings = new Map<SessionId, EntityBindings>();
-
-  answerIds(ids: readonly RecordId[]): ReadonlyMap<RecordId, string> {
-    const grouped = new Map<SessionId, RecordId[]>();
-    for (const id of ids) {
-      const record = this.get(id);
-      if (!isAnswer(record)) throw new Error('Expected a retained answer');
-      const group = grouped.get(record.session) ?? [];
-      group.push(id); grouped.set(record.session, group);
-    }
-    const result = new Map<RecordId, string>();
-    for (const [session, group] of grouped) {
-      const bindings = this.#answerBindings.get(session) ?? new EntityBindings();
-      for (const [id, reference] of bindings.allocate(group, 'answer')) result.set(id, reference);
-      this.#answerBindings.set(session, bindings);
-    }
-    return result;
-  }
-  boundAnswer(session: SessionId, reference: string): RecordId | undefined {
-    return this.#answerBindings.get(session)?.resolve(reference);
-  }
-
-  entityIds(ids: readonly RecordId[], kind: 'module' | 'group'): ReadonlyMap<RecordId, string> {
-    const grouped = new Map<SessionId, RecordId[]>();
-    // Validate the entire request before allocating even the first binding.
-    for (const id of ids) {
-      const record = this.get(id);
-      if (record.kind !== kind) throw new Error('Expected matching entity kind');
-      if (!/:[a-f0-9]{64}$/.test(id)) throw new Error('Invalid entity record key');
-      const group = grouped.get(record.session) ?? [];
-      group.push(id); grouped.set(record.session, group);
-    }
-    const allocations = [...grouped].map(([session, group]) => {
-      const bindings = this.#bindings.get(session) ?? new EntityBindings();
-      return { session, bindings, prepared: bindings.prepare(group, kind) };
-    });
-    const result = new Map<RecordId, string>();
-    for (const { session, bindings, prepared } of allocations) {
-      this.#bindings.set(session, bindings);
-      for (const pair of prepared()) result.set(...pair);
-    }
-    return new Map(ids.map(id => [id, result.get(id)!]));
-  }
-
   lookup(id: RecordId): ProgramRecord | undefined { return this.#records.get(id); }
 
-  /** Compact bindings and raw IDs must identify a retained same-Session entity; classification allocates nothing. */
-  boundEntity(session: SessionId, reference: string): RecordId | undefined {
-    const id = this.#bindings.get(session)?.resolve(reference) ?? reference as RecordId;
+  /** An exact ID must identify a retained same-Session entity. */
+  retainedEntity(session: SessionId, reference: string): RecordId | undefined {
+    const id = reference as RecordId;
     const record = this.#records.get(id);
     return record?.session === session && (record.kind === 'module' || record.kind === 'group')
       ? record.id : undefined;

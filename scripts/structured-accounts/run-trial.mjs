@@ -21,7 +21,7 @@ import path from 'node:path';
 import { openApplication } from '../../_build/src/lib/application/index.js';
 import { productionChatGPTCredentials } from '../../_build/src/lib/application/accounts.js';
 import { chatGPTDialogAgent } from '../../_build/src/lib/investigation/openai/contribution-protocol.js';
-import { arrangeContributionAnswer } from '../../_build/src/lib/contributions/answers.js';
+import { arrangeContributionAnswer } from '../../_build/scripts/structured-accounts/support/answers.js';
 import { requestBudget } from '../module-investigation/request-budget.mjs';
 
 const spec = JSON.parse(readFileSync(process.argv[2], 'utf8'));

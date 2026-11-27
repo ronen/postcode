@@ -1,3 +1,4 @@
+import { resolveModuleProjection } from '../src/lib/module-content.js';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
@@ -7,7 +8,6 @@ import { test } from 'node:test';
 import { evaluateModules } from '../src/lib/evaluation.js';
 import { methods } from '../src/lib/identity.js';
 import { MemoryProgramRecordStore } from '../src/lib/memory-store.js';
-import { createView } from '../src/lib/presentation.js';
 import { inspect, modules } from './projection-helpers.js';
 import type { SourceEvidenceRecord } from '../src/lib/records.js';
 import { openTypeScriptProject } from '../src/lib/typescript/project.js';
@@ -116,50 +116,44 @@ test('inspect exact names and handles preserves applicable context and refuses u
   }
 });
 
-test('exact names remain usable when they collide with compact IDs; scoped IDs stay precise', async () => {
+test('exact names retain reserved-looking spellings; scoped IDs stay precise', async () => {
   await temporary(async root => {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, JSON.stringify({ compilerOptions: { noLib: true, types: [] }, include: ['*.ts'] }));
     writeFileSync(path.join(root, 'ordinary.ts'), 'export const value = 1;');
-    const before = (await discover(config));
-    const selector = before.store.entityIds(before.evaluation.modules, 'module').get(before.evaluation.modules[0]!)!;
+    const selector = 'module-12345678';
     writeFileSync(path.join(root, 'ambient.d.ts'), `declare module "${selector}" { export const named: number; }`);
     const { store, evaluation, claims } = (await discover(config));
     const named = claims.find(claim => claim.information.name === selector)!;
     const ordinary = claims.find(claim => claim.information.name === null)!;
-    const ids = store.entityIds(evaluation.modules, 'module');
-    assert.equal(ids.get(ordinary.subject), selector);
 
     const currentName = inspect(store, evaluation, selector);
     assert.deepEqual(currentName.parameters, {});
     assert.deepEqual(currentName.modules, [named.subject]);
     assert.ok(currentName.contexts.includes(named.context));
-    assert.deepEqual(inspect(store, evaluation, selector, true).modules, [ordinary.subject]);
-    assert.deepEqual(inspect(store, evaluation, ids.get(named.subject)!, true).modules, [named.subject]);
-    assert.throws(() => inspect(store, evaluation, ids.get(named.subject)!), /\(missing\)/);
+    assert.deepEqual(inspect(store, evaluation, ordinary.subject, true).modules, [ordinary.subject]);
+    assert.deepEqual(inspect(store, evaluation, named.subject, true).modules, [named.subject]);
+    assert.deepEqual(inspect(store, evaluation, named.subject).modules, [named.subject]);
     assert.throws(() => inspect(store, evaluation, 'module-00000000', true), /\(unknown-reference\)/);
   });
 });
 
-test('generated handles avoid compact Entity IDs across basename, language-name and export cues', async () => {
+test('generated handles preserve reserved spellings across basename, language-name and export cues', async () => {
   await temporary(async root => {
     const config = path.join(root, 'tsconfig.json');
     writeFileSync(config, JSON.stringify({ compilerOptions: { noLib: true, types: [] }, include: ['**/*.ts'] }));
     writeFileSync(path.join(root, 'ordinary.ts'), 'export const value = 1;');
-    const before = (await discover(config));
-    const selector = before.store.entityIds(before.evaluation.modules, 'module').get(before.evaluation.modules[0]!)!;
+    const selector = 'module-12345678';
     for (const directory of ['first', 'second']) {
       mkdirSync(path.join(root, directory));
       writeFileSync(path.join(root, directory, `${selector}.ts`), 'export const value = 1;');
     }
     writeFileSync(path.join(root, 'ambient.d.ts'), `declare module "${selector}" { export const value: number; }`);
     writeFileSync(path.join(root, 'index.ts'), `export const ${selector.replace('-', '_')} = 1;`);
-    // Reserve the entire compact-ID grammar, including prefixes extended on collision.
+    // Preserve the existing naming method grammar after alias lookup retirement.
     for (const length of [9, 64]) writeFileSync(path.join(root, `module-${'a'.repeat(length)}.ts`), 'export const value = 1;');
     const { store, evaluation, claims } = (await discover(config));
-    const ids = store.entityIds(evaluation.modules, 'module');
     const ordinary = claims.find(claim => claim.information.handle === 'ordinary')!;
-    assert.equal(ids.get(ordinary.subject), selector);
     const rewritten = claims.filter(claim => claim.information.handle === `handle-${selector}`);
     assert.equal(rewritten.length, 4);
     assert.deepEqual(new Set(rewritten.map(claim => claim.information.handleProvenance)),
@@ -167,12 +161,12 @@ test('generated handles avoid compact Entity IDs across basename, language-name 
     assert.deepEqual(inspect(store, evaluation, `handle-${selector}`).modules,
       rewritten.map(claim => claim.subject));
     assert.deepEqual(inspect(store, evaluation, `handle-${selector}`).parameters, {});
-    assert.deepEqual(inspect(store, evaluation, selector, true).modules, [ordinary.subject]);
+    assert.deepEqual(inspect(store, evaluation, ordinary.subject, true).modules, [ordinary.subject]);
     const named = claims.find(claim => claim.information.name === selector)!;
     assert.deepEqual(inspect(store, evaluation, selector).modules, [named.subject]);
     for (const claim of claims) {
       assert.equal(/^module-[a-f0-9]{8,64}$/.test(claim.information.handle), false);
-      assert.deepEqual(inspect(store, evaluation, ids.get(claim.subject)!, true).modules, [claim.subject]);
+      assert.deepEqual(inspect(store, evaluation, claim.subject, true).modules, [claim.subject]);
     }
     assert.deepEqual(normalizeSession((await discover(config)).claims), normalizeSession(claims));
   });
@@ -286,15 +280,15 @@ test('output-exclusion qualifications describe only filters actually supplied by
     const store = new MemoryProgramRecordStore();
     const evaluation = evaluateModules(store, opened.analysis, ['exports', 'documentation']);
     const projection = modules(store, evaluation);
-    const view = createView(store, projection, { format: 'json', moreDetails: false }, 'Modules');
+    const content = resolveModuleProjection(store, projection);
     const expectedCount = excludedOutputDirectories?.length ?? 0;
-    assert.equal(view.analysis!.excludedOutputLocations, expectedCount);
+    assert.equal(content.session.analysis!.excludedOutputLocations, expectedCount);
     // Check both project and per-module discovery contexts through the public view.
-    assert.ok(view.qualifications.some(context => context.scope === 'configured-project'));
-    assert.ok(view.modules.length > 0);
-    const contexts = [...view.qualifications, ...view.modules.map(module => module.qualification)]
+    assert.ok(content.contexts.some(({ context }) => context.scope === 'configured-project'));
+    assert.ok(content.modules.length > 0);
+    const contexts = content.contexts.map(item => item.context)
       .filter(context => context.method.startsWith(`${methods.discovery};`));
-    assert.ok(contexts.length > view.modules.length);
+    assert.ok(contexts.length > content.modules.length);
     for (const context of contexts) {
       assert.equal(context.limitations.includes('Configured generated-output locations are explicitly excluded from repository evidence.'), expectedCount > 0);
     }

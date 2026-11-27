@@ -1,16 +1,30 @@
+import { arrangeContributionAnswer } from '../scripts/structured-accounts/support/answers.js';
 import { stateDiagramContract } from '../src/lib/contributions/state-model.js';
 import type { ResultContract } from '../src/lib/contributions/outcomes.js';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { test } from 'node:test';
-import type { ArrangedQualification } from '../src/lib/contributions/answers.js';
-import { arrangeContributionAnswer, resolveContributionAnswer, selectContributionAnswer } from '../src/lib/contributions/answers.js';
+import type { StateDiagram } from '../scripts/structured-accounts/support/state-diagram.js';
+import type { ArrangedQualification } from '../scripts/structured-accounts/support/answers.js';
+import { resolveContributionAnswer, selectContributionAnswer } from '../src/lib/contributions/answers.js';
 import { moduleEntity, sessionLedger } from '../src/lib/contributions/modules.js';
 import { discover } from './helpers.js';
 import { agentic, submit } from './contribution-helpers.js';
 
 const statements = (group: ArrangedQualification) => [...group.statements, ...(group.owner?.statements ?? [])];
 const q = (text: string) => ({ limitations: [text] });
+
+function assertNoSessionInDiagramLabels(diagrams: readonly StateDiagram[], session: string) {
+  for (const diagram of diagrams) {
+    // Precise identities belong in Trial record; they must not become fallback
+    // bearer labels in the picture, text, legends or notes.
+    const text = diagram.text.replace(/\nTrial record\n.*?(?=\nQualifications of this alternative\n|$)/s, '');
+    const svg = diagram.svg.replace(/<text x="20"[^>]*>Trial record<\/text>.*?(?=<text x="20"[^>]*>Diagram notes<\/text>)/s, '');
+    assert.notEqual(text, diagram.text, 'The text has a distinct trial-record section');
+    assert.notEqual(svg, diagram.svg, 'The SVG has a distinct trial-record section');
+    assert.ok(!JSON.stringify({ ...diagram, text, svg }).includes(session), 'Only the trial-record section may contain the Session ID');
+  }
+}
 async function setup(contract: ResultContract | null = null) {
   const { store, evaluation, claims } = await discover(path.resolve('fixtures', 'exports', 'tsconfig.json'));
   const ledger = sessionLedger(store, evaluation.session), subject = claims.find(claim => claim.information.handle === 'barrel')!.subject;
@@ -102,7 +116,8 @@ test('multiple state models preserve their distinct role and Entity bearers with
   assert.match(diagrams[0]!.text, /States of each cache instance\\u001b/);
   assert.match(diagrams[1]!.text, /States of one connection/);
   assert.match(diagrams[2]!.text, /States of barrel/);
-  assert.ok(!JSON.stringify(diagrams).includes(ledger.session));
+  assertNoSessionInDiagramLabels(diagrams, ledger.session);
+  assert.ok(diagrams.every(diagram => diagram.text.includes('Alternative 1 of 1.') && !diagram.text.includes('equally standing')));
   assert.deepEqual((projection.alternatives[0]!.items[2]!.body as { bearer: unknown }).bearer, { kind: 'entity', entity });
   assert.ok(!diagrams.some(diagram => diagram.text.includes('wrong common module label')));
   assert.deepEqual(view.alternatives[0]!.prose, []);
@@ -138,7 +153,7 @@ test('discovered module bearers retain distinct qualified labels without supplem
     assert.ok(group.statements.includes(`Generated handle: ${handle}.`));
     assert.ok(group.statements.some(statement => statement.startsWith('Mechanically derived')));
   }
-  assert.ok(!JSON.stringify(alternative.diagrams).includes(ledger.session));
+  assertNoSessionInDiagramLabels(alternative.diagrams, ledger.session);
   assert.deepEqual(ledger.productions().map(production => production.deliveries), deliveries);
   // Presentation of the old answer cannot refresh its identification after a withdrawal.
   submit(ledger, agentic(), [{ key: 'withdraw', qualification: q('WITHDRAWAL_LIMIT'), declarations: [{ key: 'w', operation: 'withdraw',
@@ -232,4 +247,45 @@ test('contribution answer keys exclude operational output-exclusion capture whil
   assert.notDeepEqual(answers[0]!.inputs, answers[1]!.inputs, 'Operational input capture remains part of exact historical support');
   assert.ok(answers[1]!.inputs.length > 0);
   assert.equal(answers[0]!.key, answers[1]!.key);
+});
+
+test('standalone diagrams identify separate alternatives and accounts with partial coverage and their own qualifications', async () => {
+  const { store, ledger, result, select } = await setup();
+  submit(ledger, agentic(), ['alpha', 'beta'].map(key => ({ key, qualification: q(`${key.toUpperCase()}_OWNER_ONLY <limit> & condition`),
+    items: [{ key: 'model', type: 'state-model', qualification: q(`${key.toUpperCase()}_ITEM_ONLY`),
+      body: { bearer: { role: key }, states: [{ key: 'idle', label: 'Idle' }], initial: { kind: 'unknown' }, transitions: [], coverage: { states: 'some', transitions: 'unknown' },
+        applicability: `${key} applicability only`, unsupported: [`${key} unsupported only`] } }],
+    declarations: [{ key: 'answer', operation: 'add', target: { kind: 'result', result: result.id }, members: [{ kind: 'item', item: { investigram: { local: key }, item: 'model' } }] }] })));
+  const content = resolveContributionAnswer(store, select()), before = structuredClone(content);
+  const view = arrangeContributionAnswer(content, 'Separate accounts');
+  assert.equal(view.alternatives.length, 2);
+  const decode = (svg: string) => [...svg.matchAll(/<text\b[^>]*>(.*?)<\/text>/gs)].map(match => match[1]!.replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))).join('');
+  for (const [index, alternative] of view.alternatives.entries()) {
+    const diagram = alternative.diagrams[0]!, own = diagram.text.startsWith('States of alpha') ? 'ALPHA' : 'BETA', other = own === 'ALPHA' ? 'BETA' : 'ALPHA';
+    for (const rendered of [diagram.text, decode(diagram.svg)]) {
+      assert.match(rendered, /Interpretation/);
+      assert.ok(rendered.includes(`Trial answer: ${content.projection.id}`));
+      assert.ok(rendered.includes(`Alternative ${index + 1} of 2.`));
+      assert.ok(rendered.includes(`Alternative designation: ${JSON.stringify(alternative.designation)}`));
+      const account = content.projection.alternatives[index]!.items.find(item => item.type === 'state-model')!;
+      assert.ok(rendered.includes(`Account item: ${JSON.stringify(account.address)}`));
+      assert.ok(rendered.includes('2 equally standing alternative answers'));
+      assert.ok(rendered.includes('Their order implies no preference, and they are not reconciled.'));
+      for (const note of diagram.notes) assert.ok(rendered.includes(note), note);
+      assert.ok(rendered.includes(`${own.toLowerCase()} applicability only`));
+      assert.ok(!rendered.includes(`${other.toLowerCase()} applicability only`));
+      assert.ok(!rendered.includes(`${other.toLowerCase()} unsupported only`));
+      assert.ok(rendered.includes(`${own}_OWNER_ONLY <limit> & condition`));
+      assert.ok(rendered.includes(`${own}_ITEM_ONLY`));
+      assert.ok(!rendered.includes(`${other}_OWNER_ONLY`));
+      assert.ok(!rendered.includes(`${other}_ITEM_ONLY`));
+    }
+    assert.doesNotMatch(diagram.svg, /<limit>/);
+    assert.equal(diagram.method, 'postcode/state-transition-diagram@9');
+    assert.match(decode(diagram.svg), /Full state and transition legend: see the companion \.txt artifact with the same basename as this SVG\./);
+    const lines = [...diagram.svg.matchAll(/<text x="20"[^>]*>(.*?)<\/text>/g)].map(match => match[1]!);
+    assert.ok(lines.some(line => line.includes('Interpretation')), 'The status word stays intact when wrapping');
+  }
+  assert.deepEqual(content, before);
+  assert.deepEqual(arrangeContributionAnswer(structuredClone(content), 'Separate accounts'), view);
 });

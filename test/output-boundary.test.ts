@@ -2,12 +2,9 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { chmodSync, existsSync, mkdirSync, readdirSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { PassThrough } from 'node:stream';
-import { runCli } from '../src/lib/cli.js';
 import { outputBoundary, OutputBoundaryFailure } from '../src/lib/output-boundary.js';
-import { openCliSession as openSession, SessionInvalidated } from '../src/lib/interfaces/cli/application.js';
-import { temporaryDirectory } from './cli-helpers.js';
-import { invokeCli } from './cli-helpers.js';
+import { openApplication as openSession, SessionInvalidated } from '../src/lib/application/index.js';
+import { temporaryDirectory } from './temporary-directory.js';
 
 test('one output policy resolves aliases, dangling targets and missing descendants without duplicate boundary counts', t => {
   const root = temporaryDirectory(t, 'postcode-output-policy-');
@@ -34,7 +31,7 @@ test('one output policy resolves aliases, dangling targets and missing descendan
   assert.equal(policy.changed(), true);
 });
 
-test('unverifiable explicit boundaries refuse both CLI entry paths and later retargeting invalidates', async t => {
+test('unverifiable explicit boundaries refuse direct application opening and later retargeting invalidates', async t => {
   const root = temporaryDirectory(t, 'postcode-boundary-refusal-');
   const configPath = path.join(root, 'tsconfig.json');
   writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":[]}');
@@ -43,17 +40,6 @@ test('unverifiable explicit boundaries refuse both CLI entry paths and later ret
   const refused = await openSession({ configPath, excludedOutputDirectories: [output] });
   assert.equal(refused.status, 'project-open-failed');
   assert.equal(refused.operational?.operation, 'resolve generated-output boundary');
-  const cli = await invokeCli(['--project', configPath], { checkout: root });
-  assert.equal(cli.exit, 2); assert.equal(cli.stdout, ''); assert.deepEqual(cli.batches, []);
-  assert.match(cli.stderr, /Project open failed:[\s\S]*resolve generated-output boundary/);
-  assert.doesNotMatch(cli.stderr, /TS\d/);
-  let shellError = '', shellOutput = '';
-  const shell = await runCli(['shell', '--project', configPath], { cwd: root, checkout: root,
-    input: Object.assign(new PassThrough(), { isTTY: true }), stdout: text => { shellOutput += text; }, stderr: text => { shellError += text; },
-    sink: { async submit() { assert.fail('Opening refusal must not produce a view observation'); } },
-  });
-  assert.equal(shell, 2); assert.equal(shellOutput, '');
-  assert.match(shellError, /Project open failed:[\s\S]*resolve generated-output boundary/);
   unlinkSync(output); symlinkSync(path.join(root, 'first'), output);
   const options = { configPath, excludedOutputDirectories: [output] };
   const opening = openSession(options); options.excludedOutputDirectories.length = 0;

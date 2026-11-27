@@ -61,7 +61,8 @@ This directory's `README.md` is also the entry point for decisions. Once decisio
 
 ## Accepted decisions
 
-- [Retire the investigation CLI while preserving the application](cli-shell-retirement.md)
+- [Share terminal finalization for Session invalidation and abort](terminal-session-invalidation.md)
+- [Retire the investigation CLI while preserving the application](cli-shell-retirement.md) — partially superseded only as to the abort-only scope of terminal finalization.
 - [Execution ownership and cancellation](execution-ownership-and-cancellation.md) — partially superseded; resource ownership and unaffected acquisition/validation obligations remain.
 - [Precise subject designations and unsuccessful lookup bindings](precise-subject-designations-and-lookup-bindings.md) — partially superseded; precise-ID validation remains while compact alias allocation/acceptance retires.
 - [Common qualified analysis contributions](common-analysis-contributions.md)

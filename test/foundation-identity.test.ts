@@ -3,13 +3,11 @@ import { execFileSync } from 'node:child_process';
 import { syncBuiltinESMExports } from 'node:module';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { temporaryDirectory } from './cli-helpers.js';
+import { temporaryDirectory } from './temporary-directory.js';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { identityReference, recordId, methods } from '../src/lib/identity.js';
+import { identityReference, recordId } from '../src/lib/identity.js';
 import type { RecordId, SessionId } from '../src/lib/records.js';
-import { isCompositionContext, moduleLimitations } from '../src/lib/qualification-policy.js';
-import { createView, renderUnicode } from '../src/lib/presentation.js';
 import { inspect } from './projection-helpers.js';
 import { inspectOrganization } from './projection-helpers.js';
 import { evaluateOrganization } from '../src/lib/organization/evaluate.js';
@@ -73,7 +71,7 @@ test('distinct subjects selected by resolved ID and literal name retain differen
 });
 
 for (const family of ['module', 'organization-module', 'organization-group', 'dependency-children', 'dependency-parents'] as const) {
-  test(`${family} projection normalizes resolved internal IDs across sessions and retains compact selection`, async t => {
+  test(`${family} projection normalizes resolved internal IDs across sessions and retains exact selection`, async t => {
     const directory = temporaryDirectory(t, 'postcode-selector-sessions-');
     execFileSync('git', ['init', '--quiet', directory]);
     const configPath = path.join(directory, 'tsconfig.json');
@@ -84,12 +82,12 @@ for (const family of ['module', 'organization-module', 'organization-group', 'de
       const dependency = evaluateDependencies(store, analysis);
       const group = family === 'organization-group';
       const selected = group ? organization.groups[0]! : evaluation.modules[0]!;
-      const compact = store.entityIds(group ? organization.groups : evaluation.modules, group ? 'group' : 'module').get(selected)!;
+      const exact = selected;
       const project = (selector: string, reference = false) => family === 'module' ? inspect(store, evaluation, selector, reference)
         : family.startsWith('organization') ? inspectOrganization(store, organization, selector, reference)
           : family === 'dependency-children' ? dependencyChildren(store, dependency, selector, reference)
             : dependencyParents(store, dependency, selector, reference);
-      const internal = project(selected), precise = project(compact, true);
+      const internal = project(selected), precise = project(exact, true);
       assert.equal(internal.selection.matches, 1);
       assert.equal(precise.selection.matches, 1);
       assert.deepEqual(precise.modules, internal.modules);
@@ -104,30 +102,6 @@ for (const family of ['module', 'organization-module', 'organization-group', 'de
     assert.equal(suffix(projections[0]!.precise.id), suffix(projections[1]!.precise.id));
   });
 }
-
-test('qualification classification uses only the exact primary producer and preserves derived limitations', async () => {
-  assert.equal(isCompositionContext({ method: methods.composition }), true);
-  assert.equal(isCompositionContext({ method: `${methods.composition};typescript@6.0.3` }), true);
-  assert.equal(isCompositionContext({ method: `${methods.organization};${methods.composition};typescript@6.0.3` }), false);
-  assert.equal(isCompositionContext({ method: `${methods.composition}-unrelated` }), false);
-  assert.equal(isCompositionContext({ method: `${methods.composition}0` }), false);
-  const { store, evaluation } = (await discover('fixtures/exports/tsconfig.json'));
-  const view = createView(store, inspect(store, evaluation, 'origin'), { format: 'unicode', moreDetails: false }, 'Inspect');
-  const module = view.modules[0]!;
-  const extra = { ...module.qualification, id: recordId(evaluation.session, 'unrelated-context', 1),
-    method: `${methods.composition}-unrelated`, scope: module.id, limitations: ['Independent limitation remains visible.'] };
-  const inherited = { ...extra, id: recordId(evaluation.session, 'derived-context', 1),
-    method: `${methods.organization};${methods.composition}`, limitations: ['Derived limitation remains visible.'] };
-  const primary = { ...extra, id: recordId(evaluation.session, 'primary-context', 1),
-    method: `${methods.composition};typescript@6.0.3`, limitations: ['Primary composition limitation.'] };
-  const withCompleteComposition = { ...view, qualifications: [...view.qualifications, extra, inherited, primary], modules: view.modules.map(item => ({ ...item,
-    composition: { claims: [], evaluations: [{ id: recordId(evaluation.session, 'complete', 1), applicability: 'applicable' as const,
-      availability: 'available' as const, execution: 'completed' as const, materialization: 'full' as const, reason: null }] } })) };
-  assert.match(renderUnicode(withCompleteComposition), /Independent limitation remains visible/);
-  assert.match(renderUnicode(withCompleteComposition), /Derived limitation remains visible/);
-  assert.doesNotMatch(renderUnicode(withCompleteComposition), /Primary composition limitation/);
-  assert.ok(view.qualifications.some(context => context.limitations.includes(moduleLimitations.population)));
-});
 
 
 test('real provider keeps ambient names containing its own session distinct from literal session', async t => {

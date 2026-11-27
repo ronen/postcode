@@ -138,12 +138,6 @@ export function captureApplicationRequest(value: unknown, catalog: Readonly<Reco
     ...(request.requirements ? { requirements: request.requirements } : {}), ...(request.consumption ? { consumption: request.consumption } : {}) });
 }
 
-/** Conflicting interface designations cannot be silently collapsed to one subject.
- * Adapters supply only these structural facts; semantic refusal policy lives here. */
-export interface InputConstraints {
-  readonly conflictingDesignation?: boolean;
-  readonly reportHasInputs?: boolean;
-}
 export function invalidParameters(request: SemanticRequest, catalog: Readonly<Record<string, LensDefinition>> = lenses): string | null {
   if (request.kind !== 'lens') return null;
   if (!request.parameters || typeof request.parameters !== 'object' || Array.isArray(request.parameters) || Object.getPrototypeOf(request.parameters) !== Object.prototype) return 'Lens parameters must be an object.';
@@ -155,10 +149,9 @@ export function invalidParameters(request: SemanticRequest, catalog: Readonly<Re
   // A fresh investigation is new production; it has no meaning for a mechanical answer or for the earlier interpretation operations.
   return request.fresh && definition.requirements.kind !== 'contribution' && definition.requirements.kind !== 'follow-up' ? `Lens ${request.lens} does not support an explicit fresh investigation.` : null;
 }
-export function invalidDesignation(request: SemanticRequest, catalog: Readonly<Record<string, LensDefinition>> = lenses, conflict = false): string | null {
+export function invalidDesignation(request: SemanticRequest, catalog: Readonly<Record<string, LensDefinition>> = lenses): string | null {
   if (request.kind !== 'lens') return null;
   const definition = catalog[request.lens]!;
-  if (conflict) return 'Supply either a selector or a project/repository subject, not both.';
   if (request.designation.kind === 'missing') return `Lens ${definition.id} requires a subject designation.`;
   if (request.designation.kind === 'configured-project' || request.designation.kind === 'repository') {
     if (!definition.subjects.includes(request.designation.kind)) return `Lens ${definition.id} does not apply to ${request.designation.kind}.`;
@@ -166,7 +159,4 @@ export function invalidDesignation(request: SemanticRequest, catalog: Readonly<R
   if ((request.designation.kind === 'name' || request.designation.kind === 'reference' || request.designation.kind === 'selection') && definition.cardinality === 'population') return `Lens ${definition.id} requires a project or repository subject, not a selector.`;
   if (request.designation.kind === 'name' && !definition.subjects.some(kind => kind === 'module' || kind === 'group')) return `Lens ${definition.id} requires a precise ${definition.subjects.includes('contribution') ? 'contribution' : 'investigram'} reference; ${definition.subjects.includes('contribution') ? 'contributions' : 'investigrams'} cannot be designated by name.`;
   return null;
-}
-export function invalidReportInputs(request: SemanticRequest, supplied: boolean): string | null {
-  return request.kind === 'report' && supplied ? 'Usage is subjectless and accepts no selector, subject, reference designation, or nonempty parameters.' : null;
 }

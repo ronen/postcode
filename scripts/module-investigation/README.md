@@ -1,99 +1,40 @@
-# Module investigation assessment tooling
+# Retained investigation diagnostics and budget support
 
-Run from the PostCode checkout using Node 22.13.1, `npm ci` and `npm run build`.
-The analyzer is the package-lock-pinned TypeScript 6.0.3. These development tools
-are not public CLI commands or a provider service.
+Build from the PostCode checkout with `npm ci` and `npm run build`, using Node
+22.13 or later and the pinned TypeScript 6.0.3. These are internal validation tools,
+not public commands or an authorization to run inference.
 
-`run-shell.mjs spec.json` opens one actual CLI shell. The spec supplies `id`,
-`pass`, `subject`, `manifest`, `project`, `output`, `budget` and `commands`.
-Use absolute project/output paths; the output directory must not already exist.
-Optional `incremental: true` accepts subsequent commands from stdin at prompts;
-optional `json: true` selects JSON views. `bounds` is reserved for the labelled
-hard-limit control. Ordinary runs use production bounds and fresh sessions.
-The fixed pass manifest is under `records/validation/module-investigation/pass-01`.
-Source pins, configuration hashes, runtime version and frozen instructions are
-checked before credential access. Build before running so emitted code is current.
+The shell assessment runner, injected worker setup, frozen scenario/rubric input
+files and CLI configuration verifier have retired. Historical passes under
+`records/validation/module-investigation/` retain their exact manifests, runtime,
+instructions, results and limitations; they do not describe the current runtime.
+Do not reproduce them by substituting a new harness and implying equivalence.
 
-Clone each public repository at the manifest commit. Install lockfile dependencies
-without lifecycle scripts (`npm ci --ignore-scripts` for Cockatiel/fsm-engine;
-`pnpm install --frozen-lockfile --ignore-scripts` using pnpm 11.28.3 for
-merge-anything). Preserve tracked files. Copy the recorded merge-anything override
-beside its original tsconfig, unchanged. The inherited @cycraft/tsconfig 0.1.2
-is verified too. Each result belongs to this effective configuration, not an
-unmodified-config run. Fixed source references and evaluator questions must be
-committed before live inference and never supplied as expected answers.
+Surviving tools:
 
-The runner uses only PostCode's credential manager and parent-process transport;
-it requires prior human sign-in and never inspects Codex credentials. Captures
-contain sanitized provider exchanges, exact CLI views/commands, observations,
-elapsed time and the effective run spec. They can contain public source evidence;
-retain license attribution and inspect captures before committing. No raw caught
-exception, header or credential is written. `questions.json` and
-`assessor-rubric.json` are fixed inputs for separate fresh evaluator/assessor agents,
-not API clients. Record their exact prompts/configuration and unavailable usage
-separately. `usage-report.mjs` keeps role/route accounting separate; monetary
-attribution unavailable through ChatGPT must not be represented as zero.
+- `request-budget.mjs`: exclusive ledger lease and reservation before dispatch;
+  failed/uncertain attempts consume reservations. Used by direct structured-account
+  trials. A ceiling contains execution; it does not authorize requests. A leftover
+  `.lock` requires manual confirmation that the owner is gone and an audit before
+  removal; no automatic stale-lock clearing is provided.
+- `usage-report.mjs`: keeps role, route and model accounting separate. Unknown
+  charges remain unavailable, not zero; API-equivalent estimates are not ChatGPT charges.
+- `diagnose-chatgpt.mjs`: separately authorized one-request structural diagnostic.
+  Uses PostCode credentials, never Codex credentials; preserve question, authorization,
+  sanitized result and diagnostic accounting.
+- `check-browser.mjs`: opt-in credential-free local browser-launch diagnostic.
+  Opens a tab and waits for a temporary local page request; no OAuth or inference.
 
-The request ledger reserves before dispatch and keeps failed/uncertain attempts.
-An exclusive lease prevents concurrent runners sharing a ledger. After a crash,
-a remaining `.lock` requires manual confirmation that its owner is gone and an
-audit of reserved requests before removal; do not automatically clear it. A finite
-ceiling stops further POSTs and records an administrative pause, not a semantic or
-milestone failure. No automatic repeat or model/billing fallback is implemented.
-`diagnose-chatgpt.mjs` is a separate one-request structural diagnostic; record its
-question, authorization and result before resuming assessment.
+Current direct trials and scenario auditing live under `scripts/structured-accounts/`.
+`run-trial.mjs` consumes an explicit run specification and preserves its normal
+capture order/budget behavior. `run-dialog14-trial.mjs` runs the focused
+regression; `audit-dialog14-trial.mjs` audits captured scenarios. Their qualified rendering
+is in `support/`, separate from core content. Inspect each tool's usage before use.
+Captures can contain source evidence; inspect them and preserve attribution before
+committing. Credentials, authorization URLs and raw caught errors must not be captured.
 
-The human clarified that the ten-request ceiling is for implementation/debugging.
-`diagnostic-budget.json` retains its two used and eight remaining requests. The
-assessment ledger is separate: six scheduled summary/focused cases, one attempt
-each, at most the production 32 requests per investigation (192 theoretical
-maximum, not a usage target). The hard-limit control should use fewer or none.
-Additional diagnostic runs consume the diagnostic allowance; evaluator and
-assessor work is separately attributed as required by the plan.
-
-The controlled fixture is copied from `fixtures/module-investigation-assessment`
-into an isolated repository. Its manifest hashes fix all six files. To recreate
-the recorded local commit exactly, stage those files (mode 100644), write the
-tree with `git write-tree`, import the recorded `fixture-git-commit.txt` using
-`git hash-object -t commit -w`, and point the isolated repository HEAD at that
-commit. The recorded tree must match. This fixture pin is a local assessment
-artifact, not an upstream repository revision.
-
-New ledgers use `ceiling` for the numeric containment limit. Historical ledgers
-using `authorized` remain readable and unchanged; a ledger specifying both is
-rejected. A ceiling does not itself authorize requests. Pass 02 is the separately
-authorized documentation reassessment: the three original subjects and focused
-entry, plus a one-call opaque control. A direct-documentation diagnostic is
-conditional on normal focused-entry acquisition still failing, and must retain
-its intervention and separate diagnostic accounting.
-
-
-Pass 03 is the separately authorized reference-transport reassessment: the same
-three upstream subjects and focused documentation fixture, once each. Its neutral
-128-request ceiling is four production call guards, not a target or diagnostic
-allowance. Captures include wire handles and a separate canonical binding/resolution
-audit. Use actual request records to establish content delivery; table membership
-alone grants no exposure. The frozen instructions include both domain and actual
-hosted instructions, and preflight verifies the built transport suffix as well.
-Earlier pass directories retain their original configuration and results.
-
-Milestone 4 uses a separately frozen progressive pass: a fresh summary and all
-three follow-up lenses for each upstream subject, plus the controlled numeric
-fixture. The manifest freezes all four operation templates. The optional `setup`
-spec points to a frozen injected-account recipe; the harness records that recipe
-and exact scripted exchanges, submits it through the production worker path, and
-uses the selected live route for subsequent missing evaluations. A repeated lens
-still reuses its outcome and does not select another participant. Setup origin is
-scripted with empty synthetic accounting, not a provider call or natural error.
-The administrative ceiling derives from scheduled live evaluations; neither it
-nor the fixture injection changes production execution guards or billing routes.
-
-Milestone 5 uses a separately frozen integrated pass. A setup recipe may contain
-`sequence: [{operation, recipe}]` to prepare a finite series of earlier accounts
-through ordinary production acceptance. Operations must match the frozen sequence;
-a mismatch stops the harness. Subsequent missing evaluations use the explicitly
-selected live agent. Repeated retained requests consume no setup step. Each recipe
-may acquire module source before submission, cite its exact supplied subject, or
-carry one explicit correction of that subject. These controls are assessment-only,
-not public configuration. Every setup exchange retains its sequence ordinal and
-truthful scripted identity; synthetic reports remain separate from provider usage.
+Existing failure-path limitations remain: failed steps can leave attempt reports
+without completed step records or final usage; final usage is success-path capture.
+Session close can replace a prior error. In the standard runner, close failure can
+skip budget close; the dialog14 runner attempts budget close in a nested finalizer.
+This retirement does not redesign runner cleanup or provide research observation.

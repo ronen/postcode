@@ -39,19 +39,16 @@ export function supportingWork(content: QualifiedContent): readonly RecordId[] {
 
 export function resolveRetainedTarget(store: ProgramRecordStore, session: SessionId, target: string) {
   const refuse = (reason: 'unknown-answer' | 'foreign-answer' | 'unsupported-answer', explanation: string) => ({ kind: 'refusal' as const, reason, explanation });
-  const raw = target.replace(/^@/, '');
-  const id = /^answer-[a-f0-9]{8,64}$/.test(raw) ? store.boundAnswer(session, raw) : raw as RecordId;
-  if (!id) return refuse('unknown-answer', 'This answer reference is not bound in this Session.');
-  if (!/^session:[^:]+:[^:]+:[a-f0-9]{64}$/.test(id)) return refuse('unknown-answer', 'Supply an exact retained Projection ID or a bound answer reference.');
+  const id = target as RecordId;
+  if (!/^session:[^:]+:[^:]+:[a-f0-9]{64}$/.test(id)) return refuse('unknown-answer', 'Supply an exact retained Projection ID.');
   if (!id.startsWith(`${session}:`)) return refuse('foreign-answer', 'This precise target belongs to a different Session.');
   const answer = store.lookup(id);
   if (!answer) return refuse('unknown-answer', 'This target is not retained in this Session.');
   if (!isAnswer(answer)) return refuse('unsupported-answer', 'This retained record is not a supported Projection.');
-  const answerReference = store.answerIds([answer.id]).get(answer.id)!;
   const associated = answer.kind === 'contribution-inspection-projection' && answer.mechanical !== null;
   const mechanical = associated && answer.kind === 'contribution-inspection-projection' ? store.get(answer.mechanical!) : null;
   if (mechanical && mechanical.kind !== 'projection' && mechanical.kind !== 'organization-projection') throw new Error('Broken mechanical support for retained inspection');
   const content = resolveRetainedContent(store, answer);
   const base = mechanical ? resolveRetainedContent(store, mechanical) : content;
-  return { kind: 'answer' as const, answerReference, content, base, associated };
+  return { kind: 'answer' as const, content, base, associated };
 }

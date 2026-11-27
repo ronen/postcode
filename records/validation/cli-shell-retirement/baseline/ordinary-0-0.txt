@@ -1,0 +1,13 @@
+States of gate
+  [Ready]
+  [Stopped]
+Transitions
+T1  Ready → Stopped
+      trigger: a failure occurs
+      effect: stops accepting requests
+State bearer: gate.
+Entry: Ready.
+States shown: some states only; others may exist.
+Transitions shown: some transitions only; others may exist.
+Not representable in this diagram: Concurrent changes are not modelled.
+The diagram arranges the supplied account. It adds no state, transition or completeness claim, and the absence of an arrow is not a claim that no transition exists unless stated above.

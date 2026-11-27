@@ -36,7 +36,7 @@ export interface SubjectResolution {
   readonly identifications?: readonly NameMatch[];
 }
 
-/** Lookup consumes qualified populations. A precise binding needs no population acquisition. */
+/** Lookup consumes qualified populations. An exact reference needs no population acquisition. */
 export function resolveSubjects(store: ProgramRecordStore, session: SessionId, definition: LensDefinition,
   designation: SubjectDesignation, populations: { modules?: EvaluationRecord; organization?: OrganizationEvaluationRecord } = {}): SubjectResolution {
   const ledger = sessionLedger(store, session);
@@ -47,7 +47,7 @@ export function resolveSubjects(store: ProgramRecordStore, session: SessionId, d
   if (organization && (organization.kind !== 'organization-evaluation' || organization.session !== session)) throw new Error('Expected same-Session group lookup population');
   populations = { ...(modules ? { modules } : {}), ...(organization ? { organization } : {}) };
   const criteria = [`Applicable subjects: ${definition.subjects.join(', ')}`, `Cardinality: ${definition.cardinality}`,
-    designation.kind === 'reference' ? 'Established compact reference or retained same-Session module, group or investigram record ID' : designation.kind === 'name' ? 'Exact name or generated module handle' : 'Designated population'];
+    designation.kind === 'reference' ? 'Exact retained same-Session module, group or investigram record ID' : designation.kind === 'name' ? 'Exact name or generated module handle' : 'Designated population'];
   const outcomes = [populations.modules, populations.organization].filter(item => item !== undefined);
   const support: LookupSupport[] = outcomes.map(item => ({ id: item.id, kind: item.kind,
     applicability: item.applicability, availability: item.availability, execution: item.execution,
@@ -84,8 +84,8 @@ export function resolveSubjects(store: ProgramRecordStore, session: SessionId, d
   }
   if (designation.kind === 'reference') {
     if (isAnswerReference(designation.value)) return finish('answer-as-subject');
-    const raw = designation.value.replace(/^@/, '');
-    const id = store.boundEntity(session, raw);
+    const raw = designation.value;
+    const id = store.retainedEntity(session, raw);
     const owner = !id ? contributionReference(ledger, raw) : undefined;
     const subject: ExactSubject | undefined = owner ? { kind: 'investigram', investigram: owner }
       : ledger.hasEntity(raw as EntityId) ? { kind: 'entity', entity: raw as EntityId } : undefined;
@@ -116,22 +116,12 @@ export function resolveSubjects(store: ProgramRecordStore, session: SessionId, d
     } else if (!commonMatches.some(item => item.id === target.id)) commonMatches.push(target);
   }
   if (commonMatches.length) {
-    const targets = [...matches.map(id => candidate(id, store.entityIds([id], store.get(id).kind as 'module' | 'group').get(id)!)), ...commonMatches];
+    const targets = [...matches.map(id => candidate(id, id)), ...commonMatches];
     return finish(definition.cardinality === 'one' && targets.length !== 1 ? 'ambiguous' : 'resolved', targets);
   }
   if (matches.length) {
     const status = definition.cardinality === 'one' && matches.length !== 1 ? 'ambiguous' : 'resolved';
-    const bindings = new Map<RecordId, string>();
-    // Successful applications retain their whole-population, group-then-module schedule.
-    // Unsuccessful applications bind the complete delivered candidate set, before any paging.
-    for (const kind of ['group', 'module'] as const) {
-      if (!definition.subjects.includes(kind)) continue;
-      const population = kind === 'group' ? populations.organization?.groups : populations.modules?.modules;
-      if (!population) continue;
-      const ids = status === 'resolved' ? [...new Set([...population, ...matches.filter(id => store.get(id).kind === kind)])] : matches.filter(id => store.get(id).kind === kind);
-      for (const [id, reference] of store.entityIds(ids, kind)) bindings.set(id, reference);
-    }
-    return finish(status, matches.map(id => candidate(id, bindings.get(id)!)));
+    return finish(status, matches.map(id => candidate(id, id)));
   }
   return finish(outcomes.some(item => item.availability === 'unavailable') ? 'lookup-unavailable'
     : outcomes.some(item => !completedMaterialization(item)) ? 'lookup-incomplete' : 'missing');
@@ -141,7 +131,7 @@ export function resolutionExplanation(resolution: SubjectResolution): string {
   switch (resolution.status) {
     case 'answer-as-subject': return 'An answer reference is not a Lens subject. Retained answers can be retrieved in the Session that owns them.';
     case 'resolved': return 'The subject designation is resolved.';
-    case 'unknown-reference': return 'The supplied reference identifies neither an established compact binding nor a retained supported subject in this Session.';
+    case 'unknown-reference': return 'The supplied reference does not identify a retained supported subject in this Session.';
     case 'unsupported-subject': return `The reference identifies a ${resolution.candidates[0]!.kind}; this is an unsupported subject/lens combination.`;
     case 'ambiguous': return 'This Lens requires one subject, but the designation matches several applicable subjects.';
     case 'lookup-incomplete': return 'No matching subject was established in the incomplete lookup population; absence is not established.';

@@ -1,5 +1,4 @@
-import { requireView, mechanicalView, programOutput } from './request-helpers.js';
-import { temporaryDirectory } from './cli-helpers.js';
+import { requireAnswer, mechanicalContent } from './application-assertions.js';
 import assert from 'node:assert/strict';
 import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import os from 'node:os';
@@ -13,9 +12,8 @@ import { evaluateModules } from '../src/lib/evaluation.js';
 import { evidenceAccess } from '../src/lib/evidence-access.js';
 import { evaluateDependencies } from '../src/lib/dependencies/evaluate.js';
 import { modules } from './projection-helpers.js';
-import { openWorkerCliSession, openCliSession as openSession, SessionInvalidated, AnalysisFailure } from '../src/lib/interfaces/cli/application.js';
+import { openApplication as openSession, SessionInvalidated, AnalysisFailure } from '../src/lib/application/index.js';
 import type { ProgramRecord } from '../src/lib/records.js';
-import type { ObservationBatch } from '../src/lib/application/observations.js';
 import { moduleStandardExpansions } from '../src/lib/records.js';
 
 async function temporary(run: (root: string, configPath: string) => void | Promise<void>, include = false) {
@@ -30,7 +28,7 @@ async function temporary(run: (root: string, configPath: string) => void | Promi
   } finally { rmSync(root, { recursive: true, force: true }); }
 }
 
-const request = { lens: 'modules' as const, selector: null, presentation: { format: 'json' as const, moreDetails: false } };
+const request = { kind: 'lens', lens: 'modules', designation: { kind: 'configured-project' } } as const;
 
 test('dependency acquisition adds captured inputs while completed core work and earlier support remain unchanged', async () => {
   await temporary(async (root, configPath) => {
@@ -70,14 +68,14 @@ for (const change of ['source', 'configuration', 'resolution', 'population', 're
       const { session } = opened;
       const oldEnvironment = process.env.POSTCODE_SESSION_TEST;
       try {
-        requireView(await session.execute(change === 'resolution' ? { ...request, lens: 'dependencies' } : request));
+        requireAnswer(await session.execute(change === 'resolution' ? { ...request, lens: 'dependency-structure' } : request));
         if (change === 'source') writeFileSync(path.join(root, 'entry.cts'), 'export const changed = 1;');
         if (change === 'configuration') writeFileSync(configPath, '{"files":[]}');
         if (change === 'resolution') { mkdirSync(path.join(root, 'later')); writeFileSync(path.join(root, 'later/target.ts'), 'export {};'); }
         if (change === 'population') writeFileSync(path.join(root, 'new.ts'), 'export {};');
         if (change === 'repository') writeFileSync(path.join(root, '.gitignore'), 'entry.cts\n');
         if (change === 'environment') process.env.POSTCODE_SESSION_TEST = 'changed';
-        await assert.rejects(async () => (requireView(await session.execute(request))), SessionInvalidated);
+        await assert.rejects(async () => (requireAnswer(await session.execute(request))), SessionInvalidated);
         await assert.rejects(async () => (await session.check()), SessionInvalidated);
       } finally {
         await session.close();
@@ -94,10 +92,10 @@ test('excluded observation creation does not invalidate the session', async () =
     const opened = (await openSession({ configPath, excludedOutputDirectories: [output] }));
     if (opened.status !== 'opened') throw new Error('Expected project');
     try {
-      const before = (requireView(await opened.session.execute(request)));
+      const before = (requireAnswer(await opened.session.execute(request)));
       mkdirSync(output);
       writeFileSync(path.join(output, 'fake.ts'), 'export const fake = 1;');
-      assert.deepEqual(programOutput((requireView(await opened.session.execute(request)))), programOutput(before));
+      assert.deepEqual(requireAnswer(await opened.session.execute(request)).answer, before.answer);
     } finally { await opened.session.close(); }
   }, true);
 });
@@ -125,45 +123,6 @@ test('a later completed evaluation preserves the earlier incomplete outcome and 
     assert.equal(projection.selection.populationEstablished, false);
     assert.equal(modules(store, completed).selection.populationEstablished, true);
   });
-});
-
-test('publication observes invalidation before and after output without fabricating or erasing views', async t => {
-  const { publishCommand } = await import('../src/lib/command-execution.js');
-  const cases: Promise<void>[] = [];
-  // Keep each temporary directory alive through asynchronous observation submission.
-  for (const after of [false, true]) {
-    const root = temporaryDirectory(t, 'postcode-publication-');
-    const configPath = path.join(root, 'tsconfig.json');
-    writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
-    const source = path.join(root, 'entry.ts');
-    writeFileSync(source, 'export const original = 1;');
-    const opened = (await openWorkerCliSession({ configPath }));
-    if (opened.status !== 'opened') throw new Error('Expected project');
-    const { session } = opened;
-    let output = '', error = '';
-    let observed: ObservationBatch | undefined;
-    cases.push((async () => {
-      try {
-        const code = await publishCommand({ id: session.id, check: session.check, execute: async (command, execution) => {
-          const result = (requireView(await session.execute(command, execution)));
-          if (!after) writeFileSync(source, 'export const changed = 2;');
-          return result;
-        } }, request, 'modules --json', configPath, 1, {
-          stdout: text => { output += text; if (after) writeFileSync(source, 'export const changed = 2;'); },
-          stderr: text => { error += text; },
-        }, { async submit(batch) { observed = batch; return { accepted: true }; } });
-          assert.equal(observed!.records.some(record => record.kind === 'qualified-view'), after);
-          assert.equal(observed!.records.find(record => record.kind === 'rendered-output')!.value, output);
-          assert.ok(observed!.events.some(event => event.type === 'session-invalidated'));
-          assert.equal(observed!.events.some(event => event.type === 'view-produced'), after);
-          assert.equal(observed!.events.some(event => event.type === 'attribution-disclosed'), false);
-        assert.equal(code, 2);
-        assert.match(error, /invalidated/);
-        assert.equal(output.length > 0, after);
-      } finally { await session.close(); rmSync(root, { recursive: true, force: true }); }
-    })());
-  }
-  await Promise.all(cases);
 });
 
 test('dependency completion keeps earlier partial outcomes even when the module basis is reused', async () => {
@@ -214,7 +173,7 @@ for (const changed of [false, true]) {
       if (opened.status !== 'opened') throw new Error('Expected project');
       const { session } = opened;
       try {
-        const before = (requireView(await session.execute(request)));
+        const before = (requireAnswer(await session.execute(request)));
         const exists = ts.sys.fileExists;
         let attempted = false;
         const probe = t.mock.method(ts.sys, 'fileExists', (name: string) => {
@@ -225,11 +184,11 @@ for (const changed of [false, true]) {
           }
           return exists(name);
         });
-        await assert.rejects(async () => (requireView(await session.execute({ ...request, lens: 'dependencies' }))), changed ? SessionInvalidated : AnalysisFailure);
+        await assert.rejects(async () => (requireAnswer(await session.execute({ ...request, lens: 'dependency-structure' }))), changed ? SessionInvalidated : AnalysisFailure);
         assert.equal(attempted, true);
         probe.mock.restore();
-        if (changed) await assert.rejects(async () => (requireView(await session.execute(request))), SessionInvalidated);
-        else assert.deepEqual(programOutput((requireView(await session.execute(request)))), programOutput(before));
+        if (changed) await assert.rejects(async () => (requireAnswer(await session.execute(request))), SessionInvalidated);
+        else assert.deepEqual(requireAnswer(await session.execute(request)).answer, before.answer);
       } finally { await session.close(); }
     });
   });
@@ -244,95 +203,24 @@ for (const lens of ['modules', 'inspect', 'dependencies'] as const) {
       if (opened.status !== 'opened') throw new Error('Expected project');
       const { session } = opened;
       try {
-        const inventory = (requireView(await session.execute(request)));
-        if (inventory.view.schema !== 'postcode-view/1-experimental') throw new Error('Expected modules');
-        assert.ok(inventory.view.evaluations.some(item => item.requirement === 'modules' && item.materialization === 'full'));
-        assert.ok(inventory.view.evaluations.some(item => item.requirement === 'exports' && item.materialization === 'partial'));
-        const command = { ...request, lens, selector: lens === 'inspect' ? inventory.view.modules[0]!.entityId : null,
-          ...(lens === 'inspect' ? { reference: true } : {}) };
-        const first = (requireView(await session.execute(command)));
+        const inventory = (requireAnswer(await session.execute(request)));
+        if (inventory.answer.content.contract !== 'modules') throw new Error('Expected modules');
+        assert.ok(inventory.answer.content.value.evaluations.some(item => item.requirement === 'modules' && item.materialization === 'full'));
+        assert.ok(inventory.answer.content.value.evaluations.some(item => item.requirement === 'exports' && item.materialization === 'partial'));
+        const command = { ...request, lens: lens === 'dependencies' ? 'dependency-structure' : lens, designation: lens === 'inspect'
+          ? { kind: 'reference' as const, value: inventory.answer.content.value.modules[0]!.id } : request.designation };
+        const first = (requireAnswer(await session.execute(command)));
         const retained = (await structuredClone(first));
-        const later = (requireView(await session.execute(command)));
-        assert.deepEqual(programOutput(later), programOutput(first));
-        assert.deepEqual(programOutput(first), programOutput(retained));
-        const firstBase = mechanicalView(first.view), laterBase = mechanicalView(later.view);
+        const later = (requireAnswer(await session.execute(command)));
+        assert.deepEqual(later.answer, first.answer);
+        assert.deepEqual(first.answer, retained.answer);
+        const firstBase = mechanicalContent(first), laterBase = mechanicalContent(later);
         if (!('modules' in firstBase) || !('modules' in laterBase)) throw new Error('Expected module selection');
-        assert.deepEqual(laterBase.modules.map(item => [item.id, item.entityId]), firstBase.modules.map(item => [item.id, item.entityId]));
+        assert.deepEqual(laterBase.modules.map(item => item.id), firstBase.modules.map(item => item.id));
       } finally { await session.close(); }
     }, true);
   });
 }
-
-test('direct execution keeps two checks while publication performs three without a duplicate', async t => {
-  const { publishCommand } = await import('../src/lib/command-execution.js');
-  const root = temporaryDirectory(t, 'postcode-check-count-');
-  const configPath = path.join(root, 'tsconfig.json');
-  const source = path.join(root, 'entry.ts');
-  writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
-  writeFileSync(source, 'export const entry = 1;');
-  const { openApplication } = await import('../src/lib/application/index.js');
-  const semantic = { kind: 'lens', lens: 'modules', designation: { kind: 'configured-project' } } as const;
-  const direct = await openApplication({ configPath });
-  assert.equal(direct.status, 'opened');
-  t.after(() => direct.session.close());
-  const opened = (await openWorkerCliSession({ configPath }));
-  if (opened.status !== 'opened') throw new Error('Expected project');
-  const { session } = opened;
-  try {
-    assert.equal((await direct.session.execute(semantic)).kind, 'answer');
-    const read = ts.sys.readFile;
-    let checks = 0;
-    t.mock.method(ts.sys, 'readFile', (name: string, encoding?: string) => {
-      if (name === source) checks++;
-      return read(name, encoding);
-    });
-    assert.equal((await direct.session.execute(semantic)).kind, 'answer');
-    assert.equal(checks, 2);
-    requireView(await session.execute(request));
-    checks = 0;
-    let published = false, observed = false;
-    assert.equal(await publishCommand(session, request, 'modules', configPath, 1,
-      { stdout: () => { published = true; }, stderr: text => assert.fail(text) },
-      { async submit() { observed = true; return { accepted: true }; } }), 0);
-    assert.equal(checks, 3);
-    assert.equal(published && observed, true);
-  } finally { await session.close(); rmSync(root, { recursive: true, force: true }); }
-});
-
-test('worker delivery is validated before publication and emitted output survives later invalidation', async t => {
-  const { publishCommand } = await import('../src/lib/command-execution.js');
-  const { interactiveSession } = await import('../src/lib/interactive-session.js');
-  for (const after of [false, true]) {
-    const root = temporaryDirectory(t, 'postcode-worker-publication-');
-    const configPath = path.join(root, 'tsconfig.json');
-    const source = path.join(root, 'entry.ts');
-    writeFileSync(configPath, '{"compilerOptions":{"noLib":true,"types":[]},"files":["entry.ts"]}');
-    writeFileSync(source, 'export const original = 1;');
-    const remote = interactiveSession({ configPath });
-    try {
-      const opened = await remote.opening;
-      if (opened.status !== 'opened') throw new Error('Expected project');
-      let stdout = '', stderr = '';
-      let observed: ObservationBatch | undefined;
-      const code = await publishCommand({ id: opened.id, check: remote.check, execute: async (command, execution) => {
-        const result = requireView(await remote.execute(command, execution));
-        if (!after) writeFileSync(source, 'export const changed = 2;');
-        return result;
-      } }, request, 'modules', configPath, 1, {
-        stdout: text => { stdout += text; if (after) writeFileSync(source, 'export const changed = 2;'); },
-        stderr: text => { stderr += text; },
-      }, { async submit(batch) { observed = batch; return { accepted: true }; } });
-      assert.equal(code, 2);
-      assert.match(stderr, /invalidated/);
-      assert.equal(stdout.length > 0, after);
-      assert.equal(observed!.records.some(item => item.kind === 'qualified-view'), after);
-      assert.equal(observed!.records.find(item => item.kind === 'rendered-output')!.value, stdout);
-      assert.equal(observed!.events.some(item => item.type === 'view-produced'), after);
-      assert.ok(observed!.events.some(item => item.type === 'session-invalidated'));
-      await assert.rejects(remote.execute(request), SessionInvalidated);
-    } finally { await remote.close(); rmSync(root, { recursive: true, force: true }); }
-  }
-});
 
 
 test('additional dependency inputs permit one new partial attempt and preserve the earlier basis', async () => {
@@ -377,20 +265,20 @@ test('session reevaluates partial work after new dependency acquisition, then re
     if (opened.status !== 'opened') throw new Error('Expected project');
     const { session } = opened;
     try {
-      const first = (requireView(await session.execute(request)));
+      const first = (requireAnswer(await session.execute(request)));
       const retained = (await structuredClone(first));
-      assert.deepEqual(programOutput((requireView(await session.execute(request)))), programOutput(first));
-      requireView(await session.execute({ ...request, lens: 'dependencies' }));
-      const later = (requireView(await session.execute(request)));
-      assert.notEqual(later.view.projection.id, first.view.projection.id);
-      requireView(await session.execute({ ...request, lens: 'organization' }));
+      assert.deepEqual(requireAnswer(await session.execute(request)).answer, first.answer);
+      requireAnswer(await session.execute({ ...request, lens: 'dependency-structure' }));
+      const later = (requireAnswer(await session.execute(request)));
+      assert.notEqual(later.answer.id, first.answer.id);
+      requireAnswer(await session.execute({ ...request, lens: 'organization' }));
       // The unresolved re-export still supplies the valid generated handle "missing".
-      const inspected = requireView(await session.execute({ ...request, lens: 'inspect', selector: 'missing' }));
-      const base = mechanicalView(inspected.view);
-      assert.equal(base.schema, 'postcode-view/1-experimental');
-      assert.equal(base.modules[0]!.handle, 'missing');
-      assert.deepEqual(programOutput((requireView(await session.execute(request)))), programOutput(later));
-      assert.deepEqual(programOutput(first), programOutput(retained));
+      const inspected = requireAnswer(await session.execute({ ...request, lens: 'inspect', designation: { kind: 'name', value: 'missing' } }));
+      const base = mechanicalContent(inspected);
+      assert.ok('modules' in base);
+      assert.equal(base.modules[0]!.claim.record.information.handle, 'missing');
+      assert.deepEqual(requireAnswer(await session.execute(request)).answer, later.answer);
+      assert.deepEqual(first.answer, retained.answer);
     } finally { await session.close(); }
   });
 });

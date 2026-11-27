@@ -1,10 +1,11 @@
 # Hosted investigation setup
 
-Hosted investigation is optional and disabled by default. Explicitly select one
-of two OpenAI routes: `POSTCODE_INVESTIGATOR=chatgpt` uses Sign in with ChatGPT and
-its granted plan allowance; `POSTCODE_INVESTIGATOR=openai` uses an API key and API
-billing. Signing in alone does not enable hosted project work. PostCode never
-switches between these routes, accounts or models to recover from a failure.
+Hosted investigation is optional and disabled by default. Internal clients explicitly
+call `configuredInvestigator('chatgpt')` for Sign in with ChatGPT and granted plan
+usage, or `configuredInvestigator('openai')` for API-key billing, then supply the
+ready agent to `openApplication`. The retained direct live-trial runners explicitly use the ChatGPT-plan route. The authentication-only CLI opens no project; setting
+`POSTCODE_INVESTIGATOR` does not restore investigation commands. Signing in alone
+does not enable hosted project work. No route, account or model fallback is automatic.
 
 The ChatGPT-plan route requests `gpt-5.6-sol` with medium reasoning; the API-key
 route retains `gpt-6-sol` with medium reasoning. Both use the public Responses API.
@@ -72,13 +73,22 @@ medium reasoning. It reports provider token usage and stops on incompatibility:
 npm run postcode -- auth chatgpt check
 ```
 
-Then explicitly choose the route when opening a project:
+For an internal client, configure the route before project opening (after building):
 
-```sh
-POSTCODE_INVESTIGATOR=chatgpt npm run postcode -- shell --project /path/to/tsconfig.json
+```js
+import { configuredInvestigator } from './_build/src/lib/application/accounts.js';
+import { openApplication } from './_build/src/lib/application/index.js';
+const configured = await configuredInvestigator('chatgpt');
+if (configured.kind !== 'ready') throw new Error('Investigator is unavailable');
+const opened = await openApplication({ configPath }, {
+  investigation: { dialogAgent: configured.agent },
+});
+// Execute authorized requests; always await the opened Session's close().
 ```
 
-The same choice applies to one-shot commands. Account eligibility, plan/workspace
+The client owns explicit transmission enablement and disclosure before this step.
+This is an internal Node integration example, not a new human investigation interface.
+Account eligibility, plan/workspace
 restrictions and model availability are provider-controlled; public documentation
 is not evidence of access through your particular account. Interactive
 reauthorization pauses assessment work for the human terminal flow.
@@ -114,11 +124,7 @@ PostCode does not configure them or require an administration key.
 In **Keychain Access**, create a password item with service **org.postcode.openai**,
 account **api-key**, and the key in the password field. Keep one matching item in
 the default search list. Do not put the key in chat, shell arguments, environment
-variables, repository files or assessment records. Explicitly select:
-
-```sh
-POSTCODE_INVESTIGATOR=openai npm run postcode -- shell --project /path/to/tsconfig.json
-```
+variables, repository files or assessment records. Explicitly select `configuredInvestigator('openai')` in the internal client. The retained live-trial runners use ChatGPT-plan billing.
 
 Preflight privately reads this item once per invocation through `/usr/bin/security`
 with a 15-second timeout. Keychain approval can require rerunning the command.
@@ -130,7 +136,7 @@ context-length and service-tier distinctions. See the [model pricing page](https
 
 ## Transmission, storage and cancellation
 
-Enabled project commands disclose on stderr that selected source, documentation,
+Clients enabling investigation must disclose that selected source, documentation,
 qualified analysis and prior interpretation can be sent to
 `https://api.openai.com/v1/responses`. The investigator accesses evidence only
 through PostCode's subject interface. It has no independent filesystem, shell,
@@ -174,9 +180,9 @@ binds to its selected registration; choosing another account affects subsequent
 invocations. Sign-out invalidates that session, rejects new requests and cancels
 in-flight local transport when its one-second watcher observes the change.
 
-Credentials stay inside the parent process. Workers receive non-secret provider
-configuration, qualified replies and usage only. Investigator context, logs,
-observations, artifacts and diagnostics exclude credentials. Sanitized provider
+Credentials stay inside the calling process and its account/transport boundary.
+Investigator context, logs, artifacts and diagnostics exclude credentials. The private
+CLI worker and observation implementation have retired. Sanitized provider
 failure bodies preserve status, error shape, code/parameter and request ID.
 OpenAI ID-token validation uses signed JWKS, exact issuer/audience, expiry, nonce
 and saved-subject binding. The setup never reads or reuses Codex credentials.
@@ -185,17 +191,19 @@ and saved-subject binding. The setup never reads or reuses Codex credentials.
 as the same OS user.** Its access controls are an operational boundary, not a
 separate-user broker. This limitation applies to both routes.
 
-Absent, empty or `disabled` enablement leaves mechanical commands usable without
-credentials. Enabled routes fail project preflight if their local prerequisites
-are missing. Help and authentication commands work independently of a project.
+Absent, empty or `disabled` provider selection leaves mechanical application work
+usable without credentials. Explicit route configuration returns typed unavailability
+when local prerequisites are missing; the caller handles it before project opening. Help and authentication commands work independently of a project.
 Protected hosted credentials currently require macOS; there is no plaintext,
 environment-key or alternate-endpoint fallback.
 
 The domain guard allows 180 seconds, 32 model exchanges, 96 evidence requests and
 2,000,000 serialized UTF-16 code units. Aborting discards local dialogue state; it
 cannot guarantee that provider computation, allowance consumption or billing
-stops, or recover usage not returned before closure. Retained displays perform
-no inference.
+stops, or recover usage not returned before closure. Exact retained access performs
+no inference. Session cancellation is cooperative and cannot preempt synchronous
+compiler work. Final request cause/accounting and shutdown cleanup assessment are
+separate; callers await shutdown and inspect its failures.
 
 Protocol verified against the current [quickstart](https://developers.openai.com/siwc/quickstart),
 [open-source integration guide](https://developers.openai.com/siwc/token-sharing-open-source),
@@ -219,44 +227,32 @@ launcher and waits for the browser to request a temporary local test page. It
 opens a browser tab but does not access Keychain, initiate OAuth or contact an
 inference provider. This opt-in check is separate from the routine offline suite.
 
-## Reproducing the current assessment configuration
+## Historical assessment configuration
 
-The summary assessment pass uses `gpt-5.6-sol`, medium reasoning and the explicitly
+The historical summary assessment pass used `gpt-5.6-sol`, medium reasoning and the explicitly
 selected ChatGPT-plan route throughout. Its [frozen manifest](../records/validation/module-investigation/pass-01/manifest.json)
 records repository revisions, input hashes, Node 22.13.1 and PostCode's analyzer
 TypeScript **6.0.3**. The human approved an assessment-only merge-anything
 [configuration override](../records/validation/module-investigation/pass-01/merge-anything-override.json):
 it extends the unchanged original `tsconfig.json` and sets only
 `compilerOptions.ignoreDeprecations` to `"6.0"`. Results belong to that effective
-configuration. Original tracked source/configuration stays unchanged; the runner
-checks the pin, hashes and compiler version before inference. Cockatiel and
-fsm-engine use their original configurations. Reproduction instructions and the
-separate diagnostic/assessment accounting are in the [development harness guide](../scripts/module-investigation/README.md).
+configuration. Original tracked source/configuration stays unchanged; the retired shell runner
+checked the pin, hashes and compiler version before inference. Cockatiel and
+fsm-engine use their original configurations. The shell harness and its exclusive scenarios have retired. Retained diagnostics
+and direct validation tools are described in the [development tooling guide](../scripts/module-investigation/README.md).
 
 Returning browser sign-in sends the retained ID token as an `id_token_hint` to
 the provider’s authorization endpoint. This hint identifies the account and may
 remain in browser history; it is not an inference bearer credential. PostCode
 keeps the authorization URL out of process arguments, logs and diagnostics.
 
-After a summary in the shell, `explain @investigram-…`, `decompose @investigram-…`
-and `examine @investigram-…` use the same explicitly selected model, reasoning and
-billing route. A new investigation can incur provider usage; reusing a completed
-attempt or inspecting retained content does not. Communication/configuration failures
-remain eligible for another execution. There is no automatic model upgrade or route
-fallback. Fresh selection follows current answer designations and associations,
-preserving standing alternatives. `inspect @investigram-…` selects the exact immutable
-contribution with newly captured standing and change context. Shell `present @answer-…`
-uses the historical answer and its fixed support without new provider work or current
-ledger lookup. Failed-attempt details remain request reporting, separate from answer
-meaning and exact historical presentation.
-
-Views show qualified associations, unresolved alternatives and reconsideration causes
-based on actual producer inputs. Revision pages expose captured change grounds,
-qualification groups and inconsistency reports. Exact references keep their original
-targets; investigators acquire retained content and receive identifiable change notices
-under the common contribution protocol. See the
-[CLI investigation reference](cli-reference.md#progressive-investigation-and-usage)
-for reuse, outcomes and paging.
+Direct `summarize`, `explain`, `decompose`, `examine`, `state-behavior` and
+`follow-up` requests use the explicitly supplied agent. New investigations can incur
+provider usage; ordinary completed-attempt reuse and exact retained access do not.
+Communication/configuration failures remain retryable. Fresh selection preserves
+standing alternatives and actual-exposure reconsideration; exact answer access keeps
+historical support without current-ledger lookup. See the
+[capability reference](capability-reference.md#interpretive-investigation).
 
 The following assessments concern the earlier tree/correction representation and
 its guidance, not the current common contribution protocol. The historical

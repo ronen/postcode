@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { temporaryDirectory } from './cli-helpers.js';
+import { temporaryDirectory } from './temporary-directory.js';
 
 test('assessment report preserves investigator/evaluator attribution and unknown ChatGPT charges', t => {
   const root = temporaryDirectory(t, 'postcode-assessment-usage-'), input = path.join(root, 'runs.json');

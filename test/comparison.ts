@@ -1,6 +1,5 @@
-import assert from 'node:assert/strict';
 /** Comparison policy for unchanged methods: only the producing namespace varies.
- * Digests, foreign references, compact IDs, literal evidence and array order do not.
+ * Digests, foreign references, literal evidence and array order do not.
  * This is deliberately not a general string-redaction or graph-isomorphism helper.
  */
 const namespace = /^session:[a-f0-9-]{36}(?=:|$)/;
@@ -36,7 +35,7 @@ function producingSession(value: unknown): string | undefined {
 }
 
 export function normalizeSession<T>(value: T, declaredSession?: string): T {
-  if (typeof value === 'string') return normalizeRendered(value, declaredSession) as T;
+  if (typeof value === 'string') return value;
   const serializable = JSON.parse(JSON.stringify(value, (_key, item: unknown) =>
     item instanceof Map ? { entries: [...item] } : item instanceof Set ? { values: [...item] } : item)) as unknown;
   const session = declaredSession ?? producingSession(serializable);
@@ -47,7 +46,6 @@ export function normalizeSession<T>(value: T, declaredSession?: string): T {
     ? `session:normalized${item.slice(session.length)}` : item;
   function visit(item: unknown, field: string): unknown {
     if (typeof item === 'string') {
-      if (['rendered', 'stdout'].includes(field)) return normalizeRendered(item, session);
       return references.has(field) || field === '$references' ? reference(item) : item;
     }
     if (Array.isArray(item)) return item.map(child => visit(child, field));
@@ -60,29 +58,9 @@ export function normalizeSession<T>(value: T, declaredSession?: string): T {
           : field === 'module-exports-body' && key === 'exports' ? visit(child, '$references')
           : object.type === 'module-exports' && key === 'body' ? visit(child, 'module-exports-body')
           : field === 'designation' && object.kind === 'reference' && key === 'value' && typeof child === 'string' ? reference(child)
-          : object.kind === 'rendered-output' && key === 'value' && typeof child === 'string' ? normalizeRendered(child, session) : visit(child, key)]));
+          : visit(child, key)]));
     }
     return item;
   }
   return visit(serializable, '$references') as T;
-}
-
-function normalizeRendered(text: string, session?: string): string {
-  // Require the exact production JSON layout, then normalize reference positions.
-  if (text.trimStart().startsWith('{')) {
-    const parsed: unknown = JSON.parse(text);
-    if (session) assert.equal(producingSession(parsed), session, 'Rendered JSON must use the producing session');
-    assert.equal(text, JSON.stringify(parsed, null, 2) + (text.endsWith('\n') ? '\n' : ''), 'Rendered JSON layout');
-    const normalized = normalizeSession(parsed);
-    // Production JSON output has one documented pretty-print layout.
-    return JSON.stringify(normalized, null, 2) + (text.endsWith('\n') ? '\n' : '');
-  }
-  // Unicode prints the namespace in unindented session headings (including embedded module detail). Literal
-  // evidence in labels/documentation is never substituted, even if it resembles it.
-  const producer = session ?? `session:${text.match(/^Session ([a-f0-9-]{36})$/m)?.[1]}`;
-  const normalizedAnswers = text.replace(/^(Answer: (?:@answer-[a-f0-9]+ · )?)(session:[a-f0-9-]{36})(:[^\n]+)$/gm, (line, label: string, id: string, suffix: string) => id === producer ? `${label}session:normalized${suffix}` : line);
-  const normalizedUses = normalizedAnswers.replace(/^(Use |Qualification \()(session:[a-f0-9-]{36})(:investigram:[a-f0-9]+(?:#[^\s:)]+)?)(?=[:)])/gm,
-    (line, label: string, id: string, suffix: string) => id === producer ? `${label}session:normalized${suffix}` : line);
-  return normalizedUses.replace(/^Session ([a-f0-9-]{36})$/gm, (heading, uuid: string) =>
-    producer === `session:${uuid}` ? 'Session normalized' : heading);
 }

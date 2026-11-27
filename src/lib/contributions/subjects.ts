@@ -1,21 +1,11 @@
 import { nativeRecordCandidate, nativeRecordEntity } from './native-identity.js';
-import { EntityBindings } from '../identity.js';
 import type { ProgramRecordStore, RecordId } from '../records.js';
 import type { ContributionLedger } from './ledger.js';
 import { UnknownReference } from './model.js';
 import type { EntityId, InvestigramId, SubjectRef } from './model.js';
 
-/** Compact contribution spellings belong to the same lifetime as their ledger. */
-const bindings = new WeakMap<ContributionLedger, EntityBindings>();
-export function contributionBindings(ledger: ContributionLedger, ids: readonly InvestigramId[]): ReadonlyMap<RecordId, string> {
-  // Validate all inputs before allocating any spelling.
-  for (const id of ids) ledger.investigram(id);
-  let table = bindings.get(ledger);
-  if (!table) { table = new EntityBindings(); bindings.set(ledger, table); }
-  return table.allocate(ids, 'investigram');
-}
 export function contributionReference(ledger: ContributionLedger, reference: string): InvestigramId | undefined {
-  const id = (bindings.get(ledger)?.resolve(reference.replace(/^@/, '')) ?? reference.replace(/^@/, '')) as InvestigramId;
+  const id = reference as InvestigramId;
   try { return ledger.investigram(id).id; } catch (error) { if (error instanceof UnknownReference) return undefined; throw error; }
 }
 

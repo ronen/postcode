@@ -1,5 +1,5 @@
+import { arrangeContributionAnswer } from '../scripts/structured-accounts/support/answers.js';
 import type { AssociationAddress } from '../src/lib/contributions/model.js';
-import { arrangeContributionView, renderContributionView } from '../src/lib/interfaces/cli/contribution-presentation.js';
 import { openAIDialogAgent } from '../src/lib/investigation/openai/contribution-protocol.js';
 import { applicationCatalog } from '../src/lib/application/catalog.js';
 import { exportsLens } from '../src/lib/mechanical-implementations.js';
@@ -12,10 +12,9 @@ import { test } from 'node:test';
 import type { TestContext } from 'node:test';
 import { openApplication } from '../src/lib/application/index.js';
 import type { ApplicationResult } from '../src/lib/application/index.js';
-import { arrangeContributionAnswer } from '../src/lib/contributions/answers.js';
 import type { DialogAgent, DialogInput, DialogReply } from '../src/lib/contributions/dialog.js';
 import type { EntityId, SubmittedContribution } from '../src/lib/contributions/model.js';
-import { temporaryDirectory } from './cli-helpers.js';
+import { temporaryDirectory } from './temporary-directory.js';
 
 const caveat = { limitations: ['Interpretation from the supplied source; not mechanically established.'] };
 type Step = (input: DialogInput) => DialogReply;
@@ -559,15 +558,7 @@ for (const lens of ['state-behavior', 'summarize']) test(`${lens}: returned with
   assert.equal(reporting.answers[0]!.standing.displacedBy[0]!.operation, 'withdraw');
   if (reporting.fulfillment) assert.deepEqual(reporting.fulfillment.alternatives, reporting.answers.map(answer => ({ ...answer, unmet: [] })));
   const reportSnapshot = structuredClone(returned.result.reporting);
-  const view = arrangeContributionView(returned.content, { title: returned.result.title, presentation: { format: 'unicode', moreDetails: false } },
-    returned.result.reporting, returned.result.usage, new Map(returned.result.bindings.associations)).view;
-  const rendered = renderContributionView(view);
-  if (lens === 'state-behavior') assert.match(rendered, /Attempt fulfillment: fulfilled/);
-  else assert.doesNotMatch(rendered, /Attempt fulfillment:/);
-  assert.match(rendered, /Attempt answer standing when assessed: withdrawn by/);
-  assert.match(rendered, /neither endorsement nor re-adoption/);
-  assert.ok(view.summary!.noCurrentAnswer);
-  assert.deepEqual(structuredClone(view.reporting), reportSnapshot);
+  assert.ok(arrangeContributionAnswer(returned.content, returned.result.title).noCurrentAnswer);
   const readopted = answer(await session.execute({ ...request, fresh: true }));
   assert.equal(readopted.projection.fulfillment, lens === 'state-behavior' ? 'fulfilled' : null);
   assert.notDeepEqual(readopted.projection.alternatives[0]!.designation, original);
@@ -576,7 +567,6 @@ for (const lens of ['state-behavior', 'summarize']) test(`${lens}: returned with
   assert.deepEqual(exact.content, historical); assert.equal(exact.result.reporting, null);
   await session.close();
   assert.deepEqual(first.content, historical); assert.deepEqual(returned.result.reporting, reportSnapshot);
-  assert.equal(renderContributionView(view), rendered, 'report presentation needs no live Session or new standing lookup');
 });
 
 test('offered option qualifications survive direct and JSON arrangement and exact historical presentation', async t => {
@@ -600,16 +590,10 @@ test('offered option qualifications survive direct and JSON arrangement and exac
   assert.ok(!offered.qualification.statements.includes('OWNER_LIMIT'));
   assert.ok(offered.qualification.owner!.statements.includes('OWNER_LIMIT'));
   assert.ok(!offered.qualification.owner!.statements.some(statement => statement.startsWith('OPTION_ONLY_LIMIT')));
-  const json = (value: typeof first) => arrangeContributionView(value.content, { title: value.result.title, presentation: { format: 'json', moreDetails: false } },
-    null, value.result.usage, new Map(value.result.bindings.associations)).view;
-  const view = json(first);
-  assert.match(renderContributionView(view), /OPTION_ONLY_LIMIT/);
-  assert.deepEqual(JSON.parse(renderContributionView(view)).summary.alternatives[0].options[0], offered);
-  assert.ok(view.qualification.some(group => group.source === JSON.stringify(offered.address) && group.statements.includes('OPTION_ONLY_LIMIT: valid only for the hypothetical deployment.')));
+  assert.deepEqual(JSON.parse(JSON.stringify(direct)).alternatives[0].options[0], offered);
   await session.execute({ ...request, fresh: true });
   const exact = answer(await session.execute({ kind: 'present', target: first.projection.id }));
   assert.deepEqual(arrangeContributionAnswer(exact.content, first.result.title), direct);
-  assert.deepEqual(json(exact).summary, view.summary);
   await session.close();
   assert.deepEqual(arrangeContributionAnswer(structuredClone(first.content), first.result.title), direct);
 });
