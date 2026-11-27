@@ -4,6 +4,8 @@ This document describes how plans, related decisions, and changes to the applica
 
 Application specification revisions may be developed with an implementation plan or through standalone human-directed design work. Follow the [specification revision requirements](workflow.md#application-specification) in either case. A package may contain specification revisions and related decisions without an implementation plan; apply the review and promotion steps relevant to its contents.
 
+When shaping a proposal, consult the [design principles](../steering/design-principles.md) for reasoning relevant to the choices at hand.
+
 ## Plan contents
 
 Plans describe intended work, not established system behavior. Store human-approved plans under [`docs/plans/`](../docs/plans/) and follow the lifecycle described there.

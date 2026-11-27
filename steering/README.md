@@ -7,5 +7,6 @@ Maintain these documents through separate human-directed discussion, not as part
 - [Upcoming work](upcoming-work.md): current selection, ordering, and decision points for strategy discussion.
 - [Candidate capabilities](candidate-capabilities.md): possible capabilities and the questions worth considering before pursuing them.
 - [Candidate UX](candidate-ux.md): possible investigation experiences and their unresolved design questions.
+- [Design principles](design-principles.md): current design preferences and the reasoning behind them.
 
 The [backlog](../docs/backlog.md) also records worthwhile work awaiting human selection and authorization. Unlike the documents here, agents may add backlog entries during planning or implementation under the [backlog guidance](../dev/workflow.md#backlog).
